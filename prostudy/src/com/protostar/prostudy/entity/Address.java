@@ -1,7 +1,6 @@
 package com.protostar.prostudy.entity;
 
-
-public class Address{
+public class Address {
 
 	private String addressType = "Default";
 	private String line1 = "";
@@ -13,8 +12,13 @@ public class Address{
 	private String dist = "";
 	private String pin = "";
 	private boolean otherAddressFlag;
-	
 
+	public Address() {
+	}
+
+	public Address(String line1) {
+		this.line1 = line1;
+	}
 
 	public boolean isOtherAddressFlag() {
 		return otherAddressFlag;

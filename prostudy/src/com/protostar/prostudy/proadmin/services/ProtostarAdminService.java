@@ -19,15 +19,15 @@ import com.protostar.prostudy.proadmin.entities.PaymentPlanType;
 @Api(name = "protostarAdminService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.prostudy.proadmin.services", ownerName = "com.protostar.prostudy.proadmin.services", packagePath = ""))
 public class ProtostarAdminService {
 
-	private static final Logger log = Logger.getLogger(ProtostarAdminService.class
-			.getName());
+	private static final Logger log = Logger
+			.getLogger(ProtostarAdminService.class.getName());
 
 	@ApiMethod(name = "addAccountType")
 	public void addAccountType(PaymentPlanType account) {
 		ofy().save().entity(account).now();
 
 	}
-	
+
 	@ApiMethod(name = "getallAccountType")
 	public List<PaymentPlanType> getallAccountType() {
 		log.info("Inside getallAccountType.");
@@ -41,11 +41,11 @@ public class ProtostarAdminService {
 
 	@ApiMethod(name = "getAccountTypeById")
 	public PaymentPlanType getAccountTypeById(@Named("id") Long id) {
-		 PaymentPlanType type = ofy().load().type(PaymentPlanType.class).id(id).now();
-		 return type;
+		PaymentPlanType type = ofy().load().type(PaymentPlanType.class).id(id)
+				.now();
+		return type;
 	}
 
-	
 	@ApiMethod(name = "initsetupnext")
 	public void initsetupnext() {
 		try {
@@ -53,8 +53,8 @@ public class ProtostarAdminService {
 			String DATE_FORMAT = "dd/MM/yyyy";
 			SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 
-			List<PaymentPlanType> accountt = ofy().load().type(PaymentPlanType.class)
-					.list();
+			List<PaymentPlanType> accountt = ofy().load()
+					.type(PaymentPlanType.class).list();
 			PaymentPlanType filteredaccount = new PaymentPlanType();
 			for (int i = 0; i < accountt.size(); i++) {
 				if (accountt.get(i).getAccountName().equals("Platinum")) {
@@ -63,10 +63,12 @@ public class ProtostarAdminService {
 			}
 
 			InstituteEntity instituteEntity = new InstituteEntity();
-			
+
 			instituteEntity.setName("Protostar");
 			instituteEntity.setAccounttype(filteredaccount);
 			instituteEntity.setRegisterDate(sdf.format(date));
+			String authorizations = "	{\"authorizations\":[{\"authName\":\"proadmin\",\"authorizations\":[]},{\"authName\":\"setup\",\"authorizations\":[]}]}";
+			instituteEntity.setAuthorizations(authorizations);
 
 			ofy().save().entity(instituteEntity).now();
 
@@ -78,6 +80,7 @@ public class ProtostarAdminService {
 			userEntity1.setIsGoogleUser(true);
 			userEntity1.setAuthority(Arrays.asList("admin"));
 			userEntity1.setRole("Admin");
+			userEntity1.setAuthorizations(authorizations);
 			ofy().save().entity(userEntity1).now();
 
 			// ------------------------------
@@ -90,8 +93,21 @@ public class ProtostarAdminService {
 			userEntity2.setIsGoogleUser(true);
 			userEntity2.setAuthority(Arrays.asList("admin"));
 			userEntity2.setRole("Admin");
+			userEntity2.setAuthorizations(authorizations);
 			ofy().save().entity(userEntity2).now();
-			
+
+			// ------------------------------
+
+			UserEntity userEntity3 = new UserEntity();
+			userEntity3.setInstituteID(instituteEntity.getId());
+			userEntity3.setEmail_id("ashvinigokale@gmail.com");
+			userEntity3.setFirstName("Ashvini");
+			userEntity3.setLastName("Gokale");
+			userEntity3.setIsGoogleUser(true);
+			userEntity3.setAuthority(Arrays.asList("admin"));
+			userEntity3.setRole("Admin");
+			userEntity3.setAuthorizations(authorizations);
+			ofy().save().entity(userEntity3).now();
 			// ------------------------------
 
 			UserEntity userEntity4 = new UserEntity();
@@ -102,21 +118,10 @@ public class ProtostarAdminService {
 			userEntity4.setIsGoogleUser(true);
 			userEntity4.setAuthority(Arrays.asList("admin"));
 			userEntity4.setRole("Admin");
+			userEntity4.setAuthorizations(authorizations);
 			ofy().save().entity(userEntity4).now();
-			
-			// ------------------------------
-			
-			UserEntity userEntity3 = new UserEntity();
-			userEntity3.setInstituteID(instituteEntity.getId());
-			userEntity3.setEmail_id("ashvinigokale@gmail.com");
-			userEntity3.setFirstName("Ashvini");
-			userEntity3.setLastName("Gokale");
-			userEntity3.setIsGoogleUser(true);
-			userEntity3.setAuthority(Arrays.asList("admin"));
-			userEntity3.setRole("Admin");
-			ofy().save().entity(userEntity3).now();			
-		} 
-		catch (Exception e) {
+
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -150,8 +155,7 @@ public class ProtostarAdminService {
 			accounttype3.setMaxuser("1000");
 			accounttype3.setPaymentDesc("Rs. 25,000 PM + Tax");
 			ofy().save().entity(accounttype3).now();
-		} 
-		catch (Exception e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
