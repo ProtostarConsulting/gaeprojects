@@ -34,14 +34,14 @@
 	<md-toolbar>
 	<div class="md-toolbar-tools" id="topRight">
 
-		<div>
+		<!-- <div>
 			<div
 				style="height: 80px; width: 120px; float: left; margin: 3px; padding: 3px;">
 				<img ng-src="{{logoURL}}" class="md-card-image" alt="Compnay Logo"
 					style="max-width: 100%; max-height: 100%;" />
 			</div>
 
-		</div>
+		</div> -->
 		<span hide-xs ng-show="curUser==null">ProStudy - Where learning
 			meets teaching, self study, tutorials and practice!</span> <span hide-xs
 			ng-show="curUser!=null">{{institute.name}}</span> <span
@@ -52,6 +52,9 @@
 				<md-button aria-label="Login" ng-hide="curUser !== null"
 					ng-show="curUser == null" ng-click="loginClick()">
 				Login <md-tooltip> Login </md-tooltip> </md-button>
+				<md-button aria-label="Login" ng-hide="curUser !== null"
+					ng-show="curUser == null" ui-sref="proadmin.instituteAddInfo">
+				Register School/College<md-tooltip>Create/Register your new school/college on ProStudy</md-tooltip> </md-button>
 
 				<md-button aria-label="Logout" ng-hide="curUser == null"
 					ng-click="signOut()"> Logout <md-tooltip>

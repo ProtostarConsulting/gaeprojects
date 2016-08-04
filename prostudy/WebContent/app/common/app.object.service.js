@@ -37,6 +37,11 @@ function objectFactoryFn($log) {
 	};
 	
 	objectFactory.newInstituteUser = function(role,instituteID,isGoogleUser) {
+		var auths = {"authorizations":[{"authName":"myprofile","authorizations":[]}]};
+		if(role == "Admin"){
+			auths.authorizations.push({"authName":"setup","authorizations":[]});
+		}
+		
 		return {
 			'instituteID' : instituteID,
 			'institute' : '',
@@ -51,6 +56,7 @@ function objectFactoryFn($log) {
 			'subject' : '',
 			'password' : '',
 			'isGoogleUser' : isGoogleUser,
+			'authorizations': angular.toJson(auths) 
 		}
 	}
 

@@ -127,13 +127,21 @@ angular.module("prostudyApp").controller(
 			};
 			$scope.institutes = [];
 
-			$scope.userEntity={
+			/*$scope.userEntity={
 					instituteID:"",
 					email_id : $scope.curUser.email_id,
 					firstName : $scope.curUser.firstName,
 					lastName : $scope.curUser.lastName,	
 					authority:[],
 					isGoogleUser:true
+			}*/
+			$scope.userEntity={
+					instituteID:"",
+					email_id : '',
+					firstName : '',
+					lastName : '',	
+					authority:[],
+					isGoogleUser:false
 			}
 			
 			$scope.addInstitute = function() {
@@ -145,19 +153,20 @@ angular.module("prostudyApp").controller(
 						$scope.selectedStudents, $scope.selectedAdmins,
 						$scope.selectedTeachers).then(function(institute) {
 				
-					$scope.userEntity.instituteID=institute.result.id;
+							$scope.currentInstID = 	institute.id	
+					/*$scope.userEntity.instituteID=institute.result.id;
 					$scope.userEntity.authority.push("admin");
 					$scope.userEntity.role = "Admin";
 					
 					var UserService = appEndpointSF.getUserService();
 					UserService.addUser($scope.userEntity).then(function(msgBean) {
 
-						});
+						});*/
 /*					$state.reload();
 					$state.go("home");
 */					
 					$state.go("institute.addAdmins", {
-						currentInstID : $scope.userEntity.instituteID
+						currentInstID : $scope.currentInstID
 					});
 					
 					
@@ -166,10 +175,8 @@ angular.module("prostudyApp").controller(
 				
 			}
 			
-			$scope.accountDDLChange = function(index, selectedaccount) {
+			$scope.accountDDLChange = function(index) {
 				$log.debug("##Came to accountDDLChange...");
-
-				$scope.tempInstitute.accounttype = selectedaccount;
 			};
 			
 			$scope.showsubConfirm = function(ev) {
@@ -209,9 +216,7 @@ angular.module("prostudyApp").controller(
 			$scope.addInstituteAdmins = function() {
 				var UserService = appEndpointSF.getUserService();
 
-					$state.go("institute.addauthority", {
-						currentInstID : $scope.currentInstID
-					});
+				$scope.tempAdmin.instituteID = $scope.currentInstID;
 
 				UserService.addUser($scope.tempAdmin).then(function(msgBean) {
 
@@ -350,6 +355,7 @@ angular.module("prostudyApp").controller(
 				var protostarAdminService = appEndpointSF.getProtostarAdminService();
 				protostarAdminService.getallAccountType().then(function(accountsList) {
 					$scope.accountlist = accountsList.items;
+					$scope.tempInstitute.accounttype = $scope.accountlist[0];
 				
 				});
 			}

@@ -10,26 +10,26 @@
 		<div layout="row" layout-align="centre centre" layout-xs="column">
 
 			<md-input-container flex> <label>First
-				name<span style="color: red"
+				Name<span style="color: red"
 				ng-show="instituteAdminForm.firstName.$error.required"
 				class="mandatory">*</span>
 			</label> <input name="firstName" ng-model="tempAdmin.firstName" id="firstName"
 				ng-required="true">
 			<div ng-messages="instituteAdminForm.firstName.$error"
 				ng-if="instituteAdminForm.firstName.$submitted || instituteAdminForm.firstName.$touched">
-				<div ng-message="required">Please Enter Admin FirstName.</div>
+				<div ng-message="required">Please Enter Admin First Name.</div>
 			</div>
 			</md-input-container>
 
 			<md-input-container flex> <label>Last
-				name<span style="color: red"
+				Name<span style="color: red"
 				ng-show="instituteAdminForm.lastName.$error.required"
 				class="mandatory">*</span>
 			</label> <input name="lastName" ng-model="tempAdmin.lastName" id="lastName"
 				ng-required="true">
 			<div ng-messages="instituteAdminForm.lastName.$error"
 				ng-if="instituteAdminForm.lastName.$submitted || instituteAdminForm.lastName.$touched">
-				<div ng-message="required">Please Enter Admin LastName.</div>
+				<div ng-message="required">Please Enter Admin Last Name.</div>
 			</div>
 			</md-input-container>
 
@@ -41,11 +41,8 @@
 			<md-input-container flex> <label>Address</label>
 			<input name="address " ng-model="tempAdmin.address" id="address"> </md-input-container>
 
-			<md-input-container flex> <label>Contact<span
-				style="color: red"
-				ng-show="instituteAdminForm.contact.$error.required"
-				class="mandatory">*</span></label> <input type="number" name="contact" id="contact"
-				ng-model="tempAdmin.contact" ng-required="true" ng-minlength="10"
+			<md-input-container flex> <label>Contact</label> <input type="number" name="contact" id="contact"
+				ng-model="tempAdmin.contact" ng-minlength="10"
 				ng-maxlength="10">
 			<div ng-messages="instituteAdminForm.contact.$error"
 				ng-if="instituteAdminForm.contact.$submitted || instituteAdminForm.contact.$touched">

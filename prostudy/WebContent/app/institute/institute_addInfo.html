@@ -1,5 +1,5 @@
 
-<h3 class="md-headline">New Institute</h3>
+<h3 class="md-headline">Create/Register your new school/college on ProStudy</h3>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 
@@ -16,7 +16,7 @@
 					</div></md-input-container>
 	
 					<md-input-container  flex> <label>Institute
-				Description<span style="color:red" ng-show="instituteForm.desc.$error.required" class="mandatory">*</span></label> <input  name=" desc" ng-model="tempInstitute.desc" ng-required="true">
+				Description(more about your school/college)</label> <input  name=" desc" ng-model="tempInstitute.desc">
 			<div ng-messages="instituteForm.desc.$error"
 				ng-if="instituteForm.desc.$submitted || instituteForm.desc.$touched">
 				<div ng-message="required">Please Enter Institute Description.</div>
@@ -34,7 +34,7 @@
 					</div> </md-input-container>
 
 		<md-input-container flex> <label>Contact
-			No<span style="color:red" ng-show="instituteForm.phone_no.$error.required" class="mandatory">*</span></label> <input  type="number" name="phone_no" ng-model="tempInstitute.phone_no" ng-minlength="10" ng-maxlength="10" ng-required="true"><div ng-messages="instituteForm.phone_no.$error"
+			No</label> <input  type="number" name="phone_no" ng-model="tempInstitute.phone_no" ng-minlength="10" ng-maxlength="10"><div ng-messages="instituteForm.phone_no.$error"
 						ng-if="instituteForm.phone_no.$submitted || instituteForm.phone_no.$touched">
 						<div ng-message="required">Please Enter Institute Phone_no.</div>
 						<span class="help-block"
@@ -44,11 +44,11 @@
 	
 
 	<div flex layout="row">
-				<md-select flex ng-model="selectedaccount"
-					placeholder="Plan"
-					ng-change="accountDDLChange($index, selectedaccount)">
-				<md-option ng-value="list" 
-					ng-repeat="list in accountlist">{{list.accountName}} ( {{list.description}} ) 
+				<md-select flex ng-model="tempInstitute.accounttype"
+					placeholder="Select Payment Plan"
+					ng-change="accountDDLChange($index)">
+				<md-option ng-value="payPlan" 
+					ng-repeat="payPlan in accountlist">{{payPlan.accountName}} ( {{payPlan.description}} ) 
 				</md-option> </md-select>
 			</div>
 	
