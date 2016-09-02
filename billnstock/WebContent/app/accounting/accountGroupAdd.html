@@ -42,24 +42,6 @@
 	<div layout layout-sm="column">
 
 
-		<md-input-container flex ng-if="!tempAccountGroup.isPrimary"> <md-select
-			ng-model="tempAccountGroup.accountGroupType" ng-disabled="tempAccountGroup.isPrimary"
-			placeholder="AccountGroupType" id="accountGroupType"
-			name="accountGroupType" ng-required="true">
-		<lable>Account Group Type<span style="color: red;">*</span></lable> <md-option
-			ng-value="item" ng-repeat="item in accountGroupTypeList">{{item}}
-
-		</md-option> </md-select>
-
-		<div ng-messages="accGroupForm.accountGroupType.$error"
-			ng-if="accGroupForm.accountGroupType.$submitted || accGroupForm.accountGroupType.$touched">
-			<div ng-message="required">Please Select the Group Type</div>
-
-		</div>
-		</md-input-container>
-
-
-
 		<md-input-container flex> <label>Enter
 			Order No <span style="color: red;">*</span>
 		</label> <input type="number" ng-model="tempAccountGroup.displayOrderNo"
@@ -70,18 +52,34 @@
 			<div ng-message="required">Please Enter Order Number</div>
 		</div>
 		</md-input-container>
+
+
+
+
 	</div>
-	
+
 	<div layout layout-sm="column">
 		<label>isPrimary </label>
 		<md-checkbox ng-model="tempAccountGroup.isPrimary"
 			ng-true-value="true" ng-false-value="false"> </md-checkbox>
 
-
-
-	</div>
-	<div layout layout-sm="column">
 		<md-input-container flex ng-if="tempAccountGroup.isPrimary">
+		<md-select ng-model="tempAccountGroup.accountGroupType"
+			ng-disabled="tempAccountGroup.isPrimary"
+			placeholder="AccountGroupType" id="accountGroupType"
+			name="accountGroupType" ng-required="true"> <lable>Account
+		Group Type<span style="color: red;">*</span></lable> <md-option
+			ng-value="item" ng-repeat="item in accountGroupTypeList">{{item}}
+
+		</md-option> </md-select>
+
+		<div ng-messages="accGroupForm.accountGroupType.$error"
+			ng-if="accGroupForm.accountGroupType.$submitted || accGroupForm.accountGroupType.$touched">
+			<div ng-message="required">Please Select the Group Type</div>
+
+		</div>
+		</md-input-container>
+		<md-input-container flex ng-if="!tempAccountGroup.isPrimary">
 		<md-select ng-model="tempAccountGroup.primaryGroup"
 			placeholder="PrimaryGroup" id="primaryGroup" name="primaryGroup"
 			ng-required="true"> <lable>Primary Group Type<span
@@ -111,6 +109,5 @@
 	</section>
 
 </form>
-==============================={{accountGroupList}}
-</md-content>
+============{{accountGroupList}} </md-content>
 
