@@ -72,7 +72,7 @@ public class DownloadGroupListServlet extends HttpServlet {
 							
 							writer.append(accEntity.get(i).getGroupName());
 							writer.append(',');
-
+							
 							writer.append(accEntity.get(i).getDescription());
 							writer.append(',');
 							

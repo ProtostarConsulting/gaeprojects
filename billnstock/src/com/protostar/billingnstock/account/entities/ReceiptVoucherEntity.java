@@ -7,7 +7,7 @@ import com.googlecode.objectify.annotation.Entity;
 public class ReceiptVoucherEntity extends VoucherEntity {
 	private Ref<AccountEntity>accountType1;
 	private  Ref<AccountEntity>accountType2;
-	public int amount;
+	public Double amount;
 	public String narration;
 
 	
@@ -23,10 +23,11 @@ public class ReceiptVoucherEntity extends VoucherEntity {
 	public void setAccountType2(AccountEntity accountType2) {
 		this.accountType2 = Ref.create(accountType2);
 	}
-	public int getAmount() {
+	
+	public Double getAmount() {
 		return amount;
 	}
-	public void setAmount(int amount) {
+	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
 	public String getNarration() {

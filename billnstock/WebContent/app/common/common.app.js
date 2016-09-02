@@ -404,6 +404,26 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 			
 	})
+	
+	
+	
+	
+	.state('accounting.voucherPurches', {
+		url : "/PurchesVoucher",
+		templateUrl : '/app/accounting/voucherPurches.html',
+		controller :'voucherPurchesCtr'
+			})
+		
+		.state('accounting.voucherPurchesList', {
+		url : "/PurchesVoucherList",
+		templateUrl : '/app/accounting/voucherPurchesList.html',
+		controller :'voucherPurchesListCtr'})
+		
+		
+		
+		
+	
+	
 	.state('accounting.accountChart', {
 		url : "/accountChart",
 		templateUrl : '/app/accounting/accountChart.html',

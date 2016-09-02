@@ -5,6 +5,9 @@ public class ServerMsg {
 	private boolean returnBool;
 	private double returnBalance;
 	
+
+	
+
 	public double getReturnBalance() {
 		return returnBalance;
 	}

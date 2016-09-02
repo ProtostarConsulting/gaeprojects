@@ -1,5 +1,6 @@
 package com.protostar.billingnstock.account.services;
 
+/*Not required. Don't use*/
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
 import java.util.List;

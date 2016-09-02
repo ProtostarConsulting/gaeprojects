@@ -7,10 +7,8 @@ import java.util.List;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
-import com.google.apphosting.client.datastoreservice.mobile.DatastoreMobileService.ReceiptData;
-import com.protostar.billingnstock.account.entities.AccountEntity;
-import com.protostar.billingnstock.account.entities.AccountEntryEntity;
 import com.protostar.billingnstock.account.entities.GeneralEntryEntity;
+import com.protostar.billingnstock.account.entities.PurchaseVoucherEntity;
 import com.protostar.billingnstock.account.entities.ReceiptVoucherEntity;
 import com.protostar.billingnstock.account.entities.SalesVoucherEntity;
 
@@ -56,7 +54,11 @@ public class VoucherService {
 			
 			
 			
-		
+	@ApiMethod(name = "addvoucherPurches", path="addvoucherPurches")
+	public void addvoucherPurches(PurchaseVoucherEntity PurchaseVoucherEntity  )
+	{
+		ofy().save().entity(PurchaseVoucherEntity).now();
+	}
 		
 	
 	

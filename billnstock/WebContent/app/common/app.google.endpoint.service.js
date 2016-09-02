@@ -1104,6 +1104,24 @@ function googleEndpointSF($log, $q) {
 	}
 	
 	
+	
+	
+	
+	VoucherService.addvoucherPurches=function(vaccount){
+		var deferred=$q.defer();
+		gapi.client.voucherService.addvoucherPurches(vaccount).execute(function(resp){
+			$log.debug("addvoucherReciept#resp at enpoint:" + resp);
+			deferred.resolve(resp);
+			
+		});
+		return deferred.promise;
+	}
+	
+	
+	
+	
+	
+	
 	//___________________________________________________________________________________________________________________________________________________________________________________________________
 	var AccountService = {};
 
@@ -1323,7 +1341,7 @@ function googleEndpointSF($log, $q) {
 		var deferred = $q.defer();
 		gapi.client.accountEntryService.getAccountEntryByAccountId({"id" : accId}).execute(function(resp) {
 			$log.debug("accountEntryService enpoint" + resp.items);
-			deferred.resolve(resp.items);
+			deferred.resolve(resp);
 		});
 		return deferred.promise;
 	}

@@ -102,6 +102,16 @@ public class ProAdminService {
 		userEntity2.setIsGoogleUser(true);
 		userEntity2.setAuthority(Arrays.asList("admin"));
 		ofy().save().entity(userEntity2).now();
+		
+		
+		UserEntity userEntity3 = new UserEntity();
+		userEntity3.setBusiness(businessEntity);
+		userEntity3.setEmail_id("deepali@protostar.co.in");
+		userEntity3.setFirstName("deepali");
+		userEntity3.setLastName("mate");
+		userEntity3.setIsGoogleUser(true);
+		userEntity3.setAuthority(Arrays.asList("admin"));
+		ofy().save().entity(userEntity3).now();
 
 		// ///////////////////
 

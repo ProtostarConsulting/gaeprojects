@@ -140,6 +140,18 @@
     <servlet-name>DownloadGroupListServlet</servlet-name>
     <url-pattern>/DownloadGroupListServlet</url-pattern>
   </servlet-mapping>
+
+  <servlet>
+    <description></description>
+    <display-name>PdfSales</display-name>
+    <servlet-name>PdfSales</servlet-name>
+    <servlet-class>com.protostar.billingnstock.account.services.PdfSales</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PdfSales</servlet-name>
+    <url-pattern>/PdfSales</url-pattern>
+  </servlet-mapping>
+
   <servlet>
     <description></description>
     <display-name>DownloadAccountChartServlet</display-name>
@@ -150,4 +162,5 @@
     <servlet-name>DownloadAccountChartServlet</servlet-name>
     <url-pattern>/DownloadAccountChartServlet</url-pattern>
   </servlet-mapping>
+
 </web-app>
