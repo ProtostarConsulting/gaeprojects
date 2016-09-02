@@ -7,7 +7,7 @@ app.controller("voucherRecieptCtr", function($scope, $window, $mdToast, $timeout
 
 	$scope.vouchersReview1 = $stateParams.Account;
 	$scope.accountId = $stateParams.AccountId;
-	var i,flag;// = 0;
+	var i,flag,ReceiptVoucherEntity="ReceiptVoucherEntity";// = 0;
 
 	$scope.vouchersRe = {
 		accountType1 : "",
@@ -43,6 +43,8 @@ $scope.s=x;
 			$scope.showAddToast();
 
 			$scope.vouchersRe = "";
+			$scope.debitCurrentBalance="";	
+			$scope.creditCurrentBalance="";
 			$scope.voucherRecieptForm.$setPristine();
 			$scope.voucherRecieptForm.$setValidity();
 			$scope.voucherRecieptForm.$setUntouched();
@@ -59,7 +61,8 @@ $scope.s=x;
 
 	}
 	
-	$scope.remSelected = function(selected) {
+	$scope.remSelected = function(selected,fl) {
+		$scope.getAccountEntryByAccountId(selected, fl);
 		
 			var accountService = appEndpointSF.getAccountService();
 			accountService.getAccountList().then(function(list) {
@@ -75,6 +78,12 @@ $scope.s=x;
 
 						$scope.vaccounts2.splice(i, 1);
 						flag=selected;
+						if (selected == $scope.vouchersRe.accountType2) {
+							$scope.debitCurrentBalance="";	
+							$scope.creditCurrentBalance="";
+								$scope.vouchersRe.accountType2 = "";
+							$scope.voucherRecieptForm.Account.$touched = true;
+						}
 						break;
 						// $log.debug(value);
 
@@ -83,6 +92,51 @@ $scope.s=x;
 			});
 	}
 
+	
+	
+	
+	var printDivCSS = new String(
+			'<link href="/lib/base/css/angular-material.min.css"" rel="stylesheet" type="text/css">'
+					+ '<link href="/lib/base/css/bootstrap.min.css"" rel="stylesheet" type="text/css">')
+	$scope.printDiv = function(divId) {
+		// window.frames["print_frame"].document.body.innerHTML
+		// = printDivCSS
+		// + document.getElementById(divId).innerHTML;
+		window.frames["print_frame"].document.body.innerHTML = document
+				.getElementById(divId).innerHTML;
+		window.frames["print_frame"].window.focus();
+		window.frames["print_frame"].window.print();
+	}
+
+	
+	$scope.downloadpdf=function(){
+		//	window.location.href ="PdfSales";
+			window.open("PdfSales?id="+$scope.vouchersReview1.id+"&entityname="+ReceiptVoucherEntity);
+		//	myWindow=window.open('PdfSales','mypage.jsp','width=200,height=100'); myWindow.focus();
+			
+		}
+	
+	
+	
+	
+	$scope.getAccountEntryByAccountId = function(accId, fl) {
+		
+		var accountservice=appEndpointSF.getAccountService();
+		
+		accountservice.getAccountBalance(accId.id).then(function(balance){
+			
+			
+			if(fl==2)
+				 $scope.debitCurrentBalance=balance;     
+			else
+				$scope.creditCurrentBalance=balance;
+			
+			
+		});					
+		}
+	
+	
+	
 
 	
 });

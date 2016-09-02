@@ -4,7 +4,20 @@ app.controller("voucherListCtr", function($scope, $window, $mdToast, $timeout,
 		$mdSidenav, $mdUtil, $log, $stateParams, objectFactory, appEndpointSF,$mdDialog,$mdMedia, $state  ) {
 	
 	
-
+	$scope.vouchersSaview1 = $stateParams.Account;
+	
+	
+	
+	
+	
+	$scope.vouchersSaview1 = {
+			accountType1 : "",
+			accountType2 : "",
+			amount : "",
+			narration : ""
+		};
+	
+	
 
 	$scope.voucherList=function(){
 		
@@ -16,7 +29,7 @@ app.controller("voucherListCtr", function($scope, $window, $mdToast, $timeout,
 			}
 	
 	
-	$scope.voucherList();
-	
+/*	$scope.voucherList();
+	*/
 
 });

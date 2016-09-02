@@ -11,6 +11,7 @@ app.controller("voucherSalesListCtr", function($scope, $window, $mdToast, $timeo
 		var voucherServiceList=appEndpointSF.getVoucherService();
 		voucherServiceList.listVoucher().then(function(list){
 			$scope.Voucheraccounts=list;
+			
 		
 				});
 			}
@@ -23,9 +24,9 @@ app.controller("voucherSalesListCtr", function($scope, $window, $mdToast, $timeo
 			$timeout($scope.waitForServiceLoad, 1000);
 		}
 	}
-	$scope.waitForServiceLoad();
+//	$scope.waitForServiceLoad();
 
-	
+	$scope.voucherList();
 	
 
 });

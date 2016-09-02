@@ -1,7 +1,29 @@
-<md-content layout-padding>
-<h3 class="md-headline" ng-hide="account.id">
+<style>
+ 
+ table {
+    border: 1px solid black;
+    
+} 
+
+
+</style>
+
+
+<md-content layout-padding  >
+<h3 class="md-headline" ng-hide="account.id"   ng-if="!vouchersReview1">
 	<u> Reciept Vaucher</u>
 </h3>
+<section layout="row"  ng-if="vouchersReview1">
+		<md-button class="md-fab md-primary md-hue-1 "
+			ng-click="printDiv('reciptid')" aria-label="Favorite"><md-tooltip>Print</md-tooltip> 
+		<md-icon md-svg-icon="img/icons/print.svg"></md-icon> </md-button>
+		
+		
+		<md-button class="md-fab md-primary md-hue-1 "
+			ng-click="downloadpdf()" aria-label="Favorite"><md-tooltip> Download GroupList</md-tooltip> 
+		<md-icon md-svg-icon="img/icons/pdfdownload.svg"></md-icon> </md-button>
+			
+	</section>
 
 <form name="voucherRecieptForm">
 
@@ -10,7 +32,7 @@
 			 <md-input-container flex>  <label>Credit Account <span
 			style="color: red;">*</span></label>
 	 <md-select ng-model="vouchersRe.accountType1" id="accountName"
-		name="Account1" ng-required="true"  ng-change="remSelected(vouchersRe.accountType1)">
+		name="Account1" ng-required="true"  ng-change="remSelected(vouchersRe.accountType1,1)">
 			<md-option ng-value="type" ng-repeat="type in vaccounts1">
 			{{type.accountName}}</md-option> </md-select> 
 			
@@ -19,14 +41,14 @@
 			<div ng-message="required">Please Select Credit Account</div>
 </div>		
 		<div>
-			Current Balance:<span>{{0}}</span>
+			Current Balance:<span>{{ creditCurrentBalance.returnBalance}}</span>
 		</div>
 			
 			</md-input-container>
 			<md-input-container flex>  <label>Debit Account<span
 			style="color: red;">*</span></label>
 	 <md-select ng-model="vouchersRe.accountType2" id="accountName"
-		name="Account" ng-required="true"  >
+		name="Account" ng-required="true" ng-change="getAccountEntryByAccountId(vouchersRe.accountType2,2)" >
 			<md-option ng-value="type" ng-repeat="type in vaccounts2">
 			{{type.accountName}}</md-option> </md-select> 
 			
@@ -35,7 +57,7 @@
 			<div ng-message="required">Please Select Credit Account</div>
 				</div>
 	<div>
-		Current Balance:<span>{{0}}</span>
+		Current Balance:<span>{{debitCurrentBalance.returnBalance}}</span>
 	</div>
 		</md-input-container>
 	</div>
@@ -58,31 +80,42 @@
 			 maxlength="300"></textarea>
 	</md-input-container>
 		
+		
 	</div>
 
 <!-- ----------------------------------------------------------------------------- -->
-<div layout layout-xs="column" ng-if="vouchersReview1">
-		<md-input-container flex> <label>Credit Account 
-		</label> <input ng-model="vouchersReview1.accountType1.accountName"  readonly="true">
-		</md-input-container>
+
+<div id="reciptid">
+
+<div  ng-if="vouchersReview1">
+<h4 align="center" style="font-size: 150%">Reciept Voucher </h4>
+
+<table style="
+     width: 100%;
+     hight:100%;" >
+	<tbody >
+		<tr style=" height: 50px;">
+
+	 <td ><b>Credit Account </b>	 {{vouchersReview1.accountType1.accountName}}</td>
 		
-		<md-input-container flex> <label>Debit Account
-		</label> <input ng-model="vouchersReview1.accountType2.accountName"  readonly="true">
-		</md-input-container>
-</div>		
-
-	<div layout layout-xs="column" ng-if="vouchersReview1">
-		<md-input-container flex> <label>Amount <span
-			style="color: red;">*</span>
-		</label> <input ng-model="vouchersReview1.amount" name="amount" ng-required="true" readonly="true">
+		
+		 <td ><b>Debit Account</b> {{vouchersReview1.accountType2.accountName}}</td></tr>
+		
+	
+<tr style=" height: 50px;">
+	
+		 <td ><b>Amount 	</b> {{vouchersReview1.amount}}</td>
 
 		
-		</md-input-container>
-			<md-input-container flex> <label>Narration</label>
-		 <textarea name="narration" ng-model="vouchersReview1.narration"
-			 readonly="true" maxlength="300"></textarea>
-	</md-input-container>
-
+		
+			<td> <b> Narration</b> {{vouchersReview1.narration}}</td></tr>
+			</tbody>
+			</table>
+	
+	
+	<iframe name="print_frame" width="0" height="0" frameborder="0"
+		src="about:blank"></iframe>
+	
 	</div>
 <!-- ----------------------------------------------------------------------------- -->	
 
