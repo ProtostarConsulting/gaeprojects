@@ -9,7 +9,7 @@ app
 
 					$scope.vouchersSaview1 = $stateParams.Account;
 					$scope.accountId = $stateParams.AccountId;
-					var i, flag,SalesVoucherEntity="SalesVoucherEntity";
+					var i, flag,SalesVoucherEntity="SalesVoucherEntity",div;
 
 					$scope.vouchers = {
 						accountType1 : "",
@@ -29,6 +29,7 @@ app
 						// window.frames["print_frame"].document.body.innerHTML
 						// = printDivCSS
 						// + document.getElementById(divId).innerHTML;
+						div=divId;
 						window.frames["print_frame"].document.body.innerHTML = document
 								.getElementById(divId).innerHTML;
 						window.frames["print_frame"].window.focus();

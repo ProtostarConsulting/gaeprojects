@@ -35,7 +35,7 @@
 	
 	</section>
 
-<form name="voucherSalesForm">
+<form name="voucherSalesForm" method="GET" action="PdfSales">
 	<div layout layout-xs="column" ng-if="!vouchersSaview1">
 
 		<md-input-container flex> <label>Debit
@@ -97,18 +97,20 @@
 	<!-- ----------------------------------------------------------------------------- -->
 
 
- <div id="salesdiv" >
+ <div  id="salesdiv" >
 
-	<!-- <div  ng-if="vouchersSaview1" >
+	 <div  ng-if="vouchersSaview1" >
 	<h4 align="center" style="font-size: 150%">Sales Voucher </h4>
 	
 	<table style="
      width: 100%;
      hight:100%;" >
+   
 	<tbody >
 	
-	<tr style=" height: 50px;">
-	<td ><b>Debit Account : </b> {{vouchersSaview1.accountType1.accountName}}</td>
+	
+	<tr style=" height: 50px; ">
+	<td><b>Debit Account : </b> {{vouchersSaview1.accountType1.accountName}}</td>
 <td><b>Credit Account:</b> {{vouchersSaview1.accountType2.accountName}}</td></tr>
 	
 	<tr style=" height: 50px;">
@@ -120,129 +122,10 @@
 		
 	<iframe name="print_frame" width="0" height="0" frameborder="0"
 		src="about:blank"></iframe>
-				</div> -->
+			
 				
 				
-			<div  ng-if="vouchersSaview1" >
-			
-			
 		
-			
-			<!-- 
-			<table style="
-     width: 100%;
-     hight:100%; 
-     border: 1px solid black;" >
-	<tbody >
-	<tr style="display: inline-table; width: 50%; height:50% ;  border:  1px solid black;"><td>dddddddd<br>fdssgfs<br>hdhdhds</td></tr>
-	<tr style="display: inline-table; width: 50%; height:50% ; border: 1px solid blacknone;"><td>wwwwww<br>fdssgfs<br>hdhdhds</td></tr>
-	<tr style="display: inline-table; width: 50%; height:50% ;  border:  1px solid black;"><td>pppp<br>fdssgfs<br>hdhdhds</td></tr>
-	<tr style="display: inline-table; width: 50%; height:50% ; border: none;"><td>kkkk<br>fdssgfs<br>hdhdhds</td></tr>
-	 
-	
-	
-	
-	</tbody>
-	</table>
-	 -->
-	 <table style="
-     width: 100%;
-     hight:100%; 
-     border: 1px solid black;">
-	 <tr>
-	 <td rowspan="3">qqq</td>
-	 <td>www</td>
-	 <td>eeee</td>
-	 </tr>
-	 <tr>
-	 <td>www</td>
-	 <td>eeee</td>
-	 </tr>
-	  <tr>
-	 <td>www</td>
-	 <td>eeee</td>
-	 </tr>
-	  <tr><td rowspan="8">qqq</td>
-	 <td>www</td>
-	 <td>eeee</td>
-	 </tr>
-	 <tr>
-	 <td>www</td>
-	 <td>eeee</td>
-	 </tr>
-	  <tr>
-	 <td>www</td>
-	 <td>eeee</td>
-	 </tr>
-	 
-	 <tr rowspan="3">
-	 <td   rowspan="3" colspan="2">t</td>
-	 </tr>
-	
-	 </table >
-	 <table style="
-     width: 100%;
-     hight:100%; 
-     border: 1px solid black;">
-     
-			
-			
-			<tr colspan="2">
-			<th >Sl No.</th>
-			<th>Particulars</th>
-			<th>Quqntity</th>
-			<th>Rate</th>
-			<th>Per</th>
-			<th>Amount</th>
-			</tr>
-			<tr colspan="2">
-			<td>q</td>
-			<td>q</td>
-			<td>q</td>
-			<td>q</td>
-			<td>q</td>
-			<td>q</td>
-			</tr>
-			<tr colspan="2">
-			<td>e</td>
-			<td>e</td>
-			<td>e</td>
-			<td>e</td>
-			<td>e</td>
-			<td>e</td>
-			</tr>
-			<tr colspan="2">
-			<td>y</td>
-			<td>y</td>
-			<td>y</td>
-			<td>y</td>
-			<td>y</td>
-			<td>y</td>
-			</tr>
-			<tr rowspan="8" >
-			<td   colspan="15"></td>
-			<td> </td>
-			</tr>
-			<tr></tr>
-			
-			
-			</table>
-			<table table style="
-    			 width: 100%;
-     			  hight:100%; 
-     			border: 1px solid black;">
-     
-     <tr style="display: inline-block;hight:50%;width: 100%;" >
-     
-     
-     
-     </tr>     
-			
-			
-			
-			
-			</table>
-			
 			
 			</div>	
 				
