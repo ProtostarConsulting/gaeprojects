@@ -7,6 +7,8 @@ import java.util.List;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
+import com.google.api.server.spi.config.Named;
+import com.protostar.billingnstock.account.entities.AccountEntity;
 import com.protostar.billingnstock.account.entities.GeneralEntryEntity;
 import com.protostar.billingnstock.account.entities.PurchaseVoucherEntity;
 import com.protostar.billingnstock.account.entities.ReceiptVoucherEntity;
@@ -38,6 +40,31 @@ public class VoucherService {
 		{
 			return ofy().load().type(SalesVoucherEntity.class).list();
 		}
+	
+	
+	@ApiMethod(name = "getSalesListById")
+	public SalesVoucherEntity  getSalesListById(@Named("id") Long accountId) 
+	{
+	SalesVoucherEntity listByid= ofy().load().type(SalesVoucherEntity.class)
+			.id(accountId).now();
+	return listByid;
+	
+	
+	
+	}
+	
+	
+	@ApiMethod(name = "getRecieptListById")
+	public ReceiptVoucherEntity  getRecieptListById(@Named("id") Long accountId) 
+	{
+		ReceiptVoucherEntity relistByid= ofy().load().type(ReceiptVoucherEntity.class)
+			.id(accountId).now();
+	return relistByid;
+	
+	
+	
+	}
+	
 			
 	@ApiMethod(name = "addvoucherReciept", path="addvoucherReciept")
 	public void addvoucherReciept(ReceiptVoucherEntity ReceiptVoucherEntity  )

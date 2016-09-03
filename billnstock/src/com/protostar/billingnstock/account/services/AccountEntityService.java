@@ -54,7 +54,7 @@ public class AccountEntityService {
 						Ref.create(Key.create(BusinessEntity.class, busId)))
 				.list();
 
-		return filteredAccounts;
+		return filteredAccounts; 
 	}
 
 	@ApiMethod(name = "getAccountById")
