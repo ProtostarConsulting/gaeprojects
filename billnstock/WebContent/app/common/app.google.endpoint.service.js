@@ -394,6 +394,20 @@ function googleEndpointSF($log, $q) {
 		});
 		return deferred.promise;
 	}
+	
+	
+	proadminService.creatAccountAndGroup = function() {
+		var deferred = $q.defer();
+		gapi.client.proadminService.creatAccountAndGroup().execute(function(resp) {
+			deferred.resolve({
+				"done" : resp
+			});
+		});
+		return deferred.promise;
+	}
+	
+	
+	
 	proadminService.getAllemp = function() {
 		var deferred = $q.defer();
 		gapi.client.proadminService.getAllemp().execute(function(resp) {
@@ -1117,7 +1131,7 @@ function googleEndpointSF($log, $q) {
 	
 	
 	
-/*	VoucherService.addvoucherPurches=function(vaccount){
+	VoucherService.addvoucherPurches=function(vaccount){
 		var deferred=$q.defer();
 		gapi.client.voucherService.addvoucherPurches(vaccount).execute(function(resp){
 			$log.debug("addvoucherReciept#resp at enpoint:" + resp);
@@ -1125,8 +1139,20 @@ function googleEndpointSF($log, $q) {
 			
 		});
 		return deferred.promise;
-	}*/
+	}
 	
+	
+	
+	VoucherService.listVoucherPurches=function(){
+		var deferred=$q.defer();
+		gapi.client.voucherService.listVoucherPurches().execute(function(resp){
+			$log.debug("listVoucherReciept#resp at enpoint:" + resp);
+			deferred.resolve(resp.items);
+			
+		});
+		return deferred.promise;
+		}
+		
 	
 	
 	
