@@ -7,15 +7,18 @@ app
 						$mdUtil, $log, $stateParams, objectFactory,
 						appEndpointSF, $mdDialog, $mdMedia, $state) {
 
-					$scope.vouchersSaview1 = $stateParams.Account;
+					$scope.vouchersPuraview = $stateParams.Account;
 					$scope.accountId = $stateParams.AccountId;
-					var i, flag;
+					var i, flag,PurchesVoucherEntity="PurchaseVoucherEntity";
 
 					$scope.purchesVouchers = {
 						accountType1 : "",
 						accountType2 : "",
 						amount : "",
-						narration : ""
+						narration : "",
+						isCash:true,
+						accdetail:"",
+						item:""
 					};
 
 					$scope.vaccounts1 = [];
@@ -26,11 +29,11 @@ app
 						accountService.getAccountList().then(function(list) {
 							for (var x = 0; x < list.length; x++) {
 								
-								if(list[x].accountgroup.groupName.toUpperCase()!="PURCHES")
+								if(list[x].accountgroup.groupName.trim()!="PurchaseAccounts")
 								{
 								$scope.vaccounts1.push(list[x]);
 								}
-									if(list[x].accountgroup.groupName.toUpperCase()=="PURCHES")
+									if(list[x].accountgroup.groupName.trim()=="PurchaseAccounts")
 										{
 								$scope.vaccounts2.push(list[x]);}
 
@@ -40,8 +43,42 @@ app
 					}
 
 					
+					
+					
+					var printDivCSS = new String(
+							'<link href="/lib/base/css/angular-material.min.css"" rel="stylesheet" type="text/css">'
+									+ '<link href="/lib/base/css/bootstrap.min.css"" rel="stylesheet" type="text/css">')
+					$scope.printDiv = function(divId) {
+						// window.frames["print_frame"].document.body.innerHTML
+						// = printDivCSS
+						// + document.getElementById(divId).innerHTML;
+						window.frames["print_frame"].document.body.innerHTML = document
+								.getElementById(divId).innerHTML;
+						window.frames["print_frame"].window.focus();
+						window.frames["print_frame"].window.print();
+					}
+					
+					
+					
+					$scope.downloadpdf=function(){
+						//	window.location.href ="PdfSales";
+							window.open("PdfSales?id="+	$scope.vouchersPuraview.id+"&entityname="+PurchesVoucherEntity);
+						//	myWindow=window.open('PdfSales','mypage.jsp','width=200,height=100'); myWindow.focus();
+							
+						}
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
 
 					$scope.addvoucher = function() {
+						if($scope.purchesVouchers.isCash==true){$scope.purchesVouchers.accdetail=""}
 
 						var voucherService = appEndpointSF.getVoucherService();
 						voucherService.addvoucherPurches($scope.purchesVouchers).then(
