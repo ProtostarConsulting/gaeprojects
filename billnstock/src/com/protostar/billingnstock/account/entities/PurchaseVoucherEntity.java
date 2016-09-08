@@ -14,8 +14,26 @@ public class PurchaseVoucherEntity extends VoucherEntity {
 	public Double amount;
 	public String narration;
 	public boolean isCash;
+	public String item;
+	public String accdetail;
 	
 	
+	public String getAccdetail() {
+		return accdetail;
+	}
+
+	public void setAccdetail(String accdetail) {
+		this.accdetail = accdetail;
+	}
+
+	public String getItem() {
+		return item;
+	}
+
+	public void setItem(String item) {
+		this.item = item;
+	}
+
 	public AccountEntity getAccountType1() {
 		return accountType1.get();
 	}
