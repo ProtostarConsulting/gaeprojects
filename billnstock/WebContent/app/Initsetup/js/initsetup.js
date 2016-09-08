@@ -12,6 +12,8 @@ angular
 					};
 					$scope.step1;
 					$scope.step2;
+					$scope.step3;
+					$scope.step4=false;
 					$scope.initsetup = function() {
 
 						var proadminService = appEndpointSF
@@ -100,6 +102,33 @@ angular
 										});
 					}
 
+					
+					
+					
+					
+					$scope.addgroup = function() {
+						
+						var proadminAddGroup= appEndpointSF
+						.getproadminService();
+						
+						proadminAddGroup.creatAccountAndGroup().then(function(resp){
+							
+						if(resp!=undefined)
+							{
+							
+							
+							
+							$scope.step3="Settup of Group List is Done........."; 
+							$scope.step4=true;
+							}
+						
+							
+						});
+						}
+					
+					
+					
+					
 					$scope.toggleRight = buildToggler('right');
 
 					function buildToggler(navID) {
