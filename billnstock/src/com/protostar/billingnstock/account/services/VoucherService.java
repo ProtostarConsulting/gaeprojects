@@ -89,5 +89,26 @@ public class VoucherService {
 		
 	
 	
+	@ApiMethod(name = "listVoucherPurches", path="listVoucherPurches")
+	public List<PurchaseVoucherEntity>listVoucherPurches() 
+	{
+		return ofy().load().type(PurchaseVoucherEntity.class).list();
+	}
+		
+	
+	@ApiMethod(name = "getPurchesListById")
+	public PurchaseVoucherEntity  getPurchesListById(@Named("id") Long accountId) 
+	{
+		PurchaseVoucherEntity relistByid= ofy().load().type(PurchaseVoucherEntity.class)
+			.id(accountId).now();
+	return relistByid;
+	
+	
+	
+	}
+	
+	
+	
+	
 
 }

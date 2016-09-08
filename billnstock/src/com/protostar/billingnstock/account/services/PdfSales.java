@@ -9,8 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.protostar.billingnstock.account.entities.ReceiptVoucherEntity;
-import com.protostar.billingnstock.account.entities.SalesVoucherEntity;
 import com.protostar.billingnstock.account.entities.VoucherEntity;
 import com.protostar.billnstock.until.data.PDFHtmlTemplateService;
 
@@ -52,7 +50,20 @@ public class PdfSales extends HttpServlet {
 		{
 			voucherEntity = voucherService.getRecieptListById(id);
 		}
+		if (entity.toString().equals("PurchaseVoucherEntity"))
+			
+		{
+			voucherEntity = voucherService.getPurchesListById(id);
+		}
 
+		
+		
+		
+		
+		
+		
+		
+		
 		try {
 			pdfHtmlTemplateService.generateVoucherPDF(voucherEntity,
 					outputStream);
