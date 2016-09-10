@@ -46,10 +46,10 @@ app
 								.getAccountEntryByAccountId(accId)
 								.then(
 										function(list) {
-
+											list = list.items; 
 											$scope.totaldebit = 0;
 											$scope.totalcredit = 0;
-
+											$log.debug("list:" + list);
 											entryList = [];
 											for (var i = 0; i < list.length; i++) {
 												if (new Date(list[i].date) >= new Date(

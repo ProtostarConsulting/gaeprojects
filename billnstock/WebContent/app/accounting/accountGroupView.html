@@ -77,8 +77,7 @@
 
 		<tr ng-repeat="acc in accountList">
 
-			<td style="border: 1px solid black;" colspan="3"
-				ng-init="getAccountEntryByAccountId(acc.id,$index)"><a
+			<td style="border: 1px solid black;" colspan="3"><a
 				ui-sref="accounting.entryList({selectdAccount:acc,fromDate:fromDate,toDate:toDate})">{{acc.accountName}}</a></td>
 			<td style="text-align: right;"><span ng-if="acc.totaldebit < 0">(</span>{{acc.totaldebit
 				|positive|number:2}}<span ng-if="acc.totaldebit < 0">)</span></td>

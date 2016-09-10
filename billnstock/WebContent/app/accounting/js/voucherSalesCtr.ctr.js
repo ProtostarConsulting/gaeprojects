@@ -15,7 +15,8 @@ app
 						accountType1 : "",
 						accountType2 : "",
 						amount : "",
-						narration : ""
+						narration : "",
+						date: new Date()
 					};
 
 					$scope.vaccounts1 = [];
@@ -144,14 +145,15 @@ app
 							$timeout($scope.waitForServiceLoad, 1000);
 						}
 					}
-				//	$scope.waitForServiceLoad();
+				// $scope.waitForServiceLoad();
 					$scope.getAccountList();
 					
 					
 					$scope.downloadpdf=function(){
-					//	window.location.href ="PdfSales";
+					// window.location.href ="PdfSales";
 						window.open("PdfSales?id="+$scope.vouchersSaview1.id+"&entityname="+SalesVoucherEntity);
-					//	myWindow=window.open('PdfSales','mypage.jsp','width=200,height=100'); myWindow.focus();
+					// myWindow=window.open('PdfSales','mypage.jsp','width=200,height=100');
+					// myWindow.focus();
 						
 					}
 

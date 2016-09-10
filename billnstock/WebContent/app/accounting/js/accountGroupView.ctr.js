@@ -31,19 +31,17 @@ app
 								.getAccountListByGroupId(groupId)
 								.then(
 										function(list) {
-
-											for (var i = 0; i < list.length; i++) {
-												list[i].totaldebit = 0;
-												list[i].totalcredit = 0;
-
-											}
+												
 											$scope.grandDebitTotal = 0;
 											$scope.grandCreditTotal = 0;
 											$scope.accountList = list;
-
-											var maxWaitTime = 1000 * 5;
+											
+											for (var i = 0; i < list.length; i++) {
+												$scope.getAccountEntryByAccountId(list[i].id, i);
+											}
+										
 											var currentWaitTime = 0;
-
+											var maxWaitTime = 10000;
 											$scope.waitFn = function() {
 												if (currentWaitTime < maxWaitTime) {
 													$log
@@ -59,7 +57,7 @@ app
 											}
 											$scope.waitFn();
 											if (!$scope.flag) {
-											$scope.getSelectedGroupName(groupId);
+											   $scope.getSelectedGroupName(groupId);
 											}
 
 										})
@@ -107,32 +105,35 @@ app
 								.then(
 										function(list) {
 
-											$scope.entryList = list;
+											$scope.entryList = list.items;
 
 											$scope.totaldebit = 0;
 											$scope.totalcredit = 0;
 
-											for (var i = 0; i < list.length; i++) {
-												if (new Date(list[i].date) >= new Date(
+											for (var i = 0; i < $scope.entryList.length; i++) {
+												$scope.accountList[acIndex].totaldebit = 0;
+												$scope.accountList[acIndex].totalcredit = 0;
+												
+												if (new Date($scope.entryList[i].date) >= new Date(
 														$scope.fromDate)
 														&& new Date(
-																list[i].date) <= new Date(
+																$scope.entryList[i].date) <= new Date(
 																$scope.toDate)) {
 
 													if ($scope.accountList.length > 0) {
 														if (angular
-																.isNumber(list[i].debit)) {
+																.isNumber($scope.entryList[i].debit)) {
 
 															$scope.totaldebit = $scope.totaldebit
-																	+ parseFloat(list[i].debit);
+																	+ parseFloat($scope.entryList[i].debit);
 
 														}
 													}
 													if ($scope.accountList.length > 0) {
 														if (angular
-																.isNumber(list[i].credit)) {
+																.isNumber($scope.entryList[i].credit)) {
 															$scope.totalcredit = $scope.totalcredit
-																	+ parseFloat(list[i].credit);
+																	+ parseFloat($scope.entryList[i].credit);
 														}
 													}
 
