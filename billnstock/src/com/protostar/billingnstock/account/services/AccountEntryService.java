@@ -43,7 +43,7 @@ public class AccountEntryService {
 			}
 			
 		}
-
+		System.out.println("filteredEntries.sie:" + filteredEntries.size());
 		return filteredEntries;
 	}
 	

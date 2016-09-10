@@ -21,7 +21,8 @@ public class GeneralEntryService {
 	public void addGeneralEntry(GeneralEntryEntity entryEntity) {		
 		
 		AccountEntryEntity debitAcc= new AccountEntryEntity();
-		debitAcc.setDate(entryEntity.getDate());
+//		debitAcc.setDate(entryEntity.getDate());
+		debitAcc.setDate(new Date());
 		debitAcc.setNarration(entryEntity.getNarration());
 		debitAcc.setDebit(entryEntity.getAmount());
 		debitAcc.setAccountEntity(entryEntity.getDebitAccount());
@@ -33,7 +34,8 @@ public class GeneralEntryService {
 		
 		AccountEntryEntity creditAcc= new AccountEntryEntity();
 		
-		creditAcc.setDate(entryEntity.getDate());
+//		creditAcc.setDate(entryEntity.getDate());
+		creditAcc.setDate(new Date());
 		creditAcc.setNarration(entryEntity.getNarration());
 		creditAcc.setCredit(entryEntity.getAmount());
 		creditAcc.setAccountEntity(entryEntity.getCreditAccount());
