@@ -29,11 +29,11 @@ app
 						accountService.getAccountList().then(function(list) {
 							for (var x = 0; x < list.length; x++) {
 								
-								if(list[x].accountgroup.groupName.trim()!="PurchaseAccounts")
+								if(list[x].accountgroup.groupName.trim()!="Purchase Accounts")
 								{
 								$scope.vaccounts1.push(list[x]);
 								}
-									if(list[x].accountgroup.groupName.trim()=="PurchaseAccounts")
+									if(list[x].accountgroup.groupName.trim()=="Purchase Accounts")
 										{
 								$scope.vaccounts2.push(list[x]);}
 
