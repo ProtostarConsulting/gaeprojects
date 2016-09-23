@@ -2,7 +2,6 @@ package com.protostar.billingnstock.setup.services;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.google.api.server.spi.config.Api;
@@ -18,7 +17,7 @@ import com.protostar.billingnstock.user.entities.UserEntity;
 @Api(name = "setupService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.setup.services", ownerName = "com.protostar.billingnstock.setup.services", packagePath = ""))
 public class setupService {
 
-	@ApiMethod(name = "getCurUserByEmailId", path="Somepath_realted_to_your_service")
+	@ApiMethod(name = "getCurUserByEmailId", path="getCurUserByEmailId")
 	public List<UserEntity> getCurUserByEmailId(@Named("email_id") String email) {
 		List<UserEntity> list = ofy().load().type(UserEntity.class)
 				.filter("email_id", email).list();
@@ -40,15 +39,10 @@ public class setupService {
 
 	@ApiMethod(name = "getAllUserOfOrg")
 	public List<UserEntity> getAllUserOfOrg(@Named("id") Long id) {
-		List<UserEntity> user = ofy().load().type(UserEntity.class).list();
-		List<UserEntity> filtereduser = new ArrayList<UserEntity>();
-
-		for (int i = 0; i < user.size(); i++) {
-			if (user.get(i).getBusiness().getId().equals(id)) {
-						filtereduser.add(user.get(i));
-			} 
-		}
-		return filtereduser;
+		System.out.println("Biz id:" + id);
+		List<UserEntity> list = ofy().load().type(UserEntity.class).ancestor(Key.create(BusinessEntity.class, id)).list();
+		System.out.println("list.size:" + list.size());
+		return list;
 	}
 	
 	@ApiMethod(name = "getuser")
