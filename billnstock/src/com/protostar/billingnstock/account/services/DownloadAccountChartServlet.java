@@ -117,8 +117,11 @@ public class DownloadAccountChartServlet extends HttpServlet {
 				GroupTypeObject groupTypeObj=new GroupTypeObject ();
 				groupTypeObj.setGroupType(accountGroupTypeList.get(i).toString());	
 				
+				//bid bid=new bid();
+				
+				
 			//	ArrayList<AccountGroupEntity> groupList=new ArrayList<AccountGroupEntity>();
-				gList=accountGroupService.getAccountGroupListByType(groupTypeObj.getGroupType());				
+				gList=accountGroupService.getAccountGroupListByType(groupTypeObj.getGroupType(), 45654L);				
 			
 				
 				groupTypeObj.setGroupList(groupList);

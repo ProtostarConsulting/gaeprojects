@@ -35,7 +35,7 @@ public class DownloadAccountsServlet extends HttpServlet {
 		Date date = new Date();
 		String DATE_FORMAT = "dd/MMM/yyyy";
 		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-		List<AccountEntity> accEntity = accountService.getAccountList();
+		List<AccountEntity> accEntity = accountService.getAccountList(0l);
 		OutputStream out = null;
 		try {
 

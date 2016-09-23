@@ -41,7 +41,7 @@ public class DownloadGroupListServlet extends HttpServlet {
 				
 				SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 				
-				List<AccountGroupEntity> accEntity = accGrpService.getAccountGroupList();
+				List<AccountGroupEntity> accEntity = accGrpService.getAccountGroupList(0l);
 				
 				OutputStream out = null;
 				try {
