@@ -7,7 +7,7 @@ angular.module("stockApp")
 	$scope.getGrouplist = function() {
 
 		var listAccountGroupService = appEndpointSF.getAccountGroupService();
-		listAccountGroupService.getAccountGroupList()
+		listAccountGroupService.getAccountGroupList($scope.curUser.business.id)
 				.then(
 						function(list) {
 							/* $log.debug("list:"+angular.toJson(list)); */

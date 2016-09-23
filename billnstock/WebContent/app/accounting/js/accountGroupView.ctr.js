@@ -76,7 +76,7 @@ app
 						var AccountGroupService = appEndpointSF
 								.getAccountGroupService();
 						AccountGroupService
-								.getAccountGroupList()
+								.getAccountGroupList($scope.curUser.business.id)
 								.then(
 										function(list) {
 

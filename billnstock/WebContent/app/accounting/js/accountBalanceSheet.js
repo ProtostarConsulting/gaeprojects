@@ -89,7 +89,7 @@ app
 								.getAccountGroupService();
 						AccountGroupService
 								.getAccountGroupListByType(
-										groupTypeObj.groupType)
+										groupTypeObj.groupType,$scope.curUser.business.id  )
 								.then(
 										function(list) {
 											$scope.GroupList = list;
@@ -140,6 +140,7 @@ app
 							}
 						}						
 					}
+					
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
@@ -147,7 +148,7 @@ app
 							for (var i = 0; i < $scope.accountGroupTypeList.length; i++) {
 								groupTypeObj = getGroupTypeObject($scope.accountGroupTypeList[i]);
 								$scope.accountGroupTypeGroupList.push(groupTypeObj);
-								$scope.getAccountGroupListByType(groupTypeObj);
+								$scope.getAccountGroupListByType(groupTypeObj);//,$scope.curUser.business.id);
 							}
 
 						} else {
@@ -155,7 +156,7 @@ app
 							$timeout($scope.waitForServiceLoad, 1000);
 						}
 					}
-					$scope.waitForServiceLoad();
+				$scope.waitForServiceLoad();
 					
 					
 					

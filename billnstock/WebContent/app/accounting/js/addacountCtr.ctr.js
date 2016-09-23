@@ -20,7 +20,8 @@ app
 						displayOrderNo : "",
 						description : "",
 						contra : false,
-						accountgroup : ""// {}
+						accountgroup : "",
+						business: $scope.curUser.business
 
 					};
 					$scope.cancle = function(accountId) {
@@ -33,39 +34,39 @@ app
 
 					}
 
-							$scope.accountType = [ 'PERSONAL', 'REAL',
-									'NOMINAL' ],
+				$scope.accountType = [ 'PERSONAL', 'REAL',
+						'NOMINAL' ],
 
-							$scope.addAccount = function() {
+				$scope.addAccount = function() {
 
-								var accountservice = appEndpointSF
-										.getAccountService();
+					var accountservice = appEndpointSF
+							.getAccountService();
 
-								for (var i = 0; i < $scope.accountgroupList.length; i++) {
-									if ($scope.account.accountgroup.groupName == $scope.accountgroupList[i].groupName) {
-										$scope.account.accountgroup = $scope.accountgroupList[i];
-									}
-								}
+					for (var i = 0; i < $scope.accountgroupList.length; i++) {
+						if ($scope.account.accountgroup.groupName == $scope.accountgroupList[i].groupName) {
+							$scope.account.accountgroup = $scope.accountgroupList[i];
+						}
+					}
 
-								accountservice.addAccount1($scope.account)
-										.then(function() {
-											if ($stateParams.AccountId == "")
-												$scope.showAddToast();
-											else
-												$scope.showUpdateToast();
+					accountservice.addAccount1($scope.account)
+							.then(function() {
+								if ($stateParams.AccountId == "")
+									$scope.showAddToast();
+								else
+									$scope.showUpdateToast();
 
-										});
+							});
 
-								/*
-								 * if ($scope.accountId == "") {
-								 * $scope.showAddToast(); } else {
-								 * $scope.showUpdateToast(); }
-								 */
-								$scope.account = "";
-								$scope.accountForm.$setPristine();
-								$scope.accountForm.$setValidity();
-								$scope.accountForm.$setUntouched();
-							}
+					/*
+					 * if ($scope.accountId == "") {
+					 * $scope.showAddToast(); } else {
+					 * $scope.showUpdateToast(); }
+					 */
+					$scope.account = "";
+					$scope.accountForm.$setPristine();
+					$scope.accountForm.$setValidity();
+					$scope.accountForm.$setUntouched();
+				}
 
 					$scope.accountgroupList = [];
 					$scope.getGrouplist = function() {
@@ -73,7 +74,7 @@ app
 						var listAccountGroupService = appEndpointSF
 								.getAccountGroupService();
 						listAccountGroupService
-								.getAccountGroupList()
+								.getAccountGroupList($scope.curUser.business.id)
 								.then(
 										function(list) {
 											/* $log.debug("list:"+angular.toJson(list)); */
@@ -86,7 +87,7 @@ app
 										});
 
 					}
-
+/*
 					$scope.getAccByid = function() {
 
 						var getrecord = appEndpointSF.getAccountService();
@@ -95,21 +96,10 @@ app
 									$scope.account = account;
 
 								});
-					}
+					}*/
 
-					/*
-					 * $scope.waitForServiceLoad = function() { if
-					 * (appEndpointSF.is_service_ready) {
-					 * 
-					 * $scope.getGrouplist(); if ($scope.accountId != undefined) {
-					 * 
-					 * $scope.getAccByid(); } } else { $log.debug("Services Not
-					 * Loaded, watiting...");
-					 * $timeout($scope.waitForServiceLoad, 1000); } }
-					 */
-
-					$scope.getGrouplist();
-					$scope.getAccByid();
+				$scope.getGrouplist();
+				//	$scope.getAccByid();
 
 				});
 

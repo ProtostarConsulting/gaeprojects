@@ -40,13 +40,19 @@ app
 						$scope.loading = true;
 						$scope.wait = true;
 
-						var AccountEntryService = appEndpointSF
-								.getAccountEntryService();
-						AccountEntryService
-								.getAccountEntryByAccountId(accId)
+						
+						var Ac = appEndpointSF.getAccountService();
+						Ac.getAccountBalance(accId).then(function(list1){
+					
+						
+						var AccountEntryService = appEndpointSF.getAccountEntryService();
+						AccountEntryService.getAccountEntryByAccountId(accId)//,$scope.curUser.business.id)
 								.then(
 										function(list) {
-											list = list.items; 
+										
+									
+											
+												list = list.items; 
 											$scope.totaldebit = 0;
 											$scope.totalcredit = 0;
 											$log.debug("list:" + list);
@@ -57,10 +63,12 @@ app
 														&& new Date(
 																list[i].date) <= new Date(
 																$scope.toDate)) {
+													
+													
+													
 
 													entryList.push(list[i]);
-													if (angular
-															.isNumber(list[i].debit)) {
+													if (angular	.isNumber(list[i].debit)) {
 														$scope.totaldebit = $scope.totaldebit
 																+ parseFloat(list[i].debit);
 													}
@@ -75,7 +83,7 @@ app
 
 											$scope.entries = [];
 											$scope.closingBalance = 0;
-											for (var i = 0; i < entryList.length; i++) {
+											/*for (var i = 0; i < entryList.length; i++) {
 												if (entryList[i].accountEntity.accountType
 														.trim() == "PERSONAL") {
 													$scope.closingBalance = $scope.totaldebit
@@ -91,9 +99,16 @@ app
 													$scope.closingBalance = $scope.totalcredit
 															- $scope.totaldebit;
 												}
+												
+												$log.debug("BALANCE of by id"+$scope.closingBalance);
 
-											}
-
+											}*/
+											//$scope.closingBalance=10;
+											$scope.closingBalance=list1.returnBalance;
+											$log.debug("BALANCE"+list1.returnBalance);
+											
+										//	$log.debug("BALANCE"+list.returnBalance);
+											//$scope.closingBalance=list.returnBalance;	
 											$scope.entries = entryList;
 
 											if ($scope.entries.length == 0) {
@@ -118,9 +133,12 @@ app
 											}
 											$scope.waitFn();
 											$scope.getselectdAccountName(accId);
+											
 										})
+						})
 
-					};
+						
+						};
 
 					
 					
@@ -152,7 +170,7 @@ app
 
 						var AccountService = appEndpointSF.getAccountService();
 						AccountService
-								.getAccountList()
+								.getAccountList($scope.curUser.business.id)
 								.then(
 										function(list) {
 											$scope.accountList = list;

@@ -8,7 +8,8 @@ angular.module("stockApp").controller(
 				displayOrderNo : "",
 				accountGroupType : "",
 				isPrimary: false,
-				primaryType:''
+				primaryType:'',
+				business: $scope.curUser.business
 			};
 
 			$scope.accountGroupTypeList = [ "ASSETS", "EQUITY", "LIABILITIES",
@@ -35,7 +36,7 @@ angular.module("stockApp").controller(
 
 				var AccountGroupService = appEndpointSF
 						.getAccountGroupService();
-				AccountGroupService.getAccountGroupList().then(function(list) {
+				AccountGroupService.getAccountGroupList( $scope.curUser.business.id).then(function(list) {
 					$scope.accountGroupList = list;
 
 				});

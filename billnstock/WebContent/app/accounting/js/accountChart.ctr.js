@@ -17,9 +17,9 @@ app
 						appEndpointSF, $mdDialog, $mdMedia) {
 
 					$scope.loading = true;
-
-					$scope.accountGroupTypeList = [ "ASSETS", "EQUITY",
-							"LIABILITIES", "INCOME", "EXPENSES",
+var flag=0;
+					$scope.accountGroupTypeList = [ "Assets", "EQUITY",
+							"Liabilities", "Incomes", "Expenses",
 							"OTHERINCOMES", "OTHEREXPENCES" ];
 
 					$scope.totalTypeCount = $scope.accountGroupTypeList.length;
@@ -29,7 +29,7 @@ app
 						$scope.accountList = [];
 
 						var AccountService = appEndpointSF.getAccountService();
-						AccountService.getAccountListByGroupId(groupObj.id)
+						AccountService.getAccountListByGroupId(groupObj.id,$scope.curUser.business.id)
 								.then(function(list) {
 
 									for (var i = 0; i < list.length; i++) {
@@ -62,9 +62,11 @@ app
 								.getAccountGroupService();
 						AccountGroupService
 								.getAccountGroupListByType(
-										groupTypeObj.groupType)
+										groupTypeObj.groupType,$scope.curUser.business.id)
 								.then(
+										
 										function(list) {
+											flag=0;
 											$scope.GroupList = list;
 											$scope.accountList = [];
 											groupTypeObj.groupList = list;
@@ -118,11 +120,16 @@ app
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
 
+							
+							
 							for (var i = 0; i < $scope.accountGroupTypeList.length; i++) {
+								
 								groupTypeObj = getGroupTypeObject($scope.accountGroupTypeList[i]);
 								$scope.accountGroupTypeGroupList
 										.push(groupTypeObj);
 								$scope.getAccountGroupListByType(groupTypeObj);
+								//flag=1;
+							
 							}
 
 						} else {
@@ -130,5 +137,9 @@ app
 							$timeout($scope.waitForServiceLoad, 1000);
 						}
 					}
+					
+					
+				//	$scope.getAccountGroupListByType("Assets");
+					
 					$scope.waitForServiceLoad();
 				});

@@ -12,7 +12,9 @@ app.controller("addAccountGeneralEntryCtr", function($scope, $window, $mdToast,
 		accountNo : "",
 		description : "",
 		displayOrderNo : "",
-		contra : ""
+		contra : "",
+		business: $scope.curUser.business
+			
 
 	};
 	$scope.tempGeneralEntry = {
@@ -30,7 +32,7 @@ app.controller("addAccountGeneralEntryCtr", function($scope, $window, $mdToast,
 	$scope.getAccountList = function() {
 
 		var getlist = appEndpointSF.getAccountService();
-		getlist.getAccountList().then(function(list) {
+		getlist.getAccountList($scope.curUser.business.id).then(function(list) {
 
 			for (i = 0; i < list.length; i++) {
 				$scope.generalAccountDebit.push(list[i]);
@@ -54,11 +56,8 @@ app.controller("addAccountGeneralEntryCtr", function($scope, $window, $mdToast,
 				if(selected.accountName==$scope.generalAccountCredit[i].accountName){
 					$scope.generalAccountCredit.splice(i, 1);
 					flag = selected;
-					
-					
 				}break;
-				
-					}
+			}
 		});
 
 	}
