@@ -15,67 +15,55 @@ angular
 					$scope.id;
 
 					$scope.query = {
-					         order: 'name',
-					         limit: 5,
-					         page: 1
-					       };
-					
-					$scope.getBusinessById=function(){
-						if(typeof $scope.businessNo == "undefined"){
-							$scope.Bid=$scope.curuser.business.id;
-						}else{
-							$scope.Bid=$scope.businessNo;
-						}
-						var UserService = appEndpointSF	.getUserService();
-							UserService.getbusinessById($scope.Bid).then(function(Business) {
-										$scope.business=Business;
-										$scope.getAllUserOfOrg();
-							});
-						
+						order : 'name',
+						limit : 5,
+						page : 1
+					};
+
+					if (typeof $scope.businessNo == undefined) {
+						$scope.Bid = $scope.curUser.business.id;
+					} else {
+						$scope.Bid = $scope.businessNo;
 					}
-				
-					$scope.business={};
-									
+
 					$scope.getAllUserOfOrg = function() {
 						var setupService = appEndpointSF.getsetupService();
-						if (typeof $scope.business.id != 'undefined') {
-							setupService
-									.getAllUserOfOrg(
-											$scope.business.id)
-									.then(
-											function(users) {
-												$scope.userslist = users.items;
-												$scope.activeUsers = [];
-												$scope.inActiveUsers = [];
-												$scope.suspendedUsers = [];
-												for (var i = 0; i < $scope.userslist.length; i++) {
-													if ($scope.userslist[i].status == "active") {
-														$scope.activeUsers
-																.push($scope.userslist[i]);
-														console
-																.log("Active Users"
-																		+ angular
-																				.toJson($scope.activeUsers));
-													} else if ($scope.userslist[i].status == "inactive") {
-														$scope.inActiveUsers
-																.push($scope.userslist[i]);
-														console
-																.log("In-Active Users"
-																		+ angular
-																				.toJson($scope.inActiveUsers));
-													}
-													if ($scope.userslist[i].status == "suspended") {
-														$scope.suspendedUsers
-																.push($scope.userslist[i]);
-														console
-																.log("Suspended Users"
-																		+ angular
-																				.toJson($scope.suspendedUsers));
-													}
+						setupService
+								.getAllUserOfOrg($scope.Bid)
+								.then(
+										function(users) {
+											$scope.userslist = users.items;
+											$scope.activeUsers = [];
+											$scope.inActiveUsers = [];
+											$scope.suspendedUsers = [];
+											for (var i = 0; i < $scope.userslist.length; i++) {
+												if ($scope.userslist[i].status == "active") {
+													$scope.activeUsers
+															.push($scope.userslist[i]);
+													console
+															.log("Active Users"
+																	+ angular
+																			.toJson($scope.activeUsers));
+												} else if ($scope.userslist[i].status == "inactive") {
+													$scope.inActiveUsers
+															.push($scope.userslist[i]);
+													console
+															.log("In-Active Users"
+																	+ angular
+																			.toJson($scope.inActiveUsers));
 												}
+												if ($scope.userslist[i].status == "suspended") {
+													$scope.suspendedUsers
+															.push($scope.userslist[i]);
+													console
+															.log("Suspended Users"
+																	+ angular
+																			.toJson($scope.suspendedUsers));
+												}
+											}
 
-											});
-						}
+										});
+
 					}
 
 					$scope.activeUsers = [];
@@ -83,12 +71,11 @@ angular
 					$scope.suspendedUsers = [];
 
 					$scope.userslist = [];
-					$scope.activeselected=[];
+					$scope.activeselected = [];
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
 							$scope.getAllUserOfOrg();
-							$scope.getBusinessById();
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
 							$timeout($scope.waitForServiceLoad, 1000);
@@ -96,22 +83,23 @@ angular
 					}
 					$scope.waitForServiceLoad();
 
-					
 					$scope.selected = [];
 
 					$scope.inactiveUserStatus = function(res) {
 						var inactive = "inactive";
 						var setupService = appEndpointSF.getsetupService();
-						if(res=='active'){
-						$scope.activeselected[0].status = inactive;
-							setupService.updateUserStatus($scope.activeselected[0]).then(
-								function(msgBean) {
-									$scope.showSimpleToast(msgBean.msg);
-									$scope.getAllUserOfOrg();
-								});
-						}else{
+						if (res == 'active') {
+							$scope.activeselected[0].status = inactive;
+							setupService.updateUserStatus(
+									$scope.activeselected[0]).then(
+									function(msgBean) {
+										$scope.showSimpleToast(msgBean.msg);
+										$scope.getAllUserOfOrg();
+									});
+						} else {
 							$scope.suspendselected[0].status = inactive;
-							setupService.updateUserStatus($scope.suspendselected[0]).then(
+							setupService.updateUserStatus(
+									$scope.suspendselected[0]).then(
 									function(msgBean) {
 										$scope.showSimpleToast(msgBean.msg);
 										$scope.getAllUserOfOrg();
@@ -121,16 +109,18 @@ angular
 					$scope.suspendUserStatus = function(res) {
 						var suspended = "suspended";
 						var setupService = appEndpointSF.getsetupService();
-						if(res=='active'){
-						$scope.activeselected[0].status = suspended;
-						setupService.updateUserStatus($scope.activeselected[0]).then(
-								function(msgBean) {
-									$scope.showSimpleToast(msgBean.msg);
-									$scope.getAllUserOfOrg();
-								});
-						}else{
+						if (res == 'active') {
+							$scope.activeselected[0].status = suspended;
+							setupService.updateUserStatus(
+									$scope.activeselected[0]).then(
+									function(msgBean) {
+										$scope.showSimpleToast(msgBean.msg);
+										$scope.getAllUserOfOrg();
+									});
+						} else {
 							$scope.inactiveselected[0].status = suspended;
-							setupService.updateUserStatus($scope.inactiveselected[0]).then(
+							setupService.updateUserStatus(
+									$scope.inactiveselected[0]).then(
 									function(msgBean) {
 										$scope.showSimpleToast(msgBean.msg);
 										$scope.getAllUserOfOrg();
@@ -139,25 +129,26 @@ angular
 					}
 					$scope.activeUserStatus = function(res) {
 						var active = "active";
-						var setupService = appEndpointSF.getsetupService();		
-						if(res=='inactive'){		
-						$scope.inactiveselected[0].status = active;
-						setupService.updateUserStatus($scope.inactiveselected[0]).then(
-								function(msgBean) {
-									$scope.showSimpleToast(msgBean.msg);
-									$scope.getAllUserOfOrg();
-								});
-						}else{
-						$scope.suspendselected[0].status = active;
-						setupService.updateUserStatus($scope.suspendselected[0]).then(
-								function(msgBean) {
-									$scope.showSimpleToast(msgBean.msg);
-									$scope.getAllUserOfOrg();
-								});
+						var setupService = appEndpointSF.getsetupService();
+						if (res == 'inactive') {
+							$scope.inactiveselected[0].status = active;
+							setupService.updateUserStatus(
+									$scope.inactiveselected[0]).then(
+									function(msgBean) {
+										$scope.showSimpleToast(msgBean.msg);
+										$scope.getAllUserOfOrg();
+									});
+						} else {
+							$scope.suspendselected[0].status = active;
+							setupService.updateUserStatus(
+									$scope.suspendselected[0]).then(
+									function(msgBean) {
+										$scope.showSimpleToast(msgBean.msg);
+										$scope.getAllUserOfOrg();
+									});
 						}
 					}
 
-				
 					$scope.changePassword = function(ev) {
 						var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))
 								&& $scope.customFullscreen;
@@ -173,8 +164,8 @@ angular
 											fullscreen : useFullScreen,
 											locals : {
 												curuser : $scope.curuser,
-												user:$scope.activeselected[0]
-								
+												user : $scope.activeselected[0]
+
 											}
 										})
 								.then(
@@ -188,45 +179,30 @@ angular
 						$scope.updatepass = function() {
 							$log.debug("change pass");
 						}
-						//window.history.back();
+						// window.history.back();
 
 					}
 
-			/*		
-					$scope.showAdvanced = function(ev) {
-						var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))
-								&& $scope.customFullscreen;
-						$mdDialog
-								.show(
-										{
-											controller : DialogController,
-											templateUrl : '/app/profile/changepassword.html',
-											parent : angular
-													.element(document.body),
-											targetEvent : ev,
-											clickOutsideToClose : true,
-											fullscreen : useFullScreen,
-											locals : {
-												curuser : $scope.curuser,
-												user:$scope.activeselected[0]
-											}
-										})
-								.then(
-										function(answer) {
-											$scope.status = 'You said the information was "'
-													+ answer + '".';
-										},
-										function() {
-											$scope.status = 'You cancelled the dialog.';
-										});
-						$scope.updatepass = function() {
-							$log.debug("change pass");
-						}
-					};*/
+					/*
+					 * $scope.showAdvanced = function(ev) { var useFullScreen =
+					 * ($mdMedia('sm') || $mdMedia('xs')) &&
+					 * $scope.customFullscreen; $mdDialog .show( { controller :
+					 * DialogController, templateUrl :
+					 * '/app/profile/changepassword.html', parent : angular
+					 * .element(document.body), targetEvent : ev,
+					 * clickOutsideToClose : true, fullscreen : useFullScreen,
+					 * locals : { curuser : $scope.curuser,
+					 * user:$scope.activeselected[0] } }) .then(
+					 * function(answer) { $scope.status = 'You said the
+					 * information was "' + answer + '".'; }, function() {
+					 * $scope.status = 'You cancelled the dialog.'; });
+					 * $scope.updatepass = function() { $log.debug("change
+					 * pass"); } };
+					 */
 
-					function DialogController($scope, $mdDialog, curuser,user) {
+					function DialogController($scope, $mdDialog, curuser, user) {
 
-						//alert(angular.toJson(curuser));
+						// alert(angular.toJson(curuser));
 						alert(angular.toJson(user));
 						$scope.hide = function() {
 							$mdDialog.hide();
@@ -272,16 +248,21 @@ angular
 								$scope.savemsg = false;
 							}
 
-							if ($scope.savemsg == true) {								
-							   	$scope.userL=user;
-							   	/*$scope.userL.modifiedBy=user.email_id;*/
-								  $scope.userL.password=$scope.password; 
-								  var UserService = appEndpointSF.getUserService();
-								 UserService.updateUser($scope.userL).then(function(msgBean) {
-								 $scope.showSimpleToast(msgBean.msg);
-								  
-								  });
-								 
+							if ($scope.savemsg == true) {
+								$scope.userL = user;
+								/* $scope.userL.modifiedBy=user.email_id; */
+								$scope.userL.password = $scope.password;
+								var UserService = appEndpointSF
+										.getUserService();
+								UserService
+										.updateUser($scope.userL)
+										.then(
+												function(msgBean) {
+													$scope
+															.showSimpleToast(msgBean.msg);
+
+												});
+
 							}
 						}
 					}
@@ -303,5 +284,4 @@ angular
 						});
 					};
 
-				
 				});
