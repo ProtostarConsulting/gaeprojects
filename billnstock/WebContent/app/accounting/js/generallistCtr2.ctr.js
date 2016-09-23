@@ -12,7 +12,7 @@ app.controller("generalListCtr", function($scope, $window, $mdToast, $timeout,
 
 	$scope.getGeneralEntryList = function() {
 		var getlist = appEndpointSF.getGeneralEntryService();
-		getlist.getGeneralEntryList().then(function(list) {
+		getlist.getGeneralEntryList($scope.curUser.business.id).then(function(list) {
 			$scope.journalEntries = list;
 			$scope.total = 0;
 			for (var i = 0; i < $scope.journalEntries.length; i++) {
