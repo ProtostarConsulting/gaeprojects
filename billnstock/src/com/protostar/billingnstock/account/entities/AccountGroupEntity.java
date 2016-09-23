@@ -18,6 +18,7 @@ public class AccountGroupEntity extends BaseEntity {
 	@Index
 	private String accountGroupType;
 	private Boolean isPrimary ;
+	@Index
 	private String primaryType;
 	
 	Ref<AccountGroupEntity> parent;
@@ -37,6 +38,8 @@ public class AccountGroupEntity extends BaseEntity {
 	}
 
 	
+	
+
 	public AccountGroupEntity getParent() {
 		return parent == null?null:parent.get();
 	}

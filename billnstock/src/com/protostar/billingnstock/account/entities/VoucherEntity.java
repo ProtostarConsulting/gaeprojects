@@ -34,7 +34,7 @@ public class VoucherEntity extends BaseEntity {
 	public Long getVoucherNumber() {
 		return voucherNumber;
 	}
-
+  
 	public void setVoucherNumber(Long voucherNumber) {
 		this.voucherNumber = voucherNumber;
 	}

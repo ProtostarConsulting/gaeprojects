@@ -26,20 +26,18 @@ public class AccountEntity extends BaseEntity {
 	private Integer displayOrderNo;
 	private Boolean contra = false;
 	private String accountType;
+	
+		
 	Ref<AccountGroupEntity> accountgroup;
 	
 
-
-
-
-	public AccountGroupEntity getAccountgroup() {
+	public AccountGroupEntity getaccountgroup() {
 		return accountgroup == null?null:accountgroup.get();
 	}
 
-	public void setAccountgroup(AccountGroupEntity accountgroup) {
-		this.accountgroup = Ref.create(accountgroup);
+	public void setaccountgroup(AccountGroupEntity accountgroup) {
+		this.accountgroup =Ref.create(accountgroup);
 	}
-
 
 	public AccountEntity(){
 		
