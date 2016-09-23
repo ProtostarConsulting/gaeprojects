@@ -22,10 +22,10 @@ import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
-import com.google.appengine.api.users.User;
-import com.google.appengine.api.users.UserServiceFactory;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
+import com.protostar.billingnstock.account.entities.AccountGroupEntity;
+import com.protostar.billingnstock.proadmin.services.ProAdminService;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.user.entities.UserEntity;
 import com.protostar.billnstock.until.data.ServerMsg;
@@ -54,9 +54,11 @@ public class UserService {
 		ofy().save().entity(businessEntity).now();
 
 		// Test Code to Send email to registered user
-		
-		/*User user = UserServiceFactory.getUserService().getCurrentUser();
-		String recipientAddress = user.getEmail();*/
+
+		/*
+		 * User user = UserServiceFactory.getUserService().getCurrentUser();
+		 * String recipientAddress = user.getEmail();
+		 */
 		Properties props = new Properties();
 		Session session = Session.getDefaultInstance(props, null);
 		String messageBody = "Welcome to Example! Your account has been created. "
@@ -67,8 +69,8 @@ public class UserService {
 				+ "The Example Team\n";
 		try {
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("ganesh.lawande@protostar.co.in",
-					"ProERP"));
+			message.setFrom(new InternetAddress(
+					"ganesh.lawande@protostar.co.in", "ProERP"));
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(
 					usr.getEmail_id()));
 			message.setSubject("Welcome to Example.com!");
@@ -83,7 +85,7 @@ public class UserService {
 			// ...
 			e.printStackTrace();
 		}
-		
+
 		// Email Send Code Ends
 
 	}
@@ -156,7 +158,8 @@ public class UserService {
 		business.setRegisterDate(sdf.format(date));
 
 		Key<BusinessEntity> now = ofy().save().entity(business).now();
-
+		ProAdminService proadmnService = new ProAdminService();
+		proadmnService.creatAccountAndGroup(business);
 		return business;
 	}
 
@@ -187,16 +190,7 @@ public class UserService {
 
 	@ApiMethod(name = "getUsersByBusinessId")
 	public List<UserEntity> getUsersByBusinessId(@Named("id") Long id) {
-
-		List<UserEntity> filtereduser = ofy()
-				.load()
-				.type(UserEntity.class)
-				.filter("business",
-						Ref.create(Key.create(BusinessEntity.class, id)))
-				.list();
-
-		return filtereduser;
-
+		return ofy().load().type(UserEntity.class).ancestor(Key.create(UserEntity.class, id)).list();
 	}
 
 	@ApiMethod(name = "isUserExists")
