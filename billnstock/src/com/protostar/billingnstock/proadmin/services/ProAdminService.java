@@ -12,6 +12,8 @@ import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
+import com.googlecode.objectify.LoadResult;
+import com.protostar.billingnstock.account.entities.AccountEntryEntity;
 import com.protostar.billingnstock.account.entities.AccountGroupEntity;
 import com.protostar.billingnstock.proadmin.entities.AccountType;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
@@ -47,303 +49,232 @@ public class ProAdminService {
 		return ofy().load().type(AccountType.class).id(id).now();
 	}
 
+	private AccountGroupEntity getTemoAccountGroupEntity(BusinessEntity business) {
+
+		AccountGroupEntity acGroupEntity = new AccountGroupEntity();
+		acGroupEntity.setBusiness(business);
+		acGroupEntity.setCreatedDate(new Date());
+		acGroupEntity.setModifiedDate(new Date());
+		return acGroupEntity;
+	}
+
 	@ApiMethod(name = "creatAccountAndGroup")
-	public void creatAccountAndGroup() {
-		
-		AccountGroupEntity fixedAsetAccountGroupEntity = new AccountGroupEntity();
+	public void creatAccountAndGroup(BusinessEntity forBiz) {
 
-		
-		  fixedAsetAccountGroupEntity.setCreatedDate(new Date());
-		  fixedAsetAccountGroupEntity.setModifiedDate(new Date());
-		  fixedAsetAccountGroupEntity.setGroupName("Fixed Assets");
-		  fixedAsetAccountGroupEntity.setIsPrimary(true);
-		  fixedAsetAccountGroupEntity.setPrimaryType("Assets");
-		  ofy().save().entity(fixedAsetAccountGroupEntity).now();
-		  
-		  
-		  AccountGroupEntity suspenseAcGroupEntity = new AccountGroupEntity();
+		List<AccountGroupEntity> acList = ofy().load()
+				.type(AccountGroupEntity.class).list();
 
-		  suspenseAcGroupEntity.setCreatedDate(new Date());
-		  suspenseAcGroupEntity.setModifiedDate(new Date());
-		  suspenseAcGroupEntity.setGroupName("Suspense A/c");
-		  suspenseAcGroupEntity.setIsPrimary(true);
-		  suspenseAcGroupEntity.setPrimaryType("Liabilities");
-		  ofy().save().entity(suspenseAcGroupEntity).now();
-		  
-		  AccountGroupEntity salesAccountsGroupEntity = new AccountGroupEntity();
+		if (acList.size() > 0)
+			return;
 
-		  salesAccountsGroupEntity.setCreatedDate(new Date());
-		  salesAccountsGroupEntity.setModifiedDate(new Date());
-		  salesAccountsGroupEntity.setGroupName("Sales Accounts");
-		  salesAccountsGroupEntity.setIsPrimary(true);
-		  salesAccountsGroupEntity.setPrimaryType("Income");
-		  ofy().save().entity(salesAccountsGroupEntity).now();
-		  
-		  AccountGroupEntity purchaseAccountsGroupEntity = new AccountGroupEntity();
+		BusinessEntity business = null;
+		if (forBiz == null || forBiz.getId() == null) {
+			List<BusinessEntity> bizList = ofy().load()
+					.type(BusinessEntity.class).list();
+			business = bizList.get(0);
+		} else {
+			business = forBiz;
+		}
 
-		  purchaseAccountsGroupEntity.setCreatedDate(new Date());
-		  purchaseAccountsGroupEntity.setModifiedDate(new Date());
-		  purchaseAccountsGroupEntity.setGroupName("Purchase Accounts");
-		  purchaseAccountsGroupEntity.setIsPrimary(true);
-		  purchaseAccountsGroupEntity.setPrimaryType("Expenses");
-		  ofy().save().entity(purchaseAccountsGroupEntity).now();
-		  
-		  AccountGroupEntity miscExpensesASSETGroupEntity = new AccountGroupEntity();
+		AccountGroupEntity acGroupEntity = getTemoAccountGroupEntity(business);
 
-		  miscExpensesASSETGroupEntity.setCreatedDate(new Date());
-		  miscExpensesASSETGroupEntity.setModifiedDate(new Date());
-		  miscExpensesASSETGroupEntity.setGroupName(" Misc.Expenses ASSET");
-		  miscExpensesASSETGroupEntity.setIsPrimary(true);
-		  miscExpensesASSETGroupEntity.setPrimaryType("Assets");
-		  ofy().save().entity(miscExpensesASSETGroupEntity).now();
-		  
-		  AccountGroupEntity loansLiabilityGroupEntity = new AccountGroupEntity();
+		acGroupEntity.setGroupName("Fixed Assets");
+		acGroupEntity.setIsPrimary(true);
+		acGroupEntity.setPrimaryType("Assets");
+		ofy().save().entity(acGroupEntity).now();
 
-		  loansLiabilityGroupEntity.setCreatedDate(new Date());
-		  loansLiabilityGroupEntity.setModifiedDate(new Date());
-		  loansLiabilityGroupEntity.setGroupName("Loans (Liability)");
-		  loansLiabilityGroupEntity.setIsPrimary(true);
-		  loansLiabilityGroupEntity.setPrimaryType("Liabilities");
-		  ofy().save().entity(loansLiabilityGroupEntity).now();
-		  
-		   AccountGroupEntity investmentsGroupEntity = new AccountGroupEntity();
+		AccountGroupEntity suspenseAcGroupEntity = getTemoAccountGroupEntity(business);
 
-		  investmentsGroupEntity.setCreatedDate(new Date());
-		  investmentsGroupEntity.setModifiedDate(new Date());
-		  investmentsGroupEntity.setGroupName("Investments");
-		  investmentsGroupEntity.setIsPrimary(true);
-		  investmentsGroupEntity.setPrimaryType("Assets");
-		  ofy().save().entity(investmentsGroupEntity).now();
+		suspenseAcGroupEntity.setGroupName("Suspense A/c");
+		suspenseAcGroupEntity.setIsPrimary(true);
+		suspenseAcGroupEntity.setPrimaryType("Liabilities");
+		ofy().save().entity(suspenseAcGroupEntity).now();
 
-		AccountGroupEntity indirectIncomesGroupEntity = new AccountGroupEntity();
+		AccountGroupEntity salesAccountsGroupEntity = getTemoAccountGroupEntity(business);
 
-		  indirectIncomesGroupEntity.setCreatedDate(new Date());
-		  indirectIncomesGroupEntity.setModifiedDate(new Date());
-		  indirectIncomesGroupEntity.setGroupName("Indirect Incomes");
-		  indirectIncomesGroupEntity.setIsPrimary(true);
-		  indirectIncomesGroupEntity.setPrimaryType("Incomes");
-		  ofy().save().entity(indirectIncomesGroupEntity).now();
+		salesAccountsGroupEntity.setGroupName("Sales Accounts");
+		salesAccountsGroupEntity.setIsPrimary(true);
+		salesAccountsGroupEntity.setPrimaryType("Income");
+		ofy().save().entity(salesAccountsGroupEntity).now();
 
-		AccountGroupEntity indirectExpensesGroupEntity = new AccountGroupEntity();
+		AccountGroupEntity purchaseAccountsGroupEntity = getTemoAccountGroupEntity(business);
 
-		  indirectExpensesGroupEntity.setCreatedDate(new Date());
-		  indirectExpensesGroupEntity.setModifiedDate(new Date());
-		  indirectExpensesGroupEntity.setGroupName("Indirect Expenses");
-		  indirectExpensesGroupEntity.setIsPrimary(true);
-		  indirectExpensesGroupEntity.setPrimaryType("Expenses");
-		  ofy().save().entity(indirectExpensesGroupEntity).now();
+		purchaseAccountsGroupEntity.setGroupName("Purchase Accounts");
+		purchaseAccountsGroupEntity.setIsPrimary(true);
+		purchaseAccountsGroupEntity.setPrimaryType("Expenses");
+		ofy().save().entity(purchaseAccountsGroupEntity).now();
 
+		AccountGroupEntity miscExpensesASSETGroupEntity = getTemoAccountGroupEntity(business);
 
-		AccountGroupEntity directIncomesGroupEntity = new AccountGroupEntity();
+		miscExpensesASSETGroupEntity.setGroupName(" Misc.Expenses ASSET");
+		miscExpensesASSETGroupEntity.setIsPrimary(true);
+		miscExpensesASSETGroupEntity.setPrimaryType("Assets");
+		ofy().save().entity(miscExpensesASSETGroupEntity).now();
 
-		  directIncomesGroupEntity.setCreatedDate(new Date());
-		  directIncomesGroupEntity.setModifiedDate(new Date());
-		  directIncomesGroupEntity.setGroupName("Direct Incomes");
-		  directIncomesGroupEntity.setIsPrimary(true);
-		  directIncomesGroupEntity.setPrimaryType("Incomes");
-		  ofy().save().entity(directIncomesGroupEntity).now();
-		  
-		  
-		AccountGroupEntity directExpensesGroupEntity = new AccountGroupEntity();
+		AccountGroupEntity loansLiabilityGroupEntity = getTemoAccountGroupEntity(business);
 
-		  directExpensesGroupEntity.setCreatedDate(new Date());
-		  directExpensesGroupEntity.setModifiedDate(new Date());
-		  directExpensesGroupEntity.setGroupName("Direct Expenses");
-		  directExpensesGroupEntity.setIsPrimary(true);
-		  directExpensesGroupEntity.setPrimaryType("Expenses");
-		  ofy().save().entity(directExpensesGroupEntity).now();
-		  
-		AccountGroupEntity currentLiabilitiesGroupEntity = new AccountGroupEntity();
+		loansLiabilityGroupEntity.setGroupName("Loans (Liability)");
+		loansLiabilityGroupEntity.setIsPrimary(true);
+		loansLiabilityGroupEntity.setPrimaryType("Liabilities");
+		ofy().save().entity(loansLiabilityGroupEntity).now();
 
-		  currentLiabilitiesGroupEntity.setCreatedDate(new Date());
-		  currentLiabilitiesGroupEntity.setModifiedDate(new Date());
-		  currentLiabilitiesGroupEntity.setGroupName("Current Liabilities");
-		  currentLiabilitiesGroupEntity.setIsPrimary(true);
-		  currentLiabilitiesGroupEntity.setPrimaryType("Liabilities");
-		  ofy().save().entity(currentLiabilitiesGroupEntity).now();
+		AccountGroupEntity investmentsGroupEntity = getTemoAccountGroupEntity(business);
 
-		 AccountGroupEntity currentAssetsGroupEntity = new AccountGroupEntity();
+		investmentsGroupEntity.setGroupName("Investments");
+		investmentsGroupEntity.setIsPrimary(true);
+		investmentsGroupEntity.setPrimaryType("Assets");
+		ofy().save().entity(investmentsGroupEntity).now();
 
-		  currentAssetsGroupEntity.setCreatedDate(new Date());
-		  currentAssetsGroupEntity.setModifiedDate(new Date());
-		  currentAssetsGroupEntity.setGroupName("Current Assets");
-		  currentAssetsGroupEntity.setIsPrimary(true);
-		  currentAssetsGroupEntity.setPrimaryType("Assets");
-		  ofy().save().entity(currentAssetsGroupEntity).now();
-		  
-		 AccountGroupEntity capitalAccountGroupEntity = new AccountGroupEntity();
+		AccountGroupEntity indirectIncomesGroupEntity = getTemoAccountGroupEntity(business);
 
-		  capitalAccountGroupEntity.setCreatedDate(new Date());
-		  capitalAccountGroupEntity.setModifiedDate(new Date());
-		  capitalAccountGroupEntity.setGroupName("Capital Account");
-		  capitalAccountGroupEntity.setIsPrimary(true);
-		  capitalAccountGroupEntity.setPrimaryType("Liabilities");
-		  ofy().save().entity(capitalAccountGroupEntity).now();    
+		indirectIncomesGroupEntity.setGroupName("Indirect Incomes");
+		indirectIncomesGroupEntity.setIsPrimary(true);
+		indirectIncomesGroupEntity.setPrimaryType("Incomes");
+		ofy().save().entity(indirectIncomesGroupEntity).now();
 
-		 AccountGroupEntity branchDivisionsGroupEntity = new AccountGroupEntity();
-
-		  branchDivisionsGroupEntity.setCreatedDate(new Date());
-		  branchDivisionsGroupEntity.setModifiedDate(new Date());
-		  branchDivisionsGroupEntity.setGroupName(" Branch / Divisions");
-		  branchDivisionsGroupEntity.setIsPrimary(true);
-		  branchDivisionsGroupEntity.setPrimaryType("Liabilities");
-		  ofy().save().entity(branchDivisionsGroupEntity).now();
-		
-		  
-		  
-		  
-		  
-		
-//***********************************SUB GROUP***********************************
-		
+		AccountGroupEntity indirectExpensesGroupEntity = getTemoAccountGroupEntity(business);
 		
 
-		AccountGroupEntity bankAccountsAccountGroupEntity = new AccountGroupEntity();
+		indirectExpensesGroupEntity.setGroupName("Indirect Expenses");
+		indirectExpensesGroupEntity.setIsPrimary(true);
+		indirectExpensesGroupEntity.setPrimaryType("Expenses");
+		ofy().save().entity(indirectExpensesGroupEntity).now();
 
-		bankAccountsAccountGroupEntity.setCreatedDate(new Date());
-		bankAccountsAccountGroupEntity.setModifiedDate(new Date());
+		AccountGroupEntity directIncomesGroupEntity = getTemoAccountGroupEntity(business);
+
+		directIncomesGroupEntity.setGroupName("Direct Incomes");
+		directIncomesGroupEntity.setIsPrimary(true);
+		directIncomesGroupEntity.setPrimaryType("Incomes");
+		ofy().save().entity(directIncomesGroupEntity).now();
+
+		AccountGroupEntity directExpensesGroupEntity = getTemoAccountGroupEntity(business);
+
+		directExpensesGroupEntity.setGroupName("Direct Expenses");
+		directExpensesGroupEntity.setIsPrimary(true);
+		directExpensesGroupEntity.setPrimaryType("Expenses");
+		ofy().save().entity(directExpensesGroupEntity).now();
+
+		AccountGroupEntity currentLiabilitiesGroupEntity = getTemoAccountGroupEntity(business);
+
+		currentLiabilitiesGroupEntity.setGroupName("Current Liabilities");
+		currentLiabilitiesGroupEntity.setIsPrimary(true);
+		currentLiabilitiesGroupEntity.setPrimaryType("Liabilities");
+		ofy().save().entity(currentLiabilitiesGroupEntity).now();
+
+		AccountGroupEntity currentAssetsGroupEntity = getTemoAccountGroupEntity(business);
+
+		currentAssetsGroupEntity.setGroupName("Current Assets");
+		currentAssetsGroupEntity.setIsPrimary(true);
+		currentAssetsGroupEntity.setPrimaryType("Assets");
+		ofy().save().entity(currentAssetsGroupEntity).now();
+
+		AccountGroupEntity capitalAccountGroupEntity = getTemoAccountGroupEntity(business);
+
+		capitalAccountGroupEntity.setGroupName("Capital Account");
+		capitalAccountGroupEntity.setIsPrimary(true);
+		capitalAccountGroupEntity.setPrimaryType("Liabilities");
+		ofy().save().entity(capitalAccountGroupEntity).now();
+
+		AccountGroupEntity branchDivisionsGroupEntity = getTemoAccountGroupEntity(business);
+
+		branchDivisionsGroupEntity.setGroupName(" Branch / Divisions");
+		branchDivisionsGroupEntity.setIsPrimary(true);
+		branchDivisionsGroupEntity.setPrimaryType("Liabilities");
+		ofy().save().entity(branchDivisionsGroupEntity).now();
+
+		// ***********************************SUB
+		// GROUP***********************************
+
+		AccountGroupEntity bankAccountsAccountGroupEntity = getTemoAccountGroupEntity(business);
+
 		bankAccountsAccountGroupEntity.setGroupName("Bank Accounts");
 		bankAccountsAccountGroupEntity.setIsPrimary(false);
 		bankAccountsAccountGroupEntity.setParent(currentAssetsGroupEntity);
 		ofy().save().entity(bankAccountsAccountGroupEntity).now();
 
-		
-		
-		AccountGroupEntity bankODA_c= new AccountGroupEntity();
-
-		bankODA_c.setCreatedDate(new Date());
-		bankODA_c.setModifiedDate(new Date());
+		AccountGroupEntity bankODA_c = getTemoAccountGroupEntity(business);
 		bankODA_c.setGroupName("Bank OD A/c");
 		bankODA_c.setIsPrimary(false);
 		bankODA_c.setParent(loansLiabilityGroupEntity);
 		ofy().save().entity(bankODA_c).now();
-		
-		
-		
-		
-		
-		
-		AccountGroupEntity Cashinhand= new AccountGroupEntity();
 
-		Cashinhand.setCreatedDate(new Date());
-		Cashinhand.setModifiedDate(new Date());
+		AccountGroupEntity Cashinhand = getTemoAccountGroupEntity(business);
 		Cashinhand.setGroupName("Cash-in-hand");
 		Cashinhand.setIsPrimary(false);
-		Cashinhand.setParent(currentAssetsGroupEntity );
-		ofy().save().entity( Cashinhand).now();
-		
-		
-		AccountGroupEntity depositsAsset= new AccountGroupEntity();
+		Cashinhand.setParent(currentAssetsGroupEntity);
+		ofy().save().entity(Cashinhand).now();
 
-		depositsAsset.setCreatedDate(new Date());
-		depositsAsset.setModifiedDate(new Date());
+		AccountGroupEntity depositsAsset = getTemoAccountGroupEntity(business);
+
 		depositsAsset.setGroupName("Deposits (Asset)");
 		depositsAsset.setIsPrimary(false);
-		depositsAsset.setParent(currentAssetsGroupEntity );
-		ofy().save().entity( depositsAsset).now();
-		
-		
-		AccountGroupEntity DutiesandTaxesAccountGroupEntity1 = new AccountGroupEntity();
+		depositsAsset.setParent(currentAssetsGroupEntity);
+		ofy().save().entity(depositsAsset).now();
 
-		DutiesandTaxesAccountGroupEntity1.setCreatedDate(new Date());
-		DutiesandTaxesAccountGroupEntity1.setModifiedDate(new Date());
+		AccountGroupEntity DutiesandTaxesAccountGroupEntity1 = getTemoAccountGroupEntity(business);
+
 		DutiesandTaxesAccountGroupEntity1.setGroupName("Duties & Taxes");
 		DutiesandTaxesAccountGroupEntity1.setIsPrimary(false);
 		DutiesandTaxesAccountGroupEntity1.setParent(currentLiabilitiesGroupEntity);
 		ofy().save().entity(DutiesandTaxesAccountGroupEntity1).now();
-		
-		
-		
-		AccountGroupEntity loansandAdvancesAssetAccountGroupEntity = new AccountGroupEntity();
 
-		loansandAdvancesAssetAccountGroupEntity.setCreatedDate(new Date());
-		loansandAdvancesAssetAccountGroupEntity.setModifiedDate(new Date());
-		loansandAdvancesAssetAccountGroupEntity.setGroupName("Loans & Advances (Asset)");
+		AccountGroupEntity loansandAdvancesAssetAccountGroupEntity = getTemoAccountGroupEntity(business);
+
+		loansandAdvancesAssetAccountGroupEntity
+				.setGroupName("Loans & Advances (Asset)");
 		loansandAdvancesAssetAccountGroupEntity.setIsPrimary(false);
-		loansandAdvancesAssetAccountGroupEntity.setParent(currentAssetsGroupEntity);
+		loansandAdvancesAssetAccountGroupEntity
+				.setParent(currentAssetsGroupEntity);
 		ofy().save().entity(loansandAdvancesAssetAccountGroupEntity).now();
-		
-		
-		
-		AccountGroupEntity provisionsAccountGroupEntity1 = new AccountGroupEntity();
 
-		provisionsAccountGroupEntity1.setCreatedDate(new Date());
-		provisionsAccountGroupEntity1.setModifiedDate(new Date());
+		AccountGroupEntity provisionsAccountGroupEntity1 = getTemoAccountGroupEntity(business);
+
 		provisionsAccountGroupEntity1.setGroupName("Provisions");
 		provisionsAccountGroupEntity1.setIsPrimary(false);
 		provisionsAccountGroupEntity1.setParent(currentLiabilitiesGroupEntity);
 		ofy().save().entity(provisionsAccountGroupEntity1).now();
-		
-		
-		
-		AccountGroupEntity 	reservesandSurplus= new AccountGroupEntity();
 
-		reservesandSurplus.setCreatedDate(new Date());
-		reservesandSurplus.setModifiedDate(new Date());
+		AccountGroupEntity reservesandSurplus = getTemoAccountGroupEntity(business);
+
 		reservesandSurplus.setGroupName("Reserves & Surplus");
 		reservesandSurplus.setIsPrimary(false);
 		reservesandSurplus.setParent(capitalAccountGroupEntity);
 		ofy().save().entity(reservesandSurplus).now();
-		
-		
-		
-		
-		AccountGroupEntity	securedLoans = new AccountGroupEntity();
 
-		securedLoans.setCreatedDate(new Date());
-		securedLoans.setModifiedDate(new Date());
+		AccountGroupEntity securedLoans = getTemoAccountGroupEntity(business);
+
 		securedLoans.setGroupName("Secured Loans");
 		securedLoans.setIsPrimary(false);
 		securedLoans.setParent(loansLiabilityGroupEntity);
 		ofy().save().entity(securedLoans).now();
-		
-		
-		
-		
-		
-		
-		AccountGroupEntity Stockinhand = new AccountGroupEntity();
 
-		Stockinhand.setCreatedDate(new Date());
-		Stockinhand.setModifiedDate(new Date());
+		AccountGroupEntity Stockinhand = getTemoAccountGroupEntity(business);
+
 		Stockinhand.setGroupName("Stock-in-Hand");
 		Stockinhand.setIsPrimary(false);
 		Stockinhand.setParent(currentAssetsGroupEntity);
 		ofy().save().entity(Stockinhand).now();
-		
-		
-		
-		AccountGroupEntity sundryCreditors = new AccountGroupEntity();
 
-		sundryCreditors.setCreatedDate(new Date());
-		sundryCreditors.setModifiedDate(new Date());
+		AccountGroupEntity sundryCreditors = getTemoAccountGroupEntity(business);
+
 		sundryCreditors.setGroupName("Sundry Creditors");
 		sundryCreditors.setIsPrimary(false);
 		sundryCreditors.setParent(currentLiabilitiesGroupEntity);
 		ofy().save().entity(sundryCreditors).now();
-		
-		
-		
-		AccountGroupEntity sundryDebtors = new AccountGroupEntity();
 
-		sundryDebtors.setCreatedDate(new Date());
-		sundryDebtors.setModifiedDate(new Date());
+		AccountGroupEntity sundryDebtors = getTemoAccountGroupEntity(business);
+
 		sundryDebtors.setGroupName("Sundry Debtors");
 		sundryDebtors.setIsPrimary(false);
 		sundryDebtors.setParent(currentLiabilitiesGroupEntity);
 		ofy().save().entity(sundryDebtors).now();
-		
-		
-		
-		AccountGroupEntity unsecuredLoans = new AccountGroupEntity();
 
-		unsecuredLoans.setCreatedDate(new Date());
-		unsecuredLoans.setModifiedDate(new Date());
+		AccountGroupEntity unsecuredLoans = getTemoAccountGroupEntity(business);
+
 		unsecuredLoans.setGroupName("Unsecured Loans");
 		unsecuredLoans.setIsPrimary(false);
 		unsecuredLoans.setParent(loansLiabilityGroupEntity);
 		ofy().save().entity(unsecuredLoans).now();
-		
 
 	}
 
@@ -368,6 +299,12 @@ public class ProAdminService {
 		 * businessEntity.setAdminEmailId("ganesh.lawande@protostar.co.in");
 		 * businessEntity.setAdminLastName("Lawande");
 		 */
+		List<BusinessEntity> bizList = ofy().load().type(BusinessEntity.class)
+				.list();
+
+		if (bizList.size() > 0)
+			return;
+
 		businessEntity.setBusinessName("Protostar");
 		businessEntity.setAccounttype(filteredaccount);
 		businessEntity.setRegisterDate(sdf.format(date));
@@ -418,6 +355,12 @@ public class ProAdminService {
 
 	@ApiMethod(name = "initsetup")
 	public void initsetup() {
+
+		List<AccountType> actList = ofy().load().type(AccountType.class).list();
+
+		if (actList.size() > 0)
+			return;
+
 		// try{
 		AccountType accounttype = new AccountType();
 		accounttype.setAccountName("Free");
