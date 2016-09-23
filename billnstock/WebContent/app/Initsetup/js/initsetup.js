@@ -13,7 +13,7 @@ angular
 					$scope.step1;
 					$scope.step2;
 					$scope.step3;
-					$scope.step4=false;
+					$scope.step4 = false;
 					$scope.initsetup = function() {
 
 						var proadminService = appEndpointSF
@@ -71,16 +71,18 @@ angular
 								.getallAccountType()
 								.then(
 										function(assetList) {
-											$scope.accountlist =  (assetList == undefined || assetList.items == undefined) ? 0: assetList.items.length;
-											
+											$scope.accountlist = (assetList == undefined || assetList.items == undefined) ? 0
+													: assetList.items.length;
+
 											if ($scope.accountlist == 4) {
 												proadminService
 														.getAllemp()
 														.then(
 																function(
 																		empList) {
-																	$scope.emps = (empList == undefined || empList.items == undefined) ? 0: empList.items.length;
-																	
+																	$scope.emps = (empList == undefined || empList.items == undefined) ? 0
+																			: empList.items.length;
+
 																	if ($scope.emps == 0) {
 																		proadminService
 																				.initsetupnext()
@@ -102,33 +104,24 @@ angular
 										});
 					}
 
-					
-					
-					
-					
 					$scope.addgroup = function() {
-						
-						var proadminAddGroup= appEndpointSF
-						.getproadminService();
-						
-						proadminAddGroup.creatAccountAndGroup().then(function(resp){
-							
-						if(resp!=undefined)
-							{
-							
-							
-							
-							$scope.step3="Settup of Group List is Done........."; 
-							$scope.step4=true;
-							}
-						
-							
-						});
-						}
-					
-					
-					
-					
+
+						var proadminAddGroup = appEndpointSF
+								.getproadminService();
+
+						proadminAddGroup
+								.creatAccountAndGroup(null)
+								.then(
+										function(resp) {
+
+											if (resp != undefined) {
+												$scope.step3 = "Settup of Group List is Done.........";
+												$scope.step4 = true;
+											}
+
+										});
+					}
+
 					$scope.toggleRight = buildToggler('right');
 
 					function buildToggler(navID) {
