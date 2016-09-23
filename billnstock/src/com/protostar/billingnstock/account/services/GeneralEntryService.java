@@ -8,6 +8,7 @@ import java.util.List;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
+import com.google.api.server.spi.config.Named;
 import com.protostar.billingnstock.account.entities.AccountEntryEntity;
 import com.protostar.billingnstock.account.entities.GeneralEntryEntity;
 
@@ -48,7 +49,8 @@ public class GeneralEntryService {
 	}
 	
 	@ApiMethod(name = "getGeneralEntryList")
-	public List<GeneralEntryEntity> getGeneralEntryList() {
-		return ofy().load().type(GeneralEntryEntity.class).list();
+	public List<GeneralEntryEntity> getGeneralEntryList(@Named("id") Long busId) {
+		List<GeneralEntryEntity> list= ofy().load().type(GeneralEntryEntity.class).list();
+		return list;
 	}
 }

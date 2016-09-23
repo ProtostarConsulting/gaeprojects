@@ -14,6 +14,7 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
 import com.protostar.billingnstock.account.entities.AccountEntity;
 import com.protostar.billingnstock.account.entities.AccountEntryEntity;
+import com.protostar.billingnstock.account.entities.AccountGroupEntity;
 import com.protostar.billingnstock.account.entities.PayableEntity;
 import com.protostar.billingnstock.account.entities.ReceivableEntity;
 import com.protostar.billingnstock.cust.entities.Customer;
@@ -65,13 +66,20 @@ public class AccountService {
 		return serverMsg;
 	}
 
-	@ApiMethod(name = "getAccountList")
-	public List<AccountEntity> getAccountList() {
+	@ApiMethod(name = "getAccountList", path = "getAccountList")
+	public List<AccountEntity> getAccountList(@Named("id") Long busId) {
+		if (busId == null)
+			return new ArrayList<AccountEntity>();
+		System.out.println("************" + busId);
 
-		List<AccountEntity> filteredAccounts = ofy().load()
-				.type(AccountEntity.class).list();
+		List<AccountEntity> accountList = ofy().load()
+				.type(AccountEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).list();
 
-		return filteredAccounts;
+		// System.out.println("************list"+accountList.get(0).getParent());//.getGroupName());
+
+		return accountList;
+
 	}
 
 	@ApiMethod(name = "updateAccount")
@@ -88,21 +96,28 @@ public class AccountService {
 		System.out.println("groupId" + groupId);
 
 		List<AccountEntity> filteredAccounts = new ArrayList<AccountEntity>();
-		List<AccountEntity> accountList = ofy().load()
-				.type(AccountEntity.class).list();
-
+		List<AccountEntity> accountList = ofy().load().type(AccountEntity.class).list();//.ancestor(Key.create(AccountGroupEntity.class, groupId)).list();
+		System.out.println("accountList----" + accountList);
 		for (AccountEntity ss : accountList) {
-			if (ss.getAccountgroup().getId().equals(groupId)) {
-				filteredAccounts.add(ss);
-			}
+			
 
+			if (ss.getId().equals(groupId)) {
+				filteredAccounts.add(ss);
+			
+			}
 		}
 
 		return filteredAccounts;
 	}
+	
+	
+//****************************************************	
+	
+	
 
 	@ApiMethod(name = "getAccountBalance", path = "getAccountBalance")
-	public ServerMsg getAccountBalance(@Named("id") Long id) {
+	public ServerMsg getAccountBalance(@Named("id") Long id,
+			@Named("bid") Long busId) {
 		System.out.println(" acc id" + id);
 
 		Double accBalance = 0.0D;
@@ -112,7 +127,7 @@ public class AccountService {
 		List<AccountEntryEntity> filteredEntries = new ArrayList<AccountEntryEntity>();
 
 		AccountEntryService accountEntryService = new AccountEntryService();
-		filteredEntries = accountEntryService.getAccountEntryByAccountId(id);
+		filteredEntries = accountEntryService.getAccountEntryByAccountId(id);// ,busId);
 
 		for (AccountEntryEntity entry : filteredEntries) {
 
@@ -144,8 +159,10 @@ public class AccountService {
 		return serverMsg;
 	}
 
-	@ApiMethod(name = "getAccountById")
+	@ApiMethod(name = "getAccountById", path = "getAccountById")
 	public AccountEntity getAccountById(@Named("id") Long accountId) {
+		if (accountId == null)
+			new ArrayList<AccountEntity>();
 
 		AccountEntity accountById = ofy().load().type(AccountEntity.class)
 				.id(accountId).now();
@@ -153,7 +170,7 @@ public class AccountService {
 		return accountById;
 	}
 
-	@ApiMethod(name = "deleteaccByid")
+	@ApiMethod(name = "deleteaccByid", path = "deleteaccByid")
 	public void deleteaccByid(@Named("id") Long accountId) {
 
 		ofy().delete().type(AccountEntity.class).id(accountId).now();
@@ -173,7 +190,7 @@ public class AccountService {
 		return filteredAccounts;
 	}
 
-	@ApiMethod(name = "getCustomerByID")
+	@ApiMethod(name = "getCustomerByID", path = "getCustomerByID")
 	public Customer getCustomerByID(@Named("Id") Long Id) {
 
 		Customer customerById = ofy().load().type(Customer.class).id(Id).now();

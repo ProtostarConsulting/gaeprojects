@@ -25,6 +25,7 @@ public class PdfSales extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		Long id = Long.parseLong(request.getParameter("id"));
+		Long bid = Long.parseLong(request.getParameter("bid"));
 		String entity = String.valueOf(request.getParameter("entityname"));
 		String entityId = String.valueOf(request.getParameter("entityId"));
 
@@ -43,17 +44,17 @@ public class PdfSales extends HttpServlet {
 		VoucherEntity voucherEntity = null;
 
 		if (entity.toString().equals("SalesVoucherEntity")) {
-			voucherEntity = voucherService.getSalesListById(id);
+			voucherEntity = voucherService.getSalesListById(id,bid);
 		} 
 		if (entity.toString().equals("ReceiptVoucherEntity"))
 		
 		{
-			voucherEntity = voucherService.getRecieptListById(id);
+			voucherEntity = voucherService.getRecieptListById(id,bid);
 		}
 		if (entity.toString().equals("PurchaseVoucherEntity"))
 			
 		{
-			voucherEntity = voucherService.getPurchesListById(id);
+			voucherEntity = voucherService.getPurchesListById(id,bid);
 		}
 
 		
