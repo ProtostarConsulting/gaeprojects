@@ -85,6 +85,10 @@
 				<md-button aria-label="Login" ng-hide="curUser !== null"
 					ng-show="curUser == null" ng-click="loginClick()">
 				Login </md-button>
+				<md-button aria-label="Logout" ng-hide="curUser == null"
+					ng-click="signOut()"> Logout <md-tooltip>
+				{{ curUser.firstName + " " + curUser.lastName + "|" +
+				curUser.email_id}} </md-tooltip> </md-button>
 				<!-- {{ curUser.firstName}} -->
 				<md-button ng-show="curUser" popover-template="'popover.html'"
 					popover-placement="bottom" popover-trigger="focus"
@@ -99,10 +103,7 @@
 
 </script>
 
-				<!-- <md-button aria-label="Logout" ng-hide="curUser == null"
-					ng-click="signOut()"> Logout <md-tooltip>
-				{{ curUser.firstName + " " + curUser.lastName + "|" +
-				curUser.email_id}} </md-tooltip> </md-button> -->
+				 
 
 				<!-- <md-button aria-label="Logout" ng-click="showSearch = !showSearch">
 				<ng-md-icon icon="logout"></ng-md-icon> </md-button>
@@ -126,7 +127,7 @@
 				md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
 
 			<md-toolbar class="md-theme-indigo">
-			<h1 class="md-toolbar-tools">Apps Module</h1>
+			<h1 class="md-toolbar-tools">{{curUser.business.businessName}}</h1>
 
 			</md-toolbar>
 
