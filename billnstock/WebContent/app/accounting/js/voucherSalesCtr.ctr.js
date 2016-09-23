@@ -1,4 +1,4 @@
-var app = angular.module("stockApp");
+  var app = angular.module("stockApp");
 
 app
 		.controller(
@@ -16,7 +16,8 @@ app
 						accountType2 : "",
 						amount : "",
 						narration : "",
-						date: new Date()
+						date: new Date(),
+						business: $scope.curUser.business
 					};
 
 					$scope.vaccounts1 = [];
@@ -72,7 +73,7 @@ app
 					$scope.getAccountList=function(){
 					
 					var accountService = appEndpointSF.getAccountService();
-					accountService.getAccountList().then(
+					accountService.getAccountList($scope.curUser.business.id).then(
 									function(list) {
 							for(var x=0;x<list.length;x++){
 								$scope.vaccounts1.push(list[x]);
@@ -100,8 +101,7 @@ app
 
 												if (selected.accountName == $scope.vaccounts2[i].accountName) {
 
-													$scope.vaccounts2.splice(i,
-															1);
+													$scope.vaccounts2.splice(i,1);
 
 													flag = selected;
 													if (selected == $scope.vouchers.accountType2) {
@@ -151,7 +151,7 @@ app
 					
 					$scope.downloadpdf=function(){
 					// window.location.href ="PdfSales";
-						window.open("PdfSales?id="+$scope.vouchersSaview1.id+"&entityname="+SalesVoucherEntity);
+						window.open("PdfSales?id="+$scope.vouchersSaview1.id+"&entityname="+SalesVoucherEntity+"&bid="+$scope.curUser.business.id);
 					// myWindow=window.open('PdfSales','mypage.jsp','width=200,height=100');
 					// myWindow.focus();
 						

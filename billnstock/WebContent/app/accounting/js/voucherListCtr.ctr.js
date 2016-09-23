@@ -22,7 +22,7 @@ app.controller("voucherListCtr", function($scope, $window, $mdToast, $timeout,
 	$scope.voucherList=function(){
 		
 		var voucherServiceList=appEndpointSF.getVoucherService();
-		voucherServiceList.listVoucher().then(function(list){
+		voucherServiceList.listVoucher($scope.curUser.business.id).then(function(list){
 			$scope.Voucheraccounts=list;
 		
 				});

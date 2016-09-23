@@ -18,7 +18,8 @@ app
 						narration : "",
 						isCash:true,
 						accdetail:"",
-						item:""
+						item:"",
+						business: $scope.curUser.business
 					};
 
 					$scope.vaccounts1 = [];
@@ -26,7 +27,7 @@ app
 					$scope.getAccountList = function() {
 
 						var accountService = appEndpointSF.getAccountService();
-						accountService.getAccountList().then(function(list) {
+						accountService.getAccountList($scope.curUser.business.id).then(function(list) {
 							for (var x = 0; x < list.length; x++) {
 								
 								if(list[x].accountgroup.groupName.trim()!="Purchase Accounts")
@@ -62,7 +63,7 @@ app
 					
 					$scope.downloadpdf=function(){
 						//	window.location.href ="PdfSales";
-							window.open("PdfSales?id="+	$scope.vouchersPuraview.id+"&entityname="+PurchesVoucherEntity);
+							window.open("PdfSales?id="+	$scope.vouchersPuraview.id+"&entityname="+PurchesVoucherEntity+"&bid="+$scope.curUser.business.id);
 						//	myWindow=window.open('PdfSales','mypage.jsp','width=200,height=100'); myWindow.focus();
 							
 						}
@@ -116,7 +117,7 @@ app
 						
 						var accountService = appEndpointSF.getAccountService();
 						accountService
-								.getAccountList()
+								.getAccountList($scope.curUser.business.id)
 								.then(
 										function(list) {
 
@@ -173,7 +174,7 @@ app
 							$timeout($scope.waitForServiceLoad, 1000);
 						}
 					}
-					$scope.waitForServiceLoad();
+					$scope.getAccountList();
 					
 					
 					

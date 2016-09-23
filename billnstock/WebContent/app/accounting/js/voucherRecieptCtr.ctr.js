@@ -13,7 +13,8 @@ app.controller("voucherRecieptCtr", function($scope, $window, $mdToast, $timeout
 		accountType1 : "",
 		accountType2 : "",
 		amount : "",
-		narration : ""
+		narration : "",
+		business: $scope.curUser.business
 	};
 
 	$scope.vaccounts1 = [];
@@ -21,7 +22,7 @@ app.controller("voucherRecieptCtr", function($scope, $window, $mdToast, $timeout
 	$scope.getAccountList = function() {
 
 		var accountService = appEndpointSF.getAccountService();
-		accountService.getAccountList().then(function(list) {
+		accountService.getAccountList($scope.curUser.business.id).then(function(list) {
 			for (var x = 0; x < list.length; x++) {
 				$scope.vaccounts1.push(list[x]);
 				$scope.vaccounts2.push(list[x]);
@@ -65,7 +66,7 @@ $scope.s=x;
 		$scope.getAccountEntryByAccountId(selected, fl);
 		
 			var accountService = appEndpointSF.getAccountService();
-			accountService.getAccountList().then(function(list) {
+			accountService.getAccountList($scope.curUser.business.id).then(function(list) {
 				
 				if(flag!=undefined)
 				$scope.vaccounts2.push(flag);
@@ -111,7 +112,7 @@ $scope.s=x;
 	
 	$scope.downloadpdf=function(){
 		//	window.location.href ="PdfSales";
-			window.open("PdfSales?id="+$scope.vouchersReview1.id+"&entityname="+ReceiptVoucherEntity);
+			window.open("PdfSales?id="+$scope.vouchersReview1.id+"&entityname="+ReceiptVoucherEntity+"&bid="+$scope.curUser.business.id);
 		//	myWindow=window.open('PdfSales','mypage.jsp','width=200,height=100'); myWindow.focus();
 			
 		}
