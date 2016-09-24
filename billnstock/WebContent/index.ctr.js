@@ -128,6 +128,72 @@ angular
 						$scope.theme = $scope.curUser.business.theme;
 						$scope.logBaseURL  ='//' + window.location.host + '/serve?blob-key='+ $scope.curUser.business.logBlobKey;
 						$scope.logFooterURL = '//' + window.location.host + '/serve?blob-key='+ $scope.curUser.business.footerBlobKey;
+						getUserAuthTree();
+					}
+					
+					function getUserAuthTree() {
+						var authService = appEndpointSF
+								.getAuthorizationService();
+						authService
+								.getAuthorizationMasterEntity()
+								.then(
+										function(result) {
+											$log.debug("result:" + result);
+											var authorizationMasterEntity = {
+												authorizations : []
+											};
+											var userAuthMasterEntity = {
+												authorizations : []
+											};
+
+											var jsonUserAuthObject = angular
+													.fromJson($scope.curUser.authorizations);
+
+											if ($scope.curUser.authorizations) {
+												var jsonUserAuthObject = angular
+														.fromJson($scope.curUser.authorizations);
+												$scope.userAuthObject = jsonUserAuthObject;
+											} else {
+												$scope.userAuthObject = {
+													authorizations : []
+												};
+											}
+
+											if (result
+													&& result.authorizations != undefined) {
+
+												authorizationMasterEntity.authorizations = result.authorizations;
+
+												userAuthMasterEntity = authService
+														.filterMasterAuthTree(
+																authorizationMasterEntity,
+																$scope.userAuthObject,
+																userAuthMasterEntity);
+
+												userAuthMasterEntity.authorizations
+														.sort(function(a, b) {
+															return (parseFloat(a.orderNumber) > parseFloat(b.orderNumber)) ? 1
+																	: -1
+														});
+
+												$log
+														.debug("userAuthMasterEntity:"
+																+ angular
+																		.toJson(userAuthMasterEntity));
+
+												var curUser = appEndpointSF
+														.getLocalUserService()
+														.getLoggedinUser();
+												curUser.userAuthMasterEntity = userAuthMasterEntity;
+												appEndpointSF
+														.getLocalUserService()
+														.saveLoggedInUser(
+																curUser);
+
+												$scope.curUser = curUser;
+												// $scope.safeApply();
+											}
+										});
 					}
 
 					$scope
