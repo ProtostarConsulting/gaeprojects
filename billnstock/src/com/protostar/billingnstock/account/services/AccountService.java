@@ -99,19 +99,19 @@ public class AccountService {
 		List<AccountEntity> accountList = ofy().load().type(AccountEntity.class).list();//.ancestor(Key.create(AccountGroupEntity.class, groupId)).list();
 		System.out.println("accountList----" + accountList);
 		for (AccountEntity ss : accountList) {
-			
+			System.out.println("(ss.getId()----" +ss.getId()+"name--"+ss.getaccountgroup().getId());
 
-			if (ss.getId().equals(groupId)) {
+			if (ss.getaccountgroup().getId().equals(groupId)) {
 				filteredAccounts.add(ss);
 			
 			}
 		}
-
+		System.out.println("filteredAccounts----" + filteredAccounts);
 		return filteredAccounts;
 	}
 	
 	
-//****************************************************	
+//*************************************************************************
 	
 	
 
