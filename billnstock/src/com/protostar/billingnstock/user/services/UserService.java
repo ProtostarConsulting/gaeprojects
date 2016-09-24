@@ -23,9 +23,8 @@ import com.google.api.server.spi.config.Named;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.googlecode.objectify.Key;
-import com.googlecode.objectify.Ref;
-import com.protostar.billingnstock.account.entities.AccountGroupEntity;
-import com.protostar.billingnstock.proadmin.services.ProAdminService;
+import com.protostar.billingnstock.hr.entities.SalSlip;
+import com.protostar.billingnstock.proadmin.services.ProtostarAdminService;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.user.entities.UserEntity;
 import com.protostar.billnstock.until.data.ServerMsg;
@@ -43,7 +42,9 @@ public class UserService {
 		List<UserEntity> filtereduser = ofy()
 				.load()
 				.type(UserEntity.class)
-				.ancestor(Key.create(BusinessEntity.class, usr.getBusiness().getId())).list();
+				.ancestor(
+						Key.create(BusinessEntity.class, usr.getBusiness()
+								.getId())).list();
 		count = filtereduser.size() + 1;
 
 		BusinessEntity businessEntity = new BusinessEntity();
@@ -156,39 +157,24 @@ public class UserService {
 		business.setRegisterDate(sdf.format(date));
 
 		Key<BusinessEntity> now = ofy().save().entity(business).now();
-		ProAdminService proadmnService = new ProAdminService();
-		proadmnService.creatAccountAndGroup(business);
 		return business;
 	}
 
-	/*
-	 * @ApiMethod(name = "addNewBusiness") public void
-	 * addNewBusiness(tempBusinessEntity business) {
-	 * 
-	 * Date date = new Date(); String DATE_FORMAT = "dd/MM/yyyy";
-	 * SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-	 * 
-	 * BusinessEntity businessEntity = new BusinessEntity();
-	 * businessEntity.setBusinessName(business.getBusinessName());
-	 * businessEntity.setAccounttype(business.getAccounttype());
-	 * businessEntity.setRegisterDate(sdf.format(date));
-	 * 
-	 * ofy().save().entity(businessEntity).now();
-	 * 
-	 * UserEntity userEntity = new UserEntity();
-	 * userEntity.setBusiness(businessEntity);
-	 * userEntity.setIsGoogleUser(business.getIsGoogleUser());
-	 * userEntity.setAuthority(Arrays.asList("admin"));
-	 * userEntity.setPassword(business.getPassword());
-	 * 
-	 * ofy().save().entity(userEntity).now();
-	 * 
-	 * }
-	 */
-
+	
 	@ApiMethod(name = "getUsersByBusinessId")
 	public List<UserEntity> getUsersByBusinessId(@Named("id") Long id) {
-		return ofy().load().type(UserEntity.class).ancestor(Key.create(UserEntity.class, id)).list();
+		/*
+		 * List<UserEntity> list = ofy().load().type(UserEntity.class)
+		 * .ancestor(Key.create(UserEntity.class, id)).list();
+		 */
+		List<UserEntity> list = ofy().load().type(UserEntity.class).list();
+		for(UserEntity user : list){
+			if(user.getId().longValue() == id.longValue()){
+				list.add(user);
+			}
+		}
+		System.out.println("list:" + list);
+		return list;
 	}
 
 	@ApiMethod(name = "isUserExists")

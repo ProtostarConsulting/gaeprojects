@@ -1,16 +1,11 @@
 package com.protostar.billingnstock.account.services;
 
 import java.io.IOException;
-import java.util.Date;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.protostar.billingnstock.account.entities.VoucherEntity;
-import com.protostar.billnstock.until.data.PDFHtmlTemplateService;
 
 public class PdfSales extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -24,7 +19,7 @@ public class PdfSales extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		Long id = Long.parseLong(request.getParameter("id"));
+		/*Long id = Long.parseLong(request.getParameter("id"));
 		Long bid = Long.parseLong(request.getParameter("bid"));
 		String entity = String.valueOf(request.getParameter("entityname"));
 		String entityId = String.valueOf(request.getParameter("entityId"));
@@ -73,7 +68,7 @@ public class PdfSales extends HttpServlet {
 		} finally {
 
 			outputStream.close();
-		}
+		}*/
 	}
 
 }

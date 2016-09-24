@@ -15,7 +15,7 @@ import com.protostar.billingnstock.user.entities.UserEntity;
 //import com.protostar.prostudy.entity.BookEntity;
 
 @Api(name = "setupService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.setup.services", ownerName = "com.protostar.billingnstock.setup.services", packagePath = ""))
-public class setupService {
+public class SetupService {
 
 	@ApiMethod(name = "getCurUserByEmailId", path = "Somepath_realted_to_your_service")
 	public List<UserEntity> getCurUserByEmailId(@Named("email_id") String email) {
@@ -32,34 +32,36 @@ public class setupService {
 
 	@ApiMethod(name = "updateUserStatus")
 	public void updateUserStatus(UserEntity userEntity) {
-
 		ofy().save().entity(userEntity).now();
-
 	}
 
 	@ApiMethod(name = "getAllUserOfOrg")
 	public List<UserEntity> getAllUserOfOrg(@Named("id") Long busId) {
-		List<UserEntity> userList = ofy().load().type(UserEntity.class).ancestor(Key.create(BusinessEntity.class, busId)).list();
-		/*List<UserEntity> filtereduser = new ArrayList<UserEntity>();
-
-		for (int i = 0; i < user.size(); i++) {
-			if (user.get(i).getBusiness().getId().equals(id)) {
-				filtereduser.add(user.get(i));
-			}
-		}*/
+		System.out.println("getAllUserOfOrg#busId:" + busId);
+		List<UserEntity> userList = ofy().load().type(UserEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId.longValue()))
+				.list();
+		/*
+		 * List<UserEntity> filtereduser = new ArrayList<UserEntity>(); for (int
+		 * i = 0; i < user.size(); i++) { if
+		 * (user.get(i).getBusiness().getId().equals(id)) {
+		 * filtereduser.add(user.get(i)); } }
+		 */
+		System.out.println("userList:size:" + userList.size());
 		return userList;
 	}
 
 	@ApiMethod(name = "getuser")
 	public UserEntity getuser(@Named("id") Long id) {
 		System.out.println("getuser#id.longValue():" + id.longValue());
-		//UserEntity now = ofy().load().type(UserEntity.class).id(id.longValue()).now();
-		
+		// UserEntity now =
+		// ofy().load().type(UserEntity.class).id(id.longValue()).now();
+
 		UserEntity now = null;
 		List<UserEntity> list = ofy().load().type(UserEntity.class).list();
-		for(UserEntity user: list){
-			//System.out.println("getuser#user.getId():" + user.getId());
-			if(user.getId().longValue() == id.longValue()){
+		for (UserEntity user : list) {
+			// System.out.println("getuser#user.getId():" + user.getId());
+			if (user.getId().longValue() == id.longValue()) {
 				now = user;
 			}
 		}
