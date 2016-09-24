@@ -29,16 +29,12 @@ public class HrService {
 		Key<Employee> now = ofy().save().entity(emp).now();
 
 	}
-	
+
 	@ApiMethod(name = "getAllemp")
 	public List<UserEntity> getAllemp(@Named("id") Long busId) {
 
-		List<UserEntity> filteredemp = ofy()
-				.load()
-				.type(UserEntity.class)
-				.filter("business",
-						Ref.create(Key.create(BusinessEntity.class, busId)))
-				.list();
+		List<UserEntity> filteredemp = ofy().load().type(UserEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).list();
 		return filteredemp;
 
 	}
@@ -61,34 +57,46 @@ public class HrService {
 	@ApiMethod(name = "addsalstruct")
 	public void addsalstruct(SalStruct struct) {
 		struct.setCreatedDate(new Date());
-			Key<SalStruct> now = ofy().save().entity(struct).now();
-
+		Key<SalStruct> now = ofy().save().entity(struct).now();
 	}
 
 	@ApiMethod(name = "getAllempsSalStruct")
-	public List<SalStruct> getAllempsSalStruct(@Named("id") Long id) {
-
-		List<SalStruct> filtersalslips = ofy().load().type(SalStruct.class).filter("business",
-						Ref.create(Key.create(BusinessEntity.class, id))).list();
-		return filtersalslips;
+	public List<SalStruct> getAllempsSalStruct(@Named("id") Long busId) {
+		System.out.println("salStructList#busId:" + busId);
+		List<SalStruct> salStructList = ofy().load().type(SalStruct.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).list();
+		System.out.println("salStructList:" + salStructList.size());
+		return salStructList;
 
 	}
 
 	@ApiMethod(name = "findsalstruct")
-	public SalStruct findsalstruct(@Named("id") Long struct) {
-
-		SalStruct salstruct = ofy().load().type(SalStruct.class).id(struct).now();
-
+	public SalStruct findsalstruct(@Named("id") Long structId) {
+		System.out.println("findsalstruct#structId:" + structId);
+		//SalStruct salstruct = ofy().load().type(SalStruct.class).filterKey(Key.create(SalStruct.class, structId)).first().now();
+		
+		SalStruct salstruct = null;
+		List<SalStruct> list = ofy().load().type(SalStruct.class).list();
+		for(SalStruct struct : list){
+			if(struct.getId().longValue() == structId.longValue()){
+				salstruct = struct;
+			}
+		}
+		System.out.println("!findsalstruct#salstruct:" + salstruct);
 		return salstruct;
 
 	}
 
 	@ApiMethod(name = "findsalstructfromemp")
 	public SalStruct findsalstructfromemp(@Named("id") Long id) {
-		
-SalStruct filteredsalstruct = ofy().load().type(SalStruct.class).filter("empAccount",Ref.create(Key.create(UserEntity.class, id))).first().now();
+
+		SalStruct filteredsalstruct = ofy()
+				.load()
+				.type(SalStruct.class)
+				.filter("empAccount",
+						Ref.create(Key.create(UserEntity.class, id))).first()
+				.now();
 		return filteredsalstruct;
-	
 	}
 
 	@ApiMethod(name = "updatesalinfo")
@@ -98,9 +106,10 @@ SalStruct filteredsalstruct = ofy().load().type(SalStruct.class).filter("empAcco
 	}
 
 	@ApiMethod(name = "countofrecord")
-	public List<SalSlip> countofrecord(@Named("id") Long id) {
-		//return ofy().load().type(SalSlip.class).list();
-	return  ofy().load().type(SalSlip.class).filter("business",Ref.create(Key.create(BusinessEntity.class, id))).list();
+	public List<SalSlip> countofrecord(@Named("id") Long busId) {
+		// return ofy().load().type(SalSlip.class).list();
+		return ofy().load().type(SalSlip.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).list();
 	}
 
 	@ApiMethod(name = "addgsalslip")
@@ -116,16 +125,26 @@ SalStruct filteredsalstruct = ofy().load().type(SalStruct.class).filter("empAcco
 	}
 
 	@ApiMethod(name = "displyOnlySelected")
-	public List<SalSlip> displyOnlySelected(@Named("month") String mon,@Named("id") Long id) {
+	public List<SalSlip> displyOnlySelected(@Named("month") String mon,
+			@Named("id") Long busId) {
 
-		return ofy().load().type(SalSlip.class).filter("business",Ref.create(Key.create(BusinessEntity.class,id))).filter("month",mon).list();
-		
+		return ofy().load().type(SalSlip.class)
+				.ancestor(Key.create(BusinessEntity.class, busId))
+				.filter("month", mon).list();
+
 	}
 
 	@ApiMethod(name = "printslip")
 	public SalSlip printslip(@Named("id") Long salslipid) {
 
-		SalSlip sals = ofy().load().type(SalSlip.class).id(salslipid).now();
+		//SalSlip sals = ofy().load().type(SalSlip.class).id(salslipid).now();
+		SalSlip sals = null;
+		List<SalSlip> list = ofy().load().type(SalSlip.class).list();
+		for(SalSlip slip : list){
+			if(slip.getId().longValue() == salslipid.longValue()){
+				sals = slip;
+			}
+		}
 
 		return sals;
 	}
@@ -152,27 +171,22 @@ SalStruct filteredsalstruct = ofy().load().type(SalStruct.class).filter("empAcco
 
 	@ApiMethod(name = "getallsalslip")
 	public List<SalSlip> getallsalslip(@Named("year") String curryear,
-			@Named("id") Long id) {
+			@Named("id") Long busId) {
 
 		List<SalSlip> filteredSalslip = ofy().load().type(SalSlip.class)
-				.filter("business",Ref.create(Key.create(BusinessEntity.class, id))).filter("year",curryear)
-				.list();
+				.ancestor(Key.create(BusinessEntity.class, busId))
+				.filter("year", curryear).list();
 		return filteredSalslip;
-		
-			
-		
 
 	}
-	
+
 	@ApiMethod(name = "getAllcompany")
-	public List<Customer> getAllcompany(@Named("id") Long id) {
+	public List<Customer> getAllcompany(@Named("id") Long busId) {
 
 		List<Customer> filteredcontact = ofy().load().type(Customer.class)
-				.filter("business",Ref.create(Key.create(BusinessEntity.class,id))).list();
+				.ancestor(Key.create(BusinessEntity.class, busId)).list();
 		return filteredcontact;
-		
-		}
-	
-	
+
+	}
 
 }// end of InternetService

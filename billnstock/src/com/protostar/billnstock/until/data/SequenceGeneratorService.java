@@ -7,6 +7,7 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Transaction;
 import com.googlecode.objectify.Work;
 
 public class SequenceGeneratorService {
@@ -26,8 +27,8 @@ public class SequenceGeneratorService {
 						.getKey();
 				DatastoreService datastore = DatastoreServiceFactory
 						.getDatastoreService();
-				Entity seqEntity = null;
-
+				Entity seqEntity = null;				
+				Transaction tx = datastore.beginTransaction();
 				try {
 					seqEntity = datastore.get(sequenceKindKey);
 				} catch (EntityNotFoundException e) {
@@ -40,6 +41,7 @@ public class SequenceGeneratorService {
 						COUNTER).toString());
 				seqEntity.setUnindexedProperty(COUNTER, currentSeqNumber + 1L);
 				datastore.put(seqEntity);
+				tx.commit();
 				return currentSeqNumber;
 			}
 		});

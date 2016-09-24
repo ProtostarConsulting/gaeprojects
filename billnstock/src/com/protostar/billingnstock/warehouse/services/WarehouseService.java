@@ -46,25 +46,22 @@ public class WarehouseService {
 		List<WarehouseEntity> filteredWarehouses = ofy()
 				.load()
 				.type(WarehouseEntity.class)
-				.filter("business",
-						Ref.create(Key.create(BusinessEntity.class, busId)))
-				.list();
+				.ancestor(Key.create(BusinessEntity.class, busId)).list();
 
 		return filteredWarehouses;
 	}
 
 	@ApiMethod(name = "updateWarehouse")
 	public void updateWarehouse(WarehouseEntity warehouseEntity) {
-
 		ofy().save().entity(warehouseEntity).now();
 	}
 
 	@ApiMethod(name = "getDefaultWarehouseByBizId",path="getDefaultWarehouseByBizId")
-	public WarehouseEntity getDefaultWarehouseByBizId(@Named("id") Long bizID) {
+	public WarehouseEntity getDefaultWarehouseByBizId(@Named("id") Long busId) {
 		WarehouseEntity filteredWarehouses = ofy()
 				.load()
 				.type(WarehouseEntity.class)
-				.filter("business",Ref.create(Key.create(BusinessEntity.class, bizID)))
+				.ancestor(Key.create(BusinessEntity.class, busId))
 				.filter("warehouseName","Default")
 				.first().now();
 

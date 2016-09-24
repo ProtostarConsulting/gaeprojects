@@ -43,9 +43,7 @@ public class UserService {
 		List<UserEntity> filtereduser = ofy()
 				.load()
 				.type(UserEntity.class)
-				.filter("business",
-						Ref.create(Key.create(BusinessEntity.class, usr
-								.getBusiness().getId()))).list();
+				.ancestor(Key.create(BusinessEntity.class, usr.getBusiness().getId())).list();
 		count = filtereduser.size() + 1;
 
 		BusinessEntity businessEntity = new BusinessEntity();

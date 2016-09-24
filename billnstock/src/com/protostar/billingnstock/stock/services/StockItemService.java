@@ -23,7 +23,7 @@ public class StockItemService {
 
 		if (stockItemEntity.getId() == null) {
 			stockItemEntity.setCreatedDate(new Date());
-		//	stockItemEntity.setModifiedDate(new Date());
+			// stockItemEntity.setModifiedDate(new Date());
 		} else {
 			stockItemEntity.setModifiedDate(new Date());
 		}
@@ -41,13 +41,10 @@ public class StockItemService {
 
 	@ApiMethod(name = "getAllStock")
 	public List<StockItemEntity> getAllStock(@Named("id") Long busId) {
-
-		List<StockItemEntity> filteredStocks = ofy()
-				.load()
+		System.out.println("getAllStock#busId:" + busId);
+		List<StockItemEntity> filteredStocks = ofy().load()
 				.type(StockItemEntity.class)
-				.filter("business",
-						Ref.create(Key.create(BusinessEntity.class, busId)))
-				.list();
+				.ancestor(Key.create(BusinessEntity.class, busId)).list();
 
 		return filteredStocks;
 	}

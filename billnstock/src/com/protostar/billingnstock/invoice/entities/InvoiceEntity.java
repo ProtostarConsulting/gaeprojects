@@ -5,24 +5,21 @@ import java.util.List;
 
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import com.protostar.billingnstock.account.entities.AccountEntity;
 import com.protostar.billingnstock.cust.entities.Customer;
 import com.protostar.billingnstock.sales.entities.SalesOrderEntity;
 import com.protostar.billingnstock.tax.entities.TaxEntity;
-import com.protostar.billingnstock.user.entities.BusinessEntity;
-import com.protostar.billingnstock.user.entities.UserEntity;
 import com.protostar.billnstock.entity.BaseEntity;
 
 @Entity
-public class InvoiceEntity extends BaseEntity{
+public class InvoiceEntity extends BaseEntity {
 	@Index
 	private Date invoiceDate;
 	@Index
 	private Date invoiceDueDate;
 	private float productSubTotal;
-	
+
 	private float serviceSubTotal;
 	private float productTaxTotal;
 	private float serviceTaxTotal;
@@ -31,23 +28,20 @@ public class InvoiceEntity extends BaseEntity{
 	private String finalTotal;
 	private String noteToCustomer;
 	private String status = "NotPaid";
-	
+
 	private String discount;
 	private float discAmount;
 	private float discValue;
-	
+
 	private Long pOrder;
-	
-	
+
 	private List<InvoiceLineItem> invoiceLineItemList;
 	private List<ServiceLineItemList> serviceLineItemList;
-	
+
 	Ref<SalesOrderEntity> salesOrderId;
 	Ref<AccountEntity> account;
 	Ref<TaxEntity> selectedTaxItem;
 	Ref<TaxEntity> selectedServiceTax;
-	
-	
 
 	@Index
 	Ref<Customer> customer;
@@ -59,56 +53,71 @@ public class InvoiceEntity extends BaseEntity{
 	public void setCustomer(Customer customer) {
 		this.customer = Ref.create(customer);
 	}
-	
+
 	public TaxEntity getSelectedTaxItem() {
-		return selectedTaxItem==null?null:selectedTaxItem.get();
+		return selectedTaxItem == null ? null : selectedTaxItem.get();
 	}
+
 	public void setSelectedTaxItem(TaxEntity selectedTaxItem) {
-		this.selectedTaxItem = Ref.create(selectedTaxItem);
+		if (selectedTaxItem == null) {
+			this.selectedTaxItem = null;
+		} else {
+			this.selectedTaxItem = Ref.create(selectedTaxItem);
+		}
 	}
-	
+
 	public TaxEntity getSelectedServiceTax() {
-		return selectedServiceTax.get();
+		return selectedServiceTax == null ? null : selectedServiceTax.get();
 	}
 
 	public void setSelectedServiceTax(TaxEntity selectedServiceTax) {
-		this.selectedServiceTax = Ref.create(selectedServiceTax);
+		if (selectedServiceTax == null) {
+			this.selectedServiceTax = null;
+		} else {
+			this.selectedServiceTax = Ref.create(selectedServiceTax);
+		}
 	}
-	
+
 	public SalesOrderEntity getSalesOrderId() {
-		return salesOrderId==null?null:salesOrderId.get();
+		return salesOrderId == null ? null : salesOrderId.get();
 	}
 
 	public void setSalesOrderId(SalesOrderEntity salesOrderId) {
-		this.salesOrderId = Ref.create(salesOrderId);
+		if (salesOrderId == null) {
+			this.salesOrderId = null;
+		} else {
+			this.salesOrderId = Ref.create(salesOrderId);
+		}
 	}
 
 	public AccountEntity getAccount() {
-		return account==null?null:account.get();
+		return account == null ? null : account.get();
 	}
 
 	public void setAccount(AccountEntity account) {
-		this.account = Ref.create(account);
+		if (account == null) {
+			this.account = null;
+		} else {
+			this.account = Ref.create(account);
+		}
 	}
-	
+
 	public List<InvoiceLineItem> getInvoiceLineItemList() {
 		return invoiceLineItemList;
 	}
 
-	public void setInvoiceLineItemList(
-			List<InvoiceLineItem> invoiceLineItemList) {
+	public void setInvoiceLineItemList(List<InvoiceLineItem> invoiceLineItemList) {
 		this.invoiceLineItemList = invoiceLineItemList;
 	}
-	
 
 	public List<ServiceLineItemList> getServiceLineItemList() {
 		return serviceLineItemList;
 	}
 
-	public void setServiceLineItemList(List<ServiceLineItemList> serviceLineItemList) {
+	public void setServiceLineItemList(
+			List<ServiceLineItemList> serviceLineItemList) {
 		this.serviceLineItemList = serviceLineItemList;
 	}
-
 
 	public float getProductSubTotal() {
 		return productSubTotal;
@@ -117,7 +126,6 @@ public class InvoiceEntity extends BaseEntity{
 	public void setProductSubTotal(float productSubTotal) {
 		this.productSubTotal = productSubTotal;
 	}
-
 
 	public float getProductTaxTotal() {
 		return productTaxTotal;
@@ -206,7 +214,7 @@ public class InvoiceEntity extends BaseEntity{
 	public void setServiceSubTotal(float serviceSubTotal) {
 		this.serviceSubTotal = serviceSubTotal;
 	}
-	
+
 	public float getDiscValue() {
 		return discValue;
 	}
@@ -214,7 +222,7 @@ public class InvoiceEntity extends BaseEntity{
 	public void setDiscValue(float discValue) {
 		this.discValue = discValue;
 	}
-	
+
 	public float getServiceTotal() {
 		return serviceTotal;
 	}
@@ -222,6 +230,7 @@ public class InvoiceEntity extends BaseEntity{
 	public void setServiceTotal(float serviceTotal) {
 		this.serviceTotal = serviceTotal;
 	}
+
 	public Long getProductTotal() {
 		return productTotal;
 	}
@@ -229,5 +238,5 @@ public class InvoiceEntity extends BaseEntity{
 	public void setProductTotal(Long productTotal) {
 		this.productTotal = productTotal;
 	}
-	
+
 }// end of InvoiceEntity

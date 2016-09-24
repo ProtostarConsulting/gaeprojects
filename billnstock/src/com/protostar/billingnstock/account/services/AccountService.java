@@ -183,9 +183,7 @@ public class AccountService {
 		List<AccountEntity> filteredAccounts = ofy()
 				.load()
 				.type(AccountEntity.class)
-				.filter("business",
-						Ref.create(Key.create(BusinessEntity.class, busId)))
-				.list();
+				.ancestor(Key.create(BusinessEntity.class, busId)).list();
 
 		return filteredAccounts;
 	}
@@ -223,9 +221,7 @@ public class AccountService {
 		List<PayableEntity> filteredPayables = ofy()
 				.load()
 				.type(PayableEntity.class)
-				.filter("business",
-						Ref.create(Key.create(BusinessEntity.class, busId)))
-				.list();
+				.ancestor(Key.create(BusinessEntity.class, busId)).list();
 
 		return filteredPayables;
 	}
@@ -263,9 +259,7 @@ public class AccountService {
 		List<ReceivableEntity> filteredReceivables = ofy()
 				.load()
 				.type(ReceivableEntity.class)
-				.filter("business",
-						Ref.create(Key.create(BusinessEntity.class, busId)))
-				.list();
+				.ancestor(Key.create(BusinessEntity.class, busId)).list();
 
 		return filteredReceivables;
 	}

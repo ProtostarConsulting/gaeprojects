@@ -29,12 +29,11 @@ public class CrmService {
 	}
 
 	@ApiMethod(name = "getAllleads")
-	public List<Lead> getAllleads(@Named("id") Long id) {
+	public List<Lead> getAllleads(@Named("id") Long busId) {
 		List<Lead> filteredlead = ofy()
 				.load()
 				.type(Lead.class)
-				.filter("business",
-						Ref.create(Key.create(BusinessEntity.class, id)))
+				.ancestor(Key.create(BusinessEntity.class, busId))
 				.list();
 		return filteredlead;
 
@@ -71,13 +70,12 @@ public class CrmService {
 	
 
 	@ApiMethod(name = "getAllcontact")
-	public List<Contact> getAllcontact(@Named("id") Long id) {
+	public List<Contact> getAllcontact(@Named("id") Long busId) {
 
 		List<Contact> filteredContact = ofy()
 				.load()
 				.type(Contact.class)
-				.filter("business",
-						Ref.create(Key.create(BusinessEntity.class, id)))
+				.ancestor(Key.create(BusinessEntity.class, busId))
 				.list();
 		return filteredContact;
 

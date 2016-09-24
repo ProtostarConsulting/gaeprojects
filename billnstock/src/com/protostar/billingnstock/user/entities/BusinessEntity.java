@@ -18,17 +18,24 @@ public class BusinessEntity {
 	private String businessName;
 	private String registerDate;
 	private Integer totalUser = 1;
-	
+
 	private Address address;
-	private String status="active" ;
+	private String status = "active";
 	private String theme;
 	@Index
 	private String LogBlobKey;
 	@Index
-	private String footerBlobKey;	
+	private String footerBlobKey;
 	private String disclaimer;
-	
- 
+	private String authorizations;
+
+	public String getAuthorizations() {
+		return authorizations;
+	}
+
+	public void setAuthorizations(String authorizations) {
+		this.authorizations = authorizations;
+	}
 
 	public String getDisclaimer() {
 		return disclaimer;
@@ -69,7 +76,7 @@ public class BusinessEntity {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -111,13 +118,11 @@ public class BusinessEntity {
 	}
 
 	public Address getAddress() {
-		return address== null ? null : address;
+		return address == null ? null : address;
 	}
 
 	public void setAddress(Address address) {
 		this.address = address;
 	}
-
-	
 
 }

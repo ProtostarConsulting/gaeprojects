@@ -2,7 +2,6 @@ package com.protostar.billingnstock.tax.services;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.google.api.server.spi.config.Api;
@@ -10,11 +9,8 @@ import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
 import com.googlecode.objectify.Key;
-import com.googlecode.objectify.Ref;
-import com.protostar.billingnstock.sales.entities.SalesOrderEntity;
 import com.protostar.billingnstock.tax.entities.TaxEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
-import com.protostar.billingnstock.warehouse.entities.WarehouseEntity;
 
 @Api(name = "taxService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.tax.services", ownerName = "com.protostar.billingnstock.tax.services", packagePath = ""))
 public class TaxService {
@@ -28,9 +24,10 @@ public class TaxService {
 	@ApiMethod(name = "getAllTaxes")
 	public List<TaxEntity> getAllTaxes(@Named("id") Long busId) {
 
-		List<TaxEntity> filteredTax = ofy().load().type(TaxEntity.class)
-				.filter("business",
-						Ref.create(Key.create(BusinessEntity.class, busId)))
+		List<TaxEntity> filteredTax = ofy()
+				.load()
+				.type(TaxEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId))
 				.list();
 
 		return filteredTax;
@@ -53,12 +50,10 @@ public class TaxService {
 	@ApiMethod(name = "getTaxesByVisibility", path = "getTaxesByVisibility")
 	public List<TaxEntity> getTaxesByVisibility(@Named("id") Long busId) {
 
-		
 		List<TaxEntity> filteredTax = ofy().load().type(TaxEntity.class)
-				.filter("business",
-						Ref.create(Key.create(BusinessEntity.class, busId)))
+				.ancestor(Key.create(BusinessEntity.class, busId))
 				.filter("active", true).list();
-		
+
 		return filteredTax;
 
 	}

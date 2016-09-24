@@ -1,20 +1,21 @@
 package com.protostar.billingnstock.user.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
+import com.protostar.billnstock.entity.Authorization;
 import com.protostar.billnstock.entity.BaseEntity;
 import com.protostar.billnstock.until.data.BankDetail;
 
 @Entity
-public class UserEntity extends BaseEntity{
-
+public class UserEntity extends BaseEntity {
 
 	private String firstName;
 	private String lastName;
-	
-	private String status="active" ;
+
+	private String status = "active";
 
 	public String getStatus() {
 		return status;
@@ -28,19 +29,27 @@ public class UserEntity extends BaseEntity{
 	private String email_id;
 	private List<String> authority;
 	private Boolean isGoogleUser = true;
-	
-/*	private Address address;*/
+
+	/* private Address address; */
 	private BankDetail bankDetail;
-	
-	
+
+	private String authorizations;
+
+	public String getAuthorizations() {
+		return authorizations;
+	}
+
+	public void setAuthorizations(String authorizations) {
+		this.authorizations = authorizations;
+	}
 
 	public BankDetail getBankDetail() {
-		return bankDetail== null ? null :bankDetail ;
+		return bankDetail == null ? null : bankDetail;
 	}
 
 	public void setBankDetail(BankDetail bankDetail) {
 		this.bankDetail = bankDetail;
-		
+
 	}
 
 	public Boolean getIsGoogleUser() {
@@ -69,9 +78,9 @@ public class UserEntity extends BaseEntity{
 		this.authority = authority;
 	}
 
-	/*public void setId(Long id) {
-		this.id = id;
-	}*/
+	/*
+	 * public void setId(Long id) { this.id = id; }
+	 */
 
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
@@ -81,9 +90,9 @@ public class UserEntity extends BaseEntity{
 		this.lastName = lastName;
 	}
 
-	/*public Long getId() {
-		return id;
-	}*/
+	/*
+	 * public Long getId() { return id; }
+	 */
 
 	public String getFirstName() {
 		return firstName;
@@ -101,20 +110,17 @@ public class UserEntity extends BaseEntity{
 		this.email_id = email_id;
 	}
 
-	/*public BusinessEntity getBusiness() {
-		return business.get();
-	}
+	/*
+	 * public BusinessEntity getBusiness() { return business.get(); }
+	 * 
+	 * public void setBusiness(BusinessEntity business) { this.business =
+	 * Ref.create(business); }
+	 */
 
-	public void setBusiness(BusinessEntity business) {
-		this.business = Ref.create(business);
-	}*/
-
-/*	public Address getAddress() {
-		return address;
-	}
-
-	public void setAddress(Address address) {
-		this.address = address;
-	}*/
+	/*
+	 * public Address getAddress() { return address; }
+	 * 
+	 * public void setAddress(Address address) { this.address = address; }
+	 */
 
 }

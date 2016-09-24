@@ -14,6 +14,7 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
 import com.protostar.billingnstock.account.entities.ReceivableEntity;
 import com.protostar.billingnstock.cust.entities.Customer;
+import com.protostar.billingnstock.hr.entities.SalStruct;
 import com.protostar.billingnstock.invoice.entities.InvoiceEntity;
 import com.protostar.billingnstock.invoice.entities.InvoiceSettingsEntity;
 import com.protostar.billingnstock.stock.entities.StockItemEntity;
@@ -25,25 +26,23 @@ public class InvoiceService {
 	@ApiMethod(name = "addInvoice")
 	public void addInvoice(InvoiceEntity invoiceEntity) {
 
-		
-		if (invoiceEntity.getId()!= null) {
+		if (invoiceEntity.getId() != null) {
 
-			ReceivableEntity receiveByID = ofy().load().type(ReceivableEntity.class)
-					.id(invoiceEntity.getId()).now();
-			
+			ReceivableEntity receiveByID = ofy().load()
+					.type(ReceivableEntity.class).id(invoiceEntity.getId())
+					.now();
+
 			receiveByID.setCustomer(invoiceEntity.getCustomer());
 			receiveByID.setFinalTotal(invoiceEntity.getFinalTotal());
 			receiveByID.setInvoiceDate(invoiceEntity.getInvoiceDate());
-			receiveByID.setInvoiceDueDate(invoiceEntity
-					.getInvoiceDueDate());
+			receiveByID.setInvoiceDueDate(invoiceEntity.getInvoiceDueDate());
 			receiveByID.setInvoiceId(invoiceEntity.getId());
 			receiveByID.setBusiness(invoiceEntity.getBusiness());
 			receiveByID.setCreatedDate(invoiceEntity.getCreatedDate());
 			receiveByID.setModifiedDate(invoiceEntity.getModifiedDate());
 			receiveByID.setModifiedBy(invoiceEntity.getModifiedBy());
 			ofy().save().entity(receiveByID).now();
-			
-			
+
 		} else {
 			ReceivableEntity receivableEntity = new ReceivableEntity();
 
@@ -59,7 +58,7 @@ public class InvoiceService {
 			receivableEntity.setModifiedBy(invoiceEntity.getModifiedBy());
 			ofy().save().entity(receivableEntity).now();
 		}
-		
+
 		if (invoiceEntity.getId() == null) {
 			invoiceEntity.setCreatedDate(new Date());
 			// stockItemEntity.setModifiedDate(new Date());
@@ -92,7 +91,6 @@ public class InvoiceService {
 
 		/* For Add in ReceivableEntity */
 
-		
 	}
 
 	@ApiMethod(name = "updateInvoiceStatus")
@@ -113,15 +111,12 @@ public class InvoiceService {
 	}
 
 	@ApiMethod(name = "getAllInvoice")
-	public List<InvoiceEntity> getAllInvoice(@Named("id") Long id) {
+	public List<InvoiceEntity> getAllInvoice(@Named("id") Long busId) {
 
-		List<InvoiceEntity> filteredinvoice = ofy()
-				.load()
+		List<InvoiceEntity> filteredinvoice = ofy().load()
 				.type(InvoiceEntity.class)
-				.filter("business",
-						Ref.create(Key.create(BusinessEntity.class, id)))
-				.list();
-				
+				.ancestor(Key.create(BusinessEntity.class, busId)).list();
+
 		System.out.println("filteredinvoice:" + filteredinvoice.size());
 		return filteredinvoice;
 
@@ -130,27 +125,36 @@ public class InvoiceService {
 	@ApiMethod(name = "getinvoiceByID")
 	public InvoiceEntity getinvoiceByID(@Named("id") Long invoiceId) {
 
-		InvoiceEntity invoiceByID = ofy().load().type(InvoiceEntity.class)
-				.id(invoiceId).now();
+		/*
+		 * InvoiceEntity invoiceByID = ofy().load().type(InvoiceEntity.class)
+		 * .id(invoiceId).now();
+		 */
+		InvoiceEntity foundInvoice = null;
+		List<InvoiceEntity> list = ofy().load().type(InvoiceEntity.class)
+				.list();
+		for (InvoiceEntity invoice : list) {
+			if (invoice.getId().longValue() == invoiceId.longValue()) {
+				foundInvoice = invoice;
+			}
+		}
+		System.out.println("getinvoiceByID Recored is:" + foundInvoice);
 
-		System.out.println("getinvoiceByID Recored is:" + invoiceId);
-
-		return invoiceByID;
+		return foundInvoice;
 	}
 
-	@ApiMethod(name="getReportByTaxReceived", path="getReportByTaxReceived")
+	@ApiMethod(name = "getReportByTaxReceived", path = "getReportByTaxReceived")
+	public List<InvoiceEntity> getReportByTaxReceived(@Named("id") Long busId) {
 
-	public List<InvoiceEntity> getReportByTaxReceived(@Named("id") Long BizId)
-	{
-		
-		List<InvoiceEntity> filteredInvoice = ofy().load().type(InvoiceEntity.class).list();
-		
-		List<InvoiceEntity> invList =  new ArrayList<InvoiceEntity>() ;
-		
+		List<InvoiceEntity> filteredInvoice = ofy().load()
+				.type(InvoiceEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).list();
+
+		List<InvoiceEntity> invList = new ArrayList<InvoiceEntity>();
+
 		return filteredInvoice;
-		
+
 	}
-	
+
 	@ApiMethod(name = "getInvoiceListByCustId", path = "getInvoiceListByCustId")
 	public List<InvoiceEntity> getInvoiceListByCustId(@Named("id") Long custId) {
 
@@ -182,14 +186,12 @@ public class InvoiceService {
 	}
 
 	@ApiMethod(name = "getInvoiceSettingsByBiz", path = "getInvoiceSettingsByBiz")
-	public InvoiceSettingsEntity getInvoiceSettingsByBiz(@Named("id") Long id) {
+	public InvoiceSettingsEntity getInvoiceSettingsByBiz(@Named("id") Long busId) {
 
-		InvoiceSettingsEntity filteredSettings = ofy()
-				.load()
+		InvoiceSettingsEntity filteredSettings = ofy().load()
 				.type(InvoiceSettingsEntity.class)
-				.filter("business",
-						Ref.create(Key.create(BusinessEntity.class, id)))
-				.first().now();
+				.ancestor(Key.create(BusinessEntity.class, busId)).first()
+				.now();
 
 		return filteredSettings;
 

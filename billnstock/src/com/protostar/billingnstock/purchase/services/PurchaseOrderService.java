@@ -38,9 +38,7 @@ public class PurchaseOrderService {
 		List<PurchaseOrderEntity> filteredPO = ofy()
 				.load()
 				.type(PurchaseOrderEntity.class)
-				.filter("business",
-						Ref.create(Key.create(BusinessEntity.class, busId)))
-				.list();
+				.ancestor(Key.create(BusinessEntity.class, busId)).list();
 
 		return filteredPO;
 	}
