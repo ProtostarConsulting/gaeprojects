@@ -3,7 +3,7 @@ angular
 		.controller(
 				"probusinessCtr",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
-						$mdUtil, $stateParams,$mdMedia,$mdDialog, $log, objectFactory,
+						$mdUtil, $stateParams,$mdMedia,$mdDialog, $log, $state, objectFactory,
 						appEndpointSF) {
 
 					$scope.businessNo = $stateParams.businessNo;
@@ -16,6 +16,10 @@ angular
 						$mdToast.show($mdToast.simple().content(msgBean)
 								.position("top").hideDelay(3000));
 					};
+					
+					$scope.changeAuthView = function(params) {
+						$state.go("proAdmin.managebizauth", params);
+					}
 
 					$scope.getBusinessList = function() {
 						$log.debug("Inside Ctr $scope.getuserById");

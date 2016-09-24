@@ -55,10 +55,11 @@
 
 		<md-button class="md-raised md-primary" ng-model="suspend"
 			value="suspend" ng-click="suspendUserStatus()">Suspend </md-button>
-		<md-button class="md-raised md-primary"
-			ui-sref="proAdmin.managebizauth({selectedbusinessID:selected[0].id})"
-			ng-click="">Manange Authorization </md-button>
-
+		<span style="padding-top: 8px;"> <md-button
+				class="md-raised md-primary"
+				ng-click="changeAuthView({selectedbusinessID:selected[0].id})">Manange
+			Authorization </md-button>
+		</span>
 	</div>
 	</md-content> </md-tab> <md-tab label="Inactive"> <md-content class="md-padding">
 	<!-- 	<h3 class="md-display-10">Day</h3> -->

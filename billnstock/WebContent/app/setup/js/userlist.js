@@ -4,7 +4,7 @@ angular
 				"userlist",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
 						$mdUtil, $stateParams, $mdMedia, $mdDialog, $log,
-						objectFactory, appEndpointSF) {
+						$state, objectFactory, appEndpointSF) {
 
 					$scope.showSimpleToast = function(msgBean) {
 						$mdToast.show($mdToast.simple().content(msgBean)
@@ -24,6 +24,10 @@ angular
 						$scope.Bid = $scope.curUser.business.id;
 					} else {
 						$scope.Bid = $scope.businessNo;
+					}
+
+					$scope.changeAuthView = function(params) {
+						$state.go("setup.userauth", params);
 					}
 
 					$scope.getAllUserOfOrg = function() {
