@@ -1256,7 +1256,7 @@ function googleEndpointSF($log, $q) {
 		return deferred.promise;
 	}
 
-	AccountService.getAccountListByGroupId = function(groupId, bid) {
+	AccountService.getAccountListByGroupId = function(groupId) {
 		var deferred = $q.defer();
 		gapi.client.accountService.getAccountListByGroupId({"id" : groupId}).execute(function(resp) {
 			$log.debug("xx enpoint" + resp.items);
