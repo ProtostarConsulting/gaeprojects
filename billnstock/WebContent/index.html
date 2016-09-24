@@ -21,6 +21,7 @@
 <link rel="stylesheet" href="/lib/base/css/bootstrap.min.css">
 <link rel="stylesheet" href="/lib/base/css/md-data-table.min.css">
 <link rel="stylesheet" href="/lib/base/css/textAngular.css">
+<link rel="stylesheet" href="/css/accordianPane.css">
 <link href="/app/AssetMangement/css/style.css" rel="stylesheet"
 	type="text/css">
 <link rel="stylesheet" href="/lib/base/css/ui-grid.css">
@@ -41,8 +42,14 @@
 <body layout="column" ng-cloak md-theme="{{theme}}"
 	md-theme-watch="true">
 
-	<div ng-show="loading">Loading...</div>
-	<md-content ng-hide="loading"> <!-- Top Navigation Pane -->
+	<div ng-show="loading" style="padding-left: 8px;">
+		<h4 class="md-title">Loading...Please wait...</h4>
+
+		<md-progress-linear class="md-warn" md-mode="buffer" value="30"
+			md-buffer-value="70" ng-disabled="false"></md-progress-linear>
+	</div>
+	<md-content ng-hide="loading"
+		style="padding-left: 8px; padding-right: 8px;"> <!-- Top Navigation Pane -->
 	<md-toolbar>
 	<div class="md-toolbar-tools">
 		<!-- <span hide-sm>ProERP - {{curUser.businessAccount.businessName}} Manage your business paperless, anytime,
@@ -82,6 +89,8 @@
 
 
 				<!-- <div flex hide-xs layout="row" layout-align="end end"> -->
+				<md-button aria-label="Logout" ng-hide="curUser == null"
+					ng-click="signOut()"> Logout </md-tooltip> </md-button>
 				<md-button aria-label="Login" ng-hide="curUser !== null"
 					ng-show="curUser == null" ng-click="loginClick()">
 				Login </md-button>
@@ -127,7 +136,7 @@
 				md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
 
 			<md-toolbar class="md-theme-indigo">
-			<h1 class="md-toolbar-tools">{{curUser.business.businessName}}</h1>
+			<h1 class="md-toolbar-tools" ng-bind="curUser.business.businessName"></h1>
 
 			</md-toolbar>
 
@@ -191,6 +200,32 @@
 					ng-show="curUser.authority.indexOf('protostarcs.com') > -1 || curUser.authority.indexOf('protostar.co.in') > -1"
 					ng-click="close()" class="md-primary" show-gt-md>Protostar
 				Admin </md-button> </md-content>
+
+				<div class="md-accordion">
+					<md-toolbar ng-init="data.expanded5 = false"
+						ng-click="data.expanded5 = !data.expanded5">
+					<div class="md-toolbar-tools">
+						<h2>
+							<span>More Actions</span>
+						</h2>
+						<span flex=""></span> <span
+							ng-class="{expandCollapse:true, active:data.expanded5}"></span>
+					</div>
+					</md-toolbar>
+					<div style="margin-left: 15px;"
+						ng-class="{dataContent:true, activeContent:data.expanded5}">
+						<md-content flex layout="column" layout-xs="column"
+							layout-align="center start"> <md-button
+							ng-repeat="auth in curUser.userAuthMasterEntity.authorizations"
+							ui-sref="{{auth.uiStateName}}" ng-click="close()"
+							class="menu-heading md-primary" aria-label="auth.authDisplayName"
+							ng-hide="auth.authName == 'grfbooks'" show-gt-md> <menu-link
+							section="child" ng-if="auth.authDisplayName === 'Home'"></menu-link>
+						<menu-toggle section="child"
+							ng-if="auth.authDisplayName === 'Setup'"></menu-toggle> <span
+							ng-bind="auth.authDisplayName"> </span></md-button> </md-content>
+					</div>
+				</div>
 			</div>
 			</md-sidenav>
 	</md-content>
@@ -397,22 +432,22 @@
 	<script src="/app/accounting/js/accountGroupList.js"></script>
 	<script src="/app/accounting/js/accountGroupView.ctr.js"></script>
 	<script src="/app/accounting/js/accountChart.ctr.js"></script>
-	<script src="/app/accounting/js/accountGroupView.ctr.js"></script>	
-	<script src="/app/accounting/js/account_Edit.js"></script>	
+	<script src="/app/accounting/js/accountGroupView.ctr.js"></script>
+	<script src="/app/accounting/js/account_Edit.js"></script>
 	<script src="/app/accounting/js/voucherSalesCtr.ctr.js"></script>
 	<script src="/app/accounting/js/voucherSalesListCtr.ctr.js"></script>
 	<script src="/app/accounting/js/voucherRecieptCtr.ctr.js"></script>
 
 
 	<script src="/app/accounting/js/voucherRecieptListCtr.ctr.js"></script>
-	
+
 	<script src="/app/accounting/js/voucherPurchesCtr.ctr.js"></script>
 	<script src="/app/accounting/js/voucherPurchesListCtr.ctr.js"></script>
-	
-	
 
 
-	<script src="/app/accounting/js/voucherRecieptListCtr.ctr.js"></script>	
+
+
+	<script src="/app/accounting/js/voucherRecieptListCtr.ctr.js"></script>
 	<script src="/app/accounting/js/accountTrialBalance.ctr.js"></script>
 
 	<script src="/app/accounting/js/accountBalanceSheet.js"></script>
@@ -625,6 +660,7 @@
 	<script src="/app/ProAdmin/js/ProAdmin.js"></script>
 	<script src="/app/ProAdmin/js/AddAccountType.js"></script>
 	<script src="/app/ProAdmin/js/ListAccountType.js"></script>
+	<script src="/app/ProAdmin/js/manage_auth_master.ctr.js"></script>
 	<!-- setup module js -->
 
 
@@ -640,7 +676,7 @@
 	<script src="/app/Email/js/email.js"></script>
 
 	<!-- initsetup -->
-	<script src="/app/Initsetup/js/initsetup.js"></script>
+	<script src="/app/initsetup/js/initsetup.js"></script>
 
 	<!-- use for ganerating pdf -->
 	<!--    <script type="text/javascript" src="/app/hr/js/jspdf.min.js"></script>
