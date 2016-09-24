@@ -94,10 +94,6 @@
 				<md-button aria-label="Login" ng-hide="curUser !== null"
 					ng-show="curUser == null" ng-click="loginClick()">
 				Login </md-button>
-				<md-button aria-label="Logout" ng-hide="curUser == null"
-					ng-click="signOut()"> Logout <md-tooltip>
-				{{ curUser.firstName + " " + curUser.lastName + "|" +
-				curUser.email_id}} </md-tooltip> </md-button>
 				<!-- {{ curUser.firstName}} -->
 				<md-button ng-show="curUser" popover-template="'popover.html'"
 					popover-placement="bottom" popover-trigger="focus"
@@ -107,12 +103,11 @@
 					ng-show="curUser.imageURl" ngf-src="curUser.imageURl"
 					class=circular> <img alt="Logo" ng-hide="curUser.imageURl"
 					src="img/images/ic_person_black_24px.svg" class=circular> </md-button>
-
 				<script type="text/ng-template" id="popover.html">
 
 </script>
 
-				 
+
 
 				<!-- <md-button aria-label="Logout" ng-click="showSearch = !showSearch">
 				<ng-md-icon icon="logout"></ng-md-icon> </md-button>
@@ -603,6 +598,8 @@
 
 	<script src="/app/setup/js/setup_changetheme.js"></script>
 	<script src="/app/setup/js/setup_setLogo.js"></script>
+	<script src="/app/setup/js/manage_user_auth.ctr.js"></script>
+	
 
 
 	<!--  profile js -->
@@ -623,6 +620,7 @@
 
 	<!-- protostar business list business -->
 	<script src="/app/probusiness/js/probusinesslist.js"></script>
+	<script src="/app/probusiness/js/manage_institute_auth.ctr.js"></script>
 
 	<!-- use for ganerating pdf -->
 	<!--    <script type="text/javascript" src="/app/hr/js/jspdf.min.js"></script>
@@ -659,8 +657,8 @@
 <!-- pro Admin -->
 	<script src="/app/ProAdmin/js/ProAdmin.js"></script>
 	<script src="/app/ProAdmin/js/AddAccountType.js"></script>
-	<script src="/app/ProAdmin/js/ListAccountType.js"></script>
-	<script src="/app/ProAdmin/js/manage_auth_master.ctr.js"></script>
+	<script src="/app/ProAdmin/js/ListAccountType.js"></script>	
+	<script src="/app/ProAdmin/js/manage_auth_master.ctr.js"></script>	
 	<!-- setup module js -->
 
 

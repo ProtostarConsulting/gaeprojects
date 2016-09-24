@@ -61,6 +61,11 @@
 	<md-button class="md-raised md-primary" ng-model="suspend" value="suspend"
 			ng-click="suspendUserStatus('active')">Suspend
 		</md-button>
+		
+	<md-button class="md-raised md-primary" ng-model="suspend"
+			value="suspend"
+			ui-sref="setup.userauth({selectedUserEmailId:activeselected[0].email_id})">Manange
+		Authorization </md-button>	
     
      <md-button class="md-primary md-raised" ng-hide="activeselected[0].isGoogleUser" ng-click="changePassword($event)">
       Change Password

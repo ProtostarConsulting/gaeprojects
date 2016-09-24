@@ -20,7 +20,7 @@ angular
 						page : 1
 					};
 
-					if (typeof $scope.businessNo == undefined) {
+					if ($scope.businessNo == undefined) {
 						$scope.Bid = $scope.curUser.business.id;
 					} else {
 						$scope.Bid = $scope.businessNo;

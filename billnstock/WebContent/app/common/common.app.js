@@ -1,7 +1,8 @@
 var app = angular.module("stockApp", [ 'ngMaterial', 'ngMessages', "xeditable",
 		"ui.bootstrap", "ui.router", 'md.data.table', 'ngResource',
 		'ngStorage', 'ngRoute', 'ngFileUpload', 'ngAnimate', 'ui.grid',
-		'ui.grid.selection', 'ui.grid.exporter', 'directive.g+signin' ,'ui.bootstrap']);
+		'ui.grid.selection', 'ui.grid.exporter', 'directive.g+signin',
+		'ui.bootstrap' ]);
 
 app.constant('monthList', [ "January", "February", "March", "April", "May",
 		"June", "July", "Augast", "September", "October", "November",
@@ -82,8 +83,8 @@ app.config(function($logProvider) {
 	$logProvider.debugEnabled(true);// this is default
 });
 app.factory('ajsCache', function($cacheFactory) {
-	 return $cacheFactory('browserCache');
-	});
+	return $cacheFactory('browserCache');
+});
 
 app.config(function($stateProvider, $urlRouterProvider) {
 	// This adds config 2
@@ -129,7 +130,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/warehouseList",
 		templateUrl : '/app/stock/warehouse_list.html',
 		controller : 'warehouseListCtr'
-	
+
 	}).state('stock.reportByThreshold', {
 		url : "/reportByThreshold",
 		templateUrl : '/app/report/stock_reportByThreshold.html',
@@ -138,16 +139,16 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/reportByWarehouse",
 		templateUrl : '/app/report/stock_reportByWarehouse.html',
 		controller : 'stockReportByWarehouseCtr'
-			
+
 	}).state('stock.reportByTaxPaid', {
 		url : "/reportByTaxPaid",
 		templateUrl : '/app/report/tax_reportByTaxPaid.html',
-		controller : 'ReportByTaxPaidCtr'	
+		controller : 'ReportByTaxPaidCtr'
 	}).state('stock.reportByTaxRecived', {
 		url : "/reportByTaxRecived",
 		templateUrl : '/app/report/tax_reportByTaxReceived.html',
 		controller : 'ReportByTaxReceivedCtr'
-			
+
 	}).state('stock.taxadd', {
 		url : "/tax/taxadd",
 		templateUrl : '/app/tax/tax_add.html',
@@ -240,99 +241,89 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	})
 
 	.state('accounting', {
-		url : "/accounting",		
+		url : "/accounting",
 		templateUrl : '/app/accounting/accounting_module.html',
 		controller : 'accountModuleCtr'
 	})
-	
 
 	.state('accounting.account_add2', {
 		url : "/account_add/:AccountId",
 		templateUrl : '/app/accounting/account_add2.html',
 		controller : 'addacountCtr',
-	})
-	.state('accounting.accountlist', {
+	}).state('accounting.accountlist', {
 		url : "/accountlist",
 		templateUrl : '/app/accounting/accountlist.html',
 		controller : 'accountlistCtr',
-		
+
 	})
-	
+
 	.state('accounting.account_Edit', {
 		url : "/account_Edit",
 		templateUrl : '/app/accounting/account_Edit.html',
 		controller : 'accountEditCtr',
-		params:{
+		params : {
 
-			selectedAccount:null
-				}
+			selectedAccount : null
+		}
 	})
-	
+
 	.state('accounting.accountGroupAdd', {
 		url : "/accountGroupAdd",
 		templateUrl : '/app/accounting/accountGroupAdd.html',
 		controller : 'accountGroupCtr'
-	})
-	.state('accounting.accountGroupList', {
+	}).state('accounting.accountGroupList', {
 		url : "/accountGroupList",
 		templateUrl : '/app/accounting/accountGroupList.html',
 		controller : 'accountGrpListCtr'
-	})
-	.state('accounting.accountGroupEdit', {
+	}).state('accounting.accountGroupEdit', {
 		url : "/accountGroupEdit",
 		templateUrl : '/app/accounting/accountGroupEdit.html',
 		controller : 'accountGrpEditCtr',
-			params:{
+		params : {
 
-				record:null
-					}
-	})
-	.state('accounting.accountGroupDisplay', {
+			record : null
+		}
+	}).state('accounting.accountGroupDisplay', {
 		url : "/accountGroupDisplay",
 		templateUrl : '/app/accounting/accountGroupDisplay.html',
 		controller : 'accountGrpDisplayCtr',
-			params:{
+		params : {
 
-				record:null		
-			}
+			record : null
+		}
 
-	})
-	.state('accounting.balanceSheet', {
+	}).state('accounting.balanceSheet', {
 		url : "/accountBalanceSheet",
 		templateUrl : '/app/accounting/accountBalanceSheet.html',
 		controller : 'accountBalanceSheetCtr',
-			params:{
+		params : {
 
-				record:null		
-			}
+			record : null
+		}
 
-	})
-		.state('accounting.trialBalance', {
+	}).state('accounting.trialBalance', {
 		url : "/trialBalance",
 		templateUrl : '/app/accounting/accountTrialBalance.html',
 		controller : 'trialBalanceCtr'
 	})
-	
 
 	.state('accounting.accountGroupView', {
 		url : "/accountGroupView",
 		templateUrl : '/app/accounting/accountGroupView.html',
 		controller : 'accountGroupViewCtr',
-		params:{
-			flag:null,
-			selectdAccount:null,
-			fromDate:null,
-			toDate:null
-		}			
+		params : {
+			flag : null,
+			selectdAccount : null,
+			fromDate : null,
+			toDate : null
+		}
 	})
 
-
- .state('accounting.addGeneralEntry', {
+	.state('accounting.addGeneralEntry', {
 		url : "/addGeneralEntry",
 		templateUrl : '/app/accounting/account_addGeneralEntry.html',
 		controller : 'addAccountGeneralEntryCtr'
-	})
- .state('accounting.addEntry', {
+	}).state('accounting.addEntry', {
 		url : "/addEntry",
 		templateUrl : '/app/accounting/account_addEntry.html',
 		controller : 'addAccountEntryController'
@@ -340,118 +331,97 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/entryList",
 		templateUrl : '/app/accounting/account_entryList.html',
 		controller : 'accountEntryListController',
-		params:{	
-			selectdAccount:null,
-			fromDate:null,
-			toDate:null
+		params : {
+			selectdAccount : null,
+			fromDate : null,
+			toDate : null
 		}
-		
-	})
-	.state('accounting.generalEntitylist', {
+
+	}).state('accounting.generalEntitylist', {
 		url : "/generalEntitylist",
 		templateUrl : '/app/accounting/generalEntitylist.html',
-		controller :'generalListCtr'
+		controller : 'generalListCtr'
 	})
-
 
 	.state('accounting.voucher', {
 		url : "/voucher",
 		templateUrl : '/app/accounting/voucher.html',
-		controller :'voucherCtr',})
+		controller : 'voucherCtr',
+	})
 
 	.state('accounting.voucherSales', {
 		url : "/SalesVoucher",
 		templateUrl : '/app/accounting/voucherSales.html',
-		controller :'voucherSalesCtr',
+		controller : 'voucherSalesCtr',
 
 		params : {
 			Account : ""
 		}
 	})
 
-
-	
-	
-	
-	
-
-
 	.state('accounting.voucherList', {
 		url : "/voucherList",
 		templateUrl : '/app/accounting/voucherList.html',
-		controller :'voucherListCtr'})
+		controller : 'voucherListCtr'
+	})
 
 	.state('accounting.voucherSalesList', {
 		url : "/SalesVoucherList",
 		templateUrl : '/app/accounting/voucherSalesList.html',
-		controller :'voucherSalesListCtr'
+		controller : 'voucherSalesListCtr'
 
-			
 	})
 
 	.state('accounting.voucherRecieptList', {
 		url : "/RecieptVoucherList",
 		templateUrl : '/app/accounting/voucherRecieptList.html',
-		controller :'voucherRecieptListCtr'
-			
-	})
-	.state('accounting.voucherReceipt', {
+		controller : 'voucherRecieptListCtr'
+
+	}).state('accounting.voucherReceipt', {
 		url : "/ReceiptVoucher",
 		templateUrl : '/app/accounting/voucherReceipt.html',
-		controller :'voucherRecieptCtr',
-			params : {
-				Account : ""
-			}
-			
+		controller : 'voucherRecieptCtr',
+		params : {
+			Account : ""
+		}
+
 	})
-	
-	
-	
-	
+
 	.state('accounting.voucherPurches', {
 		url : "/PurchesVoucher",
 		templateUrl : '/app/accounting/voucherPurches.html',
-		controller :'voucherPurchesCtr',
-			params : {
-				Account : ""
-			}
-			
-			})
-		
-		.state('accounting.voucherPurchesList', {
+		controller : 'voucherPurchesCtr',
+		params : {
+			Account : ""
+		}
+
+	})
+
+	.state('accounting.voucherPurchesList', {
 		url : "/PurchesVoucherList",
 		templateUrl : '/app/accounting/voucherPurchesList.html',
-		controller :'voucherPurchesListCtr'})
-		
-		
-		
-		
-	
-	
+		controller : 'voucherPurchesListCtr'
+	})
+
 	.state('accounting.accountChart', {
 		url : "/accountChart",
 		templateUrl : '/app/accounting/accountChart.html',
-		controller :'accountChartCtr'			
+		controller : 'accountChartCtr'
 	})
-		
 
 	.state('journal', {
 		url : "/journal",
 		templateUrl : '/app/journal/journal_module.html',
 		controller : 'journalModuleCtr'
-	})
-	.state('journal.add', {
+	}).state('journal.add', {
 		url : "/addJournal",
 		templateUrl : '/app/journal/journal_addEntry.html',
 		controller : 'addJournalCtr'
-	})	
-	.state('journal.journalList', {
+	}).state('journal.journalList', {
 		url : "/journalList",
 		templateUrl : '/app/journal/journal_entryList.html',
 		controller : 'journalEntryListCtr'
 	})
-	
-	
 
 	.state('report', {
 		url : "/report",
@@ -594,7 +564,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/contact",
 		templateUrl : '/app/crm/contact_list.html',
 		controller : 'contactsList',
-	}).state('crm.listOfContact', {    //view contact in customer form
+	}).state('crm.listOfContact', { // view contact in customer form
 		url : "/ViewContact/:selectedCustomerId",
 		templateUrl : '/app/crm/ViewContact_list.html',
 		controller : 'ViewContactsList',
@@ -683,9 +653,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
 	}).state('setup.setlogo', {
 		url : "/setLogo",
-		/*templateUrl : '/app/setup/uplode.jsp',*/
+		/* templateUrl : '/app/setup/uplode.jsp', */
 		templateUrl : '/app/setup/setup_setLogo.html',
-		/*templateUrl : '/app/setup/sendemail.html',*/
+		/* templateUrl : '/app/setup/sendemail.html', */
 		controller : 'setup.setLogo',
 
 	}).state('setup.sendmail', {
@@ -703,6 +673,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		templateUrl : '/app/setup/disclaimer.html',
 		controller : 'disclaimer',
 
+	}).state('setup.userauth', {
+		url : "/userauth/:selectedUserEmailId",
+		templateUrl : '/app/setup/manage_user_auth.html',
+		controller : 'manageUserAuthCtr'
 	}) /*
 		 * .state('login', { url : "/login", templateUrl :
 		 * '/app/login/login.html', controller : 'login', })
@@ -810,7 +784,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		templateUrl : '/app/AssetMangement/assignuser.html',
 		controller : 'AssignupdateAsset',
 	}).state('proAdmin', {
-		url : "/Admin",
+		url : "/proadmin",
 		templateUrl : '/app/ProAdmin/ProAdminModule.html',
 		controller : 'proadminctr',
 	}).state('proAdmin.addAccount', {
@@ -841,6 +815,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/businesslist",
 		templateUrl : '/app/probusiness/probusiness.html',
 		controller : 'probusinessCtr'
+	}).state('proAdmin.managebizauth', {
+		url : "/manageinstituteauth/:selectedbusinessID",
+		templateUrl : '/app/probusiness/manage_institute_auth.html',
+		controller : 'proAdminManageBizAuth'
 	}).state('proAdmin.editBusiness', {
 		url : "/editBusiness/:businessNo/:businessName",
 		templateUrl : '/app/probusiness/setup_module.html', // use probsiness
@@ -873,7 +851,5 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		templateUrl : '/app/setup/setup_viewuser.html',
 		controller : 'setup.viewuser'
 	})
-	
-	
 
 });
