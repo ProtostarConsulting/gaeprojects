@@ -25,7 +25,7 @@
 				ng-repeat="invoice in invoiceData | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
 
 				<td>{{$index+1}}</td>
-				<td>{{invoice.customer.firstName}}</td>
+				<td>{{invoice.customer.isCompany?invoice.customer.companyName:(invoice.customer.firstName +' '+ invoice.customer.lastName)}}</td>
 				<td>{{invoice.finalTotal}}</td>
 				<td>
 					<section layout="row" layout-sm="column">

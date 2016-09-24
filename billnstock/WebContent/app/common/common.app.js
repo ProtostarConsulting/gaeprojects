@@ -825,9 +825,13 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/EditAccoutType/:typeid",
 		templateUrl : '/app/ProAdmin/EditAccoutType.html',
 		controller : 'ListAccountType',
+	}).state('proAdmin.manageauthmaster', {
+		url : "/ProAdmin/manage_auth_master",
+		templateUrl : '/app/ProAdmin/manage_auth_master.html',
+		controller : 'proAdminManageAuth',
 	}).state('initsetup', {
 		url : "/initsetup",
-		templateUrl : '/app/Initsetup/initsetup.html',
+		templateUrl : '/app/initsetup/initsetup.html',
 		controller : 'initsetup',
 	})/*
 		 * .state('proAdmin.probusiness', { url : "/probusiness", templateUrl :

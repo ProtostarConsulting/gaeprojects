@@ -12,38 +12,41 @@ app
 					$log.debug("$scope.curUser++++++++"
 							+ angular.toJson($scope.curUser));
 
-					$scope.invoiceObj = {
-						salesOrderId : null,
-						customer : '',
-						// invoiceDate : $filter("date")(Date.now(),
-						// 'dd-MM-yyyy'),
-						invoiceDate : new Date(),
-						invoiceDueDate : '',
-						invoiceLineItemList : [],
-						productSubTotal : '',
-						serviceSubTotal : '',
-						serviceTotal : '',
-						taxCodeName : '',
-						taxPercenatge : '',
-						productTaxTotal : 0,
-						serviceTaxTotal : 0,
-						finalTotal : '',
-						noteToCustomer : '',
-						account : "",
-						createdDate : new Date(),
-						modifiedDate : new Date(),
-						modifiedBy : '',
+					$scope.getEmptyInvoiceObj = function() {
+						return {
+							salesOrderId : null,
+							customer : '',
+							// invoiceDate : $filter("date")(Date.now(),
+							// 'dd-MM-yyyy'),
+							invoiceDate : new Date(),
+							invoiceDueDate : new Date(),
+							invoiceLineItemList : [],
+							productSubTotal : '',
+							serviceSubTotal : '',
+							serviceTotal : '',
+							taxCodeName : '',
+							taxPercenatge : '',
+							productTaxTotal : 0,
+							serviceTaxTotal : 0,
+							finalTotal : '',
+							noteToCustomer : '',
+							account : null,
+							createdDate : new Date(),
+							modifiedDate : new Date(),
+							modifiedBy : '',
+							serviceName : '',
+							discount : '',
+							discValue : '',
+							discAmount : '0',
+							pOrder : null,
+							serviceSubTotal : 0,
+							serviceLineItemList : [],
+							selectedServiceTax : null,
+							business : null
+						};
+					}
 
-						serviceName : '',
-						discount : '',
-						discValue : '',
-						discAmount : '0',
-						pOrder : '',
-						serviceSubTotal : 0,
-						serviceLineItemList : [],
-						selectedServiceTax :'',
-						business : ""
-					};
+					$scope.invoiceObj = $scope.getEmptyInvoiceObj();
 
 					$scope.addInvoice = function() {
 						if ($scope.invoiceObj.invoiceLineItemList.length == 0
@@ -57,13 +60,14 @@ app
 							$scope.invoiceObj.modifiedBy = $scope.curUser.email_id;
 							$scope.invoiceObj.discValue = $scope.discAmount;
 							InvoiceService.addInvoice($scope.invoiceObj).then(
-									function(msgBean) {});
-							$scope.showAddToast();
-							$scope.invoiceAdd.$setPristine();
-							$scope.invoiceAdd.$setValidity();
-							$scope.invoiceAdd.$setUntouched();
+									function(msgBean) {										
+										$scope.showAddToast();
+										$scope.invoiceAdd.$setPristine();
+										$scope.invoiceAdd.$setValidity();
+										$scope.invoiceAdd.$setUntouched();
 
-							$scope.invoiceObj = {};
+										$scope.invoiceObj = $scope.getEmptyInvoiceObj();
+									});
 
 						}
 					}
@@ -88,11 +92,10 @@ app
 						lineSelectedItem.productSubTotal = stockItem.productSubTotal;
 
 						$scope.calProductSubTotal();
-					//	$scope.calSubTotal();
+						// $scope.calSubTotal();
 						$scope.calfinalTotal();
 					};
 
-					
 					$scope.calProductSubTotal = function() {
 						$log.debug("##Came to calSubTotal...");
 						$scope.invoiceObj.productSubTotal = 0;
@@ -104,16 +107,18 @@ app
 						}
 
 						$scope.invoiceObj.productSubTotal = parseFloat(
-								Math.round(($scope.invoiceObj.productSubTotal) * 100) / 100)
+								Math
+										.round(($scope.invoiceObj.productSubTotal) * 100) / 100)
 								.toFixed(2);
 
-						$scope.invoiceObj.productTotal = parseFloat($scope.invoiceObj.productSubTotal) + $scope.invoiceObj.productTaxTotal;
-						
+						$scope.invoiceObj.productTotal = parseFloat($scope.invoiceObj.productSubTotal)
+								+ $scope.invoiceObj.productTaxTotal;
+
 						$scope.calfinalTotal();
 
 						return $scope.invoiceObj.productSubTotal;
 					}
-					
+
 					$scope.calfinalTotal = function() {
 						$log.debug("##Came to calSubTotal...");
 
@@ -121,22 +126,22 @@ app
 						var finalTotal = 0;
 						var disc = 0;
 						$scope.invoiceObj.finalTotal = 0;
-						
+
 						if ($scope.lineSelectedDiscount != undefined) {
 							if ($scope.lineSelectedDiscount == "Fixed") {
 
 								$scope.tempDiscAmount = $scope.discAmount;
-								$scope.invoiceObj.discAmount = parseFloat(($scope.tempDiscAmount)).toFixed(2);
-								
-								if($scope.invoiceObj.productTotal == undefined){
+								$scope.invoiceObj.discAmount = parseFloat(
+										($scope.tempDiscAmount)).toFixed(2);
+
+								if ($scope.invoiceObj.productTotal == undefined) {
 									$scope.invoiceObj.finalTotal = (parseFloat($scope.invoiceObj.serviceTotal))
 											- parseFloat($scope.discAmount)
 													.toFixed(2);
-								}else{
-								$scope.invoiceObj.finalTotal = (parseFloat($scope.invoiceObj.productTotal)
-										+ parseFloat($scope.invoiceObj.serviceTotal))
-										- parseFloat($scope.discAmount)
-												.toFixed(2);
+								} else {
+									$scope.invoiceObj.finalTotal = (parseFloat($scope.invoiceObj.productTotal) + parseFloat($scope.invoiceObj.serviceTotal))
+											- parseFloat($scope.discAmount)
+													.toFixed(2);
 								}
 
 							} else {
@@ -145,45 +150,49 @@ app
 										+ parseFloat($scope.invoiceObj.productTaxTotal)
 										+ parseFloat($scope.invoiceObj.serviceSubTotal);
 
-								$scope.tempDiscAmount = ((disc / 100)
-										* finalTotal).toFixed(2);
+								$scope.tempDiscAmount = ((disc / 100) * finalTotal)
+										.toFixed(2);
 
 								$scope.invoiceObj.discAmount = $scope.tempDiscAmount;
 
 							}
-							if($scope.invoiceObj.productTotal == undefined){
+							if ($scope.invoiceObj.productTotal == undefined) {
 								$scope.invoiceObj.finalTotal = (parseFloat($scope.invoiceObj.serviceTotal))
 										- parseFloat($scope.tempDiscAmount)
 												.toFixed(2);
-							}else{
-							$scope.invoiceObj.finalTotal = (parseFloat($scope.invoiceObj.productTotal)
-									+ parseFloat($scope.invoiceObj.serviceTotal))
-									- parseFloat($scope.tempDiscAmount)
-											.toFixed(2);
+							} else {
+								$scope.invoiceObj.finalTotal = (parseFloat($scope.invoiceObj.productTotal) + parseFloat($scope.invoiceObj.serviceTotal))
+										- parseFloat($scope.tempDiscAmount)
+												.toFixed(2);
 							}
 						} else {
 							var a = parseInt($scope.invoiceObj.productSubTotal);
 							var b = $scope.invoiceObj.productTaxTotal;
 							var c = parseFloat($scope.invoiceObj.serviceTotal);
 
-/*							$scope.invoiceObj.finalTotal = a + b + c;
-							$scope.invoiceObj.finalTotal = (parseFloat($scope.invoiceObj.productSubTotal)
-									+ $scope.invoiceObj.productTaxTotal + parseFloat($scope.invoiceObj.serviceSubTotal))
-									.toFixed(2);
-									
-									
-*/							
-							if($scope.invoiceObj.serviceLineItemList.length == 0){
+							/*
+							 * $scope.invoiceObj.finalTotal = a + b + c;
+							 * $scope.invoiceObj.finalTotal =
+							 * (parseFloat($scope.invoiceObj.productSubTotal) +
+							 * $scope.invoiceObj.productTaxTotal +
+							 * parseFloat($scope.invoiceObj.serviceSubTotal))
+							 * .toFixed(2);
+							 * 
+							 * 
+							 */
+							if ($scope.invoiceObj.serviceLineItemList.length == 0) {
 								$scope.invoiceObj.serviceTotal = 0;
 								$scope.serviceTaxChange = "";
 							}
-							
+
 							$scope.invoiceObj.finalTotal = a + b + c;
 
-/*							$scope.invoiceObj.finalTotal = parseFloat($scope.invoiceObj.serviceSubTotal) + 
-															parseInt($scope.invoiceObj.productSubTotal) - 
-															parseFloat($scope.tempDiscAmount);  
-*/						}
+							/*
+							 * $scope.invoiceObj.finalTotal =
+							 * parseFloat($scope.invoiceObj.serviceSubTotal) +
+							 * parseInt($scope.invoiceObj.productSubTotal) -
+							 * parseFloat($scope.tempDiscAmount);
+							 */}
 					}
 					$scope.lineItemTaxChange = function(index, selectedTaxItem,
 							$event) {
@@ -195,12 +204,10 @@ app
 						$scope.calfinalTotal();
 					};
 
-					
-					
 					$scope.removeItem = function(index) {
 						$scope.invoiceObj.invoiceLineItemList.splice(index, 1);
 						$scope.calProductSubTotal();
-					//	$scope.calSubTotal();
+						// $scope.calSubTotal();
 						$scope.calfinalTotal();
 					};
 
@@ -222,30 +229,30 @@ app
 
 					$scope.removeService = function(index) {
 						$scope.invoiceObj.serviceLineItemList.splice(index, 1);
-						
-						if($scope.invoiceObj.serviceLineItemList.length == 0){
+
+						if ($scope.invoiceObj.serviceLineItemList.length == 0) {
 							$scope.invoiceObj.serviceTotal = 0;
 							$scope.serviceTaxChange = "";
 						}
-						
+
 						$scope.calServiceSubTotal();
-					//	$scope.serviceTaxChange();
+						// $scope.serviceTaxChange();
 						$scope.calfinalTotal();
-						
-						
+
 					};
 
-					$scope.serviceTaxChange = function(index, selectedServiceTax,
-							$event) {
+					$scope.serviceTaxChange = function(index,
+							selectedServiceTax, $event) {
 						$log.debug("##Came to lineItemTaxChange...");
 
 						$scope.invoiceObj.serviceTaxTotal = parseFloat(($scope.invoiceObj.selectedServiceTax.taxPercenatge / 100)
 								* ($scope.invoiceObj.serviceSubTotal));
 
-						$scope.invoiceObj.serviceTotal = $scope.invoiceObj.serviceSubTotal + $scope.invoiceObj.serviceTaxTotal;
+						$scope.invoiceObj.serviceTotal = $scope.invoiceObj.serviceSubTotal
+								+ $scope.invoiceObj.serviceTaxTotal;
 						$scope.calfinalTotal();
 					};
-					
+
 					$scope.calServiceSubTotal = function() {
 						$log.debug("##Came to calSubTotal...");
 						$scope.invoiceObj.serviceSubTotal = 0;
@@ -257,7 +264,8 @@ app
 						}
 
 						$scope.invoiceObj.productSubTotal = parseFloat(
-								Math.round(($scope.invoiceObj.productSubTotal) * 100) / 100)
+								Math
+										.round(($scope.invoiceObj.productSubTotal) * 100) / 100)
 								.toFixed(2);
 
 						$scope.calfinalTotal();
@@ -403,16 +411,19 @@ app
 
 						var invoiceService = appEndpointSF.getInvoiceService();
 
-						invoiceService.getInvoiceSettingsByBiz(
-								$scope.curUser.business.id).then(
-								function(settingsList) {
+						invoiceService
+								.getInvoiceSettingsByBiz(
+										$scope.curUser.business.id)
+								.then(
+										function(settingsList) {
 
-									$scope.settingsObj = settingsList;
-									$scope.invoiceObj.noteToCustomer = $scope.settingsObj.noteToCustomer;
-									$log.debug("Inside Ctr $scope.invoiceObj.noteToCustomer:"
-											+ $scope.invoiceObj.noteToCustomer);
-									return $scope.settingsObj;
-								});
+											$scope.settingsObj = settingsList;
+											$scope.invoiceObj.noteToCustomer = $scope.settingsObj.noteToCustomer;
+											$log
+													.debug("Inside Ctr $scope.invoiceObj.noteToCustomer:"
+															+ $scope.invoiceObj.noteToCustomer);
+											return $scope.settingsObj;
+										});
 					}
 
 					var printDivCSS = new String(
@@ -429,95 +440,70 @@ app
 					}
 
 					// FOR CUSTOMER
-/*
-					 var self = this;
-					    var pendingSearch, cancelSearch = angular.noop;
-					    var cachedQuery, lastSearch;
-					    self.allContacts = loadContacts();
-					    self.contacts = [self.allContacts[0]];
-					    self.asyncContacts = [];
-					    self.filterSelected = true;
-					    self.querySearch = querySearch;
-					    self.delayedQuerySearch = delayedQuerySearch;
-					    *//**
-					     * Search for contacts; use a random delay to simulate a remote call
-					     *//*
-					    function querySearch (criteria) {
-					      cachedQuery = cachedQuery || criteria;
-					      return cachedQuery ? self.allContacts.filter(createFilterFor(cachedQuery)) : [];
-					    }
-					    *//**
-					     * Async search for contacts
-					     * Also debounce the queries; since the md-contact-chips does not support this
-					     *//*
-					    function delayedQuerySearch(criteria) {
-					      cachedQuery = criteria;
-					      if ( !pendingSearch || !debounceSearch() )  {
-					        cancelSearch();
-					        return pendingSearch = $q(function(resolve, reject) {
-					          // Simulate async search... (after debouncing)
-					          cancelSearch = reject;
-					          $timeout(function() {
-					            resolve( self.querySearch() );
-					            refreshDebounce();
-					          }, Math.random() * 500, true)
-					        });
-					      }
-					      return pendingSearch;
-					    }
-					    function refreshDebounce() {
-					      lastSearch = 0;
-					      pendingSearch = null;
-					      cancelSearch = angular.noop;
-					    }
-					    *//**
-					     * Debounce if querying faster than 300ms
-					     *//*
-					    function debounceSearch() {
-					      var now = new Date().getMilliseconds();
-					      lastSearch = lastSearch || now;
-					      return ((now - lastSearch) < 300);
-					    }
-					    *//**
-					     * Create filter function for a query string
-					     *//*
-					    function createFilterFor(query) {
-					      var lowercaseQuery = angular.lowercase(query);
-					      return function filterFn(contact) {
-					        return (contact._lowername.indexOf(lowercaseQuery) != -1);;
-					      };
-					    }
-					    function loadContacts() {
-					      var contacts = [
-					        'Marina Augustine',
-					        'Oddr Sarno',
-					        'Nick Giannopoulos',
-					        'Narayana Garner',
-					        'Anita Gros',
-					        'Megan Smith',
-					        'Tsvetko Metzger',
-					        'Hector Simek',
-					        'Some-guy withalongalastaname'
-					      ];
-					      return contacts.map(function (c, index) {
-					        var cParts = c.split(' ');
-					        var contact = {
-					          name: c,
-					          email: cParts[0][0].toLowerCase() + '.' + cParts[1].toLowerCase() + '@example.com',
-					          image: 'http://lorempixel.com/50/50/people?' + index
-					        };
-					        contact._lowername = contact.name.toLowerCase();
-					        return contact;
-					      });
-					    }
-					  
+					/*
+					 * var self = this; var pendingSearch, cancelSearch =
+					 * angular.noop; var cachedQuery, lastSearch;
+					 * self.allContacts = loadContacts(); self.contacts =
+					 * [self.allContacts[0]]; self.asyncContacts = [];
+					 * self.filterSelected = true; self.querySearch =
+					 * querySearch; self.delayedQuerySearch =
+					 * delayedQuerySearch;
+					 *//**
+						 * Search for contacts; use a random delay to simulate a
+						 * remote call
+						 */
+					/*
+					 * function querySearch (criteria) { cachedQuery =
+					 * cachedQuery || criteria; return cachedQuery ?
+					 * self.allContacts.filter(createFilterFor(cachedQuery)) :
+					 * []; }
+					 *//**
+						 * Async search for contacts Also debounce the queries;
+						 * since the md-contact-chips does not support this
+						 */
+					/*
+					 * function delayedQuerySearch(criteria) { cachedQuery =
+					 * criteria; if ( !pendingSearch || !debounceSearch() ) {
+					 * cancelSearch(); return pendingSearch =
+					 * $q(function(resolve, reject) { // Simulate async
+					 * search... (after debouncing) cancelSearch = reject;
+					 * $timeout(function() { resolve( self.querySearch() );
+					 * refreshDebounce(); }, Math.random() * 500, true) }); }
+					 * return pendingSearch; } function refreshDebounce() {
+					 * lastSearch = 0; pendingSearch = null; cancelSearch =
+					 * angular.noop; }
+					 *//**
+						 * Debounce if querying faster than 300ms
+						 */
+					/*
+					 * function debounceSearch() { var now = new
+					 * Date().getMilliseconds(); lastSearch = lastSearch || now;
+					 * return ((now - lastSearch) < 300); }
+					 *//**
+						 * Create filter function for a query string
+						 */
+					/*
+					 * function createFilterFor(query) { var lowercaseQuery =
+					 * angular.lowercase(query); return function
+					 * filterFn(contact) { return
+					 * (contact._lowername.indexOf(lowercaseQuery) != -1);; }; }
+					 * function loadContacts() { var contacts = [ 'Marina
+					 * Augustine', 'Oddr Sarno', 'Nick Giannopoulos', 'Narayana
+					 * Garner', 'Anita Gros', 'Megan Smith', 'Tsvetko Metzger',
+					 * 'Hector Simek', 'Some-guy withalongalastaname' ]; return
+					 * contacts.map(function (c, index) { var cParts = c.split('
+					 * '); var contact = { name: c, email:
+					 * cParts[0][0].toLowerCase() + '.' +
+					 * cParts[1].toLowerCase() + '@example.com', image:
+					 * 'http://lorempixel.com/50/50/people?' + index };
+					 * contact._lowername = contact.name.toLowerCase(); return
+					 * contact; }); }
+					 * 
+					 * 
+					 */
 
-	*/				
-				
-					
-					
 					$scope.invoiceObj.customer = null;
-					//$scope.searchTextInput = null;
+					// $scope.searchTextInput = null;
 
 					$scope.querySearch = function(query) {
 						var results = query ? $scope.customersforinvoice
@@ -543,7 +529,7 @@ app
 										function(custList) {
 											$scope.customersforinvoice = custList.items;
 										});
-						
+
 					}
 					/**
 					 * Create filter function for a query string
@@ -551,33 +537,36 @@ app
 					function createFilterFor(query) {
 						var lowercaseQuery = angular.lowercase(query);
 						return function filterFn(cus) {
-							var a = cus.firstName +""+ cus.lastName;
-							return (angular.lowercase(a).indexOf(
-									lowercaseQuery) === 0);
+							var a = cus.isCompany ? cus.companyName
+									: (cus.firstName + "" + cus.lastName);
+							return (angular.lowercase(a)
+									.indexOf(lowercaseQuery) === 0);
 						};
 					}
 
-					
-					
-					
 					$scope.getAllWarehouseByBusiness = function() {
-						$log.debug("Inside function $scope.getAllWarehouseByBusiness");
+						$log
+								.debug("Inside function $scope.getAllWarehouseByBusiness");
 						var warehouseService = appEndpointSF
 								.getWarehouseManagementService();
 
-						warehouseService.getAllWarehouseByBusiness(
-								$scope.curUser.business.id).then(
-								function(warehouseList) {
-									$scope.warehouses = warehouseList;
-									$log.debug("$scope.warehouses:"
-											+ angular.toJson($scope.warehouses));
-								});
+						warehouseService
+								.getAllWarehouseByBusiness(
+										$scope.curUser.business.id)
+								.then(
+										function(warehouseList) {
+											$scope.warehouses = warehouseList;
+											$log
+													.debug("$scope.warehouses:"
+															+ angular
+																	.toJson($scope.warehouses));
+										});
 					}
-							
+
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
 							loadAllCustomers();
-					//		loadContacts();
+							// loadContacts();
 							$scope.getAllStock();
 							$scope.getAllSalesOrder();
 							$scope.getTaxesByVisibility();
@@ -593,7 +582,7 @@ app
 
 					$scope.waitForServiceLoad();
 
-					//For Add Customer from Invoice Page through popup	
+					// For Add Customer from Invoice Page through popup
 					$scope.addCustomer = function(ev) {
 						var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))
 								&& $scope.customFullscreen;
@@ -644,59 +633,37 @@ app
 						};
 					}
 
-				//For Add Stock from Invoice Page through popup	
-/*					$scope.addStock = function(ev) {
-						var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))
-								&& $scope.customFullscreen;
-						$mdDialog
-								.show({
-									controller : DialogController,
-									templateUrl : '/app/stock/stockItem_add.html',
-									parent : angular.element(document.body),
-									targetEvent : ev,
-									clickOutsideToClose : true,
-									fullscreen : useFullScreen,
-									locals : {
-										curUser : $scope.curUser,
-										stock : $scope.stock,
-										warehouses : $scope.warehouses
-									}
-								})
-								.then(
-										function(answer) {
-											$scope.status = 'You said the information was "'
-													+ answer + '".';
-										},
-										function() {
-											$scope.status = 'You cancelled the dialog.';
-										});
-					};
+					// For Add Stock from Invoice Page through popup
+					/*
+					 * $scope.addStock = function(ev) { var useFullScreen =
+					 * ($mdMedia('sm') || $mdMedia('xs')) &&
+					 * $scope.customFullscreen; $mdDialog .show({ controller :
+					 * DialogController, templateUrl :
+					 * '/app/stock/stockItem_add.html', parent :
+					 * angular.element(document.body), targetEvent : ev,
+					 * clickOutsideToClose : true, fullscreen : useFullScreen,
+					 * locals : { curUser : $scope.curUser, stock :
+					 * $scope.stock, warehouses : $scope.warehouses } }) .then(
+					 * function(answer) { $scope.status = 'You said the
+					 * information was "' + answer + '".'; }, function() {
+					 * $scope.status = 'You cancelled the dialog.'; }); };
+					 * 
+					 * function DialogController($scope, $mdDialog, curUser,
+					 * stock, warehouses) {
+					 * 
+					 * $scope.addStock = function() { $scope.stock.business =
+					 * curUser.business; $scope.stock.createdDate = new Date();
+					 * $scope.stock.modifiedBy = curUser.email_id;
+					 * 
+					 * var customerService = appEndpointSF
+					 * .getCustomerService();
+					 * 
+					 * customerService.addStock($scope.stock).then(
+					 * function(msgBean) {
+					 * 
+					 * }); $scope.hide(); }
+					 * 
+					 * $scope.hide = function() { $mdDialog.hide(); }; }
+					 */
 
-					function DialogController($scope, $mdDialog, curUser,
-							stock, warehouses) {
-
-						$scope.addStock = function() {
-							$scope.stock.business = curUser.business;
-							$scope.stock.createdDate = new Date();
-							$scope.stock.modifiedBy = curUser.email_id;
-
-							var customerService = appEndpointSF
-									.getCustomerService();
-
-							customerService.addStock($scope.stock).then(
-									function(msgBean) {
-
-									});
-							$scope.hide();
-						}
-
-						$scope.hide = function() {
-							$mdDialog.hide();
-						};
-					}
-*/				
-				
 				});
-
-
-

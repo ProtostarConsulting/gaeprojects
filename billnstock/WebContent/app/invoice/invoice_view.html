@@ -60,7 +60,7 @@
 			<tbody>
 				<tr>
 					<td style="width: 20%"><b>Customer Name :</b>
-						{{invoiceDetail.customer.firstName}}</td>
+						{{invoiceDetail.customer.isCompany?invoiceDetail.customer.companyName:(invoiceDetail.customer.firstName +' '+ invoiceDetail.customer.lastName)}}</td>
 					<td style="width: 20%"><label>Invoice ID :</label>
 						{{invoiceDetail.id}}</td>
 					<td style="width: 20%"><label>Date :</label>

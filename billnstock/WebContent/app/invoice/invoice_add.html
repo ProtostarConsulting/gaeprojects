@@ -16,9 +16,9 @@
 					md-selected-item="invoiceObj.customer"
 					md-search-text="searchTextInput"
 					md-items="item in querySearch(searchTextInput)"
-					md-item-text="item.firstName" md-floating-label="Customer Name">
+					md-item-text="item.isCompany?item.companyName:(item.firstName +' '+ item.lastName)" md-floating-label="Customer Name">
 				<md-item-template> <span
-					md-highlight-text="searchTextInput">{{item.firstName +""+ item.lastName }}</span> </md-item-template>
+					md-highlight-text="searchTextInput">{{item.isCompany?item.companyName:(item.firstName +' '+ item.lastName) }}</span> </md-item-template>
 				<div ng-messages="invoiceAdd.autocompleteField.$error"
 					ng-if="invoiceAdd.autocompleteField.$touched">
 					<div ng-message="required">
@@ -30,13 +30,13 @@
 				</md-autocomplete>
 				<md-icon md-svg-src="img/icons/ic_queue_black_24px.svg"
 					ng-click="addCustomer()" class="name"
-					style="color: Green; height: 40px; width: 40px"></md-icon>
+					style="color: Green; height: 10px; width: 10px"></md-icon>
 			</div>
 			Due Date:<span style="color: red;">*</span>
 			<md-datepicker flex ng-model="invoiceObj.invoiceDueDate"
 				md-placeholder="Select Date"></md-datepicker>
 		</div>
-		<div layout="row" layout-xs="column">
+		<!-- <div layout="row" layout-xs="column">
 
 			<md-input-container flex> <md-select
 				ng-model="invoiceObj.account" name="account"
@@ -74,7 +74,7 @@
 			<md-input-container flex="25"> </label> <input
 				ng-model="discAmount" ng-change="calfinalTotal()" name="discAmount">
 			</md-input-container>
-		</div>
+		</div> -->
 
 		<div layout="row" layout-xs="column">
 

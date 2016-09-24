@@ -432,6 +432,150 @@ function googleEndpointSF($log, $q) {
 	 * deferred.resolve(resp); }); return deferred.promise; }
 	 */
 
+	/*------------------------------------------------------------------------------------------------------*/
+	// start of AuthorizationService
+	var authorizationService = null;
+
+	serviceFactory.getAuthorizationService = function() {
+		if (authorizationService != null) {
+			return authorizationService;
+		}
+
+		authorizationService = new AuthorizationService();
+		return authorizationService;
+	}
+
+	function AuthorizationService() {
+	}
+
+	AuthorizationService.prototype.saveAuthorizationMasterEntity = function(
+			auth) {
+		var deferred = $q.defer();
+		gapi.client.authorizationService.saveAuthorizationMasterEntity(auth)
+				.execute(function() {
+					deferred.resolve({
+						"msg" : "Auth Saved Successfully."
+					});
+
+				});
+		return deferred.promise;
+	}
+
+	AuthorizationService.prototype.getAuthorizationMasterEntity = function() {
+		var deferred = $q.defer();
+		gapi.client.authorizationService.getAuthorizationMasterEntity()
+				.execute(function(resp) {
+					deferred.resolve(resp);
+				});
+		return deferred.promise;
+	}
+
+	AuthorizationService.prototype.containsInAuthTree = function(authName,
+			authHierarchy) {
+		if (authHierarchy.authName != undefined
+				&& authName == authHierarchy.authName) {
+			return true;
+		} else {
+			if (authHierarchy.authorizations) {
+				for (var i = 0; i < authHierarchy.authorizations.length; i++) {
+					var found = this.containsInAuthTree(authName,
+							authHierarchy.authorizations[i]);
+					if (found)
+						return true;
+				}
+			} else {
+				return false;
+			}
+		}
+	}
+
+	AuthorizationService.prototype.markSelectedAuthorizations = function(auth,
+			authTree) {
+		if (auth.authName != undefined) {
+			auth.selected = this.containsInAuthTree(auth.authName, authTree);
+		}
+		if (auth.authorizations) {
+			angular.forEach(auth.authorizations, function(auth, index) {
+				authorizationService.markSelectedAuthorizations(auth, authTree)
+			});
+		}
+		return auth;
+
+	}
+
+	AuthorizationService.prototype.filterMasterAuthTree = function(masterAuth,
+			selectedAuthObject, filteredAuthMaster) {
+		if (masterAuth.authName != undefined) {
+			if (this
+					.containsInAuthTree(masterAuth.authName, selectedAuthObject)) {
+				var tempAuth = this.getAuthCopy(masterAuth);
+				filteredAuthMaster.push(tempAuth);
+				if (masterAuth.authorizations) {
+					angular.forEach(masterAuth.authorizations, function(auth,
+							index) {
+						authorizationService.filterMasterAuthTree(auth,
+								selectedAuthObject, tempAuth.authorizations);
+					});
+				}
+			}
+			return;
+		}
+
+		if (masterAuth.authorizations) {
+			angular.forEach(masterAuth.authorizations,
+					function(subAuth, index) {
+						authorizationService.filterMasterAuthTree(subAuth,
+								selectedAuthObject,
+								filteredAuthMaster.authorizations);
+					});
+		}
+
+		return filteredAuthMaster;
+
+	}
+
+	AuthorizationService.prototype.getCurrentSelectedAuthorizations = function(
+			authMasterEntity) {
+		var jsonObj = {
+			authorizations : []
+		};
+
+		angular.forEach(authMasterEntity.authorizations, function(auth, index) {
+			getSelectedJsonAuthorizations(auth, jsonObj);
+		});
+
+		function getSelectedJsonAuthorizations(authHirarachy, jsonObj) {
+			var currentAuth = null;
+			if (authHirarachy.selected) {
+				currentAuth = {
+					'authName' : authHirarachy.authName,
+					'authorizations' : []
+				}
+				jsonObj.authorizations.push(currentAuth);
+			}
+
+			if (currentAuth != null && authHirarachy.authorizations) {
+				for (var i = 0; i < authHirarachy.authorizations.length; i++) {
+					getSelectedJsonAuthorizations(
+							authHirarachy.authorizations[i], currentAuth);
+				}
+			}
+		}
+		return jsonObj;
+	}
+
+	AuthorizationService.prototype.getAuthCopy = function(auth) {
+		return {
+			authName : auth.authName,
+			authDisplayName : auth.authDisplayName,
+			uiStateName : auth.uiStateName,
+			orderNumber : auth.orderNumber,
+			authorizations : []
+		};
+	}
+
+	// End of authorizationService
+	/*------------------------------------------------------------------------------------------------------*/
 	// --------------------setup service----------------------------
 	var setupService = {};
 

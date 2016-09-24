@@ -170,7 +170,7 @@ angular
 												hrService.addgsalslip($scope.salslip).then(
 																function(gsalslip) {
 																	$scope.ganeratedsalslip.push(gsalslip.result);
-																	$scope.showSimpleToast("salslip ganareted");
+																	//$scope.showSimpleToast("salslip ganareted");
 																	$log.debug("********%%%%%***********" + angular
 																			.toJson($scope.ganeratedsalslip));
 																});
@@ -179,7 +179,7 @@ angular
 						}
 						
 			
-							
+						$scope.showSimpleToast("Salary slip generation process started. Please check salary slip list after sometime.");
 						       $state.go('hr.printgeneratesalslip',
 						    		   	 {sourceSate : "hr.generatesalslip",ganeratedsalslip : $scope.ganeratedsalslip}
 						       			);

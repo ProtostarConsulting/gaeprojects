@@ -1,0 +1,101 @@
+{
+"authorizations": [
+	{
+	"authName": "home",
+	"authDisplayName": "Home",
+	"uiStateName": "home",
+	"orderNumber": "0"
+	},
+	{
+	"authName": "proadmin",
+	"authDisplayName": "Proadmin",
+	"uiStateName": "proAdmin",
+	"orderNumber": "1"
+	},
+	{
+	"authName": "setup",
+	"authDisplayName": "Setup",
+	"uiStateName": "setup",
+	"orderNumber": "2"
+	},
+	{
+	"authName": "Accounting",
+	"authDisplayName": "Accounting",
+	"uiStateName": "accounting",
+	"orderNumber": "3"
+	},
+	{
+	"authName": "Stock",
+	"authDisplayName": "Stock",
+	"uiStateName": "stock",
+	"orderNumber": "4"
+	},
+	{
+	"authName": "CRM",
+	"authDisplayName": "CRM",
+	"uiStateName": "crm",
+	"orderNumber": "5"
+	},
+	{
+	"authName": "Invoice",
+	"authDisplayName": "Invoice",
+	"uiStateName": "invoice",
+	"orderNumber": "6"
+	},
+	{
+	"authName": "report",
+	"authDisplayName": "Reports",
+	"uiStateName": "report",
+	"orderNumber": "7"
+	},
+	{
+	"authName": "admissionMgmt",
+	"authDisplayName": "admissionMgmt",
+	"uiStateName": "Admission Management",
+	"orderNumber": "8"
+	},
+	{
+	"authName": "certificateMgmt",
+	"authDisplayName": "Certificate Management",
+	"uiStateName": "certificateMgmt",
+	"orderNumber": "9"
+	},	
+	{
+	"authName": "updatemyprofile",
+	"authDisplayName": "My Profile",
+	"uiStateName": "user_prof_detail",
+	"orderNumber": "10"
+	},
+	{
+	"authName": "gfe",
+	"authDisplayName": "Google for Education Dashboard",
+	"uiStateName": "gfe",
+	"orderNumber": "21",
+	"authorizations": [
+						{
+						"authName": "list",
+						"authDisplayName": "List",
+						"uiStateName": "list",
+						"orderNumber": "1",
+						"authorizations": [
+								{
+								"authName": "inList",
+								"authDisplayName": "inList"
+								}
+						]
+						},
+						{
+						"authName": "add",
+						"authDisplayName": "Add"
+						}
+						
+		]
+	},
+	{
+	"authName": "GRF",
+	"authDisplayName": "Gandhi Research Foundation",
+	"uiStateName": "gandhifoundation",
+	"orderNumber": "22"
+	}
+]
+}

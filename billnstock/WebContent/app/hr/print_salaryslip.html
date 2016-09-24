@@ -29,7 +29,7 @@
 <md-content layout-padding>
 
 <div id="salSlipDiv">
-	<table id="hidetr">
+	<table width="100%" id="hidetr">
 		<tbody>
 			<tr>
 				<td style="width: 20%">
@@ -48,144 +48,138 @@
 						{{curUser.business.address.country}} </label></td>
 			</tr>
 		</tbody>
-
-		<table width="100%">
-			<thead md-order="query.order" md-trigger="onOrderChange">
-				<tr>
-					<th name="Employee salslip" order-by="salslip "></th>
-
-
-				</tr>
-			</thead>
-
-			<tbody>
-				<tr md-auto-select
-					ng-repeat="emp in printslectedslip | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
-
-
-					<td>
-						<div>
-							<br>
-							<table width="100%">
-								<tr height="10px">
-									<td width="50%"><b>Employee id = </b>{{emp.salarystruct.empAccount.email_id}}</td>
-									<td width="50%"><b>Employee Name = </b>{{emp.salarystruct.empAccount.firstName}}
-										{{emp.salarystruct.empAccount.lastName}}</td>
-								</tr>
-
-								<tr height="10px">
-									<td width="50%"><b>Month and Year = </b>{{emp.month}}</td>
-									<td width="50%"></td>
-								</tr>
-
-
-							</table>
-							<br> <br>
-
-
-							<table border="1" width="100%">
-								<tr>
-									<td width="25%"><b>Earnings</b></td>
-									<td width="25%"></td>
-									<td width="25%"><b>Deduction</b></td>
-									<td width="25%"></td>
-								</tr>
-								<tr>
-									<td width="25%">Basic</td>
-									<td width="25%" align="right">{{emp.bmonthly | number:2}}</td>
-									<td width="25%">Provident Fund</td>
-									<td width="25%" align="right">{{emp.pf1+emp.pf1 |
-										number:2}}</td>
-								</tr>
-								<tr>
-									<td width="25%">HRA</td>
-									<td width="25%" align="right">{{emp.hramonthly |
-										number:2}}</td>
-									<td width="25%">ESI</td>
-									<td width="25%"></td>
-								</tr>
-								<tr>
-									<td width="25%">Conveyance</td>
-									<td width="25%" align="right">{{emp.convmonthly |
-										number:2}}</td>
-									<td width="25%">Loan</td>
-									<td width="25%"></td>
-								</tr>
-								<tr>
-									<td width="25%">City Compensatory All</td>
-									<td width="25%" align="right">{{emp.ccamonthly |
-										number:2}}</td>
-									<td width="25%">Profession Tax</td>
-									<td width="25%" align="right"></td>
-								</tr>
-								<tr>
-									<td width="25%">Special Allowance</td>
-									<td width="25%" align="right">{{emp.samonthly | number:2}}</td>
-									<td width="25%">TSD/IT</td>
-									<td width="25%"></td>
-								</tr>
-								<tr>
-									<td width="25%"></td>
-									<td width="25%"></td>
-									<td width="25%">Other 1</td>
-									<td width="25%" align="right">{{emp.ldother1amt |
-										number:2}}</td>
-								</tr>
-								<tr>
-									<td width="25%"></td>
-									<td width="25%"></td>
-									<td width="25%">Other 2</td>
-									<td width="25%" align="right">{{emp.ldother2amt |
-										number:2}}</td>
-								</tr>
-								<tr>
-									<td width="25%"></td>
-									<td width="25%"></td>
-									<td width="25%"></td>
-									<td width="25%">-</td>
-								</tr>
-								<tr>
-									<td width="25%">Total Addition</td>
-									<td width="25%" align="right">{{TotalAddition | number:2
-										}}<!-- {{emp.bmonthly+emp.hramonthly+emp.convmonthly+emp.samonthly+emp.ccamonthly
-										}} -->
-									</td>
-									<td width="25%">Total Deduction</td>
-									<td width="25%" align="right">{{TotalDeduction |
-										number:2}}<!-- {{emp.pf1+emp.pf1+emp.ldother1amt+emp.ldother2amt}} -->
-									</td>
-								</tr>
-								<tr>
-									<td width="25%"></td>
-									<td width="25%"></td>
-									<td width="25%"><b>NET Salary</b></td>
-									<td width="25%" align="right">{{NETSalary}}<!-- {{(emp.bmonthly+emp.hramonthly+emp.convmonthly+emp.samonthly+emp.ccamonthly)-(emp.pf1+emp.pf1+emp.ldother1amt+emp.ldother2amt)}} --></td>
-								</tr>
-
-
-							</table>
-							<br> <b>Salary in Word :{{netsalinword }} </b> <br> <b>Name
-								Of Bank :{{emp.salarystruct.empAccount.bankDetail.bankName}} </b><br>
-							<b>Signature of Employee :</b> <br> <br> <br>
-							<p align="left">
-								<b>Generated on : {{emp.createdDate | formatDate}}</b><br>
-								<b>Verified by : Pushpak Pimpale (Finance Manager)</b>
-							</p>
-							<p align="Center">
-								<br> <br> <br>
-								<!-- <span ng-hide="curuser.business.disclaimer"><b>this Document is Electronically Generated.
-									Hence need no Signature or Stamp. </b></span> -->
-								<span ng-show="curuser.business.disclaimer"><b>{{curuser.business.disclaimer}}</b></span>
-							</p>
-						</div>
-					</td>
-
-
-				</tr>
-			</tbody>
-		</table>
-
 	</table>
+	<table width="90%">
+		<thead md-order="query.order" md-trigger="onOrderChange">
+			<tr>
+				<th name="Employee salslip" order-by="salslip "></th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<tr md-auto-select
+				ng-repeat="emp in printslectedslip | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+
+
+				<td>
+					<div>
+						<br>
+						<table width="100%">
+							<tr height="10px">
+								<td width="50%"><b>Employee id = </b>{{emp.salarystruct.empAccount.email_id}}</td>
+								<td width="50%"><b>Employee Name = </b>{{emp.salarystruct.empAccount.firstName}}
+									{{emp.salarystruct.empAccount.lastName}}</td>
+							</tr>
+
+							<tr height="10px">
+								<td width="50%"><b>Month and Year = </b>{{emp.month}}</td>
+								<td width="50%"></td>
+							</tr>
+
+
+						</table>
+						<br> <br>
+
+
+						<table border="1" width="100%">
+							<tr>
+								<td width="25%"><b>Earnings</b></td>
+								<td width="25%"></td>
+								<td width="25%"><b>Deduction</b></td>
+								<td width="25%"></td>
+							</tr>
+							<tr>
+								<td width="25%">Basic</td>
+								<td width="25%" align="right">{{emp.bmonthly | number:2}}</td>
+								<td width="25%">Provident Fund</td>
+								<td width="25%" align="right">{{emp.pf1+emp.pf1 |
+									number:2}}</td>
+							</tr>
+							<tr>
+								<td width="25%">HRA</td>
+								<td width="25%" align="right">{{emp.hramonthly | number:2}}</td>
+								<td width="25%">ESI</td>
+								<td width="25%"></td>
+							</tr>
+							<tr>
+								<td width="25%">Conveyance</td>
+								<td width="25%" align="right">{{emp.convmonthly |
+									number:2}}</td>
+								<td width="25%">Loan</td>
+								<td width="25%"></td>
+							</tr>
+							<tr>
+								<td width="25%">City Compensatory All</td>
+								<td width="25%" align="right">{{emp.ccamonthly | number:2}}</td>
+								<td width="25%">Profession Tax</td>
+								<td width="25%" align="right"></td>
+							</tr>
+							<tr>
+								<td width="25%">Special Allowance</td>
+								<td width="25%" align="right">{{emp.samonthly | number:2}}</td>
+								<td width="25%">TSD/IT</td>
+								<td width="25%"></td>
+							</tr>
+							<tr>
+								<td width="25%"></td>
+								<td width="25%"></td>
+								<td width="25%">Other 1</td>
+								<td width="25%" align="right">{{emp.ldother1amt |
+									number:2}}</td>
+							</tr>
+							<tr>
+								<td width="25%"></td>
+								<td width="25%"></td>
+								<td width="25%">Other 2</td>
+								<td width="25%" align="right">{{emp.ldother2amt |
+									number:2}}</td>
+							</tr>
+							<tr>
+								<td width="25%"></td>
+								<td width="25%"></td>
+								<td width="25%"></td>
+								<td width="25%">-</td>
+							</tr>
+							<tr>
+								<td width="25%">Total Addition</td>
+								<td width="25%" align="right">{{TotalAddition | number:2 }}<!-- {{emp.bmonthly+emp.hramonthly+emp.convmonthly+emp.samonthly+emp.ccamonthly
+										}} -->
+								</td>
+								<td width="25%">Total Deduction</td>
+								<td width="25%" align="right">{{TotalDeduction | number:2}}<!-- {{emp.pf1+emp.pf1+emp.ldother1amt+emp.ldother2amt}} -->
+								</td>
+							</tr>
+							<tr>
+								<td width="25%"></td>
+								<td width="25%"></td>
+								<td width="25%"><b>NET Salary</b></td>
+								<td width="25%" align="right">{{NETSalary}}<!-- {{(emp.bmonthly+emp.hramonthly+emp.convmonthly+emp.samonthly+emp.ccamonthly)-(emp.pf1+emp.pf1+emp.ldother1amt+emp.ldother2amt)}} --></td>
+							</tr>
+
+
+						</table>
+						<br> <b>Salary in Word :{{netsalinword }} </b> <br> <b>Name
+							Of Bank :{{emp.salarystruct.empAccount.bankDetail.bankName}} </b><br>
+						<b>Signature of Employee :</b> <br> <br> <br>
+						<p align="left">
+							<b>Generated on : {{emp.createdDate | formatDate}}</b><br> <b>Verified
+								by : Pushpak Pimpale (Finance Manager)</b>
+						</p>
+						<p align="Center">
+							<br> <br> <br>
+							<!-- <span ng-hide="curuser.business.disclaimer"><b>this Document is Electronically Generated.
+									Hence need no Signature or Stamp. </b></span> -->
+							<span ng-show="curuser.business.disclaimer"><b>{{curuser.business.disclaimer}}</b></span>
+						</p>
+					</div>
+				</td>
+
+
+			</tr>
+		</tbody>
+	</table>
+
+
 	<!-- 	<div style="bottom:0;  postion :absolute"> -->
 
 	<footer>
