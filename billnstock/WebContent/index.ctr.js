@@ -5,7 +5,7 @@ angular
 				function($scope, $window, $log, $q, $timeout, $mdToast,
 						$mdBottomSheet, $state, $http, appEndpointSF) {
 
-					console.log("Inside indexCtr");
+					$log.log("Inside indexCtr");
 					$scope.loading = true;
 
 					$scope.showUpdateToast = function() {
@@ -295,8 +295,8 @@ angular
 
 									});
 
-					$log.debug('$scope.curUser'
-							+ angular.toJson($scope.curUser));
+					/*$log.debug('$scope.curUser'
+							+ angular.toJson($scope.curUser));*/
 
 					$scope.signOut = function() {
 						$log.debug('signOut1');
@@ -379,7 +379,26 @@ angular
 					 * $scope.customer = $scope.newCustomer();
 					 * $scope.customerList = {};
 					 */
+					$scope.waitForServiceLoad = function(authResult) {
+						if (!appEndpointSF.is_service_ready) {
+							$log
+									.debug("Index: Services Not Loaded, watiting...");
+							$timeout($scope.waitForServiceLoad, 1000);
+							return;
+						}
+
+						$log
+								.debug("####Index: Loaded All Services, Continuing####");
+						/*if (authResult) {
+							continueGoogleLogin(authResult);
+						}
+						if (!$scope.initDone) {
+							$scope.initCommonSetting();
+						}*/
+					}
+
 					$scope.initGAPI();
+					$scope.waitForServiceLoad();
 
 					$scope.theme = 'default';
 					if($scope.curUser!=undefined || $scope.curUser !==null){

@@ -2,7 +2,7 @@ var app = angular.module("stockApp", [ 'ngMaterial', 'ngMessages', "xeditable",
 		"ui.bootstrap", "ui.router", 'md.data.table', 'ngResource',
 		'ngStorage', 'ngRoute', 'ngFileUpload', 'ngAnimate', 'ui.grid',
 		'ui.grid.selection', 'ui.grid.exporter', 'directive.g+signin',
-		'ui.bootstrap' ]);
+		'ui.bootstrap','textAngular' ]);
 
 app.constant('monthList', [ "January", "February", "March", "April", "May",
 		"June", "July", "Augast", "September", "October", "November",
@@ -783,6 +783,18 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/assignuser/:selectedasetNo",
 		templateUrl : '/app/AssetMangement/assignuser.html',
 		controller : 'AssignupdateAsset',
+	}).state('taskmanagement', {
+		url : "/taskmanagement",
+		templateUrl : '/app/taskmanagement/task_module.html',
+		controller : 'taskModuleCtr',
+	}).state('taskmanagement.add', {
+		url : "/taskadd",
+		templateUrl : '/app/taskmanagement/task_add.html',
+		controller : 'taskModuleCtr',
+	}).state('taskmanagement.list', {
+		url : "/tasklist",
+		templateUrl : '/app/taskmanagement/task_list.html',
+		controller : 'taskModuleCtr',
 	}).state('proAdmin', {
 		url : "/proadmin",
 		templateUrl : '/app/ProAdmin/ProAdminModule.html',

@@ -1,0 +1,36 @@
+<div layout="column" layout-padding>
+	<md-content>
+	<section>
+		<md-subheader class="md-primary">
+		<h3 class="md-headline">Create Task</h3>
+		</md-subheader>
+		<form name="taskAddForm">
+			<div layout="column" layout-sm="column">
+				<div layout="row" flex>
+					<md-input-container flex> <label>Task
+						Title</label> <input ng-model="taskEntity.taskTitle"> </md-input-container>
+					<md-input-container flex> <label>Assigned
+						To</label> <input ng-model="taskEntity.assignedTo"> </md-input-container>
+				</div>
+				<div flex>
+					<label>Task Description</label>
+				</div>
+				<div flex>
+					<md-input-container> <text-angular
+						name="taskDesc" id="taskDesc" ng-required="true"
+						ng-model="taskEntity.taskDesc"></text-angular> </md-input-container>
+				</div>
+			</div>
+
+		</form>
+
+	</section>
+
+	<section layout="row" layout-sm="column" layout-align="left left">
+		<md-button class="md-raised"> Cancel </md-button>
+		<md-button class="md-raised md-primary" ng-click="saveTask()">
+		Submit </md-button>
+
+	</section>
+	</md-content>
+</div>

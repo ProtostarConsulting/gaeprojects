@@ -31,6 +31,33 @@ function googleEndpointSF($log, $q) {
 		return deferred.promise;
 	}
 
+	// ---------------------------TaskService------------------------------
+	var TaskService = {};
+
+	serviceFactory.getTaskService = function() {
+		return TaskService;
+	}
+
+	TaskService.saveTask = function(user) {
+		var deferred = $q.defer();
+		gapi.client.TaskService.saveTask(task).execute(function() {
+			deferred.resolve({
+				"msg" : "Task Successfully Added"
+			});
+
+		});
+		return deferred.promise;
+	}
+
+	TaskService.getAllTask = function(busId) {
+		var deferred = $q.defer();
+		gapi.client.TaskService.getAllTask({"id": busId}).execute(function(data) {
+			deferred.resolve(data);
+		});
+		return deferred.promise;
+	}
+
+	 // End of TaskService
 	// ---------------------------user login------------------------------
 	var UserService = {};
 

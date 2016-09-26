@@ -196,7 +196,41 @@
 					ng-click="close()" class="md-primary" show-gt-md>Protostar
 				Admin </md-button> </md-content>
 
-				<div class="md-accordion">
+				<div class="md-accordion"
+					ng-repeat="auth in curUser.userAuthMasterEntity.authorizations"
+					ng-show="curUser!=null">
+					<md-toolbar ng-init="data.expanded[$index] = false"
+						ng-click="data.expanded[$index] = !data.expanded[$index]">
+					<div class="md-toolbar-tools">
+						<h2>
+							<span ng-bind="auth.authDisplayName"></span>
+						</h2>
+						<span flex=""></span> <span
+							ng-class="{expandCollapse:true, active:data.expanded[$index]}"></span>
+					</div>
+					</md-toolbar>
+					<!-- <div style="margin-left: 15px;"
+						ng-class="{dataContent:true, activeContent:data.expanded[$index]}">
+						<md-content flex layout="column" layout-xs="column"
+							layout-align="center start"> <md-button
+							ui-sref="{{auth.uiStateName}}" ng-click="close()"
+							class="menu-heading md-primary" aria-label="auth.authDisplayName"
+							ng-hide="" show-gt-md> <span
+							ng-bind="auth.authDisplayName"> </span></md-button> </md-content>
+					</div> -->
+					<div style="margin-left: 15px;"
+						ng-class="{dataContent:true, activeContent:data.expanded[$index]}">
+						<md-content flex layout="column" layout-xs="column"
+							layout-align="center start"> <md-button
+							ng-repeat="subAuth in auth.authorizations"
+							ui-sref="{{subAuth.uiStateName}}" ng-click="close()"
+							class="menu-heading md-primary"
+							aria-label="subAuth.authDisplayName" ng-hide="" show-gt-md>
+						<span ng-bind="subAuth.authDisplayName"> </span></md-button> </md-content>
+					</div>
+				</div>
+
+				<div class="md-accordion" ng-show="curUser!=null">
 					<md-toolbar ng-init="data.expanded5 = false"
 						ng-click="data.expanded5 = !data.expanded5">
 					<div class="md-toolbar-tools">
@@ -214,11 +248,9 @@
 							ng-repeat="auth in curUser.userAuthMasterEntity.authorizations"
 							ui-sref="{{auth.uiStateName}}" ng-click="close()"
 							class="menu-heading md-primary" aria-label="auth.authDisplayName"
-							ng-hide="auth.authName == 'grfbooks'" show-gt-md> <menu-link
-							section="child" ng-if="auth.authDisplayName === 'Home'"></menu-link>
-						<menu-toggle section="child"
-							ng-if="auth.authDisplayName === 'Setup'"></menu-toggle> <span
-							ng-bind="auth.authDisplayName"> </span></md-button> </md-content>
+							ng-hide="auth.authName == 'grfbooks'" show-gt-md> <menu-toggle
+							section="child" ng-if="auth.authDisplayName === 'Setup'"></menu-toggle>
+						<span ng-bind="auth.authDisplayName"> </span></md-button> </md-content>
 					</div>
 				</div>
 			</div>
@@ -599,7 +631,7 @@
 	<script src="/app/setup/js/setup_changetheme.js"></script>
 	<script src="/app/setup/js/setup_setLogo.js"></script>
 	<script src="/app/setup/js/manage_user_auth.ctr.js"></script>
-	
+
 
 
 	<!--  profile js -->
@@ -651,14 +683,17 @@
 	<script src="/app/AssetMangement/js/AddAsset.js"></script>
 	<script src="/app/AssetMangement/js/ListAsset.js"></script>
 
+	<script src="/app/taskmanagement/js/task_module.ctr.js"></script>
+
+
 	<!-- use for ganerating pdf -->
 	<!--    <script type="text/javascript" src="/app/hr/js/jspdf.min.js"></script>
 
 <!-- pro Admin -->
 	<script src="/app/ProAdmin/js/ProAdmin.js"></script>
 	<script src="/app/ProAdmin/js/AddAccountType.js"></script>
-	<script src="/app/ProAdmin/js/ListAccountType.js"></script>	
-	<script src="/app/ProAdmin/js/manage_auth_master.ctr.js"></script>	
+	<script src="/app/ProAdmin/js/ListAccountType.js"></script>
+	<script src="/app/ProAdmin/js/manage_auth_master.ctr.js"></script>
 	<!-- setup module js -->
 
 

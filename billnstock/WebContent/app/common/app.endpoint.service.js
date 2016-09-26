@@ -11,13 +11,22 @@ function appEndpointSFFn($log, localDBServiceFactory, googleEndpointSF) {
 	var endpointFactory = {};
 	endpointFactory.is_service_ready = false;
 	// This will call the function to load services
-
+	
+	// -----------------------------------user login-----------------
+	endpointFactory.getTaskService = function() {
+		if (isTestMode)
+			return localDBServiceFactory.getTaskService();
+		else
+			return googleEndpointSF.getTaskService();
+	};
+	// -----------------------------------AuthorizationService-----------------
 	endpointFactory.getAuthorizationService = function() {
 		if (isTestMode)
 			return localDBServiceFactory.getAuthorizationService();
 		else
 			return googleEndpointSF.getAuthorizationService();
 	};
+	
 	// -----------------------------------user login-----------------
 
 	endpointFactory.getLocalUserService = function() {
@@ -325,6 +334,10 @@ function appEndpointSFFn($log, localDBServiceFactory, googleEndpointSF) {
 			$log.debug("authorizationService Loaded......");
 		}, apiRoot);
 
+		gapi.client.load('taskService', 'v0.1', function() {
+			$log.debug("taskService Loaded......");
+		}, apiRoot);
+		
 		gapi.client.load('proadminService', 'v0.1', function() {
 			$log.debug("proadminService Loaded......");
 			endpointFactory.is_service_ready = true;
