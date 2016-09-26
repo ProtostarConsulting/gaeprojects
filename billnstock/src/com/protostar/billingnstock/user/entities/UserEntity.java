@@ -1,11 +1,9 @@
 package com.protostar.billingnstock.user.entities;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
-import com.protostar.billnstock.entity.Authorization;
 import com.protostar.billnstock.entity.BaseEntity;
 import com.protostar.billnstock.until.data.BankDetail;
 
@@ -17,6 +15,17 @@ public class UserEntity extends BaseEntity {
 
 	private String status = "active";
 
+	@Index
+	private String email_id;
+	private List<String> authority;
+
+	private Boolean isGoogleUser = true;
+
+	/* private Address address; */
+	private BankDetail bankDetail;
+
+	private String authorizations;
+
 	public String getStatus() {
 		return status;
 	}
@@ -24,16 +33,6 @@ public class UserEntity extends BaseEntity {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-
-	@Index
-	private String email_id;
-	private List<String> authority;
-	private Boolean isGoogleUser = true;
-
-	/* private Address address; */
-	private BankDetail bankDetail;
-
-	private String authorizations;
 
 	public String getAuthorizations() {
 		return authorizations;
