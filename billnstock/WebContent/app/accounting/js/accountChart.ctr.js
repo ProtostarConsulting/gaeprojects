@@ -9,15 +9,14 @@ app.filter('positive', function() {
     };
 });
 
-app
-		.controller(
+app.controller(
 				"accountChartCtr",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
 						$mdUtil, $log, $stateParams, objectFactory, $state,
 						appEndpointSF, $mdDialog, $mdMedia) {
 
 					$scope.loading = true;
-var flag=0;
+						var flag=0;
 					$scope.accountGroupTypeList = [ "Assets", "EQUITY",
 							"Liabilities", "Incomes", "Expenses",
 							"OTHERINCOMES", "OTHEREXPENCES" ];
@@ -74,8 +73,7 @@ var flag=0;
 
 											if (groupTypeObj.groupList != undefined) {
 												for (var i = 0; i < groupTypeObj.groupList.length; i++) {
-													$scope
-															.getAccountListByGroup(groupTypeObj.groupList[i]);
+													$scope.getAccountListByGroup(groupTypeObj.groupList[i]);
 												}
 											}
 
@@ -113,7 +111,7 @@ var flag=0;
 					}				
 				
 					
-					$scope.saveToPDF = function() {
+				$scope.saveToPDF = function() {
 						document.location.href = "DownloadAccountChartServlet";
 					}
 					
@@ -142,4 +140,22 @@ var flag=0;
 				//	$scope.getAccountGroupListByType("Assets");
 					
 					$scope.waitForServiceLoad();
+					
+			$scope.capture=function(accountChartDiv) {
+				
+				/*html2canas(document.getElementById(accountChartDiv),{
+					
+					onrendered:function canvas(){
+						
+						var img= canvas.toDataURL("image/png");
+						var  doc= new jspdf();
+						doc.addImage(img,'JPEG',20,20);
+						doc.save('test.pdf');
+						
+					}
+						
+				});*/
+				
+			}
+					
 				});

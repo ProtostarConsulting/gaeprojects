@@ -19,8 +19,8 @@ app
 					$scope.totalBalance;
 					
 
-					$scope.accountGroupTypeList = [ "ASSETS", "EQUITY",
-							"LIABILITIES", "INCOME", "EXPENSES",
+					$scope.accountGroupTypeList = [ "Assets", "EQUITY",
+							"Liabilities", "Incomes", "Expenses",
 							"OTHERINCOMES", "OTHEREXPENCES" ];
 					
 					$scope.noOfGroupTypesLoaded = 0;

@@ -1,9 +1,9 @@
 angular
 .module("stockApp")
-.controller('accountGrpEditCtr',function($scope,$log,appEndpointSF,$mdToast,$state,$stateParams){
+.controller('accountGrpEditCtr',function($scope,$log,appEndpointSF,$mdToast,$state,$stateParams,$injector,unpr){
 	
 	//$scope.tempAccountGrp={"groupName":"","description":"","displayOrderNo":""};
-	
+	$injector:unpr;
 	$scope.tempAccountGrp=$stateParams.record;
 	$scope.accountGroupTypeList=["ASSETS", "EQUITY", "LIABILITIES","INCOME","EXPENSES","OTHERINCOMES","OTHEREXPENCES"];
 	
@@ -20,7 +20,7 @@ angular
 	$scope.getGroupList=function(){
 		
 		var AccountGroupService= appEndpointSF.getAccountGroupService();
-		AccountGroupService.getAccountGroupList().then(function(list){
+		AccountGroupService.getAccountGroupList($scope.curUser.business.id).then(function(list){
 			$scope.accountGroupList=list;
 			
 		});
