@@ -6,6 +6,8 @@
 
 <div class="md-headline">
 	<u>Edit Accounting Group</u>
+	
+	
 </div>
 <form name="accGroupEditForm">
 
@@ -14,8 +16,7 @@
 
 
 	<div layout layout-sm="column">
-		<md-input-container flex> <label>Enter
-			Group Name <span style="color: red;">*</span>
+		<md-input-container flex> <label>Group Name <span style="color: red;">*</span>
 		</label> <input type="text" ng-model="tempAccountGrp.groupName" name="grpName"
 			ng-required="true">
 
@@ -24,45 +25,50 @@
 			<div ng-message="required">Please Enter Account Group Name</div>
 		</div>
 		</md-input-container>
-
-		<md-input-container flex> <label>Enter
-			Description<span style="color: red;">*</span>
-		</label> <input type="text" ng-model="tempAccountGrp.description"
-			name="descrip" ng-required="true">
-
-		<div ng-messages="accGroupEditForm.descrip.$error"
-			ng-if="accGroupEditForm.descrip.$submitted || accGroupEditForm.descrip.$touched">
-			<div ng-message="required">Please Enter Account Group Name</div>
-		</div>
+		<md-input-container flex> <label>Order No </label>
+		<input type="number" ng-model="tempAccountGrp.displayOrderNo"
+			name="orderNo" >
+			
 		</md-input-container>
 	</div>
-	<div layout layout-sm="column">
+	
+	
+	
+	<div layout layout-sm="column"  ng-if="!tempAccountGrp.isPrimary">
 
-		<md-input-container flex ng-if="!tempAccountGrp.isPrimary"> <md-select
-			ng-model="tempAccountGrp.accountGroupType" 
-			placeholder="AccountGroupType" id="accountGroupType"
-			name="accountGroupType" ng-required="true">
-		<lable>Account Group Type<span style="color: red;">*</span></lable> <md-option
-			ng-value="item" ng-repeat="item in accountGroupTypeList">{{item}}
+		<md-input-container flex > <lable> Primary Type<span style="color: red;">*</span></lable> <md-select
+			ng-model="tempAccountGrp.primaryType" 
+		
+			 id="primaryType""
+			 ng-required="true">
+		 <md-option
+			ng-value="item.primaryType" ng-repeat="item in accountGroupList | unique:'parent.primaryType' | filter:{isPrimary:'false'}">{{item.parent.primaryType}}
 
 		</md-option> </md-select>
 
-		<div ng-messages="accGroupEditForm.accountGroupType.$error"
-			ng-if="accGroupEditForm.accountGroupType.$submitted || accGroupEditForm.accountGroupType.$touched">
-			<div ng-message="required">Please Select the Group Type</div>
+		<div ng-messages="accGroupEditForm.primaryType.$error"
+			ng-if="accGroupEditForm.primaryType.$submitted || accGroupEditForm.primaryType.$touched">
+			<div ng-message="required">Please  Primary Type</div>
 
 		</div>
 
 		</md-input-container>
 
-		<md-input-container flex> <label>Enter
-			Order No <span style="color: red;">*</span>
-		</label> <input type="number" ng-model="tempAccountGrp.displayOrderNo"
-			name="orderNo" ng-required="true">
+		<md-input-container flex ng-if="!tempAccountGrp.isPrimary">	<lable> Parent Type<span style="color: red;">*</span></lable> <md-select
+			ng-model="tempAccountGrp.parent.groupName" 
+			
+			 id="parent"
+			 ng-required="true">
+	 <md-option
+			ng-value="item.parent.groupName"  ng-repeat="item in accountGroupList | unique:'parent.groupName' |  filter:{isPrimary:'false'}">{{item.parent.groupName}}
+			
+		
 
-		<div ng-messages="accGroupEditForm.orderNo.$error"
-			ng-if="accGroupEditForm.orderNo.$submitted || accGroupEditForm.orderNo.$touched">
-			<div ng-message="required">Please Enter Account Group Name</div>
+		</md-option> </md-select>
+
+		<div ng-messages="accGroupEditForm.parent.$error"
+			ng-if="accGroupEditForm.parent.$submitted || accGroupEditForm.parent.$touched">
+			<div ng-message="required">Please select Parent Group Type</div>
 		</div>
 		</md-input-container>
 	</div>
@@ -71,25 +77,30 @@
 		<label>isPrimary </label>
 		<md-checkbox ng-model="tempAccountGrp.isPrimary"
 			ng-true-value="true" ng-false-value="false"> </md-checkbox>
-
-
-
-	</div>
+</div>
+	
+	<!-- {{accountGroupList}} -->
+	
 	<div layout layout-sm="column">
-		<md-input-container flex ng-if="tempAccountGrp.isPrimary">
+		<md-input-container flex ng-if="tempAccountGrp.isPrimary"> <lable>Primary Group Type<span
+			style="color: red;">*</span></lable>
 		<md-select ng-model="tempAccountGrp.primaryGroup"
-			placeholder="PrimaryGroup" id="primaryGroup" name="primaryGroup"
-			ng-required="true"> <lable>Primary Group Type<span
-			style="color: red;">*</span></lable> <md-option ng-value="item"
+			 id="primaryGroupT" name="primaryGroup"
+			ng-required="true"> <md-option 
+			ng-value="item.groupName"
 			ng-repeat="item in accountGroupList">{{item.groupName}} </md-option>
 		</md-select>
+	
 
 		<div ng-messages="accGroupEditForm.primaryGroup.$error"
-			ng-if="accGroupEditForm.primaryGroup.$submitted || accGroupEditForm.primaryGroup.$touched">
+			ng-if="accGroupEditForm.primaryGroupT.$submitted || accGroupEditForm.primaryGroupT.$touched">
 			<div ng-message="required">Please Select the Primary Type</div>
 
 		</div>
 		</md-input-container>
+		
+		
+		
 	</div>
 	
 	

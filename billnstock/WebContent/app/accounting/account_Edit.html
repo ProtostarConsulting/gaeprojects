@@ -27,9 +27,9 @@
 		</md-input-container>
 
 
-		<md-input-container flex> <md-select
+		<md-input-container flex> <label>AccountType<span style="color: red;">*</span></label><md-select
 			ng-model="tempAccount.accountType" id="accountType" name="accountType" ng-required="true">
-		<label>AccountType<span style="color: red;">*</span></label> <md-option
+		 <md-option
 			ng-repeat="type in accountType "> {{type}} </md-option> </md-select>
 
 		<div ng-messages="accountForm.accountType.$error"
@@ -85,8 +85,9 @@
 			<div ng-message="min">Please Enter Positive No!</div>
 		</div>
 		</md-input-container>
-		<md-input-container flex> <md-select
-				ng-model="tempAccount.accountgroup.groupName" placeholder="AccountGroup" id="accountlist" name="accountlist" ng-required="true"><lable>Account Group<span style="color: red;">*</span></lable>
+		<md-input-container flex> <lable>Account Group<span style="color: red;">*</span></lable>
+		<md-select
+				ng-model="tempAccount.accountgroup.groupName" placeholder="AccountGroup" id="accountlist" name="accountlist" ng-required="true">
 			<md-option ng-value="accountlist.groupName"  ng-repeat="accountlist in accountgroupList">{{accountlist.groupName}}
 			
 			</md-option> </md-select>

@@ -34,24 +34,22 @@
 			<table md-data-table md-row-select="selected" md-progress="deferred">
 				<thead md-order="query.order" md-trigger="onorderchange">
 					<tr>
-					<th name="Group Name" order-by="groupName"></th>
-					<th name="Description" order-by="description"></th>
 					<th name="Order No" order-by="displayOrderNo"></th>
-					<th name="Group Type" order-by="accountGroupType"></th>
+					<th name="Group Name" order-by="groupName"></th>
 					<th name="Primary" order-by="isPrimary"></th>
-					<th name="Primary Group" order-by="primaryGroup"></th>
+					<th name="PrimaryType" order-by="PrimaryType"></th>
+					<th name="Parent Group Type" order-by="accountGroupType"></th>
+					
 					</tr>
 				</thead>
 
 				<tbody>
 					<tr md-auto-select ng-repeat="acc in List | orderBy:query.order | limitTo: query.limit: (query.page - 1) * query.limit">
-
-					<td>{{acc.groupName}}</td>
-					<td>{{acc.description}}</td>
 					<td>{{acc.displayOrderNo}}</td>
-					<td>{{acc.accountGroupType}}</td>	
+					<td>{{acc.groupName}}</td>
 					<td>{{acc.isPrimary}}</td>
-					<td>{{acc.primaryGroup.groupName}}</td>		
+					<td>{{acc.primaryType||acc.parent.primaryType}}</td>	
+					<td>{{acc.parent.groupName}}</td>		
 					 <td>
 						<section layout="row" layout-sm="column">
 						<md-button ui-sref="accounting.accountGroupEdit({record:acc})" ng-click="close()" class="md-fab md-primary md-hue-2">
