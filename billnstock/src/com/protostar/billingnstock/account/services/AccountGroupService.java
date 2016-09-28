@@ -66,12 +66,10 @@ public class AccountGroupService {
 		
 		List<AccountGroupEntity> list= ofy().load().type(AccountGroupEntity.class).ancestor(Key.create(BusinessEntity.class, bid)).list();
 		
-		
-		
 		for (AccountGroupEntity ss : list) {
 			
 			if(ss.getIsPrimary()){
-				System.out.println("ss.getPrimaryType(): "+ss.getPrimaryType());
+			//	System.out.println("ss.getPrimaryType(): "+ss.getPrimaryType());
 				if (ss.getPrimaryType().equals(type)) {
 					filteraccount.add(ss);
 					System.out.println("ss:******"+ss);
@@ -79,6 +77,11 @@ public class AccountGroupService {
 					
 				}
 			} else{
+				if(ss.getParent().getPrimaryType().equals(type))
+				{
+					filteraccount.add(ss);
+					
+				}
 				
 			}
 		}
