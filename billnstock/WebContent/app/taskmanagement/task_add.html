@@ -8,7 +8,12 @@
 			<div layout="column" layout-sm="column">
 				<div layout="row" flex>
 					<md-input-container flex> <label>Task
-						Title</label> <input ng-model="taskEntity.taskTitle"> </md-input-container>
+						Title</label> <input name="taskTitle" ng-model="taskEntity.taskTitle" ng-required="true">
+					<div ng-messages="taskAddForm.taskTitle.$error"
+						ng-if="taskAddForm.taskTitle.$submitted || taskAddForm.taskTitle.$touched">
+						<div ng-message="required">This is required field.</div>
+					</div>
+					</md-input-container>
 					<md-input-container flex> <label>Assigned
 						To</label> <input ng-model="taskEntity.assignedTo"> </md-input-container>
 				</div>
