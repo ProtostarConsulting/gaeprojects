@@ -38,9 +38,9 @@ function googleEndpointSF($log, $q) {
 		return TaskService;
 	}
 
-	TaskService.saveTask = function(user) {
+	TaskService.saveTask = function(task) {
 		var deferred = $q.defer();
-		gapi.client.TaskService.saveTask(task).execute(function() {
+		gapi.client.taskService.saveTask(task).execute(function() {
 			deferred.resolve({
 				"msg" : "Task Successfully Added"
 			});
@@ -51,7 +51,7 @@ function googleEndpointSF($log, $q) {
 
 	TaskService.getAllTask = function(busId) {
 		var deferred = $q.defer();
-		gapi.client.TaskService.getAllTask({"id": busId}).execute(function(data) {
+		gapi.client.taskService.getAllTask({"id": busId}).execute(function(data) {
 			deferred.resolve(data);
 		});
 		return deferred.promise;

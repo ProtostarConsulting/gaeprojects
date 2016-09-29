@@ -10,6 +10,7 @@ angular.module("stockApp").controller(
 			$scope.taskEntity = {
 					assignedBy: $scope.curUser,
 					assignedTo: $scope.curUser,
+					business: $scope.curUser.business
 			};
 
 			$scope.taskEntityList = [];
@@ -21,15 +22,13 @@ angular.module("stockApp").controller(
 			}
 
 			$scope.getAllTasks = function() {
-				taskService.getAllTasks($scope.curUser.business.id).then(
-
-				function(list) {
-					$scope.taskEntityList = list;
+				taskService.getAllTask($scope.curUser.business.id).then(
+				function(resp) {
+					$scope.taskEntityList = resp.items;
 				});
 			}
 
 			$scope.selected = [];
-
 			$scope.query = {
 				order : 'name',
 				limit : 10,
@@ -55,6 +54,17 @@ angular.module("stockApp").controller(
 
 				return deferred.promise;
 			};
+			
+			$scope.waitForServiceLoad = function() {
+				if (appEndpointSF.is_service_ready) {
+					$scope.getAllTasks();
+				} else {
+					$log.debug("Services Not Loaded, watiting...");
+					$timeout($scope.waitForServiceLoad, 1000);
+				}
+			}
+			$scope.waitForServiceLoad();
+			
 
 			/* Setup menu */
 			$scope.toggleRight = buildToggler('right');

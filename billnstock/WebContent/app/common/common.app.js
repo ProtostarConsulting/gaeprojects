@@ -2,7 +2,7 @@ var app = angular.module("stockApp", [ 'ngMaterial', 'ngMessages', "xeditable",
 		"ui.bootstrap", "ui.router", 'md.data.table', 'ngResource',
 		'ngStorage', 'ngRoute', 'ngFileUpload', 'ngAnimate', 'ui.grid',
 		'ui.grid.selection', 'ui.grid.exporter', 'directive.g+signin',
-		'ui.bootstrap','textAngular' ]);
+		'ui.bootstrap', 'textAngular' ]);
 
 app.constant('monthList', [ "January", "February", "March", "April", "May",
 		"June", "July", "Augast", "September", "October", "November",
@@ -11,6 +11,12 @@ app.constant('monthList', [ "January", "February", "March", "April", "May",
 app.filter('formatDate', function($filter) {
 	return function(inputDate) {
 		return $filter('date')(inputDate, 'dd-MM-yyyy');
+	};
+});
+
+app.filter('htmlToPlainText', function() {
+	return function(text) {
+		return text ? String(text).replace(/<[^>]+>/gm, '') : '';
 	};
 });
 /*
