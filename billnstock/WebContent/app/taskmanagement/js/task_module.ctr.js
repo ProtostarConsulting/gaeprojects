@@ -6,14 +6,16 @@ angular.module("stockApp").controller(
 			$log.debug("Inside taskModuleCtr");
 
 			var taskService = appEndpointSF.getTaskService();
+			var setupService = appEndpointSF.getsetupService();
 
 			$scope.taskEntity = {
-					assignedBy: $scope.curUser,
-					assignedTo: $scope.curUser,
-					business: $scope.curUser.business
+				assignedBy : $scope.curUser,
+				assignedTo : $scope.curUser,
+				business : $scope.curUser.business
 			};
 
 			$scope.taskEntityList = [];
+			$scope.userList = [];
 
 			$scope.saveTask = function() {
 				taskService.saveTask($scope.taskEntity).then(function(data) {
@@ -23,11 +25,16 @@ angular.module("stockApp").controller(
 
 			$scope.getAllTasks = function() {
 				taskService.getAllTask($scope.curUser.business.id).then(
-				function(resp) {
-					$scope.taskEntityList = resp.items;
-				});
+						function(resp) {
+							$scope.taskEntityList = resp.items;
+						});
 			}
 
+			$scope.getUserList = function() {
+				setupService.getAllUserOfOrg($scope.curUser.business.id).then(function(users) {
+					$scope.userList = users.items;
+				});
+			}
 			$scope.selected = [];
 			$scope.query = {
 				order : 'name',
@@ -54,17 +61,17 @@ angular.module("stockApp").controller(
 
 				return deferred.promise;
 			};
-			
+
 			$scope.waitForServiceLoad = function() {
 				if (appEndpointSF.is_service_ready) {
 					$scope.getAllTasks();
+					$scope.getUserList();
 				} else {
 					$log.debug("Services Not Loaded, watiting...");
 					$timeout($scope.waitForServiceLoad, 1000);
 				}
 			}
 			$scope.waitForServiceLoad();
-			
 
 			/* Setup menu */
 			$scope.toggleRight = buildToggler('right');
