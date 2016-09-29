@@ -2,7 +2,8 @@
 	<md-content>
 	<section>
 		<md-subheader class="md-primary">
-		<h3 class="md-headline">Create Task</h3>
+		<h3 class="md-headline" ng-show="!taskObj">Create Task</h3>
+		<h3 class="md-headline" ng-show="taskObj">Edit Task</h3>
 		</md-subheader>
 		<form name="taskAddForm">
 			<div layout="column" layout-sm="column">
@@ -19,9 +20,10 @@
 					<md-input-container flex> <label>Assigned
 						To<span style="color: red"
 						ng-show="taskAddForm.taskTitle.$error.required" class="mandatory">*</span>
-					</label> <md-select name="assignedTo" id="assignedTo" placeholder="--Select User--"
-						ng-model="taskEntity.assignedTo" ng-required="true"> <md-option
-						ng-value="user" ng-repeat="user in userList">{{(user.firstName
+					</label> <md-select name="assignedTo" id="assignedTo"
+						placeholder="--Select User--" ng-model="taskEntity.assignedTo"
+						ng-required="true"> <md-option
+						ng-repeat="user in userList" ng-value="user">{{(user.firstName
 					+ ' ' + user.lastName) | uppercase}}</md-option> </md-select>
 					<div ng-messages="taskAddForm.taskTitle.$error"
 						ng-if="taskAddForm.taskTitle.$submitted || taskAddForm.taskTitle.$touched">
@@ -44,10 +46,10 @@
 	</section>
 
 	<section layout="row" layout-sm="column" layout-align="left left">
-		<md-button class="md-raised"> Cancel </md-button>
+		<md-button class="md-raised" ng-click="back()"> Cancel </md-button>
 		<md-button class="md-raised md-primary"
 			ng-disabled="taskAddForm.taskTitle.$invalid || taskAddForm.taskDesc.$invalid"
-			ng-click="saveTask()"> Submit </md-button>
+			ng-click="saveTask()"> Save </md-button>
 
 	</section>
 	</md-content>

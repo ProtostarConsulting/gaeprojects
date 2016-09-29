@@ -2,7 +2,7 @@ var app = angular.module("stockApp", [ 'ngMaterial', 'ngMessages', "xeditable",
 		"ui.bootstrap", "ui.router", 'md.data.table', 'ngResource',
 		'ngStorage', 'ngRoute', 'ngFileUpload', 'ngAnimate', 'ui.grid',
 		'ui.grid.selection', 'ui.grid.exporter', 'directive.g+signin',
-		'ui.bootstrap', 'textAngular' ]);
+		'ui.bootstrap', 'textAngular', 'ngMdIcons' ]);
 
 app.constant('monthList', [ "January", "February", "March", "April", "May",
 		"June", "July", "Augast", "September", "October", "November",
@@ -797,6 +797,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/taskadd",
 		templateUrl : '/app/taskmanagement/task_add.html',
 		controller : 'taskModuleCtr',
+		params : {
+			taskObj : null
+		}
 	}).state('taskmanagement.list', {
 		url : "/tasklist",
 		templateUrl : '/app/taskmanagement/task_list.html',

@@ -19,33 +19,29 @@ angular
 								'New Record Saved Successfully.').position(
 								"top").hideDelay(3000));
 					};
-					
-					$scope.showDelToast = function() {
-					     $mdToast.show($mdToast.simple().content(
-					       'Account  Deleted ...!').position("top").hideDelay(
-					       3000));
-					    };
-					
-					
-					//use popover
-					/*$('[data-toggle="popover"]').popover({
-		                 trigger: 'manual',
-		                 placement: 'bottom',
-		                 html: true
-		              }).click(function (e) {
-		                 e.preventDefault();
-		                 // Exibe o popover.
-		                 $(this).popover('show');
 
-		                $('.popover').css('left', '63px'); 
-		              });*/
-					/*$(document).ready(function(){
-					    $('[data-toggle="popover"]').popover();   
-					});*/
-					//end popover
+					$scope.showDelToast = function() {
+						$mdToast.show($mdToast.simple().content(
+								'Account  Deleted ...!').position("top")
+								.hideDelay(3000));
+					};
+
+					// use popover
+					/*
+					 * $('[data-toggle="popover"]').popover({ trigger: 'manual',
+					 * placement: 'bottom', html: true }).click(function (e) {
+					 * e.preventDefault(); // Exibe o popover.
+					 * $(this).popover('show');
+					 * 
+					 * $('.popover').css('left', '63px'); });
+					 */
+					/*
+					 * $(document).ready(function(){
+					 * $('[data-toggle="popover"]').popover(); });
+					 */
+					// end popover
 					// ------------------------------------------login
 					// user---------------------
-
 					$scope.curUser = null;
 					$scope.googleUserDetails = "";
 					$scope.googleUser = 'null';
@@ -60,10 +56,10 @@ angular
 					// getch and set values.
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
-					//http://localhost:8888/serve?blob-key=sC_5uJK83qYiubjEWAz5zA
-					$scope.logBaseURL ;
+					// http://localhost:8888/serve?blob-key=sC_5uJK83qYiubjEWAz5zA
+					$scope.logBaseURL;
 					$scope.logFooterURL;
-					
+
 					$scope.user = {
 						business : "",
 						email_id : "",
@@ -122,15 +118,18 @@ angular
 						$scope.curUser = args.curUser;
 						$scope.initCommonSetting();
 					});
-					
-					
-					$scope.initCommonSetting = function(){
+
+					$scope.initCommonSetting = function() {
 						$scope.theme = $scope.curUser.business.theme;
-						$scope.logBaseURL  ='//' + window.location.host + '/serve?blob-key='+ $scope.curUser.business.logBlobKey;
-						$scope.logFooterURL = '//' + window.location.host + '/serve?blob-key='+ $scope.curUser.business.footerBlobKey;
+						$scope.logBaseURL = '//' + window.location.host
+								+ '/serve?blob-key='
+								+ $scope.curUser.business.logBlobKey;
+						$scope.logFooterURL = '//' + window.location.host
+								+ '/serve?blob-key='
+								+ $scope.curUser.business.footerBlobKey;
 						getUserAuthTree();
 					}
-					
+
 					function getUserAuthTree() {
 						var authService = appEndpointSF
 								.getAuthorizationService();
@@ -203,7 +202,8 @@ angular
 										// User successfully authorized the G+
 										// App!
 										$log.debug('Signed in!');
-										var profile = authResult.getBasicProfile();
+										var profile = authResult
+												.getBasicProfile();
 										$scope.googleUser = profile;
 
 										$log.debug('ID: ' + profile.getId());
@@ -226,8 +226,9 @@ angular
 														profile.getEmail())
 												.then(
 														function(loggedInUser) {
-															
-															loggedInUser.imageURl = $scope.googleUser.getImageUrl();
+
+															loggedInUser.imageURl = $scope.googleUser
+																	.getImageUrl();
 															appEndpointSF
 																	.getLocalUserService()
 																	.saveLoggedInUser(
@@ -238,7 +239,6 @@ angular
 																					.toJson(loggedInUser));
 
 															$scope.curUser = loggedInUser;
-															
 
 															if (loggedInUser.id == undefined) {
 
@@ -269,7 +269,8 @@ angular
 																return;
 															}
 
-															$scope.initCommonSetting();
+															$scope
+																	.initCommonSetting();
 
 															var auth = $scope.curUser.authority;
 															$scope.test = $scope.curUser.email_id;
@@ -295,8 +296,10 @@ angular
 
 									});
 
-					/*$log.debug('$scope.curUser'
-							+ angular.toJson($scope.curUser));*/
+					/*
+					 * $log.debug('$scope.curUser' +
+					 * angular.toJson($scope.curUser));
+					 */
 
 					$scope.signOut = function() {
 						$log.debug('signOut1');
@@ -333,21 +336,18 @@ angular
 					});
 
 					// ----------------------------------------------------------------
-					
-				/*	$scope.showListBottomSheet=function(){	
-						document.getElementById("myDropdown").classList.toggle("show");
-						 var dropdowns = document.getElementsByClassName("dropdown-content");
-						    var i;
-						    for (i = 0; i < dropdowns.length; i++) {
-						      var openDropdown = dropdowns[i];
-						      if (openDropdown.classList.contains('show')) {
-						       // openDropdown.classList.remove('show');
-						      }
-						    }
-					}
-					*/
-					//-----------------------------------------------------------------
 
+					/*
+					 * $scope.showListBottomSheet=function(){
+					 * document.getElementById("myDropdown").classList.toggle("show");
+					 * var dropdowns =
+					 * document.getElementsByClassName("dropdown-content"); var
+					 * i; for (i = 0; i < dropdowns.length; i++) { var
+					 * openDropdown = dropdowns[i]; if
+					 * (openDropdown.classList.contains('show')) { //
+					 * openDropdown.classList.remove('show'); } } }
+					 */
+					// -----------------------------------------------------------------
 					// $window.initGAPI = function() {}
 					$scope.initGAPI = function() {
 						$log.debug("Came to initGAPI");
@@ -389,24 +389,26 @@ angular
 
 						$log
 								.debug("####Index: Loaded All Services, Continuing####");
-						/*if (authResult) {
-							continueGoogleLogin(authResult);
-						}
-						if (!$scope.initDone) {
-							$scope.initCommonSetting();
-						}*/
+						/*
+						 * if (authResult) { continueGoogleLogin(authResult); }
+						 * if (!$scope.initDone) { $scope.initCommonSetting(); }
+						 */
 					}
 
 					$scope.initGAPI();
 					$scope.waitForServiceLoad();
 
 					$scope.theme = 'default';
-					if($scope.curUser!=undefined || $scope.curUser !==null){
-					$scope.theme = $scope.curUser.business.theme;
-					$scope.logBaseURL = '//' + window.location.host + '/serve?blob-key='+ $scope.curUser.business.logBlobKey;
-					$scope.logFooterURL = '//' + window.location.host + '/serve?blob-key='+ $scope.curUser.business.footerBlobKey;
+					if ($scope.curUser != undefined || $scope.curUser !== null) {
+						$scope.theme = $scope.curUser.business.theme;
+						$scope.logBaseURL = '//' + window.location.host
+								+ '/serve?blob-key='
+								+ $scope.curUser.business.logBlobKey;
+						$scope.logFooterURL = '//' + window.location.host
+								+ '/serve?blob-key='
+								+ $scope.curUser.business.footerBlobKey;
 					}
-					
+
 					$scope.themeList = [ 'default', 'red', 'pink', 'purple',
 							'deep-purple', 'indigo', 'blue', 'light-blue',
 							'cyan', 'teal', 'green', 'light-green', 'lime',
@@ -416,6 +418,10 @@ angular
 					$scope.changeTheme = function(themeName) {
 						$scope.theme = themeName
 					}
+
+					$scope.back = function() {
+						window.history.back();
+					};
 
 				}).controller(
 				'AppCtrl',

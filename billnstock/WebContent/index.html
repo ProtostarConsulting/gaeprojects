@@ -88,24 +88,38 @@
 
 
 
-				<!-- <div flex hide-xs layout="row" layout-align="end end"> -->
+				<!-- <div flex hide-xs layout="row" layout-align="end end"> 
 				<md-button aria-label="Logout" ng-hide="curUser == null"
 					ng-click="signOut()"> Logout </md-tooltip> </md-button>
+					
 				<md-button aria-label="Login" ng-hide="curUser !== null"
 					ng-show="curUser == null" ng-click="loginClick()">
 				Login </md-button>
 				<!-- {{ curUser.firstName}} -->
-				<md-button ng-show="curUser" popover-template="'popover.html'"
-					popover-placement="bottom" popover-trigger="focus"
-					data-container="body" data-toggle="popover" data-trigger="focus">
-				<md-tooltip> {{ curUser.firstName + " " +
-				curUser.lastName + "|" + curUser.email_id}} </md-tooltip> <img ng-show="true"
-					ng-show="curUser.imageURl" ngf-src="curUser.imageURl"
-					class=circular> <img alt="Logo" ng-hide="curUser.imageURl"
-					src="img/images/ic_person_black_24px.svg" class=circular> </md-button>
-				<script type="text/ng-template" id="popover.html">
 
-</script>
+
+				<div id="login" ng-show="!curUser">
+					<md-button class="md-icon-button" ng-click="loginClick()">
+					<ng-md-icon icon="login" style="fill: md-default" size="24">
+					<md-tooltip> Login</md-tooltip></ng-md-icon></md-button>
+
+					<md-button> <md-tooltip> Not Logged-in</md-tooltip> <img
+						alt="Logo" src="img/images/ic_person_black_24px.svg"
+						class=circular> </md-button>
+				</div>
+				<div id="logout" ng-show="curUser">
+					<md-button class="md-icon-button" ng-click="signOut()">
+					<ng-md-icon icon="logout" style="fill: md-default" size="24">
+					<md-tooltip> Logout</md-tooltip></ng-md-icon></md-button>
+
+					<md-button> <md-tooltip> {{
+					curUser.firstName + " " + curUser.lastName + "|" +
+					curUser.email_id}} </md-tooltip> <img
+						ngf-src="curUser.imageURl?curUser.imageURl: 'img/images/ic_person_black_24px.svg'"
+						class=circular> </md-button>
+				</div>
+
+				</script>
 
 
 
