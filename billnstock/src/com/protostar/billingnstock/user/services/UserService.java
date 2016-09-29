@@ -97,7 +97,6 @@ public class UserService {
 	@ApiMethod(name = "getBusinessById")
 	public BusinessEntity getBusinessById(@Named("id") Long id) {
 		return ofy().load().type(BusinessEntity.class).id(id.longValue()).now();
-
 	}
 
 	@ApiMethod(name = "updateUser")

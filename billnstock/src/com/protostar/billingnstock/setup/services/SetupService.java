@@ -17,7 +17,7 @@ import com.protostar.billingnstock.user.entities.UserEntity;
 @Api(name = "setupService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.setup.services", ownerName = "com.protostar.billingnstock.setup.services", packagePath = ""))
 public class SetupService {
 
-	@ApiMethod(name = "getCurUserByEmailId", path = "Somepath_realted_to_your_service")
+	@ApiMethod(name = "getCurUserByEmailId", path = "getCurUserByEmailId")
 	public List<UserEntity> getCurUserByEmailId(@Named("email_id") String email) {
 		List<UserEntity> list = ofy().load().type(UserEntity.class)
 				.filter("email_id", email).list();

@@ -9,21 +9,27 @@ public class Comment {
 	private Ref<UserEntity> addedBy;
 	private Date date;
 	private String commentText;
-	public Ref<UserEntity> getAddedBy() {
-		return addedBy;
+
+	public UserEntity getAddedBy() {
+		return addedBy.get();
 	}
-	public void setAddedBy(Ref<UserEntity> addedBy) {
-		this.addedBy = addedBy;
+
+	public void setAddedBy(UserEntity addedBy) {
+		this.addedBy = Ref.create(addedBy);
 	}
+
 	public Date getDate() {
 		return date;
 	}
+
 	public void setDate(Date date) {
 		this.date = date;
 	}
+
 	public String getCommentText() {
 		return commentText;
 	}
+
 	public void setCommentText(String commentText) {
 		this.commentText = commentText;
 	}

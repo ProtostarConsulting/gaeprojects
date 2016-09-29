@@ -19,8 +19,11 @@ public class TaskEntity extends BaseEntity {
 	private Long taskNo;
 	@Index
 	private TaskStatus taskStatus = TaskStatus.OPEN;
+	@Index
 	private Ref<UserEntity> assignedBy;
+	@Index
 	private Ref<UserEntity> assignedTo;
+
 	private Date assignedDate;
 	private Date estCompletionDate;
 	private String taskTitle;
@@ -47,7 +50,7 @@ public class TaskEntity extends BaseEntity {
 		return assignedTo == null ? null : assignedTo.get();
 	}
 
-	public void setAssignedTo(UserEntity assignedTo) {		
+	public void setAssignedTo(UserEntity assignedTo) {
 		this.assignedTo = Ref.create(assignedTo);
 	}
 
@@ -98,4 +101,5 @@ public class TaskEntity extends BaseEntity {
 	public void setTaskComments(List<Comment> taskComments) {
 		this.taskComments = taskComments;
 	}
+
 }
