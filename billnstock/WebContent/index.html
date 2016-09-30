@@ -139,7 +139,7 @@
 
 
 	<div ng-controller="AppCtrl">
-		<section layout="row" flex>
+		<section layout="row" flex>	
 			<!-- Left Navigation Pane -->
 			<md-sidenav class="md-sidenav-left md-whiteframe-z2"
 				md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
@@ -149,10 +149,7 @@
 			</md-toolbar>
 
 
-
 			<div>
-
-
 				<div class="md-accordion"
 					ng-repeat="auth in curUser.userAuthMasterEntity.authorizations"
 					ng-show="curUser!=null">
