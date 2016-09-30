@@ -49,26 +49,32 @@
 	"orderNumber": "7"
 	},
 	{
-	"authName": "taskmanagement",
-	"authDisplayName": "Task Management",
-	"uiStateName": "taskmanagement",
-	"orderNumber": "8",
-	"authorizations": [
-						{
-						"authName": "taskmanagement.list",
-						"authDisplayName": "Task List",
-						"uiStateName": "taskmanagement.list",
-						"orderNumber": "1",
-						"authorizations": []
-						},
-						{
-						"authName": "taskmanagement.add",
-						"authDisplayName": "Task Add",
-						"uiStateName": "taskmanagement.add",
-						"orderNumber": "2",
-						"authorizations": []
-						}
-					]
+	"authName":"taskmanagement",
+	"authDisplayName":"Task Management",
+	"uiStateName":"taskmanagement",
+	"orderNumber":"8",
+	"authorizations":[	    
+	     {"authName":"taskmanagement.mytasklist",		  
+	      "authDisplayName":"My Task List",		  
+	      "uiStateName":"taskmanagement.mytasklist",
+		  "orderNumber":"1",
+		  "authorizations":[]
+		 },
+		 {
+		 "authName":"taskmanagement.list",
+		 "authDisplayName":"Task List",
+		 "uiStateName":"taskmanagement.list",
+		 "orderNumber":"2",
+		 "authorizations":[]
+		 },
+		 {
+		 "authName":"taskmanagement.add",
+		 "authDisplayName":"Task Add",
+		 "uiStateName":"taskmanagement.add",
+		 "orderNumber":"3",
+		 "authorizations":[]
+		 }
+		  ]
 	},
 	{
 	"authName": "certificateMgmt",
