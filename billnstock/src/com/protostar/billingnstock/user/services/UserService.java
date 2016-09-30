@@ -23,15 +23,14 @@ import com.google.api.server.spi.config.Named;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.googlecode.objectify.Key;
-import com.protostar.billingnstock.hr.entities.SalSlip;
-import com.protostar.billingnstock.proadmin.services.ProtostarAdminService;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.user.entities.UserEntity;
+import com.protostar.billnstock.until.data.Constants;
 import com.protostar.billnstock.until.data.ServerMsg;
 
-//import com.protostar.prostudy.entity.BookEntity;
-
-@Api(name = "userService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.user.services", ownerName = "com.protostar.billingnstock.user.services", packagePath = ""))
+@Api(name = "userService", version = "v0.1", clientIds = {
+		Constants.WEB_CLIENT_ID, Constants.ANDROID_CLIENT_ID,
+		Constants.API_EXPLORER_CLIENT_ID }, audiences = { Constants.ANDROID_AUDIENCE }, scopes = { Constants.EMAIL_SCOPE }, namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.user.services", ownerName = "com.protostar.billingnstock.user.services", packagePath = ""))
 public class UserService {
 
 	@ApiMethod(name = "addUser")
@@ -110,11 +109,17 @@ public class UserService {
 		return ofy().load().type(UserEntity.class).list();
 	}
 
-	@ApiMethod(name = "getUserByEmailID")
+	@ApiMethod(name = "getUserByEmailID", path = "getUserByEmailID")
 	public UserEntity getUserByEmailID(@Named("email_id") String email) {
 		List<UserEntity> list = ofy().load().type(UserEntity.class)
 				.filter("email_id", email).list();
 		return (list == null || list.size() == 0) ? null : list.get(0);
+	}
+
+	@ApiMethod(name = "getUserByID", path = "getUserByID")
+	public UserEntity getUserByID(@Named("id") Long id) {
+		UserEntity userE = ofy().load().type(UserEntity.class).id(id.longValue()).now();
+		return userE;
 	}
 
 	@ApiMethod(name = "getBusinessByEmailID", path = "Somepath_realted_to_your_service")
@@ -159,7 +164,6 @@ public class UserService {
 		return business;
 	}
 
-	
 	@ApiMethod(name = "getUsersByBusinessId")
 	public List<UserEntity> getUsersByBusinessId(@Named("id") Long id) {
 		/*
@@ -167,8 +171,8 @@ public class UserService {
 		 * .ancestor(Key.create(UserEntity.class, id)).list();
 		 */
 		List<UserEntity> list = ofy().load().type(UserEntity.class).list();
-		for(UserEntity user : list){
-			if(user.getId().longValue() == id.longValue()){
+		for (UserEntity user : list) {
+			if (user.getId().longValue() == id.longValue()) {
 				list.add(user);
 			}
 		}

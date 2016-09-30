@@ -15,12 +15,13 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Transaction;
 import com.protostar.billnstock.entity.Authorization;
 import com.protostar.billnstock.entity.AuthorizationMasterEntity;
+import com.protostar.billnstock.until.data.Constants;
 
-@Api(name = "authorizationService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billnstock.service", ownerName = "com.protostar.billnstock.service", packagePath = ""), scopes = {
-		"https://www.googleapis.com/auth/userinfo.email",
-		"https://www.googleapis.com/auth/userinfo.profile" })
+@Api(name = "authorizationService", version = "v0.1", clientIds = {
+		Constants.WEB_CLIENT_ID, Constants.ANDROID_CLIENT_ID,
+		Constants.API_EXPLORER_CLIENT_ID }, audiences = { Constants.ANDROID_AUDIENCE }, scopes = {
+		Constants.EMAIL_SCOPE, Constants.PROFILE_SCOPE }, namespace = @ApiNamespace(ownerDomain = "com.protostar.billnstock.service", ownerName = "com.protostar.billnstock.service", packagePath = ""))
 public class AuthorizationService {
-
 	private static final String AUTHORIZATION_MASTER_ENTITY_PROPERTY_KEY = "authorizations";
 	private static final String AUTHORIZATION_MASTER_ENTITY_KIND = "AuthorizationMasterEntity";
 	private static final String AUTHORIZATION_MASTER_ENTITY_KIND_KEY_NAME = "1";
