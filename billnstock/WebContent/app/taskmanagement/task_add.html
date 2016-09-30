@@ -18,27 +18,59 @@
 					</div>
 					</md-input-container>
 					<md-input-container flex> <label>Assigned
-						To<span style="color: red"
-						ng-show="taskAddForm.taskTitle.$error.required" class="mandatory">*</span>
+						To<span style="color: red" class="mandatory">*</span>
 					</label> <md-select name="assignedTo" id="assignedTo"
 						placeholder="--Select User--" ng-model="taskEntity.assignedTo"
 						ng-required="true"> <md-option
 						ng-repeat="user in userList" ng-value="user">{{(user.firstName
 					+ ' ' + user.lastName) | uppercase}}</md-option> </md-select>
-					<div ng-messages="taskAddForm.taskTitle.$error"
-						ng-if="taskAddForm.taskTitle.$submitted || taskAddForm.taskTitle.$touched">
+					<div ng-messages="taskAddForm.assignedTo.$error"
+						ng-if="taskAddForm.assignedTo.$submitted || taskAddForm.assignedTo.$touched">
 						<div ng-message="required">Please Select User.</div>
 					</div>
 					</md-input-container>
 				</div>
+				<div layout="row" layout-sm="column">
+					<md-input-container flex> <label>Task
+						Status<span style="color: red" class="mandatory">*</span>
+					</label> <md-select name="taskStatus" id="taskStatus"
+						placeholder="--Select Task Status--"
+						ng-model="taskEntity.taskStatus" ng-required="true"> <md-option
+						ng-repeat="taskStatus in taskStatusList" ng-value="taskStatus">{{taskStatus}}</md-option>
+					</md-select>
+					<div ng-messages="taskAddForm.taskStatus.$error"
+						ng-if="taskAddForm.taskStatus.$submitted || taskAddForm.taskStatus.$touched">
+						<div ng-message="required">Please select task status.</div>
+					</div>
+					</md-input-container>
+
+					<div layout="row" layout-sm="column" flex>
+						<md-input-container> <label>Est.
+							Completion Date </label> <input name="estCompletionDate"
+							ng-disabled="true" value=" "></md-input-container>
+						<md-datepicker flex ng-model="taskEntity.estCompletionDate"
+							md-placeholder="Select Date" style="padding-top:13px;"></md-datepicker>
+					</div>
+				</div>
+
+			</div>
+
+			<div layout="column" flex>
 				<div flex>
-					<label>Task Description</label>
+					<label>Task Description<span style="color: red"
+						class="mandatory">*</span></label>
 				</div>
 				<div flex>
 					<md-input-container> <text-angular
 						name="taskDesc" id="taskDesc" ng-required="true"
-						ng-model="taskEntity.taskDesc"></text-angular> </md-input-container>
+						ng-model="taskEntity.taskDesc"></text-angular>
+					<div ng-messages="taskAddForm.taskDesc.$error"
+						ng-if="taskAddForm.taskDesc.$submitted || taskAddForm.taskDesc.$touched">
+						<div ng-message="required">This is a required field.</div>
+					</div>
+					</md-input-container>
 				</div>
+
 			</div>
 
 		</form>
@@ -48,7 +80,7 @@
 	<section layout="row" layout-sm="column" layout-align="left left">
 		<md-button class="md-raised" ng-click="back()"> Cancel </md-button>
 		<md-button class="md-raised md-primary"
-			ng-disabled="taskAddForm.taskTitle.$invalid || taskAddForm.taskDesc.$invalid"
+			ng-disabled="taskAddForm.taskTitle.$invalid || taskAddForm.assignedTo.$invalid || taskAddForm.taskStatus.$invalid || taskAddForm.taskDesc.$invalid"
 			ng-click="saveTask()"> Save </md-button>
 
 	</section>

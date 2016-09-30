@@ -44,28 +44,28 @@ angular
 												if ($scope.userslist[i].status == "active") {
 													$scope.activeUsers
 															.push($scope.userslist[i]);
-													console
-															.log("Active Users"
-																	+ angular
-																			.toJson($scope.activeUsers));
 												} else if ($scope.userslist[i].status == "inactive") {
 													$scope.inActiveUsers
 															.push($scope.userslist[i]);
-													console
-															.log("In-Active Users"
-																	+ angular
-																			.toJson($scope.inActiveUsers));
 												}
 												if ($scope.userslist[i].status == "suspended") {
 													$scope.suspendedUsers
 															.push($scope.userslist[i]);
-													console
-															.log("Suspended Users"
-																	+ angular
-																			.toJson($scope.suspendedUsers));
 												}
 											}
 
+											$log
+													.debug("Active Users"
+															+ angular
+																	.toJson($scope.activeUsers));
+											$log
+													.debug("In-Active Users"
+															+ angular
+																	.toJson($scope.inActiveUsers));
+											$log
+													.debug("Suspended Users"
+															+ angular
+																	.toJson($scope.suspendedUsers));
 										});
 
 					}

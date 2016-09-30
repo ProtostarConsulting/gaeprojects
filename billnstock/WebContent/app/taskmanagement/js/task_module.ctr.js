@@ -3,23 +3,32 @@ angular
 		.controller(
 				"taskModuleCtr",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
-						$mdUtil, $log, $state, $stateParams, objectFactory,
+						$mdUtil, $log, $q, $location, $anchorScroll, $state, $stateParams, objectFactory,
 						appEndpointSF) {
 
 					$log.debug("Inside taskModuleCtr");
-
+					$location.hash('topRight');
+					$anchorScroll();
 					var taskService = appEndpointSF.getTaskService();
 					var setupService = appEndpointSF.getsetupService();
 
+					$scope.taskStatusList = [ 'OPEN', 'INPROGRESS', 'COMPLETED' ];
+
 					$scope.taskObj = $stateParams.taskObj;
+					$scope.action = $stateParams.action;
+					// action value can be: listmytask, add, edit, listall
 
 					if ($scope.taskObj) {
 						$scope.taskEntity = $scope.taskObj;
+						$scope.taskEntity.assignedDate = new Date($scope.taskEntity.assignedDate);
+						$scope.taskEntity.estCompletionDate = new Date($scope.taskEntity.estCompletionDate);
 					} else {
 						$scope.taskEntity = {
+							business : $scope.curUser.business,
 							assignedBy : $scope.curUser,
 							assignedTo : null,
-							business : $scope.curUser.business
+							taskStatus : 'OPEN',
+							estCompletionDate: null
 						};
 					}
 					$scope.taskEntityList = [];
@@ -33,6 +42,8 @@ angular
 									} else {
 										$scope.showAddToast();
 									}
+									$location.hash('topRight');
+									$anchorScroll();
 								});
 					}
 
@@ -42,6 +53,13 @@ angular
 
 					$scope.getAllTasks = function() {
 						taskService.getAllTask($scope.curUser.business.id)
+								.then(function(resp) {
+									$scope.taskEntityList = resp.items;
+								});
+					}
+					
+					$scope.getMyAllTask = function() {
+						taskService.getMyAllTask($scope.curUser.email_id)
 								.then(function(resp) {
 									$scope.taskEntityList = resp.items;
 								});
@@ -91,9 +109,13 @@ angular
 					};
 
 					$scope.waitForServiceLoad = function() {
-						if (appEndpointSF.is_service_ready) {
-							$scope.getAllTasks();
+						if (appEndpointSF.is_service_ready) {							
 							$scope.getUserList();
+							if($scope.action == 'listmytask'){
+								$scope.getMyAllTask();
+							} else if($scope.action == 'listall'){
+								$scope.getAllTasks();
+							}
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
 							$timeout($scope.waitForServiceLoad, 1000);

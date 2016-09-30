@@ -56,6 +56,14 @@ function googleEndpointSF($log, $q) {
 		});
 		return deferred.promise;
 	}
+	
+	TaskService.getMyAllTask = function(email_id) {
+		var deferred = $q.defer();
+		gapi.client.taskService.getMyAllTask({"email_id": email_id}).execute(function(data) {
+			deferred.resolve(data);
+		});
+		return deferred.promise;
+	}
 
 	 // End of TaskService
 	// ---------------------------user login------------------------------

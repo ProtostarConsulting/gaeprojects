@@ -2,8 +2,9 @@ angular
 		.module("stockApp")
 		.controller(
 				"indexCtr",
-				function($scope, $window, $log, $q, $timeout, $mdToast,
-						$mdBottomSheet, $state, $http, appEndpointSF) {
+				function($scope, $rootScope, $window, $log, $q, $timeout, $mdToast,
+						$mdBottomSheet, $state, $http, $location,
+						$anchorScroll, appEndpointSF) {
 
 					$log.log("Inside indexCtr");
 					$scope.loading = true;
@@ -333,6 +334,19 @@ angular
 						// User has not authorized the G+ App!
 						$log.debug('Not signed into Google Plus.');
 						$scope.googleUser = 'null';
+					});
+					$rootScope.$on('$stateChangeSuccess', function(event,
+							toState, toParams, fromState, fromParams) {
+						// On any state change go the the top
+						 $timeout(function() {
+								$location.hash('topRight');
+								$anchorScroll();
+					        }, 10);
+
+					});
+					$rootScope.$on('$stateChangeStart', function(e, toState,
+							toParams, fromState, fromParams) {
+						// check access permission here.
 					});
 
 					// ----------------------------------------------------------------
