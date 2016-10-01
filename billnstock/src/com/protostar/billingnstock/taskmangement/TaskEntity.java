@@ -26,6 +26,7 @@ public class TaskEntity extends BaseEntity {
 
 	private Date assignedDate;
 	private Date estCompletionDate;
+	private Date completionDate;
 	private String taskTitle;
 	private String taskDesc;
 	private List<Comment> taskComments;
@@ -100,6 +101,14 @@ public class TaskEntity extends BaseEntity {
 
 	public void setTaskComments(List<Comment> taskComments) {
 		this.taskComments = taskComments;
+	}
+
+	public Date getCompletionDate() {
+		return completionDate;
+	}
+
+	public void setCompletionDate(Date completionDate) {
+		this.completionDate = completionDate;
 	}
 
 }
