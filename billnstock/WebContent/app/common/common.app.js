@@ -804,15 +804,22 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/tasklist",
 		templateUrl : '/app/taskmanagement/task_list.html',
 		controller : 'taskModuleCtr',
-		params:{
-			action: 'listall'
+		params : {
+			action : 'listall'
 		}
 	}).state('taskmanagement.mytasklist', {
 		url : "/mytasklist",
 		templateUrl : '/app/taskmanagement/task_list.html',
 		controller : 'taskModuleCtr',
-		params:{
-			action: 'listmytask'
+		params : {
+			action : 'listmytask'
+		}
+	}).state('taskmanagement.tasklistreport', {
+		url : "/tasklistreport",
+		templateUrl : '/app/taskmanagement/task_list_report.html',
+		controller : 'taskModuleCtr',
+		params : {
+			action : 'tasklistreport'
 		}
 	}).state('proAdmin', {
 		url : "/proadmin",

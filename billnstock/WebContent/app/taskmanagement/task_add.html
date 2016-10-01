@@ -1,4 +1,9 @@
-<div layout="column" layout-padding>
+<div ng-if="loading">
+	<div layout="row" layout-sm="column" layout-align="space-around">
+		<md-progress-circular md-diameter="100" md-mode="indeterminate"></md-progress-circular>
+	</div>
+</div>
+<div ng-if="!loading" layout="column" layout-padding>
 	<md-content>
 	<section>
 		<md-subheader class="md-primary">
@@ -19,9 +24,8 @@
 					</md-input-container>
 					<md-input-container flex> <label>Assigned
 						To<span style="color: red" class="mandatory">*</span>
-					</label> <md-select name="assignedTo" id="assignedTo"
-						placeholder="--Select User--" ng-model="taskEntity.assignedTo"
-						ng-required="true"> <md-option
+					</label> <md-select name="assignedTo" placeholder="--Select User--"
+						ng-model="taskEntity.assignedTo" ng-required="true"> <md-option
 						ng-repeat="user in userList" ng-value="user">{{(user.firstName
 					+ ' ' + user.lastName) | uppercase}}</md-option> </md-select>
 					<div ng-messages="taskAddForm.assignedTo.$error"
@@ -31,11 +35,37 @@
 					</md-input-container>
 				</div>
 				<div layout="row" layout-sm="column">
+					<div layout="row" layout-sm="column" flex>
+						<md-input-container> <label>Assigned
+							Date </label> <input name="assignedDate" ng-disabled="true" value=" "></md-input-container>
+						<div layout="column" layout-sm="column" flex>
+							<md-datepicker name="assignedDate"
+								ng-model="taskEntity.assignedDate" ng-required="true"
+								md-placeholder="Select Date" style="padding-top:13px;" flex></md-datepicker>
+							<div ng-messages="taskAddForm.assignedDate.$error"
+								ng-if="taskAddForm.assignedDate.$submitted || taskAddForm.assignedDate.$touched">
+								<div ng-message="required" style="color: red">This is a
+									required field.</div>
+							</div>
+						</div>
+					</div>
+					<div layout="row" layout-sm="column" flex>
+						<md-input-container> <label>Est.
+							Completion Date </label> <input name="estCompletionDate"
+							ng-disabled="true" value=" "></md-input-container>
+						<md-datepicker name="estCompletionDate"
+							ng-model="taskEntity.estCompletionDate" ng-required="true"
+							md-placeholder="Select Date" style="padding-top:13px;" flex></md-datepicker>
+					</div>
+
+				</div>
+				<div layout="row" layout-sm="column">
 					<md-input-container flex> <label>Task
 						Status<span style="color: red" class="mandatory">*</span>
 					</label> <md-select name="taskStatus" id="taskStatus"
 						placeholder="--Select Task Status--"
-						ng-model="taskEntity.taskStatus" ng-required="true"> <md-option
+						ng-model="taskEntity.taskStatus" ng-required="true"
+						ng-change="statusChanged()"> <md-option
 						ng-repeat="taskStatus in taskStatusList" ng-value="taskStatus">{{taskStatus}}</md-option>
 					</md-select>
 					<div ng-messages="taskAddForm.taskStatus.$error"
@@ -45,13 +75,22 @@
 					</md-input-container>
 
 					<div layout="row" layout-sm="column" flex>
-						<md-input-container> <label>Est.
-							Completion Date </label> <input name="estCompletionDate"
-							ng-disabled="true" value=" "></md-input-container>
-						<md-datepicker flex ng-model="taskEntity.estCompletionDate"
-							md-placeholder="Select Date" style="padding-top:13px;"></md-datepicker>
+						<md-input-container> <label>Completion
+							Date </label> <input name="completionDate" ng-disabled="true" value=" "></md-input-container>
+						<div layout="column" layout-sm="column" flex>
+							<md-datepicker name="completionDate"
+								ng-model="taskEntity.completionDate"
+								ng-disabled="taskAddForm.taskStatus != 'COMPLETED'"
+								md-placeholder="Select Date" style="padding-top:13px;" flex></md-datepicker>
+							<!-- <div ng-messages="taskAddForm.completionDate.$error"
+								ng-if="taskAddForm.completionDate.$submitted || taskAddForm.completionDate.$touched">
+								<div ng-message="required" style="color: red">This is a
+									required field.</div>
+							</div> -->
+						</div>
 					</div>
 				</div>
+
 
 			</div>
 
@@ -80,7 +119,8 @@
 	<section layout="row" layout-sm="column" layout-align="left left">
 		<md-button class="md-raised" ng-click="back()"> Cancel </md-button>
 		<md-button class="md-raised md-primary"
-			ng-disabled="taskAddForm.taskTitle.$invalid || taskAddForm.assignedTo.$invalid || taskAddForm.taskStatus.$invalid || taskAddForm.taskDesc.$invalid"
+			ng-disabled="taskAddForm.taskTitle.$invalid || taskAddForm.assignedTo.$invalid || taskAddForm.assignedDate.$invalid
+			|| taskAddForm.completionDate.$invalid || taskAddForm.taskDesc.$invalid"
 			ng-click="saveTask()"> Save </md-button>
 
 	</section>

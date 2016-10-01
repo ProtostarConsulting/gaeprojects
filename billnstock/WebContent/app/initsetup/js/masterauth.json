@@ -62,7 +62,7 @@
 		 },
 		 {
 		 "authName":"taskmanagement.list",
-		 "authDisplayName":"Task List",
+		 "authDisplayName":"All Task List",
 		 "uiStateName":"taskmanagement.list",
 		 "orderNumber":"2",
 		 "authorizations":[]
@@ -73,8 +73,14 @@
 		 "uiStateName":"taskmanagement.add",
 		 "orderNumber":"3",
 		 "authorizations":[]
-		 }
-		  ]
+		 },
+		 {"authName":"taskmanagement.tasklistreport",
+		  "authDisplayName":"Task List Report",
+		  "uiStateName":"taskmanagement.tasklistreport",
+		  "orderNumber":"4",
+		  "authorizations":[]
+		  }
+		]
 	},
 	{
 	"authName": "certificateMgmt",
@@ -90,7 +96,7 @@
 	},
 	{
 	"authName": "gfe",
-	"authDisplayName": "Google for Education Dashboard",
+	"authDisplayName": "Google Suite",
 	"uiStateName": "gfe",
 	"orderNumber": "21",
 	"authorizations": [
@@ -112,12 +118,7 @@
 						}
 						
 		]
-	},
-	{
-	"authName": "GRF",
-	"authDisplayName": "Gandhi Research Foundation",
-	"uiStateName": "gandhifoundation",
-	"orderNumber": "22"
 	}
+	
 ]
 }

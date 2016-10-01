@@ -6,10 +6,8 @@ angular
 						$mdUtil, $stateParams, $mdMedia, $mdDialog, $log,
 						$state, objectFactory, appEndpointSF) {
 
-					$scope.showSimpleToast = function(msgBean) {
-						$mdToast.show($mdToast.simple().content(msgBean)
-								.position("top").hideDelay(3000));
-					};
+					$scope.loading = true;
+					
 					$scope.selecteduserNo = $stateParams.selecteduserNo;
 					$scope.businessNo = $stateParams.businessNo;
 					$scope.id;
@@ -29,6 +27,11 @@ angular
 					$scope.changeAuthView = function(params) {
 						$state.go("setup.userauth", params);
 					}
+					
+					$scope.showSimpleToast = function(msgBean) {
+						$mdToast.show($mdToast.simple().content(msgBean)
+								.position("top").hideDelay(3000));
+					};
 
 					$scope.getAllUserOfOrg = function() {
 						var setupService = appEndpointSF.getsetupService();
@@ -53,8 +56,9 @@ angular
 															.push($scope.userslist[i]);
 												}
 											}
+											$scope.loading = false;
 
-											$log
+											/*$log
 													.debug("Active Users"
 															+ angular
 																	.toJson($scope.activeUsers));
@@ -65,7 +69,7 @@ angular
 											$log
 													.debug("Suspended Users"
 															+ angular
-																	.toJson($scope.suspendedUsers));
+																	.toJson($scope.suspendedUsers));*/
 										});
 
 					}
@@ -87,7 +91,9 @@ angular
 					}
 					$scope.waitForServiceLoad();
 
-					$scope.selected = [];
+					$scope.selected = [];					
+					$scope.inactiveselected = [];
+					$scope.suspendselected = [];
 
 					$scope.inactiveUserStatus = function(res) {
 						var inactive = "inactive";

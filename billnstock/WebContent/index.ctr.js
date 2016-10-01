@@ -138,7 +138,7 @@ angular
 								.getAuthorizationMasterEntity()
 								.then(
 										function(result) {
-											$log.debug("result:" + result);
+											/*$log.debug("result:" + result);*/
 											var authorizationMasterEntity = {
 												authorizations : []
 											};
@@ -176,10 +176,10 @@ angular
 																	: -1
 														});
 
-												$log
+												/*$log
 														.debug("userAuthMasterEntity:"
 																+ angular
-																		.toJson(userAuthMasterEntity));
+																		.toJson(userAuthMasterEntity));*/
 
 												var curUser = appEndpointSF
 														.getLocalUserService()
@@ -210,13 +210,13 @@ angular
 										$log.debug('ID: ' + profile.getId());
 										// Do not send to your backend! Use an
 										// ID token instead.
-										$log
-												.debug('Name: '
-														+ profile.getName());
-										$log.debug('Image URL: '
-												+ profile.getImageUrl());
-										$log.debug('email_id: '
-												+ profile.getEmail());
+										/*
+										 * $log .debug('Name: ' +
+										 * profile.getName()); $log.debug('Image
+										 * URL: ' + profile.getImageUrl());
+										 * $log.debug('email_id: ' +
+										 * profile.getEmail());
+										 */
 										$scope.googleUserDetails = profile
 												.getName()
 												+ "<br>" + profile.getEmail()
@@ -234,10 +234,10 @@ angular
 																	.getLocalUserService()
 																	.saveLoggedInUser(
 																			loggedInUser);
-															$log
+															/*$log
 																	.debug("loggedInUser:"
 																			+ angular
-																					.toJson(loggedInUser));
+																					.toJson(loggedInUser));*/
 
 															$scope.curUser = loggedInUser;
 
@@ -444,8 +444,8 @@ angular
 
 					// $scope.userauthoritys=[];
 					$scope.userauthoritys = $stateParams.userauthoritys;
-					$log.debug("userid========="
-							+ angular.toJson($scope.userauthoritys));
+					/*$log.debug("userid========="
+							+ angular.toJson($scope.userauthoritys));*/
 
 					/*
 					 * var str = $scope.userauthoritys; var arr =

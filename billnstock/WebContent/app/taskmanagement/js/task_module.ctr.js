@@ -3,12 +3,12 @@ angular
 		.controller(
 				"taskModuleCtr",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
-						$mdUtil, $log, $q, $location, $anchorScroll, $state, $stateParams, objectFactory,
-						appEndpointSF) {
+						$mdUtil, $log, $q, $location, $anchorScroll, $state,
+						$stateParams, objectFactory, appEndpointSF) {
 
 					$log.debug("Inside taskModuleCtr");
-					$location.hash('topRight');
-					$anchorScroll();
+					$scope.loading = true;
+
 					var taskService = appEndpointSF.getTaskService();
 					var setupService = appEndpointSF.getsetupService();
 
@@ -18,21 +18,58 @@ angular
 					$scope.action = $stateParams.action;
 					// action value can be: listmytask, add, edit, listall
 
+					var aMonthBeforeDate = new Date();
+					aMonthBeforeDate.setDate(aMonthBeforeDate.getDate() - 30);
+					// $log.debug("30 Days Before local Date:"
+					// + aMonthBeforeDate.toLocaleString())
+					$scope.selectFilterData = {
+						assignedDate : aMonthBeforeDate,
+						taskStatus : 'All',
+						assignedBy : null,
+						assignedTo : null,
+						taskStatusList : angular.copy($scope.taskStatusList),
+						userList : []
+					}
+					$scope.selectFilterData.taskStatusList.unshift('All');
+
 					if ($scope.taskObj) {
 						$scope.taskEntity = $scope.taskObj;
-						$scope.taskEntity.assignedDate = new Date($scope.taskEntity.assignedDate);
-						$scope.taskEntity.estCompletionDate = new Date($scope.taskEntity.estCompletionDate);
+						$scope.taskEntity.assignedDate = new Date(
+								$scope.taskEntity.assignedDate);
+						$scope.taskEntity.estCompletionDate = new Date(
+								$scope.taskEntity.estCompletionDate);
 					} else {
 						$scope.taskEntity = {
 							business : $scope.curUser.business,
 							assignedBy : $scope.curUser,
 							assignedTo : null,
 							taskStatus : 'OPEN',
-							estCompletionDate: null
+							assignedDate: new Date(),
+							estCompletionDate : null,
+							completionDate : null
 						};
 					}
 					$scope.taskEntityList = [];
 					$scope.userList = [];
+
+					$scope.changeEditView = function(params) {
+						$state.go("taskmanagement.add", params);
+					}
+					
+					$scope.getDelayInDays = function(assignedDate) {
+						var today = new Date();
+						var taskAssignedDate = new Date(assignedDate);
+						var diffInDays = (today.getTime() - taskAssignedDate.getTime())/ (1000 * 3600 * 24);
+						return Math.ceil(diffInDays);
+					}
+
+					$scope.statusChanged = function() {
+						if ($scope.taskEntity.taskStatus == 'COMPLETED') {
+							$scope.taskEntity.completionDate = new Date()
+						} else {
+							$scope.taskEntity.completionDate = null;
+						}
+					}
 
 					$scope.saveTask = function() {
 						taskService.saveTask($scope.taskEntity).then(
@@ -47,21 +84,19 @@ angular
 								});
 					}
 
-					$scope.changeEditView = function(params) {
-						$state.go("taskmanagement.add", params);
-					}
-
 					$scope.getAllTasks = function() {
 						taskService.getAllTask($scope.curUser.business.id)
 								.then(function(resp) {
 									$scope.taskEntityList = resp.items;
+									$scope.loading = false;
 								});
 					}
-					
+
 					$scope.getMyAllTask = function() {
-						taskService.getMyAllTask($scope.curUser.email_id)
-								.then(function(resp) {
+						taskService.getMyAllTask($scope.curUser.email_id).then(
+								function(resp) {
 									$scope.taskEntityList = resp.items;
+									$scope.loading = false;
 								});
 					}
 
@@ -71,6 +106,17 @@ angular
 								.then(
 										function(users) {
 											$scope.userList = users.items;
+											$scope.selectFilterData.userList = angular
+													.copy($scope.userList);
+											var allUserDummy = {
+												firstName : 'All',
+												id : -1
+											}
+											$scope.selectFilterData.userList
+													.unshift(allUserDummy);
+											$scope.selectFilterData.assignedBy = allUserDummy;
+											$scope.selectFilterData.assignedTo = allUserDummy;
+
 											if ($scope.taskObj) {
 												$scope.userList
 														.forEach(function(user) {
@@ -79,15 +125,33 @@ angular
 															}
 														});
 											}
+
+											$scope.loading = false;
 										});
 					}
+
+					$scope.waitForServiceLoad = function() {
+						if (appEndpointSF.is_service_ready) {
+							$scope.getUserList();
+							if ($scope.action == 'listmytask') {
+								$scope.getMyAllTask();
+							} else if ($scope.action == 'listall'
+									|| $scope.action == 'tasklistreport') {
+								$scope.getAllTasks();
+							}
+						} else {
+							$log.debug("Services Not Loaded, watiting...");
+							$timeout($scope.waitForServiceLoad, 1000);
+						}
+					}
+					$scope.waitForServiceLoad();
+
 					$scope.selected = [];
 					$scope.query = {
 						order : 'name',
 						limit : 10,
 						page : 1
 					};
-
 					$scope.onpagechange = function(page, limit) {
 						var deferred = $q.defer();
 
@@ -107,22 +171,6 @@ angular
 
 						return deferred.promise;
 					};
-
-					$scope.waitForServiceLoad = function() {
-						if (appEndpointSF.is_service_ready) {							
-							$scope.getUserList();
-							if($scope.action == 'listmytask'){
-								$scope.getMyAllTask();
-							} else if($scope.action == 'listall'){
-								$scope.getAllTasks();
-							}
-						} else {
-							$log.debug("Services Not Loaded, watiting...");
-							$timeout($scope.waitForServiceLoad, 1000);
-						}
-					}
-					$scope.waitForServiceLoad();
-
 					/* Setup menu */
 					$scope.toggleRight = buildToggler('right');
 					/**
