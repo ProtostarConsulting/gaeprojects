@@ -4,6 +4,10 @@ var app = angular.module("stockApp", [ 'ngMaterial', 'ngMessages', "xeditable",
 		'ui.grid.selection', 'ui.grid.exporter', 'directive.g+signin',
 		'ui.bootstrap', 'textAngular', 'ngMdIcons' ]);
 
+app.factory('ajsCache', function($cacheFactory) {
+	return $cacheFactory('browserCache');
+});
+
 app.constant('monthList', [ "January", "February", "March", "April", "May",
 		"June", "July", "Augast", "September", "October", "November",
 		"December" ]);

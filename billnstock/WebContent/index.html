@@ -139,15 +139,14 @@
 
 
 	<div ng-controller="AppCtrl">
-		<section layout="row" flex>	
+		<section layout="row" flex>
 			<!-- Left Navigation Pane -->
 			<md-sidenav class="md-sidenav-left md-whiteframe-z2"
 				md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
 
 			<md-toolbar class="md-theme-indigo">
-				<h1 class="md-toolbar-tools" ng-bind="curUser.business.businessName"></h1>
-			</md-toolbar>
-
+			<h1 class="md-toolbar-tools" ng-bind="curUser.business.businessName"></h1>
+			</md-toolbar> <md-content layout="column" ng-controller="LeftCtrl">
 
 			<div>
 				<div class="md-accordion"
@@ -208,9 +207,9 @@
 					</div>
 				</div>
 			</div>
-			<md-content layout="column" ng-controller="LeftCtrl"> <md-button
-				class="md-primary" ng-click="close()" hide-gt-md> Close
-			Sidenav </md-button> <md-button ui-sref="home"
+
+			<md-button class="md-primary" ng-click="close()" hide-gt-md>
+			Close Sidenav </md-button> <md-button ui-sref="home"
 				ng-show="curUser.authority.length >= 0" ng-click="close()"
 				class="md-primary" show-gt-md> Home</md-button> <md-button
 				ui-sref="user_prof_detail" ng-show="curUser.authority.length >= 0"

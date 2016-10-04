@@ -4,7 +4,7 @@ angular
 				"taskModuleCtr",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
 						$mdUtil, $log, $q, $location, $anchorScroll, $state,
-						$stateParams, objectFactory, appEndpointSF) {
+						$stateParams, objectFactory, appEndpointSF, ajsCache) {
 
 					$log.debug("Inside taskModuleCtr");
 					$scope.loading = true;
@@ -24,7 +24,7 @@ angular
 					// + aMonthBeforeDate.toLocaleString())
 					$scope.selectFilterData = {
 						assignedDate : aMonthBeforeDate,
-						taskStatus : 'All',
+						taskStatus : 'ALL',
 						assignedBy : null,
 						assignedTo : null,
 						taskStatusList : angular.copy($scope.taskStatusList),
@@ -44,7 +44,7 @@ angular
 							assignedBy : $scope.curUser,
 							assignedTo : null,
 							taskStatus : 'OPEN',
-							assignedDate: new Date(),
+							assignedDate : new Date(),
 							estCompletionDate : null,
 							completionDate : null
 						};
@@ -55,11 +55,13 @@ angular
 					$scope.changeEditView = function(params) {
 						$state.go("taskmanagement.add", params);
 					}
-					
+
 					$scope.getDelayInDays = function(assignedDate) {
 						var today = new Date();
 						var taskAssignedDate = new Date(assignedDate);
-						var diffInDays = (today.getTime() - taskAssignedDate.getTime())/ (1000 * 3600 * 24);
+						var diffInDays = (today.getTime() - taskAssignedDate
+								.getTime())
+								/ (1000 * 3600 * 24);
 						return Math.ceil(diffInDays);
 					}
 
@@ -101,33 +103,53 @@ angular
 					}
 
 					$scope.getUserList = function() {
+						var refresh = false;
+						var getAllUserOfOrgCacheKey = "getAllUserOfOrg";
+						// Note this key has to be unique across application
+						// else it will return unexpected result.
+						if (!angular.isUndefined(ajsCache
+								.get(getAllUserOfOrgCacheKey))
+								&& !refresh) {
+							$log.debug("Found List in Cache, return it.")
+							postProcessGetUserList(ajsCache
+									.get(getAllUserOfOrgCacheKey));
+							return;
+						} else {
+							$log
+									.debug("Not Found List in Cache, need to fetch from Server.")
+						}
 						setupService
 								.getAllUserOfOrg($scope.curUser.business.id)
 								.then(
 										function(users) {
-											$scope.userList = users.items;
-											$scope.selectFilterData.userList = angular
-													.copy($scope.userList);
-											var allUserDummy = {
-												firstName : 'All',
-												id : -1
-											}
-											$scope.selectFilterData.userList
-													.unshift(allUserDummy);
-											$scope.selectFilterData.assignedBy = allUserDummy;
-											$scope.selectFilterData.assignedTo = allUserDummy;
-
-											if ($scope.taskObj) {
-												$scope.userList
-														.forEach(function(user) {
-															if (user.id == $scope.taskObj.assignedTo.id) {
-																$scope.taskObj.assignedTo = user;
-															}
-														});
-											}
-
-											$scope.loading = false;
+											ajsCache.put(
+													getAllUserOfOrgCacheKey,
+													users.items);
+											postProcessGetUserList(users.items);
 										});
+					}
+
+					function postProcessGetUserList(userList) {
+						$scope.userList = userList;
+						$scope.selectFilterData.userList = angular
+								.copy($scope.userList);
+						var allUserDummy = {
+							firstName : 'All',
+							id : -1
+						}
+						$scope.selectFilterData.userList.unshift(allUserDummy);
+						$scope.selectFilterData.assignedBy = allUserDummy;
+						$scope.selectFilterData.assignedTo = allUserDummy;
+
+						if ($scope.taskObj) {
+							$scope.userList.forEach(function(user) {
+								if (user.id == $scope.taskObj.assignedTo.id) {
+									$scope.taskObj.assignedTo = user;
+								}
+							});
+						}
+
+						$scope.loading = false;
 					}
 
 					$scope.waitForServiceLoad = function() {
