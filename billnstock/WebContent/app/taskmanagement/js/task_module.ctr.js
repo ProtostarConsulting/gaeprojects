@@ -30,7 +30,7 @@ angular
 						taskStatusList : angular.copy($scope.taskStatusList),
 						userList : []
 					}
-					$scope.selectFilterData.taskStatusList.unshift('All');
+					$scope.selectFilterData.taskStatusList.unshift('ALL');
 
 					if ($scope.taskObj) {
 						$scope.taskEntity = $scope.taskObj;
@@ -54,6 +54,14 @@ angular
 
 					$scope.changeEditView = function(params) {
 						$state.go("taskmanagement.add", params);
+					}
+
+					$scope.filterTaskList = function(task) {
+						return ($scope.selectFilterData.assignedDate == '' || new Date(
+								task.assignedDate) >= $scope.selectFilterData.assignedDate)
+								&& ($scope.selectFilterData.assignedBy.firstName == 'ALL' || task.assignedBy.id == $scope.selectFilterData.assignedBy.id)
+								&& ($scope.selectFilterData.assignedTo.firstName == 'ALL' || task.assignedTo.id == $scope.selectFilterData.assignedTo.id)
+								&& ($scope.selectFilterData.taskStatus == 'ALL' || task.taskStatus == $scope.selectFilterData.taskStatus);
 					}
 
 					$scope.getDelayInDays = function(assignedDate) {
@@ -134,7 +142,7 @@ angular
 						$scope.selectFilterData.userList = angular
 								.copy($scope.userList);
 						var allUserDummy = {
-							firstName : 'All',
+							firstName : 'ALL',
 							id : -1
 						}
 						$scope.selectFilterData.userList.unshift(allUserDummy);

@@ -7,16 +7,53 @@ angular
 						$state, objectFactory, appEndpointSF) {
 
 					$scope.loading = true;
-					
+
 					$scope.selecteduserNo = $stateParams.selecteduserNo;
 					$scope.businessNo = $stateParams.businessNo;
 					$scope.id;
 
-					$scope.query = {
-						order : 'name',
-						limit : 5,
-						page : 1
+					$scope.fabMenuData = {
+						activeUsersIsOpen : [],
+						inActiveUsersIsOpen : [],
+						suspendedUsersIsOpen : [],
+						selectedDirection : 'up',
+						selectedMode : 'md-fling md-fab-top-right',
+						items : [ {
+							name : "Twitter",
+							icon : "img/icons/twitter.svg",
+							direction : "bottom"
+						}, {
+							name : "Facebook",
+							icon : "img/icons/facebook.svg",
+							direction : "top"
+						}, {
+							name : "Google Hangout",
+							icon : "img/icons/hangout.svg",
+							direction : "bottom"
+						} ]
 					};
+
+					$scope.openDialog = function($event, item) {
+						// Show the dialog
+						$mdDialog.show({
+							clickOutsideToClose : true,
+							controller : function($mdDialog) {
+								// Save the clicked item
+								this.item = item;
+
+								// Setup some handlers
+								this.close = function() {
+									$mdDialog.cancel();
+								};
+								this.submit = function() {
+									$mdDialog.hide();
+								};
+							},
+							controllerAs : 'dialog',
+							templateUrl : 'dialog.html',
+							targetEvent : $event
+						});
+					}
 
 					if ($scope.businessNo == undefined) {
 						$scope.Bid = $scope.curUser.business.id;
@@ -27,7 +64,7 @@ angular
 					$scope.changeAuthView = function(params) {
 						$state.go("setup.userauth", params);
 					}
-					
+
 					$scope.showSimpleToast = function(msgBean) {
 						$mdToast.show($mdToast.simple().content(msgBean)
 								.position("top").hideDelay(3000));
@@ -47,29 +84,34 @@ angular
 												if ($scope.userslist[i].status == "active") {
 													$scope.activeUsers
 															.push($scope.userslist[i]);
+													$scope.fabMenuData.activeUsersIsOpen
+															.push(false);
 												} else if ($scope.userslist[i].status == "inactive") {
 													$scope.inActiveUsers
 															.push($scope.userslist[i]);
+													$scope.fabMenuData.inActiveUsersIsOpen
+															.push(false);
 												}
 												if ($scope.userslist[i].status == "suspended") {
 													$scope.suspendedUsers
 															.push($scope.userslist[i]);
+													$scope.fabMenuData.suspendedUsersIsOpen
+															.push(false);
 												}
 											}
 											$scope.loading = false;
 
-											/*$log
-													.debug("Active Users"
-															+ angular
-																	.toJson($scope.activeUsers));
-											$log
-													.debug("In-Active Users"
-															+ angular
-																	.toJson($scope.inActiveUsers));
-											$log
-													.debug("Suspended Users"
-															+ angular
-																	.toJson($scope.suspendedUsers));*/
+											/*
+											 * $log .debug("Active Users" +
+											 * angular
+											 * .toJson($scope.activeUsers));
+											 * $log .debug("In-Active Users" +
+											 * angular
+											 * .toJson($scope.inActiveUsers));
+											 * $log .debug("Suspended Users" +
+											 * angular
+											 * .toJson($scope.suspendedUsers));
+											 */
 										});
 
 					}
@@ -79,7 +121,6 @@ angular
 					$scope.suspendedUsers = [];
 
 					$scope.userslist = [];
-					$scope.activeselected = [];
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
@@ -91,75 +132,28 @@ angular
 					}
 					$scope.waitForServiceLoad();
 
-					$scope.selected = [];					
-					$scope.inactiveselected = [];
-					$scope.suspendselected = [];
-
-					$scope.inactiveUserStatus = function(res) {
-						var inactive = "inactive";
-						var setupService = appEndpointSF.getsetupService();
-						if (res == 'active') {
-							$scope.activeselected[0].status = inactive;
-							setupService.updateUserStatus(
-									$scope.activeselected[0]).then(
-									function(msgBean) {
-										$scope.showSimpleToast(msgBean.msg);
-										$scope.getAllUserOfOrg();
-									});
-						} else {
-							$scope.suspendselected[0].status = inactive;
-							setupService.updateUserStatus(
-									$scope.suspendselected[0]).then(
-									function(msgBean) {
-										$scope.showSimpleToast(msgBean.msg);
-										$scope.getAllUserOfOrg();
-									});
-						}
-					}
-					$scope.suspendUserStatus = function(res) {
+					$scope.suspendUser = function(user) {
 						var suspended = "suspended";
 						var setupService = appEndpointSF.getsetupService();
-						if (res == 'active') {
-							$scope.activeselected[0].status = suspended;
-							setupService.updateUserStatus(
-									$scope.activeselected[0]).then(
-									function(msgBean) {
-										$scope.showSimpleToast(msgBean.msg);
-										$scope.getAllUserOfOrg();
-									});
-						} else {
-							$scope.inactiveselected[0].status = suspended;
-							setupService.updateUserStatus(
-									$scope.inactiveselected[0]).then(
-									function(msgBean) {
-										$scope.showSimpleToast(msgBean.msg);
-										$scope.getAllUserOfOrg();
-									});
-						}
+						user.status = suspended;
+						setupService.updateUserStatus(user).then(
+								function(msgBean) {
+									$scope.showSimpleToast(msgBean.msg);
+									$scope.getAllUserOfOrg();
+								});
 					}
-					$scope.activeUserStatus = function(res) {
+					$scope.activateUser = function(user) {
 						var active = "active";
 						var setupService = appEndpointSF.getsetupService();
-						if (res == 'inactive') {
-							$scope.inactiveselected[0].status = active;
-							setupService.updateUserStatus(
-									$scope.inactiveselected[0]).then(
-									function(msgBean) {
-										$scope.showSimpleToast(msgBean.msg);
-										$scope.getAllUserOfOrg();
-									});
-						} else {
-							$scope.suspendselected[0].status = active;
-							setupService.updateUserStatus(
-									$scope.suspendselected[0]).then(
-									function(msgBean) {
-										$scope.showSimpleToast(msgBean.msg);
-										$scope.getAllUserOfOrg();
-									});
-						}
+						user.status = active;
+						setupService.updateUserStatus(user).then(
+								function(msgBean) {
+									$scope.showSimpleToast(msgBean.msg);
+									$scope.getAllUserOfOrg();
+								});
 					}
 
-					$scope.changePassword = function(ev) {
+					$scope.changePassword = function(ev, user) {
 						var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))
 								&& $scope.customFullscreen;
 						$mdDialog
@@ -174,7 +168,7 @@ angular
 											fullscreen : useFullScreen,
 											locals : {
 												curuser : $scope.curuser,
-												user : $scope.activeselected[0]
+												user : user
 
 											}
 										})
@@ -193,27 +187,9 @@ angular
 
 					}
 
-					/*
-					 * $scope.showAdvanced = function(ev) { var useFullScreen =
-					 * ($mdMedia('sm') || $mdMedia('xs')) &&
-					 * $scope.customFullscreen; $mdDialog .show( { controller :
-					 * DialogController, templateUrl :
-					 * '/app/profile/changepassword.html', parent : angular
-					 * .element(document.body), targetEvent : ev,
-					 * clickOutsideToClose : true, fullscreen : useFullScreen,
-					 * locals : { curuser : $scope.curuser,
-					 * user:$scope.activeselected[0] } }) .then(
-					 * function(answer) { $scope.status = 'You said the
-					 * information was "' + answer + '".'; }, function() {
-					 * $scope.status = 'You cancelled the dialog.'; });
-					 * $scope.updatepass = function() { $log.debug("change
-					 * pass"); } };
-					 */
-
 					function DialogController($scope, $mdDialog, curuser, user) {
 
-						// alert(angular.toJson(curuser));
-						alert(angular.toJson(user));
+						//alert(angular.toJson(user));
 						$scope.hide = function() {
 							$mdDialog.hide();
 						};
@@ -276,6 +252,12 @@ angular
 							}
 						}
 					}
+
+					$scope.query = {
+						order : 'id',
+						limit : 10,
+						page : 1
+					};
 
 					$scope.toggleRight = buildToggler('right');
 

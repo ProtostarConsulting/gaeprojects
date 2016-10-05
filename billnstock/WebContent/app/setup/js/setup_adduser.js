@@ -12,67 +12,8 @@ angular
 					};
 
 					$scope.businessNo = $stateParams.businessNo;
-					$scope.id;
+					$scope.id;				
 					
-					//-------------------send email-----------
-				/*	 var CLIENT_ID = '871660457189-1ishasdcqph3an1eu26262htusofo6v2';
-
-				      var SCOPES = ['https://www.googleapis.com/auth/gmail.readonly'];
-					
-				      $scope.checkAuth=function() {
-				          gapi.auth.authorize(
-				            {
-				              'client_id': CLIENT_ID,
-				              'scope': SCOPES.join(' '),
-				              'immediate': true
-				            }, handleAuthResult);
-				        }
-				      
-				      $scope.handleAuthResult=function(authResult) {
-				          var authorizeDiv = document.getElementById('authorize-div');
-				          if (authResult && !authResult.error) {
-				            // Hide auth UI, then load client library.
-				            authorizeDiv.style.display = 'none';
-				            loadGmailApi();
-				          } else {
-				            // Show auth UI, allowing the user to initiate authorization by
-				            // clicking authorize button.
-				            authorizeDiv.style.display = 'inline';
-				          }
-				        }
-				    
-				      $scope.handleAuthClick=function(event) {
-				          gapi.auth.authorize(
-				            {client_id: CLIENT_ID, scope: SCOPES, immediate: false},
-				            handleAuthResult);
-				          return false;
-				        }
-				      
-				      
-				      $scope.loadGmailApi=function() {
-				          gapi.client.load('gmail', 'v1', listLabels);
-				        }
-				      
-				      $scope.listLabels=function() {
-				          var request = gapi.client.gmail.users.labels.list({
-				            'userId': 'me'
-				          });
-				          
-				          
-				          request.execute(function(resp) {
-				              var labels = resp.labels;
-				              appendPre('Labels:');
-
-				              if (labels && labels.length > 0) {
-				                for (i = 0; i < labels.length; i++) {
-				                  var label = labels[i];
-				                  appendPre(label.name)
-				                }
-				              } else {
-				                appendPre('No Labels found.');
-				              }
-				            });
-				          }*/
 
 					
 					// ----------------------UPLODE EXCEL FILE-------------------------------

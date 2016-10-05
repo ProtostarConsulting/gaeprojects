@@ -96,7 +96,7 @@
 
 						</tr>
 
-						<tr ng-repeat="task in taskEntityList">
+						<tr ng-repeat="task in taskEntityList | filter: filterTaskList">
 							<td
 								style="border: 1px solid black; text-align: left; padding: 2px;">{{$index
 								+ 1}}</td>
