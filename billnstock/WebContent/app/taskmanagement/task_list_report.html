@@ -45,7 +45,7 @@
 
 		</div>
 		<div layout="row" layout-align="center center">
-			<md-button class="md-raised md-primary" ng-click="filterSchoolList()">Display
+			<md-button class="md-raised md-primary" ng-click="filterTasksByFitlerData()">Display
 			Report</md-button>
 		</div>
 
@@ -100,7 +100,7 @@
 						</tr>
 
 						<tr
-							ng-repeat="task in taskEntityList | filter: filterTaskList | proOrderObjectByDateField: 'assignedDate'">
+							ng-repeat="task in taskEntityList | proOrderObjectByDateField: 'assignedDate'">
 							<td
 								style="border: 1px solid black; text-align: left; padding: 2px;">{{$index
 								+ 1}}</td>

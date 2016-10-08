@@ -7,15 +7,12 @@
 	<md-content laout="column" flex> <md-toolbar
 		class="md-table-toolbar md-default">
 	<div class="md-toolbar-tools">
-		<span flex>{{(action == 'listmytask')?'My Task List':'All Task List'}}</span>
-		<div ng-show="selected.length">
-			<md-button class="md-icon-button" id="downloadExcel"
-				ng-click="downloadData()"> <ng-md-icon
-				icon="file_download" style="fill: md-default" size="24">
-			<md-tooltip> Download This Task List</md-tooltip></ng-md-icon> </md-button>
-			<md-button class="md-icon-button" ng-click="getAllTasks()">
-			<ng-md-icon icon="refresh" style="fill: md-default" size="24">
-			<md-tooltip> Refresh List</md-tooltip></ng-md-icon></md-button>
+		<span flex>{{(action == 'listmytask')?'My Task List':'All Task
+			List'}}</span>
+		<div>
+			<span>Since Date:-</span>
+			<md-datepicker flex ng-model="selectFilterData.assignedDate"
+				ng-change="filterTasksByFitlerData()"></md-datepicker>
 		</div>
 	</div>
 	</md-toolbar> <md-data-table-container>
@@ -23,8 +20,10 @@
 		<thead md-order="query.order" md-trigger="onorderchange">
 			<tr>
 				<th name="Sr. No." unit=""></th>
-				<th order-by="firstName" name="Assigned To" ng-if="action != 'listmytask'"></th>
-				<th order-by="firstName" name="Assigned By" ng-if="action == 'listmytask'"></th>
+				<th order-by="firstName" name="Assigned To"
+					ng-if="action != 'listmytask'"></th>
+				<th order-by="firstName" name="Assigned By"
+					ng-if="action == 'listmytask'"></th>
 				<th order-by="assignedDate" name="Assigned Date"></th>
 				<th order-by="assignedDate" name="Delayed (in Days)"></th>
 				<th order-by="taskStatus" name="Task Status"></th>
@@ -37,10 +36,10 @@
 			<tr
 				ng-repeat="task in taskEntityList | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
 				<td>{{$index+1}}</td>
-				<td ng-if="action != 'listmytask'">{{(task.assignedTo.firstName + ' ' +
-					task.assignedTo.lastName) | uppercase}}</td>
-				<td ng-if="action == 'listmytask'">{{(task.assignedBy.firstName + ' ' +
-					task.assignedBy.lastName) | uppercase}}</td>	
+				<td ng-if="action != 'listmytask'">{{(task.assignedTo.firstName
+					+ ' ' + task.assignedTo.lastName) | uppercase}}</td>
+				<td ng-if="action == 'listmytask'">{{(task.assignedBy.firstName
+					+ ' ' + task.assignedBy.lastName) | uppercase}}</td>
 				<td>{{task.assignedDate | formatDate}}</td>
 				<td>{{getDelayInDays(task.assignedDate)}}</td>
 				<td>{{task.taskStatus}}</td>

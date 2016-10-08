@@ -18,12 +18,12 @@ angular
 					$scope.action = $stateParams.action;
 					// action value can be: listmytask, add, edit, listall
 
-					var aMonthBeforeDate = new Date();
-					aMonthBeforeDate.setDate(aMonthBeforeDate.getDate() - 30);
+					var sinceDate = new Date();
+					sinceDate.setDate(sinceDate.getDate() - 90);
 					// $log.debug("30 Days Before local Date:"
-					// + aMonthBeforeDate.toLocaleString())
+					// + sinceDate.toLocaleString())
 					$scope.selectFilterData = {
-						assignedDate : aMonthBeforeDate,
+						assignedDate : sinceDate,
 						taskStatus : 'ALL',
 						assignedBy : null,
 						assignedTo : null,
@@ -36,8 +36,13 @@ angular
 						$scope.taskEntity = $scope.taskObj;
 						$scope.taskEntity.assignedDate = new Date(
 								$scope.taskEntity.assignedDate);
-						$scope.taskEntity.estCompletionDate = new Date(
-								$scope.taskEntity.estCompletionDate);
+						$scope.taskEntity.estCompletionDate = $scope.taskEntity.estCompletionDate ? new Date(
+								$scope.taskEntity.estCompletionDate)
+								: null;
+						$scope.taskEntity.completionDate = $scope.taskEntity.completionDate ? new Date(
+								$scope.taskEntity.completionDate)
+								: null;
+
 					} else {
 						$scope.taskEntity = {
 							business : $scope.curUser.business,
@@ -73,14 +78,6 @@ angular
 						 */
 						window.frames["print_frame"].window.print();
 
-					}
-
-					$scope.filterTaskList = function(task) {
-						return ($scope.selectFilterData.assignedDate == '' || new Date(
-								task.assignedDate) >= $scope.selectFilterData.assignedDate)
-								&& ($scope.selectFilterData.assignedBy.firstName == 'ALL' || task.assignedBy.id == $scope.selectFilterData.assignedBy.id)
-								&& ($scope.selectFilterData.assignedTo.firstName == 'ALL' || task.assignedTo.id == $scope.selectFilterData.assignedTo.id)
-								&& ($scope.selectFilterData.taskStatus == 'ALL' || task.taskStatus == $scope.selectFilterData.taskStatus);
 					}
 
 					$scope.getDelayInDays = function(assignedDate) {
@@ -120,6 +117,25 @@ angular
 									$scope.taskEntityList = resp.items;
 									$scope.loading = false;
 								});
+					}
+					$scope.filterTasksByFitlerData = function() {
+						$scope.loading = true;
+						var taskEntityFilterData = {
+							businessId : $scope.curUser.business.id,
+							sinceAssignedDate : $scope.selectFilterData.assignedDate,
+							assignedBy : $scope.selectFilterData.assignedBy.firstName == 'ALL' ? null
+									: $scope.selectFilterData.assignedBy,
+							assignedTo : $scope.selectFilterData.assignedTo.firstName == 'ALL' ? null
+									: $scope.selectFilterData.assignedTo,
+							taskStatus : $scope.selectFilterData.taskStatus == 'ALL' ? null
+									: $scope.selectFilterData.taskStatus,
+						}
+
+						taskService.filterTasksByFitlerData(
+								taskEntityFilterData).then(function(resp) {
+							$scope.taskEntityList = resp.items;
+							$scope.loading = false;
+						});
 					}
 
 					$scope.getMyAllTask = function() {
@@ -184,10 +200,13 @@ angular
 						if (appEndpointSF.is_service_ready) {
 							$scope.getUserList();
 							if ($scope.action == 'listmytask') {
-								$scope.getMyAllTask();
-							} else if ($scope.action == 'listall'
-									|| $scope.action == 'tasklistreport') {
-								$scope.getAllTasks();
+								// $scope.getMyAllTask();
+								$scope.selectFilterData.assignedTo = $scope.curUser;
+								$scope.filterTasksByFitlerData();
+							} else if ($scope.action == 'listall') {
+								$scope.filterTasksByFitlerData();
+							} else if ($scope.action == 'tasklistreport') {
+								// $scope.filterTasksByFitlerData();
 							}
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
