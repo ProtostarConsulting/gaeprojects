@@ -176,7 +176,7 @@ public class UserService {
 				list.add(user);
 			}
 		}
-		System.out.println("list:" + list);
+		//System.out.println("list:" + list);
 		return list;
 	}
 

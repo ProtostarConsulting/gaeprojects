@@ -47,12 +47,12 @@ public class TaskManagementService {
 	@ApiMethod(name = "getMyAllTask", path = "getMyAllTask")
 	public List<TaskEntity> getMyAllTask(@Named("email_id") String email_id) {
 		UserService userService = new UserService();
-		System.out.println("getMyAllTask#email_id:" + email_id);
+		//System.out.println("getMyAllTask#email_id:" + email_id);
 		UserEntity user = userService.getUserByEmailID(email_id);
-		System.out.println("user:" + user);
+		//System.out.println("user:" + user);
 		List<TaskEntity> list = ofy().load().type(TaskEntity.class)
 				.filter("assignedTo", user).list();
-		System.out.println("list:size:" + list.size());
+		//System.out.println("list:size:" + list.size());
 		return list;
 	}
 
