@@ -35,6 +35,46 @@ app.directive('focusOn', function($timeout) {
 		}
 	}
 });
+app.filter('proOrderObjectByNumberField', function() {
+	return function(input, attribute) {
+		if (!angular.isObject(input))
+			return input;
+		var reverseOrder = attribute.startsWith("-");
+		if (reverseOrder)
+			attribute = attribute.split("-")[1];
+		var array = [];
+		for ( var objectKey in input) {
+			array.push(input[objectKey]);
+		}
+
+		array.sort(function(a, b) {
+			a = parseFloat(a[attribute]);
+			b = parseFloat(b[attribute]);
+			return (a - b) * (reverseOrder ? -1 : 1);
+		});
+		return array;
+	}
+});
+app.filter('proOrderObjectByDateField', function() {
+	return function(input, attribute) {
+		if (!angular.isObject(input))
+			return input;
+		var reverseOrder = attribute.startsWith("-");
+		if (reverseOrder)
+			attribute = attribute.split("-")[1];
+		var array = [];
+		for ( var objectKey in input) {
+			array.push(input[objectKey]);
+		}
+
+		array.sort(function(a, b) {
+			a = new Date(a[attribute]);
+			b = new Date(b[attribute]);
+			return (a - b) * (reverseOrder ? -1 : 1);
+		});
+		return array;
+	}
+});
 app.directive("proBeforeDateCheck", function() {
 	return {
 		restrict : "A",

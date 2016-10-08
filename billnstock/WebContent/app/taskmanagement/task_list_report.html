@@ -99,7 +99,8 @@
 
 						</tr>
 
-						<tr ng-repeat="task in taskEntityList | filter: filterTaskList">
+						<tr
+							ng-repeat="task in taskEntityList | filter: filterTaskList | proOrderObjectByDateField: 'assignedDate'">
 							<td
 								style="border: 1px solid black; text-align: left; padding: 2px;">{{$index
 								+ 1}}</td>
