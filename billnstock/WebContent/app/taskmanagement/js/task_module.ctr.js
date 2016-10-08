@@ -55,6 +55,25 @@ angular
 					$scope.changeEditView = function(params) {
 						$state.go("taskmanagement.add", params);
 					}
+					$scope.printDiv = function(divId) {
+
+						var printDivCSS = new String(
+								'<link href="/lib/base/css/angular-material.min.css"" rel="stylesheet" type="text/css">'
+										+ '<link href="/lib/base/css/bootstrap.min.css"" rel="stylesheet" type="text/css">')
+						/*
+						 * document.getElementById('hidetr').style.display =
+						 * 'block';
+						 */
+						window.frames["print_frame"].document.body.innerHTML = printDivCSS
+								+ document.getElementById(divId).innerHTML;
+						window.frames["print_frame"].window.focus();
+						/*
+						 * document.getElementById('hidetr').style.display =
+						 * 'none';
+						 */
+						window.frames["print_frame"].window.print();
+
+					}
 
 					$scope.filterTaskList = function(task) {
 						return ($scope.selectFilterData.assignedDate == '' || new Date(
@@ -88,6 +107,7 @@ angular
 										$scope.showUpdateToast();
 									} else {
 										$scope.showAddToast();
+										$state.reload();
 									}
 									$location.hash('topRight');
 									$anchorScroll();

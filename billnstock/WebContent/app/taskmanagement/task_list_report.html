@@ -53,9 +53,9 @@
 			<md-toolbar class="md-table-toolbar md-default">
 			<div class="md-toolbar-tools">
 				<span flex>Task List Report</span>
-				<md-button class="md-raised md-primary" id="downloadExcel"
-					ng-click="downloadData()">Download All Schools Data <md-tooltip>
-				Download All Schools Data</md-tooltip> </md-button>
+				<!-- <md-button class="md-raised md-primary" id="downloadExcel"
+					ng-click="downloadData()">Download CSV Data <md-tooltip>
+				Download All Schools Data</md-tooltip> </md-button> -->
 				<md-button class="md-icon-button md-accent"
 					ng-click="printDiv('reportContentDiv')" aria-label="Favorite">
 				<md-icon md-svg-icon="img/icons/print.svg"></md-icon> </md-button>
@@ -88,6 +88,9 @@
 								style="border: 1px solid black; text-align: left; padding: 2px;">Assigned
 								Date</th>
 							<th
+								style="border: 1px solid black; text-align: left; padding: 2px;">Delayed
+								(in Days)</th>
+							<th
 								style="border: 1px solid black; text-align: left; padding: 2px;">Task
 								Title</th>
 							<th
@@ -112,6 +115,8 @@
 								style="border: 1px solid black; text-align: left; padding: 2px;">{{task.assignedDate
 								| date:"dd-MM-yyyy"}}</td>
 							<td
+								style="border: 1px solid black; text-align: left; padding: 2px;">{{getDelayInDays(task.assignedDate)}}</td>
+							<td
 								style="border: 1px solid black; text-align: left; padding: 2px;">{{task.taskTitle}}</td>
 							<td
 								style="border: 1px solid black; text-align: left; padding: 2px;">{{task.taskDesc
@@ -126,3 +131,6 @@
 
 	</form>
 </div>
+
+<iframe name="print_frame" width="0" height="0" frameborder="0"
+	src="about:blank"></iframe>

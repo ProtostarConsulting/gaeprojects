@@ -23,6 +23,38 @@ app.filter('htmlToPlainText', function() {
 		return text ? String(text).replace(/<[^>]+>/gm, '') : '';
 	};
 });
+app.directive('focusOn', function($timeout) {
+	return {
+		restrict : 'A',
+		link : function($scope, $element, $attr) {
+			$scope.$watch($attr.focusOn, function(_focusVal) {
+				$timeout(function() {
+					_focusVal ? $element.focus() : $element.blur();
+				});
+			});
+		}
+	}
+});
+app.directive("proBeforeDateCheck", function() {
+	return {
+		restrict : "A",
+		require : "ngModel",
+		link : function(scope, element, attributes, ngModel) {
+			ngModel.$validators.proBeforeDateCheck = function(currentDateValue) {				
+				var assignedDate = new Date(Number(attributes.proBeforeDateCheck));
+				if(!currentDateValue){
+					return true;
+				}
+				currentDateValue.setHours(0,0,0,0);
+				assignedDate.setHours(0,0,0,0);
+				if (currentDateValue >= assignedDate) {
+					return true;
+				}
+				return false
+			}
+		}
+	};
+});
 /*
  * app.filter('formatDate1', function($filter) { return function(inputDate) {
  * return $filter('date')(inputDate, 'dd-MM-yyyy'); }; });
