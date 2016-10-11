@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Parent;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 
@@ -12,6 +13,7 @@ public abstract class BaseEntity {
 	private Long id;
 	@Parent
 	Ref<BusinessEntity> business;
+	@Index
 	private Date createdDate;
 	private Date modifiedDate;
 	private String modifiedBy;

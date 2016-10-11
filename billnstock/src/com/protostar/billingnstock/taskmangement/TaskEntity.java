@@ -23,7 +23,7 @@ public class TaskEntity extends BaseEntity {
 	private Ref<UserEntity> assignedBy;
 	@Index
 	private Ref<UserEntity> assignedTo;
-
+	@Index
 	private Date assignedDate;
 	private Date estCompletionDate;
 	private Date completionDate;

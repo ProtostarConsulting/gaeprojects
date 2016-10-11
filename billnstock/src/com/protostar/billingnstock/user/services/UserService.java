@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -23,6 +24,7 @@ import com.google.api.server.spi.config.Named;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.googlecode.objectify.Key;
+import com.protostar.billingnstock.taskmangement.TaskManagementService;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.user.entities.UserEntity;
 import com.protostar.billnstock.until.data.Constants;
@@ -33,6 +35,9 @@ import com.protostar.billnstock.until.data.ServerMsg;
 		Constants.API_EXPLORER_CLIENT_ID }, audiences = { Constants.ANDROID_AUDIENCE }, scopes = { Constants.EMAIL_SCOPE }, namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.user.services", ownerName = "com.protostar.billingnstock.user.services", packagePath = ""))
 public class UserService {
 
+	private final Logger logger = Logger.getLogger(TaskManagementService.class
+			.getName());
+	
 	@ApiMethod(name = "addUser")
 	public void addUser(UserEntity usr) throws MessagingException, IOException {
 		usr.setCreatedDate(new Date());
@@ -176,7 +181,7 @@ public class UserService {
 				list.add(user);
 			}
 		}
-		//System.out.println("list:" + list);
+		//logger.info("list:" + list);
 		return list;
 	}
 
