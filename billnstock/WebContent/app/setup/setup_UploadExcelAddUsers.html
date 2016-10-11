@@ -1,39 +1,34 @@
-
 <div layout="row" ng-cloak class="md-inline-form">
 
 	<md-content layout="column">
 
-	<form name="excelform" method="post" enctype="multipart/form-data">
+	<form name="fileUploadForm" method="post" enctype="multipart/form-data">
 
-		<div ng-show="loding">Loding.....</div>
-		<div ng-hide="loding">
-			<input type="hidden" name="bizID" id="bizID" value={{bizID}}>
-			<div>
-				<b>Use this format download CSV File click csv image</b>
-
-				<a href="img/images/app_users.csv" download>
-  <img border="0" src="img/images/CSV.png" alt="W3Schools" width="60" height="60">
-		</a>
-			</div>
-
-			<div class="md-block">
-				<label>Upload Only CSV File To Add User's:</label> <input
-					name="myFile" type="file" class="md-raised md-primary"
-					accept=".csv" required>
-			</div>
-
-			<div>
-				<md-button ng-click="uplodeimage()" class="md-raised md-primary"
-					ng-disabled="excelform.$invalid" show-gt-md> Submit </md-button>
-			</div>
-
-
+		<div>
+			<b>Download sample CSV File. Click this Icon</b> <a
+				href="img/images/app_users.csv" download> <img border="0"
+				src="img/images/CSV.png" alt="Sample CSV File" width="60"
+				height="45">
+			</a>
 		</div>
 
+		<div layout="row" layout-xs="column" flex>
+			<md-button class='md-raised' type="file" ngf-select
+				ng-model="fileObject" name="file2" accept="*.csv" ngf-max-size="2MB"
+				required ngf-model-invalid="errorFile">Choose CSV File</md-button>
+		</div>
+		<div layout="row" layout-xs="column" flex>
+			<label>{{uploadProgressMsg ==
+				null?fileObject.name:uploadProgressMsg}} </label>
+		</div>
+		<br>
+		<div>
+			<md-button class="md-raised md-primary" ng-click="uploadFile()"
+				ng-disabled="fileUploadForm.$invalid"> Submit </md-button>
+			<md-button class="md-raised md-primary" ng-click="cancel()">
+			Cancel </md-button>
+		</div>
 
-		<!-- <div class="dropzone" data-width="960" data-height="540" data-resize="true" data-url="canvas.php" style="width: 100%;">
-  <input type="file" name="thumb" />
-</div> -->
 	</form>
 
 	<div>

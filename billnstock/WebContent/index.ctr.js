@@ -2,8 +2,8 @@ angular
 		.module("stockApp")
 		.controller(
 				"indexCtr",
-				function($scope, $rootScope, $window, $log, $q, $timeout, $mdToast,
-						$mdBottomSheet, $state, $http, $location,
+				function($scope, $rootScope, $window, $log, $q, $timeout,
+						$mdToast, $mdBottomSheet, $state, $http, $location,
 						$anchorScroll, appEndpointSF) {
 
 					$log.log("Inside indexCtr");
@@ -72,6 +72,9 @@ angular
 						authority : []
 					}
 
+					$scope.orderByAuthOrderValue = function(auth) {
+						return Number(auth.orderNumber);
+					}
 					$scope.login = function() {
 						var UserService = appEndpointSF.getUserService();
 						UserService
@@ -122,12 +125,13 @@ angular
 
 					$scope.initCommonSetting = function() {
 						$scope.theme = $scope.curUser.business.theme;
-						$scope.logBaseURL = '//' + window.location.host
+						$scope.logBaseURL = $scope.curUser.business.logBlobKey;
+						/*$scope.logBaseURL = '//' + window.location.host
 								+ '/serve?blob-key='
 								+ $scope.curUser.business.logBlobKey;
 						$scope.logFooterURL = '//' + window.location.host
 								+ '/serve?blob-key='
-								+ $scope.curUser.business.footerBlobKey;
+								+ $scope.curUser.business.footerBlobKey;*/
 						getUserAuthTree();
 					}
 
@@ -138,7 +142,7 @@ angular
 								.getAuthorizationMasterEntity()
 								.then(
 										function(result) {
-											/*$log.debug("result:" + result);*/
+											/* $log.debug("result:" + result); */
 											var authorizationMasterEntity = {
 												authorizations : []
 											};
@@ -176,10 +180,12 @@ angular
 																	: -1
 														});
 
-												/*$log
-														.debug("userAuthMasterEntity:"
-																+ angular
-																		.toJson(userAuthMasterEntity));*/
+												/*
+												 * $log
+												 * .debug("userAuthMasterEntity:" +
+												 * angular
+												 * .toJson(userAuthMasterEntity));
+												 */
 
 												var curUser = appEndpointSF
 														.getLocalUserService()
@@ -234,10 +240,12 @@ angular
 																	.getLocalUserService()
 																	.saveLoggedInUser(
 																			loggedInUser);
-															/*$log
-																	.debug("loggedInUser:"
-																			+ angular
-																					.toJson(loggedInUser));*/
+															/*
+															 * $log
+															 * .debug("loggedInUser:" +
+															 * angular
+															 * .toJson(loggedInUser));
+															 */
 
 															$scope.curUser = loggedInUser;
 
@@ -338,10 +346,10 @@ angular
 					$rootScope.$on('$stateChangeSuccess', function(event,
 							toState, toParams, fromState, fromParams) {
 						// On any state change go the the top
-						 $timeout(function() {
-								$location.hash('topRight');
-								$anchorScroll();
-					        }, 10);
+						$timeout(function() {
+							$location.hash('topRight');
+							$anchorScroll();
+						}, 10);
 
 					});
 					$rootScope.$on('$stateChangeStart', function(e, toState,
@@ -403,25 +411,16 @@ angular
 
 						$log
 								.debug("####Index: Loaded All Services, Continuing####");
-						/*
-						 * if (authResult) { continueGoogleLogin(authResult); }
-						 * if (!$scope.initDone) { $scope.initCommonSetting(); }
-						 */
+						if ($scope.curUser != undefined || $scope.curUser !== null) {
+							$scope.initCommonSetting();
+						}
 					}
 
 					$scope.initGAPI();
 					$scope.waitForServiceLoad();
 
 					$scope.theme = 'default';
-					if ($scope.curUser != undefined || $scope.curUser !== null) {
-						$scope.theme = $scope.curUser.business.theme;
-						$scope.logBaseURL = '//' + window.location.host
-								+ '/serve?blob-key='
-								+ $scope.curUser.business.logBlobKey;
-						$scope.logFooterURL = '//' + window.location.host
-								+ '/serve?blob-key='
-								+ $scope.curUser.business.footerBlobKey;
-					}
+					
 
 					$scope.themeList = [ 'default', 'red', 'pink', 'purple',
 							'deep-purple', 'indigo', 'blue', 'light-blue',
@@ -444,8 +443,10 @@ angular
 
 					// $scope.userauthoritys=[];
 					$scope.userauthoritys = $stateParams.userauthoritys;
-					/*$log.debug("userid========="
-							+ angular.toJson($scope.userauthoritys));*/
+					/*
+					 * $log.debug("userid=========" +
+					 * angular.toJson($scope.userauthoritys));
+					 */
 
 					/*
 					 * var str = $scope.userauthoritys; var arr =

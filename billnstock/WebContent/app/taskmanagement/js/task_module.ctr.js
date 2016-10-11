@@ -98,6 +98,7 @@ angular
 					}
 
 					$scope.saveTask = function() {
+						$scope.loading = true;
 						taskService.saveTask($scope.taskEntity).then(
 								function(data) {
 									if ($scope.taskObj) {
@@ -108,6 +109,7 @@ angular
 									}
 									$location.hash('topRight');
 									$anchorScroll();
+									$scope.loading = false;
 								});
 					}
 

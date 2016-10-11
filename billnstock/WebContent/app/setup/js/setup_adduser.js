@@ -3,8 +3,8 @@ angular
 		.controller(
 				"setup.adduser",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
-						$mdUtil, $stateParams, $log, objectFactory,$mdMedia,$mdDialog,
-						appEndpointSF) {
+						$mdUtil, $stateParams, $log, objectFactory, $mdMedia,
+						$mdDialog, Upload, appEndpointSF) {
 					// ////////////////////////////////////////////////////////////////////////////////////////////////
 					$scope.showSimpleToast = function(msgBean) {
 						$mdToast.show($mdToast.simple().content(msgBean)
@@ -12,11 +12,10 @@ angular
 					};
 
 					$scope.businessNo = $stateParams.businessNo;
-					$scope.id;				
-					
+					$scope.id;
 
-					
-					// ----------------------UPLODE EXCEL FILE-------------------------------
+					// ----------------------UPLODE EXCEL
+					// FILE-------------------------------
 
 					$scope.UplodeExcel = function(ev) {
 						var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))
@@ -32,8 +31,7 @@ angular
 											clickOutsideToClose : true,
 											fullscreen : useFullScreen,
 											locals : {
-												curuser : $scope.curuser,
-												business:$scope.business
+												curUser : $scope.curUser
 											}
 										})
 								.then(
@@ -44,70 +42,110 @@ angular
 										function() {
 											$scope.status = 'You cancelled the dialog.';
 										});
-						
+
 					};
 
-					function DialogController($scope, $mdDialog, curuser,business) {
-						$scope.bizID;
-						$scope.loding=false;
-						$scope.uplodeimage=function(){
-							$scope.loding=true;
-							 document.excelform.action = $scope.ExcelUploadURL;
-						      document.excelform.submit();
-						}
-						
-						
-						$scope.getExcelUploadURL=function(){
-							var uploadUrlService = appEndpointSF.getuploadURLService();
-							uploadUrlService.getExcelUploadURL()
-									.then(function(url) {
-										$scope.ExcelUploadURL=url.msg;
-										$scope.bizID = business.id;
-									});
-							
-							
-						}
-						$scope.ExcelUploadURL;
-						
-						$scope.waitForServiceLoad = function() {
-							if (appEndpointSF.is_service_ready) {
-								$scope.getExcelUploadURL();
-							} else {
-								$log.debug("Services Not Loaded, watiting...");
-								$timeout($scope.waitForServiceLoad, 1000);
-							}
-						}
-						$scope.waitForServiceLoad();
-						}
+					function DialogController($scope, $mdDialog, curUser) {
+
+						$scope.fileObject;
+						$scope.uploadProgressMsg = null;
+
+						$scope.uploadFile = function() {
+							$scope.loading = true;
+							var fileObject = $scope.fileObject;
+							Upload
+									.upload({
+										url : '/UploadUsersServlet',
+										data : {
+											'file' : fileObject,
+											'username' : curUser.email_id,
+											'businessId' : curUser.business.id
+										}
+									})
+									.then(
+											function(resp) {
+												$log
+														.debug('Successfully uploaded '
+																+ resp.config.data.file.name
+																+ '.'
+																+ angular
+																		.toJson(resp.data));
+												$scope.uploadProgressMsg = 'Successfully uploaded '
+														+ resp.config.data.file.name
+														+ '.';
+												$mdToast
+														.show($mdToast
+																.simple()
+																.content(
+																		'User List Uploaded Sucessfully.')
+																.position("top")
+																.hideDelay(3000));
+
+												$scope.fileObject = null;
+												$timeout(function() {
+													$scope.cancel();
+												}, 3000);
+												// Load the books again in the
+												// end
+												// getFreshBooks(true);
+											},
+											function(resp) {
+												$log
+														.debug('Error Ouccured, Error status: '
+																+ resp.status);
+												$scope.uploadProgressMsg = 'Error: '
+														+ resp.status;
+											},
+											function(evt) {
+												var progressPercentage = parseInt(100.0
+														* evt.loaded
+														/ evt.total);
+												$log
+														.debug('Upload progress: '
+																+ progressPercentage
+																+ '% '
+																+ evt.config.data.file.name);
+												$scope.uploadProgressMsg = 'Upload progress: '
+														+ progressPercentage
+														+ '% '
+														+ evt.config.data.file.name;
+												+'...'
+
+												/*
+												 * if(progressPercentage ==
+												 * 100%){ }
+												 */
+											});
+						};
+
+						$scope.cancel = function() {
+							$mdDialog.cancel();
+						};
+					}
 
 					// -------------------------------------------------------
-					
-					
-					
-					//----------hide and show ---------------------------
+					// ----------hide and show ---------------------------
 
 					$scope.IsHidden = true;
 					$scope.ShowHide = function() {
 						$scope.IsHidden = $scope.IsHidden ? false : true;
 					}
-				      //-----------------end send mail-------------------
+					// -----------------end send mail-------------------
 
 					$scope.items = [ "customer", "account", "stock",
 							"salesOrder", "purchaseOrder", "invoice",
 							"warehouse", "hr", "crm", "employee", "admin" ];
 					$scope.selection = [];
 
-		
 					$scope.curuser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
 
-		
-					$scope.BankDetail={
-						bankName:"",
-						bankIfscCode:"",	
-						branchName:"",
-						bankAccountNo:"",
-								
+					$scope.BankDetail = {
+						bankName : "",
+						bankIfscCode : "",
+						branchName : "",
+						bankAccountNo : "",
+
 					}
 					// use to set all item false to set
 					for ( var item in $scope.items) {
@@ -115,34 +153,9 @@ angular
 								.indexOf(item) > -1);
 					}
 
-					$scope.getBusinessById = function() {
-						if (typeof $scope.businessNo == "undefined") {
-							$scope.Bid = $scope.curuser.business.id;
-						} else {
-							$scope.Bid = $scope.businessNo;
-						}
-						var UserService = appEndpointSF.getUserService();
-						UserService
-								.getbusinessById($scope.Bid)
-								.then(
-										function(Business) {
-											$scope.business = Business;
-											$scope.id = $scope.business.id;
-											if ($scope.business.accounttype.maxuser == $scope.business.totalUser - 1) {
-												$("#hideSpan").show();
-												$log.debug("#hideSpan");
-											} else {
-												$("#hideSpan").hide();
-												$("#hideDiv").hide();
-											}
-
-										});
-
-					}
-					$scope.business = {};
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
-							$scope.getBusinessById();
+							// $scope.getBusinessById();
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
 							$timeout($scope.waitForServiceLoad, 1000);
@@ -166,7 +179,7 @@ angular
 					// -------------------------------------------------------------------------
 
 					$scope.user = {
-						bankDetail:"",
+						bankDetail : "",
 						business : "",
 						email_id : "",
 						firstName : "",
@@ -192,7 +205,7 @@ angular
 
 					$scope.adduser = function() {
 						$scope.user.business = $scope.business;
-						$scope.user.bankDetail=$scope.BankDetail;
+						$scope.user.bankDetail = $scope.BankDetail;
 						// use selection array true false value and push that
 						// numbered item on authority
 						$scope.user.authority = [];
@@ -210,32 +223,32 @@ angular
 												$scope.userslist = users.items.length;
 												if ($scope.userslist < $scope.curuser.business.accounttype.maxuser) {
 
-													var UserService = appEndpointSF.getUserService();
-													UserService.addUser($scope.user)
-															.then(function(msgBean) {
-																$scope.showAddToast();
-																
-													
-																
-																
-																
+													var UserService = appEndpointSF
+															.getUserService();
+													UserService
+															.addUser(
+																	$scope.user)
+															.then(
+																	function(
+																			msgBean) {
+																		$scope
+																				.showAddToast();
+
 																	});
-													
+
 													$scope.user = {};
 												} else {
-													$scope.showSimpleToast("userlimit is low");
+													$scope
+															.showSimpleToast("userlimit is low");
 												}
 
 											});
 
 						}
-				   
+
 						$scope.addform.$setPristine();
 						$scope.addform.$setValidity();
 						$scope.addform.$setUntouched();
-						
-						
-						
 
 					}
 

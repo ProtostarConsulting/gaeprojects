@@ -54,26 +54,26 @@
 	"uiStateName":"taskmanagement",
 	"orderNumber":"8",
 	"authorizations":[	    
+	     {
+		 "authName":"taskmanagement.add",
+		 "authDisplayName":"Task Add",
+		 "uiStateName":"taskmanagement.add",
+		 "orderNumber":"1",
+		 "authorizations":[]
+		 },
 	     {"authName":"taskmanagement.mytasklist",		  
 	      "authDisplayName":"My Task List",		  
 	      "uiStateName":"taskmanagement.mytasklist",
-		  "orderNumber":"1",
+		  "orderNumber":"2",
 		  "authorizations":[]
 		 },
 		 {
 		 "authName":"taskmanagement.list",
 		 "authDisplayName":"All Task List",
 		 "uiStateName":"taskmanagement.list",
-		 "orderNumber":"2",
-		 "authorizations":[]
-		 },
-		 {
-		 "authName":"taskmanagement.add",
-		 "authDisplayName":"Task Add",
-		 "uiStateName":"taskmanagement.add",
 		 "orderNumber":"3",
 		 "authorizations":[]
-		 },
+		 },		 
 		 {"authName":"taskmanagement.tasklistreport",
 		  "authDisplayName":"Task List Report",
 		  "uiStateName":"taskmanagement.tasklistreport",

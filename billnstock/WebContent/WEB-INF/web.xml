@@ -163,4 +163,26 @@
     <url-pattern>/DownloadAccountChartServlet</url-pattern>
   </servlet-mapping>
 
+<servlet>
+    <description/>
+    <display-name>UploadUsersServlet</display-name>
+    <servlet-name>UploadUsersServlet</servlet-name>
+    <servlet-class>com.protostar.billnstock.servlets.UploadUsersServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UploadUsersServlet</servlet-name>
+    <url-pattern>/UploadUsersServlet</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <description/>
+    <display-name>UploadBusinessLogoServlet</display-name>
+    <servlet-name>UploadBusinessLogoServlet</servlet-name>
+    <servlet-class>com.protostar.billnstock.servlets.UploadBusinessLogoServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UploadBusinessLogoServlet</servlet-name>
+    <url-pattern>/UploadBusinessLogoServlet</url-pattern>
+  </servlet-mapping>
+  
 </web-app>

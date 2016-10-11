@@ -1,25 +1,36 @@
 
 <div layout="row" ng-cloak class="md-inline-form">
 
-	<md-content layout="column">
-	<span class="md-headline">Current Logo</span>
-		<div style="height: 80px; width:120px;  float: left; margin: 3px;  padding: 3px;">
-			<img ng-src="{{logBaseURL}}" class="md-card-image" alt="Compnay Logo" style=" max-width: 100%;  max-height: 100%;" />
-		</div>
-	<form name="imageform" method="post" enctype="multipart/form-data">
-		
+	<md-content layout="column"> <span class="md-headline">Current
+		Logo</span>
+	<div
+		style="height: 80px; width: 120px; float: left; margin: 3px; padding: 3px;">
+		<img ng-src="{{existingLogURL}}" class="md-card-image" alt="Compnay Logo"
+			style="max-width: 100%; max-height: 100%;" />
+	</div>
+	<form name="fileUploadForm" method="post" enctype="multipart/form-data">
+
 		<p style="font-size: .8em; width: 100%; text-align: center;">
 			Upload logo height/width of 80px/120px only.</p>
-		<div class="md-block">
-			<label>Upload Logo:</label> <input name="myFile" type="file"
-				class="md-raised md-primary">
-		</div>
 
-		<div>
-			<md-button ng-click="uplodeimage()" class="md-raised md-primary"
-				show-gt-md> Submit </md-button>
+		<div layout="row" layout-xs="column" flex>
+			<md-button class='md-raised' type="file" ngf-select
+				ng-model="fileObject" name="file2" accept="*.png, *.jpg, *.gif" ngf-max-size="2MB"
+				required ngf-model-invalid="errorFile">Choose Logo File</md-button>
 		</div>
-		<input type="hidden" name="bizID" id="bizID" value={{bizID}}>
+		<div layout="row" layout-xs="column" flex>
+			<label>{{uploadProgressMsg ==
+				null?fileObject.name:uploadProgressMsg}} </label>
+		</div>
+		<br>
+		<div>
+
+			<md-button class="md-raised md-primary" ng-click="uploadFile()"
+				ng-disabled="fileUploadForm.$invalid"> Submit </md-button>
+
+			<md-button class="md-raised md-primary" ng-click="back()">
+			Cancel </md-button>
+		</div>
 
 
 

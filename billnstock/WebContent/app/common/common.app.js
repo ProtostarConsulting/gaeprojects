@@ -1,8 +1,7 @@
-var app = angular.module("stockApp", [ 'ngMaterial', 'ngMessages', "xeditable",
+var app = angular.module("stockApp", [ 'ngMaterial', 'ngMessages',
 		"ui.bootstrap", "ui.router", 'md.data.table', 'ngResource',
-		'ngStorage', 'ngRoute', 'ngFileUpload', 'ngAnimate', 'ui.grid',
-		'ui.grid.selection', 'ui.grid.exporter', 'directive.g+signin',
-		'ui.bootstrap', 'textAngular', 'ngMdIcons' ]);
+		'ngStorage', 'ngRoute', 'ngFileUpload', 'ngAnimate',
+		'directive.g+signin', 'ui.bootstrap', 'textAngular', 'ngMdIcons' ]);
 
 app.factory('ajsCache', function($cacheFactory) {
 	return $cacheFactory('browserCache');
@@ -75,26 +74,29 @@ app.filter('proOrderObjectByDateField', function() {
 		return array;
 	}
 });
-app.directive("proBeforeDateCheck", function() {
-	return {
-		restrict : "A",
-		require : "ngModel",
-		link : function(scope, element, attributes, ngModel) {
-			ngModel.$validators.proBeforeDateCheck = function(currentDateValue) {				
-				var assignedDate = new Date(Number(attributes.proBeforeDateCheck));
-				if(!currentDateValue){
-					return true;
+app.directive("proBeforeDateCheck",
+		function() {
+			return {
+				restrict : "A",
+				require : "ngModel",
+				link : function(scope, element, attributes, ngModel) {
+					ngModel.$validators.proBeforeDateCheck = function(
+							currentDateValue) {
+						var assignedDate = new Date(
+								Number(attributes.proBeforeDateCheck));
+						if (!currentDateValue) {
+							return true;
+						}
+						currentDateValue.setHours(0, 0, 0, 0);
+						assignedDate.setHours(0, 0, 0, 0);
+						if (currentDateValue >= assignedDate) {
+							return true;
+						}
+						return false
+					}
 				}
-				currentDateValue.setHours(0,0,0,0);
-				assignedDate.setHours(0,0,0,0);
-				if (currentDateValue >= assignedDate) {
-					return true;
-				}
-				return false
-			}
-		}
-	};
-});
+			};
+		});
 /*
  * app.filter('formatDate1', function($filter) { return function(inputDate) {
  * return $filter('date')(inputDate, 'dd-MM-yyyy'); }; });
