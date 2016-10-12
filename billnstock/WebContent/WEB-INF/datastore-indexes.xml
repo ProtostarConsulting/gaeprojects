@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<datastore-indexes autoGenerate="true">
+	<datastore-index kind="TaskEntity" ancestor="true">
+		<property name="assignedDate" direction="asc" />
+		<property name="assignedBy" direction="asc" />
+		<property name="assignedTo" direction="asc" />
+		<property name="taskStatus" direction="asc" />
+	</datastore-index>
+</datastore-indexes>
