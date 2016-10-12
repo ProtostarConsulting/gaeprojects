@@ -118,7 +118,7 @@ public class UploadBusinessLogoServlet extends HttpServlet {
 					SimpleDateFormat sdf = new SimpleDateFormat(
 							"YYYY-MM-dd-HHmmssSSS");
 					String dtString = sdf.format(new Date());
-					final String fileNameStr = dtString + next.getName();
+					final String fileNameStr = dtString + next.getName().trim().toLowerCase();
 
 					log.info("uploadFileInfo.getContentType().toLowerCase(): "
 							+ next.getContentType().toLowerCase());

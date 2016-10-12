@@ -11,6 +11,6 @@ public class Constants {
 	public static final String PROFILE_SCOPE = "https://www.googleapis.com/auth/userinfo.profile";
 	
 	//GCS bucket names
-	public static final String PROERP_IMAGES_BUCKET = "ProERP_Image_Files";
+	public static final String PROERP_IMAGES_BUCKET = "proerp_image_files";
 
 }
