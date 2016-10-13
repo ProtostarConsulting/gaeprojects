@@ -13,6 +13,7 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
 import com.protostar.billingnstock.cust.entities.Customer;
 import com.protostar.billingnstock.hr.entities.Employee;
+import com.protostar.billingnstock.hr.entities.LeaveDetailEntity;
 import com.protostar.billingnstock.hr.entities.SalSlip;
 import com.protostar.billingnstock.hr.entities.SalStruct;
 import com.protostar.billingnstock.hr.entities.TimeSheet;
@@ -152,6 +153,7 @@ public class HrService {
 	public void addtimesheet(TimeSheet timesheet) {
 		Key<TimeSheet> now = ofy().save().entity(timesheet).now();
 
+
 	}
 
 	@ApiMethod(name = "getAlltimesheet")
@@ -187,5 +189,58 @@ public class HrService {
 		return filteredcontact;
 
 	}
-
+	
+	
+	@ApiMethod(name="saveLeaveDetail")
+	public void saveLeaveDetail(LeaveDetailEntity saveleaveDetail) {
+		
+			ofy().save().entities(saveleaveDetail).now();
+			//saveleaveDetail.setCurrentMonth();
+		}
+	
+	
+	
+	
+	
+	
+	@ApiMethod(name="getLeaveListEmp")
+	public List<LeaveDetailEntity>getLeaveListEmp(@Named("id") Long busId,@Named("month") String month,@Named ("prevMonth") String prevMonth) {
+		
+		List<LeaveDetailEntity> employeeLeaveDetaillist= ofy().load().type(LeaveDetailEntity.class).ancestor(Key.create(BusinessEntity.class, busId)).filter("currentMonth",month).list();
+		
+		if(employeeLeaveDetaillist.size()==0){
+			
+			
+			
+			
+			List<LeaveDetailEntity> list2= ofy().load().type(LeaveDetailEntity.class).ancestor(Key.create(BusinessEntity.class, busId)).filter("currentMonth",prevMonth).list();
+			if(list2.size()==0){return employeeLeaveDetaillist;}
+			
+			System.out.println("list2"+list2.size());
+			
+			
+			 for(int i=0;i<list2.size();i++){
+				 
+				 
+				
+				 employeeLeaveDetaillist.add(list2.get(i));
+				 employeeLeaveDetaillist.get(i).setOpeningBalance(list2.get(i).getNextOpeningBalance());
+				 employeeLeaveDetaillist.get(i).setId(null);	
+			
+				 employeeLeaveDetaillist.get(i).setMothLeave(0);
+				 employeeLeaveDetaillist.get(i).setTakenmothLeave(0);
+				 employeeLeaveDetaillist.get(i).setWithoutpay(0) ;
+				 employeeLeaveDetaillist.get(i).setCurrentMonth(month);
+				 employeeLeaveDetaillist.get(i).setNextOpeningBalance(0);
+		}
+	 
+	
+			
+	
+	
+	
+	}
+		
+		 return employeeLeaveDetaillist;	
 }// end of InternetService
+}
