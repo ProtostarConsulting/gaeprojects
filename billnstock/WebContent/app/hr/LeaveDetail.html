@@ -1,0 +1,95 @@
+
+<md-content layout-padding>
+<form name="employeeForm">
+
+
+
+<md-input-container flex"><lable>CurrentMonth<span style="color: red;">*</span></lable>
+		<md-select ng-model="Selectedmonth" ng-change="monthSelectChange(Selectedmonth)"
+			
+			 id="month"
+			name="month" ng-required="true">  <md-option
+			ng-value="item" ng-repeat="item in month1">{{item}}
+
+		</md-option> </md-select>
+
+		<div ng-messages="employeeForm.CurrentMonth.$error"
+			ng-if="employeeForm.$invalid || employeeForm.$pristine || employeeForm.$touched">
+			<div ng-message="required">Please Select the Group Type</div>
+
+		</div>
+		</md-input-container>
+		
+
+
+
+
+<!-- ???????? -->
+	<!-- <md-input-container flex> <label>CurrentMonth <span style="color: red;">*</span>
+	</label> <md-select ng-model="getEmptyEmployeeLeaveDetails.currentMonth" id="month" name="month" ng-change="month"
+		ng-change="monthSelect(month)"> <md-option
+		ng-value="month" ng-repeat="month in month">{{month}}</md-option> </md-select> </md-input-container>
+
+	<md-data-table-container> -->
+	<div >
+	<table md-data-table md-row-select="selected" md-progress="deferred">
+		<thead md-order="query.order" md-trigger="onOrderChange">
+			<tr>
+				<th name="Employee Name" order-by="Employee Name"></th>
+				<th name="Opening Balance" order-by="Employee Name"></th>
+
+				<th name="Current Month leave" order-by="Employee Name"></th>
+
+				<th name="Leave taken" order-by="Employee Name"></th>
+				<th name="Without Pay for" order-by="Employee Name"></th>
+				<th name="Opening Balance for next Month" order-by="Employee Name"></th>
+</tr>
+		</thead>
+
+		<tbody>
+		
+			<tr
+				ng-repeat="empLeaveDetailObj in employeeLeaveDetailsList | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+				<td><md-input-container><input
+						ng-model="empLeaveDetailObj.user.firstName" readonly="true">
+					</md-input-container></td>
+				<td><md-input-container>
+					<input ng-model="empLeaveDetailObj.openingBalance" type="number">
+					</md-input-container></td>
+				<td><md-input-container>
+					<input ng-model="empLeaveDetailObj.mothLeave" type="number">
+					</md-input-container></td>
+				<td><md-input-container>
+					<input ng-model="empLeaveDetailObj.takenmothLeave" type="number"
+						ng-blur="calculation ($index)"> </md-input-container></td>
+				<td><md-input-container>
+					<input ng-model="empLeaveDetailObj.withoutpay" readonly="true">
+					</md-input-container></td>
+				<td><md-input-container>
+					</lable>
+					<input ng-model="empLeaveDetailObj.nextOpeningBalance"
+						readonly="true"> </md-input-container></td>
+
+				<td>
+					<!-- <section layout="row" layout-sm="column">
+						<md-button class="md-raised md-primary"
+							ui-sref="hr.gSalSlip({selectedempstructno: emp.id})">View Salary Structure</md-button>
+					</section> -->
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+	<md-data-table-pagination md-limit="query.limit" md-page="query.page"
+		md-total={{emps.length}} md-trigger="onpagechange"></md-data-table-pagination>
+	</md-data-table-container>
+
+
+	<md-button class="md-raised md-primary"
+		ng-disabled="employeeForm.$invalid || employeeForm.$pristine || employeeForm.$touched"
+		ng-click="addEmpLeav()">Add</md-button>
+
+
+</form>
+</md-content>
