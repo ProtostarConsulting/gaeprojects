@@ -695,26 +695,49 @@ function googleEndpointSF($log, $q) {
 		});
 		return deferred.promise;
 	}
+	
+	
+	
+	hrService.getLeaveListEmp = function(id,month,prevMonth) {
+		var deferred = $q.defer();
+		gapi.client.hrService.getLeaveListEmp({
+			'id' : id,'month':month,'prevMonth':prevMonth
+		}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}
+	
 
 	hrService.getAllemp = function(id) {
 		var deferred = $q.defer();
 		gapi.client.hrService.getAllemp({
 			'id' : id
 		}).execute(function(resp) {
-			deferred.resolve(resp);
+			deferred.resolve(resp.items);
 		});
 		return deferred.promise;
 	}
 
 	hrService.getempByID = function(selectedempNo) {
 		var deferred = $q.defer();
+
+		gapi.client.hrService.getempByID({'id' : selectedempNo}).execute(function(resp) {
+			/* $log.debug("internet cost:=" + resp); */
+
 		gapi.client.hrService.getempByID({
 			'id' : selectedempNo
 		}).execute(function(resp) {
+
 			deferred.resolve(resp);
-		});
+	
 		return deferred.promise;
-	}
+		
+		});
+	});
+		
+
+}
 
 	hrService.updateemp = function(emp) {
 
@@ -741,6 +764,25 @@ function googleEndpointSF($log, $q) {
 		});
 		return deferred.promise;
 	}
+	
+	hrService.saveLeaveDetail=function(save){
+		
+		var deferred = $q.defer();
+	
+		gapi.client.hrService.saveLeaveDetail(save).execute(function(){
+			
+			deferred.resolve({
+				"msg" : "addEmpLeav Added Successfully."
+			});
+			
+		});
+		
+		return deferred.promise;
+	}
+	
+	
+	
+	
 
 	hrService.findsalstructure = function(struct) {
 		var deferred = $q.defer();

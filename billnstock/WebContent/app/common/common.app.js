@@ -624,7 +624,16 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/print/:printempidsalslip",
 		templateUrl : '/app/hr/print_salaryslip.html',
 		controller : 'hrctr.selected_Employeesalaryslip',
-	}).state('crm', {
+	})
+	.state('hr.LeaveDetail', {
+		url : "/LeaveDetail",
+		templateUrl : '/app/hr/LeaveDetail.html',
+		controller :'LeaveDetails',
+	})
+	
+	
+	
+	.state('crm', {
 		url : "/crm",
 		templateUrl : '/app/crm/crm_module.html',
 		controller : 'crm',
