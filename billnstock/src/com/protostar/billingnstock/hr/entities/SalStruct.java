@@ -55,6 +55,73 @@ public class SalStruct extends BaseEntity{
 	private String ldother2dis;
 	private Float ldother1amt;
 	private Float ldother2amt;
+	private Float basic;
+	private Float HRA;
+	private Float convence;
+	 
+	 
+	 
+	public Float getBasic() {
+		return basic;
+	}
+
+	public void setBasic(Float basic) {
+		this.basic = basic;
+	}
+
+	public Float getHRA() {
+		return HRA;
+	}
+
+	public void setHRA(Float hRA) {
+		HRA = hRA;
+	}
+
+	public Float getConvence() {
+		return convence;
+	}
+
+	public void setConvence(Float convence) {
+		this.convence = convence;
+	}
+
+	public Float getMedical() {
+		return medical;
+	}
+
+	public void setMedical(Float medical) {
+		this.medical = medical;
+	}
+
+	public Float getEducation() {
+		return education;
+	}
+
+	public void setEducation(Float education) {
+		this.education = education;
+	}
+
+	public Float getAdhocAllow() {
+		return adhocAllow;
+	}
+
+	public void setAdhocAllow(Float adhocAllow) {
+		this.adhocAllow = adhocAllow;
+	}
+
+	public Float getSpecialAllow() {
+		return specialAllow;
+	}
+
+	public void setSpecialAllow(Float specialAllow) {
+		this.specialAllow = specialAllow;
+	}
+
+
+	private Float medical;
+	private Float education;
+	private Float adhocAllow;
+	private Float specialAllow;
 	@Index
 	private String empid; 
 
