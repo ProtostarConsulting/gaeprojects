@@ -631,6 +631,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		controller :'LeaveDetails',
 	})
 	
+	.state('hr.SalaryMaster', {
+		url : "/SalaryMaster",
+		templateUrl : '/app/hr/SalaryMaster.html',
+		controller :'SalaryMaster',
+	})
 	
 	
 	.state('crm', {

@@ -708,6 +708,20 @@ function googleEndpointSF($log, $q) {
 		return deferred.promise;
 	}
 	
+	
+	
+	
+	
+	hrService.getSalaryMasterlist = function(id) {
+		var deferred = $q.defer();
+		gapi.client.hrService.getSalaryMasterlist({
+			'id' : id
+			}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}
+	
 
 	hrService.getAllemp = function(id) {
 		var deferred = $q.defer();
@@ -780,6 +794,22 @@ function googleEndpointSF($log, $q) {
 		return deferred.promise;
 	}
 	
+	
+	
+hrService.saveSalaryMasterDetail=function(save){
+		
+		var deferred = $q.defer();
+	
+		gapi.client.hrService.saveSalaryMasterDetail(save).execute(function(){
+			
+			deferred.resolve({
+				"msg" : "addEmpLeav Added Successfully."
+			});
+			
+		});
+		
+		return deferred.promise;
+	}
 	
 	
 	
