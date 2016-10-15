@@ -32,7 +32,7 @@
 
 	<md-data-table-container> -->
 	<div >
-	<table md-data-table md-row-select="selected" md-progress="deferred">
+	<table md-data-table  md-progress="deferred">
 		<thead md-order="query.order" md-trigger="onOrderChange">
 			<tr>
 				<th name="Employee Name" order-by="Employee Name"></th>
@@ -54,10 +54,10 @@
 						ng-model="empLeaveDetailObj.user.firstName" readonly="true">
 					</md-input-container></td>
 				<td><md-input-container>
-					<input ng-model="empLeaveDetailObj.openingBalance" type="number">
+					<input ng-model="empLeaveDetailObj.openingBalance" type="number" ng-blur="calculation ($index)">
 					</md-input-container></td>
 				<td><md-input-container>
-					<input ng-model="empLeaveDetailObj.mothLeave" type="number">
+					<input ng-model="empLeaveDetailObj.mothLeave" type="number" ng-blur="calculation ($index)">
 					</md-input-container></td>
 				<td><md-input-container>
 					<input ng-model="empLeaveDetailObj.takenmothLeave" type="number"
