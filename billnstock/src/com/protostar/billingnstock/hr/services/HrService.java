@@ -201,6 +201,25 @@ public class HrService {
 	
 	
 	
+	@ApiMethod(name="saveSalaryMasterDetail")
+	public void saveSalaryMasterDetail(SalStruct salStruct) {
+		
+			ofy().save().entities(salStruct).now();
+			
+		}
+	
+	
+	
+	@ApiMethod(name = "getSalaryMasterlist" ,path="getSalaryMasterlist")
+	public List<SalStruct> getSalaryMasterlist(@Named("id") Long busId) {
+
+		List<SalStruct> salStructlist = ofy().load().type(SalStruct.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).list();
+		System.out.println("salStructlist"+salStructlist.size());
+		return salStructlist;
+
+	}
+	
 	
 	
 	@ApiMethod(name="getLeaveListEmp")
