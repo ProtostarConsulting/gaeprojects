@@ -638,6 +638,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	})
 	
 	
+	.state('hr.MonthlyPaymentDetail', {
+		url : "/MonthlyPaymentDetail",
+		templateUrl : '/app/hr/MonthlyPaymentDetail.html',
+		controller :'MonthlyPaymentDetail',
+	})
+	
 	.state('crm', {
 		url : "/crm",
 		templateUrl : '/app/crm/crm_module.html',
