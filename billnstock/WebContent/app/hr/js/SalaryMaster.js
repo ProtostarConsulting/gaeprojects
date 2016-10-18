@@ -7,7 +7,8 @@ angular
 						appEndpointSF,$mdDialog, $mdMedia, $state) {
 					
 					
-					
+					$scope.flag=false;
+					$scope.neg=false;
 					
 					$scope.getEmptyEmployeeLeaveDetails = function(emp) {
 						return{
@@ -20,6 +21,7 @@ angular
 							  education:"",
 							  adhocAllow:"",
 							  specialAllow:"",
+							  calGrossTotal:"",
 							  business : $scope.curUser.business
 							
 					};
@@ -76,17 +78,41 @@ angular
 					
 					$scope.calculation=function (index){
 						
-						if($scope.employeeLeaveDetailsList[index].grosssal!==undefined){
+						if($scope.employeeLeaveDetailsList[index].grosssal!==null ){
 						var cal;
+						if($scope.employeeLeaveDetailsList[index].basic==null ){
+						$scope.employeeLeaveDetailsList[index].basic =$scope.employeeLeaveDetailsList[index].grosssal*(40/100);}
+						if( $scope.employeeLeaveDetailsList[index].convence=="")
+						{	$scope.employeeLeaveDetailsList[index].convence=2000;}
+						if($scope.employeeLeaveDetailsList[index].medical=="")
+						{$scope.employeeLeaveDetailsList[index].medical=1250;}
+						if($scope.employeeLeaveDetailsList[index].education=="")
+						{$scope.employeeLeaveDetailsList[index].education=200;}
 						
-						$scope.employeeLeaveDetailsList[index].basic =$scope.employeeLeaveDetailsList[index].grosssal*(40/100);
-						$scope.employeeLeaveDetailsList[index].convence=2000;
-						$scope.employeeLeaveDetailsList[index].medical=1250;
-						$scope.employeeLeaveDetailsList[index].education=200;
 						$scope.employeeLeaveDetailsList[index].specialAllow=$scope.employeeLeaveDetailsList[index].grosssal-($scope.employeeLeaveDetailsList[index].convence+$scope.employeeLeaveDetailsList[index].basic+$scope.employeeLeaveDetailsList[index].medical+$scope.employeeLeaveDetailsList[index].education);
 						
+						$scope.employeeLeaveDetailsList[index].calGrossTotal=($scope.employeeLeaveDetailsList[index].convence+$scope.employeeLeaveDetailsList[index].basic+$scope.employeeLeaveDetailsList[index].medical+$scope.employeeLeaveDetailsList[index].education)+$scope.employeeLeaveDetailsList[index].specialAllow;
+						
+						
+						
+						
 						}
+						
+							
+							
+							
+						
+						}
+					
+						
+						
+						
+					
+					
+					$scope.getSAStyle=function(spValue){
+						return {color: spValue>0?'':'red'};
 					}
+					
 					$scope.addEmpLeav=function(){
 
 						var hrService = appEndpointSF.gethrService();
