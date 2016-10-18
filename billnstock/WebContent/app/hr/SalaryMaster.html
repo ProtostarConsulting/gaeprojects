@@ -1,77 +1,95 @@
-
+<style>
+td.red {
+	color: red;
+}
+</style>
 <md-content layout-padding>
+<h3 class="md-headline">
+	<u> Salary Master</u>
+</h3>
+
 <form name="SalaryMasterform">
 
 
-	<div >
-	<table md-data-table  md-progress="deferred">
-		<thead md-order="query.order" md-trigger="onOrderChange">
-			<tr>
-				<th name="Employee Name" order-by="Employee Name"></th>
-				<th name=" Gross  " order-by="Employee Name"></th>
+	<div>
+		<table md-data-table md-progress="deferred">
+			<thead md-order="query.order" md-trigger="onOrderChange">
+				<tr>
+					<th name="Employee Name" style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
+					<th name="Monthly Gross" style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
 
-				<th name="Basic" order-by="Employee Name"></th>
+					<th name="Basic" style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
 
-				<th name="HRA" order-by="Employee Name"></th>
-				<th name="Convence" order-by="Employee Name"></th>
-				<th name="Medical" order-by="Employee Name"></th>
-				<th name="Education" order-by="Employee Name"></th>
-				<th name="AdhocAllow" order-by="Employee Name"></th>
-				<th name="SpecialAllow" order-by="Employee Name"></th>
-</tr>
-		</thead>
+					<th name="HRA" style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
+					<th name="Convence" style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
+					<th name="Medical" style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
+					<th name="Education" style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
+					<th name="AdhocAllow" style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
+					<th name="SpecialAllow" style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
+					<!-- <th name="Calculated Gross" style="margin: 0; padding-left: 0; padding-right: 5px;"></th> -->
+				</tr>
+			</thead>
 
-		<tbody>
-		
-			<tr
-				ng-repeat="empLeaveDetailObj in employeeLeaveDetailsList | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
-				<td><md-input-container><input
-						ng-model="empLeaveDetailObj.empAccount.firstName" readonly="true">
-					</md-input-container></td>
-					
-					
-					<td><md-input-container>
-					<input ng-model="empLeaveDetailObj.grosssal" type="number" ng-blur="calculation ($index)">
-					</md-input-container></td>
-					
-					
-					
-					
-				<td><md-input-container>
-					<input ng-model="empLeaveDetailObj.basic" type="number" >
-					</md-input-container></td>
-				<td><md-input-container>
-					<input ng-model="empLeaveDetailObj. HRA" type="number" >
-					</md-input-container></td>
-				<td><md-input-container>
-					<input ng-model="empLeaveDetailObj.convence" type="number"
-						> </md-input-container></td>
-				<td><md-input-container>
-					<input ng-model="empLeaveDetailObj.medical">
-					</md-input-container></td>
-				<td><md-input-container>
+			<tbody>
+
+				<tr
+					ng-repeat="empLeaveDetailObj in employeeLeaveDetailsList | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+					<td style="min-width: 220px; margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container style="margin: 0; padding: 0; padding-left: 0; padding-right: 5px;">
+						<b  ng-bind="empLeaveDetailObj.empAccount.firstName + ' ' +empLeaveDetailObj.empAccount.lastName"> </b></md-input-container></td>
+
+
+					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container style="margin: 0; padding: 0;"> <input
+							ng-model="empLeaveDetailObj.grosssal" type="number"
+							ng-blur="calculation ($index)">
+						</md-input-container></td>
+
+
+
+
+					<td style="min-width: 100px; margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container style="margin: 0; padding-left: 0; padding-right: 5px;"> <input
+							ng-model="empLeaveDetailObj.basic" type="number"
+							ng-blur="calculation ($index)">
+						</md-input-container></td>
+					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container style="margin: 0; padding: 0;"> <input
+							ng-model="empLeaveDetailObj. HRA" type="number"
+							ng-blur="calculation ($index)">
+						</md-input-container></td>
+					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container style="margin: 0; padding: 0;"> <input
+							ng-model="empLeaveDetailObj.convence" type="number"
+							ng-blur="calculation ($index)" >
+						</md-input-container></td>
+					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container style="margin: 0; padding: 0;"> <input
+							ng-model="empLeaveDetailObj.medical" type="number"
+							ng-blur="calculation ($index)">
+						</md-input-container></td>
+					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container style="margin: 0; padding: 0;"> <input
+							ng-model="empLeaveDetailObj.education"
+							ng-blur="calculation ($index)">
+						</md-input-container></td>
+
+
+					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container style="margin: 0; padding: 0;"> <input
+							ng-model="empLeaveDetailObj.adhocAllow"> </md-input-container></td>
+
+
+					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container style="margin: 0; padding: 0;"> <input
+							ng-model="empLeaveDetailObj.specialAllow" id="no"
+							value="empLeaveDetailObj.specialAllow" readonly="true"
+													
+							ng-style="getSAStyle(empLeaveDetailObj.specialAllow)"> </md-input-container></td>
+
+					<!-- <td ><md-input-container>
 					</lable>
-					<input ng-model="empLeaveDetailObj.education"
-						> </md-input-container></td>
-
-				
-				<td><md-input-container>
-					</lable>
-					<input ng-model="empLeaveDetailObj.adhocAllow"
-						> </md-input-container></td>
-
-				
-				<td><md-input-container>
-					</lable>
-					<input ng-model="empLeaveDetailObj.specialAllow"
-						readonly="true"> </md-input-container></td>
+					<input ng-model="empLeaveDetailObj.calGrossTotal"
+						readonly="true" > </md-input-container></td>
+						<td ng-if="flag" onclick="alert('Calculation is wrong')"></td>
 
 					
-				</td>
-			</tr>
-		</tbody>
-	</table>
-</div>
+				</td> -->
+				</tr>
+			</tbody>
+		</table>
+	</div>
 
 	<md-data-table-pagination md-limit="query.limit" md-page="query.page"
 		md-total={{emps.length}} md-trigger="onpagechange"></md-data-table-pagination>
@@ -79,7 +97,7 @@
 
 
 	<md-button class="md-raised md-primary"
-		ng-disabled="SalaryMasterform.$invalid || SalaryMasterform.$pristine || SalaryMasterform.$touched"
+		
 		ng-click="addEmpLeav()">Submit</md-button>
 
 
