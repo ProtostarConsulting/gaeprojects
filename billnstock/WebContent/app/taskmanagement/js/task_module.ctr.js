@@ -168,10 +168,15 @@ angular
 								.getAllUserOfOrg($scope.curUser.business.id)
 								.then(
 										function(users) {
+											var activeUserList = [];
+											angular.forEach(users.items, function(user){												
+												if(user.status == "active")
+													activeUserList.push(user);
+											});
 											ajsCache.put(
 													getAllUserOfOrgCacheKey,
-													users.items);
-											postProcessGetUserList(users.items);
+													activeUserList);
+											postProcessGetUserList(activeUserList);
 										});
 					}
 

@@ -4,10 +4,11 @@ angular
 				"indexCtr",
 				function($scope, $rootScope, $window, $log, $q, $timeout,
 						$mdToast, $mdBottomSheet, $state, $http, $location,
-						$anchorScroll, appEndpointSF) {
+						$anchorScroll, ajsCache, appEndpointSF) {
 
 					$log.log("Inside indexCtr");
 					$scope.loading = true;
+					$scope.angular = angular;
 
 					$scope.showUpdateToast = function() {
 						$mdToast.show($mdToast.simple().content(
@@ -124,6 +125,7 @@ angular
 					});
 
 					$scope.initCommonSetting = function() {
+						ajsCache.removeAll();
 						$scope.theme = $scope.curUser.business.theme;
 						$scope.logBaseURL = $scope.curUser.business.logBlobKey;
 						/*$scope.logBaseURL = '//' + window.location.host

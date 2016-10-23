@@ -6,20 +6,15 @@ angular
 						$mdUtil, $stateParams, $log, objectFactory,
 						appEndpointSF,$state) {
 					
-				/*	
-					$scope.userid = $stateParams.userid;
-					$log.debug("userid========="+$scope.userid);*/
-					
-					
-					
-					
+					$scope.loading = false;
 					
 					$scope.login=function(userid){
-						
+						$scope.loading = true;
 						 var loginService = appEndpointSF.getloginService();
 							
 						 loginService.getuserById(userid).then(
 								function(userList) {
+									$scope.loading = false;
 									$log.debug("Inside Ctr getAllleads");
 									$scope.userL = userList[0];
 									if (typeof $scope.userL === 'undefined')
