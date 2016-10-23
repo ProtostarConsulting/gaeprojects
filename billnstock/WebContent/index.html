@@ -3,21 +3,12 @@
 <head>
 <title>ProERP</title>
 <meta name="viewport" content="initial-scale=1" />
-<!--send mail files  -->
 
-<link rel="stylesheet"
-	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<link rel="stylesheet"
-	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-<!--popover css  -->
-<link
-	href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"
-	rel="stylesheet">
 <!--end send mail  -->
 <link rel="stylesheet" href="/lib/base/css/angular-material.min.css">
 <link rel="stylesheet" href="/lib/base/css/googleapi.roboto.css">
 <link rel="stylesheet" href="/lib/base/css/font-awesome.css">
-<link rel="stylesheet" href="/lib/base/css/xeditable.css">
+<!-- <link rel="stylesheet" href="/lib/base/css/xeditable.css"> -->
 <link rel="stylesheet" href="/lib/base/css/bootstrap.min.css">
 <link rel="stylesheet" href="/lib/base/css/md-data-table.min.css">
 <link rel="stylesheet" href="/lib/base/css/textAngular.css">
@@ -59,12 +50,10 @@
 		<!-- <md-card class="md-media-sm card-media"> <img
 			ng-src="{{logBaseURL}}" class="md-card-image" alt="Compnay Logo" height="80px" width="100px">
 		</md-card> -->
-		<div>
+		<div hide-xs>
 			<img ng-show="curUser.business.logBlobKey" ng-click="show_info()"
 				ng-src="{{logBaseURL}}" class="md-card-image" height="60px"
-				width="120px" /> <img ng-hide="curUser.business.logBlobKey"
-				ng-click="show_info()" src="img/images/your_default_logo.png"
-				height="60px" width="120px">
+				width="120px" />
 		</div>
 
 
@@ -524,13 +513,13 @@
 	<!-- 	Complete Sales Order js  -->
 
 	<!-- 	Purchase Order js  -->
-	<script src="/app/purchase/js/purchaseOrder_add.ctr.js"></script>
+	<!-- <script src="/app/purchase/js/purchaseOrder_add.ctr.js"></script>
 	<script src="/app/purchase/js/purchaseOrder_list.ctr.js"></script>
 	<script src="/app/purchase/js/purchaseOrder_view.ctr.js"></script>
 	<script src="/app/purchase/js/purchaseOrder_module.ctr.js"></script>
 	<script src="/app/purchase/js/purchaseOrder_edit.ctr.js"></script>
 	<script src="/app/purchase/js/supplier_add.ctr.js"></script>
-	<script src="/app/purchase/js/supplier_list.ctr.js"></script>
+	<script src="/app/purchase/js/supplier_list.ctr.js"></script> -->
 	<!-- 	Complete Purchase Order js  -->
 
 	<!-- 	hr js  -->
