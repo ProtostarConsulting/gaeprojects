@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.Writer;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletOutputStream;
@@ -17,6 +18,7 @@ import com.protostar.billingnstock.account.entities.PurchaseVoucherEntity;
 import com.protostar.billingnstock.account.entities.ReceiptVoucherEntity;
 import com.protostar.billingnstock.account.entities.SalesVoucherEntity;
 import com.protostar.billingnstock.account.entities.VoucherEntity;
+import com.protostar.billingnstock.hr.entities.MonthlyPaymentDetailEntity;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -57,13 +59,14 @@ public class PDFHtmlTemplateService {
 			generatePurchesVoucherPDF((PurchaseVoucherEntity)voucherEntity, outputStream);
 		}
 		
-		
-		
 		else{
 			throw new RuntimeException("Did not find this entity PDF handling methods: " + voucherEntity.getClass());
 		}
 	}
 
+	
+	
+	
 	private void generateSalesVoucherPDF(SalesVoucherEntity salesEntity,
 			ServletOutputStream outputStream) {
 		try {
@@ -228,8 +231,75 @@ public class PDFHtmlTemplateService {
 
 	}
 
+	public void generateHrPDF(
+			MonthlyPaymentDetailEntity monthlyPaymentDetailEntity,
+			ServletOutputStream outputStream) {
+		if (monthlyPaymentDetailEntity instanceof MonthlyPaymentDetailEntity) {
+			generateHrMonthlyPaymentDetailPDF((MonthlyPaymentDetailEntity)monthlyPaymentDetailEntity, outputStream);
+		}
+		else{
+			throw new RuntimeException("Did not find this entity PDF handling methods: " + monthlyPaymentDetailEntity.getClass());
+		}
+		
+		
+	}
+
 	
-	
+	private void generateHrMonthlyPaymentDetailPDF(MonthlyPaymentDetailEntity monthlyPaymentDetailEntity,
+			ServletOutputStream outputStream) {
+		
+		try {
+			Document document = new Document();
+			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
+
+			document.open();
+			
+			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
+
+
+			Map<String, Object> root = new HashMap<String, Object>();
+			
+			
+			root.put("Name",monthlyPaymentDetailEntity.getleaveDetailEntity().getUser().getFirstName()+monthlyPaymentDetailEntity.getleaveDetailEntity().getUser().getLastName());
+			root.put("ManthlyGross",monthlyPaymentDetailEntity.getMonthlyGrossSalary());
+			root.put("PayDays",monthlyPaymentDetailEntity.getPayableDays());
+			root.put("MonthlySalary",monthlyPaymentDetailEntity.getMonthlyGrossSalary());
+			root.put("PFDeductionAmt",monthlyPaymentDetailEntity.getPfDeductionAmt());
+			root.put("PTDeductionAmt",monthlyPaymentDetailEntity.getPtDeductionAmt());
+			root.put("Canteen",monthlyPaymentDetailEntity.getCanteenDeductionAmt());
+			root.put("OtherDeduction (Advance )",monthlyPaymentDetailEntity.getOtherDeductionAmt());
+			root.put("ITDduction",monthlyPaymentDetailEntity.getItDeductionAmt());
+			root.put("Net Salary",monthlyPaymentDetailEntity.getNetSalaryAmt());
+			root.put("Month",monthlyPaymentDetailEntity.getCurrentMonth());
+			
+			
+
+			Template temp = getConfiguration().getTemplate(
+					"pdf_templates/HrMonthlyPaymentDetailPDF.ftlh");
+
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
+					5000);
+			Writer out = new PrintWriter(byteArrayOutputStream);
+			temp.process(root, out);
+			
+
+			String pdfXMLContent = byteArrayOutputStream.toString();
+
+			worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
+			document.close();
+			
+			
+			
+			
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+	}
 	
 	
 	

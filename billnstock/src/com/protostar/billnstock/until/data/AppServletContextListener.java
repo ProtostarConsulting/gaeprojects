@@ -24,6 +24,7 @@ import com.protostar.billingnstock.crm.entities.Opportunity;
 import com.protostar.billingnstock.cust.entities.Customer;
 import com.protostar.billingnstock.hr.entities.Employee;
 import com.protostar.billingnstock.hr.entities.LeaveDetailEntity;
+import com.protostar.billingnstock.hr.entities.MonthlyPaymentDetailEntity;
 import com.protostar.billingnstock.hr.entities.SalSlip;
 import com.protostar.billingnstock.hr.entities.SalStruct;
 import com.protostar.billingnstock.hr.entities.TimeSheet;
@@ -95,6 +96,8 @@ public class AppServletContextListener implements ServletContextListener {
 		ObjectifyService.register(PurchaseVoucherEntity.class);
 		ObjectifyService.register(TaskEntity.class);
 		ObjectifyService.register(LeaveDetailEntity.class);
+		ObjectifyService.register(MonthlyPaymentDetailEntity.class);
+
 
 	}
 
