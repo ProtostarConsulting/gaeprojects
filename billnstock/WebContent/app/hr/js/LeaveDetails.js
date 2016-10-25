@@ -15,8 +15,9 @@ angular
 							takenmothLeave : "",
 							withoutpay : "",
 							nextOpeningBalance : "",
-							currentMonth:month+new Date().getFullYear(),
+							currentMonth:month+"-"+new Date().getFullYear(),
 							business : $scope.curUser.business
+							
 
 						};
 					}
@@ -33,7 +34,7 @@ angular
 						{
 						if(selectedMonth==$scope.month1[i+1])
 						{
-							var prevMonth=$scope.month1[i]+new Date().getFullYear();
+							var prevMonth=$scope.month1[i]+"-"+new Date().getFullYear();
 							break;
 
 						}
@@ -42,7 +43,7 @@ angular
 						}
 						$log.debug("$scope.prevMonth" + $scope.prevMonth);
 						
-						$scope.mon=selectedMonth+new Date().getFullYear();
+						$scope.mon=selectedMonth+"-"+new Date().getFullYear();
 						$scope.getEmpLeavList($scope.mon,prevMonth);
 					//	$scope.getEmpLeavList(month);
 					//	
