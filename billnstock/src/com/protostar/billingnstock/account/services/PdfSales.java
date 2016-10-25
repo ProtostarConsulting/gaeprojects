@@ -2,6 +2,7 @@ package com.protostar.billingnstock.account.services;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -10,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.protostar.billingnstock.account.entities.VoucherEntity;
+import com.protostar.billingnstock.hr.entities.MonthlyPaymentDetailEntity;
+import com.protostar.billingnstock.hr.services.HrService;
 import com.protostar.billnstock.until.data.PDFHtmlTemplateService;
 
 public class PdfSales extends HttpServlet {
@@ -28,7 +31,7 @@ public class PdfSales extends HttpServlet {
 		Long bid = Long.parseLong(request.getParameter("bid"));
 		String entity = String.valueOf(request.getParameter("entityname"));
 		String entityId = String.valueOf(request.getParameter("entityId"));
-
+		String month=String.valueOf(request.getParameter("month"));
 		String str1 = String.valueOf(request.getParameter("str"));
 
 		PDFHtmlTemplateService pdfHtmlTemplateService = new PDFHtmlTemplateService();
@@ -42,30 +45,45 @@ public class PdfSales extends HttpServlet {
 
 		VoucherService voucherService = new VoucherService();
 		VoucherEntity voucherEntity = null;
+		HrService hrService=new HrService();
+		MonthlyPaymentDetailEntity monthlyPaymentDetailEntity=null;
 
 		if (entity.toString().equals("SalesVoucherEntity")) {
 			voucherEntity = voucherService.getSalesListById(id, bid);
+			pdfHtmlTemplateService.generateVoucherPDF(voucherEntity,
+					outputStream);
+			
+			
+			
 		}
 		if (entity.toString().equals("ReceiptVoucherEntity"))
 
 		{
 			voucherEntity = voucherService.getRecieptListById(id, bid);
+			pdfHtmlTemplateService.generateVoucherPDF(voucherEntity,
+					outputStream);
 		}
 		if (entity.toString().equals("PurchaseVoucherEntity"))
 
 		{
 			voucherEntity = voucherService.getPurchesListById(id, bid);
-		}
-
-		try {
 			pdfHtmlTemplateService.generateVoucherPDF(voucherEntity,
 					outputStream);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-
-			outputStream.close();
 		}
-	}
+		
+		System.out.println("entity" + entity);
+		
+		if (entity.toString().equals("MonthlyPaymentDetailEntity"))
 
+		{
+			monthlyPaymentDetailEntity = hrService.getMonthlyPaymentByID(bid,month,id);
+			
+			
+			System.out.println("monthlyPaymentDetailEntity*********ii**" + monthlyPaymentDetailEntity.getNetSalaryAmt());
+			pdfHtmlTemplateService.generateHrPDF(monthlyPaymentDetailEntity,outputStream);
+		}
+		
+		
+}
+	
 }
