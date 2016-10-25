@@ -1,0 +1,126 @@
+<style>
+td.red {
+	color: red;
+}
+</style>
+<md-content layout-padding>
+<h3 class="md-headline">
+	<u> MonthlyPaymentDetail</u>
+</h3>
+
+<form name="MonthlyPaymentDetail">
+
+
+<md-input-container flex"><lable>CurrentMonth<span style="color: red;">*</span></lable>
+		<md-select ng-model="Selectedmonth" ng-change="monthSelectChange(Selectedmonth)"
+			
+			 id="month"
+			name="month" ng-required="true">  <md-option
+			ng-value="item" ng-repeat="item in month1">{{item}}
+
+		</md-option> </md-select>
+
+		<div ng-messages="MonthlyPaymentDetail.CurrentMonth.$error"
+			ng-if="MonthlyPaymentDetail.$invalid || MonthlyPaymentDetail.$pristine || MonthlyPaymentDetail.$touched">
+			<div ng-message="required">Please Select the Group Type</div>
+
+		</div>
+		</md-input-container>
+
+
+	<div ng-if="!worning">
+		<table md-data-table md-progress="deferred">
+			<thead md-order="query.order" md-trigger="onOrderChange">
+				<tr>
+					<th name="Employee Name" style="margin: 0;  padding-right: 5px;"></th>
+					<th name="Monthly Gross" style="margin: 0; padding-right: 5px;"></th>
+
+					<th name="Pay Days" style="margin: 0;  padding-right: 5px;"></th>
+
+					<th name="Monthly Salary" style="margin: 0;  padding-right: 5px;"></th>
+					<th  name="P F"  style="margin: 0;  align:center;padding-right: 5px;" ></th>
+					<th  name="P T"  style="margin: 0; align:center; width:60%  padding-right: 5px; "></th>
+					<th name="Canteen" style="margin: 0;  padding-right: 5px;"></th>
+					<th name="Other deduction (Advance )" style="margin: 0;  padding-right: 5px;"></th>
+					<th name="IT Dduction" style="margin: 0;  padding-right: 5px;"></th>
+					 <th name="Net Salary" style="margin: 0;  padding-right: 5px;"></th> 
+				</tr>
+			</thead>
+
+			<tbody>
+
+				<tr
+					ng-repeat="empLeaveDetailObj in employeeLeaveDetailsList | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+					<td style="min-width: 220px; margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container style="margin: 0; padding: 0; padding-left: 0; ">
+						<b  ng-bind="empLeaveDetailObj.leaveDetailEntity.user.firstName + ' ' +empLeaveDetailObj.leaveDetailEntity.user.lastName"> </b></md-input-container></td>
+
+
+					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container style="margin: 0; padding: 0;"> <input
+							ng-model="empLeaveDetailObj.monthlyGrossSalary" type="number"
+							ng-blur="calculation ($index)">
+						</md-input-container></td>
+
+
+
+
+					<td style="min-width: 100px; margin: 0;  padding-right: 5px;"><md-input-container style="margin: 0;  padding-right: 5px;"> <input
+							ng-model="empLeaveDetailObj.payableDays" type="number"
+							ng-blur="calculation ($index)">
+						</md-input-container></td>
+					<td style="margin: 0; padding-right: 5px;"><md-input-container style="margin: 0; padding: 0;"> <input
+							ng-model="empLeaveDetailObj.calculatedGrossSalary" type="number"
+							ng-blur="calculation ($index)">
+						</md-input-container></td>
+					<td style="margin: 0; min-width: 100px;padding-right: 5px;"><md-input-container style="margin: 0; padding: 0;"> <input
+							ng-model="empLeaveDetailObj.pfDeductionAmt" type="number"
+							ng-blur="calculation ($index)" >
+						</md-input-container></td>
+					<td style="margin: 0; min-width: 100px; padding-right: 5px;"><md-input-container style="margin: 0; padding: 0;"> <input
+							ng-model="empLeaveDetailObj.ptDeductionAmt" type="number"
+							ng-blur="calculation ($index)">
+						</md-input-container></td>
+					<td style="margin: 0;  padding-right: 5px;"><md-input-container style="margin: 0; padding: 0;"> <input
+							ng-model="empLeaveDetailObj.canteenDeductionAmt" type="number"
+							ng-blur="calculation ($index)">
+						</md-input-container></td>
+
+
+					<td style="margin: 0;  padding-right: 5px;"><md-input-container style="margin: 0; padding: 0;"> <input
+							ng-model="empLeaveDetailObj.otherDeductionAmt"  type="number" ng-blur="calculation ($index)"> </md-input-container></td>
+
+
+					<td style="margin: 0;  padding-right: 5px;"><md-input-container style="margin: 0; padding: 0;"> <input
+							ng-model="empLeaveDetailObj.specialAllow" id="no" type="number"
+							value="empLeaveDetailObj.itDeductionAmt" readonly="true">
+							 </md-input-container></td>
+
+					 <td style="margin: 0;  padding-right: 5px;" ><md-input-container style="margin: 0; padding: 0;">
+					
+					<input ng-model="empLeaveDetailObj.netSalaryAmt"
+						readonly="true" > </md-input-container></td>
+						<td><md-button class="md-fab md-primary md-hue-1 "
+			ng-click="downloadSalarySlip(empLeaveDetailObj)" aria-label="Favorite"><md-tooltip>Download Salary slip</md-tooltip> 
+		<md-icon md-svg-icon="img/icons/pdfdownload.svg"></md-icon> </md-button></td>
+					
+
+					
+				</td> 
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div  ng-if="worning" ><lable style="color:red">Entry of current month in Leave Detail not Done Please do it First!</lable></div>
+	
+
+	<md-data-table-pagination md-limit="query.limit" md-page="query.page"
+		md-total={{emps.length}} md-trigger="onpagechange"></md-data-table-pagination>
+	</md-data-table-container>
+
+
+	<md-button class="md-raised md-primary"
+		
+		ng-click="addEmpLeav()">Submit</md-button>
+
+
+</form>
+</md-content>
