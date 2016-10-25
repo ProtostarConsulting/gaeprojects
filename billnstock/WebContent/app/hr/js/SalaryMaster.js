@@ -13,15 +13,15 @@ angular
 					$scope.getEmptyEmployeeLeaveDetails = function(emp) {
 						return{
 							empAccount:emp,
-							grosssal:"",
-							 basic:"",
-							 HRA:"",
-							 convence:"",
-							 medical:"",
-							  education:"",
-							  adhocAllow:"",
-							  specialAllow:"",
-							  calGrossTotal:"",
+							grosssal:0,
+							 basic:0,
+							 HRA:0,
+							 convence:0,
+							 medical:0,
+							  education:0,
+							  adhocAllow:0,
+							  specialAllow:0,
+							  calGrossTotal:0,
 							  business : $scope.curUser.business
 							
 					};
@@ -62,14 +62,14 @@ angular
 										else
 											$scope.employeeLeaveDetailsList.length=0;
 										for (var i = 0; i < list.length; i++) {
-											
+										//if(list[i].grosssal==0)	{$scope.employeeLeaveDetailsList.push($scope.getEmptyEmployeeLeaveDetails(list[i]));}
 										$scope.employeeLeaveDetailsList.push(list[i]);
 										
 										$scope.calculation(i);
 										
 										}
 										
-									
+										$log.debug("id///////////////////////////" + $scope.curUser.business.items);
 
 									});
 						
@@ -78,18 +78,18 @@ angular
 					
 					$scope.calculation=function (index){
 						
-						if($scope.employeeLeaveDetailsList[index].grosssal!==null ){
-						var cal;
-						if($scope.employeeLeaveDetailsList[index].basic==null ){
-						$scope.employeeLeaveDetailsList[index].basic =$scope.employeeLeaveDetailsList[index].grosssal*(40/100);}
-						if( $scope.employeeLeaveDetailsList[index].convence=="")
+						if($scope.employeeLeaveDetailsList[index].grosssal!==0 ){
+						
+						if($scope.employeeLeaveDetailsList[index].basic==0 ){
+						$scope.employeeLeaveDetailsList[index].basic =$scope.employeeLeaveDetailsList[index].grosssal*40/100;}
+						if( $scope.employeeLeaveDetailsList[index].convence==0)
 						{	$scope.employeeLeaveDetailsList[index].convence=2000;}
-						if($scope.employeeLeaveDetailsList[index].medical=="")
+						if($scope.employeeLeaveDetailsList[index].medical==0)
 						{$scope.employeeLeaveDetailsList[index].medical=1250;}
-						if($scope.employeeLeaveDetailsList[index].education=="")
+						if($scope.employeeLeaveDetailsList[index].education==0)
 						{$scope.employeeLeaveDetailsList[index].education=200;}
 						
-						$scope.employeeLeaveDetailsList[index].specialAllow=$scope.employeeLeaveDetailsList[index].grosssal-($scope.employeeLeaveDetailsList[index].convence+$scope.employeeLeaveDetailsList[index].basic+$scope.employeeLeaveDetailsList[index].medical+$scope.employeeLeaveDetailsList[index].education);
+						$scope.employeeLeaveDetailsList[index].specialAllow=$scope.employeeLeaveDetailsList[index].grosssal-$scope.employeeLeaveDetailsList[index].convence-$scope.employeeLeaveDetailsList[index].basic-$scope.employeeLeaveDetailsList[index].medical-$scope.employeeLeaveDetailsList[index].education;
 						
 						$scope.employeeLeaveDetailsList[index].calGrossTotal=($scope.employeeLeaveDetailsList[index].convence+$scope.employeeLeaveDetailsList[index].basic+$scope.employeeLeaveDetailsList[index].medical+$scope.employeeLeaveDetailsList[index].education)+$scope.employeeLeaveDetailsList[index].specialAllow;
 						
@@ -132,7 +132,14 @@ angular
 					}
 					
 					$scope.getSalarylist ();
+					$scope.download=function(){
+						
+					//	window.open("DownloadSalaryMaster?id="+$scope.curUser.business.id+d);
+						document.location.href = "DownloadSalaryMaster?id="+$scope.curUser.business.id;
+						
+						
+						
+					}
 					
-					
-					
+					$log.debug("id" + $scope.curUser.business);
 				});
