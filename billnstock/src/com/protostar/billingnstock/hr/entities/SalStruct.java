@@ -58,9 +58,18 @@ public class SalStruct extends BaseEntity{
 	private Float basic;
 	private Float HRA;
 	private Float convence;
+	private Float calGrossTotal;
 	 
 	 
 	 
+	public Float getCalGrossTotal() {
+		return calGrossTotal;
+	}
+
+	public void setCalGrossTotal(Float calGrossTotal) {
+		this.calGrossTotal = calGrossTotal;
+	}
+
 	public Float getBasic() {
 		return basic;
 	}
