@@ -711,6 +711,25 @@ function googleEndpointSF($log, $q) {
 	
 	
 	
+	hrService.getMonthlyPayment = function(id,currentmonth) {
+		var deferred = $q.defer();
+		gapi.client.hrService.getMonthlyPayment({
+			'id' : id,'currentmonth':currentmonth
+			}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	hrService.getSalaryMasterlist = function(id) {
 		var deferred = $q.defer();
@@ -812,6 +831,37 @@ hrService.saveSalaryMasterDetail=function(save){
 	}
 	
 	
+
+
+
+
+hrService.saveMonthlyPaymentDetail=function(save){
+	
+	var deferred = $q.defer();
+
+	gapi.client.hrService.saveMonthlyPaymentDetail(save).execute(function(){
+		
+		deferred.resolve({
+			"msg" : "saveMonthlyPaymentDetail Added Successfully."
+		});
+		
+	});
+	
+	return deferred.promise;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 	
 
 	hrService.findsalstructure = function(struct) {
