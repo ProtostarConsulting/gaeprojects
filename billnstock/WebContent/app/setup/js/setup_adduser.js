@@ -204,7 +204,7 @@ angular
 					}
 
 					$scope.adduser = function() {
-						$scope.user.business = $scope.business;
+						$scope.user.business = $scope.curuser.business;
 						$scope.user.bankDetail = $scope.BankDetail;
 						// use selection array true false value and push that
 						// numbered item on authority
