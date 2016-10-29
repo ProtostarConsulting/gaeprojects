@@ -181,7 +181,7 @@
     <servlet-name>UploadBusinessLogoServlet</servlet-name>
     <url-pattern>/UploadBusinessLogoServlet</url-pattern>
   </servlet-mapping>
-  <servlet>
+  <!--<servlet>
     <description></description>
     <display-name>DownloadSalaryMaster</display-name>
     <servlet-name>DownloadSalaryMaster</servlet-name>
@@ -190,5 +190,16 @@
   <servlet-mapping>
     <servlet-name>DownloadSalaryMaster</servlet-name>
     <url-pattern>/DownloadSalaryMaster</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping>  --> 
+  <!--  Security constraints --> 
+  <security-constraint> 
+        <web-resource-collection> 
+                <web-resource-name>Protected Area</web-resource-name> 
+                <url-pattern>/*</url-pattern> 
+        </web-resource-collection> 
+          <user-data-constraint> 
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee> 
+          </user-data-constraint> 
+  </security-constraint> 
+  
 </web-app>

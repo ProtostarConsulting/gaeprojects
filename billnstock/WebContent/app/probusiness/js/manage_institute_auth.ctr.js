@@ -132,7 +132,7 @@ angular
 					$scope.selected = []
 					$scope.query = {
 						order : 'id',
-						limit : 5,
+						limit : 50,
 						page : 1
 					};
 

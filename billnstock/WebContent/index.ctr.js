@@ -4,7 +4,7 @@ angular
 				"indexCtr",
 				function($scope, $rootScope, $window, $log, $q, $timeout,
 						$mdToast, $mdBottomSheet, $state, $http, $location,
-						$anchorScroll, ajsCache, appEndpointSF) {
+						$anchorScroll, $mdMedia, ajsCache, appEndpointSF) {
 
 					$log.log("Inside indexCtr");
 					$scope.loading = true;
@@ -28,22 +28,6 @@ angular
 								.hideDelay(3000));
 					};
 
-					// use popover
-					/*
-					 * $('[data-toggle="popover"]').popover({ trigger: 'manual',
-					 * placement: 'bottom', html: true }).click(function (e) {
-					 * e.preventDefault(); // Exibe o popover.
-					 * $(this).popover('show');
-					 * 
-					 * $('.popover').css('left', '63px'); });
-					 */
-					/*
-					 * $(document).ready(function(){
-					 * $('[data-toggle="popover"]').popover(); });
-					 */
-					// end popover
-					// ------------------------------------------login
-					// user---------------------
 					$scope.curUser = null;
 					$scope.googleUserDetails = "";
 					$scope.googleUser = 'null';
@@ -128,12 +112,7 @@ angular
 						ajsCache.removeAll();
 						$scope.theme = $scope.curUser.business.theme;
 						$scope.logBaseURL = $scope.curUser.business.logBlobKey;
-						/*$scope.logBaseURL = '//' + window.location.host
-								+ '/serve?blob-key='
-								+ $scope.curUser.business.logBlobKey;
-						$scope.logFooterURL = '//' + window.location.host
-								+ '/serve?blob-key='
-								+ $scope.curUser.business.footerBlobKey;*/
+
 						getUserAuthTree();
 					}
 
@@ -359,20 +338,6 @@ angular
 						// check access permission here.
 					});
 
-					// ----------------------------------------------------------------
-
-					/*
-					 * $scope.showListBottomSheet=function(){
-					 * document.getElementById("myDropdown").classList.toggle("show");
-					 * var dropdowns =
-					 * document.getElementsByClassName("dropdown-content"); var
-					 * i; for (i = 0; i < dropdowns.length; i++) { var
-					 * openDropdown = dropdowns[i]; if
-					 * (openDropdown.classList.contains('show')) { //
-					 * openDropdown.classList.remove('show'); } } }
-					 */
-					// -----------------------------------------------------------------
-					// $window.initGAPI = function() {}
 					$scope.initGAPI = function() {
 						$log.debug("Came to initGAPI");
 						// This will load all server side end points
@@ -413,7 +378,8 @@ angular
 
 						$log
 								.debug("####Index: Loaded All Services, Continuing####");
-						if ($scope.curUser != undefined || $scope.curUser !== null) {
+						if ($scope.curUser != undefined
+								|| $scope.curUser !== null) {
 							$scope.initCommonSetting();
 						}
 					}
@@ -422,7 +388,6 @@ angular
 					$scope.waitForServiceLoad();
 
 					$scope.theme = 'default';
-					
 
 					$scope.themeList = [ 'default', 'red', 'pink', 'purple',
 							'deep-purple', 'indigo', 'blue', 'light-blue',
@@ -438,42 +403,24 @@ angular
 						window.history.back();
 					};
 
-				}).controller(
+				})
+		.controller(
 				'AppCtrl',
-				function($scope, $timeout, $mdSidenav, $mdUtil, $log,
-						$stateParams) {
+				function($scope, $timeout, $mdSidenav, $mdUtil, $log, $mdMedia) {
+					
+					$scope.toggleMainMenuSwitch = $mdMedia('gt-md');
+					
+					$scope.toggleMainMenu = function() {
+						$scope.toggleMainMenuSwitch = !$scope.toggleMainMenuSwitch;
+						$log
+								.debug("toggle left menu. $scope.toggleMainMenuSwitch:"
+										+ $scope.toggleMainMenuSwitch);
+					}
 
-					// $scope.userauthoritys=[];
-					$scope.userauthoritys = $stateParams.userauthoritys;
-					/*
-					 * $log.debug("userid=========" +
-					 * angular.toJson($scope.userauthoritys));
-					 */
-
-					/*
-					 * var str = $scope.userauthoritys; var arr =
-					 * str.split(','); //Note the space as well
-					 * console.log(arr); //Yields ["Apples", "Bananas",
-					 * "Cherries"]
-					 */
-					$scope.loader = {
-						invoice : "true",
-						hr : "true",
-						sales : "true",
-						crm : "true"
-
-					};
-					/*
-					 * for(i=0;i<$scope.userid.length;i++){
-					 * if($scope.userL.authority[i]=='invoice')
-					 * $scope.loader.invoice = true ;
-					 * if($scope.userL.authority[i]=='hr') $scope.loader.hr =
-					 * true ; if($scope.userL.authority[i]=='sales')
-					 * $scope.loader.sales = true ;
-					 * if($scope.userL.authority[i]=='crm') $scope.loader.crm =
-					 * true ; if($scope.userL.authority[i]=='setup')
-					 * $scope.loader.setup = true ; }
-					 */
+					$scope.close = function() {
+						if (!$mdMedia('gt-md'))
+							$scope.toggleMainMenu();
+					}
 
 					$scope.toggleLeft = buildToggler('left');
 					// $scope.toggleRight = buildToggler('right');
@@ -489,11 +436,4 @@ angular
 						}, 200);
 						return debounceFn;
 					}
-				}).controller('LeftCtrl',
-				function($scope, $timeout, $mdSidenav, $log) {
-					$scope.close = function() {
-						$mdSidenav('left').close().then(function() {
-							$log.debug("close LEFT is done");
-						});
-					};
 				});

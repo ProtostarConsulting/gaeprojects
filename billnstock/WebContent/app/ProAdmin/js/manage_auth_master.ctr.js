@@ -129,7 +129,7 @@ angular
 					$scope.selected = []
 					$scope.query = {
 						order : 'orderNumber',
-						limit : 10,
+						limit : 50,
 						page : 1
 					};
 

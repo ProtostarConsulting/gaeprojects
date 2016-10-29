@@ -10,7 +10,7 @@ angular
 					
 					$scope.query = {
 					         order: 'name',
-					         limit: 5,
+					         limit: 50,
 					         page: 1
 					       };
 					
@@ -30,7 +30,7 @@ angular
 
 						hrService.getAllemp($scope.curUser.business.id).then(function(empList) {
 							$log.debug("Inside Ctr getAllemps");
-							$scope.emps = empList.items;
+							$scope.emps = empList;
 							
 					});
 					}

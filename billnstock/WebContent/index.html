@@ -8,19 +8,13 @@
 <link rel="stylesheet" href="/lib/base/css/angular-material.min.css">
 <link rel="stylesheet" href="/lib/base/css/googleapi.roboto.css">
 <link rel="stylesheet" href="/lib/base/css/font-awesome.css">
-<!-- <link rel="stylesheet" href="/lib/base/css/xeditable.css"> -->
 <link rel="stylesheet" href="/lib/base/css/bootstrap.min.css">
 <link rel="stylesheet" href="/lib/base/css/md-data-table.min.css">
 <link rel="stylesheet" href="/lib/base/css/textAngular.css">
 <link rel="stylesheet" href="/css/accordianPane.css">
 <link href="/app/AssetMangement/css/style.css" rel="stylesheet"
 	type="text/css">
-<!-- <link rel="stylesheet" href="/lib/base/css/ui-grid.css">
-<link rel="stylesheet" href="http://ui-grid.info/release/ui-grid.css"
-	type="text/css"> -->
 <link rel="stylesheet" href="/app/setup/css/checkbox.css">
-<!-- <link rel="stylesheet" href="main.css" type="text/css">
- -->
 <link href="app/invoice/css/style.css" rel="stylesheet" type="text/css" />
 <link href="css/header.css" rel="stylesheet" type="text/css" />
 
@@ -42,100 +36,51 @@
 	<md-content id="topRight" ng-hide="loading"
 		style="padding-left: 8px; padding-right: 8px;"> <!-- Top Navigation Pane -->
 	<md-toolbar>
-	<div class="md-toolbar-tools">
-		<!-- <span hide-sm>ProERP - {{curUser.businessAccount.businessName}} Manage your business paperless, anytime,
-			& anywhere!
-		</span> <span hide-gt-sm>ProERP</span> -->
-
-		<!-- <md-card class="md-media-sm card-media"> <img
-			ng-src="{{logBaseURL}}" class="md-card-image" alt="Compnay Logo" height="80px" width="100px">
-		</md-card> -->
+	<div class="md-toolbar-tools" layout="row">
 		<div hide-xs>
 			<img ng-show="curUser.business.logBlobKey" ng-click="show_info()"
 				ng-src="{{logBaseURL}}" class="md-card-image" height="60px"
 				width="120px" />
 		</div>
-
-
-		<!-- fill up the space between left and right area -->
 		<span flex></span>
-		<section layout="row">
-			<div layout="row" layout-align="end center">
-				<!-- <md-button hide-xs class="md-icon-button md-accent" aria-label="Favorite">
-				<md-icon md-font-icon="icon-home" ng-class="font.theme" class="step"></md-icon>
+		<div layout="row" layout-align="end center">
+			<!-- fill up the space between left and right area -->
+
+			<div id="login" ng-show="!curUser">
+				<md-button class="md-icon-button" ng-click="loginClick()">
+				<ng-md-icon icon="login" style="fill: md-default" size="24">
+				<md-tooltip> Login</md-tooltip></ng-md-icon></md-button>
+				<md-button> <md-tooltip> Not Logged-in</md-tooltip> <img
+					alt="Logo" src="img/images/ic_person_black_24px.svg" class=circular>
 				</md-button>
-
-				<md-button hide-xs class="md-icon-button md-accent" aria-label="Favorite">
-				<md-icon md-svg-icon="img/icons/ic_comment_24px.svg"></md-icon> </md-button>
-				<md-button hide-xs class="md-icon-button md-accent" aria-label="Favorite">
-				<md-icon md-svg-icon="img/icons/codepen-logo.svg"></md-icon> </md-button>
-				<md-button hide-xs class="md-icon-button md-accent" aria-label="Favorite">
-				<md-icon md-svg-icon="img/icons/separator.svg"></md-icon> </md-button>
-				<md-button hide-xs class="md-icon-button" aria-label="More"
-					ng-click="toggleRight()"> <md-icon
-					md-svg-icon="img/icons/more_vert.svg"></md-icon> </md-button> -->
-
-
-
-				<!-- <div flex hide-xs layout="row" layout-align="end end"> 
-				<md-button aria-label="Logout" ng-hide="curUser == null"
-					ng-click="signOut()"> Logout </md-tooltip> </md-button>
-					
-				<md-button aria-label="Login" ng-hide="curUser !== null"
-					ng-show="curUser == null" ng-click="loginClick()">
-				Login </md-button>
-				<!-- {{ curUser.firstName}} -->
-
-
-				<div id="login" ng-show="!curUser">
-					<md-button class="md-icon-button" ng-click="loginClick()">
-					<ng-md-icon icon="login" style="fill: md-default" size="24">
-					<md-tooltip> Login</md-tooltip></ng-md-icon></md-button>
-
-					<md-button> <md-tooltip> Not Logged-in</md-tooltip> <img
-						alt="Logo" src="img/images/ic_person_black_24px.svg"
-						class=circular> </md-button>
-				</div>
-				<div id="logout" ng-show="curUser">
-					<md-button class="md-icon-button" ng-click="signOut()">
-					<ng-md-icon icon="logout" style="fill: md-default" size="24">
-					<md-tooltip> Logout</md-tooltip></ng-md-icon></md-button>
-
-					<md-button> <md-tooltip> {{
-					curUser.firstName + " " + curUser.lastName + "|" +
-					curUser.email_id}} </md-tooltip> <img
-						ngf-src="curUser.imageURl?curUser.imageURl: 'img/images/ic_person_black_24px.svg'"
-						class=circular> </md-button>
-				</div>
-
-				</script>
-
-
-
-				<!-- <md-button aria-label="Logout" ng-click="showSearch = !showSearch">
-				<ng-md-icon icon="logout"></ng-md-icon> </md-button>
-				 <md-button aria-label="Open Settings"
-					ng-click="showListBottomSheet($event)"> <ng-md-icon
-					icon="more_vert"></ng-md-icon> </md-button> -->
-				<!-- </div> -->
 			</div>
-		</section>
-
-
+			<div id="logout" ng-show="curUser">
+				<span hide-xs style="padding-top: 3px"
+					ng-bind="curUser.firstName + ' ' + curUser.lastName"> </span>
+				<md-button class="md-icon-button" ng-click="signOut()">
+				<ng-md-icon icon="logout" style="fill: md-default" size="24">
+				<md-tooltip> Logout</md-tooltip></ng-md-icon></md-button>
+				<md-button> <md-tooltip> {{
+				curUser.firstName + " " + curUser.lastName + "|" +
+				curUser.email_id}} </md-tooltip> <img
+					ngf-src="curUser.imageURl?curUser.imageURl: 'img/images/ic_person_black_24px.svg'"
+					class=circular> </md-button>
+			</div>
+		</div>
 	</div>
 
 	</md-toolbar>
-
 
 	<div ng-controller="AppCtrl">
 		<section layout="row" flex>
 			<!-- Left Navigation Pane -->
 			<md-sidenav class="md-sidenav-left md-whiteframe-z2"
-				md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
+				md-component-id="left" md-is-locked-open="toggleMainMenuSwitch">
 
 			<md-toolbar class="md-theme-indigo">
-			<h1 class="md-toolbar-tools" ng-bind="curUser.business.businessName"></h1>
-			</md-toolbar> <md-content layout="column" ng-controller="LeftCtrl">
+			<h1 class="md-toolbar-tools" ng-click="toggleMainMenu()">{{curUser.business.businessName
+				+ ' <'}}</h1>
+			</md-toolbar> <md-content layout="column">
 
 			<div>
 				<div class="md-accordion"
@@ -197,72 +142,18 @@
 				</div>
 			</div>
 
-			<!-- <md-button class="md-primary" ng-click="close()" hide-gt-md>
-			Close Sidenav </md-button> <md-button ui-sref="home"
-				ng-show="curUser.authority.length >= 0" ng-click="close()"
-				class="md-primary" show-gt-md> Home</md-button> <md-button
-				ui-sref="user_prof_detail" ng-show="curUser.authority.length >= 0"
-				ng-click="close()" class="md-primary" show-gt-md>My
-			Profile </md-button> 		<md-button ui-sref="customer" ng-show="curUser.authority.indexOf('admin') > -1|| curUser.authority.indexOf('customer') > -1" class="md-primary" show-gt-md> Customer </md-button>
-			<md-button ui-sref="account"
-				ng-show="curUser.authority.indexOf('admin') > -1|| curUser.authority.indexOf('account') > -1"
-				ng-click="close()" class="md-primary" show-gt-md>Account</md-button>
-
-
-			<md-button ui-sref="accounting"
-				ng-show="curUser.authority.indexOf('admin') > -1|| curUser.authority.indexOf('account') > -1"
-				ng-click="close()" class="md-primary" show-gt-md>Accounting
-			</md-button> <md-button ui-sref="journal"
-				ng-show="curUser.authority.indexOf('admin') > -1|| curUser.authority.indexOf('account') > -1"
-				ng-click="close()" class="md-primary" show-gt-md>Journal</md-button>
-
-
-
-			<md-button ui-sref="stock"
-				ng-show="curUser.authority.indexOf('admin') > -1|| curUser.authority.indexOf('stock') > -1"
-				ng-click="close()" ng-show="loader.stock" class="md-primary"
-				show-gt-md>Stock </md-button> <md-button ui-sref="stock" ng-click="close()" class="md-primary" show-gt-md> Stock </md-button> 
-			<md-button ui-sref="invoice"
-				ng-show="curUser.authority.indexOf('admin') > -1|| curUser.authority.indexOf('invoice') > -1"
-				ng-click="close()" class="md-primary" show-gt-md>
-			Invoice </md-button> <md-button ui-sref="salesOrder"
-				ng-show="curUser.authority.indexOf('admin') > -1|| curUser.authority.indexOf('salesOrder') > -1"
-				ng-click="close()" class="md-primary" show-gt-md> Sales
-			</md-button> <md-button ui-sref="purchaseOrder"
-				ng-show="curUser.authority.indexOf('admin') > -1|| curUser.authority.indexOf('purchaseOrder') > -1"
-				ng-click="close()" class="md-primary" show-gt-md>
-			Purchase </md-button> <md-button ui-sref="hr" id="hr"
-				ng-show="curUser.authority.indexOf('admin') > -1|| curUser.authority.indexOf('hr') > -1"
-				ng-click="close()" ng-show="loader.hr" class="md-primary" show-gt-md>
-			HR </md-button> <md-button ui-sref="crm"
-				ng-show="curUser.authority.indexOf('admin') > -1|| curUser.authority.indexOf('crm') > -1"
-				ng-show="loader.crm" class="md-primary" show-gt-md>CRM</md-button> <md-button
-				ui-sref="setup" ng-show="curUser.authority.indexOf('admin') > -1"
-				ng-click="close()" class="md-primary" show-gt-md>SETUP </md-button>
-			<md-button ui-sref="login" ng-show="curUser.authority.indexOf('admin') > -1|| curUser.authority.indexOf('login') > -1" ng-click="close()" class="md-primary" show-gt-md>LOGIN</md-button>
-			<md-button ui-sref="probusiness" ng-show="curUser.authority.indexOf('protostarcs.com') > -1 || curUser.authority.indexOf('protostar.co.in') > -1" ng-click="close()" class="md-primary" show-gt-md>ProBusiness</md-button>
-			<md-button ui-sref="AssetMangement"
-				ng-show="curUser.authority.indexOf('admin') > -1|| curUser.authority.indexOf('AssetMangement') > -1"
-				ng-click="close()" class="md-primary" show-gt-md>Asset
-			Mangement</md-button> 				<md-button ui-sref="warehouse" ng-show="curUser.authority.indexOf('admin') > -1|| curUser.authority.indexOf('warehouse') > -1" ng-click="close()" class="md-primary" show-gt-md>Warehouse Management</md-button> 
-							<md-button ui-sref="document" ng-show="curUser.authority.indexOf('admin') > -1|| curUser.authority.indexOf('document') > -1" class="md-primary" show-gt-md>Document</md-button>
-				<md-button ui-sref="email" ng-show="curUser.authority.indexOf('admin') > -1|| curUser.authority.indexOf('email') > -1" class="md-primary" show-gt-md>email</md-button>
-			<md-button ui-sref="proAdmin" ng-show="(userDoamin=='protostarcs.com' || userDoamin=='protostar.co.in') && user == 'admin'" ng-click="close()"  class="md-primary" show-gt-md>Protostar Admin </md-button>
-			<md-button ui-sref="proAdmin"
-				ng-show="curUser.authority.indexOf('protostarcs.com') > -1 || curUser.authority.indexOf('protostar.co.in') > -1"
-				ng-click="close()" class="md-primary" show-gt-md>Protostar
-			Admin </md-button>  --></md-content> </md-sidenav>
+			</md-content> </md-sidenav>
 
 
 			<md-content flex layout-padding>
-			<div class="md-toolbar-tools" hide-gt-md>
+			<div class="md-toolbar-tools" ng-hide="toggleMainMenuSwitch">
 				<div>
-					<md-button ng-click="toggleLeft()" class="md-fab md-mini"
-						aria-label="Mini FAB" hide-gt-md> <md-icon
-						md-svg-src="img/icons/menu.svg"></md-icon> </md-button>
+					<md-button ng-click="toggleMainMenu()" class="md-fab md-mini"
+						aria-label="Mini FAB">
+					<md-icon md-svg-src="img/icons/menu.svg"></md-icon> </md-button>
 				</div>
 			</div>
-			<md-card>
+			<!-- <md-card> -->
 			<div layout="column" layout-align="top stretch">
 				<!--<div ng-view></div>-->
 				<div ui-view>
@@ -314,9 +205,13 @@
 				<p>&nbsp;</p>
 				<p>&nbsp;</p>
 				<p>&nbsp;</p>
+				<md-content layout="column">
+				<hr>
+				<span flex>©2017-2018 ProERP Google Cloud Platform, a product
+					of Protostar Consulting Services, Pune. All rights reserved. </span> </md-content>
 			</div>
 
-			</md-card> </md-content>
+			<!-- </md-card>  --></md-content>
 
 			<!--This is a botton section of the app-->
 			<md-divider></md-divider>

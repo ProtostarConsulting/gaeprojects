@@ -8,6 +8,11 @@ angular
 
 					$scope.loading = true;
 
+					$scope.query = {
+						order : 'id',
+						limit : 15,
+						page : 1
+					};
 					$scope.selecteduserNo = $stateParams.selecteduserNo;
 					$scope.businessNo = $stateParams.businessNo;
 					$scope.id;
@@ -189,7 +194,7 @@ angular
 
 					function DialogController($scope, $mdDialog, curuser, user) {
 
-						//alert(angular.toJson(user));
+						// alert(angular.toJson(user));
 						$scope.hide = function() {
 							$mdDialog.hide();
 						};
@@ -252,12 +257,6 @@ angular
 							}
 						}
 					}
-
-					$scope.query = {
-						order : 'id',
-						limit : 10,
-						page : 1
-					};
 
 					$scope.toggleRight = buildToggler('right');
 

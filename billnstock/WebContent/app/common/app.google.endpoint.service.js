@@ -695,52 +695,39 @@ function googleEndpointSF($log, $q) {
 		});
 		return deferred.promise;
 	}
-	
-	
-	
-	hrService.getLeaveListEmp = function(id,month,prevMonth) {
+
+	hrService.getLeaveListEmp = function(id, month, prevMonth) {
 		var deferred = $q.defer();
 		gapi.client.hrService.getLeaveListEmp({
-			'id' : id,'month':month,'prevMonth':prevMonth
+			'id' : id,
+			'month' : month,
+			'prevMonth' : prevMonth
 		}).execute(function(resp) {
 			deferred.resolve(resp.items);
 		});
 		return deferred.promise;
 	}
-	
-	
-	
-	
-	hrService.getMonthlyPayment = function(id,currentmonth) {
+
+	hrService.getMonthlyPayment = function(id, currentmonth) {
 		var deferred = $q.defer();
 		gapi.client.hrService.getMonthlyPayment({
-			'id' : id,'currentmonth':currentmonth
-			}).execute(function(resp) {
+			'id' : id,
+			'currentmonth' : currentmonth
+		}).execute(function(resp) {
 			deferred.resolve(resp.items);
 		});
 		return deferred.promise;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	hrService.getSalaryMasterlist = function(id) {
 		var deferred = $q.defer();
 		gapi.client.hrService.getSalaryMasterlist({
 			'id' : id
-			}).execute(function(resp) {
+		}).execute(function(resp) {
 			deferred.resolve(resp.items);
 		});
 		return deferred.promise;
 	}
-	
 
 	hrService.getAllemp = function(id) {
 		var deferred = $q.defer();
@@ -755,22 +742,23 @@ function googleEndpointSF($log, $q) {
 	hrService.getempByID = function(selectedempNo) {
 		var deferred = $q.defer();
 
-		gapi.client.hrService.getempByID({'id' : selectedempNo}).execute(function(resp) {
-			/* $log.debug("internet cost:=" + resp); */
-
 		gapi.client.hrService.getempByID({
 			'id' : selectedempNo
 		}).execute(function(resp) {
+			/* $log.debug("internet cost:=" + resp); */
 
-			deferred.resolve(resp);
-	
-		return deferred.promise;
-		
+			gapi.client.hrService.getempByID({
+				'id' : selectedempNo
+			}).execute(function(resp) {
+
+				deferred.resolve(resp);
+
+				return deferred.promise;
+
+			});
 		});
-	});
-		
 
-}
+	}
 
 	hrService.updateemp = function(emp) {
 
@@ -797,72 +785,40 @@ function googleEndpointSF($log, $q) {
 		});
 		return deferred.promise;
 	}
-	
-	hrService.saveLeaveDetail=function(save){
-		
+
+	hrService.saveLeaveDetailList = function(leaveDetailList) {
 		var deferred = $q.defer();
-	
-		gapi.client.hrService.saveLeaveDetail(save).execute(function(){
-			
+		gapi.client.hrService.saveLeaveDetailList(leaveDetailList).execute(
+				function() {
+					deferred.resolve({
+						"msg" : "addEmpLeav Added Successfully."
+					});
+				});
+		return deferred.promise;
+	}
+
+	hrService.saveSalaryMasterDetailList = function(salaryMasterDetailList) {
+		var deferred = $q.defer();
+		gapi.client.hrService.saveSalaryMasterDetailList(salaryMasterDetailList).execute(function() {
 			deferred.resolve({
 				"msg" : "addEmpLeav Added Successfully."
 			});
-			
+
 		});
-		
+
 		return deferred.promise;
 	}
-	
-	
-	
-hrService.saveSalaryMasterDetail=function(save){
-		
+
+	hrService.saveMonthlyPaymentDetailList = function(monthlyPaymentDetailList) {
 		var deferred = $q.defer();
-	
-		gapi.client.hrService.saveSalaryMasterDetail(save).execute(function(){
-			
-			deferred.resolve({
-				"msg" : "addEmpLeav Added Successfully."
-			});
-			
-		});
-		
+		gapi.client.hrService.saveMonthlyPaymentDetailList(monthlyPaymentDetailList).execute(
+				function() {
+					deferred.resolve({
+						"msg" : "saveMonthlyPaymentDetail Added Successfully."
+					});
+				});
 		return deferred.promise;
 	}
-	
-	
-
-
-
-
-hrService.saveMonthlyPaymentDetail=function(save){
-	
-	var deferred = $q.defer();
-
-	gapi.client.hrService.saveMonthlyPaymentDetail(save).execute(function(){
-		
-		deferred.resolve({
-			"msg" : "saveMonthlyPaymentDetail Added Successfully."
-		});
-		
-	});
-	
-	return deferred.promise;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
 
 	hrService.findsalstructure = function(struct) {
 		var deferred = $q.defer();
