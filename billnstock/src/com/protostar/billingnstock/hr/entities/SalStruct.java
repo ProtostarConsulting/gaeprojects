@@ -6,51 +6,34 @@ import com.googlecode.objectify.annotation.Index;
 import com.protostar.billingnstock.user.entities.UserEntity;
 import com.protostar.billnstock.entity.BaseEntity;
 
-
-
 @Entity
-public class SalStruct extends BaseEntity{
-
-
+public class SalStruct extends BaseEntity {
 	@Index
 	private Ref<UserEntity> empAccount;
-	
-	
-	public UserEntity getEmpAccount() {
-		return empAccount.get();
-	}
-	
-	public void setEmpAccount(UserEntity empAccount) {
-			this.empAccount = Ref.create(empAccount);
-	}
-	
-	
-	//	private String cust_id;
-//	private String empName; 
-	private Float grosssal; 
-	private Float monthly ;
-	private Float byearly ;
-	private Float bmonthly ;
-	private Float hrayearly ;
-	private Float hramonthly ;
-	private Float ccayearly ;
-	private Float ccamonthly ;
-	private Float ec12Byearly ;
-	private Float convyearly ;
-	private Float convmonthly ;
-	private Float sayearly ;
-	private Float grandtotal; 
-	private Float samonthly ;
-	private Float bgrandtotal; 
-	private Float ptaxyearly ;
-	private Float pf1 ;
-	private Float pf2 ;
-	private Float ptaxgrandtotal ;
-	private Float netsalgrandtotalmonthly; 
-	private Float netsalgrandtotal ;
-	private Float addprobonus ;
-	private Float ctc ;
-	private Float mctc ;
+	private Float grosssal;
+	private Float monthly;
+	private Float byearly;
+	private Float bmonthly;
+	private Float hrayearly;
+	private Float hramonthly;
+	private Float ccayearly;
+	private Float ccamonthly;
+	private Float ec12Byearly;
+	private Float convyearly;
+	private Float convmonthly;
+	private Float sayearly;
+	private Float grandtotal;
+	private Float samonthly;
+	private Float bgrandtotal;
+	private Float ptaxyearly;
+	private Float pf1;
+	private Float pf2;
+	private Float ptaxgrandtotal;
+	private Float netsalgrandtotalmonthly;
+	private Float netsalgrandtotal;
+	private Float addprobonus;
+	private Float ctc;
+	private Float mctc;
 	private String ldother1dis;
 	private String ldother2dis;
 	private Float ldother1amt;
@@ -64,6 +47,13 @@ public class SalStruct extends BaseEntity{
 	private Float adhocAllow;
 	private Float specialAllow;
 
+	public UserEntity getEmpAccount() {
+		return empAccount == null ? null : empAccount.get();
+	}
+
+	public void setEmpAccount(UserEntity empAccount) {
+		this.empAccount = Ref.create(empAccount);
+	}
 
 	public Float getGrosssal() {
 		return grosssal;
@@ -352,22 +342,16 @@ public class SalStruct extends BaseEntity{
 	public void setSpecialAllow(Float specialAllow) {
 		this.specialAllow = specialAllow;
 	}
-	
-	//private String empid; 
 
-	/*public String getEmpid() {
-		return empid;
-	}
-	public void setEmpid(String empid) {
-		this.empid = empid;
-	}*/
-	/*public String getEmpName() {
-		return empName;
-	}
-	public void setEmpName(String empName) {
-		this.empName = empName;
-	}*/
-	
+	// private String empid;
+
+	/*
+	 * public String getEmpid() { return empid; } public void setEmpid(String
+	 * empid) { this.empid = empid; }
+	 */
+	/*
+	 * public String getEmpName() { return empName; } public void
+	 * setEmpName(String empName) { this.empName = empName; }
+	 */
 
 }
-

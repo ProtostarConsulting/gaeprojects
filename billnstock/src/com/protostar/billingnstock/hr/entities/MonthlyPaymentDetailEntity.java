@@ -3,95 +3,112 @@ package com.protostar.billingnstock.hr.entities;
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
-import com.protostar.billingnstock.user.entities.UserEntity;
 import com.protostar.billnstock.entity.BaseEntity;
 
 @Entity
+public class MonthlyPaymentDetailEntity extends BaseEntity {
 
-public class MonthlyPaymentDetailEntity extends BaseEntity{
-	
-	Ref <LeaveDetailEntity> leaveDetailEntity;		
+	@Index
+	private Ref<LeaveDetailEntity> leaveDetailEntity;
 	private int payableDays;
-	private int monthlyGrossSalary;
-	private int calculatedGrossSalary;
-	private int pfDeductionAmt;
-	private int ptDeductionAmt;
-	private int canteenDeductionAmt;
-	private int itDeductionAmt;
-	private int otherDeductionAmt;
-	private int netSalaryAmt;
-	
-	
+	private float monthlyGrossSalary;
+	private float calculatedGrossSalary;
+	private float pfDeductionAmt;
+	private float ptDeductionAmt;
+	private float canteenDeductionAmt;
+	private float itDeductionAmt;
+	private float otherDeductionAmt;
+	private float netSalaryAmt;
+
 	@Index
 	private String currentMonth;
-	
+
 	public LeaveDetailEntity getleaveDetailEntity() {
-		return leaveDetailEntity.get();
+		return leaveDetailEntity == null ? null : leaveDetailEntity.get();
 	}
+
 	public void setleaveDetailEntity(LeaveDetailEntity leaveDetailEntity) {
 		this.leaveDetailEntity = Ref.create(leaveDetailEntity);
-		
-	}	
+
+	}
+
 	public String getCurrentMonth() {
 		return currentMonth;
 	}
+
 	public void setCurrentMonth(String currentMonth) {
 		this.currentMonth = currentMonth;
-	}	
-	
-	
+	}
+
 	public int getPayableDays() {
 		return payableDays;
 	}
+
 	public void setPayableDays(int payableDays) {
 		this.payableDays = payableDays;
 	}
-	public int getMonthlyGrossSalary() {
+
+	public float getMonthlyGrossSalary() {
 		return monthlyGrossSalary;
 	}
-	public void setMonthlyGrossSalary(int monthlyGrossSalary) {
+
+	public void setMonthlyGrossSalary(float monthlyGrossSalary) {
 		this.monthlyGrossSalary = monthlyGrossSalary;
 	}
-	public int getCalculatedGrossSalary() {
+
+	public float getCalculatedGrossSalary() {
 		return calculatedGrossSalary;
 	}
-	public void setCalculatedGrossSalary(int calculatedGrossSalary) {
+
+	public void setCalculatedGrossSalary(float calculatedGrossSalary) {
 		this.calculatedGrossSalary = calculatedGrossSalary;
 	}
-	public int getPfDeductionAmt() {
+
+	public float getPfDeductionAmt() {
 		return pfDeductionAmt;
 	}
-	public void setPfDeductionAmt(int pfDeductionAmt) {
+
+	public void setPfDeductionAmt(float pfDeductionAmt) {
 		this.pfDeductionAmt = pfDeductionAmt;
 	}
-	public int getPtDeductionAmt() {
+
+	public float getPtDeductionAmt() {
 		return ptDeductionAmt;
 	}
-	public void setPtDeductionAmt(int ptDeductionAmt) {
+
+	public void setPtDeductionAmt(float ptDeductionAmt) {
 		this.ptDeductionAmt = ptDeductionAmt;
 	}
-	public int getCanteenDeductionAmt() {
+
+	public float getCanteenDeductionAmt() {
 		return canteenDeductionAmt;
 	}
-	public void setCanteenDeductionAmt(int canteenDeductionAmt) {
+
+	public void setCanteenDeductionAmt(float canteenDeductionAmt) {
 		this.canteenDeductionAmt = canteenDeductionAmt;
 	}
-	public int getItDeductionAmt() {
+
+	public float getItDeductionAmt() {
 		return itDeductionAmt;
 	}
-	public void setItDeductionAmt(int itDeductionAmt) {
+
+	public void setItDeductionAmt(float itDeductionAmt) {
 		this.itDeductionAmt = itDeductionAmt;
 	}
-	public int getOtherDeductionAmt() {
+
+	public float getOtherDeductionAmt() {
 		return otherDeductionAmt;
 	}
-	public void setOtherDeductionAmt(int otherDeductionAmt) {
+
+	public void setOtherDeductionAmt(float otherDeductionAmt) {
 		this.otherDeductionAmt = otherDeductionAmt;
 	}
-	public int getNetSalaryAmt() {
+
+	public float getNetSalaryAmt() {
 		return netSalaryAmt;
 	}
-	public void setNetSalaryAmt(int netSalaryAmt) {
+
+	public void setNetSalaryAmt(float netSalaryAmt) {
 		this.netSalaryAmt = netSalaryAmt;
 	}
 

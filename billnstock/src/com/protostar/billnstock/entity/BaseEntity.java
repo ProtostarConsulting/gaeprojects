@@ -3,16 +3,18 @@ package com.protostar.billnstock.entity;
 import java.util.Date;
 
 import com.googlecode.objectify.Ref;
+import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Parent;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 
+@Entity
 public abstract class BaseEntity {
 	@Id
 	private Long id;
 	@Parent
-	Ref<BusinessEntity> business;
+	private Ref<BusinessEntity> business;
 	@Index
 	private Date createdDate;
 	private Date modifiedDate;

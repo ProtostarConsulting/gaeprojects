@@ -2,6 +2,7 @@ package com.protostar.billingnstock.user.entities;
 
 import java.util.List;
 
+import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
 import com.protostar.billnstock.entity.BaseEntity;
@@ -20,6 +21,11 @@ public class UserEntity extends BaseEntity {
 	private List<String> authority;
 
 	private Boolean isGoogleUser = true;
+	@Index
+	private Boolean isLoginAllowed = false;
+	private Long empId;
+	@Index
+	private Ref<EmpDepartment> department;
 
 	/* private Address address; */
 	private BankDetail bankDetail;
@@ -109,17 +115,28 @@ public class UserEntity extends BaseEntity {
 		this.email_id = email_id;
 	}
 
-	/*
-	 * public BusinessEntity getBusiness() { return business.get(); }
-	 * 
-	 * public void setBusiness(BusinessEntity business) { this.business =
-	 * Ref.create(business); }
-	 */
+	public Boolean getIsLoginAllowed() {
+		return isLoginAllowed;
+	}
 
-	/*
-	 * public Address getAddress() { return address; }
-	 * 
-	 * public void setAddress(Address address) { this.address = address; }
-	 */
+	public void setIsLoginAllowed(Boolean isLoginAllowed) {
+		this.isLoginAllowed = isLoginAllowed;
+	}
+
+	public Long getEmpId() {
+		return empId;
+	}
+
+	public void setEmpId(Long empId) {
+		this.empId = empId;
+	}
+
+	public EmpDepartment getDepartment() {
+		return department == null ? null : department.get();
+	}
+
+	public void setDepartment(EmpDepartment department) {
+		this.department = Ref.create(department);
+	}
 
 }

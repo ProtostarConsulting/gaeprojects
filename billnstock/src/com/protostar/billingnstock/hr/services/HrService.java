@@ -2,7 +2,6 @@ package com.protostar.billingnstock.hr.services;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +20,10 @@ import com.protostar.billingnstock.hr.entities.SalStruct;
 import com.protostar.billingnstock.hr.entities.TimeSheet;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.user.entities.UserEntity;
+import com.protostar.billnstock.until.data.EntityUtil;
+import com.protostar.billnstock.until.data.LeaveDetailEntityList;
+import com.protostar.billnstock.until.data.MonthlyPaymentDetailEntityList;
+import com.protostar.billnstock.until.data.SalStructEntityList;
 
 @Api(name = "hrService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.hr.services", ownerName = "com.protostar.billingnstock.hr.services", packagePath = ""))
 public class HrService {
@@ -193,24 +196,28 @@ public class HrService {
 
 	}
 
-	@ApiMethod(name = "saveLeaveDetail")
-	public void saveLeaveDetail(LeaveDetailEntity saveleaveDetail) {
-
-		if (saveleaveDetail.getId() == null) {
-			saveleaveDetail.setCreatedDate(new Date());
-		} else {
-			saveleaveDetail.setModifiedDate(new Date());
-		}
-		
-		ofy().save().entities(saveleaveDetail).now();
+	@ApiMethod(name = "saveLeaveDetailList", path = "saveLeaveDetailList")
+	public void saveLeaveDetailList(LeaveDetailEntityList saveleaveDetailList) {
+		@SuppressWarnings("unchecked")
+		List<LeaveDetailEntity> list = (List<LeaveDetailEntity>) EntityUtil
+				.updateCreatedModifiedDate(saveleaveDetailList.getList());
+		ofy().save().entities(list).now();
 		// saveleaveDetail.setCurrentMonth();
 	}
 
-	@ApiMethod(name = "saveSalaryMasterDetail")
+	@ApiMethod(name = "saveSalaryMasterDetail", path = "saveSalaryMasterDetail")
 	public void saveSalaryMasterDetail(SalStruct salStruct) {
 
 		ofy().save().entities(salStruct).now();
 
+	}
+
+	@ApiMethod(name = "saveSalaryMasterDetailList", path = "saveSalaryMasterDetailList")
+	public void saveSalaryMasterDetailList(SalStructEntityList salStructList) {
+		@SuppressWarnings("unchecked")
+		List<SalStruct> list = (List<SalStruct>) EntityUtil
+				.updateCreatedModifiedDate(salStructList.getList());
+		ofy().save().entities(list).now();
 	}
 
 	@ApiMethod(name = "getSalaryMasterlist", path = "getSalaryMasterlist")
@@ -262,55 +269,55 @@ public class HrService {
 
 		return employeeLeaveDetaillist;
 	}// end of InternetService
-	
-	
-	
-	
-	@ApiMethod(name = "saveMonthlyPaymentDetail")
-	public void saveMonthlyPaymentDetail(MonthlyPaymentDetailEntity monthlyPaymentDetailEntity) {
 
-		ofy().save().entities(monthlyPaymentDetailEntity).now();
-
+	@ApiMethod(name = "saveMonthlyPaymentDetailList", path = "saveMonthlyPaymentDetailList")
+	public void saveMonthlyPaymentDetailList(
+			MonthlyPaymentDetailEntityList monthlyPaymentDetailEntityList) {
+		@SuppressWarnings("unchecked")
+		List<MonthlyPaymentDetailEntity> list = (List<MonthlyPaymentDetailEntity>) EntityUtil
+				.updateCreatedModifiedDate(monthlyPaymentDetailEntityList
+						.getList());
+		ofy().save().entities(list).now();
 	}
-	
-	
-	
-	
-	@ApiMethod(name = "getMonthlyPayment")
-	public List<MonthlyPaymentDetailEntity> getMonthlyPayment(@Named("id") Long busId,@Named("currentmonth") String currentmonth) {
 
-		List<MonthlyPaymentDetailEntity> monthlyPaymentDetailEntity = ofy().load().type(MonthlyPaymentDetailEntity.class)
-				.ancestor(Key.create(BusinessEntity.class, busId)).filter("currentMonth", currentmonth).list();
-		System.out.println("monthlyPaymentDetailEntity" + monthlyPaymentDetailEntity);
-	
+	@ApiMethod(name = "getMonthlyPayment")
+	public List<MonthlyPaymentDetailEntity> getMonthlyPayment(
+			@Named("id") Long busId, @Named("currentmonth") String currentmonth) {
+
+		List<MonthlyPaymentDetailEntity> monthlyPaymentDetailEntity = ofy()
+				.load().type(MonthlyPaymentDetailEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId))
+				.filter("currentMonth", currentmonth).list();
+		System.out.println("monthlyPaymentDetailEntity"
+				+ monthlyPaymentDetailEntity);
+
 		return monthlyPaymentDetailEntity;
 
 	}
-	
+
 	@ApiMethod(name = "getMonthlyPaymentByID")
-	public MonthlyPaymentDetailEntity getMonthlyPaymentByID(@Named("bid") Long busId,@Named("month") String currentmonth,@Named("id") Long empid) {
-		MonthlyPaymentDetailEntity monthlyPaymen =new MonthlyPaymentDetailEntity();
-		List<MonthlyPaymentDetailEntity> monthlyPaymentDetailEntity = ofy().load().type(MonthlyPaymentDetailEntity.class).ancestor(Key.create(BusinessEntity.class, busId )).filter("currentMonth", currentmonth).list();
-		
-		
-		for(MonthlyPaymentDetailEntity monthlyPaymentDetailEntityId:monthlyPaymentDetailEntity)
-		{
-			if(monthlyPaymentDetailEntityId.getId().equals(empid)){
-				monthlyPaymen=monthlyPaymentDetailEntityId;
-				
+	public MonthlyPaymentDetailEntity getMonthlyPaymentByID(
+			@Named("bid") Long busId, @Named("month") String currentmonth,
+			@Named("id") Long empid) {
+		MonthlyPaymentDetailEntity monthlyPaymen = new MonthlyPaymentDetailEntity();
+		List<MonthlyPaymentDetailEntity> monthlyPaymentDetailEntity = ofy()
+				.load().type(MonthlyPaymentDetailEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId))
+				.filter("currentMonth", currentmonth).list();
+
+		for (MonthlyPaymentDetailEntity monthlyPaymentDetailEntityId : monthlyPaymentDetailEntity) {
+			if (monthlyPaymentDetailEntityId.getId().equals(empid)) {
+				monthlyPaymen = monthlyPaymentDetailEntityId;
+
 			}
-			
+
 			System.out.println("monthlyPaymentDetailEntity" + monthlyPaymen);
 		}
-		
-		System.out.println("monthlyPaymentDetailEntity***********" + monthlyPaymen);
+
+		System.out.println("monthlyPaymentDetailEntity***********"
+				+ monthlyPaymen);
 		return monthlyPaymen;
 
 	}
-	
-	
-	
-	
-	
-	
+
 }

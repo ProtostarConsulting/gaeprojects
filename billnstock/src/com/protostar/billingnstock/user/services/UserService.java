@@ -26,6 +26,7 @@ import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.googlecode.objectify.Key;
 import com.protostar.billingnstock.taskmangement.TaskManagementService;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
+import com.protostar.billingnstock.user.entities.EmpDepartment;
 import com.protostar.billingnstock.user.entities.UserEntity;
 import com.protostar.billnstock.until.data.Constants;
 import com.protostar.billnstock.until.data.ServerMsg;
@@ -37,8 +38,8 @@ public class UserService {
 
 	private final Logger logger = Logger.getLogger(TaskManagementService.class
 			.getName());
-	
-	@ApiMethod(name = "addUser")
+
+	@ApiMethod(name = "addUser", path = "addUser")
 	public void addUser(UserEntity usr) throws MessagingException, IOException {
 		usr.setCreatedDate(new Date());
 		Key<UserEntity> now = ofy().save().entity(usr).now();
@@ -93,6 +94,19 @@ public class UserService {
 
 	}
 
+	@ApiMethod(name = "addEmpDepartment", path = "addEmpDepartment")
+	public void addEmpDepartment(EmpDepartment department) {
+		ofy().save().entity(department).now();
+	}
+
+	@ApiMethod(name = "getEmpDepartments", path = "getEmpDepartments")
+	public List<EmpDepartment> getEmpDepartments(@Named("id") Long id) {
+		List<EmpDepartment> list = ofy().load().type(EmpDepartment.class)
+				.ancestor(Key.create(BusinessEntity.class, id)).list();
+		logger.info("list:" + list);
+		return list;
+	}
+
 	@ApiMethod(name = "updateBusiStatus", path = "updateBusiStatus")
 	public void updateBusiStatus(BusinessEntity businessEntity) {
 		ofy().save().entity(businessEntity).now();
@@ -123,7 +137,8 @@ public class UserService {
 
 	@ApiMethod(name = "getUserByID", path = "getUserByID")
 	public UserEntity getUserByID(@Named("id") Long id) {
-		UserEntity userE = ofy().load().type(UserEntity.class).id(id.longValue()).now();
+		UserEntity userE = ofy().load().type(UserEntity.class)
+				.id(id.longValue()).now();
 		return userE;
 	}
 
@@ -161,11 +176,26 @@ public class UserService {
 	public BusinessEntity addBusiness(BusinessEntity business) {
 		Date date = new Date();
 		String DATE_FORMAT = "dd/MM/yyyy";
-
 		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-		business.setRegisterDate(sdf.format(date));
+		boolean isFreshBusiness = business.getId() == null;
+		if (isFreshBusiness) {
+			// Seth Basic Auths
+			String authorizations = "{\"authorizations\":[{\"authName\":\"updatemyprofile\",\"authorizations\":[]},{\"authName\":\"setup\",\"authorizations\":[]}]}";
+			business.setAuthorizations(authorizations);
+		}
 
-		Key<BusinessEntity> now = ofy().save().entity(business).now();
+		ofy().save().entity(business).now();
+
+		if (isFreshBusiness) {
+			// this is being created. Perform basic configs
+			// Set default department
+			business.setRegisterDate(sdf.format(date));
+			EmpDepartment defaultDepartment = new EmpDepartment();
+			defaultDepartment.setName("Default");
+			defaultDepartment.setBusiness(business);
+			defaultDepartment.setCreatedDate(new Date());
+
+		}
 		return business;
 	}
 
@@ -181,7 +211,7 @@ public class UserService {
 				list.add(user);
 			}
 		}
-		//logger.info("list:" + list);
+		// logger.info("list:" + list);
 		return list;
 	}
 
