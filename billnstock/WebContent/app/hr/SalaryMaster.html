@@ -43,9 +43,9 @@
 						style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
 					<th name="Education"
 						style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
-					<th name="AdhocAllow"
+					<th name="Adhoc Allow"
 						style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
-					<th name="SpecialAllow"
+					<th name="Special Allow"
 						style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
 					<!-- <th name="Calculated Gross" style="margin: 0; padding-left: 0; padding-right: 5px;"></th> -->
 				</tr>
@@ -54,72 +54,61 @@
 			<tbody>
 
 				<tr
-					ng-repeat="empLeaveDetailObj in employeeLeaveDetailsList | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+					ng-repeat="empSalaryMasterObj in empSalaryMasterList | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
 					<td
 						style="min-width: 220px; margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
 							style="margin: 0; padding: 0; padding-left: 0; padding-right: 5px;">
 						<b
-							ng-bind="empLeaveDetailObj.empAccount.firstName + ' ' +empLeaveDetailObj.empAccount.lastName">
+							ng-bind="empSalaryMasterObj.empAccount.firstName + ' ' +empSalaryMasterObj.empAccount.lastName">
 						</b></md-input-container></td>
 
 
 					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
 							style="margin: 0; padding: 0;"> <input
-							ng-model="empLeaveDetailObj.grosssal" type="number"
-							ng-blur="calculation ($index)"> </md-input-container></td>
-
-
-
-
+							ng-model="empSalaryMasterObj.grosssal" type="number"
+							ng-change="grossSalaryChanged($index)"
+							ng-model-options="{ debounce: 100 }"> </md-input-container></td>
 					<td
 						style="min-width: 100px; margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
 							style="margin: 0; padding-left: 0; padding-right: 5px;">
-						<input ng-model="empLeaveDetailObj.basic" type="number"
-							ng-blur="calculation ($index)"> </md-input-container></td>
+						<input ng-model="empSalaryMasterObj.basic" type="number"
+							ng-change="calSpecialAllow($index)"> </md-input-container></td>
 					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
 							style="margin: 0; padding: 0;"> <input
-							ng-model="empLeaveDetailObj. HRA" type="number"
-							ng-blur="calculation ($index)"> </md-input-container></td>
+							ng-model="empSalaryMasterObj.hramonthly" type="number"
+							ng-change="calSpecialAllow($index)"> </md-input-container></td>
 					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
 							style="margin: 0; padding: 0;"> <input
-							ng-model="empLeaveDetailObj.convence" type="number"
-							ng-blur="calculation ($index)"> </md-input-container></td>
+							ng-model="empSalaryMasterObj.convence" type="number"
+							ng-change="calSpecialAllow($index)"> </md-input-container></td>
 					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
 							style="margin: 0; padding: 0;"> <input
-							ng-model="empLeaveDetailObj.medical" type="number"
-							ng-blur="calculation ($index)"> </md-input-container></td>
+							ng-model="empSalaryMasterObj.medical" type="number"
+							ng-change="calSpecialAllow($index)"> </md-input-container></td>
 					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
 							style="margin: 0; padding: 0;"> <input
-							ng-model="empLeaveDetailObj.education"
-							ng-blur="calculation ($index)"> </md-input-container></td>
+							ng-model="empSalaryMasterObj.education"
+							ng-change="calSpecialAllow($index)"> </md-input-container></td>
 
 
 					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
 							style="margin: 0; padding: 0;"> <input
-							ng-model="empLeaveDetailObj.adhocAllow"> </md-input-container></td>
+							ng-model="empSalaryMasterObj.adhocAllow"
+							ng-change="calSpecialAllow($index)"> </md-input-container></td>
 
 
 					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
 							style="margin: 0; padding: 0;"> <input
-							ng-model="empLeaveDetailObj.specialAllow" id="no"
-							value="empLeaveDetailObj.specialAllow" readonly="true"
-							ng-style="getSAStyle(empLeaveDetailObj.specialAllow)"> </md-input-container></td>
-
-					<!-- <td ><md-input-container>
-					</lable>
-					<input ng-model="empLeaveDetailObj.calGrossTotal"
-						readonly="true" > </md-input-container></td>
-						<td ng-if="flag" onclick="alert('Calculation is wrong')"></td>
-
-					
-				</td> -->
+							ng-model="empSalaryMasterObj.specialAllow" id="no"
+							value="empSalaryMasterObj.specialAllow" readonly
+							ng-style="getHighlightRedStyle(empSalaryMasterObj.specialAllow)"> </md-input-container></td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
 
 	<md-data-table-pagination md-limit="query.limit" md-page="query.page"
-		md-total={{emps.length}} md-trigger="onpagechange"></md-data-table-pagination>
+		md-total={{empSalaryMasterList.length}} md-trigger="onpagechange"></md-data-table-pagination>
 	</md-data-table-container>
 
 	<div>

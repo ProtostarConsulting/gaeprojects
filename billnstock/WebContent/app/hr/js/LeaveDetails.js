@@ -111,8 +111,7 @@ angular
 
 						/*
 						 * for (var i = 0; i <
-						 * $scope.employeeLeaveDetailsList.length; i++) {
-						 *  //
+						 * $scope.employeeLeaveDetailsList.length; i++) { //
 						 * $scope.employeeLeaveDetailsList[i].currentMonth=$scope.month+new //
 						 * Date().getFullYear() ;
 						 * 

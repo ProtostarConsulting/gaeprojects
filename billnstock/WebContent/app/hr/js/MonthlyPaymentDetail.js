@@ -12,16 +12,16 @@ angular
 
 					$scope.salaryMasterList = [];
 
-					$scope.getEmptyEmployeeLeaveDetails = function(emp) {
+					$scope.getEmptyMonthlyPayDetails = function(emp) {
 						var salMasterObj = $scope
 								.getEmpSalaryMasterObj(emp.user);
 						return {
-
 							leaveDetailEntity : emp,
-							payableDays : "",
+							payableDays : 0,
 							monthlyGrossSalary : salMasterObj ? salMasterObj.grosssal
 									: 0,
 							calculatedGrossSalary : 0,
+							specialAllow : 0,
 							pfDeductionAmt : 0,
 							ptDeductionAmt : 0,
 							canteenDeductionAmt : 0,
@@ -33,57 +33,68 @@ angular
 						};
 					}
 
-					$scope.employeeLeaveDetailsList2 = [];
-					$scope.employeeLeaveDetailsList = [];
+					$scope.monthlyPayDetailsList = [];
 
-					$scope.calculation = function(index) {
+					$scope.totalDaysInSelectedMonth = 0;
 
-						$scope.employeeLeaveDetailsList[index].payableDays = 30 + $scope.employeeLeaveDetailsList[index].leaveDetailEntity.withoutpay;
-						$scope.employeeLeaveDetailsList[index].calculatedGrossSalary = $scope.employeeLeaveDetailsList[index].payableDays
-								* ($scope.employeeLeaveDetailsList[index].monthlyGrossSalary / 30)
+					$scope.calculateMonthlyPayment = function(index) {
+						monthlyPayDetailObj = $scope.monthlyPayDetailsList[index];
 
-						$scope.employeeLeaveDetailsList[index].netSalaryAmt = $scope.employeeLeaveDetailsList[index].calculatedGrossSalary
-								- $scope.employeeLeaveDetailsList[index].pfDeductionAmt
-								- $scope.employeeLeaveDetailsList[index].ptDeductionAmt
-								- $scope.employeeLeaveDetailsList[index].canteenDeductionAmt
-								- $scope.employeeLeaveDetailsList[index].itDeductionAmt
-								- $scope.employeeLeaveDetailsList[index].otherDeductionAmt
+						monthlyPayDetailObj.payableDays = $scope.totalDaysInSelectedMonth
+								+ monthlyPayDetailObj.leaveDetailEntity.withoutpay;
+						monthlyPayDetailObj.calculatedGrossSalary = monthlyPayDetailObj.payableDays
+								* (monthlyPayDetailObj.monthlyGrossSalary / $scope.totalDaysInSelectedMonth);
 
+						monthlyPayDetailObj.netSalaryAmt = (monthlyPayDetailObj.calculatedGrossSalary + monthlyPayDetailObj.specialAllow)
+								- monthlyPayDetailObj.pfDeductionAmt
+								- monthlyPayDetailObj.ptDeductionAmt
+								- monthlyPayDetailObj.canteenDeductionAmt
+								- monthlyPayDetailObj.itDeductionAmt
+								- monthlyPayDetailObj.otherDeductionAmt;
+
+						monthlyPayDetailObj.calculatedGrossSalary = monthlyPayDetailObj.calculatedGrossSalary
+								.toFixed(2);
+						monthlyPayDetailObj.netSalaryAmt = monthlyPayDetailObj.netSalaryAmt
+								.toFixed(2);
 					}
 
-					$scope.list = function() {
+					$scope.getMonthlyPaymentList = function() {
 						var hrService = appEndpointSF.gethrService();
 
-						hrService
-								.getMonthlyPayment($scope.curUser.business.id,
-										$scope.mon)
-								.then(
-										function(list) {
+						hrService.getMonthlyPayment($scope.curUser.business.id,
+								$scope.mon).then(function(list) {
 
-											if (list.length == 0) {
-												$scope.getEmpLeavList(
-														$scope.mon, null);
-											} else {
-												$scope.list2 = list;
-												$scope.employeeLeaveDetailsList.length = 0;
-												for (var i = 0; i < list.length; i++) {
+							if (list.length == 0) {
+								$scope.getEmpLeavList($scope.mon, null);
+							} else {
+								$scope.list2 = list;
+								$scope.monthlyPayDetailsList.length = 0;
+								for (var i = 0; i < list.length; i++) {
 
-													$scope.employeeLeaveDetailsList
-															.push(list[i]);
+									$scope.monthlyPayDetailsList.push(list[i]);
 
-												}
-											}
+								}
+							}
 
-										});
+						});
 
 					}
 
 					$scope.monthSelectChange = function(selectedMonth) {
 						$scope.worning = false;
-
+						var selectedMonthIndex = $scope.monthList
+								.indexOf(selectedMonth.trim());
+						var nowDate = new Date();
+						var salaryMonth = new Date(
+								nowDate.getFullYear(),
+								selectedMonthIndex == 11 ? selectedMonthIndex - 1
+										: selectedMonthIndex, 1);
+						$scope.totalDaysInSelectedMonth = $scope
+								.getDaysInMonth(selectedMonthIndex + 1,
+										salaryMonth.getFullYear());
 						$scope.mon = selectedMonth + "-"
-								+ new Date().getFullYear();
-						$scope.list();
+								+ salaryMonth.getFullYear();
+						$scope.getMonthlyPaymentList();
 
 					}
 
@@ -100,12 +111,13 @@ angular
 											}
 
 											else {
-												$scope.employeeLeaveDetailsList.length = 0;
+												$scope.monthlyPayDetailsList.length = 0;
 												for (var i = 0; i < list.length; i++) {
-													$scope.employeeLeaveDetailsList
+													$scope.monthlyPayDetailsList
 															.push($scope
-																	.getEmptyEmployeeLeaveDetails(list[i]));
-													$scope.calculation(i);
+																	.getEmptyMonthlyPayDetails(list[i]));
+													$scope
+															.calculateMonthlyPayment(i);
 												}
 											}
 
@@ -116,11 +128,11 @@ angular
 
 						var hrService = appEndpointSF.gethrService();
 
-						for (var i = 0; i < $scope.employeeLeaveDetailsList.length; i++) {
-							$scope.employeeLeaveDetailsList[i].currentMonth = $scope.employeeLeaveDetailsList[i].leaveDetailEntity.currentMonth;
+						for (var i = 0; i < $scope.monthlyPayDetailsList.length; i++) {
+							$scope.monthlyPayDetailsList[i].currentMonth = $scope.monthlyPayDetailsList[i].leaveDetailEntity.currentMonth;
 						}
 						hrService.saveMonthlyPaymentDetailList({
-							'list' : $scope.employeeLeaveDetailsList
+							'list' : $scope.monthlyPayDetailsList
 						}).then(function() {
 							$scope.showAddToast();
 						});
@@ -162,7 +174,7 @@ angular
 					}
 
 					$scope.highlightRed = function(payableDays) {
-						var isTrue = payableDays < 30;
+						var isTrue = payableDays < $scope.totalDaysInSelectedMonth;
 						// $log.debug("payableDays: " + payableDays + " isTrue:"
 						// + isTrue);
 						return {

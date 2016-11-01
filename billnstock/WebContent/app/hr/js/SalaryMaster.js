@@ -4,27 +4,29 @@ angular
 				"SalaryMaster",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
 						$mdUtil, $stateParams, $log, objectFactory,
-						appEndpointSF,$mdDialog, $mdMedia, $state) {
-					$scope.flag=false;
-					$scope.neg=false;
-					
-					$scope.getEmptyEmployeeLeaveDetails = function(emp) {
-						return{
-							empAccount:emp,
-							grosssal:0,
-							 basic:0,
-							 HRA:0,
-							 convence:0,
-							 medical:0,
-							  education:0,
-							  adhocAllow:0,
-							  specialAllow:0,
-							  calGrossTotal:0,
-							  business : $scope.curUser.business
-							
-					};
-				}
-					$scope.employeeLeaveDetailsList = [];
+						appEndpointSF, $mdDialog, $mdMedia, $state) {
+
+					$scope.flag = false;
+					$scope.neg = false;
+
+					$scope.getEmptySalaryMaster = function(emp) {
+						return {
+							empAccount : emp,
+							grosssal : 0,
+							basic : 0,
+							hramonthly : 0,
+							convence : 0,
+							medical : 0,
+							education : 0,
+							adhocAllow : 0,
+							specialAllow : 0,
+							calGrossTotal : 0,
+							business : $scope.curUser.business
+
+						};
+					}
+
+					$scope.empSalaryMasterList = [];
 					$scope.list = function() {
 						var hrService = appEndpointSF.gethrService();
 
@@ -33,74 +35,91 @@ angular
 								.then(
 										function(list) {
 
-											$scope.employeeLeaveDetailsList.length=0;
+											$scope.empSalaryMasterList.length = 0;
 											for (var i = 0; i < list.length; i++) {
-											
-												
-												$scope.employeeLeaveDetailsList.push($scope.getEmptyEmployeeLeaveDetails(list[i]));
-												
+
+												$scope.empSalaryMasterList
+														.push($scope
+																.getEmptySalaryMaster(list[i]));
 
 											}
 
 										});
 
 					}
-					
-					
-					$scope.getSalarylist = function() {
-							var hrService = appEndpointSF.gethrService();
-							hrService.getSalaryMasterlist($scope.curUser.business.id).then(
-									function(list) {
-										if(list.length==0){
-											$scope.list();	}
-										else
-											$scope.employeeLeaveDetailsList.length=0;
-										for (var i = 0; i < list.length; i++) {
-										// if(list[i].grosssal==0)
-										// {$scope.employeeLeaveDetailsList.push($scope.getEmptyEmployeeLeaveDetails(list[i]));}
-										$scope.employeeLeaveDetailsList.push(list[i]);
-										$scope.calculation(i);
-										}
-										$log.debug("items: " + $scope.curUser.business.items);
 
-									});
-						
-					}
-	
-					
-					$scope.calculation=function (index){
-						if($scope.employeeLeaveDetailsList[index].grosssal!==0 ){
-							if($scope.employeeLeaveDetailsList[index].basic==0 ){
-							$scope.employeeLeaveDetailsList[index].basic =$scope.employeeLeaveDetailsList[index].grosssal*40/100;}
-							if( $scope.employeeLeaveDetailsList[index].convence==0)
-							{	$scope.employeeLeaveDetailsList[index].convence=2000;}
-							if($scope.employeeLeaveDetailsList[index].medical==0)
-							{$scope.employeeLeaveDetailsList[index].medical=1250;}
-							if($scope.employeeLeaveDetailsList[index].education==0)
-							{$scope.employeeLeaveDetailsList[index].education=200;}
-							
-							$scope.employeeLeaveDetailsList[index].specialAllow=$scope.employeeLeaveDetailsList[index].grosssal-$scope.employeeLeaveDetailsList[index].convence-$scope.employeeLeaveDetailsList[index].basic-$scope.employeeLeaveDetailsList[index].medical-$scope.employeeLeaveDetailsList[index].education;
-							
-							$scope.employeeLeaveDetailsList[index].calGrossTotal=($scope.employeeLeaveDetailsList[index].convence+$scope.employeeLeaveDetailsList[index].basic+$scope.employeeLeaveDetailsList[index].medical+$scope.employeeLeaveDetailsList[index].education)+$scope.employeeLeaveDetailsList[index].specialAllow;
-							}
-					}
-					$scope.getSAStyle=function(spValue){
-						return {color: spValue>0?'':'red'};
-					}
-					
-					$scope.saveSalaryMasterDetailList=function(){
+					$scope.getSalarylist = function() {
 						var hrService = appEndpointSF.gethrService();
-						hrService.saveSalaryMasterDetailList({'list':$scope.employeeLeaveDetailsList}).then(
-								function() {
-									$scope.showAddToast();
+						hrService.getSalaryMasterlist(
+								$scope.curUser.business.id).then(
+								function(list) {
+									if (list.length == 0) {
+										$scope.list();
+									} else
+										$scope.empSalaryMasterList.length = 0;
+									for (var i = 0; i < list.length; i++) {
+										// if(list[i].grosssal==0)
+										// {$scope.empSalaryMasterList.push($scope.getEmptySalaryMaster(list[i]));}
+										$scope.empSalaryMasterList
+												.push(list[i]);
+										// $scope.calculation( i );
+									}
+									$log.debug("items: "
+											+ $scope.curUser.business.items);
+
 								});
+
 					}
-					
-					$scope.getSalarylist ();
-					$scope.download=function(){
-					// window.open("DownloadSalaryMaster?id="+$scope.curUser.business.id+d);
-						document.location.href = "DownloadSalaryMaster?id="+$scope.curUser.business.id;
+
+					$scope.calSpecialAllow = function(index) {
+						var currEmpSalMasterObj = $scope.empSalaryMasterList[index];
+						if (currEmpSalMasterObj.grosssal !== 0) {
+							currEmpSalMasterObj.specialAllow = currEmpSalMasterObj.grosssal
+									- currEmpSalMasterObj.basic
+									- currEmpSalMasterObj.hramonthly
+									- currEmpSalMasterObj.convence
+									- currEmpSalMasterObj.medical
+									- currEmpSalMasterObj.education
+									- currEmpSalMasterObj.adhocAllow;
+							currEmpSalMasterObj.specialAllow = currEmpSalMasterObj.specialAllow.toFixed(2);
+						}
 					}
-					
+
+					$scope.grossSalaryChanged = function(index) {
+						var currEmpSalMasterObj = $scope.empSalaryMasterList[index];
+						if (currEmpSalMasterObj.grosssal >= 11650) {
+							// because all below are equal to 11650, which is
+							// standard for suruchi dairy
+							currEmpSalMasterObj.basic = 5200;
+							currEmpSalMasterObj.hramonthly = 3000;
+							currEmpSalMasterObj.convence = 2000;
+							currEmpSalMasterObj.medical = 1250;
+							currEmpSalMasterObj.education = 200;
+
+							$scope.calSpecialAllow(index);
+						}
+					}
+
+					$scope.getHighlightRedStyle = function(spValue) {
+						return {
+							color : spValue > 0 ? '' : 'red'
+						};
+					}
+
+					$scope.saveSalaryMasterDetailList = function() {
+						var hrService = appEndpointSF.gethrService();
+						hrService.saveSalaryMasterDetailList({
+							'list' : $scope.empSalaryMasterList
+						}).then(function() {
+							$scope.showAddToast();
+						});
+					}
+
+					$scope.getSalarylist();
+					$scope.download = function() {
+						// window.open("DownloadSalaryMaster?id="+$scope.curUser.business.id+d);
+						document.location.href = "DownloadSalaryMaster?id="
+								+ $scope.curUser.business.id;
+					}
 					$log.debug("id" + $scope.curUser.business);
 				});

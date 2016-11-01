@@ -13,6 +13,7 @@ public class MonthlyPaymentDetailEntity extends BaseEntity {
 	private int payableDays;
 	private float monthlyGrossSalary;
 	private float calculatedGrossSalary;
+	private float specialAllow;
 	private float pfDeductionAmt;
 	private float ptDeductionAmt;
 	private float canteenDeductionAmt;
@@ -110,6 +111,14 @@ public class MonthlyPaymentDetailEntity extends BaseEntity {
 
 	public void setNetSalaryAmt(float netSalaryAmt) {
 		this.netSalaryAmt = netSalaryAmt;
+	}
+
+	public float getSpecialAllow() {
+		return specialAllow;
+	}
+
+	public void setSpecialAllow(float specialAllow) {
+		this.specialAllow = specialAllow;
 	}
 
 }
