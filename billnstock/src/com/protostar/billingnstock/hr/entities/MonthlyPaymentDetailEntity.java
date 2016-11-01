@@ -20,6 +20,8 @@ public class MonthlyPaymentDetailEntity extends BaseEntity {
 	private float itDeductionAmt;
 	private float otherDeductionAmt;
 	private float netSalaryAmt;
+	
+	private SalStruct salStruct;
 
 	@Index
 	private String currentMonth;
@@ -119,6 +121,14 @@ public class MonthlyPaymentDetailEntity extends BaseEntity {
 
 	public void setSpecialAllow(float specialAllow) {
 		this.specialAllow = specialAllow;
+	}
+
+	public SalStruct getSalStruct() {
+		return salStruct;
+	}
+
+	public void setSalStruct(SalStruct salStruct) {
+		this.salStruct = salStruct;
 	}
 
 }

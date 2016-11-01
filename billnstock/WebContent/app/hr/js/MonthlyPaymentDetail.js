@@ -16,6 +16,7 @@ angular
 						var salMasterObj = $scope
 								.getEmpSalaryMasterObj(emp.user);
 						return {
+							salStruct:salMasterObj,
 							leaveDetailEntity : emp,
 							payableDays : 0,
 							monthlyGrossSalary : salMasterObj ? salMasterObj.grosssal
