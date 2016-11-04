@@ -22,7 +22,7 @@ angular
 						authorizations : []
 					};
 					function getAllAuthorizations() {
-
+						$scope.loading = true;
 						authService
 								.getAuthorizationMasterEntity()
 								.then(
@@ -54,6 +54,7 @@ angular
 														.push($scope.authorizationMasterEntity);
 											}
 											$scope.mode = "list";
+											$scope.loading = false;
 										});
 
 						$log.debug("Called getAllAuthorizations...");

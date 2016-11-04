@@ -1,5 +1,4 @@
-<md-content layout-padding>
-<!-- <h3 class="md-headline">Leave Detail</h3> -->
+<md-content layout-padding> <!-- <h3 class="md-headline">Leave Detail</h3> -->
 <form name="employeeForm" layout="column">
 	<div>
 		<md-input-container flex="50"> <lable>Select
@@ -32,7 +31,12 @@
 	</div>
 	</md-toolbar>
 
-	<div>
+	<div ng-if="loading">
+		<div layout="row" layout-sm="column" layout-align="space-around">
+			<md-progress-circular md-diameter="100" md-mode="indeterminate"></md-progress-circular>
+		</div>
+	</div>
+	<div ng-if="!loading">
 		<table md-data-table md-progress="deferred">
 			<thead md-order="query.order" md-trigger="onOrderChange">
 				<tr>
@@ -73,7 +77,9 @@
 							ng-model="empLeaveDetailObj.takenmothLeave" type="number"
 							ng-blur="calculation ($index)"> </md-input-container></td>
 					<td ng-style="getFormRowStyle()"><span
-						ng-bind="empLeaveDetailObj.withoutpay" ng-style="getHighlightRedStyle(empLeaveDetailObj.withoutpay)"> </span></td>
+						ng-bind="empLeaveDetailObj.withoutpay"
+						ng-style="getHighlightRedStyle(empLeaveDetailObj.withoutpay)">
+					</span></td>
 					<td ng-style="getFormRowStyle()"><span
 						ng-bind="empLeaveDetailObj.nextOpeningBalance"> </span></td>
 				</tr>

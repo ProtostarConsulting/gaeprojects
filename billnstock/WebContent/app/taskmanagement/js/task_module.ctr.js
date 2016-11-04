@@ -22,11 +22,15 @@ angular
 					sinceDate.setDate(sinceDate.getDate() - 90);
 					// $log.debug("30 Days Before local Date:"
 					// + sinceDate.toLocaleString())
+					var allUserDummy = {
+							firstName : 'ALL',
+							id : -1
+						}
 					$scope.selectFilterData = {
 						assignedDate : sinceDate,
 						taskStatus : 'ALL',
-						assignedBy : null,
-						assignedTo : null,
+						assignedBy : allUserDummy,
+						assignedTo : allUserDummy,
 						taskStatusList : angular.copy($scope.taskStatusList),
 						userList : []
 					}
@@ -184,10 +188,7 @@ angular
 						$scope.userList = userList;
 						$scope.selectFilterData.userList = angular
 								.copy($scope.userList);
-						var allUserDummy = {
-							firstName : 'ALL',
-							id : -1
-						}
+						
 						$scope.selectFilterData.userList.unshift(allUserDummy);
 						$scope.selectFilterData.assignedBy = allUserDummy;
 						$scope.selectFilterData.assignedTo = allUserDummy;

@@ -16,7 +16,7 @@ angular
 						var salMasterObj = $scope
 								.getEmpSalaryMasterObj(emp.user);
 						return {
-							salStruct:salMasterObj,
+							salStruct : salMasterObj,
 							leaveDetailEntity : emp,
 							payableDays : 0,
 							monthlyGrossSalary : salMasterObj ? salMasterObj.grosssal
@@ -100,7 +100,7 @@ angular
 					}
 
 					$scope.getEmpLeavList = function(month, prevMonth) {
-
+						$scope.loading = true;
 						var hrService = appEndpointSF.gethrService();
 						hrService
 								.getLeaveListEmp($scope.curUser.business.id,
@@ -121,14 +121,14 @@ angular
 															.calculateMonthlyPayment(i);
 												}
 											}
-
+											$scope.loading = false;
 										});
 					}
 
 					$scope.saveMonthlyPaymentDetailList = function() {
 
 						var hrService = appEndpointSF.gethrService();
-
+						$scope.loading = true;
 						for (var i = 0; i < $scope.monthlyPayDetailsList.length; i++) {
 							$scope.monthlyPayDetailsList[i].currentMonth = $scope.monthlyPayDetailsList[i].leaveDetailEntity.currentMonth;
 						}
@@ -136,6 +136,7 @@ angular
 							'list' : $scope.monthlyPayDetailsList
 						}).then(function() {
 							$scope.showAddToast();
+							$scope.loading = false;
 						});
 
 					}
@@ -152,11 +153,13 @@ angular
 					}
 
 					$scope.getSalaryMasterlist = function() {
+						$scope.loading = true;
 						var hrService = appEndpointSF.gethrService();
 						hrService.getSalaryMasterlist(
 								$scope.curUser.business.id).then(
 								function(list) {
 									$scope.salaryMasterList = list;
+									$scope.loading = false;
 								});
 
 					}
@@ -179,7 +182,8 @@ angular
 						// $log.debug("payableDays: " + payableDays + " isTrue:"
 						// + isTrue);
 						return {
-							'color' : isTrue ? 'red' : ''
+							'color' : isTrue ? 'red' : '',
+							'padding-left' : '10px'
 						};
 
 					}

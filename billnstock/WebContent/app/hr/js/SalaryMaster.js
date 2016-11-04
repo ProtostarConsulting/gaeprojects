@@ -27,14 +27,14 @@ angular
 					}
 
 					$scope.empSalaryMasterList = [];
-					$scope.list = function() {
+					$scope.getEmpList = function() {						
+						$scope.loading = true;
 						var hrService = appEndpointSF.gethrService();
-
 						hrService
 								.getAllemp($scope.curUser.business.id)
 								.then(
 										function(list) {
-
+											
 											$scope.empSalaryMasterList.length = 0;
 											for (var i = 0; i < list.length; i++) {
 
@@ -43,18 +43,20 @@ angular
 																.getEmptySalaryMaster(list[i]));
 
 											}
+											$scope.loading = false;
 
 										});
 
 					}
 
-					$scope.getSalarylist = function() {
+					$scope.getSalaryMasterlist = function() {
+						$scope.loading = true;	
 						var hrService = appEndpointSF.gethrService();
 						hrService.getSalaryMasterlist(
 								$scope.curUser.business.id).then(
 								function(list) {
 									if (list.length == 0) {
-										$scope.list();
+										$scope.getEmpList();
 									} else
 										$scope.empSalaryMasterList.length = 0;
 									for (var i = 0; i < list.length; i++) {
@@ -66,6 +68,7 @@ angular
 									}
 									$log.debug("items: "
 											+ $scope.curUser.business.items);
+									$scope.loading = false;	
 
 								});
 
@@ -115,7 +118,7 @@ angular
 						});
 					}
 
-					$scope.getSalarylist();
+					$scope.getSalaryMasterlist();
 					$scope.download = function() {
 						// window.open("DownloadSalaryMaster?id="+$scope.curUser.business.id+d);
 						document.location.href = "DownloadSalaryMaster?id="

@@ -1,4 +1,9 @@
-<md-content layout-padding> <!-- <h3 class="md-headline">Salary Master</h3> -->
+<div ng-if="loading">
+	<div layout="row" layout-sm="column" layout-align="space-around">
+		<md-progress-circular md-diameter="100" md-mode="indeterminate"></md-progress-circular>
+	</div>
+</div>
+<md-content  ng-if="!loading" ng-cloak layout-padding> <!-- <h3 class="md-headline">Salary Master</h3> -->
 
 <form name="SalaryMasterform" layout="column">
 
@@ -23,7 +28,7 @@
 		</section>
 	</div>
 	</md-toolbar>
-	<div>
+	<div ng-cloak>
 		<table md-data-table md-progress="deferred">
 			<thead md-order="query.order" md-trigger="onOrderChange">
 				<tr>

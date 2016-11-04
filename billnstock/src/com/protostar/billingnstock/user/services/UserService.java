@@ -41,6 +41,9 @@ public class UserService {
 
 	@ApiMethod(name = "addUser", path = "addUser")
 	public void addUser(UserEntity usr) throws MessagingException, IOException {
+		if (usr.getDepartment() == null)
+			setDefaultDepartment(usr);
+
 		usr.setCreatedDate(new Date());
 		Key<UserEntity> now = ofy().save().entity(usr).now();
 		int count;
@@ -94,13 +97,23 @@ public class UserService {
 
 	}
 
+	private void setDefaultDepartment(UserEntity usr) {
+		List<EmpDepartment> empDepartments = getEmpDepartments(usr
+				.getBusiness().getId());
+		for (EmpDepartment empDepartment : empDepartments) {
+			if ("Default".equalsIgnoreCase(empDepartment.getName())) {
+				usr.setDepartment(empDepartment);
+			}
+		}
+	}
+
 	@ApiMethod(name = "addEmpDepartment", path = "addEmpDepartment")
 	public void addEmpDepartment(EmpDepartment department) {
 		ofy().save().entity(department).now();
 	}
 
 	@ApiMethod(name = "getEmpDepartments", path = "getEmpDepartments")
-	public List<EmpDepartment> getEmpDepartments(@Named("id") Long id) {
+	public List<EmpDepartment> getEmpDepartments(@Named("businessId") Long id) {
 		List<EmpDepartment> list = ofy().load().type(EmpDepartment.class)
 				.ancestor(Key.create(BusinessEntity.class, id)).list();
 		logger.info("list:" + list);

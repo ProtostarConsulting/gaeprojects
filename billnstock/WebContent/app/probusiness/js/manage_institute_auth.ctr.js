@@ -23,6 +23,7 @@ angular
 					$scope.existingbusinessAuthObject = null;
 
 					function getAuthorizationMasterEntity() {
+						$scope.loading = true;
 						var authService = appEndpointSF
 								.getAuthorizationService();
 						authService
@@ -60,6 +61,7 @@ angular
 																						$scope.authorizationMasterEntity,
 																						$scope.existingbusinessAuthObject);
 																	}
+																	$scope.loading = false;
 																});
 
 											}

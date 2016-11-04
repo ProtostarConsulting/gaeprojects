@@ -1,4 +1,9 @@
-<div layout="column" layout-padding>
+<div ng-if="loading">
+	<div layout="row" layout-sm="column" layout-align="space-around">
+		<md-progress-circular md-diameter="100" md-mode="indeterminate"></md-progress-circular>
+	</div>
+</div>
+<div ng-if="!loading" layout="column" layout-padding>
 	<h3 class="md-headline">{{institute.name}}</h3>
 	<p class="md-subheader">Main Modules and Child Links Access
 		Configuration</p>

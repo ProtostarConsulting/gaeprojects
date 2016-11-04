@@ -10,7 +10,7 @@ angular
 
 					$scope.query = {
 						order : 'id',
-						limit : 15,
+						limit : 50,
 						page : 1
 					};
 					$scope.selecteduserNo = $stateParams.selecteduserNo;

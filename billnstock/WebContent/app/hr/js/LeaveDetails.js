@@ -79,7 +79,7 @@ angular
 					}
 
 					$scope.getEmpLeavList = function(month, prevMonth) {
-
+						$scope.loading = true;
 						var hrService = appEndpointSF.gethrService();
 						hrService.getLeaveListEmp($scope.curUser.business.id,
 								month, prevMonth).then(function(list) {
@@ -89,12 +89,10 @@ angular
 							} else
 								$scope.employeeLeaveDetailsList.length = 0;
 							for (var i = 0; i < list.length; i++) {
-
 								$scope.employeeLeaveDetailsList.push(list[i]);
-
 								$scope.calculation(i);
-
 							}
+							$scope.loading = false;
 
 						});
 					}
@@ -107,21 +105,7 @@ angular
 							'list' : $scope.employeeLeaveDetailsList
 						}).then(function() {
 							$scope.showAddToast();
-						});
-
-						/*
-						 * for (var i = 0; i <
-						 * $scope.employeeLeaveDetailsList.length; i++) { //
-						 * $scope.employeeLeaveDetailsList[i].currentMonth=$scope.month+new //
-						 * Date().getFullYear() ;
-						 * 
-						 * hrService.saveLeaveDetail(
-						 * $scope.employeeLeaveDetailsList[i]).then( function() {
-						 * 
-						 * $scope.showAddToast();
-						 * 
-						 * }); }
-						 */
+						});						
 					}
 
 					$scope.calculation = function(index) {

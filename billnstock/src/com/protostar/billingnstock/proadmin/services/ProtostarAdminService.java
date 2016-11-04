@@ -15,7 +15,9 @@ import com.google.api.server.spi.config.Named;
 import com.protostar.billingnstock.account.entities.AccountGroupEntity;
 import com.protostar.billingnstock.proadmin.entities.AccountType;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
+import com.protostar.billingnstock.user.entities.EmpDepartment;
 import com.protostar.billingnstock.user.entities.UserEntity;
+import com.protostar.billingnstock.user.services.UserService;
 import com.protostar.billnstock.entity.Address;
 
 @Api(name = "proadminService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.proadmin.services", ownerName = "com.protostar.billingnstock.proadmin.services", packagePath = ""))
@@ -360,6 +362,9 @@ public class ProtostarAdminService {
 		address.setPin("411034");
 
 		ofy().save().entity(businessEntity).now();
+		
+		createDefaultDepartments(businessEntity.getId());
+		
 
 		UserEntity userEntity = new UserEntity();
 		userEntity.setBusiness(businessEntity);
@@ -405,6 +410,29 @@ public class ProtostarAdminService {
 
 		// ///////////////////
 
+	}
+
+	@ApiMethod(name = "createDefaultDepartments", path = "createDefaultDepartments")
+	public void createDefaultDepartments(@Named("businessId") Long id) {
+		
+		UserService userService = new UserService();
+		
+		BusinessEntity businessEntity = userService.getBusinessById(id);
+		
+		EmpDepartment department = new EmpDepartment();
+		department.setName("Default");
+		department.setBusiness(businessEntity);
+		userService.addEmpDepartment(department);
+
+		department = new EmpDepartment();
+		department.setName("Staff");
+		department.setBusiness(businessEntity);
+		userService.addEmpDepartment(department);
+
+		department = new EmpDepartment();
+		department.setName("Workmen");
+		department.setBusiness(businessEntity);
+		userService.addEmpDepartment(department);
 	}
 
 	@ApiMethod(name = "initsetup")
