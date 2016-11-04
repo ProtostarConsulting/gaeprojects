@@ -72,7 +72,7 @@
 
 		<h3 class="md-headline" ng-show="selectedAuth.authorizations">{{
 			selectedAuth.authName==undefined?'Auth List':'Child Auth List'}}</h3>
-		<p class="md-headline"
+		<p
 			ng-show="!(selectedAuth.authorizations && selectedAuth.authorizations.length > 0)">No
 			Child Authorization</p>
 		<p>&nbsp;</p>
@@ -82,7 +82,6 @@
 
 		<div
 			ng-show="selectedAuth.authorizations && selectedAuth.authorizations.length > 0 ">
-
 			<md-data-table-container>
 			<table md-data-table md-row-select="selected" md-progress="deferred"
 				ng-click="disable()">
@@ -92,6 +91,7 @@
 						<th name="Auth Display Name" order-by="authDisplayName"></th>
 						<th name="UI State Name" order-by="uiStateName"></th>
 						<th name="Order Number" order-by="orderNumber"></th>
+						<th name="Actions"></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -101,6 +101,18 @@
 						<td>{{auth.authDisplayName}}</td>
 						<td>{{auth.uiStateName}}</td>
 						<td>{{auth.orderNumber | number}}</td>
+						<td>
+							<div layout="row" flex>
+								<md-button class="md-icon-button" id="editAuth"
+									ng-click="editAuthorization(auth)"> <ng-md-icon
+									icon="edit" style="fill: md-default" size="24"> <md-tooltip>Edit
+								Auth</md-tooltip></ng-md-icon></md-button>
+								<md-button class="md-icon-button" id="delAuth"
+									ng-click="deleteAuthorization(auth)"> <ng-md-icon
+									icon="delete" style="fill: md-default" size="24">
+								<md-tooltip>Delete Auth</md-tooltip></ng-md-icon></md-button>
+							</div>
+						</td>
 					</tr>
 				</tbody>
 			</table>
@@ -108,8 +120,6 @@
 			<md-data-table-pagination md-limit="query.limit" md-page="query.page"
 				md-total={{selectedAuth.authorizations.length}}
 				md-trigger="onpagechange"></md-data-table-pagination> </md-data-table-container>
-
-
 		</div>
 	</form>
 
@@ -119,8 +129,10 @@
 		<md-button ng-click="showAddAuthorization()"
 			class="md-primary md-raised" hide-xs>{{selectedAuth.authName==undefined?'New
 		Authorization':'New Child Authorization'}}</md-button>
-		<md-button ng-click="editAuthorization()" class="md-primary md-raised"
-			ng-show="selected.length==1">View Selected Authorization</md-button>
+		<!-- <md-button ng-click="editAuthorization()" class="md-primary md-raised"
+			ng-show="selected.length==1">View Selected Authorization</md-button> -->
+		<md-button ng-click="saveAuthorization()" class="md-primary md-raised">Save
+		Authorization</md-button>
 	</div>
 	</md-content>
 

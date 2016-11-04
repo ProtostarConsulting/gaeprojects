@@ -73,13 +73,22 @@ angular
 
 					}
 
-					$scope.editAuthorization = function() {
+					$scope.editAuthorization = function(auth) {
 						$log.debug("Called editAuthorization...");
-						$scope.selectedAuth = $scope.selected[0];
+						$scope.selectedAuth = auth ? auth : $scope.selected[0];
 						if (!$scope.selectedAuth.authorizations) {
 							$scope.selectedAuth.authorizations = [];
 						}
 						$scope.selectedAuthStack.push($scope.selectedAuth);
+						$scope.query.page = 1;
+					}
+
+					$scope.deleteAuthorization = function(auth) {
+						$log.debug("Called deleteAuthorization...Auth:" + auth.authDisplayName);
+						$log.debug("$scope.selectedAuth.authorizations.indexOf:" + $scope.selectedAuth.authorizations.indexOf(auth));
+						var indexToDle = $scope.selectedAuth.authorizations.indexOf(auth);
+						var deletedAuth = $scope.selectedAuth.authorizations.splice(indexToDle, 1);						
+						$log.debug("deletedAuth:" + deletedAuth[0].authDisplayName);
 						$scope.query.page = 1;
 					}
 
