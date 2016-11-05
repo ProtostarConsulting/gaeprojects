@@ -4,6 +4,7 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -184,6 +185,8 @@ public class UploadUsersServlet extends HttpServlet {
 				UserService userService = new UserService();
 				BusinessEntity businessEntity = userService
 						.getBusinessById(businessId);
+				
+				List<UserEntity> userList = new ArrayList<UserEntity>();
 				Date todaysDate = new Date();
 				// Start from 1 so that column headers are scriped.
 				for (int row = 1; row < split2.length; row++) {
@@ -205,16 +208,17 @@ public class UploadUsersServlet extends HttpServlet {
 						userEntity.setIsGoogleUser("1"
 								.equalsIgnoreCase(split[3].trim()));
 						userEntity.setPassword(split[4].trim());
-						ofy().save().entity(userEntity).now();
-
+						//ofy().save().entity(userEntity).now();
+						userList.add(userEntity);
 						log.fine("Processed userEntity.getFirstName(): "
 								+ userEntity.getFirstName());
 					} catch (Exception e) {
 						log.warning(e.getMessage());
 						e.printStackTrace();
 					}
-
-				}
+				}	
+				//this saves all users in single batch operation that to Async way.
+				ofy().save().entities(userList);
 			}
 		} catch (Exception e) {
 			log.severe(e.getMessage());
