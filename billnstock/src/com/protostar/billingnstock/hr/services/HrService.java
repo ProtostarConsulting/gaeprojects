@@ -2,6 +2,7 @@ package com.protostar.billingnstock.hr.services;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import com.protostar.billingnstock.hr.entities.SalStruct;
 import com.protostar.billingnstock.hr.entities.TimeSheet;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.user.entities.UserEntity;
+import com.protostar.billingnstock.user.services.UserService;
 import com.protostar.billnstock.until.data.EntityUtil;
 import com.protostar.billnstock.until.data.LeaveDetailEntityList;
 import com.protostar.billnstock.until.data.MonthlyPaymentDetailEntityList;
@@ -234,41 +236,56 @@ public class HrService {
 	public List<LeaveDetailEntity> getLeaveListEmp(@Named("id") Long busId,
 			@Named("month") String month, @Named("prevMonth") String prevMonth) {
 
-		List<LeaveDetailEntity> employeeLeaveDetaillist = ofy().load()
+		List<LeaveDetailEntity> empLeaveListToReturn = new ArrayList<LeaveDetailEntity>();
+		List<LeaveDetailEntity> empLeaveListCurrentMonth = ofy().load()
 				.type(LeaveDetailEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, busId))
 				.filter("currentMonth", month).list();
 
-		if (employeeLeaveDetaillist.size() == 0) {
+		UserService userService = new UserService();
+		List<UserEntity> userList = userService.getUsersByBusinessId(busId);
 
-			List<LeaveDetailEntity> list2 = ofy().load()
-					.type(LeaveDetailEntity.class)
-					.ancestor(Key.create(BusinessEntity.class, busId))
-					.filter("currentMonth", prevMonth).list();
-			if (list2.size() == 0) {
-				return employeeLeaveDetaillist;
-			}
-
-			System.out.println("list2" + list2.size());
-
-			for (int i = 0; i < list2.size(); i++) {
-
-				employeeLeaveDetaillist.add(list2.get(i));
-				employeeLeaveDetaillist.get(i).setOpeningBalance(
-						list2.get(i).getNextOpeningBalance());
-				employeeLeaveDetaillist.get(i).setId(null);
-
-				employeeLeaveDetaillist.get(i).setMothLeave(0);
-				employeeLeaveDetaillist.get(i).setTakenmothLeave(0);
-				employeeLeaveDetaillist.get(i).setWithoutpay(0);
-				employeeLeaveDetaillist.get(i).setCurrentMonth(month);
-				employeeLeaveDetaillist.get(i).setNextOpeningBalance(0);
-			}
-
+		if (userList.size() == empLeaveListToReturn.size()) {
+			// Meaning all employee leaves are updated. No need to process
+			// further, hence returning.
+			return empLeaveListCurrentMonth;
 		}
 
-		return employeeLeaveDetaillist;
-	}// end of InternetService
+		List<LeaveDetailEntity> empLeaveListPrevMonth = ofy().load()
+				.type(LeaveDetailEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId))
+				.filter("currentMonth", prevMonth).list();
+
+		for (UserEntity userEntity : userList) {
+			if (empLeaveListCurrentMonth != null
+					& !empLeaveListCurrentMonth.isEmpty()) {
+				LeaveDetailEntity foundLeaveDetail = null;
+				for (LeaveDetailEntity leaveDetail : empLeaveListCurrentMonth) {
+					if (leaveDetail.getUser().getId() == userEntity.getId()) {
+						foundLeaveDetail = leaveDetail;
+					}
+				}
+
+				if (foundLeaveDetail == null) {
+					foundLeaveDetail = new LeaveDetailEntity();
+					foundLeaveDetail.setUser(userEntity);
+				}
+				
+				for (LeaveDetailEntity prevMonthleaveDetail : empLeaveListPrevMonth) {
+					if (prevMonthleaveDetail.getUser().getId() == userEntity
+							.getId()) {
+						foundLeaveDetail
+								.setOpeningBalance(prevMonthleaveDetail
+										.getNextOpeningBalance());
+					}
+				}
+				
+				empLeaveListToReturn.add(foundLeaveDetail);
+			}
+		}
+
+		return empLeaveListToReturn;
+	}
 
 	@ApiMethod(name = "saveMonthlyPaymentDetailList", path = "saveMonthlyPaymentDetailList")
 	public void saveMonthlyPaymentDetailList(
