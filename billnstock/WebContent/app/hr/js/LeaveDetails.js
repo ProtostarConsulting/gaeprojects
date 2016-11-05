@@ -34,6 +34,7 @@ angular
 							"September", "October", "November", "December" ];
 
 					$scope.monthSelectChange = function(selectedMonth) {
+						$scope.worning=false;
 						$log.debug("selectedMonth" + selectedMonth);
 						for (var i = 0; i < $scope.monthList.length - 1; i++) {
 							if (selectedMonth == $scope.monthList[i + 1]) {
@@ -64,6 +65,10 @@ angular
 								.then(
 										function(list) {
 											$scope.employeeLeaveDetailsList.length = 0;
+											
+											
+											
+											
 											for (var i = 0; i < list.length; i++) {
 
 												$scope.employeeLeaveDetailsList
@@ -85,7 +90,7 @@ angular
 								month, prevMonth).then(function(list) {
 
 							if (list.length == 0) {
-								$scope.getEmpList();
+								$scope.worning=true;
 							} else
 								$scope.employeeLeaveDetailsList.length = 0;
 							for (var i = 0; i < list.length; i++) {
@@ -139,5 +144,8 @@ angular
 						};
 
 					}
+					
+					
+					
 
 				});

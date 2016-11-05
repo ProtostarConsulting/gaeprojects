@@ -771,13 +771,25 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/userlist",
 		templateUrl : '/app/setup/userlist.html',
 		controller : 'userlist',
-
-	}).state('setup.disclaimer', {
+		params : {
+			action : 'useradd'
+		}
+		}).state('setup.disclaimer', {
 		url : "/disclaimer",
 		templateUrl : '/app/setup/disclaimer.html',
 		controller : 'disclaimer',
 
-	}).state('setup.userauth', {
+	})
+	
+	.state('setup.departmentList', {
+		url : "/departmentList",
+		templateUrl : '/app/setup/setup_departmentList.html',
+		controller : 'setup.departmentList',
+
+	})
+	
+	
+	.state('setup.userauth', {
 		url : "/userauth/:selectedUserEmailId",
 		templateUrl : '/app/setup/manage_user_auth.html',
 		controller : 'manageUserAuthCtr'

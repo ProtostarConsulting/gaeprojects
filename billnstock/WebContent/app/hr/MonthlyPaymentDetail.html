@@ -4,7 +4,7 @@
 	<div>
 		<md-input-container flex="50"> <lable>Select
 		a Month to Prepare Salary Details<span style="color: red;">*</span></lable> <md-select
-			ng-model="Selectedmonth" ng-change="monthSelectChange(Selectedmonth)"
+			ng-model="Selectedmonth" ng-change="monthSelectChange(Selectedmonth)"aria-label="Selectedmonth"
 			id="month" name="month" ng-required="true"> <md-option
 			ng-value="item" ng-repeat="item in monthList">{{item}} </md-option> </md-select>
 		</md-input-container>
@@ -81,28 +81,28 @@
 						<td style="margin: 0; min-width: 100px; padding-right: 5px;"><md-input-container
 								style="margin: 0; padding: 0;"> <input
 								ng-model="monthlyPayObj.specialAllow" type="number"
-								ng-change="calculateMonthlyPayment($index)"> </md-input-container></td>
+								ng-change="calculateMonthlyPayment($index)"aria-label="specialAllow"> </md-input-container></td>
 
 						<td style="margin: 0; min-width: 100px; padding-right: 5px;"><md-input-container
 								style="margin: 0; padding: 0;"> <input
 								ng-model="monthlyPayObj.pfDeductionAmt" type="number"
-								ng-change="calculateMonthlyPayment($index)"> </md-input-container></td>
+								ng-change="calculateMonthlyPayment($index)"aria-label="pfDeductionAmt"> </md-input-container></td>
 						<td style="margin: 0; min-width: 100px; padding-right: 5px;"><md-input-container
 								style="margin: 0; padding: 0;"> <input
 								ng-model="monthlyPayObj.ptDeductionAmt" type="number"
-								ng-change="calculateMonthlyPayment($index)"> </md-input-container></td>
+								ng-change="calculateMonthlyPayment($index)"aria-label="ptDeductionAmt"> </md-input-container></td>
 						<td style="margin: 0; padding-right: 5px;"><md-input-container
 								style="margin: 0; padding: 0;"> <input
 								ng-model="monthlyPayObj.canteenDeductionAmt" type="number"
-								ng-change="calculateMonthlyPayment($index)"> </md-input-container></td>
+								ng-change="calculateMonthlyPayment($index)"aria-label="canteenDeductionAmt"> </md-input-container></td>
 						<td style="margin: 0; padding-right: 5px;"><md-input-container
 								style="margin: 0; padding: 0;"> <input
 								ng-model="monthlyPayObj.otherDeductionAmt" type="number"
-								ng-change="calculateMonthlyPayment($index)"> </md-input-container></td>
+								ng-change="calculateMonthlyPayment($index)"aria-label="otherDeductionAmt"> </md-input-container></td>
 						<td style="margin: 0; padding-right: 5px;"><md-input-container
 								style="margin: 0; padding: 0;"> <input
 								ng-model="monthlyPayObj.itDeductionAmt" type="number"
-								ng-change="calculateMonthlyPayment($index)"> </md-input-container></td>
+								ng-change="calculateMonthlyPayment($index)"aria-label="itDeductionAmt"> </md-input-container></td>
 
 						<td style="margin: 0; padding-left: 0; padding-right: 5px;"><b
 							ng-bind="monthlyPayObj.netSalaryAmt"
