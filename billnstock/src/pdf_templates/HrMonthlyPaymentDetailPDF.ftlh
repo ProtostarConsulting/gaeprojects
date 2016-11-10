@@ -1,29 +1,39 @@
 <html>
 
-<style>
+<style  type="text/css">
 table {
     border-collapse: collapse;
 }
 
 table, td, th {
     border: 1px solid black;
+    border-color:#cccccc;
      border-spacing: 5px;
+      height: 30px;
+}
+tab2{
+ 
 }
 </style>
 
 
 
-
+ 
+ 
  <div align="center" >
+ 
+ <img src="/billnstock/WebContent/img/images/protostar_logo_pix_313_132.jpg"style="width:55px;height:55px;"/>
 <b>Protostar Consulting</b>
 <br></br>
 Kasarwadi,pune
 </div>
 <hr></hr>
-
+<p><b>Employee No.</b>324 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Department:</b></p>
 <p><b>Name:</b> ${Name}</p>
 <p><b>Designation: </b> </p>
-<p><b> Month: </b>${Month} <b> Year</b>${Month}</p>
+<p><b> Month: </b>${Month} </P>
+
+<br></br>
 <table style="
     width: 100%;
  hight:100%; " >
@@ -56,9 +66,17 @@ Kasarwadi,pune
   <td>Monthly Salary</td>
   <td>${MonthlySalary}</td>
     </tr>
+    <tr>
+   <td></td>
+  <td></td>
+  <td><b>Net Salary(PF)</b></td>
+  <td>${NetSalary}</td>
+    </tr>
 	
 	 </tbody>
 		 </table>
+		 
+<p>*<small>This is Automatically Generated Salary</small></p>		 
 		
 	
   
