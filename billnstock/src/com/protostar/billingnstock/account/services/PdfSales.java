@@ -45,9 +45,7 @@ public class PdfSales extends HttpServlet {
 
 		VoucherService voucherService = new VoucherService();
 		VoucherEntity voucherEntity = null;
-		HrService hrService=new HrService();
-		MonthlyPaymentDetailEntity monthlyPaymentDetailEntity=null;
-
+		
 		if (entity.toString().equals("SalesVoucherEntity")) {
 			voucherEntity = voucherService.getSalesListById(id, bid);
 			pdfHtmlTemplateService.generateVoucherPDF(voucherEntity,
@@ -73,15 +71,7 @@ public class PdfSales extends HttpServlet {
 		
 		System.out.println("entity" + entity);
 		
-		if (entity.toString().equals("MonthlyPaymentDetailEntity"))
-
-		{
-			monthlyPaymentDetailEntity = hrService.getMonthlyPaymentByID(bid,month,id);
-			
-			
-			System.out.println("monthlyPaymentDetailEntity*********ii**" + monthlyPaymentDetailEntity.getNetSalaryAmt());
-			pdfHtmlTemplateService.generateHrPDF(monthlyPaymentDetailEntity,outputStream);
-		}
+		
 		
 		
 }
