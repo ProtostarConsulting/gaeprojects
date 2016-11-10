@@ -5,7 +5,6 @@ import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.Writer;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletOutputStream;
@@ -269,7 +268,8 @@ public class PDFHtmlTemplateService {
 			root.put("Canteen",monthlyPaymentDetailEntity.getCanteenDeductionAmt());
 			root.put("OtherDeduction (Advance )",monthlyPaymentDetailEntity.getOtherDeductionAmt());
 			root.put("ITDduction",monthlyPaymentDetailEntity.getItDeductionAmt());
-			root.put("Net Salary",monthlyPaymentDetailEntity.getNetSalaryAmt());
+			root.put("NetSalary",monthlyPaymentDetailEntity.getNetSalaryAmt());
+		//	root.put("words",EnglishNumberToWords.convert(9000000) );
 			root.put("Month",monthlyPaymentDetailEntity.getCurrentMonth());
 			
 			
