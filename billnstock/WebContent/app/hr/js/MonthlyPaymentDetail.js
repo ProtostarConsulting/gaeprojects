@@ -66,7 +66,7 @@ angular
 								$scope.mon).then(function(list) {
 
 							if (list.length == 0) {
-								$scope.getEmpLeavList($scope.mon, null);
+								$scope.getEmpLeavList($scope.mon, "null");
 							} else {
 								$scope.list2 = list;
 								$scope.monthlyPayDetailsList.length = 0;
@@ -158,8 +158,12 @@ angular
 						hrService.getSalaryMasterlist(
 								$scope.curUser.business.id).then(
 								function(list) {
-									$scope.salaryMasterList = list;
-									$scope.loading = false;
+									for (var i = 0; i < list.length; i++) {
+									//scope.employeeLeaveDetailsList.push(list[i]);
+										//$scope.calculation(i);
+									
+									$scope.salaryMasterList.push(list[i]);
+									}$scope.loading = false;
 								});
 
 					}
@@ -170,7 +174,7 @@ angular
 
 					$scope.downloadSalarySlip = function(empLeaveDetailObj) {
 
-						window.open("PdfSales?month=" + $scope.mon
+						window.open("PrintPdfSalarySlip?month=" + $scope.mon
 								+ "&entityname=" + MonthlyPaymentDetailEntity
 								+ "&bid=" + $scope.curUser.business.id + "&id="
 								+ empLeaveDetailObj.id);

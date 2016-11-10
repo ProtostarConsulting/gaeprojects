@@ -38,18 +38,20 @@ angular
 						$log.debug("selectedMonth" + selectedMonth);
 						for (var i = 0; i < $scope.monthList.length - 1; i++) {
 							if (selectedMonth == $scope.monthList[i + 1]) {
-								var prevMonth = $scope.monthList[i] + "-"
+								$scope. prevMonth = $scope.monthList[i] + "-"
 										+ new Date().getFullYear();
+							
 								break;
 
 							}
 
 						}
-						$log.debug("$scope.prevMonth" + $scope.prevMonth);
-
+						$log.debug("e.prevMonth*&*&*&*&" + $scope. prevMonth);
+						if($scope. prevMonth==undefined){$scope.prevMonth=null;}
+						$log.debug("e.prevMonth*&*&*2222&*&" + $scope. prevMonth);
 						$scope.mon = selectedMonth + "-"
 								+ new Date().getFullYear();
-						$scope.getEmpLeavList($scope.mon, prevMonth);
+						$scope.getEmpLeavList($scope.mon, $scope.prevMonth);
 						// $scope.getEmpLeavList(month);
 						//	
 
@@ -89,7 +91,7 @@ angular
 						hrService.getLeaveListEmp($scope.curUser.business.id,
 								month, prevMonth).then(function(list) {
 
-							if (list.length == 0) {
+							if (list.length == 0||list==null) {
 								$scope.worning=true;
 							} else
 								$scope.employeeLeaveDetailsList.length = 0;
@@ -103,6 +105,8 @@ angular
 					}
 
 					$scope.saveLeaveDetailList = function() {
+						
+						
 
 						var hrService = appEndpointSF.gethrService();
 						// hrService.saveLeaveDetail($scope.employee1).then(function(){
