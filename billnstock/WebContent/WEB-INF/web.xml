@@ -190,16 +190,24 @@
   <servlet-mapping>
     <servlet-name>DownloadSalaryMaster</servlet-name>
     <url-pattern>/DownloadSalaryMaster</url-pattern>
-  </servlet-mapping>  
-  <!--  Security constraints --> 
-  <security-constraint> 
-        <web-resource-collection> 
-                <web-resource-name>Protected Area</web-resource-name> 
-                <url-pattern>/*</url-pattern> 
-        </web-resource-collection> 
-          <user-data-constraint> 
-            <transport-guarantee>CONFIDENTIAL</transport-guarantee> 
-          </user-data-constraint> 
-  </security-constraint> 
-  
+  </servlet-mapping>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Protected Area</web-resource-name>
+      <url-pattern>/*</url-pattern>
+    </web-resource-collection>
+    <user-data-constraint>
+      <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint>
+  </security-constraint>
+  <servlet>
+    <description></description>
+    <display-name>PrintPdfSalarySlip</display-name>
+    <servlet-name>PrintPdfSalarySlip</servlet-name>
+    <servlet-class>com.protostar.billingnstock.hr.services.PrintPdfSalarySlip</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PrintPdfSalarySlip</servlet-name>
+    <url-pattern>/PrintPdfSalarySlip</url-pattern>
+  </servlet-mapping>
 </web-app>
