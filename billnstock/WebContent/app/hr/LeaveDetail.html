@@ -75,19 +75,19 @@
 					</span></td>
 					
 					<td ng-style="getFormRowStyle()"><span
-						ng-bind="empLeaveDetailObj.nextOpeningBalance"> </span></td>
+						ng-bind="empLeaveDetailObj.openingBalance"> </span></td>
 					<!-- <td ng-style="getFormRowStyle()"><md-input-container
 							ng-style="getFormRowStyle()"> <input
 							ng-model="empLeaveDetailObj.openingBalance" type="number"
-							ng-blur="calculation ($index)" aria-label = "openingBalance"> </md-input-container></td> -->
+							ng-change="calculation ($index)" aria-label = "openingBalance"> </md-input-container></td> -->
 					<td ng-style="getFormRowStyle()"><md-input-container
 							ng-style="getFormRowStyle()"> <input
 							ng-model="empLeaveDetailObj.mothLeave" type="number"
-							ng-blur="calculation ($index)"aria-label="mothLeave"> </md-input-container></td>
+							ng-change="calculation ($index)"aria-label="mothLeave"> </md-input-container></td>
 					<td ng-style="getFormRowStyle()"><md-input-container
 							ng-style="getFormRowStyle()"> <input
 							ng-model="empLeaveDetailObj.takenmothLeave" type="number"
-							ng-blur="calculation ($index)"aria-label="takenmothLeave"> </md-input-container></td>
+							ng-change="calculation ($index)"aria-label="takenmothLeave"> </md-input-container></td>
 					<td ng-style="getFormRowStyle()"><span
 						ng-bind="empLeaveDetailObj.withoutpay"
 						ng-style="getHighlightRedStyle(empLeaveDetailObj.withoutpay)">
