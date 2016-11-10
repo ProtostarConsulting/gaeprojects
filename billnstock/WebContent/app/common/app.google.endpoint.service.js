@@ -610,6 +610,38 @@ function googleEndpointSF($log, $q) {
 		return setupService;
 	}
 
+	
+	
+	
+	
+	
+	
+	setupService.saveDepartment = function(department) {
+		var deferred = $q.defer();
+		gapi.client.setupService.saveDepartment(department).execute(function() {
+			deferred.resolve({
+				"msg" : "User Status Successfully Updated"
+			});
+		});
+		return deferred.promise;
+	}
+	
+	
+	setupService.getDepartmentList = function(buzid) {
+		var deferred = $q.defer();
+		gapi.client.setupService.getDepartmentList({
+			'buzid' : buzid
+		}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}
+	
+	
+	
+	
+	
+	
 	setupService.getCurUserByEmailId = function(emailid) {
 		var deferred = $q.defer();
 		gapi.client.setupService.getCurUserByEmailId({
