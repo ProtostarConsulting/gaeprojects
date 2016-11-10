@@ -228,6 +228,33 @@ public class HrService {
 		List<SalStruct> salStructlist = ofy().load().type(SalStruct.class)
 				.ancestor(Key.create(BusinessEntity.class, busId)).list();
 		System.out.println("salStructlist" + salStructlist.size());
+		List<SalStruct> salStructlistReturn = new ArrayList<SalStruct>();
+		UserService userS = new UserService();
+		List<UserEntity> userList = userS.getUsersByBusinessId(busId);
+		if (userList.size() == salStructlist.size()) {
+			return salStructlist;
+		}
+		SalStruct foundMasterlist = null;
+		for (UserEntity usere : userList) {
+			for (SalStruct salList : salStructlist) {
+
+				if (usere.getId() == salList.getEmpAccount().getEmpId()) {
+					foundMasterlist = salList;
+
+				}
+			}
+
+			if (foundMasterlist == null) {
+
+				foundMasterlist = new SalStruct();
+				foundMasterlist.setEmpAccount(usere);
+
+			}
+
+			salStructlistReturn.add(foundMasterlist);
+
+		}
+
 		return salStructlist;
 
 	}
@@ -235,12 +262,16 @@ public class HrService {
 	@ApiMethod(name = "getLeaveListEmp")
 	public List<LeaveDetailEntity> getLeaveListEmp(@Named("id") Long busId,
 			@Named("month") String month, @Named("prevMonth") String prevMonth) {
-
+		
+		System.out.println("prevMonth***************"+prevMonth);
+		System.out.println("current***************"+month);
+		
 		List<LeaveDetailEntity> empLeaveListToReturn = new ArrayList<LeaveDetailEntity>();
 		List<LeaveDetailEntity> empLeaveListCurrentMonth = ofy().load()
 				.type(LeaveDetailEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, busId))
-				.filter("currentMonth", month).list();
+				.filter("currentMonth", month.trim()).list();
+		System.out.println("empLeaveListCurrentMonth**********"+empLeaveListCurrentMonth);
 
 		UserService userService = new UserService();
 		List<UserEntity> userList = userService.getUsersByBusinessId(busId);
@@ -257,9 +288,11 @@ public class HrService {
 				.filter("currentMonth", prevMonth).list();
 
 		for (UserEntity userEntity : userList) {
+
+			LeaveDetailEntity foundLeaveDetail = null;
 			if (empLeaveListCurrentMonth != null
 					& !empLeaveListCurrentMonth.isEmpty()) {
-				LeaveDetailEntity foundLeaveDetail = null;
+
 				for (LeaveDetailEntity leaveDetail : empLeaveListCurrentMonth) {
 					if (leaveDetail.getUser().getId() == userEntity.getId()) {
 						foundLeaveDetail = leaveDetail;
@@ -269,21 +302,33 @@ public class HrService {
 				if (foundLeaveDetail == null) {
 					foundLeaveDetail = new LeaveDetailEntity();
 					foundLeaveDetail.setUser(userEntity);
+					foundLeaveDetail.setBusiness(userEntity.getBusiness());
 				}
+
 				
+
+				
+			} else {
+				foundLeaveDetail = new LeaveDetailEntity();
+				foundLeaveDetail.setUser(userEntity);
+				foundLeaveDetail.setCurrentMonth(month);
+				foundLeaveDetail.setBusiness(userEntity.getBusiness());
 				for (LeaveDetailEntity prevMonthleaveDetail : empLeaveListPrevMonth) {
 					if (prevMonthleaveDetail.getUser().getId() == userEntity
 							.getId()) {
-						foundLeaveDetail
-								.setOpeningBalance(prevMonthleaveDetail
-										.getNextOpeningBalance());
+						foundLeaveDetail.setOpeningBalance(prevMonthleaveDetail
+								.getNextOpeningBalance());
+						
+						
 					}
 				}
 				
-				empLeaveListToReturn.add(foundLeaveDetail);
-			}
-		}
 
+			}
+			empLeaveListToReturn.add(foundLeaveDetail);
+
+		}
+	//	System.out.println("id********************"+empLeaveListToReturn.get(0).getId());
 		return empLeaveListToReturn;
 	}
 
