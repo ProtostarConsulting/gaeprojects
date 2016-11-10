@@ -10,6 +10,7 @@ import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
 import com.googlecode.objectify.Key;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
+import com.protostar.billingnstock.user.entities.EmpDepartment;
 import com.protostar.billingnstock.user.entities.UserEntity;
 
 //import com.protostar.prostudy.entity.BookEntity;
@@ -69,6 +70,27 @@ public class SetupService {
 		return now;
 	}
 
+	@ApiMethod(name ="saveDepartment") 
+	public void saveDepartment(EmpDepartment empDepartment) {
+		
+		ofy().save().entity(empDepartment).now();
+		
+	}
+	
+	
+	
+	@ApiMethod(name = "getDepartmentList")
+	public List<EmpDepartment> getDepartmentList(@Named("buzid") Long buzid) {
+		
+
+		
+		List<EmpDepartment> departmentList =  ofy().load().type(EmpDepartment.class)
+				.ancestor(Key.create(BusinessEntity.class, buzid)).list();
+		return departmentList;
+	}
+
+	
+	
 	/*
 	 * @ApiMethod(name ="adduser") public void adduser(UserEntity user) {
 	 * 
