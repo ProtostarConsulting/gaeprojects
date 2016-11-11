@@ -350,8 +350,8 @@ public class HrService {
 				.load().type(MonthlyPaymentDetailEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, busId))
 				.filter("currentMonth", currentmonth).list();
-		System.out.println("monthlyPaymentDetailEntity"
-				+ monthlyPaymentDetailEntity);
+		/*System.out.println("monthlyPaymentDetailEntity"
+				+ monthlyPaymentDetailEntity.get(0).getSalStruct().getBasic());*/
 
 		return monthlyPaymentDetailEntity;
 
