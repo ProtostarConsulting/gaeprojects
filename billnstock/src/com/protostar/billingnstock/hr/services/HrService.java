@@ -3,8 +3,10 @@ package com.protostar.billingnstock.hr.services;
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
@@ -333,13 +335,14 @@ public class HrService {
 	}
 
 	@ApiMethod(name = "saveMonthlyPaymentDetailList", path = "saveMonthlyPaymentDetailList")
-	public void saveMonthlyPaymentDetailList(
+	public Collection<MonthlyPaymentDetailEntity> saveMonthlyPaymentDetailList(
 			MonthlyPaymentDetailEntityList monthlyPaymentDetailEntityList) {
 		@SuppressWarnings("unchecked")
 		List<MonthlyPaymentDetailEntity> list = (List<MonthlyPaymentDetailEntity>) EntityUtil
 				.updateCreatedModifiedDate(monthlyPaymentDetailEntityList
 						.getList());
-		ofy().save().entities(list).now();
+		Map<Key<MonthlyPaymentDetailEntity>, MonthlyPaymentDetailEntity> now = ofy().save().entities(list).now();
+		return now.values();
 	}
 
 	@ApiMethod(name = "getMonthlyPayment")

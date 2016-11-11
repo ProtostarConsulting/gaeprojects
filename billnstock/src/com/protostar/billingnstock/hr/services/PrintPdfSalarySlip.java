@@ -17,22 +17,22 @@ import com.protostar.billnstock.until.data.PDFHtmlTemplateService;
  */
 public class PrintPdfSalarySlip extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-   
-    public PrintPdfSalarySlip() {
-    	super();
-    }
 
-    @SuppressWarnings("deprecation")
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public PrintPdfSalarySlip() {
+		super();
+	}
 
-		// TODO Auto-generated method stub
+	@SuppressWarnings("deprecation")
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		String idParam = request.getParameter("id");
+		System.out.println("idParam:" + idParam);
 		Long id = Long.parseLong(request.getParameter("id"));
 		Long bid = Long.parseLong(request.getParameter("bid"));
-		String entity = String.valueOf(request.getParameter("entityname"));
-		String entityId = String.valueOf(request.getParameter("entityId"));
-		String month=String.valueOf(request.getParameter("month"));
-		String str1 = String.valueOf(request.getParameter("str"));
+		String entity = request.getParameter("entityname");
+		String entityId = request.getParameter("entityId");
+		String month = request.getParameter("month");
+		String str1 = request.getParameter("str");
 
 		PDFHtmlTemplateService pdfHtmlTemplateService = new PDFHtmlTemplateService();
 		response.setContentType("application/PDF");
@@ -43,24 +43,22 @@ public class PrintPdfSalarySlip extends HttpServlet {
 		response.setHeader("Content-disposition",
 				"inline; filename='Downloaded_" + fileNameAppend + ".pdf'");
 
-				System.out.println("entity" + entity);
-				HrService hrService=new HrService();
-				MonthlyPaymentDetailEntity monthlyPaymentDetailEntity=null;
+		System.out.println("entity" + entity);
+		HrService hrService = new HrService();
+		MonthlyPaymentDetailEntity monthlyPaymentDetailEntity = null;
 
-		
 		if (entity.toString().equals("MonthlyPaymentDetailEntity"))
 
 		{
-			monthlyPaymentDetailEntity = hrService.getMonthlyPaymentByID(bid,month,id);
-			
-			
-			System.out.println("monthlyPaymentDetailEntity*********ii**" + monthlyPaymentDetailEntity.getNetSalaryAmt());
-			pdfHtmlTemplateService.generateHrPDF(monthlyPaymentDetailEntity,outputStream);
+			monthlyPaymentDetailEntity = hrService.getMonthlyPaymentByID(bid,
+					month, id);
+
+			System.out.println("monthlyPaymentDetailEntity*********ii**"
+					+ monthlyPaymentDetailEntity.getNetSalaryAmt());
+			pdfHtmlTemplateService.generateHrPDF(monthlyPaymentDetailEntity,
+					outputStream);
 		}
-		
-		
 
 	}
 
-	
 }

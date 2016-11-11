@@ -844,10 +844,8 @@ function googleEndpointSF($log, $q) {
 	hrService.saveMonthlyPaymentDetailList = function(monthlyPaymentDetailList) {
 		var deferred = $q.defer();
 		gapi.client.hrService.saveMonthlyPaymentDetailList(monthlyPaymentDetailList).execute(
-				function() {
-					deferred.resolve({
-						"msg" : "saveMonthlyPaymentDetail Added Successfully."
-					});
+				function(resp) {
+					deferred.resolve(resp);
 				});
 		return deferred.promise;
 	}

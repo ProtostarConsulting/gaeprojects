@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.Writer;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -241,12 +242,10 @@ public class PDFHtmlTemplateService {
 		try {
 			Document document = new Document();
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
-
 			document.open();
-
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
-
 			Map<String, Object> root = new HashMap<String, Object>();
+			DecimalFormat df = new DecimalFormat("#.00");
 
 			SalStruct salStruct = mtlyPayObj.getSalStruct();
 			float basicAmt = salStruct.getBasic() / mtlyPayObj.getTotalDays()
@@ -274,29 +273,38 @@ public class PDFHtmlTemplateService {
 					+ mtlyPayObj.getOtherDeductionAmt();
 
 			UserEntity user = mtlyPayObj.getleaveDetailEntity().getUser();
-			root.put("Name", user.getFirstName() +" "+ user.getLastName());
-					root.put("ManthlyGross", mtlyPayObj.getMonthlyGrossSalary());
+			
+			root.put("Name", user.getFirstName() + " " + user.getLastName());
+			root.put("ManthlyGross",
+					df.format(mtlyPayObj.getMonthlyGrossSalary()));
 			root.put("PayDays", mtlyPayObj.getPayableDays());
-			root.put("MonthlySalary", mtlyPayObj.getMonthlyGrossSalary());
-			root.put("PFDeductionAmt", mtlyPayObj.getPfDeductionAmt());
-			root.put("PTDeductionAmt", mtlyPayObj.getPtDeductionAmt());
-			root.put("Canteen", mtlyPayObj.getCanteenDeductionAmt());
-			root.put("OtherDeduction", mtlyPayObj.getOtherDeductionAmt());
-			root.put("ITDduction", mtlyPayObj.getItDeductionAmt());
-			root.put("NetSalary", mtlyPayObj.getNetSalaryAmt());
-			root.put("Basic", basicAmt);
+			root.put("MonthlySalary",
+					df.format(mtlyPayObj.getMonthlyGrossSalary()));
+			root.put("PFDeductionAmt",
+					df.format(mtlyPayObj.getPfDeductionAmt()));
+			root.put("PTDeductionAmt",
+					df.format(mtlyPayObj.getPtDeductionAmt()));
+			root.put("Canteen", df.format(mtlyPayObj.getCanteenDeductionAmt()));
+			root.put("OtherDeduction",
+					df.format(mtlyPayObj.getOtherDeductionAmt()));
+			root.put("ITDduction", df.format(mtlyPayObj.getItDeductionAmt()));
+			NumberToRupees numberToRupees = new NumberToRupees(
+					Math.round(mtlyPayObj.getNetSalaryAmt()));
+			String netInWords = numberToRupees.getAmountInWords();
+			root.put("NetSalary", df.format(Math.round(mtlyPayObj.getNetSalaryAmt())));
+			root.put("NetSalaryInWords", netInWords);
+			root.put("Basic", df.format(basicAmt));
 			root.put("Month", mtlyPayObj.getCurrentMonth());
-			root.put("HRA", hraAmt);
-			root.put("Conveyance", conAmt);
-			root.put("Medical", medAmt);
-			root.put("Education", eduAmt);
-			root.put("AdhocAllow", adhAmt);
-			root.put("SpecialAllow", splAmt);
-			root.put("SpecialAllow2", mtlyPayObj.getSpecialAllow());
-			root.put("totalEarnings", totalEarnings);
-			root.put("totalDeductions", totalDeductions);
+			root.put("HRA", df.format(hraAmt));
+			root.put("Conveyance", df.format(conAmt));
+			root.put("Medical", df.format(medAmt));
+			root.put("Education", df.format(eduAmt));
+			root.put("AdhocAllow", df.format(adhAmt));
+			root.put("SpecialAllow", df.format(splAmt));
+			root.put("SpecialAllow2", df.format(mtlyPayObj.getSpecialAllow()));
+			root.put("totalEarnings", df.format(totalEarnings));
+			root.put("totalDeductions", df.format(totalDeductions));
 			root.put("totalDays", mtlyPayObj.getTotalDays());
-
 
 			Template temp = getConfiguration().getTemplate(
 					"pdf_templates/HrMonthlyPaymentDetailPDF.ftlh");

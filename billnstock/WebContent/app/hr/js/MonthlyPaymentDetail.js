@@ -57,8 +57,7 @@ angular
 
 						monthlyPayDetailObj.calculatedGrossSalary = monthlyPayDetailObj.calculatedGrossSalary
 								.toFixed(2);
-						monthlyPayDetailObj.netSalaryAmt = monthlyPayDetailObj.netSalaryAmt
-								.toFixed(2);
+						monthlyPayDetailObj.netSalaryAmt = Math.round(monthlyPayDetailObj.netSalaryAmt);
 
 					}
 
@@ -137,7 +136,8 @@ angular
 						}
 						hrService.saveMonthlyPaymentDetailList({
 							'list' : $scope.monthlyPayDetailsList
-						}).then(function() {
+						}).then(function(resp) {
+							$scope.monthlyPayDetailsList = resp.items;
 							$scope.showAddToast();
 							$scope.loading = false;
 						});
