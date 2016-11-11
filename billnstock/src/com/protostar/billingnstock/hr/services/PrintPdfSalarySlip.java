@@ -1,6 +1,7 @@
 package com.protostar.billingnstock.hr.services;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.servlet.ServletException;
@@ -37,11 +38,14 @@ public class PrintPdfSalarySlip extends HttpServlet {
 		PDFHtmlTemplateService pdfHtmlTemplateService = new PDFHtmlTemplateService();
 		response.setContentType("application/PDF");
 		ServletOutputStream outputStream = response.getOutputStream();
-		Date today = new Date();
-		String fileNameAppend = today.getDay() + "_" + today.getMonth() + "_"
-				+ today.getYear();
+
+		Date date = new Date();
+		String DATE_FORMAT = "dd/MMM/yyyy";
+		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+
+		String fileNameAppend = "_" + month + sdf.format(date);
 		response.setHeader("Content-disposition",
-				"inline; filename='Downloaded_" + fileNameAppend + ".pdf'");
+				"inline; filename='SalarySlip_" + fileNameAppend + ".pdf'");
 
 		System.out.println("entity" + entity);
 		HrService hrService = new HrService();
