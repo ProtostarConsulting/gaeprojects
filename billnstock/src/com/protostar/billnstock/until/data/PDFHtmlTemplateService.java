@@ -18,6 +18,8 @@ import com.protostar.billingnstock.account.entities.ReceiptVoucherEntity;
 import com.protostar.billingnstock.account.entities.SalesVoucherEntity;
 import com.protostar.billingnstock.account.entities.VoucherEntity;
 import com.protostar.billingnstock.hr.entities.MonthlyPaymentDetailEntity;
+import com.protostar.billingnstock.hr.entities.SalStruct;
+import com.protostar.billingnstock.user.entities.UserEntity;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -49,23 +51,25 @@ public class PDFHtmlTemplateService {
 			ServletOutputStream outputStream) {
 
 		if (voucherEntity instanceof SalesVoucherEntity) {
-			generateSalesVoucherPDF((SalesVoucherEntity)voucherEntity, outputStream);
+			generateSalesVoucherPDF((SalesVoucherEntity) voucherEntity,
+					outputStream);
 		} else if (voucherEntity instanceof ReceiptVoucherEntity) {
-			generateReceiptVoucherPDF((ReceiptVoucherEntity)voucherEntity, outputStream);
+			generateReceiptVoucherPDF((ReceiptVoucherEntity) voucherEntity,
+					outputStream);
 		}
-		
+
 		else if (voucherEntity instanceof PurchaseVoucherEntity) {
-			generatePurchesVoucherPDF((PurchaseVoucherEntity)voucherEntity, outputStream);
+			generatePurchesVoucherPDF((PurchaseVoucherEntity) voucherEntity,
+					outputStream);
 		}
-		
-		else{
-			throw new RuntimeException("Did not find this entity PDF handling methods: " + voucherEntity.getClass());
+
+		else {
+			throw new RuntimeException(
+					"Did not find this entity PDF handling methods: "
+							+ voucherEntity.getClass());
 		}
 	}
 
-	
-	
-	
 	private void generateSalesVoucherPDF(SalesVoucherEntity salesEntity,
 			ServletOutputStream outputStream) {
 		try {
@@ -75,11 +79,14 @@ public class PDFHtmlTemplateService {
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 
 			Map<String, Object> root = new HashMap<String, Object>();
-			root.put("DebitAccount",salesEntity.getAccountType1().getAccountName().toString());
-			root.put("CreditAccount",salesEntity.getAccountType2().getAccountName().toString());
-			root.put("Amount",salesEntity.getAmount().toString());
-			root.put("Narration",salesEntity.getNarration().toString());
-		//	root.put("DebitAccount", salesEntity.getAccountType1().toString());
+			root.put("DebitAccount", salesEntity.getAccountType1()
+					.getAccountName().toString());
+			root.put("CreditAccount", salesEntity.getAccountType2()
+					.getAccountName().toString());
+			root.put("Amount", salesEntity.getAmount().toString());
+			root.put("Narration", salesEntity.getNarration().toString());
+			// root.put("DebitAccount",
+			// salesEntity.getAccountType1().toString());
 
 			Template temp = getConfiguration().getTemplate(
 					"pdf_templates/sales_voucher_tmpl.ftlh");
@@ -107,15 +114,16 @@ public class PDFHtmlTemplateService {
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 
 			document.open();
-			
+
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 
 			Map<String, Object> root = new HashMap<String, Object>();
-			root.put("CreditAccount",receiptEntity.getAccountType1().getAccountName().toString());
-			root.put("DebitAccount",receiptEntity.getAccountType2().getAccountName().toString());
-			root.put("Amount",receiptEntity.getAmount().toString());
-			root.put("Narration",receiptEntity.getNarration().toString());
-		
+			root.put("CreditAccount", receiptEntity.getAccountType1()
+					.getAccountName().toString());
+			root.put("DebitAccount", receiptEntity.getAccountType2()
+					.getAccountName().toString());
+			root.put("Amount", receiptEntity.getAmount().toString());
+			root.put("Narration", receiptEntity.getNarration().toString());
 
 			Template temp = getConfiguration().getTemplate(
 					"pdf_templates/invoice_voucher_tmpl.ftlh");
@@ -130,22 +138,13 @@ public class PDFHtmlTemplateService {
 
 			worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
 			document.close();
-			
-			
-			
-			
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 	}
-	
-	
-	
-	
-	
-	
+
 	private void generatePurchesVoucherPDF(PurchaseVoucherEntity purchesEntity,
 			ServletOutputStream outputStream) {
 		try {
@@ -153,17 +152,18 @@ public class PDFHtmlTemplateService {
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 
 			document.open();
-			
+
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 
 			Map<String, Object> root = new HashMap<String, Object>();
-			root.put("CreditAccount",purchesEntity.getAccountType2().getAccountName().toString());
-			root.put("DebitAccount",purchesEntity.getAccountType1().getAccountName().toString());
-			root.put("Amount",purchesEntity.getAmount().toString());
-			root.put("Items",purchesEntity.getItem().toString());
-			root.put("Accdetail",purchesEntity.getAccdetail().toString());
-			root.put("Narration",purchesEntity.getNarration().toString());
-		
+			root.put("CreditAccount", purchesEntity.getAccountType2()
+					.getAccountName().toString());
+			root.put("DebitAccount", purchesEntity.getAccountType1()
+					.getAccountName().toString());
+			root.put("Amount", purchesEntity.getAmount().toString());
+			root.put("Items", purchesEntity.getItem().toString());
+			root.put("Accdetail", purchesEntity.getAccdetail().toString());
+			root.put("Narration", purchesEntity.getNarration().toString());
 
 			Template temp = getConfiguration().getTemplate(
 					"pdf_templates/purches_voucher_tmpl.ftlh");
@@ -178,10 +178,6 @@ public class PDFHtmlTemplateService {
 
 			worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
 			document.close();
-			
-			
-			
-			
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -189,8 +185,6 @@ public class PDFHtmlTemplateService {
 
 	}
 
-	
-	
 	private void generateAccountChartpdf(AccountGroupEntity accountGroupEntity,
 			ServletOutputStream outputStream) {
 		try {
@@ -198,15 +192,14 @@ public class PDFHtmlTemplateService {
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 
 			document.open();
-			
+
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 
 			Map<String, Object> root = new HashMap<String, Object>();
-			root.put("groupName",accountGroupEntity.getPrimaryType());
-		//	root.put("accountName",accountGroupEntity.get;
-			root.put("groupType",accountGroupEntity.getPrimaryType());
-		//	root.put("balance",purchesEntity.getItem().toString());
-					
+			root.put("groupName", accountGroupEntity.getPrimaryType());
+			// root.put("accountName",accountGroupEntity.get;
+			root.put("groupType", accountGroupEntity.getPrimaryType());
+			// root.put("balance",purchesEntity.getItem().toString());
 
 			Template temp = getConfiguration().getTemplate(
 					"pdf_templates/Download_Account_chart_tmpl.ftlh");
@@ -219,10 +212,6 @@ public class PDFHtmlTemplateService {
 
 			worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
 			document.close();
-			
-			
-			
-			
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -234,45 +223,80 @@ public class PDFHtmlTemplateService {
 			MonthlyPaymentDetailEntity monthlyPaymentDetailEntity,
 			ServletOutputStream outputStream) {
 		if (monthlyPaymentDetailEntity instanceof MonthlyPaymentDetailEntity) {
-			generateHrMonthlyPaymentDetailPDF((MonthlyPaymentDetailEntity)monthlyPaymentDetailEntity, outputStream);
+			generateHrMonthlyPaymentDetailPDF(
+					(MonthlyPaymentDetailEntity) monthlyPaymentDetailEntity,
+					outputStream);
+		} else {
+			throw new RuntimeException(
+					"Did not find this entity PDF handling methods: "
+							+ monthlyPaymentDetailEntity.getClass());
 		}
-		else{
-			throw new RuntimeException("Did not find this entity PDF handling methods: " + monthlyPaymentDetailEntity.getClass());
-		}
-		
-		
+
 	}
 
-	
-	private void generateHrMonthlyPaymentDetailPDF(MonthlyPaymentDetailEntity monthlyPaymentDetailEntity,
+	private void generateHrMonthlyPaymentDetailPDF(
+			MonthlyPaymentDetailEntity mtlyPayObj,
 			ServletOutputStream outputStream) {
-		
+
 		try {
 			Document document = new Document();
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 
 			document.open();
-			
+
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 
-
 			Map<String, Object> root = new HashMap<String, Object>();
-			
-			
-			root.put("Name",monthlyPaymentDetailEntity.getleaveDetailEntity().getUser().getFirstName()+monthlyPaymentDetailEntity.getleaveDetailEntity().getUser().getLastName());
-			root.put("ManthlyGross",monthlyPaymentDetailEntity.getMonthlyGrossSalary());
-			root.put("PayDays",monthlyPaymentDetailEntity.getPayableDays());
-			root.put("MonthlySalary",monthlyPaymentDetailEntity.getMonthlyGrossSalary());
-			root.put("PFDeductionAmt",monthlyPaymentDetailEntity.getPfDeductionAmt());
-			root.put("PTDeductionAmt",monthlyPaymentDetailEntity.getPtDeductionAmt());
-			root.put("Canteen",monthlyPaymentDetailEntity.getCanteenDeductionAmt());
-			root.put("OtherDeduction (Advance )",monthlyPaymentDetailEntity.getOtherDeductionAmt());
-			root.put("ITDduction",monthlyPaymentDetailEntity.getItDeductionAmt());
-			root.put("NetSalary",monthlyPaymentDetailEntity.getNetSalaryAmt());
-		//	root.put("words",EnglishNumberToWords.convert(9000000) );
-			root.put("Month",monthlyPaymentDetailEntity.getCurrentMonth());
-			
-			
+
+			SalStruct salStruct = mtlyPayObj.getSalStruct();
+			float basicAmt = salStruct.getBasic() / mtlyPayObj.getTotalDays()
+					* mtlyPayObj.getPayableDays();
+			float hraAmt = salStruct.getHramonthly()
+					/ mtlyPayObj.getTotalDays() * mtlyPayObj.getPayableDays();
+			float conAmt = salStruct.getConvence() / mtlyPayObj.getTotalDays()
+					* mtlyPayObj.getPayableDays();
+			float medAmt = salStruct.getMedical() / mtlyPayObj.getTotalDays()
+					* mtlyPayObj.getPayableDays();
+			float eduAmt = salStruct.getEducation() / mtlyPayObj.getTotalDays()
+					* mtlyPayObj.getPayableDays();
+			float adhAmt = salStruct.getAdhocAllow()
+					/ mtlyPayObj.getTotalDays() * mtlyPayObj.getPayableDays();
+			float splAmt = salStruct.getSpecialAllow()
+					/ mtlyPayObj.getTotalDays() * mtlyPayObj.getPayableDays();
+
+			float totalEarnings = basicAmt + hraAmt + conAmt + medAmt + eduAmt
+					+ adhAmt + splAmt + mtlyPayObj.getSpecialAllow();
+
+			float totalDeductions = mtlyPayObj.getPfDeductionAmt()
+					+ mtlyPayObj.getPtDeductionAmt()
+					+ mtlyPayObj.getCanteenDeductionAmt()
+					+ mtlyPayObj.getItDeductionAmt()
+					+ mtlyPayObj.getOtherDeductionAmt();
+
+			UserEntity user = mtlyPayObj.getleaveDetailEntity().getUser();
+			root.put("Name", user.getFirstName() +" "+ user.getLastName());
+					root.put("ManthlyGross", mtlyPayObj.getMonthlyGrossSalary());
+			root.put("PayDays", mtlyPayObj.getPayableDays());
+			root.put("MonthlySalary", mtlyPayObj.getMonthlyGrossSalary());
+			root.put("PFDeductionAmt", mtlyPayObj.getPfDeductionAmt());
+			root.put("PTDeductionAmt", mtlyPayObj.getPtDeductionAmt());
+			root.put("Canteen", mtlyPayObj.getCanteenDeductionAmt());
+			root.put("OtherDeduction", mtlyPayObj.getOtherDeductionAmt());
+			root.put("ITDduction", mtlyPayObj.getItDeductionAmt());
+			root.put("NetSalary", mtlyPayObj.getNetSalaryAmt());
+			root.put("Basic", basicAmt);
+			root.put("Month", mtlyPayObj.getCurrentMonth());
+			root.put("HRA", hraAmt);
+			root.put("Conveyance", conAmt);
+			root.put("Medical", medAmt);
+			root.put("Education", eduAmt);
+			root.put("AdhocAllow", adhAmt);
+			root.put("SpecialAllow", splAmt);
+			root.put("SpecialAllow2", mtlyPayObj.getSpecialAllow());
+			root.put("totalEarnings", totalEarnings);
+			root.put("totalDeductions", totalDeductions);
+			root.put("totalDays", mtlyPayObj.getTotalDays());
+
 
 			Template temp = getConfiguration().getTemplate(
 					"pdf_templates/HrMonthlyPaymentDetailPDF.ftlh");
@@ -281,40 +305,15 @@ public class PDFHtmlTemplateService {
 					5000);
 			Writer out = new PrintWriter(byteArrayOutputStream);
 			temp.process(root, out);
-			
 
 			String pdfXMLContent = byteArrayOutputStream.toString();
 
 			worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
 			document.close();
-			
-			
-			
-			
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
-		
-		
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
+	}
 }
