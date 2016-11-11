@@ -10,6 +10,7 @@ public class MonthlyPaymentDetailEntity extends BaseEntity {
 
 	@Index
 	private Ref<LeaveDetailEntity> leaveDetailEntity;
+	private int totalDays;
 	private int payableDays;
 	private float monthlyGrossSalary;
 	private float calculatedGrossSalary;
@@ -20,7 +21,6 @@ public class MonthlyPaymentDetailEntity extends BaseEntity {
 	private float itDeductionAmt;
 	private float otherDeductionAmt;
 	private float netSalaryAmt;
-	
 	private SalStruct salStruct;
 
 	@Index
@@ -129,6 +129,14 @@ public class MonthlyPaymentDetailEntity extends BaseEntity {
 
 	public void setSalStruct(SalStruct salStruct) {
 		this.salStruct = salStruct;
+	}	
+
+	public int getTotalDays() {
+		return totalDays;
+	}
+
+	public void setTotalDays(int totalDays) {
+		this.totalDays = totalDays;
 	}
 
 }
