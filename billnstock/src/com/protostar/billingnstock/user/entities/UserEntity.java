@@ -23,6 +23,7 @@ public class UserEntity extends BaseEntity {
 	private Boolean isGoogleUser = true;
 	@Index
 	private Boolean isLoginAllowed = false;
+	@Index
 	private Long empId;
 	@Index
 	private Ref<EmpDepartment> department;
