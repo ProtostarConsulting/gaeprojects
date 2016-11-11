@@ -21,6 +21,7 @@ angular
 							payableDays : 0,
 							monthlyGrossSalary : salMasterObj ? salMasterObj.grosssal
 									: 0,
+							salStruct : salMasterObj,
 							calculatedGrossSalary : 0,
 							specialAllow : 0,
 							pfDeductionAmt : 0,
@@ -41,6 +42,7 @@ angular
 					$scope.calculateMonthlyPayment = function(index) {
 						monthlyPayDetailObj = $scope.monthlyPayDetailsList[index];
 
+						monthlyPayDetailObj.totalDays = $scope.totalDaysInSelectedMonth;
 						monthlyPayDetailObj.payableDays = $scope.totalDaysInSelectedMonth
 								+ monthlyPayDetailObj.leaveDetailEntity.withoutpay;
 						monthlyPayDetailObj.calculatedGrossSalary = monthlyPayDetailObj.payableDays
@@ -57,6 +59,7 @@ angular
 								.toFixed(2);
 						monthlyPayDetailObj.netSalaryAmt = monthlyPayDetailObj.netSalaryAmt
 								.toFixed(2);
+
 					}
 
 					$scope.getMonthlyPaymentList = function() {
@@ -159,11 +162,12 @@ angular
 								$scope.curUser.business.id).then(
 								function(list) {
 									for (var i = 0; i < list.length; i++) {
-									//scope.employeeLeaveDetailsList.push(list[i]);
-										//$scope.calculation(i);
-									
-									$scope.salaryMasterList.push(list[i]);
-									}$scope.loading = false;
+										// scope.employeeLeaveDetailsList.push(list[i]);
+										// $scope.calculation(i);
+
+										$scope.salaryMasterList.push(list[i]);
+									}
+									$scope.loading = false;
 								});
 
 					}
