@@ -933,23 +933,23 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		}
 	}).state('proAdmin', {
 		url : "/proadmin",
-		templateUrl : '/app/proadmin/ProAdminModule.html',
+		templateUrl : '/app/ProAdmin/ProAdminModule.html',
 		controller : 'proadminctr',
 	}).state('proAdmin.addAccount', {
 		url : "/addAccountType",
-		templateUrl : '/app/proadmin/AddAccountType.html',
+		templateUrl : '/app/ProAdmin/AddAccountType.html',
 		controller : 'AddAccountType',
 	}).state('proAdmin.listAccount', {
 		url : "/listAccountType",
-		templateUrl : '/app/proadmin/ListAccountType.html',
+		templateUrl : '/app/ProAdmin/ListAccountType.html',
 		controller : 'ListAccountType',
 	}).state('proAdmin.editAccoutType', {
 		url : "/EditAccoutType/:typeid",
-		templateUrl : '/app/proadmin/EditAccoutType.html',
+		templateUrl : '/app/ProAdmin/EditAccoutType.html',
 		controller : 'ListAccountType',
 	}).state('proAdmin.manageauthmaster', {
 		url : "/proadmin/manage_auth_master",
-		templateUrl : '/app/proadmin/manage_auth_master.html',
+		templateUrl : '/app/ProAdmin/manage_auth_master.html',
 		controller : 'proAdminManageAuth',
 	}).state('initsetup', {
 		url : "/initsetup",
@@ -957,15 +957,15 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		controller : 'initsetup',
 	}).state('proAdmin.probusiness', {
 		url : "/businesslist",
-		templateUrl : '/app/proadmin/probusiness.html',
+		templateUrl : '/app/ProAdmin/probusiness.html',
 		controller : 'probusinessCtr'
 	}).state('proAdmin.managebizauth', {
 		url : "/manageinstituteauth/:selectedbusinessID",
-		templateUrl : '/app/proadmin/manage_institute_auth.html',
+		templateUrl : '/app/ProAdmin/manage_institute_auth.html',
 		controller : 'proAdminManageBizAuth'
 	}).state('proAdmin.editBusiness', {
 		url : "/editBusiness/:businessNo/:businessName",
-		templateUrl : '/app/proadmin/setup_module.html', // use probsiness
+		templateUrl : '/app/ProAdmin/setup_module.html', // use probsiness
 		// setup module
 		// beacause navigate
 		// diff address
