@@ -19,6 +19,7 @@ import com.protostar.billingnstock.user.entities.EmpDepartment;
 import com.protostar.billingnstock.user.entities.UserEntity;
 import com.protostar.billingnstock.user.services.UserService;
 import com.protostar.billnstock.entity.Address;
+import com.protostar.billnstock.until.data.Constants;
 
 @Api(name = "proadminService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.proadmin.services", ownerName = "com.protostar.billingnstock.proadmin.services", packagePath = ""))
 public class ProtostarAdminService {
@@ -350,7 +351,7 @@ public class ProtostarAdminService {
 		businessEntity.setBusinessName("Protostar Consulting Services");
 		businessEntity.setAccounttype(filteredaccount);
 		businessEntity.setRegisterDate(sdf.format(date));
-		String authorizations = "{\"authorizations\":[{\"authName\":\"More Actions\",\"authorizations\":[{\"authName\":\"updatemyprofile\",\"authorizations\":[]},{\"authName\":\"proadmin\",\"authorizations\":[]},{\"authName\":\"setup\",\"authorizations\":[]}]}]}";
+		String authorizations = Constants.PROTOSTAR_DEFAULT_AUTHS;
 		businessEntity.setAuthorizations(authorizations);
 
 		Address address = new Address();

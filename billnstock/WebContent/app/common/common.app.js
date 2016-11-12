@@ -960,36 +960,50 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		templateUrl : '/app/ProAdmin/probusiness.html',
 		controller : 'probusinessCtr'
 	}).state('proAdmin.managebizauth', {
-		url : "/manageinstituteauth/:selectedbusinessID",
+		url : "/manageinstituteauth",
 		templateUrl : '/app/ProAdmin/manage_institute_auth.html',
-		controller : 'proAdminManageBizAuth'
+		controller : 'proAdminManageBizAuth',
+		params: {
+			selectedBusiness: null
+		}
 	}).state('proAdmin.editBusiness', {
-		url : "/editBusiness/:businessNo/:businessName",
-		templateUrl : '/app/ProAdmin/setup_module.html', // use probsiness
-		// setup module
-		// beacause navigate
-		// diff address
-		controller : 'setup'
+		url : "/editbusinesssetup",
+		templateUrl : '/app/ProAdmin/setup_module.html', 
+		controller : 'setup',
+		params: {
+			selectedBusiness: null
+		}
 	}).state('proAdmin.editBusiness.useradd', {
-		url : "/useradd/:businessNo",
+		url : "/useradd",
 		templateUrl : '/app/setup/setup_adduser.html',
 		controller : 'setup.adduser',
+		params: {
+			selectedBusiness: null
+		}
 
 	}).state('proAdmin.editBusiness.businesssetup', {
-		url : "/businesssetup/:businessNo",
+		url : "/businesssetup",
 		templateUrl : '/app/setup/EditBusiness.html',
 		controller : 'editBusiness',
+		params: {
+			selectedBusiness: null
+		}
 
 	}).state('proAdmin.editBusiness.changeplan', {
-		url : "/changePaln/:businessNo",
+		url : "/changePaln",
 		templateUrl : '/app/setup/changeplan.html',
 		controller : 'setup.changeplan',
+		params: {
+			selectedBusiness: null
+		}
 
 	}).state('proAdmin.editBusiness.userlist', {
-		url : "/userlist/:businessNo",
+		url : "/userlist",
 		templateUrl : '/app/setup/userlist.html',
 		controller : 'userlist',
-
+		params: {
+			selectedBusiness: null
+		}
 	}).state('proAdmin.editBusiness.userview', {
 		url : "/userview/:selecteduserNo",
 		templateUrl : '/app/setup/setup_viewuser.html',

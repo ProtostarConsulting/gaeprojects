@@ -10,23 +10,14 @@ angular
 						$mdToast.show($mdToast.simple().content(msgBean)
 								.position("top").hideDelay(3000));
 					};
-					$scope.businessNo = $stateParams.businessNo;
-							
-					$scope.curuser = appEndpointSF.getLocalUserService().getLoggedinUser();
 
-				
-					
-				
+					$scope.curuser = appEndpointSF.getLocalUserService()
+							.getLoggedinUser();
+
+					$scope.selectedBusiness = $stateParams.selectedBusiness ? $stateParams.selectedBusiness
+							: $scope.curuser.business;
+
 					// ----------hide and show ---------------------------
-
-					$scope.IsHidden = true;
-					$scope.ShowHide = function() {
-						$scope.IsHidden = $scope.IsHidden ? false : true;
-					}
-					// -----------------------------------------------------
-
-				
-					
 
 					$scope.toggleRight = buildToggler('right');
 
@@ -45,7 +36,4 @@ angular
 						});
 					};
 
-			
-			
-			
 				});

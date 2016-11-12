@@ -5,38 +5,42 @@
 	<div layout="row" layout-align="end end" layout-sm="column">
 		<a ui-sref="newBusinessAccount">New Business Registration</a>
 	</div>
-	<h3 class="md-display-10">Business</h3>
-	<md-content> <md-tabs md-dynamic-height md-border-bottom>
-	<md-tab label="Active"> <md-content class="md-padding">
+	<h3 class="md-display-10">Business List</h3>
+	<md-content class="md-padding">
 
 	<div layout layout-sm="column">
-		<md-input-container flex> <label>Search</label> <input
-			ng-model="searchText"> </md-input-container>
+		<md-input-container flex="40%"> <label>Search</label>
+		<input ng-model="searchText"> </md-input-container>
 	</div>
 
 
 
-	<table md-data-table md-row-select="selected" md-progress="deferred">
+	<table md-data-table md-progress="deferred">
 		<thead md-order="query.order" md-trigger="onOrderChange">
 			<tr>
 				<th name="Business Name" order-by="BusinessName"></th>
 				<th name="Date Registered" order-by="registerDate"></th>
 				<th name="Number of Users" order-by="noofuser"></th>
-
+				<th name="Actions"></th>
 			</tr>
 		</thead>
 
 		<tbody>
-			<tr md-auto-select
-				ng-repeat="user in activeBusiness | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
-				<td>{{user.businessName}}</td>
-				<td>{{user.registerDate}}</td>
-				<td>{{user.totalUser}}</td>
+			<tr
+				ng-repeat="business in businesslist | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+				<td>{{business.businessName}}</td>
+				<td>{{business.registerDate}}</td>
+				<td>{{business.totalUser}}</td>
 				<td>
 					<section layout="row" layout-sm="column">
-						<md-button class="md-raised md-primary"
-							ui-sref="proAdmin.editBusiness({businessNo:user.id,businessName:user.businessName})">Edit
-						Business</md-button>
+						<md-button class="md-icon-button"
+							ui-sref="proAdmin.editBusiness({selectedBusiness: business})">
+						<ng-md-icon icon="edit" style="fill: md-default" size="24">
+						<md-tooltip> Edit Business</md-tooltip></ng-md-icon></md-button>
+
+						<md-button class="md-icon-button" ui-sref="proAdmin.managebizauth({selectedBusiness: business})"> <ng-md-icon
+							icon="list" style="fill: md-default" size="24"> <md-tooltip>
+						Edit Authorizations</md-tooltip></ng-md-icon></md-button>
 					</section>
 				</td>
 			</tr>
@@ -46,110 +50,6 @@
 	<md-data-table-pagination md-limit="query.limit" md-page="query.page"
 		md-total={{businesslist.length}} md-trigger="onpagechange"></md-data-table-pagination>
 	</md-data-table-container>
-
-
-	<div id="changeState" ng-show="selected.length == 1">
-
-		<md-button class="md-raised md-primary"
-			ng-click="inactiveUserStatus()">Inactive </md-button>
-
-		<md-button class="md-raised md-primary" ng-model="suspend"
-			value="suspend" ng-click="suspendUserStatus()">Suspend </md-button>
-		<span style="padding-top: 8px;"> <md-button
-				class="md-raised md-primary"
-				ng-click="changeAuthView({selectedbusinessID:selected[0].id})">Manange
-			Authorization </md-button>
-		</span>
-	</div>
-	</md-content> </md-tab> <md-tab label="Inactive"> <md-content class="md-padding">
-	<!-- 	<h3 class="md-display-10">Day</h3> -->
-	<div layout layout-sm="column">
-		<md-input-container flex> <label>Search</label> <input
-			ng-model="searchText"> </md-input-container>
-	</div>
-
-	<table md-data-table md-row-select="selected" md-progress="deferred">
-		<thead md-order="query.order" md-trigger="onOrderChange">
-			<tr>
-				<th name="Business Name" order-by="BusinessName"></th>
-				<th name="Date Registered" order-by="registerDate"></th>
-				<th name="Number of Users" order-by="noofuser"></th>
-
-			</tr>
-		</thead>
-
-		<tbody>
-			<tr md-auto-select
-				ng-repeat="user in inActiveBusiness | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
-				<td>{{user.businessName}}</td>
-				<td>{{user.registerDate}}</td>
-				<td>{{user.totalUser}}</td>
-				<td>
-					<section layout="row" layout-sm="column">
-						<md-button class="md-raised md-primary"
-							ui-sref="probusiness.editBusiness({businessNo:user.id,businessName:user.businessName})">Edit
-						Business</md-button>
-					</section>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-
-	<md-data-table-pagination md-limit="query.limit" md-page="query.page"
-		md-total={{businesslist.length}} md-trigger="onpagechange"></md-data-table-pagination>
-	</md-data-table-container>
-
-
-	<div ng-show="selected.length == 1">
-
-		<md-button class="md-raised md-primary" ng-click="activeUserStatus()">Active
-		</md-button>
-
-		<md-button class="md-raised md-primary" ng-model="suspend"
-			value="suspend" ng-click="suspendUserStatus()">Suspend </md-button>
-
-	</div>
-
-	</md-content> </md-tab> <md-tab label="Suspended"> <md-content class="md-padding">
-	<!-- 	<h3 class="md-display-10">Month</h3> -->
-
-	<div layout layout-sm="column">
-		<md-input-container flex> <label>Search</label> <input
-			ng-model="searchText"> </md-input-container>
-	</div>
-
-
-	<table md-data-table md-row-select="selected" md-progress="deferred">
-		<thead md-order="query.order" md-trigger="onOrderChange">
-			<tr>
-				<th name="Business Name" order-by="BusinessName"></th>
-				<th name="Date Registered" order-by="registerDate"></th>
-				<th name="Number of Users" order-by="noofuser"></th>
-
-			</tr>
-		</thead>
-
-		<tbody>
-			<tr md-auto-select
-				ng-repeat="user in suspendedBusiness | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
-				<td>{{user.businessName}}</td>
-				<td>{{user.registerDate}}</td>
-				<td>{{user.totalUser}}</td>
-				<td>
-					<section layout="row" layout-sm="column">
-						<md-button class="md-raised md-primary"
-							ui-sref="probusiness.editBusiness({businessNo:user.id,businessName:user.businessName})">Edit
-						Business</md-button>
-					</section>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-
-	<md-data-table-pagination md-limit="query.limit" md-page="query.page"
-		md-total={{businesslist.length}} md-trigger="onpagechange"></md-data-table-pagination>
-	</md-data-table-container>
-
 
 	<div ng-show="selected.length == 1">
 
@@ -162,6 +62,6 @@
 
 	</div>
 
-	</md-content> </md-tab>
+	</md-content>
 </div>
 </md-content>

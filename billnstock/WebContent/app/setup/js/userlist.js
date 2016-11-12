@@ -7,15 +7,14 @@ angular
 						$state, objectFactory, appEndpointSF) {
 
 					$scope.loading = true;
+					$scope.selectedBusiness = $stateParams.selectedBusiness ? $stateParams.selectedBusiness
+							: $scope.curUser.business;
 
 					$scope.query = {
 						order : 'id',
 						limit : 50,
 						page : 1
 					};
-					$scope.selecteduserNo = $stateParams.selecteduserNo;
-					$scope.businessNo = $stateParams.businessNo;
-					$scope.id;
 
 					$scope.fabMenuData = {
 						activeUsersIsOpen : [],
@@ -60,12 +59,6 @@ angular
 						});
 					}
 
-					if ($scope.businessNo == undefined) {
-						$scope.Bid = $scope.curUser.business.id;
-					} else {
-						$scope.Bid = $scope.businessNo;
-					}
-
 					$scope.changeAuthView = function(params) {
 						$state.go("setup.userauth", params);
 					}
@@ -78,7 +71,7 @@ angular
 					$scope.getAllUserOfOrg = function() {
 						var setupService = appEndpointSF.getsetupService();
 						setupService
-								.getAllUserOfOrg($scope.Bid)
+								.getAllUserOfOrg($scope.selectedBusiness.id)
 								.then(
 										function(users) {
 											$scope.userslist = users.items;

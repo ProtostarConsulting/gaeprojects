@@ -10,16 +10,16 @@ angular
 							.getLoggedinUser();
 					$log.debug("Inside proAdminManageBizAuth");
 
-					$scope.selectedbusinessID = $stateParams.selectedbusinessID;
+					$scope.selectedBusiness = $stateParams.selectedBusiness;
 
-					if (!$scope.selectedbusinessID) {
+					if (!$scope.selectedBusiness) {
 						return;
 					}
 
 					$scope.authorizationMasterEntity = {
 						authorizations : []
 					};
-					$scope.business = null;
+					
 					$scope.existingbusinessAuthObject = null;
 
 					function getAuthorizationMasterEntity() {
@@ -35,34 +35,23 @@ angular
 													&& result.authorizations != undefined) {
 												$scope.authorizationMasterEntity.authorizations = result.authorizations;
 
-												var userService = appEndpointSF
-														.getUserService();
+												var jsonString = $scope.selectedBusiness.authorizations;
 
-												userService
-														.getbusinessById(
-																$scope.selectedbusinessID)
-														.then(
-																function(
-																		business) {
-																	$scope.business = business;
-																	var jsonString = $scope.business.authorizations;
+												$log
+														.debug("$scope.selectedBusiness.authorizations:Json: "
+																+ jsonString);
 
-																	$log
-																			.debug("$scope.business.authorizations:Json: "
-																					+ jsonString);
+												if (jsonString) {
+													var jsonObject = angular
+															.fromJson($scope.selectedBusiness.authorizations);
+													$scope.existingbusinessAuthObject = jsonObject;
 
-																	if (jsonString) {
-																		var jsonObject = angular
-																				.fromJson($scope.business.authorizations);
-																		$scope.existingbusinessAuthObject = jsonObject;
-
-																		$scope.authorizationMasterEntity = authService
-																				.markSelectedAuthorizations(
-																						$scope.authorizationMasterEntity,
-																						$scope.existingbusinessAuthObject);
-																	}
-																	$scope.loading = false;
-																});
+													$scope.authorizationMasterEntity = authService
+															.markSelectedAuthorizations(
+																	$scope.authorizationMasterEntity,
+																	$scope.existingbusinessAuthObject);
+												}
+												$scope.loading = false;
 
 											}
 											$scope.mode = "list";
@@ -93,8 +82,6 @@ angular
 
 					};
 
-					
-
 					$scope.saveAuthorization = function() {
 						$log.debug("Called saveAuthorization...");
 						var authService = appEndpointSF
@@ -106,15 +93,14 @@ angular
 
 						$log.debug("toSaveJsonString: " + toSaveJsonString);
 
-						$scope.business.authorizations = toSaveJsonString;
-						var userService = appEndpointSF
-						.getUserService();
-						userService.updateBusiStatus($scope.business)
-								.then(function(msgBean) {
+						$scope.selectedBusiness.authorizations = toSaveJsonString;
+						var userService = appEndpointSF.getUserService();
+						userService.updateBusiStatus($scope.selectedBusiness).then(
+								function(msgBean) {
 									$scope.showUpdateToast();
 								});
 					}
-					
+
 					$scope.cancelButton = function() {
 						$state.go("^", {});
 					}

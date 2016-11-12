@@ -22,10 +22,9 @@ angular
 								"top").hideDelay(3000));
 					};
 
-					$scope.showDelToast = function() {
-						$mdToast.show($mdToast.simple().content(
-								'Account  Deleted ...!').position("top")
-								.hideDelay(3000));
+					$scope.showShowCustomToast = function(msg) {
+						$mdToast.show($mdToast.simple().content(msg).position(
+								"top").hideDelay(3000));
 					};
 
 					$scope.curUser = null;

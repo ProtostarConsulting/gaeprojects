@@ -5,18 +5,11 @@ angular
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
 						$mdUtil, $stateParams, $log, objectFactory, $mdMedia,
 						$mdDialog, Upload, appEndpointSF) {
-					// ////////////////////////////////////////////////////////////////////////////////////////////////
-					$scope.showSimpleToast = function(msgBean) {
-						$mdToast.show($mdToast.simple().content(msgBean)
-								.position("top").hideDelay(3000));
-					};
 
-					$scope.businessNo = $stateParams.businessNo;
-					$scope.id;
+					$scope.selectedBusiness = $stateParams.selectedBusiness ? $stateParams.selectedBusiness
+							: $scope.curuser.business;
 
-					// ----------------------UPLODE EXCEL
-					// FILE-------------------------------
-
+					// ------UPLODE EXCEL FILE----
 					$scope.UplodeExcel = function(ev) {
 						var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))
 								&& $scope.customFullscreen;
@@ -59,7 +52,7 @@ angular
 										data : {
 											'file' : fileObject,
 											'username' : curUser.email_id,
-											'businessId' : curUser.business.id
+											'businessId' : selectedBusiness.id
 										}
 									})
 									.then(
@@ -192,7 +185,7 @@ angular
 					$scope.checkDuplicateAndAddUser = function() {
 						var UserService = appEndpointSF.getUserService();
 						UserService
-								.isUserExists($scope.curuser.business.id,
+								.isUserExists($scope.selectedBusiness.id,
 										emailid)
 								.then(
 										function(responce) {
@@ -205,24 +198,19 @@ angular
 					}
 
 					$scope.adduser = function() {
-						$scope.user.business = $scope.curuser.business;
+						$scope.user.business = $scope.selectedBusiness;
 						$scope.user.bankDetail = $scope.BankDetail;
 						// use selection array true false value and push that
 						// numbered item on authority
-						$scope.user.authority = [];
-						for (var i = 0; i < $scope.selection.length; i++) {
-							if ($scope.selection[i])
-								$scope.user.authority.push($scope.items[i]);
-						}
 
 						var setupService = appEndpointSF.getsetupService();
-						if (typeof $scope.curuser.business.id != 'undefined') {
+						if (typeof $scope.selectedBusiness.id != 'undefined') {
 							setupService
-									.getAllUserOfOrg($scope.curuser.business.id)
+									.getAllUserOfOrg($scope.selectedBusiness.id)
 									.then(
 											function(users) {
 												$scope.userslist = users.items.length;
-												if ($scope.userslist < $scope.curuser.business.accounttype.maxuser) {
+												if ($scope.userslist < $scope.selectedBusiness.accounttype.maxuser) {
 
 													var UserService = appEndpointSF
 															.getUserService();
@@ -240,7 +228,7 @@ angular
 													$scope.user = {};
 												} else {
 													$scope
-															.showSimpleToast("userlimit is low");
+															.showShowCustomToast("Userlimit is low. Please contact support.");
 												}
 
 											});
@@ -259,7 +247,7 @@ angular
 
 						var UserService = appEndpointSF.getUserService();
 						UserService
-								.isUserExists($scope.curuser.business.id,
+								.isUserExists($scope.selectedBusiness.id,
 										emailid)
 								.then(
 										function(responce) {

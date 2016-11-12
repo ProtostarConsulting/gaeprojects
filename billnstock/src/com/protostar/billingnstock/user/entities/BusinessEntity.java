@@ -1,5 +1,7 @@
 package com.protostar.billingnstock.user.entities;
 
+import java.util.Date;
+
 import javax.persistence.Transient;
 
 import com.googlecode.objectify.Key;
@@ -31,6 +33,35 @@ public class BusinessEntity {
 	private String footerBlobKey;
 	private String disclaimer;
 	private String authorizations;
+
+	private Date createdDate;
+	private Date modifiedDate;
+	private String modifiedBy;
+	private String note;
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public Date getModifiedDate() {
+		return modifiedDate;
+	}
+
+	public void setModifiedDate(Date modifiedDate) {
+		this.modifiedDate = modifiedDate;
+	}
+
+	public String getModifiedBy() {
+		return modifiedBy;
+	}
+
+	public void setModifiedBy(String modifiedBy) {
+		this.modifiedBy = modifiedBy;
+	}
 
 	@Transient
 	public com.google.appengine.api.datastore.Key getKey() {
@@ -131,6 +162,14 @@ public class BusinessEntity {
 
 	public void setAddress(Address address) {
 		this.address = address;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
 	}
 
 }

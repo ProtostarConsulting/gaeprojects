@@ -3,20 +3,20 @@ angular
 		.controller(
 				"probusinessCtr",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
-						$mdUtil, $stateParams,$mdMedia,$mdDialog, $log, $state, objectFactory,
-						appEndpointSF) {
+						$mdUtil, $stateParams, $mdMedia, $mdDialog, $log,
+						$state, objectFactory, appEndpointSF) {				
 
-					$scope.businessNo = $stateParams.businessNo;
-					$scope.userid = $stateParams.userid;
-					$scope.businessName = $stateParams.businessName;
-					$scope.BNo = $stateParams.BNo;
-					$scope.selecteduserNo = $stateParams.selecteduserNo;
-
+					$scope.query = {
+							order : 'id',
+							limit : 50,
+							page : 1
+						};
+					
 					$scope.showSimpleToast = function(msgBean) {
 						$mdToast.show($mdToast.simple().content(msgBean)
 								.position("top").hideDelay(3000));
 					};
-					
+
 					$scope.changeAuthView = function(params) {
 						$state.go("proAdmin.managebizauth", params);
 					}
@@ -29,41 +29,12 @@ angular
 									$log.debug("Inside Ctr getAllleads");
 									$scope.businesslist = businessList.items;
 
-									for (var i = 0; i < $scope.businesslist.length; i++) {
-										if ($scope.businesslist[i].status == "active") {
-											$scope.activeBusiness
-													.push($scope.businesslist[i]);
-											console
-													.log("Active Users"
-															+ angular
-																	.toJson($scope.activeBusiness));
-										} else if ($scope.businesslist[i].status == "inactive") {
-											$scope.inActiveBusiness
-													.push($scope.businesslist[i]);
-											console
-													.log("In-Active Users"
-															+ angular
-																	.toJson($scope.inActiveBusiness));
-										}
-										if ($scope.businesslist[i].status == "suspended") {
-											$scope.suspendedBusiness
-													.push($scope.businesslist[i]);
-											console
-													.log("Suspended Users"
-															+ angular
-																	.toJson($scope.suspendedBusiness));
-										}
-									}
 								});
 
 					}
 
-					$scope.activeBusiness = [];
-					$scope.inActiveBusiness = [];
-					$scope.suspendedBusiness = [];
-					
 					$scope.businesslist = [];
-					
+
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
 							$scope.getBusinessList();
@@ -76,16 +47,6 @@ angular
 
 					$scope.selected = [];
 
-					$scope.inactiveUserStatus = function() {
-						var inactive = "inactive"
-						$scope.selected[0].status = inactive;
-						var UserService = appEndpointSF.getUserService();
-						UserService.updateBusiStatus($scope.selected[0]).then(
-								function(msgBean) {
-									$scope.showSimpleToast(msgBean.msg);
-									$scope.getBusinessList();
-								});
-					}
 					$scope.suspendUserStatus = function() {
 						var suspended = "suspended"
 						$scope.selected[0].status = suspended;
@@ -106,39 +67,6 @@ angular
 									$scope.getBusinessList();
 								});
 					}
-
-					
-			
-
-					// -------------------------------------------------------------------------------------
-					$scope.user = {
-						business : "",
-						email_id : "",
-						firstName : "",
-						lastName : "",
-						password : "",
-						isGoogleUser : true,
-						authority : []
-					}
-					$scope.items = [ "stock", "sales", "hr", "crm", "customer",
-							"invoice", "purchase", "employee", "admin" ];
-					$scope.selection = [];
-					$scope.toggleSelection = function toggleSelection(itemName) {
-						var idx = $scope.selection.indexOf(itemName);
-
-						// is currently selected
-						if (idx > -1) {
-							$scope.selection.splice(idx, 1);
-						}
-
-						// is newly selected
-						else {
-							$scope.selection.push(itemName);
-						}
-
-						$log.debug("$scope.selection===" + $scope.selection);
-
-					};
 
 					$scope.getbusinessById = function() {
 						var UserService = appEndpointSF.getUserService();
@@ -264,12 +192,6 @@ angular
 					}
 					$scope.user11 = [];
 					$scope.userexist = "";
-					
-					
-					
-					
-					
-					
 
 					$scope.toggleRight = buildToggler('right');
 

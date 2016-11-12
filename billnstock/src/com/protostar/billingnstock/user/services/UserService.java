@@ -44,6 +44,12 @@ public class UserService {
 		if (usr.getDepartment() == null)
 			setDefaultDepartment(usr);
 
+		if (usr.getId() == null) {
+			usr.setCreatedDate(new Date());
+			usr.setAuthorizations(Constants.NEW_BIZ_USER_DEFAULT_AUTHS);
+		} else {
+			usr.setModifiedDate(new Date());
+		}
 		usr.setCreatedDate(new Date());
 		Key<UserEntity> now = ofy().save().entity(usr).now();
 		int count;
@@ -122,6 +128,7 @@ public class UserService {
 
 	@ApiMethod(name = "updateBusiStatus", path = "updateBusiStatus")
 	public void updateBusiStatus(BusinessEntity businessEntity) {
+		businessEntity.setModifiedDate(new Date());
 		ofy().save().entity(businessEntity).now();
 	}
 
@@ -189,8 +196,8 @@ public class UserService {
 		boolean isFreshBusiness = business.getId() == null;
 		if (isFreshBusiness) {
 			// Seth Basic Auths
-			String authorizations = "{\"authorizations\":[{\"authName\":\"updatemyprofile\",\"authorizations\":[]},{\"authName\":\"setup\",\"authorizations\":[]}]}";
-			business.setAuthorizations(authorizations);
+			business.setAuthorizations(Constants.NEW_BIZ_DEFAULT_AUTHS);
+			business.setCreatedDate(new Date());
 		}
 
 		ofy().save().entity(business).now();

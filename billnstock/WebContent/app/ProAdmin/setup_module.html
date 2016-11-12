@@ -1,29 +1,30 @@
+<b>Selected Business: {{selectedBusiness.businessName}} </b>
 <div layout="column">
-
-
 	<div>
-
 		<section layout="row">
-		<span hide-xs> 
+
 			<div class="md-toolbar-tools">
-			<md-content layout="row" layout-align="center start">
-			<!-- 	<md-button ui-sref="setup.user"
+				<md-content layout="row" layout-align="center start"> <!-- 	<md-button ui-sref="setup.user"
 				ng-click="close()" class="md-primary" show-gt-md> User </md-button>
 
 			<md-button ui-sref="setup.printheaderfooter" ng-click="close()"
 				class="md-primary" show-gt-md> Print Header/Footer </md-button> -->
-				<md-button ui-sref="proAdmin.editBusiness.useradd({businessNo:businessNo})"
-				ng-click="close()" class="md-primary" show-gt-md> Add User </md-button>
-				<md-button ui-sref="proAdmin.editBusiness.businesssetup({businessNo:businessNo})"
-				ng-click="close()" class="md-primary" show-gt-md>Edit Business  </md-button>
-				 <md-button ui-sref="proAdmin.editBusiness.userlist({businessNo:businessNo})"
-				ng-click="close()" class="md-primary" show-gt-md> Userlist </md-button>
- 				<md-button ui-sref="proAdmin.editBusiness.changeplan({businessNo:businessNo})"
-				ng-click="close()" class="md-primary" show-gt-md>Change Business Plan</md-button>
-			</md-content>
+				<md-button
+					ui-sref="proAdmin.editBusiness.useradd({selectedBusiness: selectedBusiness})"
+					ng-click="close()" class="md-primary" show-gt-md> Add
+				User </md-button> <md-button
+					ui-sref="proAdmin.editBusiness.businesssetup({selectedBusiness: selectedBusiness})"
+					ng-click="close()" class="md-primary" show-gt-md>Edit
+				Business </md-button> <md-button
+					ui-sref="proAdmin.editBusiness.userlist({selectedBusiness: selectedBusiness})"
+					ng-click="close()" class="md-primary" show-gt-md>
+				Userlist </md-button> <md-button
+					ui-sref="proAdmin.editBusiness.changeplan({selectedBusiness: selectedBusiness})"
+					ng-click="close()" class="md-primary" show-gt-md>Change
+				Business Plan</md-button> </md-content>
 			</div>
-		</span>
-		<!--  <span hide-gt-xs> -->
+
+			<!--  <span hide-gt-xs> -->
 			<div class="md-toolbar-tools">
 				<span flex></span>
 				<md-card>
@@ -34,29 +35,28 @@
 				</section>
 				</md-card>
 			</div>
-		<!-- </span> -->
+			<!-- </span> -->
 
-		<md-sidenav class="md-sidenav-right md-whiteframe-z2"
-				md-component-id="right"> <md-toolbar class="md-theme-light">
-					<h1 class="md-toolbar-tools">Sidenav Right</h1>
-			</md-toolbar> 
-			<md-content layout="column"> 
-			<md-button ui-sref="setup.useradd({businessNo:businessNo})"
-				ng-click="close()" class="md-primary" show-gt-md> Add User </md-button>
-				<md-button ui-sref="setup.businesssetup({businessNo:businessNo})"
-				ng-click="close()" class="md-primary" show-gt-md>Edit Business  </md-button>
-				 <md-button ui-sref="setup.userlist({businessNo:businessNo})"
-				ng-click="close()" class="md-primary" show-gt-md> Userlist </md-button>
- 				<md-button ui-sref="setup.changeplan({businessNo:businessNo})"
-				ng-click="close()" class="md-primary" show-gt-md>Change Business Plan</md-button>
-			</md-content> 
-		</md-sidenav>
+			<md-sidenav class="md-sidenav-right md-whiteframe-z2"
+				md-component-id="right"> <md-toolbar
+				class="md-theme-light">
+			<h1 class="md-toolbar-tools">Sidenav Right</h1>
+			</md-toolbar> <md-content layout="column"> <md-button
+				ui-sref="proAdmin.editBusiness.useradd({selectedBusiness: selectedBusiness})"
+				ng-click="close()" class="md-primary" show-gt-md> Add
+			User </md-button> <md-button
+				ui-sref="proAdmin.editBusiness.businesssetup({selectedBusiness: selectedBusiness})"
+				ng-click="close()" class="md-primary" show-gt-md>Edit
+			Business </md-button> <md-button
+				ui-sref="proAdmin.editBusiness.userlist({selectedBusiness: selectedBusiness})"
+				ng-click="close()" class="md-primary" show-gt-md>
+			Userlist </md-button> <md-button
+				ui-sref="proAdmin.editBusiness.changeplan({selectedBusiness: selectedBusiness})"
+				ng-click="close()" class="md-primary" show-gt-md>Change
+			Business Plan</md-button> </md-content>
+			</md-content> </md-sidenav>
 		</section>
 
 	</div>
-
-
-
-
 	<div ui-view></div>
 </div>

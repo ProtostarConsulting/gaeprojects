@@ -6,73 +6,58 @@ angular
 						$mdUtil, $stateParams, $mdMedia, $mdDialog, $log,
 						objectFactory, appEndpointSF) {
 
-					$scope.showSimpleToast = function(msgBean) {
-						$mdToast.show($mdToast.simple().content(msgBean)
-								.position("top").hideDelay(3000));
-					};
-					$scope.selecteduserNo = $stateParams.selecteduserNo;
-					$scope.businessNo = $stateParams.businessNo;
-					$scope.id;
-
-				
 					$scope.curuser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
 
-					
-					$scope.Address={
-							line1:"",
-							line2:"",
-							city:"",
-							state:"",
-							country:"",
-							pin:""
+					$scope.selectedBusiness = $stateParams.selectedBusiness ? $stateParams.selectedBusiness
+							: $scope.curuser.business;
+
+					$scope.Address = {
+						line1 : "",
+						line2 : "",
+						city : "",
+						state : "",
+						country : "",
+						pin : ""
 					}
-					
-					
-					
-					$scope.getBusinessById=function(){
-						if(typeof $scope.businessNo == "undefined"){
-							$scope.Bid=$scope.curuser.business.id;
-						}else{
-							$scope.Bid=$scope.businessNo;
-						}
-						var UserService = appEndpointSF	.getUserService();
-							UserService.getbusinessById($scope.Bid).then(function(Business) {
-										$scope.business=Business;
-										$scope.Address=$scope.business.address;
-										
-							});
-						
+
+					$scope.getBusinessById = function() {
+
+						var UserService = appEndpointSF.getUserService();
+						UserService.getbusinessById($scope.selectedBusiness.id)
+								.then(function(Business) {
+									$scope.business = Business;
+									$scope.Address = $scope.business.address;
+
+								});
+
 					}
-					$scope.business={};
-					
-					
+					$scope.business = {};
+
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
-							
+
 							$scope.getBusinessById();
-							
+
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
 							$timeout($scope.waitForServiceLoad, 1000);
 						}
 					}
 					$scope.waitForServiceLoad();
-					
-					
-					$scope.updateBusiness = function() {						
-						$scope.business.address=$scope.Address;
+
+					$scope.updateBusiness = function() {
+						$scope.business.address = $scope.Address;
 						var setupService = appEndpointSF.getsetupService();
-						setupService
-								.updateBusiness($scope.business)
-								.then(function(msgBean) {
-									$scope.curuser.business=$scope.business;
-									appEndpointSF.getLocalUserService().saveLoggedInUser($scope.curuser);
+						setupService.updateBusiness($scope.business).then(
+								function(msgBean) {
+									$scope.curuser.business = $scope.business;
+									appEndpointSF.getLocalUserService()
+											.saveLoggedInUser($scope.curuser);
 									$scope.showUpdateToast();
-										});
+								});
 					}
 
-				
 					// ----------hide and show ---------------------------
 
 					$scope.IsHidden = true;
@@ -80,9 +65,6 @@ angular
 						$scope.IsHidden = $scope.IsHidden ? false : true;
 					}
 					// -----------------------------------------------------
-
-				
-					
 
 					$scope.toggleRight = buildToggler('right');
 
@@ -101,7 +83,4 @@ angular
 						});
 					};
 
-			
-			
-			
 				});
