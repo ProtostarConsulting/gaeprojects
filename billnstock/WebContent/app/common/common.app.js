@@ -183,10 +183,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/drivefiles",
 		templateUrl : "/app/demo/drivefiles.html",
 		controller : 'driveFilesCtr'
-	}).state('state1.list', {
-		url : "/list/:someVal",
-		templateUrl : "/app/demo/state1.list.html",
-		controller : 'statesPageCtr'
+	}).state('selectmultibiz', {
+		url : "/selectbiz",
+		templateUrl : "/app/login/multiselectbusiness.html",
+		controller : 'indexCtr'
 	}).state('home', {
 		url : "/home",
 		templateUrl : '/home.html',
@@ -624,26 +624,24 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/print/:printempidsalslip",
 		templateUrl : '/app/hr/print_salaryslip.html',
 		controller : 'hrctr.selected_Employeesalaryslip',
-	})
-	.state('hr.LeaveDetail', {
+	}).state('hr.LeaveDetail', {
 		url : "/LeaveDetail",
 		templateUrl : '/app/hr/LeaveDetail.html',
-		controller :'LeaveDetails',
+		controller : 'LeaveDetails',
 	})
-	
+
 	.state('hr.SalaryMaster', {
 		url : "/SalaryMaster",
 		templateUrl : '/app/hr/SalaryMaster.html',
-		controller :'SalaryMaster',
+		controller : 'SalaryMaster',
 	})
-	
-	
+
 	.state('hr.MonthlyPaymentDetail', {
 		url : "/MonthlyPaymentDetail",
 		templateUrl : '/app/hr/MonthlyPaymentDetail.html',
-		controller :'MonthlyPaymentDetail',
+		controller : 'MonthlyPaymentDetail',
 	})
-	
+
 	.state('crm', {
 		url : "/crm",
 		templateUrl : '/app/crm/crm_module.html',
@@ -774,25 +772,27 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		params : {
 			action : 'useradd'
 		}
-		}).state('setup.disclaimer', {
+	}).state('setup.disclaimer', {
 		url : "/disclaimer",
 		templateUrl : '/app/setup/disclaimer.html',
 		controller : 'disclaimer',
 
 	})
-	
+
 	.state('setup.departmentList', {
 		url : "/departmentList",
 		templateUrl : '/app/setup/setup_departmentList.html',
 		controller : 'setup.departmentList',
 
 	})
-	
-	
+
 	.state('setup.userauth', {
-		url : "/userauth/:selectedUserEmailId",
+		url : "/userauth",
 		templateUrl : '/app/setup/manage_user_auth.html',
-		controller : 'manageUserAuthCtr'
+		controller : 'manageUserAuthCtr',
+		params : {
+			selectedUser : null
+		}
 	}) /*
 		 * .state('login', { url : "/login", templateUrl :
 		 * '/app/login/login.html', controller : 'login', })
@@ -933,43 +933,39 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		}
 	}).state('proAdmin', {
 		url : "/proadmin",
-		templateUrl : '/app/ProAdmin/ProAdminModule.html',
+		templateUrl : '/app/proadmin/ProAdminModule.html',
 		controller : 'proadminctr',
 	}).state('proAdmin.addAccount', {
 		url : "/addAccountType",
-		templateUrl : '/app/ProAdmin/AddAccountType.html',
+		templateUrl : '/app/proadmin/AddAccountType.html',
 		controller : 'AddAccountType',
 	}).state('proAdmin.listAccount', {
 		url : "/listAccountType",
-		templateUrl : '/app/ProAdmin/ListAccountType.html',
+		templateUrl : '/app/proadmin/ListAccountType.html',
 		controller : 'ListAccountType',
 	}).state('proAdmin.editAccoutType', {
 		url : "/EditAccoutType/:typeid",
-		templateUrl : '/app/ProAdmin/EditAccoutType.html',
+		templateUrl : '/app/proadmin/EditAccoutType.html',
 		controller : 'ListAccountType',
 	}).state('proAdmin.manageauthmaster', {
-		url : "/ProAdmin/manage_auth_master",
-		templateUrl : '/app/ProAdmin/manage_auth_master.html',
+		url : "/proadmin/manage_auth_master",
+		templateUrl : '/app/proadmin/manage_auth_master.html',
 		controller : 'proAdminManageAuth',
 	}).state('initsetup', {
 		url : "/initsetup",
 		templateUrl : '/app/initsetup/initsetup.html',
 		controller : 'initsetup',
-	})/*
-		 * .state('proAdmin.probusiness', { url : "/probusiness", templateUrl :
-		 * '/app/probusiness/proBusinessModule.html', controller :
-		 * 'probusinessCtr' })
-		 */.state('proAdmin.probusiness', {
+	}).state('proAdmin.probusiness', {
 		url : "/businesslist",
-		templateUrl : '/app/probusiness/probusiness.html',
+		templateUrl : '/app/proadmin/probusiness.html',
 		controller : 'probusinessCtr'
 	}).state('proAdmin.managebizauth', {
 		url : "/manageinstituteauth/:selectedbusinessID",
-		templateUrl : '/app/probusiness/manage_institute_auth.html',
+		templateUrl : '/app/proadmin/manage_institute_auth.html',
 		controller : 'proAdminManageBizAuth'
 	}).state('proAdmin.editBusiness', {
 		url : "/editBusiness/:businessNo/:businessName",
-		templateUrl : '/app/probusiness/setup_module.html', // use probsiness
+		templateUrl : '/app/proadmin/setup_module.html', // use probsiness
 		// setup module
 		// beacause navigate
 		// diff address

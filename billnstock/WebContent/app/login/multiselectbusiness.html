@@ -1,0 +1,6 @@
+<md-content layout-padding> Select Business To Continue
+Login. <br>
+<md-button ng-repeat="user in multiUsers"
+	ng-click="multiBizSelectUser(user)" class="md-primary"
+	aria-label="bizName"> <span
+	ng-bind="user.business.businessName"> </span></md-button> </md-content>

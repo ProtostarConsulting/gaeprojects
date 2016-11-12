@@ -192,13 +192,14 @@ angular
 					$scope.checkDuplicateAndAddUser = function() {
 						var UserService = appEndpointSF.getUserService();
 						UserService
-								.isUserExists(emailid)
+								.isUserExists($scope.curuser.business.id,
+										emailid)
 								.then(
 										function(responce) {
-											if (responce.result.returnBool == false) {
+											if (responce.returnBool == false) {
 												$scope.adduser();
 											} else {
-												$scope.userexists = "user already exists";
+												$scope.userexists = "This user already exists.";
 											}
 										});
 					}
@@ -258,11 +259,12 @@ angular
 
 						var UserService = appEndpointSF.getUserService();
 						UserService
-								.isUserExists(emailid)
+								.isUserExists($scope.curuser.business.id,
+										emailid)
 								.then(
 										function(responce) {
-											if (responce.result.returnBool == true) {
-												$scope.userexists = "user already exists";
+											if (responce.returnBool == true) {
+												$scope.userexists = "This user already exists.";
 												$scope.user.firstName = "";
 												$scope.user.lastName = "";
 												angular

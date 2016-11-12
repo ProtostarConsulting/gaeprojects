@@ -93,6 +93,12 @@
 	 					"authDisplayName":"Generate Monthly Salary",
 	 					"uiStateName":"hr.MonthlyPaymentDetail",
 	 					"orderNumber":"3"
+	 					},
+	 					{
+	 					"authName":"PayrollReports",
+	 					"authDisplayName":"Payroll Reports",
+	 					"uiStateName":"hr.reports",
+	 					"orderNumber":"3"
 	 					}
 					]
 	},

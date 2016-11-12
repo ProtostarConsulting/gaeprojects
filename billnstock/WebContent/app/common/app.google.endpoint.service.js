@@ -203,14 +203,16 @@ function googleEndpointSF($log, $q) {
 		return deferred.promise;
 	}
 
-	UserService.isUserExists = function(emailid) {
+	UserService.isUserExists = function(bizId, email_id) {
 		var deferred = $q.defer();
 		gapi.client.userService.isUserExists({
-			'email_id' : emailid
+			'bizId' : bizId,
+			'email_id' : email_id
 		}).execute(function(resp) {
-			deferred.resolve(resp);
+			deferred.resolve(resp.result);
 		});
 		return deferred.promise;
+
 	}
 
 	/*

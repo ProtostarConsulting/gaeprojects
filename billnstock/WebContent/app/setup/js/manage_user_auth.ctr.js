@@ -10,9 +10,9 @@ angular
 							.getLoggedinUser();
 					$log.debug("Inside manageUserAuthCtr");
 
-					$scope.selectedUserEmailId = $stateParams.selectedUserEmailId;
+					$scope.selectedUser = $stateParams.selectedUser;
 
-					if (!$scope.selectedUserEmailId) {
+					if (!$scope.selectedUser) {
 						return;
 					}
 
@@ -37,7 +37,6 @@ angular
 					$log.debug("$scope.curUser.business.authorizations: "
 							+ $scope.curUser.business.authorizations);
 
-					$scope.selectedUser = null
 					$scope.userAuthObject = null;
 
 					function getAuthorizationMasterEntity() {
@@ -58,27 +57,15 @@ angular
 																$scope.existingInstituteAuthObject,
 																$scope.instituteAuthMasterEntity);
 
-												var UserService = appEndpointSF
-														.getUserService();
-												UserService
-														.getUserByEmailID(
-																$scope.selectedUserEmailId)
-														.then(
-																function(user) {
-																	$scope.selectedUser = user;
-																	$log
-																			.debug("user.authorizations: "
-																					+ user.authorizations);
-																	var jsonUserAuthObject = angular
-																			.fromJson(user.authorizations);
-																	$scope.userAuthObject = jsonUserAuthObject;
-																	if (user.authorizations) {
-																		$scope.instituteAuthMasterEntity = authService
-																				.markSelectedAuthorizations(
-																						$scope.instituteAuthMasterEntity,
-																						$scope.userAuthObject);
-																	}
-																});
+												var jsonUserAuthObject = angular
+														.fromJson($scope.selectedUser.authorizations);
+												$scope.userAuthObject = jsonUserAuthObject;
+												if ($scope.selectedUser.authorizations) {
+													$scope.instituteAuthMasterEntity = authService
+															.markSelectedAuthorizations(
+																	$scope.instituteAuthMasterEntity,
+																	$scope.userAuthObject);
+												}
 
 											}
 											$scope.mode = "list";
