@@ -43,9 +43,9 @@ public class PrintPdfSalarySlip extends HttpServlet {
 		String DATE_FORMAT = "dd/MMM/yyyy";
 		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 
-		String fileNameAppend = "_" + month + sdf.format(date);
+		String fileNameAppend = "_" + month + "_" + sdf.format(date);
 		response.setHeader("Content-disposition",
-				"inline; filename='SalarySlip_" + fileNameAppend + ".pdf'");
+				"inline; filename='SalarySlip" + fileNameAppend + ".pdf'");
 
 		System.out.println("entity" + entity);
 		HrService hrService = new HrService();

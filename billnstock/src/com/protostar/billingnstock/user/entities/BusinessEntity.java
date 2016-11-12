@@ -1,5 +1,8 @@
 package com.protostar.billingnstock.user.entities;
 
+import javax.persistence.Transient;
+
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
@@ -28,6 +31,11 @@ public class BusinessEntity {
 	private String footerBlobKey;
 	private String disclaimer;
 	private String authorizations;
+
+	@Transient
+	public com.google.appengine.api.datastore.Key getKey() {
+		return Key.create(BusinessEntity.class, id).getRaw();
+	}
 
 	public String getAuthorizations() {
 		return authorizations;

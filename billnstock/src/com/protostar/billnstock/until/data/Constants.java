@@ -14,5 +14,11 @@ public class Constants {
 	//public static final String PROERP_IMAGES_BUCKET = "proerp_image_files";
 	public static final String PROERP_IMAGES_BUCKET = "proerp12_image_files";
 	
+	//Counter/Sequence Names
+	public static final String EMP_NO_COUNTER = "EMP_NO_COUNTER";
+	public static final String ACC_ACCOUNT_NO_COUNTER = "ACC_ACCOUNT_NO_COUNTER";
+	public static final String INVOICE_NO_COUNTER = "INVOICE_NO_COUNTER";
+	public static final String VOUCHER_NO_COUNTER = "VOUCHER_NO_COUNTER";
+	
 
 }

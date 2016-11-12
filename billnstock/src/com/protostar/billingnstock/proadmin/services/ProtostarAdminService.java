@@ -350,7 +350,7 @@ public class ProtostarAdminService {
 		businessEntity.setBusinessName("Protostar Consulting Services");
 		businessEntity.setAccounttype(filteredaccount);
 		businessEntity.setRegisterDate(sdf.format(date));
-		String authorizations = "{\"authorizations\":[{\"authName\":\"updatemyprofile\",\"authorizations\":[]},{\"authName\":\"proadmin\",\"authorizations\":[]},{\"authName\":\"setup\",\"authorizations\":[]}]}";
+		String authorizations = "{\"authorizations\":[{\"authName\":\"More Actions\",\"authorizations\":[{\"authName\":\"updatemyprofile\",\"authorizations\":[]},{\"authName\":\"proadmin\",\"authorizations\":[]},{\"authName\":\"setup\",\"authorizations\":[]}]}]}";
 		businessEntity.setAuthorizations(authorizations);
 
 		Address address = new Address();
@@ -380,9 +380,9 @@ public class ProtostarAdminService {
 
 		UserEntity userEntity1 = new UserEntity();
 		userEntity1.setBusiness(businessEntity);
-		userEntity1.setEmail_id("sneha@protostar.co.in");
-		userEntity1.setFirstName("Sneha");
-		userEntity1.setLastName("Sakhare");
+		userEntity1.setEmail_id("shantanu@protostar.co.in");
+		userEntity1.setFirstName("Shantanu");
+		userEntity1.setLastName("Lawande");
 		userEntity1.setIsGoogleUser(true);
 		userEntity1.setAuthority(Arrays.asList("admin"));
 		userEntity1.setAuthorizations(authorizations);

@@ -142,10 +142,10 @@ public class UserService {
 	}
 
 	@ApiMethod(name = "getUserByEmailID", path = "getUserByEmailID")
-	public UserEntity getUserByEmailID(@Named("email_id") String email) {
+	public List<UserEntity> getUserByEmailID(@Named("email_id") String email) {
 		List<UserEntity> list = ofy().load().type(UserEntity.class)
 				.filter("email_id", email).list();
-		return (list == null || list.size() == 0) ? null : list.get(0);
+		return (list == null || list.size() == 0) ? null : list;
 	}
 
 	@ApiMethod(name = "getUserByID", path = "getUserByID")
@@ -164,25 +164,21 @@ public class UserService {
 	}
 
 	@ApiMethod(name = "login")
-	public UserEntity login(@Named("email_id") String email,
+	public List<UserEntity> login(@Named("email_id") String email,
 			@Named("password") String pass) {
 		List<UserEntity> list = ofy().load().type(UserEntity.class)
 				.filter("email_id", email).list();
 
-		UserEntity foundUser = (list == null || list.size() == 0) ? null : list
-				.get(0);
-		if (foundUser != null) {
+		if (list != null & list.size() > 0) {
+			UserEntity foundUser = list.get(0);
 			if (foundUser.getPassword().equals(pass)) {
-				return foundUser;
+				return list;
 			} else {
 				return null;
-
 			}
 		} else {
 			return null;
-
 		}
-
 	}
 
 	@ApiMethod(name = "addBusiness")
@@ -229,9 +225,11 @@ public class UserService {
 	}
 
 	@ApiMethod(name = "isUserExists")
-	public ServerMsg isUserExists(@Named("email_id") String emailID) {
+	public ServerMsg isUserExists(@Named("bizId") Long id,
+			@Named("email_id") String emailID) {
 		ServerMsg serverMsg = new ServerMsg();
 		List<UserEntity> list = ofy().load().type(UserEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, id))
 				.filter("email_id", emailID).list();
 
 		/* if(list.get(0).equals(null)){ */

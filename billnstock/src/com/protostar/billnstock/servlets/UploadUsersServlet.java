@@ -24,6 +24,8 @@ import com.protostar.billingnstock.user.entities.EmpDepartment;
 import com.protostar.billingnstock.user.entities.UserEntity;
 import com.protostar.billingnstock.user.services.UserService;
 import com.protostar.billnstock.service.UtilityService;
+import com.protostar.billnstock.until.data.Constants;
+import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 
 public class UploadUsersServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -75,7 +77,6 @@ public class UploadUsersServlet extends HttpServlet {
 		Date todaysDate = new Date();
 		// Start from 1 so that column headers are scriped.
 		for (int row = 1; row < split2.length; row++) {
-
 			try {
 				String[] split = split2[row].split(",");
 				if (split == null || split.length < 7) {
@@ -108,13 +109,16 @@ public class UploadUsersServlet extends HttpServlet {
 					}
 				}
 
-				userEntity
-						.setIsLoginAllowed("1".equalsIgnoreCase(split[4].trim()));
-				
+				userEntity.setIsLoginAllowed("1".equalsIgnoreCase(split[4]
+						.trim()));
+
 				userEntity
 						.setIsGoogleUser("1".equalsIgnoreCase(split[5].trim()));
 				userEntity.setPassword(split[6].trim());
 
+				SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
+						businessEntity.getKey(), Constants.EMP_NO_COUNTER);
+				userEntity.setEmpId(sequenceGenService.getNextSequenceNumber());
 				ofy().save().entity(userEntity).now();
 
 				log.info("Processed userEntity.getFirstName(): "
@@ -185,7 +189,7 @@ public class UploadUsersServlet extends HttpServlet {
 				UserService userService = new UserService();
 				BusinessEntity businessEntity = userService
 						.getBusinessById(businessId);
-				
+
 				List<UserEntity> userList = new ArrayList<UserEntity>();
 				Date todaysDate = new Date();
 				// Start from 1 so that column headers are scriped.
@@ -208,7 +212,7 @@ public class UploadUsersServlet extends HttpServlet {
 						userEntity.setIsGoogleUser("1"
 								.equalsIgnoreCase(split[3].trim()));
 						userEntity.setPassword(split[4].trim());
-						//ofy().save().entity(userEntity).now();
+						// ofy().save().entity(userEntity).now();
 						userList.add(userEntity);
 						log.fine("Processed userEntity.getFirstName(): "
 								+ userEntity.getFirstName());
@@ -216,8 +220,9 @@ public class UploadUsersServlet extends HttpServlet {
 						log.warning(e.getMessage());
 						e.printStackTrace();
 					}
-				}	
-				//this saves all users in single batch operation that to Async way.
+				}
+				// this saves all users in single batch operation that to Async
+				// way.
 				ofy().save().entities(userList);
 			}
 		} catch (Exception e) {
