@@ -1,20 +1,27 @@
 <md-content layout-padding>
+<div>
+	<ng-md-icon icon="add_circle" style="fill: md-default" size="35"
+		ui-sref="proAdmin.addAccount"> <md-tooltip>
+	New Business Plan</md-tooltip></ng-md-icon>
+	</ng-md-icon>
+</div>
+
 <div layout layout-sm="column">
-  <md-input-container flex> <label>Search</label> <input
-   ng-model="searchText"> </md-input-container>
- </div>
+	<md-input-container flex> <label>Search</label> <input
+		ng-model="searchText"> </md-input-container>
+</div>
+
 <div>
 	<md-data-table-container>
 
-	<table md-data-table  md-progress="deferred">
+	<table md-data-table md-progress="deferred">
 		<thead md-order="query.order" md-trigger="onOrderChange">
 			<tr>
-		    	
-				<th name="Account Name" order-by="accountName"></th>
-			   <th name="Discription" order-by="description"></th>
-			   <th name="Maxuser" order-by="maxuser"></th>
-			   <th name="Payment Description" order-by="paymentDesc"></th>
-			   <th name="Edit" order-by="edit"></th>
+				<th name="Business Plan" order-by="accountName"></th>
+				<th name="Discription" order-by="description"></th>
+				<th name="Maxuser" order-by="maxuser"></th>
+				<th name="Payment Description" order-by="paymentDesc"></th>
+				<th name="Edit" order-by="edit"></th>
 			</tr>
 		</thead>
 
@@ -33,10 +40,10 @@
 			</tr>
 		</tbody>
 	</table>
- 
- <md-data-table-pagination md-limit="query.limit"
-		md-page="query.page" md-total={{accountlist.length}}
-		md-trigger="onpagechange"></md-data-table-pagination> </md-data-table-container>
+
+	<md-data-table-pagination md-limit="query.limit" md-page="query.page"
+		md-total={{accountlist.length}} md-trigger="onpagechange"></md-data-table-pagination>
+	</md-data-table-container>
 </div>
 
 
