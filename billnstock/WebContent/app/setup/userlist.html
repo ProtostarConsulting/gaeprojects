@@ -63,11 +63,11 @@
 							<section layout="row">
 								<md-button class="md-icon-button" ng-hide="businessNo"
 									style="padding-top:18px"
-									ui-sref="setup.userview({selecteduserNo:user.id})">
+									ui-sref="setup.userview({selectedUser: user})">
 								<ng-md-icon icon="edit" style="fill: md-default" size="24">
 								<md-tooltip> Edit Record</md-tooltip></ng-md-icon></md-button>
 								<md-button class="md-icon-button" ng-show="businessNo"
-									ui-sref="proAdmin.editBusiness.userview({selecteduserNo:user.id})">
+									ui-sref="proAdmin.editBusiness.userview({selectedUser: user})">
 								<ng-md-icon icon="edit" style="fill: md-default" size="24">
 								<md-tooltip> Edit Record</md-tooltip></ng-md-icon></md-button>
 								<md-menu md-offset="0 -7"> <md-button

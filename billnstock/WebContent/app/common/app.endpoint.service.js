@@ -136,13 +136,7 @@ function appEndpointSFFn($log, localDBServiceFactory, googleEndpointSF) {
 			return googleEndpointSF.getopportunityService();
 	}
 
-	// -----------------------------------------------------
-	endpointFactory.getsetupService = function() {
-		if (isTestMode)
-			return localDBServiceFactory.getsetupService();
-		else
-			return googleEndpointSF.getsetupService();
-	}
+	
 
 	// -----------------------------------------------------
 
@@ -308,10 +302,6 @@ function appEndpointSFFn($log, localDBServiceFactory, googleEndpointSF) {
 
 		gapi.client.load('salesOrderService', 'v0.1', function() {
 			$log.debug("salesOrderService Loaded....");
-		}, apiRoot);
-
-		gapi.client.load('setupService', 'v0.1', function() {
-			$log.debug("setupService Loaded....");
 		}, apiRoot);
 
 		gapi.client.load('purchaseOrderService', 'v0.1', function() {

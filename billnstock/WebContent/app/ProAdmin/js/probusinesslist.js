@@ -22,7 +22,7 @@ angular
 					}
 
 					$scope.getBusinessList = function() {
-						$log.debug("Inside Ctr $scope.getuserById");
+						$log.debug("Inside Ctr $scope.getBusinessList");
 						var UserService = appEndpointSF.getUserService();
 						UserService.getBusinessList().then(
 								function(businessList) {
@@ -107,32 +107,7 @@ angular
 						// });
 
 					}
-
-					$scope.getuserById = function() {
-						$log.debug("Inside Ctr $scope.getuserById");
-						var setupService = appEndpointSF.getsetupService();
-						if (typeof $scope.selecteduserNo != 'undefined') {
-							setupService.getuserById($scope.selecteduserNo)
-									.then(function(userList) {
-										$log.debug("Inside Ctr getAllleads");
-										$scope.userL = userList.result;
-
-									});
-						}
-					}
-
-					$scope.userL = [];
-					$scope.getuserById();
-
-					$scope.updateuser = function() {
-						$scope.userL.authority = $scope.selection;
-						// $scope.userL.password= $scope.password;
-						var UserService = appEndpointSF.getUserService();
-						UserService.updateUser($scope.userL).then(
-								function(msgBean) {
-									$scope.showUpdateToast();
-								});
-					}
+					
 
 					// -----------------------------------------------------------------------------------------------
 					$scope.back = function() {

@@ -729,9 +729,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		controller : 'setup.adduser',
 
 	}).state('setup.userview', {
-		url : "/userview/:selecteduserNo",
+		url : "/userview",
 		templateUrl : '/app/setup/setup_viewuser.html',
 		controller : 'setup.viewuser',
+		params:{
+			selectedUser: null
+		}
 
 	}).state('setup.footer', {
 		url : "/addfooter",

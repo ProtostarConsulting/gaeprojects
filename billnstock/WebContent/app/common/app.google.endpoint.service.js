@@ -57,10 +57,10 @@ function googleEndpointSF($log, $q) {
 		return deferred.promise;
 	}
 
-	TaskService.getMyAllTask = function(email_id) {
+	TaskService.getMyAllTask = function(userId) {
 		var deferred = $q.defer();
 		gapi.client.taskService.getMyAllTask({
-			"email_id" : email_id
+			"userId" : userId
 		}).execute(function(data) {
 			deferred.resolve(data);
 		});
@@ -95,9 +95,9 @@ function googleEndpointSF($log, $q) {
 		return deferred.promise;
 	}
 
-	UserService.updateBusiStatus = function(update) {
+	UserService.updateBusiness = function(update) {
 		var deferred = $q.defer();
-		gapi.client.userService.updateBusiStatus(update).execute(function() {
+		gapi.client.userService.updateBusiness(update).execute(function() {
 			deferred.resolve({
 				"msg" : "Business Status Successfully Updated"
 			});
@@ -120,6 +120,15 @@ function googleEndpointSF($log, $q) {
 		var deferred = $q.defer();
 		gapi.client.userService.getUser().execute(function(resp) {
 			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}
+	UserService.getUserByID = function(userId) {
+		var deferred = $q.defer();
+		gapi.client.userService.getUserByID({
+			'id' : userId
+		}).execute(function(resp) {
+			deferred.resolve(resp.result);
 		});
 		return deferred.promise;
 	}
@@ -201,7 +210,7 @@ function googleEndpointSF($log, $q) {
 			deferred.resolve(resp);
 		});
 		return deferred.promise;
-	}
+	}	
 
 	UserService.isUserExists = function(bizId, email_id) {
 		var deferred = $q.defer();
@@ -604,110 +613,6 @@ function googleEndpointSF($log, $q) {
 	}
 
 	// End of authorizationService
-	/*------------------------------------------------------------------------------------------------------*/
-	// --------------------setup service----------------------------
-	var setupService = {};
-
-	serviceFactory.getsetupService = function() {
-		return setupService;
-	}
-
-	
-	
-	
-	
-	
-	
-	setupService.saveDepartment = function(department) {
-		var deferred = $q.defer();
-		gapi.client.setupService.saveDepartment(department).execute(function() {
-			deferred.resolve({
-				"msg" : "User Status Successfully Updated"
-			});
-		});
-		return deferred.promise;
-	}
-	
-	
-	setupService.getDepartmentList = function(buzid) {
-		var deferred = $q.defer();
-		gapi.client.setupService.getDepartmentList({
-			'buzid' : buzid
-		}).execute(function(resp) {
-			deferred.resolve(resp.items);
-		});
-		return deferred.promise;
-	}
-	
-	
-	
-	
-	
-	
-	setupService.getCurUserByEmailId = function(emailid) {
-		var deferred = $q.defer();
-		gapi.client.setupService.getCurUserByEmailId({
-			'email_id' : emailid
-		}).execute(function(resp) {
-			deferred.resolve(resp);
-		});
-		return deferred.promise;
-	}
-
-	setupService.updateBusiness = function(business) {
-		var deferred = $q.defer();
-		gapi.client.setupService.updateBusiness(business).execute(
-				function(resp) {
-					deferred.resolve(resp);
-					/*
-					 * deferred.resolve({ "msg" : "Business Updated
-					 * Successfully" });
-					 */
-				});
-		return deferred.promise;
-	}
-
-	setupService.updateUserStatus = function(update) {
-		var deferred = $q.defer();
-		gapi.client.setupService.updateUserStatus(update).execute(function() {
-			deferred.resolve({
-				"msg" : "User Status Successfully Updated"
-			});
-		});
-		return deferred.promise;
-	}
-
-	setupService.getAllUserOfOrg = function(id) {
-		var deferred = $q.defer();
-		gapi.client.setupService.getAllUserOfOrg({
-			'id' : id
-		}).execute(function(resp) {
-			deferred.resolve(resp);
-		});
-		return deferred.promise;
-	}
-
-	setupService.getuserById = function(usrid) {
-		var deferred = $q.defer();
-		gapi.client.setupService.getuser({
-			'id' : usrid
-		}).execute(function(resp) {
-			deferred.resolve(resp);
-		});
-		return deferred.promise;
-	}
-
-	/*
-	 * setupService.adduser= function(user) {
-	 * 
-	 * var deferred = $q.defer();
-	 * gapi.client.setupService.adduser(user).execute(function() {
-	 * 
-	 * deferred.resolve({ "msg" : "user Added Successfully." });
-	 * 
-	 * }); return deferred.promise; }
-	 */
-
 	// --------------------hr services--------------------------------------
 	var hrService = {};
 
@@ -833,22 +738,24 @@ function googleEndpointSF($log, $q) {
 
 	hrService.saveSalaryMasterDetailList = function(salaryMasterDetailList) {
 		var deferred = $q.defer();
-		gapi.client.hrService.saveSalaryMasterDetailList(salaryMasterDetailList).execute(function() {
-			deferred.resolve({
-				"msg" : "addEmpLeav Added Successfully."
-			});
+		gapi.client.hrService
+				.saveSalaryMasterDetailList(salaryMasterDetailList).execute(
+						function() {
+							deferred.resolve({
+								"msg" : "addEmpLeav Added Successfully."
+							});
 
-		});
+						});
 
 		return deferred.promise;
 	}
 
 	hrService.saveMonthlyPaymentDetailList = function(monthlyPaymentDetailList) {
 		var deferred = $q.defer();
-		gapi.client.hrService.saveMonthlyPaymentDetailList(monthlyPaymentDetailList).execute(
-				function(resp) {
-					deferred.resolve(resp);
-				});
+		gapi.client.hrService.saveMonthlyPaymentDetailList(
+				monthlyPaymentDetailList).execute(function(resp) {
+			deferred.resolve(resp);
+		});
 		return deferred.promise;
 	}
 

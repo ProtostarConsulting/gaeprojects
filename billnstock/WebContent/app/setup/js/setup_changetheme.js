@@ -18,8 +18,8 @@ angular.module("stockApp").controller(
 			
 				$scope.saveTheme=function(themeName){
 					$scope.curUser.business.theme=themeName;
-						var setupService = appEndpointSF.getsetupService();
-						setupService.updateBusiness($scope.curUser.business).then(
+						var UserService = appEndpointSF.getUserService();
+						UserService.updateBusiness($scope.curUser.business).then(
 								function(msgBean) {
 									$scope.showUpdateToast();
 								});

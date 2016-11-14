@@ -48,8 +48,8 @@ angular
 
 					$scope.updateBusiness = function() {
 						$scope.business.address = $scope.Address;
-						var setupService = appEndpointSF.getsetupService();
-						setupService.updateBusiness($scope.business).then(
+						var UserService = appEndpointSF.getUserService();
+						UserService.updateBusiness($scope.business).then(
 								function(msgBean) {
 									$scope.curuser.business = $scope.business;
 									appEndpointSF.getLocalUserService()

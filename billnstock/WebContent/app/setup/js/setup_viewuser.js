@@ -10,10 +10,12 @@ angular
 						$mdToast.show($mdToast.simple().content(msgBean)
 								.position("top").hideDelay(3000));
 					};
-					$scope.businessNo = $stateParams.businessNo;
-					$scope.selecteduserNo = $stateParams.selecteduserNo;
-					$scope.id;
-
+					//$scope.businessNo = $stateParams.businessNo;
+					//$scope.selecteduserNo = $stateParams.selecteduserNo;
+					$scope.userL = $stateParams.selectedUser;
+					
+					
+					
 					$scope.items = [ "customer","account","stock", "salesOrder", "purchaseOrder", "invoice",
 							"warehouse", "hr", "crm", "employee",
 							"admin" ];
@@ -47,10 +49,10 @@ angular
 					// controller----------------
 					$scope.getuserById = function() {
 						$log.debug("Inside Ctr $scope.getuserById");
-						var setupService = appEndpointSF.getsetupService();
+						var UserService = appEndpointSF.getUserService();
 						if (typeof $scope.selecteduserNo != "undefined") {
-							setupService
-									.getuserById($scope.selecteduserNo)
+							UserService
+									.getUserByID($scope.selecteduserNo)
 									.then(
 											function(userList) {
 												$log
@@ -69,11 +71,10 @@ angular
 						}
 					}
 
-					$scope.userL = {};
-					
+				
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
-							$scope.getuserById();
+							//$scope.getuserById();
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
 							$timeout($scope.waitForServiceLoad, 1000);
@@ -84,11 +85,7 @@ angular
 					$scope.updateuser = function() {
 						$scope.userL.modifiedBy=$scope.curUser.email_id;
 						$scope.userL.bankDetail=$scope.BankDetail;
-						$scope.userL.authority = [];
-						for (var i = 0; i < $scope.selection.length; i++) {
-							if ($scope.selection[i])
-								$scope.userL.authority.push($scope.items[i]);
-						}
+						
 						var UserService = appEndpointSF.getUserService();
 						UserService.updateUser($scope.userL).then(
 								function(msgBean) {

@@ -203,10 +203,10 @@ angular
 						// use selection array true false value and push that
 						// numbered item on authority
 
-						var setupService = appEndpointSF.getsetupService();
+						var UserService = appEndpointSF.getUserService();
 						if (typeof $scope.selectedBusiness.id != 'undefined') {
-							setupService
-									.getAllUserOfOrg($scope.selectedBusiness.id)
+							UserService
+									.getUsersByBusinessId($scope.selectedBusiness.id)
 									.then(
 											function(users) {
 												$scope.userslist = users.items.length;

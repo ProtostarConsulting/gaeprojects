@@ -19,8 +19,8 @@ angular
 					$scope.updateBusiness = function() {						
 						$scope.curuser.business.disclaimer=$scope.disclaimer;
 						
-						var setupService = appEndpointSF.getsetupService();
-						setupService
+						var UserService = appEndpointSF.getUserService();
+						UserService
 								.updateBusiness($scope.curuser.business)
 								.then(function(business) {
 									$scope.curuser.business=business;

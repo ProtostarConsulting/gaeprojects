@@ -61,29 +61,7 @@ angular
 					};
 
 				
-					$scope.addsalstruct = function() {
-						var setupService = appEndpointSF.getsetupService();
-						if (typeof $scope.selectedUserId != 'undefined') {
-							setupService.getuserById($scope.selectedUserId)
-									.then(function(userList) {
-												
-												$scope.userL = userList.result;
-												$scope.salstruct.empAccount = $scope.userL;
-												$scope.salstruct.business=$scope.userL.business;
-												
-												var hrService = appEndpointSF.gethrService();
-												hrService.addsalstruct($scope.salstruct)
-														.then(function(msgBean) {
-																	$log.debug("Inside Ctr salstruct");
-																	$log.debug("msgBean.msg:"+ msgBean.msg);
-																	$scope.showAddToast();
-																	//$scope.getAllemps();
-																	$scope.salstruct = {};
-																});
-												});
-						}
-
-					}
+					
 					$scope.updatesalinfo = function() {
 						$scope.salstruct.modifiedBy=$scope.curUser.email_id;
 						var hrService = appEndpointSF.gethrService();

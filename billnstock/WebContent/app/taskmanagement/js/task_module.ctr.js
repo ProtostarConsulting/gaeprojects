@@ -10,7 +10,7 @@ angular
 					$scope.loading = true;
 
 					var taskService = appEndpointSF.getTaskService();
-					var setupService = appEndpointSF.getsetupService();
+					var UserService = appEndpointSF.getUserService();
 
 					$scope.taskStatusList = [ 'OPEN', 'INPROGRESS', 'COMPLETED' ];
 
@@ -145,7 +145,7 @@ angular
 					}
 
 					$scope.getMyAllTask = function() {
-						taskService.getMyAllTask($scope.curUser.email_id).then(
+						taskService.getMyAllTask($scope.curUser.id).then(
 								function(resp) {
 									$scope.taskEntityList = resp.items;
 									$scope.loading = false;
@@ -168,8 +168,8 @@ angular
 							$log
 									.debug("Not Found List in Cache, need to fetch from Server.")
 						}
-						setupService
-								.getAllUserOfOrg($scope.curUser.business.id)
+						UserService
+								.getUsersByBusinessId($scope.curUser.business.id)
 								.then(
 										function(users) {
 											var activeUserList = [];

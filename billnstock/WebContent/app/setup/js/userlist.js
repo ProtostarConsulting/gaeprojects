@@ -69,9 +69,9 @@ angular
 					};
 
 					$scope.getAllUserOfOrg = function() {
-						var setupService = appEndpointSF.getsetupService();
-						setupService
-								.getAllUserOfOrg($scope.selectedBusiness.id)
+						var UserService = appEndpointSF.getUserService();
+						UserService
+								.getUsersByBusinessId($scope.selectedBusiness.id)
 								.then(
 										function(users) {
 											$scope.userslist = users.items;
@@ -132,9 +132,9 @@ angular
 
 					$scope.suspendUser = function(user) {
 						var suspended = "suspended";
-						var setupService = appEndpointSF.getsetupService();
+						var UserService = appEndpointSF.getUserService();
 						user.status = suspended;
-						setupService.updateUserStatus(user).then(
+						UserService.updateUser(user).then(
 								function(msgBean) {
 									$scope.showSimpleToast(msgBean.msg);
 									$scope.getAllUserOfOrg();
@@ -142,9 +142,9 @@ angular
 					}
 					$scope.activateUser = function(user) {
 						var active = "active";
-						var setupService = appEndpointSF.getsetupService();
+						var UserService = appEndpointSF.getUserService();
 						user.status = active;
-						setupService.updateUserStatus(user).then(
+						UserService.updateUser(user).then(
 								function(msgBean) {
 									$scope.showSimpleToast(msgBean.msg);
 									$scope.getAllUserOfOrg();

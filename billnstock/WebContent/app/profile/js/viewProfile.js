@@ -17,9 +17,9 @@ angular
 	
 					$scope.getuserById = function() {
 						$log.debug("Inside Ctr $scope.getuserById");
-						var setupService = appEndpointSF.getsetupService();
+						var UserService = appEndpointSF.getUserService();
 						if (typeof $scope.curuser.id != 'undefined') {
-							setupService.getuserById($scope.curuser.id).then(
+							UserService.getUserByID($scope.curuser.id).then(
 									function(userList) {
 										$log.debug("Inside Ctr getAllleads");
 										$scope.userL = userList.result;
