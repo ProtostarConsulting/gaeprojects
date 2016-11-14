@@ -49,9 +49,11 @@ public class UserService {
 			usr.setAuthorizations(Constants.NEW_BIZ_USER_DEFAULT_AUTHS);
 		} else {
 			usr.setModifiedDate(new Date());
+			ofy().save().entity(usr).now();
+			return;
 		}
-		usr.setCreatedDate(new Date());
-		Key<UserEntity> now = ofy().save().entity(usr).now();
+		
+		ofy().save().entity(usr).now();
 		int count;
 		List<UserEntity> filtereduser = ofy()
 				.load()
@@ -126,10 +128,9 @@ public class UserService {
 		return list;
 	}
 
-	@ApiMethod(name = "updateBusiStatus", path = "updateBusiStatus")
-	public void updateBusiStatus(BusinessEntity businessEntity) {
-		businessEntity.setModifiedDate(new Date());
-		ofy().save().entity(businessEntity).now();
+	@ApiMethod(name = "updateBusiness", path = "updateBusiness")
+	public void updateBusiness(BusinessEntity businessEntity) {
+		addBusiness(businessEntity);
 	}
 
 	@ApiMethod(name = "getBusinessById")
@@ -162,7 +163,7 @@ public class UserService {
 		return userE;
 	}
 
-	@ApiMethod(name = "getBusinessByEmailID", path = "Somepath_realted_to_your_service")
+	@ApiMethod(name = "getBusinessByEmailID", path = "getBusinessByEmailID")
 	public BusinessEntity getBusinessByEmailID(
 			@Named("adminEmailId") String emailid) {
 		List<BusinessEntity> list = ofy().load().type(BusinessEntity.class)
@@ -198,19 +199,21 @@ public class UserService {
 			// Seth Basic Auths
 			business.setAuthorizations(Constants.NEW_BIZ_DEFAULT_AUTHS);
 			business.setCreatedDate(new Date());
+			business.setRegisterDate(sdf.format(date));
+		} else {
+			business.setModifiedDate(new Date());
 		}
 
 		ofy().save().entity(business).now();
 
 		if (isFreshBusiness) {
 			// this is being created. Perform basic configs
-			// Set default department
-			business.setRegisterDate(sdf.format(date));
+			// Set default department			
 			EmpDepartment defaultDepartment = new EmpDepartment();
 			defaultDepartment.setName("Default");
 			defaultDepartment.setBusiness(business);
 			defaultDepartment.setCreatedDate(new Date());
-
+			addEmpDepartment(defaultDepartment);
 		}
 		return business;
 	}
