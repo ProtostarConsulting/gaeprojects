@@ -70,8 +70,9 @@ angular
 
 					$scope.getAllUserOfOrg = function() {
 						var UserService = appEndpointSF.getUserService();
+						var bizId = Number($scope.selectedBusiness.id);
 						UserService
-								.getUsersByBusinessId($scope.selectedBusiness.id)
+								.getUsersByBusinessId(bizId)
 								.then(
 										function(users) {
 											$scope.userslist = users.items;

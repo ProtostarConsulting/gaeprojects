@@ -218,18 +218,17 @@ public class UserService {
 		return business;
 	}
 
-	@ApiMethod(name = "getUsersByBusinessId")
+	@ApiMethod(name = "getUsersByBusinessId", path="getUsersByBusinessId")
 	public List<UserEntity> getUsersByBusinessId(@Named("id") Long id) {
-		/*
-		 * List<UserEntity> list = ofy().load().type(UserEntity.class)
-		 * .ancestor(Key.create(UserEntity.class, id)).list();
-		 */
-		List<UserEntity> list = ofy().load().type(UserEntity.class).list();
+		 List<UserEntity> list = ofy().load().type(UserEntity.class)
+		 .ancestor(Key.create(BusinessEntity.class, id)).list();
+		
+		 /*List<UserEntity> list = ofy().load().type(UserEntity.class).list();
 		for (UserEntity user : list) {
 			if (user.getId().longValue() == id.longValue()) {
 				list.add(user);
 			}
-		}
+		}*/
 		// logger.info("list:" + list);
 		return list;
 	}
