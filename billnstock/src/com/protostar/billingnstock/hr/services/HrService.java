@@ -47,7 +47,13 @@ public class HrService {
 		return filteredemp;
 
 	}
+	@ApiMethod(name = "getSalStructByUser")
+	public SalStruct getSalStructByUser( UserEntity currRowUser) {
 
+	//	SalStruct salStruct = ofy().load().type(SalStruct.class).filter("UserEntity",currRowUser).now();
+
+		return null;//salStruct;
+	}
 	@ApiMethod(name = "getempByID")
 	public Employee getempByID(@Named("id") Long selectedid) {
 

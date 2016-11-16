@@ -32,7 +32,7 @@ public class DownloadSalaryMaster extends HttpServlet {
 
 		System.out.println("***************"
 				+ Long.parseLong(request.getParameter("id").toString()));
-		List<SalStruct> salMasterList = hrService.getSalaryMasterlist(id);
+		List<SalStruct> salMasterList = hrService.getSalaryMasterlist(id);  
 		UserService userService = new UserService();
 
 		List<UserEntity> userList = userService.getUsersByBusinessId(id);
@@ -88,7 +88,8 @@ public class DownloadSalaryMaster extends HttpServlet {
 
 				try {
 					UserEntity userEntity = userList.get(i);
-					writer.append("" + userEntity.getId());
+					String strLong = Long.toString(userEntity.getId().longValue());
+					writer.append(strLong );
 					writer.append(',');
 					SalStruct userSalMaster = null;
 					for (SalStruct salMaster : salMasterList) {
@@ -104,17 +105,19 @@ public class DownloadSalaryMaster extends HttpServlet {
 						userSalMaster.setEmpAccount(userEntity);
 					}
 
-					writer.append(userSalMaster.getEmpAccount().getFirstName()
+				writer.append(userSalMaster.getEmpAccount().getFirstName()
 							+ " " + userSalMaster.getEmpAccount().getLastName());
 
-					writer.append(""+(i+1));
-
-					writer.append("" + (i + 1));
-
+				
 					writer.append(',');
+					writer.append("-");
 
+				
+					writer.append(',');
+					
+if(salMasterList.size()!=0){
 
-					writer.append(salMasterList.get(i).getEmpAccount().getFirstName()+""+salMasterList.get(i).getEmpAccount().getLastName());
+					/*writer.append(salMasterList.get(i).getEmpAccount().getFirstName()+""+salMasterList.get(i).getEmpAccount().getLastName());
 					writer.append(',');
 
 					writer.append(salMasterList.get(i).getEmpAccount()
@@ -122,10 +125,9 @@ public class DownloadSalaryMaster extends HttpServlet {
 							+ ""
 							+ salMasterList.get(i).getEmpAccount()
 									.getLastName());
-					writer.append(',');
+					writer.append(',');*/
 
-					writer.append("-");
-					writer.append(',');
+					
 					Float grosssal = userSalMaster.getGrosssal();
 					writer.append(grosssal == null ? "" : grosssal.toString());
 					writer.append(',');
@@ -152,26 +154,22 @@ public class DownloadSalaryMaster extends HttpServlet {
 					writer.append(',');
 					writer.append(userSalMaster.getEducation() == null ? ""
 							: userSalMaster.getEducation().toString());
-					writer.append(salMasterList.get(i).getEducation().toString());
-					writer.append(salMasterList.get(i).getEducation()
-							.toString());
+				
 					writer.append(',');
 					writer.append(userSalMaster.getAdhocAllow() == null ? ""
 							: userSalMaster.getAdhocAllow().toString());
-					writer.append(salMasterList.get(i).getAdhocAllow().toString());
-					writer.append(salMasterList.get(i).getAdhocAllow()
-							.toString());
+					
+							
 					writer.append(',');
 					writer.append(userSalMaster.getSpecialAllow() == null ? ""
 							: userSalMaster.getSpecialAllow().toString());
-					writer.append(salMasterList.get(i).getSpecialAllow().toString());
+				
 
-					writer.append(salMasterList.get(i).getSpecialAllow()
-							.toString());
+				
 
 					writer.append(',');
 
-					writer.append(System.lineSeparator());
+					writer.append(System.lineSeparator());}writer.append(System.lineSeparator());
 				} catch (Exception e) {
 
 					e.printStackTrace();
