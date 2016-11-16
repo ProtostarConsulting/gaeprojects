@@ -25,6 +25,7 @@ import com.protostar.billingnstock.user.entities.UserEntity;
 import com.protostar.billingnstock.user.services.UserService;
 import com.protostar.billnstock.service.UtilityService;
 import com.protostar.billnstock.until.data.Constants;
+import com.protostar.billnstock.until.data.EntityUtil;
 import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 
 public class UploadUsersServlet extends HttpServlet {
@@ -117,7 +118,7 @@ public class UploadUsersServlet extends HttpServlet {
 				userEntity.setPassword(split[6].trim());
 
 				SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
-						businessEntity.getKey(), Constants.EMP_NO_COUNTER);
+						EntityUtil.getBusinessRawKey(businessEntity), Constants.EMP_NO_COUNTER);
 				userEntity.setEmpId(sequenceGenService.getNextSequenceNumber());
 				ofy().save().entity(userEntity).now();
 

@@ -11,51 +11,25 @@ angular
 
 					$scope.selectedBusiness = $stateParams.selectedBusiness ? $stateParams.selectedBusiness
 							: $scope.curuser.business;
-
-					$scope.Address = {
-						line1 : "",
-						line2 : "",
-						city : "",
-						state : "",
-						country : "",
-						pin : ""
-					}
-
-					$scope.getBusinessById = function() {
-
-						var UserService = appEndpointSF.getUserService();
-						UserService.getbusinessById($scope.selectedBusiness.id)
-								.then(function(Business) {
-									$scope.business = Business;
-									$scope.Address = $scope.business.address;
-
-								});
-
-					}
-					$scope.business = {};
-
-					$scope.waitForServiceLoad = function() {
-						if (appEndpointSF.is_service_ready) {
-
-							$scope.getBusinessById();
-
-						} else {
-							$log.debug("Services Not Loaded, watiting...");
-							$timeout($scope.waitForServiceLoad, 1000);
-						}
-					}
-					$scope.waitForServiceLoad();
+					
+					$scope.Address = $scope.selectedBusiness.address;
 
 					$scope.updateBusiness = function() {
-						$scope.business.address = $scope.Address;
+						$scope.selectedBusiness.address = $scope.Address;
 						var UserService = appEndpointSF.getUserService();
-						UserService.updateBusiness($scope.business).then(
-								function(msgBean) {
-									$scope.curuser.business = $scope.business;
-									appEndpointSF.getLocalUserService()
-											.saveLoggedInUser($scope.curuser);
-									$scope.showUpdateToast();
-								});
+						UserService
+								.updateBusiness($scope.selectedBusiness)
+								.then(
+										function(msgBean) {
+											if ($scope.curuser.business.id == $scope.selectedBusiness.id) {
+												$scope.curuser.business = $scope.selectedBusiness;
+												appEndpointSF
+														.getLocalUserService()
+														.saveLoggedInUser(
+																$scope.curuser);
+											}
+											$scope.showUpdateToast();
+										});
 					}
 
 					// ----------hide and show ---------------------------

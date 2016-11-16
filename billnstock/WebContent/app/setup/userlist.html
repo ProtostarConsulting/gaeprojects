@@ -46,8 +46,9 @@
 						<th name="First Name" order-by="firstName"></th>
 						<th name="Last Name" order-by="lastName"></th>
 						<th name="Department" order-by="department" hide-xs></th>
-						<th name="Login Allowed" order-by="isLoginAllowed" hide-xs></th>
+						<th name="Login Allowed" order-by="isLoginAllowed" hide-xs></th>						
 						<th name="Email" order-by="email_id" hide-xs></th>
+						<th name="Last Login" order-by="lastLoginDate" hide-xs></th>
 						<th name="Edit | Actions"></th>
 					</tr>
 				</thead>
@@ -59,6 +60,7 @@
 						<td hide-xs>{{user.department?user.department.name:'Default'}}</td>
 						<td hide-xs>{{user.isLoginAllowed?'Yes':'No'}}</td>
 						<td hide-xs>{{user.email_id}}</td>
+						<td hide-xs>{{user.lastLoginDate | formatDateWithTime}}</td>
 						<td>
 							<section layout="row">
 								<md-button class="md-icon-button" ng-hide="businessNo"

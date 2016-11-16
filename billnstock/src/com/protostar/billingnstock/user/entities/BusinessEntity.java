@@ -2,9 +2,6 @@ package com.protostar.billingnstock.user.entities;
 
 import java.util.Date;
 
-import javax.persistence.Transient;
-
-import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
@@ -61,11 +58,6 @@ public class BusinessEntity {
 
 	public void setModifiedBy(String modifiedBy) {
 		this.modifiedBy = modifiedBy;
-	}
-
-	@Transient
-	public com.google.appengine.api.datastore.Key getKey() {
-		return Key.create(BusinessEntity.class, id).getRaw();
 	}
 
 	public String getAuthorizations() {
@@ -129,10 +121,12 @@ public class BusinessEntity {
 	}
 
 	public AccountType getAccounttype() {
-		return accounttype.get();
+		return accounttype == null ? null : accounttype.get();
 	}
 
 	public void setAccounttype(AccountType accounttype) {
+		if (accounttype == null)
+			return;
 		this.accounttype = Ref.create(accounttype);
 	}
 

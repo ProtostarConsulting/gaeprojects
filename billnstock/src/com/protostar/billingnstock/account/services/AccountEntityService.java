@@ -14,6 +14,7 @@ import com.googlecode.objectify.Ref;
 import com.protostar.billingnstock.account.entities.AccountEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billnstock.until.data.Constants;
+import com.protostar.billnstock.until.data.EntityUtil;
 import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 
 @Api(name = "accountEntityService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.services", ownerName = "com.protostar.billingnstock.services", packagePath = ""))
@@ -29,8 +30,8 @@ public class AccountEntityService {
 			accountEntity.setModifiedDate(new Date());
 		}
 		Long nextSequenceNumber = new SequenceGeneratorShardedService(
-				accountEntity.getBusiness().getKey(), Constants.ACC_ACCOUNT_NO_COUNTER)
-				.getNextSequenceNumber();
+				EntityUtil.getBusinessRawKey(accountEntity.getBusiness()),
+				Constants.ACC_ACCOUNT_NO_COUNTER).getNextSequenceNumber();
 		accountEntity.setAccountNo(nextSequenceNumber.toString());
 		ofy().save().entity(accountEntity).now();
 

@@ -3,6 +3,8 @@ package com.protostar.billnstock.until.data;
 import java.util.Date;
 import java.util.List;
 
+import com.googlecode.objectify.Key;
+import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billnstock.entity.BaseEntity;
 
 public class EntityUtil {
@@ -12,7 +14,7 @@ public class EntityUtil {
 		if (entityList != null && entityList.size() > 0) {
 			Date dateNow = new Date();
 			for (Object obj : entityList) {
-				BaseEntity entityObj = (BaseEntity)obj;
+				BaseEntity entityObj = (BaseEntity) obj;
 				if (entityObj.getId() == null) {
 					entityObj.setCreatedDate(dateNow);
 				} else {
@@ -31,5 +33,9 @@ public class EntityUtil {
 			entityObj.setModifiedDate(dateNow);
 		}
 		return entityObj;
+	}
+
+	public static com.google.appengine.api.datastore.Key getBusinessRawKey(BusinessEntity entityObj) {
+		return Key.create(BusinessEntity.class, entityObj.getId()).getRaw();
 	}
 }

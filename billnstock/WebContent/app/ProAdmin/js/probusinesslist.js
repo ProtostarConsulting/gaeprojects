@@ -1,188 +1,106 @@
-angular
-		.module("stockApp")
-		.controller(
-				"probusinessCtr",
-				function($scope, $window, $mdToast, $timeout, $mdSidenav,
-						$mdUtil, $stateParams, $mdMedia, $mdDialog, $log,
-						$state, objectFactory, appEndpointSF) {				
+angular.module("stockApp").controller(
+		"probusinessCtr",
+		function($scope, $window, $mdToast, $timeout, $mdSidenav, $mdUtil,
+				$stateParams, $mdMedia, $mdDialog, $log, $state, objectFactory,
+				appEndpointSF) {
+			$scope.loading = true;
+			$scope.query = {
+				order : 'id',
+				limit : 50,
+				page : 1
+			};
 
-					$scope.query = {
-							order : 'id',
-							limit : 50,
-							page : 1
-						};
-					
-					$scope.showSimpleToast = function(msgBean) {
-						$mdToast.show($mdToast.simple().content(msgBean)
-								.position("top").hideDelay(3000));
-					};
+			$scope.showSimpleToast = function(msgBean) {
+				$mdToast.show($mdToast.simple().content(msgBean)
+						.position("top").hideDelay(3000));
+			};
 
-					$scope.changeAuthView = function(params) {
-						$state.go("proAdmin.managebizauth", params);
-					}
+			$scope.changeAuthView = function(params) {
+				$state.go("proAdmin.managebizauth", params);
+			}
 
-					$scope.getBusinessList = function() {
-						$log.debug("Inside Ctr $scope.getBusinessList");
-						var UserService = appEndpointSF.getUserService();
-						UserService.getBusinessList().then(
-								function(businessList) {
-									$log.debug("Inside Ctr getAllleads");
-									$scope.businesslist = businessList.items;
-
-								});
-
-					}
-
-					$scope.businesslist = [];
-
-					$scope.waitForServiceLoad = function() {
-						if (appEndpointSF.is_service_ready) {
-							$scope.getBusinessList();
-						} else {
-							$log.debug("Services Not Loaded, watiting...");
-							$timeout($scope.waitForServiceLoad, 1000);
-						}
-					}
-					$scope.waitForServiceLoad();
-
-					$scope.selected = [];
-
-					$scope.suspendUserStatus = function() {
-						var suspended = "suspended"
-						$scope.selected[0].status = suspended;
-						var UserService = appEndpointSF.getUserService();
-						UserService.updateBusiStatus($scope.selected[0]).then(
-								function(msgBean) {
-									$scope.showSimpleToast(msgBean.msg);
-									$scope.getBusinessList();
-								});
-					}
-					$scope.activeUserStatus = function() {
-						var active = "active"
-						$scope.selected[0].status = active;
-						var UserService = appEndpointSF.getUserService();
-						UserService.updateBusiStatus($scope.selected[0]).then(
-								function(msgBean) {
-									$scope.showSimpleToast(msgBean.msg);
-									$scope.getBusinessList();
-								});
-					}
-
-					$scope.getbusinessById = function() {
-						var UserService = appEndpointSF.getUserService();
-						if (typeof $scope.BNo != 'undefined') {
-							UserService
-									.getbusinessById($scope.BNo)
-									.then(
-											function(busi) {
-												$scope.business = busi.result;
-
-												if ($scope.business.accounttype.maxuser == $scope.business.totalUser - 1) {
-													$("#hideSpan").show();
-													$log.debug("#hideSpan");
-												} else {
-													$("#hideSpan").hide();
-													$("#hideDiv").hide();
-												}
-
-											});
-						}
-
-					}
-					$scope.getbusinessById();
-
-					$scope.adduser = function() {
-						var UserService = appEndpointSF.getUserService();
-						/*
-						 * UserService
-						 * .getbusinessById($scope.BNo).then(function(busi) {
-						 */
-						$scope.user.business = $scope.business;
-						$scope.user.authority = $scope.selection;
-						UserService.addUser($scope.user).then(
-								function(msgBean) {
-									$scope.showAddToast();
-
-								});
-						// });
-
-					}
-					
-
-					// -----------------------------------------------------------------------------------------------
-					$scope.back = function() {
-						window.history.back();
-						// $state.go("^", {});
-					};
-					// ----------hide and show ---------------------------
-
-					$scope.IsHidden = true;
-					$scope.ShowHide = function() {
-						$scope.IsHidden = $scope.IsHidden ? false : true;
-					}
-					// -----------------------------------------------------
-
-					$scope.condition = function() {
-						if ($scope.user.isGoogleUser == false) {
-							return true;
-						} else {
-							return false
-						}
-					}
-
-					// check email already exists
-
-					$scope.Checkemail = function(emailid) {
-						var proadminService = appEndpointSF
-								.getproadminService();
-						proadminService
-								.getAllemp()
-								.then(
-										function(empList) {
-											$scope.user11 = empList.items;
-											for (i = 0; i < $scope.user11.length; i++) {
-												if ($scope.user11[i].email_id == emailid) {
-													$scope.userexists = "user already exists"
-													angular
-															.element(document
-																	.getElementById('fname'))[0].disabled = true;
-													angular
-															.element(document
-																	.getElementById('lname'))[0].disabled = true;
-													break;
-
-												} else {
-													$scope.userexists = "";
-													angular
-															.element(document
-																	.getElementById('fname'))[0].disabled = false;
-													angular
-															.element(document
-																	.getElementById('lname'))[0].disabled = false;
-
-												}
-											}
-										});
-
-					}
-					$scope.user11 = [];
-					$scope.userexist = "";
-
-					$scope.toggleRight = buildToggler('right');
-
-					function buildToggler(navID) {
-						var debounceFn = $mdUtil.debounce(function() {
-							$mdSidenav(navID).toggle().then(function() {
-								$log.debug("toggle " + navID + " is done");
-							});
-						}, 200);
-						return debounceFn;
-					}
-
-					$scope.close = function() {
-						$mdSidenav('right').close().then(function() {
-							$log.debug("close RIGHT is done");
-						});
-					};
-
+			$scope.getBusinessList = function() {
+				$scope.loading = true;
+				$log.debug("Inside Ctr $scope.getBusinessList");
+				var UserService = appEndpointSF.getUserService();
+				UserService.getBusinessList().then(function(businessList) {
+					$scope.businesslist = businessList.items;
+					$scope.loading = false;
 				});
+
+			}
+
+			$scope.businesslist = [];
+
+			$scope.waitForServiceLoad = function() {
+				if (appEndpointSF.is_service_ready) {
+					$scope.getBusinessList();
+				} else {
+					$log.debug("Services Not Loaded, watiting...");
+					$timeout($scope.waitForServiceLoad, 1000);
+				}
+			}
+			$scope.waitForServiceLoad();
+
+			$scope.selected = [];
+
+			$scope.suspendUserStatus = function() {
+				var suspended = "suspended"
+				$scope.selected[0].status = suspended;
+				var UserService = appEndpointSF.getUserService();
+				UserService.updateBusiness($scope.selected[0]).then(
+						function(msgBean) {
+							$scope.showSimpleToast(msgBean.msg);
+							$scope.getBusinessList();
+						});
+			}
+			$scope.activeUserStatus = function() {
+				var active = "active"
+				$scope.selected[0].status = active;
+				var UserService = appEndpointSF.getUserService();
+				UserService.updateBusiness($scope.selected[0]).then(
+						function(msgBean) {
+							$scope.showSimpleToast(msgBean.msg);
+							$scope.getBusinessList();
+						});
+			}
+
+			// -----------------------------------------------------------------------------------------------
+			$scope.back = function() {
+				window.history.back();
+				// $state.go("^", {});
+			};
+			// ----------hide and show ---------------------------
+
+			$scope.IsHidden = true;
+			$scope.ShowHide = function() {
+				$scope.IsHidden = $scope.IsHidden ? false : true;
+			}
+			// -----------------------------------------------------
+
+			$scope.condition = function() {
+				if ($scope.user.isGoogleUser == false) {
+					return true;
+				} else {
+					return false
+				}
+			}
+
+			$scope.toggleRight = buildToggler('right');
+
+			function buildToggler(navID) {
+				var debounceFn = $mdUtil.debounce(function() {
+					$mdSidenav(navID).toggle().then(function() {
+						$log.debug("toggle " + navID + " is done");
+					});
+				}, 200);
+				return debounceFn;
+			}
+
+			$scope.close = function() {
+				$mdSidenav('right').close().then(function() {
+					$log.debug("close RIGHT is done");
+				});
+			};
+
+		});

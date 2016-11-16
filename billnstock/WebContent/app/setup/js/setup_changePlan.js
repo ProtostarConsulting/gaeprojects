@@ -12,17 +12,6 @@ angular
 					$scope.selectedBusiness = $stateParams.selectedBusiness ? $stateParams.selectedBusiness
 							: $scope.curuser.business;
 
-					$scope.getBusinessById = function() {
-						var UserService = appEndpointSF.getUserService();
-						UserService.getbusinessById($scope.selectedBusiness.id)
-								.then(function(Business) {
-									$scope.business = Business;
-								});
-
-					}
-
-					$scope.business = {};
-
 					/* get Account Type */
 
 					$scope.getallAccountType = function() {
@@ -34,7 +23,7 @@ angular
 										function(assetList) {
 											$scope.accountlist1 = assetList.items;
 											for (i = 0; i < $scope.accountlist1.length; i++) {
-												if ($scope.business.accounttype.maxuser <= $scope.accountlist1[i].maxuser) {
+												if ($scope.selectedBusiness.accounttype.maxuser <= $scope.accountlist1[i].maxuser) {
 													$scope.accountlist
 															.push($scope.accountlist1[i]);
 												}
@@ -43,10 +32,10 @@ angular
 										});
 					}
 					$scope.accountlist = [];
+					$scope.newSelectedPlan = $scope.selectedBusiness.accounttype;
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
-							$scope.getBusinessById();
 							$scope.getallAccountType();
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
@@ -57,26 +46,14 @@ angular
 
 					$scope.updatePlan = function() {
 
-						var proadminService = appEndpointSF
-								.getproadminService();
-						proadminService
-								.getAccountTypeById($scope.accounttype)
-								.then(
-										function(accountType) {
-											$scope.business.accounttype = accountType.result;
-											var UserService = appEndpointSF
-													.getUserService();
-											// addbusiness use in number of
-											// place don't update service method
-											UserService
-													.addBusiness(
-															$scope.business)
-													.then(
-															function(business) {
-																$scope
-																		.showUpdateToast();
-															});
-										});
+						$scope.selectedBusiness.accounttype = $scope.newSelectedPlan;
+						var UserService = appEndpointSF.getUserService();
+						// addbusiness use in number of
+						// place don't update service method
+						UserService.updateBusiness($scope.selectedBusiness).then(
+								function(business) {
+									$scope.showUpdateToast();
+								});
 
 					}
 

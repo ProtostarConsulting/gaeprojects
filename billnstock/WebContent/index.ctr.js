@@ -237,7 +237,7 @@ angular
 										appEndpointSF
 												.getUserService()
 												.getUserByEmailID(
-														profile.getEmail())
+														profile.getEmail(), true)
 												.then(
 														function(
 																loggedInUserList) {

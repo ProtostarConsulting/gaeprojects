@@ -1,126 +1,53 @@
-<md-content layout-padding>
-<div>
-	<ng-md-icon icon="add_circle" style="fill: md-default" size="35"
-		ui-sref="proAdmin.addAccount"> <md-tooltip>
-	New Business Plan</md-tooltip></ng-md-icon>
-	</ng-md-icon>
+<div ng-if="loading">
+	<div layout="row" layout-sm="column" layout-align="space-around">
+		<md-progress-circular md-diameter="100" md-mode="indeterminate"></md-progress-circular>
+	</div>
 </div>
+<div ng-if="!loading">
+	<div>
+		<ng-md-icon icon="add_circle" style="fill: md-default" size="35"
+			ui-sref="proAdmin.addAccount"> <md-tooltip>
+		New Business Plan</md-tooltip></ng-md-icon>
+		</ng-md-icon>
+	</div>
 
-<div layout layout-sm="column">
-	<md-input-container flex> <label>Search</label> <input
-		ng-model="searchText"> </md-input-container>
+	<div layout layout-sm="column">
+		<md-input-container flex> <label>Search</label> <input
+			ng-model="searchText"> </md-input-container>
+	</div>
+
+	<div>
+		<md-data-table-container>
+
+		<table md-data-table md-progress="deferred">
+			<thead md-order="query.order" md-trigger="onOrderChange">
+				<tr>
+					<th name="Business Plan" order-by="accountName"></th>
+					<th name="Discription" order-by="description"></th>
+					<th name="Maxuser" order-by="maxuser"></th>
+					<th name="Payment Description" order-by="paymentDesc"></th>
+					<th name="Edit" order-by="edit"></th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr md-auto-select
+					ng-repeat="account in accountlist | orderBy: 'maxuser' | filter: searchText | limitTo: query.limit: (query.page - 1) * query.limit"">
+					<td>{{account.accountName}}</td>
+					<td>{{account.description}}</td>
+					<td>{{account.maxuser}}</td>
+					<td>{{account.paymentDesc}}</td>
+					<td><section layout="row" layout-sm="column">
+							<md-button class="md-raised md-primary"
+								ui-sref="proAdmin.editAccoutType({typeid:account.id})">
+							Edit Account </md-button>
+						</section></td>
+				</tr>
+			</tbody>
+		</table>
+
+		<md-data-table-pagination md-limit="query.limit" md-page="query.page"
+			md-total={{accountlist.length}} md-trigger="onpagechange"></md-data-table-pagination>
+		</md-data-table-container>
+	</div>
 </div>
-
-<div>
-	<md-data-table-container>
-
-	<table md-data-table md-progress="deferred">
-		<thead md-order="query.order" md-trigger="onOrderChange">
-			<tr>
-				<th name="Business Plan" order-by="accountName"></th>
-				<th name="Discription" order-by="description"></th>
-				<th name="Maxuser" order-by="maxuser"></th>
-				<th name="Payment Description" order-by="paymentDesc"></th>
-				<th name="Edit" order-by="edit"></th>
-			</tr>
-		</thead>
-
-		<tbody>
-			<tr md-auto-select
-				ng-repeat="account in accountlist | orderBy: 'maxuser' | filter: searchText | limitTo: query.limit: (query.page - 1) * query.limit"">
-				<td>{{account.accountName}}</td>
-				<td>{{account.description}}</td>
-				<td>{{account.maxuser}}</td>
-				<td>{{account.paymentDesc}}</td>
-				<td><section layout="row" layout-sm="column">
-						<md-button class="md-raised md-primary"
-							ui-sref="proAdmin.editAccoutType({typeid:account.id})">
-						Edit Account </md-button>
-					</section></td>
-			</tr>
-		</tbody>
-	</table>
-
-	<md-data-table-pagination md-limit="query.limit" md-page="query.page"
-		md-total={{accountlist.length}} md-trigger="onpagechange"></md-data-table-pagination>
-	</md-data-table-container>
-</div>
-
-
-</md-content>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- 
-<md-content layout-padding>
-
-<div>
-	<md-data-table-container>
-	<table md-data-table md-row-select="selected" md-progress="deferred">
-		<thead md-order="query.order" md-trigger="onOrderChange">
-			<tr>
-		    	<th name="Employee id" order-by="empid"></th>
-				<th name="Employee Name" order-by="empName"></th>
-				<th name="Email" order-by="email"></th>
-				<th name="Company Email" order-by="compemail"></th>
-				<th name="Address" order-by="empAddress"></th>
-			    <th name="Edit" order-by="Edit"></th>
-			</tr>
-		</thead>
-
-		<tbody>
-			<tr md-auto-select
-				ng-repeat="emp in emps | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit"">
-				<td>{{emp.empid}}</td>
-				<td>{{emp.empName}}</td>
-				<td>{{emp.email}}</td>
-				<td>{{emp.compemail}}</td>
-				<td>{{emp.empAddress}}</td>
-				<td>
-					<section layout="row" layout-sm="column">
-						<md-button class="md-raised md-primary"
-							ui-sref="hr.empview({selectedempNo: emp.id})">View employee</md-button>
-					</section>
-	     		</td>
-			</tr>
-		</tbody>
-	</table>
- 
- <md-data-table-pagination md-limit="query.limit"
-		md-page="query.page" md-total={{emps.length}}
-		md-trigger="onpagechange"></md-data-table-pagination> </md-data-table-container>
-</div>
-vals: {{customers}}
-<md-button ui-sref="customer.list" ng-click="getAllemp()" class="md-primary">
-		Customer List in side List view 
-	</md-button>
-
-	
-</md-content> -->

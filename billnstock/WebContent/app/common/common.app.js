@@ -17,6 +17,12 @@ app.filter('formatDate', function($filter) {
 	};
 });
 
+app.filter('formatDateWithTime', function($filter) {
+	return function(inputDate) {
+		return $filter('date')(inputDate, 'dd-MM-yyyy h:mm a');
+	};
+});
+
 app.filter('htmlToPlainText', function() {
 	return function(text) {
 		return text ? String(text).replace(/<[^>]+>/gm, '') : '';

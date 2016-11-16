@@ -4,7 +4,7 @@ angular
 				"proAdminManageAuth",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
 						$mdUtil, $log, $q, objectFactory, appEndpointSF) {
-
+					$log.debug("Inside proAdminManageAuth");
 					$scope.mode = "list";
 					$scope.tempAuth = getEmptyAuth();
 					$scope.selectedAuthStack = [];
@@ -15,7 +15,7 @@ angular
 					// $scope.mode = "add";
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
-					$log.debug("Inside proAdminManageAuth");
+					
 
 					var authService = appEndpointSF.getAuthorizationService();
 					$scope.authorizationMasterEntity = {

@@ -1,67 +1,72 @@
-
-<md-content layout-padding>
-
-<div ng-cloak>
-	<div layout="row" layout-align="end end" layout-sm="column">
-		<a ui-sref="newBusinessAccount">New Business Registration</a>
+<div ng-if="loading">
+	<div layout="row" layout-sm="column" layout-align="space-around">
+		<md-progress-circular md-diameter="100" md-mode="indeterminate"></md-progress-circular>
 	</div>
-	<h3 class="md-display-10">Business List</h3>
-	<md-content class="md-padding">
-
-	<div layout layout-sm="column">
-		<md-input-container flex-gt-xs="33" flex> <label>Search</label>
-		<input ng-model="searchText"> </md-input-container>
-	</div>
-
-
-
-	<table md-data-table md-progress="deferred">
-		<thead md-order="query.order" md-trigger="onOrderChange">
-			<tr>
-				<th name="Business Name" order-by="BusinessName"></th>
-				<th name="Date Registered" order-by="registerDate"></th>
-				<th name="Number of Users" order-by="noofuser"></th>
-				<th name="Actions"></th>
-			</tr>
-		</thead>
-
-		<tbody>
-			<tr
-				ng-repeat="business in businesslist | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
-				<td>{{business.businessName}}</td>
-				<td>{{business.registerDate}}</td>
-				<td>{{business.totalUser}}</td>
-				<td>
-					<section layout="row" layout-sm="column">
-						<md-button class="md-icon-button"
-							ui-sref="proAdmin.editBusiness({selectedBusiness: business})">
-						<ng-md-icon icon="edit" style="fill: md-default" size="24">
-						<md-tooltip> Edit Business</md-tooltip></ng-md-icon></md-button>
-
-						<md-button class="md-icon-button" ui-sref="proAdmin.managebizauth({selectedBusiness: business})"> <ng-md-icon
-							icon="list" style="fill: md-default" size="24"> <md-tooltip>
-						Edit Authorizations</md-tooltip></ng-md-icon></md-button>
-					</section>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-
-	<md-data-table-pagination md-limit="query.limit" md-page="query.page"
-		md-total={{businesslist.length}} md-trigger="onpagechange"></md-data-table-pagination>
-	</md-data-table-container>
-
-	<div ng-show="selected.length == 1">
-
-		<md-button class="md-raised md-primary" ng-click="activeUserStatus()">Active
-		</md-button>
-
-		<md-button class="md-raised md-primary" ng-model="suspend"
-			value="suspend" ng-click="inactiveUserStatus()">Inactive
-		</md-button>
-
-	</div>
-
-	</md-content>
 </div>
-</md-content>
+<div ng-if="!loading">
+
+	<div ng-cloak>
+		<div layout="row" layout-align="end end" layout-sm="column">
+			<a ui-sref="newBusinessAccount">New Business Registration</a>
+		</div>
+		<h3 class="md-display-10">Business List</h3>
+		<md-content class="md-padding">
+
+		<div layout layout-sm="column">
+			<md-input-container flex-gt-xs="33" flex> <label>Search</label>
+			<input ng-model="searchText"> </md-input-container>
+		</div>
+
+
+
+		<table md-data-table md-progress="deferred">
+			<thead md-order="query.order" md-trigger="onOrderChange">
+				<tr>
+					<th name="Business Name" order-by="BusinessName"></th>
+					<th name="Date Registered" order-by="registerDate"></th>
+					<th name="Number of Users" order-by="noofuser"></th>
+					<th name="Actions"></th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr
+					ng-repeat="business in businesslist | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+					<td>{{business.businessName}}</td>
+					<td>{{business.registerDate}}</td>
+					<td>{{business.totalUser}}</td>
+					<td>
+						<section layout="row" layout-sm="column">
+							<md-button class="md-icon-button"
+								ui-sref="proAdmin.editBusiness({selectedBusiness: business})">
+							<ng-md-icon icon="edit" style="fill: md-default" size="24">
+							<md-tooltip> Edit Business</md-tooltip></ng-md-icon></md-button>
+
+							<md-button class="md-icon-button"
+								ui-sref="proAdmin.managebizauth({selectedBusiness: business})">
+							<ng-md-icon icon="list" style="fill: md-default" size="24">
+							<md-tooltip> Edit Authorizations</md-tooltip></ng-md-icon></md-button>
+						</section>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<md-data-table-pagination md-limit="query.limit" md-page="query.page"
+			md-total={{businesslist.length}} md-trigger="onpagechange"></md-data-table-pagination>
+		</md-data-table-container>
+
+		<div ng-show="selected.length == 1">
+
+			<md-button class="md-raised md-primary" ng-click="activeUserStatus()">Active
+			</md-button>
+
+			<md-button class="md-raised md-primary" ng-model="suspend"
+				value="suspend" ng-click="inactiveUserStatus()">Inactive
+			</md-button>
+
+		</div>
+
+		</md-content>
+	</div>
+</div>

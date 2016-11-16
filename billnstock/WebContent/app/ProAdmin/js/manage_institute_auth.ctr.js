@@ -19,7 +19,7 @@ angular
 					$scope.authorizationMasterEntity = {
 						authorizations : []
 					};
-					
+
 					$scope.existingbusinessAuthObject = null;
 
 					function getAuthorizationMasterEntity() {
@@ -37,10 +37,11 @@ angular
 
 												var jsonString = $scope.selectedBusiness.authorizations;
 
-												$log
-														.debug("$scope.selectedBusiness.authorizations:Json: "
-																+ jsonString);
-
+												/*
+												 * $log
+												 * .debug("$scope.selectedBusiness.authorizations:Json: " +
+												 * jsonString);
+												 */
 												if (jsonString) {
 													var jsonObject = angular
 															.fromJson($scope.selectedBusiness.authorizations);
@@ -91,14 +92,23 @@ angular
 								.toJson(authService
 										.getCurrentSelectedAuthorizations($scope.authorizationMasterEntity));
 
-						$log.debug("toSaveJsonString: " + toSaveJsonString);
+						//$log.debug("toSaveJsonString: " + toSaveJsonString);
 
 						$scope.selectedBusiness.authorizations = toSaveJsonString;
 						var userService = appEndpointSF.getUserService();
-						userService.updateBusiStatus($scope.selectedBusiness).then(
-								function(msgBean) {
-									$scope.showUpdateToast();
-								});
+						userService
+								.updateBusiness($scope.selectedBusiness)
+								.then(
+										function(msgBean) {
+											if ($scope.selectedBusiness.id == $scope.curUser.business.id) {
+												$scope.curUser.business = $scope.selectedBusiness;
+												appEndpointSF
+														.getLocalUserService()
+														.saveLoggedInUser(
+																$scope.curUser);
+											}
+											$scope.showUpdateToast();
+										});
 					}
 
 					$scope.cancelButton = function() {

@@ -133,15 +133,17 @@ function googleEndpointSF($log, $q) {
 		return deferred.promise;
 	}
 
-	UserService.getUserByEmailID = function(email_id) {
+	UserService.getUserByEmailID = function(email_id, forLogin) {
 		var deferred = $q.defer();
 		gapi.client.userService.getUserByEmailID({
-			'email_id' : email_id
+			'email_id' : email_id,
+			'forLogin' : forLogin
 		}).execute(function(resp) {
 			deferred.resolve(resp.result);
 		});
 		return deferred.promise;
 	}
+	
 	UserService.getBusinessByEmailID = function(email_id) {
 		var deferred = $q.defer();
 		gapi.client.userService.getBusinessByEmailID({
