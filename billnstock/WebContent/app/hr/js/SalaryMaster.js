@@ -164,10 +164,9 @@ angular
 							var fileObject = $scope.fileObject;
 							Upload
 									.upload({
-										url : '/UploadUsersServlet',
+										url : '/UploadSalaryMasterServlet',
 										data : {
 											'file' : fileObject,
-											'username' : curUser.email_id,
 											'businessId' : curUser.business.id
 										}
 									})
@@ -233,7 +232,10 @@ angular
 					}
 					
 					
-					
+$scope.Refreshpage = function() {
+						
+						$scope.getSalaryMasterlist();
+					}
 					
 					
 				});

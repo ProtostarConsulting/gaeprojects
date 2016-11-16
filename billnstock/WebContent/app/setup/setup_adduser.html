@@ -48,6 +48,16 @@
 			</md-input-container>
 
 
+<md-input-container flex><md-select	ng-model="user.department"  placeholder="Select  Department" ><lable>Select Department</lable> 
+		<md-option
+			ng-value="department" ng-repeat="department in department">{{department.name}}
+
+
+		</md-option> </md-select></md-input-container>
+			
+
+
+
 
 		</div>
 		<div layout layout-xs="column">

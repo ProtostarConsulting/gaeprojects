@@ -15,11 +15,17 @@
 		<br>
 		<br>
 	<div layout layout-xs="column">
-			<md-input-container flex> <label>User Id
-			</label> <input ng-model="userL.id" disabled> </md-input-container>
+			
 
 			<md-input-container flex> <label>Enter
 				Email id </label> <input ng-model="userL.email_id" disabled> </md-input-container>
+				
+				<md-input-container flex><md-select	ng-model="userL.department"  placeholder="Select  Department" ><lable>Select Department</lable> 
+		<md-option
+			ng-value="department" ng-repeat="department in department">{{department.name}}
+
+
+		</md-option> </md-select></md-input-container>
 		</div>
 		<!-- 	<div layout layout-xs="column">
 			<md-input-container flex> <label>First

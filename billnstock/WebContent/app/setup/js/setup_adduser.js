@@ -179,6 +179,7 @@ angular
 						lastName : "",
 						password : "",
 						isGoogleUser : true,
+						department:"",
 						authority : []
 					}
 
@@ -275,6 +276,19 @@ angular
 										});
 
 					}
+					
+					
+					
+					$scope.getDepartmentList=function(){
+						
+						var getsetupService=appEndpointSF.getsetupService();
+						
+						getsetupService.getDepartmentList($scope.curUser.business.id).then(function(list) {
+							$scope.department=list;
+							
+						});}
+					
+					$scope.getDepartmentList();
 					$scope.user11 = [];
 					$scope.userexist = "";
 

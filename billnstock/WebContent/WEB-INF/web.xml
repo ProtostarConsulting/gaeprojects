@@ -210,4 +210,14 @@
     <servlet-name>PrintPdfSalarySlip</servlet-name>
     <url-pattern>/PrintPdfSalarySlip</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>UploadSalaryMasterServlet</display-name>
+    <servlet-name>UploadSalaryMasterServlet</servlet-name>
+    <servlet-class>com.protostar.billingnstock.hr.services.UploadSalaryMasterServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UploadSalaryMasterServlet</servlet-name>
+    <url-pattern>/UploadSalaryMasterServlet</url-pattern>
+  </servlet-mapping>
 </web-app>
