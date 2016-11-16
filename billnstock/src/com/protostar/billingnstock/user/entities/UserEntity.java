@@ -22,7 +22,7 @@ public class UserEntity extends BaseEntity {
 
 	private Boolean isGoogleUser = true;
 	@Index
-	private Boolean isLoginAllowed = false;
+	private Boolean isLoginAllowed = true;
 	@Index
 	private Long empId;
 	@Index
