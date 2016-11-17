@@ -8,9 +8,14 @@ import com.protostar.billnstock.entity.BaseEntity;
 
 @Entity
 public class LeaveDetailEntity extends BaseEntity {
-
-	private int openingBalance;
 	private Ref<UserEntity> user;
+	private int openingBalance;
+	private int mothLeave;
+	private int takenmothLeave;
+	private int withoutpay;
+	private int nextOpeningBalance;
+	@Index
+	private String currentMonth;
 
 	public UserEntity getUser() {
 		return user == null ? null : user.get();
@@ -20,13 +25,6 @@ public class LeaveDetailEntity extends BaseEntity {
 		this.user = Ref.create(user);
 
 	}
-
-	private int mothLeave;
-	private int takenmothLeave;
-	private int withoutpay;
-	private int nextOpeningBalance;
-	@Index
-	private String currentMonth;
 
 	public String getCurrentMonth() {
 		return currentMonth;

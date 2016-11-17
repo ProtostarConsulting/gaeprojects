@@ -41,19 +41,19 @@ public class HrService {
 
 	@ApiMethod(name = "getAllemp")
 	public List<UserEntity> getAllemp(@Named("id") Long busId) {
-
 		List<UserEntity> filteredemp = ofy().load().type(UserEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, busId)).list();
 		return filteredemp;
-
 	}
+
 	@ApiMethod(name = "getSalStructByUser")
-	public SalStruct getSalStructByUser( UserEntity currRowUser) {
-
-	//	SalStruct salStruct = ofy().load().type(SalStruct.class).filter("UserEntity",currRowUser).now();
-
-		return null;//salStruct;
+	public SalStruct getSalStructByUser(UserEntity currRowUser) {
+		List<SalStruct> list = ofy().load().type(SalStruct.class)
+				.filter("UserEntity", currRowUser).list();
+		SalStruct salStruct = list.size() > 0 ? list.get(0) : null;
+		return salStruct;
 	}
+
 	@ApiMethod(name = "getempByID")
 	public Employee getempByID(@Named("id") Long selectedid) {
 
@@ -232,54 +232,51 @@ public class HrService {
 
 	@ApiMethod(name = "getSalaryMasterlist", path = "getSalaryMasterlist")
 	public List<SalStruct> getSalaryMasterlist(@Named("id") Long busId) {
-
 		List<SalStruct> salStructlist = ofy().load().type(SalStruct.class)
 				.ancestor(Key.create(BusinessEntity.class, busId)).list();
-		System.out.println("salStructlist" + salStructlist.size());
-		List<SalStruct> salStructlistReturn = new ArrayList<SalStruct>();
+
+		List<SalStruct> salStructlistToReturn = new ArrayList<SalStruct>();
 		UserService userS = new UserService();
 		List<UserEntity> userList = userS.getUsersByBusinessId(busId);
 		if (userList.size() == salStructlist.size()) {
 			return salStructlist;
 		}
-		SalStruct foundMasterlist = null;
+
 		for (UserEntity usere : userList) {
-			for (SalStruct salList : salStructlist) {
-
-				if (usere.getId() == salList.getEmpAccount().getEmpId()) {
-					foundMasterlist = salList;
-
+			SalStruct foundSalMaster = null;
+			for (SalStruct salStruct : salStructlist) {
+				if (usere.getId() == salStruct.getEmpAccount().getId()) {
+					foundSalMaster = salStruct;
 				}
 			}
 
-			if (foundMasterlist == null) {
-
-				foundMasterlist = new SalStruct();
-				foundMasterlist.setEmpAccount(usere);
-
+			if (foundSalMaster == null) {
+				foundSalMaster = new SalStruct();
+				foundSalMaster.setBusiness(usere.getBusiness());
+				foundSalMaster.setEmpAccount(usere);
 			}
 
-			salStructlistReturn.add(foundMasterlist);
-
+			salStructlistToReturn.add(foundSalMaster);
 		}
 
-		return salStructlist;
+		return salStructlistToReturn;
 
 	}
 
 	@ApiMethod(name = "getLeaveListEmp")
 	public List<LeaveDetailEntity> getLeaveListEmp(@Named("id") Long busId,
 			@Named("month") String month, @Named("prevMonth") String prevMonth) {
-		
-		System.out.println("prevMonth***************"+prevMonth);
-		System.out.println("current***************"+month);
-		
+
+		System.out.println("prevMonth***************" + prevMonth);
+		System.out.println("current***************" + month);
+
 		List<LeaveDetailEntity> empLeaveListToReturn = new ArrayList<LeaveDetailEntity>();
 		List<LeaveDetailEntity> empLeaveListCurrentMonth = ofy().load()
 				.type(LeaveDetailEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, busId))
 				.filter("currentMonth", month.trim()).list();
-		System.out.println("empLeaveListCurrentMonth**********"+empLeaveListCurrentMonth);
+		System.out.println("empLeaveListCurrentMonth**********"
+				+ empLeaveListCurrentMonth);
 
 		UserService userService = new UserService();
 		List<UserEntity> userList = userService.getUsersByBusinessId(busId);
@@ -313,9 +310,6 @@ public class HrService {
 					foundLeaveDetail.setBusiness(userEntity.getBusiness());
 				}
 
-				
-
-				
 			} else {
 				foundLeaveDetail = new LeaveDetailEntity();
 				foundLeaveDetail.setUser(userEntity);
@@ -326,17 +320,15 @@ public class HrService {
 							.getId()) {
 						foundLeaveDetail.setOpeningBalance(prevMonthleaveDetail
 								.getNextOpeningBalance());
-						
-						
+
 					}
 				}
-				
 
 			}
 			empLeaveListToReturn.add(foundLeaveDetail);
 
 		}
-	//	System.out.println("id********************"+empLeaveListToReturn.get(0).getId());
+		// System.out.println("id********************"+empLeaveListToReturn.get(0).getId());
 		return empLeaveListToReturn;
 	}
 
@@ -347,7 +339,8 @@ public class HrService {
 		List<MonthlyPaymentDetailEntity> list = (List<MonthlyPaymentDetailEntity>) EntityUtil
 				.updateCreatedModifiedDate(monthlyPaymentDetailEntityList
 						.getList());
-		Map<Key<MonthlyPaymentDetailEntity>, MonthlyPaymentDetailEntity> now = ofy().save().entities(list).now();
+		Map<Key<MonthlyPaymentDetailEntity>, MonthlyPaymentDetailEntity> now = ofy()
+				.save().entities(list).now();
 		return now.values();
 	}
 
@@ -359,8 +352,10 @@ public class HrService {
 				.load().type(MonthlyPaymentDetailEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, busId))
 				.filter("currentMonth", currentmonth).list();
-		/*System.out.println("monthlyPaymentDetailEntity"
-				+ monthlyPaymentDetailEntity.get(0).getSalStruct().getBasic());*/
+		/*
+		 * System.out.println("monthlyPaymentDetailEntity" +
+		 * monthlyPaymentDetailEntity.get(0).getSalStruct().getBasic());
+		 */
 
 		return monthlyPaymentDetailEntity;
 

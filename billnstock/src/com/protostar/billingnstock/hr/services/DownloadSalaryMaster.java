@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -11,12 +12,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.googlecode.objectify.Ref;
 import com.protostar.billingnstock.hr.entities.SalStruct;
+import com.protostar.billingnstock.user.entities.EmpDepartment;
 import com.protostar.billingnstock.user.entities.UserEntity;
 import com.protostar.billingnstock.user.services.UserService;
+import com.protostar.billnstock.servlets.UploadMonthlySalaryMasterServlet;
+import com.protostar.billnstock.until.data.Constants;
 
 public class DownloadSalaryMaster extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private final Logger log = Logger.getLogger(DownloadSalaryMaster.class
+			.getName());
 
 	public DownloadSalaryMaster() {
 		super();
@@ -26,26 +33,16 @@ public class DownloadSalaryMaster extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		HrService hrService = new HrService();
-		System.out.println("***************"
+		System.out.println("businessId: "
 				+ Long.parseLong(request.getParameter("id").toString()));
-		Long id = Long.parseLong(request.getParameter("id"));
+		Long businessId = Long.parseLong(request.getParameter("id"));
 
-		System.out.println("***************"
-				+ Long.parseLong(request.getParameter("id").toString()));
-		List<SalStruct> salMasterList = hrService.getSalaryMasterlist(id);  
+		List<SalStruct> salMasterList = hrService
+				.getSalaryMasterlist(businessId);
 		UserService userService = new UserService();
 
-		List<UserEntity> userList = userService.getUsersByBusinessId(id);
-
-		System.out.println("***************"+Long.parseLong(request.getParameter("id").toString()));
-		//List<SalStruct>salMasterList =hrService.getSalaryMasterlist(id);
-		
-		
-
-		System.out.println("***************"
-				+ Long.parseLong(request.getParameter("id").toString()));
-		//List<SalStruct> salMasterList = hrService.getSalaryMasterlist(id);
-
+		List<UserEntity> userList = userService
+				.getUsersByBusinessId(businessId);
 
 		OutputStream out = null;
 
@@ -59,7 +56,7 @@ public class DownloadSalaryMaster extends HttpServlet {
 			ServletOutputStream outputStream = response.getOutputStream();
 			OutputStreamWriter writer = new OutputStreamWriter(outputStream);
 
-			writer.append("UserId");
+			writer.append("User Key (Do not change this value)");
 			writer.append(',');
 			writer.append("Name Of Employee");
 			writer.append(',');
@@ -85,11 +82,11 @@ public class DownloadSalaryMaster extends HttpServlet {
 			writer.append(System.lineSeparator());
 
 			for (int i = 0; i < userList.size(); i++) {
-
 				try {
 					UserEntity userEntity = userList.get(i);
-					String strLong = Long.toString(userEntity.getId().longValue());
-					writer.append(strLong );
+					String userKey = Ref.create(userEntity).key().toWebSafeString();
+					log.info("strLong: " + userKey);
+					writer.append(userKey);
 					writer.append(',');
 					SalStruct userSalMaster = null;
 					for (SalStruct salMaster : salMasterList) {
@@ -99,79 +96,64 @@ public class DownloadSalaryMaster extends HttpServlet {
 						}
 					}
 
-
 					if (userSalMaster == null) {
 						userSalMaster = new SalStruct();
 						userSalMaster.setEmpAccount(userEntity);
 					}
 
-				writer.append(userSalMaster.getEmpAccount().getFirstName()
+					writer.append(userSalMaster.getEmpAccount().getFirstName()
 							+ " " + userSalMaster.getEmpAccount().getLastName());
 
-				
-					writer.append(',');
-					writer.append("-");
-
-				
-					writer.append(',');
-					
-if(salMasterList.size()!=0){
-
-					/*writer.append(salMasterList.get(i).getEmpAccount().getFirstName()+""+salMasterList.get(i).getEmpAccount().getLastName());
 					writer.append(',');
 
-					writer.append(salMasterList.get(i).getEmpAccount()
-							.getFirstName()
-							+ ""
-							+ salMasterList.get(i).getEmpAccount()
-									.getLastName());
-					writer.append(',');*/
-
-					
-					Float grosssal = userSalMaster.getGrosssal();
-					writer.append(grosssal == null ? "" : grosssal.toString());
-					writer.append(',');
-					writer.append(userSalMaster.getBasic() == null ? ""
-							: userSalMaster.getBasic().toString());
-					writer.append(',');
-
-					// if(salMasterList.get(i).getHRA().toString()==null)
-
-					writer.append(userSalMaster.getHramonthly() == null ? ""
-							: userSalMaster.getHramonthly().toString());
-					//if(salMasterList.get(i).getHRA().toString()==null)
-					
-					writer.append("  ");
-					// if(salMasterList.get(i).getHRA().toString()==null)
-
-					writer.append("  ");
-					writer.append(',');
-					writer.append(userSalMaster.getConvence() == null ? ""
-							: userSalMaster.getConvence().toString());
-					writer.append(',');
-					writer.append(userSalMaster.getMedical() == null ? ""
-							: userSalMaster.getMedical().toString());
-					writer.append(',');
-					writer.append(userSalMaster.getEducation() == null ? ""
-							: userSalMaster.getEducation().toString());
-				
-					writer.append(',');
-					writer.append(userSalMaster.getAdhocAllow() == null ? ""
-							: userSalMaster.getAdhocAllow().toString());
-					
-							
-					writer.append(',');
-					writer.append(userSalMaster.getSpecialAllow() == null ? ""
-							: userSalMaster.getSpecialAllow().toString());
-				
-
-				
+					EmpDepartment department = userSalMaster.getEmpAccount()
+							.getDepartment();
+					if (department != null)
+						writer.append(department.getName());
+					else
+						writer.append(Constants.DEFAULT_EMP_DEPT);
 
 					writer.append(',');
 
-					writer.append(System.lineSeparator());}writer.append(System.lineSeparator());
-				} catch (Exception e) {
+					if (salMasterList.size() != 0) {
 
+						Float grosssal = userSalMaster.getGrosssal();
+						writer.append(grosssal == null ? "" : grosssal
+								.toString());
+						writer.append(',');
+						writer.append(userSalMaster.getBasic() == null ? ""
+								: userSalMaster.getBasic().toString());
+						writer.append(',');
+
+						// if(salMasterList.get(i).getHRA().toString()==null)
+
+						writer.append(userSalMaster.getHramonthly() == null ? ""
+								: userSalMaster.getHramonthly().toString());
+						// if(salMasterList.get(i).getHRA().toString()==null)
+
+						writer.append(',');
+						writer.append(userSalMaster.getConvence() == null ? ""
+								: userSalMaster.getConvence().toString());
+						writer.append(',');
+						writer.append(userSalMaster.getMedical() == null ? ""
+								: userSalMaster.getMedical().toString());
+						writer.append(',');
+						writer.append(userSalMaster.getEducation() == null ? ""
+								: userSalMaster.getEducation().toString());
+
+						writer.append(',');
+						writer.append(userSalMaster.getAdhocAllow() == null ? ""
+								: userSalMaster.getAdhocAllow().toString());
+
+						writer.append(',');
+						writer.append(userSalMaster.getSpecialAllow() == null ? ""
+								: userSalMaster.getSpecialAllow().toString());
+
+						writer.append(',');
+					}
+
+					writer.append(System.lineSeparator());
+				} catch (Exception e) {					
 					e.printStackTrace();
 				}
 			}

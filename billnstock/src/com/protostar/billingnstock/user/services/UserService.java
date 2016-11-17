@@ -3,6 +3,7 @@ package com.protostar.billingnstock.user.services;
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -24,11 +25,14 @@ import com.google.api.server.spi.config.Named;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.googlecode.objectify.Key;
+import com.googlecode.objectify.Result;
 import com.protostar.billingnstock.taskmangement.TaskManagementService;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.user.entities.EmpDepartment;
 import com.protostar.billingnstock.user.entities.UserEntity;
 import com.protostar.billnstock.until.data.Constants;
+import com.protostar.billnstock.until.data.EntityUtil;
+import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 import com.protostar.billnstock.until.data.ServerMsg;
 
 @Api(name = "userService", version = "v0.1", clientIds = {
@@ -40,19 +44,23 @@ public class UserService {
 			.getName());
 
 	@ApiMethod(name = "addUser", path = "addUser")
-	public void addUser(UserEntity usr) throws MessagingException, IOException {
+	public void addUser(UserEntity usr) {
 		if (usr.getDepartment() == null)
 			setDefaultDepartment(usr);
 
 		if (usr.getId() == null) {
 			usr.setCreatedDate(new Date());
 			usr.setAuthorizations(Constants.NEW_BIZ_USER_DEFAULT_AUTHS);
+			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
+					EntityUtil.getBusinessRawKey(usr.getBusiness()),
+					Constants.EMP_NO_COUNTER);
+			usr.setEmpId(sequenceGenService.getNextSequenceNumber());
 		} else {
 			usr.setModifiedDate(new Date());
 			ofy().save().entity(usr).now();
 			return;
 		}
-		
+
 		ofy().save().entity(usr).now();
 		int count;
 		List<UserEntity> filtereduser = ofy()
@@ -98,6 +106,9 @@ public class UserService {
 		} catch (MessagingException e) {
 			// There was an error contacting the Mail service.
 			// ...
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -150,16 +161,35 @@ public class UserService {
 	}
 
 	@ApiMethod(name = "getUserByEmailID", path = "getUserByEmailID")
-	public List<UserEntity> getUserByEmailID(@Named("email_id") String email) {
+	public List<UserEntity> getUserByEmailID(@Named("email_id") String email,
+			@Named("forLogin") boolean forLogin) {
 		List<UserEntity> list = ofy().load().type(UserEntity.class)
 				.filter("email_id", email).list();
-		return (list == null || list.size() == 0) ? null : list;
+		if (list == null || list.size() == 0) {
+			return null;
+		} else {
+			if (forLogin) {
+				UserEntity foundUser = list.get(0);
+				foundUser.setLastLoginDate(new Date());
+				ofy().save().entity(foundUser);
+				// This is save async.
+				return list;
+			}
+			return list;
+		}
 	}
 
 	@ApiMethod(name = "getUserByID", path = "getUserByID")
 	public UserEntity getUserByID(@Named("id") Long id) {
 		UserEntity userE = ofy().load().type(UserEntity.class)
 				.id(id.longValue()).now();
+		return userE;
+	}
+
+	@ApiMethod(name = "getUserByWebSafeKey", path = "getUserByWebSafeKey")
+	public UserEntity getUserByWebSafeKey(@Named("keyStr") String webSafeString) {
+		UserEntity userE = ofy().load().type(UserEntity.class)
+				.filterKey(Key.create(webSafeString)).first().now();
 		return userE;
 	}
 
@@ -175,11 +205,16 @@ public class UserService {
 	public List<UserEntity> login(@Named("email_id") String email,
 			@Named("password") String pass) {
 		List<UserEntity> list = ofy().load().type(UserEntity.class)
-				.filter("email_id", email).list();
+				.filter("email_id", email).order("createdDate").list();
 
 		if (list != null & list.size() > 0) {
+			// Login will be checked against first/the created first. Notice
+			// order by clause above
 			UserEntity foundUser = list.get(0);
 			if (foundUser.getPassword().equals(pass)) {
+				foundUser.setLastLoginDate(new Date());
+				ofy().save().entity(foundUser);
+				// This is save async
 				return list;
 			} else {
 				return null;
@@ -208,7 +243,7 @@ public class UserService {
 
 		if (isFreshBusiness) {
 			// this is being created. Perform basic configs
-			// Set default department			
+			// Set default department
 			EmpDepartment defaultDepartment = new EmpDepartment();
 			defaultDepartment.setName("Default");
 			defaultDepartment.setBusiness(business);
@@ -218,17 +253,16 @@ public class UserService {
 		return business;
 	}
 
-	@ApiMethod(name = "getUsersByBusinessId", path="getUsersByBusinessId")
+	@ApiMethod(name = "getUsersByBusinessId", path = "getUsersByBusinessId")
 	public List<UserEntity> getUsersByBusinessId(@Named("id") Long id) {
-		 List<UserEntity> list = ofy().load().type(UserEntity.class)
-		 .ancestor(Key.create(BusinessEntity.class, id)).list();
-		
-		 /*List<UserEntity> list = ofy().load().type(UserEntity.class).list();
-		for (UserEntity user : list) {
-			if (user.getId().longValue() == id.longValue()) {
-				list.add(user);
-			}
-		}*/
+		List<UserEntity> list = ofy().load().type(UserEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, id)).list();
+
+		/*
+		 * List<UserEntity> list = ofy().load().type(UserEntity.class).list();
+		 * for (UserEntity user : list) { if (user.getId().longValue() ==
+		 * id.longValue()) { list.add(user); } }
+		 */
 		// logger.info("list:" + list);
 		return list;
 	}
@@ -265,6 +299,10 @@ public class UserService {
 		ServerMsg serverMsg = new ServerMsg();
 		serverMsg.setMsg(createUploadUrl);
 		return serverMsg;
+	}
+
+	public void addUserBatch(List<UserEntity> userList) {
+		ofy().save().entities(userList);
 	}
 
 }

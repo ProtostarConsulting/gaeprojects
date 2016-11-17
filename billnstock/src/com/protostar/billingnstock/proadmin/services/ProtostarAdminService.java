@@ -362,10 +362,11 @@ public class ProtostarAdminService {
 		address.setState("MH");
 		address.setPin("411034");
 
-		ofy().save().entity(businessEntity).now();
-		
+		UserService userService = new UserService();
+		// ofy().save().entity(businessEntity).now();
+		userService.addBusiness(businessEntity);
+
 		createDefaultDepartments(businessEntity.getId());
-		
 
 		UserEntity userEntity = new UserEntity();
 		userEntity.setBusiness(businessEntity);
@@ -375,7 +376,8 @@ public class ProtostarAdminService {
 		userEntity.setIsGoogleUser(true);
 		userEntity.setAuthority(Arrays.asList("admin"));
 		userEntity.setAuthorizations(authorizations);
-		ofy().save().entity(userEntity).now();
+		// ofy().save().entity(userEntity).now();
+		userService.addUser(userEntity);
 
 		// ------------------------------
 
@@ -387,7 +389,8 @@ public class ProtostarAdminService {
 		userEntity1.setIsGoogleUser(true);
 		userEntity1.setAuthority(Arrays.asList("admin"));
 		userEntity1.setAuthorizations(authorizations);
-		ofy().save().entity(userEntity1).now();
+		// ofy().save().entity(userEntity1).now();
+		userService.addUser(userEntity1);
 
 		UserEntity userEntity2 = new UserEntity();
 		userEntity2.setBusiness(businessEntity);
@@ -397,7 +400,8 @@ public class ProtostarAdminService {
 		userEntity2.setIsGoogleUser(true);
 		userEntity2.setAuthority(Arrays.asList("admin"));
 		userEntity2.setAuthorizations(authorizations);
-		ofy().save().entity(userEntity2).now();
+		// ofy().save().entity(userEntity2).now();
+		userService.addUser(userEntity2);
 
 		UserEntity userEntity3 = new UserEntity();
 		userEntity3.setBusiness(businessEntity);
@@ -407,19 +411,19 @@ public class ProtostarAdminService {
 		userEntity3.setIsGoogleUser(true);
 		userEntity3.setAuthority(Arrays.asList("admin"));
 		userEntity3.setAuthorizations(authorizations);
-		ofy().save().entity(userEntity3).now();
-
+		// ofy().save().entity(userEntity3).now();
+		userService.addUser(userEntity3);
 		// ///////////////////
 
 	}
 
 	@ApiMethod(name = "createDefaultDepartments", path = "createDefaultDepartments")
 	public void createDefaultDepartments(@Named("businessId") Long id) {
-		
+
 		UserService userService = new UserService();
-		
+
 		BusinessEntity businessEntity = userService.getBusinessById(id);
-		
+
 		EmpDepartment department = new EmpDepartment();
 		department.setName("Default");
 		department.setBusiness(businessEntity);

@@ -4,7 +4,7 @@ angular
 				"SalaryMaster",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
 						$mdUtil, $stateParams, $log, objectFactory,
-						appEndpointSF, Upload,$mdDialog, $mdMedia, $state) {
+						appEndpointSF, Upload, $mdDialog, $mdMedia, $state) {
 
 					$scope.flag = false;
 					$scope.neg = false;
@@ -27,49 +27,25 @@ angular
 					}
 
 					$scope.empSalaryMasterList = [];
-					$scope.getEmpList = function() {						
+					$scope.getEmpList = function() {
 						$scope.loading = true;
 						var hrService = appEndpointSF.gethrService();
-						hrService
-								.getAllemp($scope.curUser.business.id)
-								.then(
-										function(list) {
-											
-											$scope.empSalaryMasterList.length = 0;
-											for (var i = 0; i < list.length; i++) {
-
-												$scope.empSalaryMasterList
-														.push($scope
-																.getEmptySalaryMaster(list[i]));
-
-											}
-											$scope.loading = false;
-
-										});
+						hrService.getAllemp($scope.curUser.business.id).then(
+								function(list) {
+									$scope.empSalaryMasterList = list;
+									$scope.loading = false;
+								});
 
 					}
 
 					$scope.getSalaryMasterlist = function() {
-						$scope.loading = true;	
+						$scope.loading = true;
 						var hrService = appEndpointSF.gethrService();
 						hrService.getSalaryMasterlist(
 								$scope.curUser.business.id).then(
 								function(list) {
-									if (list.length == 0) {
-										$scope.getEmpList();
-									} else
-										$scope.empSalaryMasterList.length = 0;
-									for (var i = 0; i < list.length; i++) {
-										// if(list[i].grosssal==0)
-										// {$scope.empSalaryMasterList.push($scope.getEmptySalaryMaster(list[i]));}
-										$scope.empSalaryMasterList
-												.push(list[i]);
-										// $scope.calculation( i );
-									}
-									$log.debug("items: "
-											+ $scope.curUser.business.items);
-									$scope.loading = false;	
-
+									$scope.empSalaryMasterList = list;
+									$scope.loading = false;
 								});
 
 					}
@@ -84,7 +60,8 @@ angular
 									- currEmpSalMasterObj.medical
 									- currEmpSalMasterObj.education
 									- currEmpSalMasterObj.adhocAllow;
-							currEmpSalMasterObj.specialAllow = currEmpSalMasterObj.specialAllow.toFixed(2);
+							currEmpSalMasterObj.specialAllow = currEmpSalMasterObj.specialAllow
+									.toFixed(2);
 						}
 					}
 
@@ -98,6 +75,7 @@ angular
 							currEmpSalMasterObj.convence = 2000;
 							currEmpSalMasterObj.medical = 1250;
 							currEmpSalMasterObj.education = 200;
+							currEmpSalMasterObj.adhocAllow = 0;
 
 							$scope.calSpecialAllow(index);
 						}
@@ -125,9 +103,7 @@ angular
 								+ $scope.curUser.business.id;
 					}
 					$log.debug("id" + $scope.curUser.business);
-					
-					
-					
+
 					$scope.UplodeExcel = function(ev) {
 						var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))
 								&& $scope.customFullscreen;
@@ -154,7 +130,8 @@ angular
 											$scope.status = 'You cancelled the dialog.';
 										});
 
-					};function DialogController($scope, $mdDialog, curUser) {
+					};
+					function DialogController($scope, $mdDialog, curUser) {
 
 						$scope.fileObject;
 						$scope.uploadProgressMsg = null;
@@ -230,12 +207,10 @@ angular
 							$mdDialog.cancel();
 						};
 					}
-					
-					
-$scope.Refreshpage = function() {
-						
+
+					$scope.Refreshpage = function() {
+
 						$scope.getSalaryMasterlist();
 					}
-					
-					
+
 				});

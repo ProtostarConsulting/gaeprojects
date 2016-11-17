@@ -171,8 +171,42 @@ angular
 								});
 
 					}
-					// get salary master list on page load.
-					$scope.getSalaryMasterlist();
+					
+					
+					$scope.waitForServiceLoad = function() {
+						if (appEndpointSF.is_service_ready) {
+							// get salary master list on page load.
+							$scope.getSalaryMasterlist();
+						} else {
+							$log.debug("Services Not Loaded, watiting...");
+							$timeout($scope.waitForServiceLoad, 1000);
+						}
+					}
+					$scope.waitForServiceLoad();
+					
+					$scope.openDialog = function($event, monthlyPayObj, allowanceOrDeductionFlag) {
+						// Show the dialog
+						$mdDialog.show({
+							clickOutsideToClose : true,
+							controller : function($mdDialog) {
+								// Save the clicked item
+								//this.item = item;
+								this.item = monthlyPayObj;
+								this.allowanceOrDeductionFlag = allowanceOrDeductionFlag;
+								// Setup some handlers
+								this.close = function() {
+									$mdDialog.cancel();
+								};
+								this.submit = function() {
+									$mdDialog.hide();
+								};
+							},
+							autoWrap: false,
+							controllerAs : 'dialog',
+							templateUrl : 'dialog.html',
+							targetEvent : $event
+						});
+					}
 
 					var MonthlyPaymentDetailEntity = "MonthlyPaymentDetailEntity";
 

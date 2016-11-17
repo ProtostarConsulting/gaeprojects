@@ -45,7 +45,6 @@ angular
 					$scope.waitForServiceLoad();
 
 					$scope.updatePlan = function() {
-
 						$scope.selectedBusiness.accounttype = $scope.newSelectedPlan;
 						var UserService = appEndpointSF.getUserService();
 						// addbusiness use in number of
@@ -54,7 +53,6 @@ angular
 								function(business) {
 									$scope.showUpdateToast();
 								});
-
 					}
 
 					$scope.toggleRight = buildToggler('right');

@@ -4,10 +4,10 @@
 	<div>
 		<md-input-container flex="50"> <lable>Select
 		a Month to Prepare Salary Details<span style="color: red;">*</span></lable> <md-select
-			ng-model="Selectedmonth" ng-change="monthSelectChange(Selectedmonth)"aria-label="Selectedmonth"
-			id="month" name="month" ng-required="true"> <md-option
-			ng-value="item" ng-repeat="item in monthList">{{item}} </md-option> </md-select>
-		</md-input-container>
+			ng-model="Selectedmonth" ng-change="monthSelectChange(Selectedmonth)"
+			aria-label="Selectedmonth" id="month" name="month" ng-required="true">
+		<md-option ng-value="item" ng-repeat="item in monthList">{{item}}
+		</md-option> </md-select> </md-input-container>
 	</div>
 
 	<md-toolbar class="md-table-toolbar md-default">
@@ -47,7 +47,7 @@
 						<th name="Pay Days" style="margin: 0; padding-right: 5px;"></th>
 
 						<th name="Monthly Salary" style="margin: 0; padding-right: 5px;"></th>
-						<th name="Special Allow" style="margin: 0; padding-right: 5px;"></th>
+						<th name="Onetime Payment" style="margin: 0; padding-right: 5px;"></th>
 						<th name="P F"
 							style="margin: 0; align: center; padding-right: 5px;"></th>
 						<th name="P T"
@@ -62,7 +62,7 @@
 				<tbody>
 
 					<tr
-						ng-repeat="monthlyPayObj in monthlyPayDetailsList | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+						ng-repeat="monthlyPayObj in monthlyPayDetailsList | limitTo: query.limit: (query.page - 1) * query.limit">
 						<td
 							style="min-width: 220px; margin: 0; padding-left: 0; padding-right: 5px;">
 							<b
@@ -78,40 +78,60 @@
 						<td style="min-width: 100px; margin: 0; padding-right: 5px;"><b
 							ng-bind="monthlyPayObj.calculatedGrossSalary"
 							ng-style="highlightRed(monthlyPayObj.payableDays)"> </b></td>
-						<td style="margin: 0; min-width: 100px; padding-right: 5px;"><md-input-container
+						<td style="margin: 0; min-width: 100px; padding-right: 5px;"
+							layout="row"><md-input-container
 								style="margin: 0; padding: 0;"> <input
 								ng-model="monthlyPayObj.specialAllow" type="number"
-								ng-change="calculateMonthlyPayment($index)"aria-label="specialAllow"> </md-input-container></td>
+								ng-change="calculateMonthlyPayment($index)"
+								aria-label="specialAllow"> </md-input-container> <md-button
+								class="md-icon-button"
+								ng-click="openDialog($event, monthlyPayObj, 'allowance')">
+							<ng-md-icon icon="note_add" style="fill: md-default" size="20">
+							<md-tooltip> Add Note</md-tooltip></ng-md-icon></md-button></td>
 
 						<td style="margin: 0; min-width: 100px; padding-right: 5px;"><md-input-container
 								style="margin: 0; padding: 0;"> <input
 								ng-model="monthlyPayObj.pfDeductionAmt" type="number"
-								ng-change="calculateMonthlyPayment($index)"aria-label="pfDeductionAmt"> </md-input-container></td>
+								ng-change="calculateMonthlyPayment($index)"
+								aria-label="pfDeductionAmt"> </md-input-container></td>
 						<td style="margin: 0; min-width: 100px; padding-right: 5px;"><md-input-container
 								style="margin: 0; padding: 0;"> <input
 								ng-model="monthlyPayObj.ptDeductionAmt" type="number"
-								ng-change="calculateMonthlyPayment($index)"aria-label="ptDeductionAmt"> </md-input-container></td>
+								ng-change="calculateMonthlyPayment($index)"
+								aria-label="ptDeductionAmt"> </md-input-container></td>
 						<td style="margin: 0; padding-right: 5px;"><md-input-container
 								style="margin: 0; padding: 0;"> <input
 								ng-model="monthlyPayObj.canteenDeductionAmt" type="number"
-								ng-change="calculateMonthlyPayment($index)"aria-label="canteenDeductionAmt"> </md-input-container></td>
-						<td style="margin: 0; padding-right: 5px;"><md-input-container
-								style="margin: 0; padding: 0;"> <input
-								ng-model="monthlyPayObj.otherDeductionAmt" type="number"
-								ng-change="calculateMonthlyPayment($index)"aria-label="otherDeductionAmt"> </md-input-container></td>
+								ng-change="calculateMonthlyPayment($index)"
+								aria-label="canteenDeductionAmt"> </md-input-container></td>
 						<td style="margin: 0; padding-right: 5px;"><md-input-container
 								style="margin: 0; padding: 0;"> <input
 								ng-model="monthlyPayObj.itDeductionAmt" type="number"
-								ng-change="calculateMonthlyPayment($index)"aria-label="itDeductionAmt"> </md-input-container></td>
+								ng-change="calculateMonthlyPayment($index)"
+								aria-label="itDeductionAmt"> </md-input-container></td>
+						<td style="margin: 0; padding-right: 5px;" layout="row"><md-input-container
+								style="margin: 0; padding: 0;"> <input
+								ng-model="monthlyPayObj.otherDeductionAmt" type="number"
+								ng-change="calculateMonthlyPayment($index)"
+								aria-label="otherDeductionAmt"> </md-input-container> <md-button
+								class="md-icon-button"
+								ng-click="openDialog($event, monthlyPayObj, 'deduction')">
+							<ng-md-icon icon="note_add" style="fill: md-default" size="20">
+							<md-tooltip> Add Note</md-tooltip></ng-md-icon></md-button></td>
 
 						<td style="margin: 0; padding-left: 0; padding-right: 5px;"><b
 							ng-bind="monthlyPayObj.netSalaryAmt"
 							ng-style="highlightRed(monthlyPayObj.payableDays)"> </b></td>
-						<td><md-button class="md-fab md-primary md-hue-1 "
+						<td>
+							<!-- <md-button class="md-fab md-primary md-hue-1 "
 								ng-click="downloadSalarySlip(monthlyPayObj)"
 								aria-label="Favorite"> <md-tooltip>Download
 							Salary Slip</md-tooltip> <md-icon md-svg-icon="img/icons/pdfdownload.svg"></md-icon>
-							</md-button></td>
+							</md-button> --> <md-button class="md-icon-button"
+								ng-click="downloadSalarySlip(monthlyPayObj)"> <ng-md-icon
+								icon="picture_as_pdf" style="fill: md-default" size="20">
+							<md-tooltip> Download Salary Slip</md-tooltip></ng-md-icon></md-button>
+						</td>
 					</tr>
 				</tbody>
 			</table>
@@ -133,4 +153,33 @@
 		</div>
 	</div>
 </form>
-</md-content>
+
+<script type="text/ng-template" id="dialog.html">
+    <md-dialog>
+      <md-toolbar>
+        <div class="md-toolbar-tools">Add Notes</div>
+      </md-toolbar>
+
+      <md-dialog-content layout-padding>
+		<br><br>
+		<md-input-container ng-show="dialog.allowanceOrDeductionFlag == 'allowance'"> 
+			<label> Enter one time payment notes </label>
+			<input ng-model="dialog.item.specialAllowNote"	aria-label="specialAllowNote"> 
+		</md-input-container>
+		<md-input-container ng-show="dialog.allowanceOrDeductionFlag == 'deduction'"> 
+			<label> Enter one time deduction notes </label>
+			<input ng-model="dialog.item.otherDeductionAmtNote"	aria-label="otherDeductionAmtNote"> 
+		</md-input-container> 
+
+      </md-dialog-content>
+
+      <md-dialog-actions>
+        <md-button aria-label="Close dialog" ng-click="dialog.close()" class="md-primary">
+          Cancel
+        </md-button>
+        <md-button aria-label="Submit dialog" ng-click="dialog.submit()" class="md-primary">
+          Save
+        </md-button>
+     </md-dialog-actions>
+    </md-dialog>
+  </script> </md-content>

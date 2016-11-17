@@ -23,7 +23,6 @@ public class PrintPdfSalarySlip extends HttpServlet {
 		super();
 	}
 
-	@SuppressWarnings("deprecation")
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		String idParam = request.getParameter("id");
@@ -47,7 +46,6 @@ public class PrintPdfSalarySlip extends HttpServlet {
 		response.setHeader("Content-disposition",
 				"inline; filename='SalarySlip" + fileNameAppend + ".pdf'");
 
-		System.out.println("entity" + entity);
 		HrService hrService = new HrService();
 		MonthlyPaymentDetailEntity monthlyPaymentDetailEntity = null;
 
@@ -57,8 +55,6 @@ public class PrintPdfSalarySlip extends HttpServlet {
 			monthlyPaymentDetailEntity = hrService.getMonthlyPaymentByID(bid,
 					month, id);
 
-			System.out.println("monthlyPaymentDetailEntity*********ii**"
-					+ monthlyPaymentDetailEntity.getNetSalaryAmt());
 			pdfHtmlTemplateService.generateHrPDF(monthlyPaymentDetailEntity,
 					outputStream);
 		}

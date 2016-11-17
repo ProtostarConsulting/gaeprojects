@@ -1,6 +1,7 @@
 package com.protostar.billingnstock.hr.entities;
 
-import com.googlecode.objectify.Ref;
+import javax.persistence.Embedded;
+
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
 import com.protostar.billnstock.entity.BaseEntity;
@@ -9,29 +10,33 @@ import com.protostar.billnstock.entity.BaseEntity;
 public class MonthlyPaymentDetailEntity extends BaseEntity {
 
 	@Index
-	private Ref<LeaveDetailEntity> leaveDetailEntity;
+	@Embedded
+	private LeaveDetailEntity leaveDetailEntity;
 	private int totalDays;
 	private int payableDays;
 	private float monthlyGrossSalary;
 	private float calculatedGrossSalary;
 	private float specialAllow;
+	private String specialAllowNote;
 	private float pfDeductionAmt;
 	private float ptDeductionAmt;
 	private float canteenDeductionAmt;
 	private float itDeductionAmt;
 	private float otherDeductionAmt;
+	private String otherDeductionAmtNote;
 	private float netSalaryAmt;
+	@Embedded
 	private SalStruct salStruct;
 
 	@Index
 	private String currentMonth;
 
 	public LeaveDetailEntity getleaveDetailEntity() {
-		return leaveDetailEntity == null ? null : leaveDetailEntity.get();
+		return leaveDetailEntity;
 	}
 
 	public void setleaveDetailEntity(LeaveDetailEntity leaveDetailEntity) {
-		this.leaveDetailEntity = Ref.create(leaveDetailEntity);
+		this.leaveDetailEntity = leaveDetailEntity;
 
 	}
 
@@ -129,7 +134,7 @@ public class MonthlyPaymentDetailEntity extends BaseEntity {
 
 	public void setSalStruct(SalStruct salStruct) {
 		this.salStruct = salStruct;
-	}	
+	}
 
 	public int getTotalDays() {
 		return totalDays;
@@ -137,6 +142,22 @@ public class MonthlyPaymentDetailEntity extends BaseEntity {
 
 	public void setTotalDays(int totalDays) {
 		this.totalDays = totalDays;
+	}
+
+	public String getSpecialAllowNote() {
+		return specialAllowNote;
+	}
+
+	public void setSpecialAllowNote(String specialAllowNote) {
+		this.specialAllowNote = specialAllowNote;
+	}
+
+	public String getOtherDeductionAmtNote() {
+		return otherDeductionAmtNote;
+	}
+
+	public void setOtherDeductionAmtNote(String otherDeductionAmtNote) {
+		this.otherDeductionAmtNote = otherDeductionAmtNote;
 	}
 
 }

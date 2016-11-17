@@ -1,5 +1,6 @@
 package com.protostar.billingnstock.user.entities;
 
+import java.util.Date;
 import java.util.List;
 
 import com.googlecode.objectify.Ref;
@@ -13,7 +14,8 @@ public class UserEntity extends BaseEntity {
 
 	private String firstName;
 	private String lastName;
-
+	private String fullName;
+	
 	private String status = "active";
 
 	@Index
@@ -27,9 +29,12 @@ public class UserEntity extends BaseEntity {
 	private Long empId;
 	@Index
 	private Ref<EmpDepartment> department;
+	private String designationName;
+	
+	private Date lastLoginDate;
 
 	/* private Address address; */
-	private BankDetail bankDetail;
+	private BankDetail bankDetail = new BankDetail();
 
 	private String authorizations;
 
@@ -138,6 +143,30 @@ public class UserEntity extends BaseEntity {
 
 	public void setDepartment(EmpDepartment department) {
 		this.department = Ref.create(department);
+	}
+
+	public Date getLastLoginDate() {
+		return lastLoginDate;
+	}
+
+	public void setLastLoginDate(Date lastLoginDate) {
+		this.lastLoginDate = lastLoginDate;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	public String getDesignationName() {
+		return designationName;
+	}
+
+	public void setDesignationName(String designationName) {
+		this.designationName = designationName;
 	}
 
 }

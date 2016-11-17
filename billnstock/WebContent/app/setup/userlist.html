@@ -31,8 +31,8 @@
 
 
 			<ng-md-icon icon="add_circle" style="fill: md-default" size="35"
-				ui-sref="setup.useradd({selectedBusiness: selectedBusiness})"> <md-tooltip>
-			Add User</md-tooltip></ng-md-icon>
+				ui-sref="setup.useradd({selectedBusiness: selectedBusiness})">
+			<md-tooltip> Add User</md-tooltip></ng-md-icon>
 			</ng-md-icon>
 
 		</div>
@@ -46,7 +46,7 @@
 						<th name="First Name" order-by="firstName"></th>
 						<th name="Last Name" order-by="lastName"></th>
 						<th name="Department" order-by="department" hide-xs></th>
-						<th name="Login Allowed" order-by="isLoginAllowed" hide-xs></th>						
+						<th name="Login Allowed" order-by="isLoginAllowed" hide-xs></th>
 						<th name="Email" order-by="email_id" hide-xs></th>
 						<th name="Last Login" order-by="lastLoginDate" hide-xs></th>
 						<th name="Edit | Actions"></th>
@@ -63,12 +63,14 @@
 						<td hide-xs>{{user.lastLoginDate | formatDateWithTime}}</td>
 						<td>
 							<section layout="row">
-								<md-button class="md-icon-button" ng-hide="businessNo"
+								<md-button class="md-icon-button"
+									ng-hide="selectedBusiness == curUser.business"
 									style="padding-top:18px"
-									ui-sref="setup.userview({selectedUser: user})">
-								<ng-md-icon icon="edit" style="fill: md-default" size="24">
-								<md-tooltip> Edit Record</md-tooltip></ng-md-icon></md-button>
-								<md-button class="md-icon-button" ng-show="businessNo"
+									ui-sref="setup.userview({selectedUser: user})"> <ng-md-icon
+									icon="edit" style="fill: md-default" size="24"> <md-tooltip>
+								Edit Record</md-tooltip></ng-md-icon></md-button>
+								<md-button class="md-icon-button"
+									ng-show="selectedBusiness == curUser.business"
 									ui-sref="proAdmin.editBusiness.userview({selectedUser: user})">
 								<ng-md-icon icon="edit" style="fill: md-default" size="24">
 								<md-tooltip> Edit Record</md-tooltip></ng-md-icon></md-button>

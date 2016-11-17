@@ -20,7 +20,10 @@ import com.protostar.billingnstock.account.entities.SalesVoucherEntity;
 import com.protostar.billingnstock.account.entities.VoucherEntity;
 import com.protostar.billingnstock.hr.entities.MonthlyPaymentDetailEntity;
 import com.protostar.billingnstock.hr.entities.SalStruct;
+import com.protostar.billingnstock.user.entities.BusinessEntity;
+import com.protostar.billingnstock.user.entities.EmpDepartment;
 import com.protostar.billingnstock.user.entities.UserEntity;
+import com.protostar.billnstock.entity.Address;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -273,26 +276,53 @@ public class PDFHtmlTemplateService {
 					+ mtlyPayObj.getOtherDeductionAmt();
 
 			UserEntity user = mtlyPayObj.getleaveDetailEntity().getUser();
-			
-			root.put("Name", user.getFirstName() + " " + user.getLastName());
+			BusinessEntity business = user.getBusiness();
+
+			StringBuffer addressBuf = new StringBuffer();
+			Address address = business.getAddress();
+			if (address != null) {
+				if (address.getLine1() != null && !address.getLine1().isEmpty())
+					addressBuf.append(address.getLine1());
+				if (address.getLine2() != null && !address.getLine2().isEmpty())
+					addressBuf.append(", " + address.getLine2());
+				if (address.getCity() != null && !address.getCity().isEmpty())
+					addressBuf.append(", " + address.getCity());
+				if (address.getState() != null && !address.getState().isEmpty())
+					addressBuf.append(", " + address.getState());
+			}
+
+			String buisinessAddress = addressBuf.toString();
+			// Top Header
+			root.put("buisinessName", "" + business.getBusinessName());
+			root.put("buisinessAddress", "" + buisinessAddress);
+
+			// Header Col1
+			root.put("empNumber", "" + user.getEmpId());
+			String empName = user.getFirstName() + " " + user.getLastName();
+			root.put("empName", empName);
+			EmpDepartment department = user.getDepartment();
+			root.put("department",
+					department == null ? "" : "" + department.getName());
+			root.put("empDesignation", "" + user.getDesignationName());
+			BankDetail bankDetail = user.getBankDetail();
+			if (bankDetail == null)
+				bankDetail = new BankDetail();
+			root.put("bankName", "" + bankDetail.getBankName());
+			root.put("bankAccNumber", "" + bankDetail.getBankAccountNo());
+
+			// Header Col2
 			root.put("ManthlyGross",
-					df.format(mtlyPayObj.getMonthlyGrossSalary()));
-			root.put("PayDays", mtlyPayObj.getPayableDays());
-			root.put("MonthlySalary",
-					df.format(mtlyPayObj.getMonthlyGrossSalary()));
-			root.put("PFDeductionAmt",
-					df.format(mtlyPayObj.getPfDeductionAmt()));
-			root.put("PTDeductionAmt",
-					df.format(mtlyPayObj.getPtDeductionAmt()));
-			root.put("Canteen", df.format(mtlyPayObj.getCanteenDeductionAmt()));
-			root.put("OtherDeduction",
-					df.format(mtlyPayObj.getOtherDeductionAmt()));
-			root.put("ITDduction", df.format(mtlyPayObj.getItDeductionAmt()));
-			NumberToRupees numberToRupees = new NumberToRupees(
-					Math.round(mtlyPayObj.getNetSalaryAmt()));
-			String netInWords = numberToRupees.getAmountInWords();
-			root.put("NetSalary", df.format(Math.round(mtlyPayObj.getNetSalaryAmt())));
-			root.put("NetSalaryInWords", netInWords);
+					"Rs. " + df.format(mtlyPayObj.getMonthlyGrossSalary()));
+			/*
+			 * root.put("MonthlySalary",
+			 * df.format(mtlyPayObj.getMonthlyGrossSalary()));
+			 */
+			root.put("totalDays", mtlyPayObj.getTotalDays());
+			root.put("payableDays", mtlyPayObj.getPayableDays());
+			root.put("leaveBalance", mtlyPayObj.getleaveDetailEntity()
+					.getNextOpeningBalance());
+
+			// Earnings Col
 			root.put("Basic", df.format(basicAmt));
 			root.put("Month", mtlyPayObj.getCurrentMonth());
 			root.put("HRA", df.format(hraAmt));
@@ -302,9 +332,32 @@ public class PDFHtmlTemplateService {
 			root.put("AdhocAllow", df.format(adhAmt));
 			root.put("SpecialAllow", df.format(splAmt));
 			root.put("SpecialAllow2", df.format(mtlyPayObj.getSpecialAllow()));
+			root.put(
+					"specialAllow2Note",
+					mtlyPayObj.getSpecialAllowNote() == null ? "" : mtlyPayObj
+							.getSpecialAllowNote());
 			root.put("totalEarnings", df.format(totalEarnings));
+
+			// Deductions Col
+			root.put("PFDeductionAmt",
+					df.format(mtlyPayObj.getPfDeductionAmt()));
+			root.put("PTDeductionAmt",
+					df.format(mtlyPayObj.getPtDeductionAmt()));
+			root.put("ITDduction", df.format(mtlyPayObj.getItDeductionAmt()));
+			root.put("Canteen", df.format(mtlyPayObj.getCanteenDeductionAmt()));
+			root.put("OtherDeduction",
+					df.format(mtlyPayObj.getOtherDeductionAmt()));
+			root.put("otherDeductionNote",
+					mtlyPayObj.getOtherDeductionAmtNote() == null ? ""
+							: mtlyPayObj.getOtherDeductionAmtNote());
 			root.put("totalDeductions", df.format(totalDeductions));
-			root.put("totalDays", mtlyPayObj.getTotalDays());
+
+			NumberToRupees numberToRupees = new NumberToRupees(
+					Math.round(mtlyPayObj.getNetSalaryAmt()));
+			String netInWords = numberToRupees.getAmountInWords();
+			root.put("NetSalary",
+					df.format(Math.round(mtlyPayObj.getNetSalaryAmt())));
+			root.put("NetSalaryInWords", netInWords);
 
 			Template temp = getConfiguration().getTemplate(
 					"pdf_templates/HrMonthlyPaymentDetailPDF.ftlh");

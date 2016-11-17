@@ -76,6 +76,11 @@ public class UploadUsersServlet extends HttpServlet {
 		List<EmpDepartment> empDepartments = userService
 				.getEmpDepartments(businessId);
 		Date todaysDate = new Date();
+		List<UserEntity> userList = new ArrayList<UserEntity>();
+		SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
+				EntityUtil.getBusinessRawKey(businessEntity),
+				Constants.EMP_NO_COUNTER);
+
 		// Start from 1 so that column headers are scriped.
 		for (int row = 1; row < split2.length; row++) {
 			try {
@@ -117,10 +122,9 @@ public class UploadUsersServlet extends HttpServlet {
 						.setIsGoogleUser("1".equalsIgnoreCase(split[5].trim()));
 				userEntity.setPassword(split[6].trim());
 
-				SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
-						EntityUtil.getBusinessRawKey(businessEntity), Constants.EMP_NO_COUNTER);
 				userEntity.setEmpId(sequenceGenService.getNextSequenceNumber());
-				ofy().save().entity(userEntity).now();
+				// ofy().save().entity(userEntity).now();
+				userList.add(userEntity);
 
 				log.info("Processed userEntity.getFirstName(): "
 						+ userEntity.getFirstName());
@@ -130,6 +134,8 @@ public class UploadUsersServlet extends HttpServlet {
 			}
 
 		}
+		if (userList.size() > 0)
+			userService.addUserBatch(userList);
 	}
 
 	protected void doGetBackup(HttpServletRequest request,
