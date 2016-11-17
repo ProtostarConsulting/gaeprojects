@@ -181,6 +181,17 @@ function googleEndpointSF($log, $q) {
 		});
 		return deferred.promise;
 	}
+	
+	UserService.getEmpDepartments = function(id) {
+		var deferred = $q.defer();
+		gapi.client.userService.getEmpDepartments({
+			'businessId' : id
+		}).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}
+	
 
 	UserService.updateUser = function(user) {
 		var deferred = $q.defer();

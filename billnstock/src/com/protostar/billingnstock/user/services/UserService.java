@@ -2,7 +2,6 @@ package com.protostar.billingnstock.user.services;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,7 +24,6 @@ import com.google.api.server.spi.config.Named;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.googlecode.objectify.Key;
-import com.googlecode.objectify.Result;
 import com.protostar.billingnstock.taskmangement.TaskManagementService;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.user.entities.EmpDepartment;
@@ -301,7 +299,7 @@ public class UserService {
 		return serverMsg;
 	}
 
-	public void addUserBatch(List<UserEntity> userList) {
+	public static void addUserBatch(List<UserEntity> userList) {
 		ofy().save().entities(userList);
 	}
 

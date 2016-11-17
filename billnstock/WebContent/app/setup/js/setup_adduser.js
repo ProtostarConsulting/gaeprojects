@@ -52,7 +52,7 @@ angular
 										data : {
 											'file' : fileObject,
 											'username' : curUser.email_id,
-											'businessId' : selectedBusiness.id
+											'businessId' : curUser.business.id
 										}
 									})
 									.then(
@@ -179,7 +179,7 @@ angular
 						lastName : "",
 						password : "",
 						isGoogleUser : true,
-						department:"",
+						department : "",
 						authority : []
 					}
 
@@ -207,7 +207,8 @@ angular
 						var UserService = appEndpointSF.getUserService();
 						if (typeof $scope.selectedBusiness.id != 'undefined') {
 							UserService
-									.getUsersByBusinessId($scope.selectedBusiness.id)
+									.getUsersByBusinessId(
+											$scope.selectedBusiness.id)
 									.then(
 											function(users) {
 												$scope.userslist = users.items.length;
@@ -276,18 +277,16 @@ angular
 										});
 
 					}
-					
-					
-					
-					$scope.getDepartmentList=function(){
-						
-						var getsetupService=appEndpointSF.getsetupService();
-						
-						getsetupService.getDepartmentList($scope.curUser.business.id).then(function(list) {
-							$scope.department=list;
-							
-						});}
-					
+
+					$scope.getDepartmentList = function() {
+						var UserService = appEndpointSF.getUserService();
+						UserService.getEmpDepartments(
+								$scope.curUser.business.id).then(
+								function(list) {
+									$scope.department = list.items;
+								});
+					}
+
 					$scope.getDepartmentList();
 					$scope.user11 = [];
 					$scope.userexist = "";
