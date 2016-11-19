@@ -51,7 +51,8 @@ public class HrService {
 	@ApiMethod(name = "getSalStructByUser")
 	public SalStruct getSalStructByUser(UserEntity currRowUser) {
 		List<SalStruct> list = ofy().load().type(SalStruct.class)
-				.filter("UserEntity", currRowUser).list();
+				.ancestor(Key.create(BusinessEntity.class, currRowUser.getBusiness().getId()))
+				.filter("empAccount", currRowUser).list();
 		SalStruct salStruct = list.size() > 0 ? list.get(0) : null;
 		return salStruct;
 	}

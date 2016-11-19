@@ -35,8 +35,7 @@ angular
 
 					}
 
-					$scope.calSpecialAllow = function(index) {
-						var currEmpSalMasterObj = $scope.empSalaryMasterList[index];
+					$scope.calSpecialAllow = function(currEmpSalMasterObj) {
 						if (currEmpSalMasterObj.monthlyGrossSal !== 0) {
 							currEmpSalMasterObj.monthlySpecialAllow = currEmpSalMasterObj.monthlyGrossSal
 									- currEmpSalMasterObj.monthlyBasic
@@ -47,11 +46,11 @@ angular
 									- currEmpSalMasterObj.monthlyAdhocAllow;
 							currEmpSalMasterObj.monthlySpecialAllow = currEmpSalMasterObj.monthlySpecialAllow
 									.toFixed(2);
+							currEmpSalMasterObj.monthlySpecialAllow = Number(currEmpSalMasterObj.monthlySpecialAllow);
 						}
 					}
 
-					$scope.grossSalaryChanged = function(index) {
-						var currEmpSalMasterObj = $scope.empSalaryMasterList[index];
+					$scope.grossSalaryChanged = function(currEmpSalMasterObj) {
 						if (currEmpSalMasterObj.monthlyGrossSal >= 11650) {
 							// because all below are equal to 11650, which is
 							// standard for suruchi dairy
@@ -62,7 +61,7 @@ angular
 							currEmpSalMasterObj.monthlyEducation = 200;
 							currEmpSalMasterObj.monthlyAdhocAllow = 0;
 
-							$scope.calSpecialAllow(index);
+							$scope.calSpecialAllow(currEmpSalMasterObj);
 						}
 					}
 
@@ -81,7 +80,16 @@ angular
 						});
 					}
 
-					$scope.getSalaryMasterlist();
+					$scope.waitForServiceLoad = function() {
+						if (appEndpointSF.is_service_ready) {
+							$scope.getSalaryMasterlist();
+						} else {
+							$log.debug("Services Not Loaded, watiting...");
+							$timeout($scope.waitForServiceLoad, 1000);
+						}
+					}
+					$scope.waitForServiceLoad();
+
 					$scope.download = function() {
 						// window.open("DownloadSalaryMaster?id="+$scope.curUser.business.id+d);
 						document.location.href = "DownloadSalaryMaster?id="
@@ -103,7 +111,8 @@ angular
 											clickOutsideToClose : true,
 											fullscreen : useFullScreen,
 											locals : {
-												curUser : $scope.curUser
+												curUser : $scope.curUser,
+												refreshSalaryMasterlist : $scope.getSalaryMasterlist
 											}
 										})
 								.then(
@@ -116,7 +125,7 @@ angular
 										});
 
 					};
-					function DialogController($scope, $mdDialog, curUser) {
+					function DialogController($scope, $mdDialog, curUser, refreshSalaryMasterlist) {
 
 						$scope.fileObject;
 						$scope.uploadProgressMsg = null;
@@ -147,17 +156,19 @@ angular
 														.show($mdToast
 																.simple()
 																.content(
-																		'User List Uploaded Sucessfully.')
+																		'Salary Master Uploaded Sucessfully.')
 																.position("top")
 																.hideDelay(3000));
+												// Load the list again in the
+												// end
+												refreshSalaryMasterlist();
 
 												$scope.fileObject = null;
 												$timeout(function() {
 													$scope.cancel();
-												}, 3000);
-												// Load the books again in the
-												// end
-												// getFreshBooks(true);
+												}, 1000);
+												
+												
 											},
 											function(resp) {
 												$log

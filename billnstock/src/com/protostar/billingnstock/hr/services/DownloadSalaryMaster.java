@@ -137,10 +137,10 @@ public class DownloadSalaryMaster extends HttpServlet {
 						writer.append(""+userSalMaster.getMonthlyEducation());
 
 						writer.append(',');
-						writer.append(""+userSalMaster.getAdhocAllow());
+						writer.append(""+userSalMaster.getMonthlyAdhocAllow());
 
 						writer.append(',');
-						writer.append(""+userSalMaster.getSpecialAllow());
+						writer.append(""+userSalMaster.getMonthlySpecialAllow());
 
 						writer.append(',');
 					}

@@ -77,7 +77,7 @@ public class UploadSalaryMasterServlet extends HttpServlet {
 					continue;
 				}
 				SalStruct salEntity = hrService.getSalStructByUser(currRowUser);
-
+				log.info("Found salEntity:" + salEntity);
 				if (salEntity == null) {
 					salEntity = new SalStruct();
 					salEntity.setEmpAccount(currRowUser);
@@ -93,9 +93,10 @@ public class UploadSalaryMasterServlet extends HttpServlet {
 				salEntity.setMonthlyHra(Float.parseFloat(split[5].trim()));
 				salEntity.setMonthlyConvence(Float.parseFloat(split[6].trim()));
 				salEntity.setMonthlyMedical(Float.parseFloat(split[7].trim()));
-				salEntity.setMonthlyEducation(Float.parseFloat(split[8].trim()));
-				salEntity.setAdhocAllow(Float.parseFloat(split[9].trim()));
-				salEntity.setSpecialAllow(Float.parseFloat(split[10].trim()));
+				salEntity
+						.setMonthlyEducation(Float.parseFloat(split[8].trim()));
+				salEntity.setMonthlyAdhocAllow(Float.parseFloat(split[9].trim()));
+				salEntity.setMonthlySpecialAllow(Float.parseFloat(split[10].trim()));
 				ofy().save().entity(salEntity).now();
 			} catch (Exception e) {
 				log.warning(e.getMessage());

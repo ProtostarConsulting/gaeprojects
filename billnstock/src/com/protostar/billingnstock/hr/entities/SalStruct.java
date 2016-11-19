@@ -330,19 +330,19 @@ public class SalStruct extends BaseEntity {
 		this.monthlyEducation = education;
 	}
 
-	public float getAdhocAllow() {
+	public float getMonthlyAdhocAllow() {
 		return monthlyAdhocAllow;
 	}
 
-	public void setAdhocAllow(float adhocAllow) {
+	public void setMonthlyAdhocAllow(float adhocAllow) {
 		this.monthlyAdhocAllow = adhocAllow;
 	}
 
-	public float getSpecialAllow() {
+	public float getMonthlySpecialAllow() {
 		return monthlySpecialAllow;
 	}
 
-	public void setSpecialAllow(float specialAllow) {
+	public void setMonthlySpecialAllow(float specialAllow) {
 		this.monthlySpecialAllow = specialAllow;
 	}
 

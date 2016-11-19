@@ -261,9 +261,9 @@ public class PDFHtmlTemplateService {
 					* mtlyPayObj.getPayableDays();
 			float eduAmt = salStruct.getMonthlyEducation() / mtlyPayObj.getTotalDays()
 					* mtlyPayObj.getPayableDays();
-			float adhAmt = salStruct.getAdhocAllow()
+			float adhAmt = salStruct.getMonthlyAdhocAllow()
 					/ mtlyPayObj.getTotalDays() * mtlyPayObj.getPayableDays();
-			float splAmt = salStruct.getSpecialAllow()
+			float splAmt = salStruct.getMonthlySpecialAllow()
 					/ mtlyPayObj.getTotalDays() * mtlyPayObj.getPayableDays();
 
 			float totalEarnings = basicAmt + hraAmt + conAmt + medAmt + eduAmt

@@ -76,46 +76,46 @@
 					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
 							style="margin: 0; padding: 0;"> <input
 							ng-model="empSalaryMasterObj.monthlyGrossSal" type="number"
-							ng-change="grossSalaryChanged($index)"
+							ng-change="grossSalaryChanged(empSalaryMasterObj)"
 							aria-label="monthlyGrossSal" ng-model-options="{ debounce: 100 }">
 						</md-input-container></td>
 					<td
 						style="min-width: 100px; margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
 							style="margin: 0; padding-left: 0; padding-right: 5px;">
 						<input ng-model="empSalaryMasterObj.monthlyBasic" type="number"
-							ng-change="calSpecialAllow($index)" aria-label="monthlyBasic">
+							ng-change="calSpecialAllow(empSalaryMasterObj)" aria-label="monthlyBasic">
 						</md-input-container></td>
 					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
 							style="margin: 0; padding: 0;"> <input
 							ng-model="empSalaryMasterObj.monthlyHra" type="number"
-							ng-change="calSpecialAllow($index)" aria-label="monthlyHra">
+							ng-change="calSpecialAllow(empSalaryMasterObj)" aria-label="monthlyHra">
 						</md-input-container></td>
 					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
 							style="margin: 0; padding: 0;"> <input
 							ng-model="empSalaryMasterObj.monthlyConvence" type="number"
-							ng-change="calSpecialAllow($index)" aria-label="monthlyConvence">
+							ng-change="calSpecialAllow(empSalaryMasterObj)" aria-label="monthlyConvence">
 						</md-input-container></td>
 					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
 							style="margin: 0; padding: 0;"> <input
 							ng-model="empSalaryMasterObj.monthlyMedical" type="number"
-							ng-change="calSpecialAllow($index)" aria-label="monthlyMedical">
+							ng-change="calSpecialAllow(empSalaryMasterObj)" aria-label="monthlyMedical">
 						</md-input-container></td>
 					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
 							style="margin: 0; padding: 0;"> <input
 							ng-model="empSalaryMasterObj.monthlyEducation"
-							ng-change="calSpecialAllow($index)" aria-label="monthlyEducation">
+							ng-change="calSpecialAllow(empSalaryMasterObj)" aria-label="monthlyEducation">
 						</md-input-container></td>
 
 
 					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
-							style="margin: 0; padding: 0;"> <input
-							ng-model="empSalaryMasterObj.monthlyAdhocAllow"
-							ng-change="calSpecialAllow($index)"
+							style="margin: 0; padding: 0;"> <input type="number"
+							ng-model="empSalaryMasterObj.monthlyAdhocAllow" 
+							ng-change="calSpecialAllow(empSalaryMasterObj)"
 							aria-label="monthlyAdhocAllow"> </md-input-container></td>
 
 
 					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
-							style="margin: 0; padding: 0;"> <input
+							style="margin: 0; padding: 0;"> <input type="number"
 							ng-model="empSalaryMasterObj.monthlySpecialAllow" id="no"
 							value="empSalaryMasterObj.monthlySpecialAllow" readonly
 							ng-style="getHighlightRedStyle(empSalaryMasterObj.monthlySpecialAllow)"
