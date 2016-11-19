@@ -67,8 +67,8 @@
 			</thead>
 			<tbody>
 				<tr ng-style="getFormRowStyle()"
-					ng-repeat="empLeaveDetailObj in employeeLeaveDetailsList | limitTo: query.limit: (query.page - 1) * query.limit">
-					<td ng-style="getFormRowStyle()"><span ng-bind="$index + 1">
+					ng-repeat="empLeaveDetailObj in employeeLeaveDetailsList | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+					<td ng-style="getFormRowStyle()"><span ng-bind="empLeaveDetailObj.user.empId">
 					</span></td>
 					<td ng-style="getFormRowStyle()"><span
 						ng-bind="empLeaveDetailObj.user.firstName + ' ' +empLeaveDetailObj.user.lastName"ng-style="highlightRed(monthlyPayObj.payableDays)">

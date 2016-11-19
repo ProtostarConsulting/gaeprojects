@@ -41,6 +41,7 @@
 			<table md-data-table md-progress="deferred">
 				<thead md-order="query.order" md-trigger="onOrderChange">
 					<tr>
+						<th name="Emp. No." style="margin: 0; padding-right: 5px;"></th>
 						<th name="Employee Name" style="margin: 0; padding-right: 5px;"></th>
 						<th name="Monthly Gross" style="margin: 0; padding-right: 5px;"></th>
 
@@ -62,7 +63,9 @@
 				<tbody>
 
 					<tr
-						ng-repeat="monthlyPayObj in monthlyPayDetailsList | limitTo: query.limit: (query.page - 1) * query.limit">
+						ng-repeat="monthlyPayObj in monthlyPayDetailsList | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+						<td style="margin: 0; padding-left: 0; padding-right: 5px;"><span
+							ng-bind="monthlyPayObj.leaveDetailEntity.user.empId"> </span></td>
 						<td
 							style="min-width: 220px; margin: 0; padding-left: 0; padding-right: 5px;">
 							<b
@@ -78,7 +81,8 @@
 						<td style="min-width: 100px; margin: 0; padding-right: 5px;"><b
 							ng-bind="monthlyPayObj.calculatedGrossSalary"
 							ng-style="highlightRed(monthlyPayObj.payableDays)"> </b></td>
-						<td style="margin: 0; min-width: 100px; padding-top: 15px; padding-right: 5px;"
+						<td
+							style="margin: 0; min-width: 100px; padding-top: 15px; padding-right: 5px;"
 							layout="row"><md-input-container
 								style="margin: 0; padding: 0;"> <input
 								ng-model="monthlyPayObj.specialAllow" type="number"
@@ -89,12 +93,14 @@
 							<ng-md-icon icon="note_add" style="fill: md-default" size="20">
 							<md-tooltip> Add Note</md-tooltip></ng-md-icon></md-button></td>
 
-						<td style="margin: 0; min-width: 100px; padding-top: 15px; padding-right: 5px;"><md-input-container
+						<td
+							style="margin: 0; min-width: 100px; padding-top: 15px; padding-right: 5px;"><md-input-container
 								style="margin: 0; padding: 0;"> <input
 								ng-model="monthlyPayObj.pfDeductionAmt" type="number"
 								ng-change="calculateMonthlyPayment($index)"
 								aria-label="pfDeductionAmt"> </md-input-container></td>
-						<td style="margin: 0; min-width: 100px; padding-top: 15px; padding-right: 5px;"><md-input-container
+						<td
+							style="margin: 0; min-width: 100px; padding-top: 15px; padding-right: 5px;"><md-input-container
 								style="margin: 0; padding: 0;"> <input
 								ng-model="monthlyPayObj.ptDeductionAmt" type="number"
 								ng-change="calculateMonthlyPayment($index)"
@@ -104,12 +110,13 @@
 								ng-model="monthlyPayObj.canteenDeductionAmt" type="number"
 								ng-change="calculateMonthlyPayment($index)"
 								aria-label="canteenDeductionAmt"> </md-input-container></td>
-						<td style="margin: 0; padding-top: 15px;  padding-right: 5px;"><md-input-container
+						<td style="margin: 0; padding-top: 15px; padding-right: 5px;"><md-input-container
 								style="margin: 0; padding: 0;"> <input
 								ng-model="monthlyPayObj.itDeductionAmt" type="number"
 								ng-change="calculateMonthlyPayment($index)"
 								aria-label="itDeductionAmt"> </md-input-container></td>
-						<td style="margin: 0; padding-top: 15px; padding-right: 5px;" layout="row"><md-input-container
+						<td style="margin: 0; padding-top: 15px; padding-right: 5px;"
+							layout="row"><md-input-container
 								style="margin: 0; padding: 0;"> <input
 								ng-model="monthlyPayObj.otherDeductionAmt" type="number"
 								ng-change="calculateMonthlyPayment($index)"
@@ -129,14 +136,14 @@
 							Salary Slip</md-tooltip> <md-icon md-svg-icon="img/icons/pdfdownload.svg"></md-icon>
 							</md-button> --> <md-button class="md-icon-button"
 								ng-click="downloadSalarySlip(monthlyPayObj)"> <ng-md-icon
-								icon="print" style="fill: md-default" size="20">
-							<md-tooltip> Download Salary Slip</md-tooltip></ng-md-icon></md-button>
+								icon="print" style="fill: md-default" size="20"> <md-tooltip>
+							Download Salary Slip</md-tooltip></ng-md-icon></md-button>
 						</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
-		
+
 		<md-data-table-pagination md-limit="query.limit" md-page="query.page"
 			md-total={{monthlyPayDetailsList.length}} md-trigger="onpagechange"></md-data-table-pagination>
 		</md-data-table-container>

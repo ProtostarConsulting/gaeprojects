@@ -6,7 +6,11 @@ angular
 						$mdUtil, $stateParams, $log, objectFactory,
 						appEndpointSF, Upload, $mdDialog, $mdMedia, $state) {
 
-					
+					$scope.query = {
+						order : 'empAccount.empId',
+						limit : 50,
+						page : 1
+					};
 					$scope.empSalaryMasterList = [];
 					$scope.getEmpList = function() {
 						$scope.loading = true;

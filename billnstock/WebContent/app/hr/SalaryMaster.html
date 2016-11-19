@@ -3,7 +3,7 @@
 		<md-progress-circular md-diameter="100" md-mode="indeterminate"></md-progress-circular>
 	</div>
 </div>
-<md-content  ng-if="!loading" ng-cloak layout-padding> <!-- <h3 class="md-headline">Salary Master</h3> -->
+<md-content ng-if="!loading" ng-cloak layout-padding> <!-- <h3 class="md-headline">Salary Master</h3> -->
 
 <form name="SalaryMasterform" layout="column">
 
@@ -17,9 +17,9 @@
 				icon="file_upload" style="fill: md-default" size="24">
 			<md-tooltip>Upload CSV Data</md-tooltip></ng-md-icon></md-button>
 			<md-button class="md-icon-button" id="downloadExcel"
-				ng-click="download()"> <ng-md-icon
-				icon="file_download" style="fill: md-default" size="24">
-			<md-tooltip>Download CSV Data</md-tooltip></ng-md-icon></md-button>
+				ng-click="download()"> <ng-md-icon icon="file_download"
+				style="fill: md-default" size="24"> <md-tooltip>Download
+			CSV Data</md-tooltip></ng-md-icon></md-button>
 			<md-button class="md-icon-button" id="refreshIcon"
 				ng-click="Refreshpage()"> <ng-md-icon icon="refresh"
 				style="fill: md-default" size="24"> <md-tooltip>Refresh
@@ -32,6 +32,8 @@
 		<table md-data-table md-progress="deferred">
 			<thead md-order="query.order" md-trigger="onOrderChange">
 				<tr>
+					<th name="Emp. No."
+						style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
 					<th name="Employee Name"
 						style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
 					<th name="Monthly Gross"
@@ -60,53 +62,64 @@
 
 				<tr
 					ng-repeat="empSalaryMasterObj in empSalaryMasterList | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+
+					<td
+						style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
+							style="margin: 0; padding: 0; padding-left: 0; padding-right: 5px;">
+						<b ng-bind="empSalaryMasterObj.empAccount.empId"> </b></md-input-container></td>
 					<td
 						style="min-width: 220px; margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
 							style="margin: 0; padding: 0; padding-left: 0; padding-right: 5px;">
 						<b
 							ng-bind="empSalaryMasterObj.empAccount.firstName + ' ' +empSalaryMasterObj.empAccount.lastName">
 						</b></md-input-container></td>
-
-
 					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
 							style="margin: 0; padding: 0;"> <input
 							ng-model="empSalaryMasterObj.monthlyGrossSal" type="number"
-							ng-change="grossSalaryChanged($index)" aria-label="monthlyGrossSal"
-							ng-model-options="{ debounce: 100 }"> </md-input-container></td>
+							ng-change="grossSalaryChanged($index)"
+							aria-label="monthlyGrossSal" ng-model-options="{ debounce: 100 }">
+						</md-input-container></td>
 					<td
 						style="min-width: 100px; margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
 							style="margin: 0; padding-left: 0; padding-right: 5px;">
 						<input ng-model="empSalaryMasterObj.monthlyBasic" type="number"
-							ng-change="calSpecialAllow($index)" aria-label="monthlyBasic"> </md-input-container></td>
+							ng-change="calSpecialAllow($index)" aria-label="monthlyBasic">
+						</md-input-container></td>
 					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
 							style="margin: 0; padding: 0;"> <input
 							ng-model="empSalaryMasterObj.monthlyHra" type="number"
-							ng-change="calSpecialAllow($index)" aria-label="monthlyHra"> </md-input-container></td>
+							ng-change="calSpecialAllow($index)" aria-label="monthlyHra">
+						</md-input-container></td>
 					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
 							style="margin: 0; padding: 0;"> <input
 							ng-model="empSalaryMasterObj.monthlyConvence" type="number"
-							ng-change="calSpecialAllow($index)" aria-label="monthlyConvence"> </md-input-container></td>
+							ng-change="calSpecialAllow($index)" aria-label="monthlyConvence">
+						</md-input-container></td>
 					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
 							style="margin: 0; padding: 0;"> <input
 							ng-model="empSalaryMasterObj.monthlyMedical" type="number"
-							ng-change="calSpecialAllow($index)" aria-label="monthlyMedical"> </md-input-container></td>
+							ng-change="calSpecialAllow($index)" aria-label="monthlyMedical">
+						</md-input-container></td>
 					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
 							style="margin: 0; padding: 0;"> <input
 							ng-model="empSalaryMasterObj.monthlyEducation"
-							ng-change="calSpecialAllow($index)" aria-label="monthlyEducation"> </md-input-container></td>
+							ng-change="calSpecialAllow($index)" aria-label="monthlyEducation">
+						</md-input-container></td>
 
 
 					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
 							style="margin: 0; padding: 0;"> <input
 							ng-model="empSalaryMasterObj.monthlyAdhocAllow"
-							ng-change="calSpecialAllow($index)" aria-label="monthlyAdhocAllow"> </md-input-container></td>
+							ng-change="calSpecialAllow($index)"
+							aria-label="monthlyAdhocAllow"> </md-input-container></td>
 
 
 					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
 							style="margin: 0; padding: 0;"> <input
 							ng-model="empSalaryMasterObj.monthlySpecialAllow" id="no"
 							value="empSalaryMasterObj.monthlySpecialAllow" readonly
-							ng-style="getHighlightRedStyle(empSalaryMasterObj.monthlySpecialAllow)" aria-label="monthlySpecialAllow"> </md-input-container></td>
+							ng-style="getHighlightRedStyle(empSalaryMasterObj.monthlySpecialAllow)"
+							aria-label="monthlySpecialAllow"> </md-input-container></td>
 				</tr>
 			</tbody>
 		</table>
@@ -119,7 +132,7 @@
 	<div>
 		<md-button class="md-raised md-primary"
 			ng-click="saveSalaryMasterDetailList()">Submit</md-button>
-<!-- 
+		<!-- 
 		<md-button class="md-fab md-primary md-hue-1" ng-click="download()">
 		<md-tooltip>Download Salary Master</md-tooltip> <md-icon
 			md-svg-icon="img/icons/pdfdownload.svg"></md-icon> </md-button> -->

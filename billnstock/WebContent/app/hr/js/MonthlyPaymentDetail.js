@@ -5,6 +5,11 @@ angular
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
 						$mdUtil, $stateParams, $log, objectFactory,
 						appEndpointSF, $mdDialog, $mdMedia, $state) {
+					$scope.query = {
+							order : 'leaveDetailEntity.user.empId',
+							limit : 50,
+							page : 1
+						};
 
 					$scope.monthList = [ "January", "February", "March",
 							"April", "May", "June", "July", "August",
@@ -12,7 +17,7 @@ angular
 
 					$scope.monthlyPayDetailsList = [];
 
-					$scope.totalDaysInSelectedMonth = 0;					
+					$scope.totalDaysInSelectedMonth = 0;
 
 					$scope.calculateMonthlyPayment = function(index) {
 						monthlyPayDetailObj = $scope.monthlyPayDetailsList[index];
@@ -73,11 +78,9 @@ angular
 
 					}
 
-					
-
 					$scope.saveMonthlyPaymentDetailList = function() {
 						$scope.loading = true;
-						var hrService = appEndpointSF.gethrService();						
+						var hrService = appEndpointSF.gethrService();
 						for (var i = 0; i < $scope.monthlyPayDetailsList.length; i++) {
 							$scope.monthlyPayDetailsList[i].currentMonth = $scope.monthlyPayDetailsList[i].leaveDetailEntity.currentMonth;
 						}
@@ -89,12 +92,12 @@ angular
 							$scope.loading = false;
 						});
 
-					}	
+					}
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
 							// get salary master list on page load.
-							//$scope.getSalaryMasterlist();
+							// $scope.getSalaryMasterlist();
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
 							$timeout($scope.waitForServiceLoad, 1000);
@@ -128,15 +131,13 @@ angular
 								});
 					}
 
-					var MonthlyPaymentDetailEntity = "MonthlyPaymentDetailEntity";
-
-					$scope.downloadSalarySlip = function(empLeaveDetailObj) {
-
-						window.open("PrintPdfSalarySlip?month=" + $scope.selectedMonth
-								+ "&entityname=" + MonthlyPaymentDetailEntity
-								+ "&bid=" + $scope.curUser.business.id + "&id="
-								+ empLeaveDetailObj.id);
-
+					$scope.downloadSalarySlip = function(monthlyPayObj) {
+						var MonthlyPaymentDetailEntity = "MonthlyPaymentDetailEntity";
+						window.open("PrintPdfSalarySlip?month="
+								+ $scope.selectedMonth + "&entityname="
+								+ MonthlyPaymentDetailEntity + "&bid="
+								+ $scope.curUser.business.id + "&id="
+								+ monthlyPayObj.id);
 					}
 
 					$scope.highlightRed = function(payableDays) {

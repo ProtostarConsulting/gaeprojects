@@ -30,10 +30,7 @@ public class PrintPdfSalarySlip extends HttpServlet {
 		Long id = Long.parseLong(request.getParameter("id"));
 		Long bid = Long.parseLong(request.getParameter("bid"));
 		String entity = request.getParameter("entityname");
-		String entityId = request.getParameter("entityId");
 		String month = request.getParameter("month");
-		String str1 = request.getParameter("str");
-
 		PDFHtmlTemplateService pdfHtmlTemplateService = new PDFHtmlTemplateService();
 		response.setContentType("application/PDF");
 		ServletOutputStream outputStream = response.getOutputStream();
