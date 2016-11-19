@@ -11,8 +11,7 @@ angular.module("stockApp").controller(
 			// $scope.businessNo = $stateParams.businessNo;
 			// $scope.selecteduserNo = $stateParams.selecteduserNo;
 			$scope.selectedUser = $stateParams.selectedUser;
-		
-		
+
 			$scope.curuser = appEndpointSF.getLocalUserService()
 					.getLoggedinUser();
 
@@ -23,13 +22,13 @@ angular.module("stockApp").controller(
 					return false;
 				}
 			}
-			
+
 			$scope.getEmpDepartments = function() {
 				$scope.newDept = false;
-				
+
 				var userService = appEndpointSF.getUserService();
-				userService.getEmpDepartments($scope.selectedUser.business.id).then(
-						function(list) {
+				userService.getEmpDepartments($scope.selectedUser.business.id)
+						.then(function(list) {
 							$scope.departmentList = list.items;
 						});
 
@@ -47,12 +46,11 @@ angular.module("stockApp").controller(
 
 			$scope.updateuser = function() {
 				$scope.selectedUser.modifiedBy = $scope.curUser.email_id;
-				$scope.selectedUser.bankDetail = $scope.bankDetail;
-
 				var UserService = appEndpointSF.getUserService();
-				UserService.updateUser($scope.selectedUser).then(function(msgBean) {
-					$scope.showUpdateToast();
-				});
+				UserService.updateUser($scope.selectedUser).then(
+						function(msgBean) {
+							$scope.showUpdateToast();
+						});
 			}
 			// ------------------------------------------------------------
 			$scope.back = function() {
