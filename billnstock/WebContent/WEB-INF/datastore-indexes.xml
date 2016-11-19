@@ -6,4 +6,8 @@
 		<property name="assignedTo" direction="asc" />
 		<property name="taskStatus" direction="asc" />
 	</datastore-index>
+	<datastore-index kind="UserEntity" ancestor="false" source="manual">
+		<property name="email_id" direction="asc" />
+		<property name="createdDate" direction="asc" />
+	</datastore-index>
 </datastore-indexes>

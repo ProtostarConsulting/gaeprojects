@@ -22,7 +22,7 @@ angular
 						authority : []
 					}
 
-					$scope.login = function() {
+					/*$scope.login = function() {
 						var UserService = appEndpointSF.getUserService();
 						UserService
 								.login($scope.user.email_id,
@@ -47,7 +47,7 @@ angular
 											}
 										});
 
-					}
+					}*/
 
 					/* Setup page menu */
 					$scope.toggleRight = buildToggler('right');
