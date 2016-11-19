@@ -117,24 +117,24 @@ public class DownloadSalaryMaster extends HttpServlet {
 
 					if (salMasterList.size() != 0) {
 
-						Float grosssal = userSalMaster.getGrosssal();
+						Float grosssal = userSalMaster.getMonthlyGrossSal();
 						writer.append(grosssal == null ? "" : grosssal
 								.toString());
 						writer.append(',');
-						writer.append(""+userSalMaster.getBasic());
+						writer.append(""+userSalMaster.getMonthlyBasic());
 						writer.append(',');
 
 						// if(salMasterList.get(i).getHRA().toString()==null)
 
-						writer.append(""+userSalMaster.getHramonthly());
+						writer.append(""+userSalMaster.getMonthlyHra());
 						// if(salMasterList.get(i).getHRA().toString()==null)
 
 						writer.append(',');
-						writer.append(""+userSalMaster.getConvence());
+						writer.append(""+userSalMaster.getMonthlyConvence());
 						writer.append(',');
-						writer.append(""+userSalMaster.getMedical());
+						writer.append(""+userSalMaster.getMonthlyMedical());
 						writer.append(',');
-						writer.append(""+userSalMaster.getEducation());
+						writer.append(""+userSalMaster.getMonthlyEducation());
 
 						writer.append(',');
 						writer.append(""+userSalMaster.getAdhocAllow());

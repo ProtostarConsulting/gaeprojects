@@ -88,12 +88,12 @@ public class UploadSalaryMasterServlet extends HttpServlet {
 				salEntity.setModifiedDate(todaysDate);
 				log.info("Updating Emp: " + currRowUser.getFirstName()
 						+ ", Dept: " + split[2]);
-				salEntity.setGrosssal(Float.parseFloat(split[3].trim()));
-				salEntity.setBasic(Float.parseFloat(split[4].trim()));
-				salEntity.setHramonthly(Float.parseFloat(split[5].trim()));
-				salEntity.setConvence(Float.parseFloat(split[6].trim()));
-				salEntity.setMedical(Float.parseFloat(split[7].trim()));
-				salEntity.setEducation(Float.parseFloat(split[8].trim()));
+				salEntity.setMonthlyGrossSal(Float.parseFloat(split[3].trim()));
+				salEntity.setMonthlyBasic(Float.parseFloat(split[4].trim()));
+				salEntity.setMonthlyHra(Float.parseFloat(split[5].trim()));
+				salEntity.setMonthlyConvence(Float.parseFloat(split[6].trim()));
+				salEntity.setMonthlyMedical(Float.parseFloat(split[7].trim()));
+				salEntity.setMonthlyEducation(Float.parseFloat(split[8].trim()));
 				salEntity.setAdhocAllow(Float.parseFloat(split[9].trim()));
 				salEntity.setSpecialAllow(Float.parseFloat(split[10].trim()));
 				ofy().save().entity(salEntity).now();

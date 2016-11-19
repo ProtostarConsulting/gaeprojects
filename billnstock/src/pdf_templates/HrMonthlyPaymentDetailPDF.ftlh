@@ -58,15 +58,15 @@ tab2 {
 		<td align="left">Bank Name:</td>
 		<td align="left">${bankName}</td>
 		<td align="left"></td>
-		<td align="left"></td>
-		<td align="left"></td>
+		<td align="left">PAN Number:</td>
+		<td align="left">${panNumber}</td>
 	</tr>
 	<tr>
 		<td align="left">Acc Number:</td>
 		<td align="left">002701347556</td>
 		<td align="left"></td>
-		<td align="left"></td>
-		<td align="left"></td>
+		<td align="left">PF Number:</td>
+		<td align="left">${pfNumber}</td>
 	</tr>
 </table>
 

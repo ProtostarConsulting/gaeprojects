@@ -10,33 +10,9 @@ angular
 							"April", "May", "June", "July", "August",
 							"September", "October", "November", "December" ];
 
-					$scope.salaryMasterList = [];
 					$scope.monthlyPayDetailsList = [];
 
-					$scope.totalDaysInSelectedMonth = 0;
-
-					$scope.getEmptyMonthlyPayDetails = function(emp) {
-						var salMasterObj = $scope
-								.getEmpSalaryMasterObj(emp.user);
-						return {
-							salStruct : salMasterObj,
-							leaveDetailEntity : emp,
-							payableDays : 0,
-							monthlyGrossSalary : salMasterObj ? salMasterObj.grosssal
-									: 0,
-							salStruct : salMasterObj,
-							calculatedGrossSalary : 0,
-							specialAllow : 0,
-							pfDeductionAmt : 0,
-							ptDeductionAmt : 0,
-							canteenDeductionAmt : 0,
-							itDeductionAmt : 0,
-							otherDeductionAmt : 0,
-							netSalaryAmt : 0,
-							currentMonth : 0,
-							business : $scope.curUser.business
-						};
-					}
+					$scope.totalDaysInSelectedMonth = 0;					
 
 					$scope.calculateMonthlyPayment = function(index) {
 						monthlyPayDetailObj = $scope.monthlyPayDetailsList[index];
@@ -62,25 +38,25 @@ angular
 					}
 
 					$scope.getMonthlyPaymentList = function() {
+						$scope.loading = true;
 						var hrService = appEndpointSF.gethrService();
 
 						hrService
 								.getMonthlyPayment($scope.curUser.business.id,
-										$scope.mon)
+										$scope.selectedMonth)
 								.then(
 										function(list) {
 											$scope.monthlyPayDetailsList = list;
-											for (var i = 0; i < $scope.salaryMasterList.length; i++) {
-												$scope.salaryMasterList[i] = $scope.totalDaysInSelectedMonth
+											for (var i = 0; i < $scope.monthlyPayDetailsList.length; i++) {
 												$scope
 														.calculateMonthlyPayment(i);
 											}
+											$scope.loading = false;
 										});
 
 					}
 
 					$scope.monthSelectChange = function(selectedMonth) {
-						$scope.worning = false;
 						var selectedMonthIndex = $scope.monthList
 								.indexOf(selectedMonth.trim());
 						var nowDate = new Date();
@@ -91,42 +67,17 @@ angular
 						$scope.totalDaysInSelectedMonth = $scope
 								.getDaysInMonth(selectedMonthIndex + 1,
 										salaryMonth.getFullYear());
-						$scope.mon = selectedMonth + "-"
+						$scope.selectedMonth = selectedMonth + "-"
 								+ salaryMonth.getFullYear();
 						$scope.getMonthlyPaymentList();
 
 					}
 
-					$scope.getEmpLeavList = function(month, prevMonth) {
-						$scope.loading = true;
-						var hrService = appEndpointSF.gethrService();
-						hrService
-								.getLeaveListEmp($scope.curUser.business.id,
-										month, prevMonth)
-								.then(
-										function(list) {
-											if (list.length == 0) {
-												$scope.worning = true;
-											}
-
-											else {
-												$scope.monthlyPayDetailsList.length = 0;
-												for (var i = 0; i < list.length; i++) {
-													$scope.monthlyPayDetailsList
-															.push($scope
-																	.getEmptyMonthlyPayDetails(list[i]));
-													$scope
-															.calculateMonthlyPayment(i);
-												}
-											}
-											$scope.loading = false;
-										});
-					}
+					
 
 					$scope.saveMonthlyPaymentDetailList = function() {
-
-						var hrService = appEndpointSF.gethrService();
 						$scope.loading = true;
+						var hrService = appEndpointSF.gethrService();						
 						for (var i = 0; i < $scope.monthlyPayDetailsList.length; i++) {
 							$scope.monthlyPayDetailsList[i].currentMonth = $scope.monthlyPayDetailsList[i].leaveDetailEntity.currentMonth;
 						}
@@ -138,35 +89,12 @@ angular
 							$scope.loading = false;
 						});
 
-					}
-
-					$scope.getEmpSalaryMasterObj = function(empObj) {
-						var foundSalMaster = null;
-						angular.forEach($scope.salaryMasterList, function(
-								empSalMaterObj) {
-							if (empSalMaterObj.empAccount.id == empObj.id) {
-								foundSalMaster = empSalMaterObj;
-							}
-						});
-						return foundSalMaster;
-					}
-
-					$scope.getSalaryMasterlist = function() {
-						$scope.loading = true;
-						var hrService = appEndpointSF.gethrService();
-						hrService.getSalaryMasterlist(
-								$scope.curUser.business.id).then(
-								function(list) {
-									$scope.salaryMasterList = list;
-									$scope.loading = false;
-								});
-
-					}
+					}	
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
 							// get salary master list on page load.
-							$scope.getSalaryMasterlist();
+							//$scope.getSalaryMasterlist();
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
 							$timeout($scope.waitForServiceLoad, 1000);
@@ -204,7 +132,7 @@ angular
 
 					$scope.downloadSalarySlip = function(empLeaveDetailObj) {
 
-						window.open("PrintPdfSalarySlip?month=" + $scope.mon
+						window.open("PrintPdfSalarySlip?month=" + $scope.selectedMonth
 								+ "&entityname=" + MonthlyPaymentDetailEntity
 								+ "&bid=" + $scope.curUser.business.id + "&id="
 								+ empLeaveDetailObj.id);

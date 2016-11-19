@@ -4,8 +4,8 @@
 	<div>
 		<md-input-container flex="50"> <lable>Select
 		a Month to Prepare Salary Details<span style="color: red;">*</span></lable> <md-select
-			ng-model="Selectedmonth" ng-change="monthSelectChange(Selectedmonth)"
-			aria-label="Selectedmonth" id="month" name="month" ng-required="true">
+			ng-model="selectedMonth" ng-change="monthSelectChange(selectedMonth)"
+			aria-label="selectedMonth" id="month" name="month" ng-required="true">
 		<md-option ng-value="item" ng-repeat="item in monthList">{{item}}
 		</md-option> </md-select> </md-input-container>
 	</div>
@@ -37,7 +37,7 @@
 		</div>
 	</div>
 	<div ng-if="!loading">
-		<div ng-if="!worning">
+		<div>
 			<table md-data-table md-progress="deferred">
 				<thead md-order="query.order" md-trigger="onOrderChange">
 					<tr>
@@ -136,12 +136,7 @@
 				</tbody>
 			</table>
 		</div>
-		<div ng-if="worning">
-			<lable style="color:red">Entry of current month in Leave
-			Detail not Done Please do it First!</lable>
-		</div>
-
-
+		
 		<md-data-table-pagination md-limit="query.limit" md-page="query.page"
 			md-total={{monthlyPayDetailsList.length}} md-trigger="onpagechange"></md-data-table-pagination>
 		</md-data-table-container>

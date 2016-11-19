@@ -6,26 +6,7 @@ angular
 						$mdUtil, $stateParams, $log, objectFactory,
 						appEndpointSF, Upload, $mdDialog, $mdMedia, $state) {
 
-					$scope.flag = false;
-					$scope.neg = false;
-
-					$scope.getEmptySalaryMaster = function(emp) {
-						return {
-							empAccount : emp,
-							grosssal : 0,
-							basic : 0,
-							hramonthly : 0,
-							convence : 0,
-							medical : 0,
-							education : 0,
-							adhocAllow : 0,
-							specialAllow : 0,
-							calGrossTotal : 0,
-							business : $scope.curUser.business
-
-						};
-					}
-
+					
 					$scope.empSalaryMasterList = [];
 					$scope.getEmpList = function() {
 						$scope.loading = true;
@@ -52,30 +33,30 @@ angular
 
 					$scope.calSpecialAllow = function(index) {
 						var currEmpSalMasterObj = $scope.empSalaryMasterList[index];
-						if (currEmpSalMasterObj.grosssal !== 0) {
-							currEmpSalMasterObj.specialAllow = currEmpSalMasterObj.grosssal
-									- currEmpSalMasterObj.basic
-									- currEmpSalMasterObj.hramonthly
-									- currEmpSalMasterObj.convence
-									- currEmpSalMasterObj.medical
-									- currEmpSalMasterObj.education
-									- currEmpSalMasterObj.adhocAllow;
-							currEmpSalMasterObj.specialAllow = currEmpSalMasterObj.specialAllow
+						if (currEmpSalMasterObj.monthlyGrossSal !== 0) {
+							currEmpSalMasterObj.monthlySpecialAllow = currEmpSalMasterObj.monthlyGrossSal
+									- currEmpSalMasterObj.monthlyBasic
+									- currEmpSalMasterObj.monthlyHra
+									- currEmpSalMasterObj.monthlyConvence
+									- currEmpSalMasterObj.monthlyMedical
+									- currEmpSalMasterObj.monthlyEducation
+									- currEmpSalMasterObj.monthlyAdhocAllow;
+							currEmpSalMasterObj.monthlySpecialAllow = currEmpSalMasterObj.monthlySpecialAllow
 									.toFixed(2);
 						}
 					}
 
 					$scope.grossSalaryChanged = function(index) {
 						var currEmpSalMasterObj = $scope.empSalaryMasterList[index];
-						if (currEmpSalMasterObj.grosssal >= 11650) {
+						if (currEmpSalMasterObj.monthlyGrossSal >= 11650) {
 							// because all below are equal to 11650, which is
 							// standard for suruchi dairy
-							currEmpSalMasterObj.basic = 5200;
-							currEmpSalMasterObj.hramonthly = 3000;
-							currEmpSalMasterObj.convence = 2000;
-							currEmpSalMasterObj.medical = 1250;
-							currEmpSalMasterObj.education = 200;
-							currEmpSalMasterObj.adhocAllow = 0;
+							currEmpSalMasterObj.monthlyBasic = 5200;
+							currEmpSalMasterObj.monthlyHra = 3000;
+							currEmpSalMasterObj.monthlyConvence = 2000;
+							currEmpSalMasterObj.monthlyMedical = 1250;
+							currEmpSalMasterObj.monthlyEducation = 200;
+							currEmpSalMasterObj.monthlyAdhocAllow = 0;
 
 							$scope.calSpecialAllow(index);
 						}

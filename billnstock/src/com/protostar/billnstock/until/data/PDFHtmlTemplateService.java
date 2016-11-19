@@ -251,15 +251,15 @@ public class PDFHtmlTemplateService {
 			DecimalFormat df = new DecimalFormat("#.00");
 
 			SalStruct salStruct = mtlyPayObj.getSalStruct();
-			float basicAmt = salStruct.getBasic() / mtlyPayObj.getTotalDays()
+			float basicAmt = salStruct.getMonthlyBasic() / mtlyPayObj.getTotalDays()
 					* mtlyPayObj.getPayableDays();
-			float hraAmt = salStruct.getHramonthly()
+			float hraAmt = salStruct.getMonthlyHra()
 					/ mtlyPayObj.getTotalDays() * mtlyPayObj.getPayableDays();
-			float conAmt = salStruct.getConvence() / mtlyPayObj.getTotalDays()
+			float conAmt = salStruct.getMonthlyConvence() / mtlyPayObj.getTotalDays()
 					* mtlyPayObj.getPayableDays();
-			float medAmt = salStruct.getMedical() / mtlyPayObj.getTotalDays()
+			float medAmt = salStruct.getMonthlyMedical() / mtlyPayObj.getTotalDays()
 					* mtlyPayObj.getPayableDays();
-			float eduAmt = salStruct.getEducation() / mtlyPayObj.getTotalDays()
+			float eduAmt = salStruct.getMonthlyEducation() / mtlyPayObj.getTotalDays()
 					* mtlyPayObj.getPayableDays();
 			float adhAmt = salStruct.getAdhocAllow()
 					/ mtlyPayObj.getTotalDays() * mtlyPayObj.getPayableDays();
@@ -309,6 +309,9 @@ public class PDFHtmlTemplateService {
 				bankDetail = new BankDetail();
 			root.put("bankName", "" + bankDetail.getBankName());
 			root.put("bankAccNumber", "" + bankDetail.getBankAccountNo());
+			
+			root.put("panNumber", "" + "");
+			root.put("pfNumber", "" + "");
 
 			// Header Col2
 			root.put("ManthlyGross",

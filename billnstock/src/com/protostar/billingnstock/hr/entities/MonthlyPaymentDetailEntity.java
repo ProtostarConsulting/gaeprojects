@@ -43,7 +43,7 @@ public class MonthlyPaymentDetailEntity extends BaseEntity {
 		this.currentMonth = currentMonth;
 		this.leaveDetailEntity = leaveDetailEntity;
 		this.salStruct = salStruct;
-		this.monthlyGrossSalary = salStruct.getGrosssal();
+		this.monthlyGrossSalary = salStruct.getMonthlyGrossSal();
 	}
 
 	public LeaveDetailEntity getleaveDetailEntity() {

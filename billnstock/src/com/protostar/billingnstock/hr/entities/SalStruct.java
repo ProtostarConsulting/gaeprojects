@@ -10,12 +10,21 @@ import com.protostar.billnstock.entity.BaseEntity;
 public class SalStruct extends BaseEntity {
 	@Index
 	private Ref<UserEntity> empAccount;
-	private float grosssal = 0F;
+	
+	private float monthlyGrossSal = 0F;
+	private float monthlyBasic = 0F;
+	private float monthlyHra = 0F;
+	private float monthlyConvence = 0F;	
+	private float monthlyMedical = 0F;
+	private float monthlyEducation = 0F;
+	private float monthlyAdhocAllow = 0F;
+	private float monthlySpecialAllow = 0F;
+	
+	private float calGrossTotal = 0F;
 	private float monthly = 0F;
 	private float byearly = 0F;
 	private float bmonthly = 0F;
-	private float hrayearly = 0F;
-	private float hramonthly = 0F;
+	private float hrayearly = 0F;	
 	private float ccayearly = 0F;
 	private float ccamonthly = 0F;
 	private float ec12Byearly = 0F;
@@ -37,15 +46,9 @@ public class SalStruct extends BaseEntity {
 	private String ldother1dis;
 	private String ldother2dis;
 	private float ldother1amt;
-	private float ldother2amt;
-	private float basic = 0F;
+	private float ldother2amt;	
 	private float HRA = 0F;
-	private float convence = 0F;
-	private float calGrossTotal = 0F;
-	private float medical = 0F;
-	private float education = 0F;
-	private float adhocAllow = 0F;
-	private float specialAllow = 0F;
+	
 
 	public UserEntity getEmpAccount() {
 		return empAccount == null ? null : empAccount.get();
@@ -55,12 +58,12 @@ public class SalStruct extends BaseEntity {
 		this.empAccount = Ref.create(empAccount);
 	}
 
-	public float getGrosssal() {
-		return grosssal;
+	public float getMonthlyGrossSal() {
+		return monthlyGrossSal;
 	}
 
-	public void setGrosssal(float grosssal) {
-		this.grosssal = grosssal;
+	public void setMonthlyGrossSal(float grosssal) {
+		this.monthlyGrossSal = grosssal;
 	}
 
 	public float getMonthly() {
@@ -95,12 +98,12 @@ public class SalStruct extends BaseEntity {
 		this.hrayearly = hrayearly;
 	}
 
-	public float getHramonthly() {
-		return hramonthly;
+	public float getMonthlyHra() {
+		return monthlyHra;
 	}
 
-	public void setHramonthly(float hramonthly) {
-		this.hramonthly = hramonthly;
+	public void setMonthlyHra(float hramonthly) {
+		this.monthlyHra = hramonthly;
 	}
 
 	public float getCcayearly() {
@@ -279,12 +282,12 @@ public class SalStruct extends BaseEntity {
 		this.ldother2amt = ldother2amt;
 	}
 
-	public float getBasic() {
-		return basic;
+	public float getMonthlyBasic() {
+		return monthlyBasic;
 	}
 
-	public void setBasic(float basic) {
-		this.basic = basic;
+	public void setMonthlyBasic(float basic) {
+		this.monthlyBasic = basic;
 	}
 
 	public float getHRA() {
@@ -295,12 +298,12 @@ public class SalStruct extends BaseEntity {
 		HRA = hRA;
 	}
 
-	public float getConvence() {
-		return convence;
+	public float getMonthlyConvence() {
+		return monthlyConvence;
 	}
 
-	public void setConvence(float convence) {
-		this.convence = convence;
+	public void setMonthlyConvence(float convence) {
+		this.monthlyConvence = convence;
 	}
 
 	public float getCalGrossTotal() {
@@ -311,36 +314,36 @@ public class SalStruct extends BaseEntity {
 		this.calGrossTotal = calGrossTotal;
 	}
 
-	public float getMedical() {
-		return medical;
+	public float getMonthlyMedical() {
+		return monthlyMedical;
 	}
 
-	public void setMedical(float medical) {
-		this.medical = medical;
+	public void setMonthlyMedical(float medical) {
+		this.monthlyMedical = medical;
 	}
 
-	public float getEducation() {
-		return education;
+	public float getMonthlyEducation() {
+		return monthlyEducation;
 	}
 
-	public void setEducation(float education) {
-		this.education = education;
+	public void setMonthlyEducation(float education) {
+		this.monthlyEducation = education;
 	}
 
 	public float getAdhocAllow() {
-		return adhocAllow;
+		return monthlyAdhocAllow;
 	}
 
 	public void setAdhocAllow(float adhocAllow) {
-		this.adhocAllow = adhocAllow;
+		this.monthlyAdhocAllow = adhocAllow;
 	}
 
 	public float getSpecialAllow() {
-		return specialAllow;
+		return monthlySpecialAllow;
 	}
 
 	public void setSpecialAllow(float specialAllow) {
-		this.specialAllow = specialAllow;
+		this.monthlySpecialAllow = specialAllow;
 	}
 
 	// private String empid;
