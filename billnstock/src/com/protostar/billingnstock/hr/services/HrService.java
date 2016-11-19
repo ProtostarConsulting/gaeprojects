@@ -2,7 +2,9 @@ package com.protostar.billingnstock.hr.services;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -409,5 +411,133 @@ public class HrService {
 		return monthlyPaymen;
 
 	}
+	
+	
+	
+	
+	@ApiMethod(name = "getpayRollReport")
+	public List<PayRollMonthlyData> getpayRollReport(@Named("id") Long busId) {
+
+		List<PayRollMonthlyData> payrolldatalist = new ArrayList<PayRollMonthlyData>();
+
+		String monthList[] = { "January", "February", "March", "April", "May",
+				"June", "July", "August", "September", "October", "November",
+				"December" };
+
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		float sal = 0, totalPF = 0, totalPT = 0, totalCanteen = 0, totalIT = 0, totalOther = 0;
+		for (int i = 0; i < 12; i++) {
+			String s = monthList[i] + "-" + year;
+			HrService hr = new HrService();
+			List<MonthlyPaymentDetailEntity> monthlyPaymentDetailEntity = hr
+					.getMonthlyPayment(busId, s.trim());
+			if (monthlyPaymentDetailEntity.size() != 0) {
+				for (int j = 0; j < monthlyPaymentDetailEntity.size(); j++) {
+					sal += monthlyPaymentDetailEntity.get(j)
+							.getCalculatedGrossSalary();
+					totalPF += monthlyPaymentDetailEntity.get(j)
+							.getPfDeductionAmt();
+					totalPT += monthlyPaymentDetailEntity.get(j)
+							.getPtDeductionAmt();
+					totalCanteen += monthlyPaymentDetailEntity.get(j)
+							.getCanteenDeductionAmt();
+					totalIT += monthlyPaymentDetailEntity.get(j)
+							.getItDeductionAmt();
+					totalOther += monthlyPaymentDetailEntity.get(j)
+							.getOtherDeductionAmt();
+
+				}
+				PayRollMonthlyData payr = new PayRollMonthlyData();
+				payr.month = s.trim();
+				payr.total = sal;
+				payr.totalPF = totalPF;
+				payr.totalPT = totalPT;
+				payr.totalCanteen = totalCanteen;
+				payr.totalIT = totalIT;
+				payr.totalOther = totalOther;
+				payrolldatalist.add(i, payr);
+				sal = 0;
+				totalPF = 0;
+				totalPT = 0;
+				totalCanteen = 0;
+				totalIT = 0;
+				totalOther = 0;
+
+			}
+
+		}
+
+		return payrolldatalist;
+
+	}
 
 }
+
+class PayRollMonthlyData implements Serializable {
+	String month;
+	float total;
+	float totalPF;
+	float totalPT;
+	float totalCanteen;
+	float totalIT;
+	float totalOther;
+
+	public String getMonth() {
+		return month;
+	}
+
+	public void setMonth(String month) {
+		this.month = month;
+	}
+
+	public float getTotal() {
+		return total;
+	}
+
+	public void setTotal(float total) {
+		this.total = total;
+	}
+
+	public float getTotalPF() {
+		return totalPF;
+	}
+
+	public void setTotalPF(float totalPF) {
+		this.totalPF = totalPF;
+	}
+
+	public float getTotalPT() {
+		return totalPT;
+	}
+
+	public void setTotalPT(float totalPT) {
+		this.totalPT = totalPT;
+	}
+
+	public float getTotalCanteen() {
+		return totalCanteen;
+	}
+
+	public void setTotalCanteen(float totalCanteen) {
+		this.totalCanteen = totalCanteen;
+	}
+
+	public float getTotalIT() {
+		return totalIT;
+	}
+
+	public void setTotalIT(float totalIT) {
+		this.totalIT = totalIT;
+	}
+
+	public float getTotalOther() {
+		return totalOther;
+	}
+
+	public void setTotalOther(float totalOther) {
+		this.totalOther = totalOther;
+	}
+
+}
+	
+	
