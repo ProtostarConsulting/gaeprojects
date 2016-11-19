@@ -10,42 +10,42 @@ import com.protostar.billnstock.entity.BaseEntity;
 public class SalStruct extends BaseEntity {
 	@Index
 	private Ref<UserEntity> empAccount;
-	private Float grosssal;
-	private Float monthly;
-	private Float byearly;
-	private Float bmonthly;
-	private Float hrayearly;
-	private Float hramonthly;
-	private Float ccayearly;
-	private Float ccamonthly;
-	private Float ec12Byearly;
-	private Float convyearly;
-	private Float convmonthly;
-	private Float sayearly;
-	private Float grandtotal;
-	private Float samonthly;
-	private Float bgrandtotal;
-	private Float ptaxyearly;
-	private Float pf1;
-	private Float pf2;
-	private Float ptaxgrandtotal;
-	private Float netsalgrandtotalmonthly;
-	private Float netsalgrandtotal;
-	private Float addprobonus;
-	private Float ctc;
-	private Float mctc;
+	private float grosssal = 0F;
+	private float monthly = 0F;
+	private float byearly = 0F;
+	private float bmonthly = 0F;
+	private float hrayearly = 0F;
+	private float hramonthly = 0F;
+	private float ccayearly = 0F;
+	private float ccamonthly = 0F;
+	private float ec12Byearly = 0F;
+	private float convyearly = 0F;
+	private float convmonthly = 0F;
+	private float sayearly = 0F;
+	private float grandtotal = 0F;
+	private float samonthly = 0F;
+	private float bgrandtotal = 0F;
+	private float ptaxyearly = 0F;
+	private float pf1 = 0F;
+	private float pf2 = 0F;
+	private float ptaxgrandtotal = 0F;
+	private float netsalgrandtotalmonthly = 0F;
+	private float netsalgrandtotal = 0F;
+	private float addprobonus = 0F;
+	private float ctc = 0F;
+	private float mctc = 0F;
 	private String ldother1dis;
 	private String ldother2dis;
-	private Float ldother1amt;
-	private Float ldother2amt;
-	private Float basic;
-	private Float HRA;
-	private Float convence;
-	private Float calGrossTotal;
-	private Float medical;
-	private Float education;
-	private Float adhocAllow;
-	private Float specialAllow;
+	private float ldother1amt;
+	private float ldother2amt;
+	private float basic = 0F;
+	private float HRA = 0F;
+	private float convence = 0F;
+	private float calGrossTotal = 0F;
+	private float medical = 0F;
+	private float education = 0F;
+	private float adhocAllow = 0F;
+	private float specialAllow = 0F;
 
 	public UserEntity getEmpAccount() {
 		return empAccount == null ? null : empAccount.get();
@@ -55,195 +55,195 @@ public class SalStruct extends BaseEntity {
 		this.empAccount = Ref.create(empAccount);
 	}
 
-	public Float getGrosssal() {
+	public float getGrosssal() {
 		return grosssal;
 	}
 
-	public void setGrosssal(Float grosssal) {
+	public void setGrosssal(float grosssal) {
 		this.grosssal = grosssal;
 	}
 
-	public Float getMonthly() {
+	public float getMonthly() {
 		return monthly;
 	}
 
-	public void setMonthly(Float monthly) {
+	public void setMonthly(float monthly) {
 		this.monthly = monthly;
 	}
 
-	public Float getByearly() {
+	public float getByearly() {
 		return byearly;
 	}
 
-	public void setByearly(Float byearly) {
+	public void setByearly(float byearly) {
 		this.byearly = byearly;
 	}
 
-	public Float getBmonthly() {
+	public float getBmonthly() {
 		return bmonthly;
 	}
 
-	public void setBmonthly(Float bmonthly) {
+	public void setBmonthly(float bmonthly) {
 		this.bmonthly = bmonthly;
 	}
 
-	public Float getHrayearly() {
+	public float getHrayearly() {
 		return hrayearly;
 	}
 
-	public void setHrayearly(Float hrayearly) {
+	public void setHrayearly(float hrayearly) {
 		this.hrayearly = hrayearly;
 	}
 
-	public Float getHramonthly() {
+	public float getHramonthly() {
 		return hramonthly;
 	}
 
-	public void setHramonthly(Float hramonthly) {
+	public void setHramonthly(float hramonthly) {
 		this.hramonthly = hramonthly;
 	}
 
-	public Float getCcayearly() {
+	public float getCcayearly() {
 		return ccayearly;
 	}
 
-	public void setCcayearly(Float ccayearly) {
+	public void setCcayearly(float ccayearly) {
 		this.ccayearly = ccayearly;
 	}
 
-	public Float getCcamonthly() {
+	public float getCcamonthly() {
 		return ccamonthly;
 	}
 
-	public void setCcamonthly(Float ccamonthly) {
+	public void setCcamonthly(float ccamonthly) {
 		this.ccamonthly = ccamonthly;
 	}
 
-	public Float getEc12Byearly() {
+	public float getEc12Byearly() {
 		return ec12Byearly;
 	}
 
-	public void setEc12Byearly(Float ec12Byearly) {
+	public void setEc12Byearly(float ec12Byearly) {
 		this.ec12Byearly = ec12Byearly;
 	}
 
-	public Float getConvyearly() {
+	public float getConvyearly() {
 		return convyearly;
 	}
 
-	public void setConvyearly(Float convyearly) {
+	public void setConvyearly(float convyearly) {
 		this.convyearly = convyearly;
 	}
 
-	public Float getConvmonthly() {
+	public float getConvmonthly() {
 		return convmonthly;
 	}
 
-	public void setConvmonthly(Float convmonthly) {
+	public void setConvmonthly(float convmonthly) {
 		this.convmonthly = convmonthly;
 	}
 
-	public Float getSayearly() {
+	public float getSayearly() {
 		return sayearly;
 	}
 
-	public void setSayearly(Float sayearly) {
+	public void setSayearly(float sayearly) {
 		this.sayearly = sayearly;
 	}
 
-	public Float getGrandtotal() {
+	public float getGrandtotal() {
 		return grandtotal;
 	}
 
-	public void setGrandtotal(Float grandtotal) {
+	public void setGrandtotal(float grandtotal) {
 		this.grandtotal = grandtotal;
 	}
 
-	public Float getSamonthly() {
+	public float getSamonthly() {
 		return samonthly;
 	}
 
-	public void setSamonthly(Float samonthly) {
+	public void setSamonthly(float samonthly) {
 		this.samonthly = samonthly;
 	}
 
-	public Float getBgrandtotal() {
+	public float getBgrandtotal() {
 		return bgrandtotal;
 	}
 
-	public void setBgrandtotal(Float bgrandtotal) {
+	public void setBgrandtotal(float bgrandtotal) {
 		this.bgrandtotal = bgrandtotal;
 	}
 
-	public Float getPtaxyearly() {
+	public float getPtaxyearly() {
 		return ptaxyearly;
 	}
 
-	public void setPtaxyearly(Float ptaxyearly) {
+	public void setPtaxyearly(float ptaxyearly) {
 		this.ptaxyearly = ptaxyearly;
 	}
 
-	public Float getPf1() {
+	public float getPf1() {
 		return pf1;
 	}
 
-	public void setPf1(Float pf1) {
+	public void setPf1(float pf1) {
 		this.pf1 = pf1;
 	}
 
-	public Float getPf2() {
+	public float getPf2() {
 		return pf2;
 	}
 
-	public void setPf2(Float pf2) {
+	public void setPf2(float pf2) {
 		this.pf2 = pf2;
 	}
 
-	public Float getPtaxgrandtotal() {
+	public float getPtaxgrandtotal() {
 		return ptaxgrandtotal;
 	}
 
-	public void setPtaxgrandtotal(Float ptaxgrandtotal) {
+	public void setPtaxgrandtotal(float ptaxgrandtotal) {
 		this.ptaxgrandtotal = ptaxgrandtotal;
 	}
 
-	public Float getNetsalgrandtotalmonthly() {
+	public float getNetsalgrandtotalmonthly() {
 		return netsalgrandtotalmonthly;
 	}
 
-	public void setNetsalgrandtotalmonthly(Float netsalgrandtotalmonthly) {
+	public void setNetsalgrandtotalmonthly(float netsalgrandtotalmonthly) {
 		this.netsalgrandtotalmonthly = netsalgrandtotalmonthly;
 	}
 
-	public Float getNetsalgrandtotal() {
+	public float getNetsalgrandtotal() {
 		return netsalgrandtotal;
 	}
 
-	public void setNetsalgrandtotal(Float netsalgrandtotal) {
+	public void setNetsalgrandtotal(float netsalgrandtotal) {
 		this.netsalgrandtotal = netsalgrandtotal;
 	}
 
-	public Float getAddprobonus() {
+	public float getAddprobonus() {
 		return addprobonus;
 	}
 
-	public void setAddprobonus(Float addprobonus) {
+	public void setAddprobonus(float addprobonus) {
 		this.addprobonus = addprobonus;
 	}
 
-	public Float getCtc() {
+	public float getCtc() {
 		return ctc;
 	}
 
-	public void setCtc(Float ctc) {
+	public void setCtc(float ctc) {
 		this.ctc = ctc;
 	}
 
-	public Float getMctc() {
+	public float getMctc() {
 		return mctc;
 	}
 
-	public void setMctc(Float mctc) {
+	public void setMctc(float mctc) {
 		this.mctc = mctc;
 	}
 
@@ -263,83 +263,83 @@ public class SalStruct extends BaseEntity {
 		this.ldother2dis = ldother2dis;
 	}
 
-	public Float getLdother1amt() {
+	public float getLdother1amt() {
 		return ldother1amt;
 	}
 
-	public void setLdother1amt(Float ldother1amt) {
+	public void setLdother1amt(float ldother1amt) {
 		this.ldother1amt = ldother1amt;
 	}
 
-	public Float getLdother2amt() {
+	public float getLdother2amt() {
 		return ldother2amt;
 	}
 
-	public void setLdother2amt(Float ldother2amt) {
+	public void setLdother2amt(float ldother2amt) {
 		this.ldother2amt = ldother2amt;
 	}
 
-	public Float getBasic() {
+	public float getBasic() {
 		return basic;
 	}
 
-	public void setBasic(Float basic) {
+	public void setBasic(float basic) {
 		this.basic = basic;
 	}
 
-	public Float getHRA() {
+	public float getHRA() {
 		return HRA;
 	}
 
-	public void setHRA(Float hRA) {
+	public void setHRA(float hRA) {
 		HRA = hRA;
 	}
 
-	public Float getConvence() {
+	public float getConvence() {
 		return convence;
 	}
 
-	public void setConvence(Float convence) {
+	public void setConvence(float convence) {
 		this.convence = convence;
 	}
 
-	public Float getCalGrossTotal() {
+	public float getCalGrossTotal() {
 		return calGrossTotal;
 	}
 
-	public void setCalGrossTotal(Float calGrossTotal) {
+	public void setCalGrossTotal(float calGrossTotal) {
 		this.calGrossTotal = calGrossTotal;
 	}
 
-	public Float getMedical() {
+	public float getMedical() {
 		return medical;
 	}
 
-	public void setMedical(Float medical) {
+	public void setMedical(float medical) {
 		this.medical = medical;
 	}
 
-	public Float getEducation() {
+	public float getEducation() {
 		return education;
 	}
 
-	public void setEducation(Float education) {
+	public void setEducation(float education) {
 		this.education = education;
 	}
 
-	public Float getAdhocAllow() {
+	public float getAdhocAllow() {
 		return adhocAllow;
 	}
 
-	public void setAdhocAllow(Float adhocAllow) {
+	public void setAdhocAllow(float adhocAllow) {
 		this.adhocAllow = adhocAllow;
 	}
 
-	public Float getSpecialAllow() {
+	public float getSpecialAllow() {
 		return specialAllow;
 	}
 
-	public void setSpecialAllow(Float specialAllow) {
+	public void setSpecialAllow(float specialAllow) {
 		this.specialAllow = specialAllow;
 	}
 

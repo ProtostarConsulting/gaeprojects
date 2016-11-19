@@ -121,33 +121,26 @@ public class DownloadSalaryMaster extends HttpServlet {
 						writer.append(grosssal == null ? "" : grosssal
 								.toString());
 						writer.append(',');
-						writer.append(userSalMaster.getBasic() == null ? ""
-								: userSalMaster.getBasic().toString());
+						writer.append(""+userSalMaster.getBasic());
 						writer.append(',');
 
 						// if(salMasterList.get(i).getHRA().toString()==null)
 
-						writer.append(userSalMaster.getHramonthly() == null ? ""
-								: userSalMaster.getHramonthly().toString());
+						writer.append(""+userSalMaster.getHramonthly());
 						// if(salMasterList.get(i).getHRA().toString()==null)
 
 						writer.append(',');
-						writer.append(userSalMaster.getConvence() == null ? ""
-								: userSalMaster.getConvence().toString());
+						writer.append(""+userSalMaster.getConvence());
 						writer.append(',');
-						writer.append(userSalMaster.getMedical() == null ? ""
-								: userSalMaster.getMedical().toString());
+						writer.append(""+userSalMaster.getMedical());
 						writer.append(',');
-						writer.append(userSalMaster.getEducation() == null ? ""
-								: userSalMaster.getEducation().toString());
+						writer.append(""+userSalMaster.getEducation());
 
 						writer.append(',');
-						writer.append(userSalMaster.getAdhocAllow() == null ? ""
-								: userSalMaster.getAdhocAllow().toString());
+						writer.append(""+userSalMaster.getAdhocAllow());
 
 						writer.append(',');
-						writer.append(userSalMaster.getSpecialAllow() == null ? ""
-								: userSalMaster.getSpecialAllow().toString());
+						writer.append(""+userSalMaster.getSpecialAllow());
 
 						writer.append(',');
 					}

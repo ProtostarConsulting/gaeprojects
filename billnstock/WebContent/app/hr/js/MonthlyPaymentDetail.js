@@ -11,6 +11,9 @@ angular
 							"September", "October", "November", "December" ];
 
 					$scope.salaryMasterList = [];
+					$scope.monthlyPayDetailsList = [];
+
+					$scope.totalDaysInSelectedMonth = 0;
 
 					$scope.getEmptyMonthlyPayDetails = function(emp) {
 						var salMasterObj = $scope
@@ -35,10 +38,6 @@ angular
 						};
 					}
 
-					$scope.monthlyPayDetailsList = [];
-
-					$scope.totalDaysInSelectedMonth = 0;
-
 					$scope.calculateMonthlyPayment = function(index) {
 						monthlyPayDetailObj = $scope.monthlyPayDetailsList[index];
 
@@ -57,29 +56,26 @@ angular
 
 						monthlyPayDetailObj.calculatedGrossSalary = monthlyPayDetailObj.calculatedGrossSalary
 								.toFixed(2);
-						monthlyPayDetailObj.netSalaryAmt = Math.round(monthlyPayDetailObj.netSalaryAmt);
+						monthlyPayDetailObj.netSalaryAmt = Math
+								.round(monthlyPayDetailObj.netSalaryAmt);
 
 					}
 
 					$scope.getMonthlyPaymentList = function() {
 						var hrService = appEndpointSF.gethrService();
 
-						hrService.getMonthlyPayment($scope.curUser.business.id,
-								$scope.mon).then(function(list) {
-
-							if (list.length == 0) {
-								$scope.getEmpLeavList($scope.mon, "null");
-							} else {
-								$scope.list2 = list;
-								$scope.monthlyPayDetailsList.length = 0;
-								for (var i = 0; i < list.length; i++) {
-
-									$scope.monthlyPayDetailsList.push(list[i]);
-
-								}
-							}
-
-						});
+						hrService
+								.getMonthlyPayment($scope.curUser.business.id,
+										$scope.mon)
+								.then(
+										function(list) {
+											$scope.monthlyPayDetailsList = list;
+											for (var i = 0; i < $scope.salaryMasterList.length; i++) {
+												$scope.salaryMasterList[i] = $scope.totalDaysInSelectedMonth
+												$scope
+														.calculateMonthlyPayment(i);
+											}
+										});
 
 					}
 
@@ -161,18 +157,12 @@ angular
 						hrService.getSalaryMasterlist(
 								$scope.curUser.business.id).then(
 								function(list) {
-									for (var i = 0; i < list.length; i++) {
-										// scope.employeeLeaveDetailsList.push(list[i]);
-										// $scope.calculation(i);
-
-										$scope.salaryMasterList.push(list[i]);
-									}
+									$scope.salaryMasterList = list;
 									$scope.loading = false;
 								});
 
 					}
-					
-					
+
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
 							// get salary master list on page load.
@@ -183,29 +173,31 @@ angular
 						}
 					}
 					$scope.waitForServiceLoad();
-					
-					$scope.openDialog = function($event, monthlyPayObj, allowanceOrDeductionFlag) {
+
+					$scope.openDialog = function($event, monthlyPayObj,
+							allowanceOrDeductionFlag) {
 						// Show the dialog
-						$mdDialog.show({
-							clickOutsideToClose : true,
-							controller : function($mdDialog) {
-								// Save the clicked item
-								//this.item = item;
-								this.item = monthlyPayObj;
-								this.allowanceOrDeductionFlag = allowanceOrDeductionFlag;
-								// Setup some handlers
-								this.close = function() {
-									$mdDialog.cancel();
-								};
-								this.submit = function() {
-									$mdDialog.hide();
-								};
-							},
-							autoWrap: false,
-							controllerAs : 'dialog',
-							templateUrl : 'dialog.html',
-							targetEvent : $event
-						});
+						$mdDialog
+								.show({
+									clickOutsideToClose : true,
+									controller : function($mdDialog) {
+										// Save the clicked item
+										// this.item = item;
+										this.item = monthlyPayObj;
+										this.allowanceOrDeductionFlag = allowanceOrDeductionFlag;
+										// Setup some handlers
+										this.close = function() {
+											$mdDialog.cancel();
+										};
+										this.submit = function() {
+											$mdDialog.hide();
+										};
+									},
+									autoWrap : false,
+									controllerAs : 'dialog',
+									templateUrl : 'dialog.html',
+									targetEvent : $event
+								});
 					}
 
 					var MonthlyPaymentDetailEntity = "MonthlyPaymentDetailEntity";

@@ -267,16 +267,12 @@ public class HrService {
 	public List<LeaveDetailEntity> getLeaveListEmp(@Named("id") Long busId,
 			@Named("month") String month, @Named("prevMonth") String prevMonth) {
 
-		System.out.println("prevMonth***************" + prevMonth);
-		System.out.println("current***************" + month);
-
 		List<LeaveDetailEntity> empLeaveListToReturn = new ArrayList<LeaveDetailEntity>();
 		List<LeaveDetailEntity> empLeaveListCurrentMonth = ofy().load()
 				.type(LeaveDetailEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, busId))
 				.filter("currentMonth", month.trim()).list();
-		System.out.println("empLeaveListCurrentMonth**********"
-				+ empLeaveListCurrentMonth);
+	
 
 		UserService userService = new UserService();
 		List<UserEntity> userList = userService.getUsersByBusinessId(busId);
@@ -348,17 +344,45 @@ public class HrService {
 	public List<MonthlyPaymentDetailEntity> getMonthlyPayment(
 			@Named("id") Long busId, @Named("currentmonth") String currentmonth) {
 
-		List<MonthlyPaymentDetailEntity> monthlyPaymentDetailEntity = ofy()
+		List<MonthlyPaymentDetailEntity> monthlyPaymentDetailEntityListToReturn = new ArrayList<MonthlyPaymentDetailEntity>();
+		List<MonthlyPaymentDetailEntity> monthlyPaymentDetailEntityList = ofy()
 				.load().type(MonthlyPaymentDetailEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, busId))
 				.filter("currentMonth", currentmonth).list();
-		/*
-		 * System.out.println("monthlyPaymentDetailEntity" +
-		 * monthlyPaymentDetailEntity.get(0).getSalStruct().getBasic());
-		 */
 
-		return monthlyPaymentDetailEntity;
+		List<SalStruct> salaryMasterlist = getSalaryMasterlist(busId);
+		String prevMonth = null;
+		List<LeaveDetailEntity> leaveListEmp = getLeaveListEmp(busId, currentmonth, prevMonth);
+		for (SalStruct salStruct : salaryMasterlist) {
+			System.out.println("salStruct:" + salStruct);
+			System.out.println("salStruct:" + salStruct.getEmpAccount().getFirstName());
+			MonthlyPaymentDetailEntity foundSalEntity = null;
+			for (MonthlyPaymentDetailEntity salEntity : monthlyPaymentDetailEntityList) {
+				if(salStruct.getEmpAccount().getId() == salEntity.getSalStruct().getEmpAccount().getId()){
+					foundSalEntity = salEntity;
+					break;
+				}
+			}
+			if(foundSalEntity == null){	
+				LeaveDetailEntity empLeaveDetail = getEmpLeaveDetail(salStruct.getEmpAccount(), leaveListEmp);
+				System.out.println("empLeaveDetail:" + empLeaveDetail);
+				foundSalEntity = new MonthlyPaymentDetailEntity(salStruct.getEmpAccount().getBusiness(), empLeaveDetail, salStruct, currentmonth);
+			}
+			monthlyPaymentDetailEntityListToReturn.add(foundSalEntity);
+		}
 
+		return monthlyPaymentDetailEntityListToReturn;
+
+	}
+	
+	private static LeaveDetailEntity getEmpLeaveDetail(UserEntity user, List<LeaveDetailEntity> leaveList){
+		for (LeaveDetailEntity leaveEntity : leaveList) {
+			if(leaveEntity.getUser().getId() == user.getId()){
+				return leaveEntity;
+			}
+			
+		}
+		return null;
 	}
 
 	@ApiMethod(name = "getMonthlyPaymentByID")

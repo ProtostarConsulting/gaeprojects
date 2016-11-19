@@ -4,6 +4,7 @@ import javax.persistence.Embedded;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
+import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billnstock.entity.BaseEntity;
 
 @Entity
@@ -30,6 +31,20 @@ public class MonthlyPaymentDetailEntity extends BaseEntity {
 
 	@Index
 	private String currentMonth;
+
+	public MonthlyPaymentDetailEntity() {
+		this.monthlyGrossSalary = 0;
+	}
+
+	public MonthlyPaymentDetailEntity(BusinessEntity business,
+			LeaveDetailEntity leaveDetailEntity, SalStruct salStruct,
+			String currentMonth) {
+		setBusiness(business);
+		this.currentMonth = currentMonth;
+		this.leaveDetailEntity = leaveDetailEntity;
+		this.salStruct = salStruct;
+		this.monthlyGrossSalary = salStruct.getGrosssal();
+	}
 
 	public LeaveDetailEntity getleaveDetailEntity() {
 		return leaveDetailEntity;
