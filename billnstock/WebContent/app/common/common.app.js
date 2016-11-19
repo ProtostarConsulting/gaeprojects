@@ -1016,7 +1016,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	}).state('proAdmin.editBusiness.userview', {
 		url : "/userview/:selecteduserNo",
 		templateUrl : '/app/setup/setup_viewuser.html',
-		controller : 'setup.viewuser'
+		controller : 'setup.viewuser',
+		params:{
+			selectedUser: null
+		}
 	})
 
 });

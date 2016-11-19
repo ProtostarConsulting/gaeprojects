@@ -36,22 +36,30 @@ angular.module("stockApp").controller(
 				$scope.newDept = true;
 			}
 			$scope.back = function() {
-				$scope.getDepartmentList();
+				$scope.getEmpDepartments();
 
 			}
 
-			$scope.getDepartmentList = function() {
+			$scope.getEmpDepartments = function() {
 				$scope.newDept = false;
 				$scope.deptment = $scope.getdepartment();
 
 				var userService = appEndpointSF.getUserService();
-
-				userService.getDepartmentList($scope.curUser.business.id).then(
-						function(list) {
-							$scope.departmentList = list;
+				userService.getEmpDepartments($scope.curUser.business.id)
+						.then(function(list) {
+							$scope.departmentList = list.items;
 						});
 
+			}			
+
+			$scope.waitForServiceLoad = function() {
+				if (appEndpointSF.is_service_ready) {
+					$scope.getEmpDepartments();
+				} else {
+					$log.debug("Services Not Loaded, watiting...");
+					$timeout($scope.waitForServiceLoad, 1000);
+				}
 			}
-			$scope.getDepartmentList();
+			$scope.waitForServiceLoad();
 
 		});

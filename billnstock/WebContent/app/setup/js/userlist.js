@@ -9,6 +9,7 @@ angular
 					$scope.loading = true;
 					$scope.selectedBusiness = $stateParams.selectedBusiness ? $stateParams.selectedBusiness
 							: $scope.curUser.business;
+					$scope.currentStateName = $state.current.name;
 
 					$scope.query = {
 						order : 'id',

@@ -64,16 +64,16 @@
 						<td>
 							<section layout="row">
 								<md-button class="md-icon-button"
-									ng-hide="selectedBusiness == curUser.business"
-									style="padding-top:18px"
-									ui-sref="setup.userview({selectedUser: user})"> <ng-md-icon
-									icon="edit" style="fill: md-default" size="24"> <md-tooltip>
+									ng-show="currentStateName == 'setup.userlist'"
+									ui-sref="setup.userview({selectedUser: user})" style="padding-top: 10px"> <ng-md-icon
+									icon="edit" style="fill: md-default" size="24" > <md-tooltip>
 								Edit Record</md-tooltip></ng-md-icon></md-button>
 								<md-button class="md-icon-button"
-									ng-show="selectedBusiness == curUser.business"
-									ui-sref="proAdmin.editBusiness.userview({selectedUser: user})">
+									ng-show="currentStateName == 'proAdmin.editBusiness.userlist'"
+									ui-sref="proAdmin.editBusiness.userview({selectedUser: user})" style="padding-top: 10px">
 								<ng-md-icon icon="edit" style="fill: md-default" size="24">
 								<md-tooltip> Edit Record</md-tooltip></ng-md-icon></md-button>
+
 								<md-menu md-offset="0 -7"> <md-button
 									aria-label="Open Menu" class="md-icon-button"
 									ng-click="$mdOpenMenu($event)"> <md-icon
@@ -127,29 +127,30 @@
 						<td hide-xs>{{user.email_id}}</td>
 						<td>
 							<section layout="row">
-								<md-button class="md-icon-button" ng-hide="businessNo"
-									style="padding-top:18px"
-									ui-sref="setup.userview({selecteduserNo:user.id})">
+								<md-button class="md-icon-button"
+									ng-show="currentStateName == 'setup.userlist'"
+									ui-sref="setup.userview({selectedUser: user})"> <ng-md-icon
+									icon="edit" style="fill: md-default" size="24"> <md-tooltip>
+								Edit Record</md-tooltip></ng-md-icon></md-button>
+								<md-button class="md-icon-button"
+									ng-show="currentStateName == 'proAdmin.editBusiness.userview'"
+									ui-sref="proAdmin.editBusiness.userview({selectedUser: user})">
 								<ng-md-icon icon="edit" style="fill: md-default" size="24">
 								<md-tooltip> Edit Record</md-tooltip></ng-md-icon></md-button>
-								<md-button class="md-icon-button" ng-show="businessNo"
-									ui-sref="proAdmin.editBusiness.userview({selecteduserNo:user.id})">
-								<ng-md-icon icon="edit" style="fill: md-default" size="24">
-								<md-tooltip> Edit Record</md-tooltip></ng-md-icon></md-button>
+
 								<md-menu md-offset="0 -7"> <md-button
 									aria-label="Open Menu" class="md-icon-button"
 									ng-click="$mdOpenMenu($event)"> <md-icon
 									md-menu-origin md-svg-icon="img/icons/more_vert.svg"></md-icon>
 								</md-button> <md-menu-content width="2"> <md-menu-item>
 								<md-button class="md-raised md-primary"
-									ng-click="activateUser(user)" md-menu-align-target>Activate
-								</md-button> </md-menu-item> <md-menu-item> <md-button
-									class="md-raised md-primary"
 									ng-click="changePassword($event, user)" md-menu-align-target>Change
 								Password </md-button> </md-menu-item> <md-menu-item> <md-button
-									class="md-raised md-primary"
-									ng-click="changeAuthView({selectedUserEmailId:user.email_id})"
-									md-menu-align-target>Manange Authorization </md-button> </md-menu-item> </md-menu-content></md-menu>
+									class="md-raised md-primary" ng-click="suspendUser(user)"
+									md-menu-align-target>Suspend </md-button> </md-menu-item> <md-menu-item>
+								<md-button class="md-raised md-primary"
+									ng-click="changeAuthView({selectedUser:user})"
+									md-menu-align-target>Manange Authorization </md-button> </md-menu-item> </md-menu-content> </md-menu>
 							</section>
 						</td>
 					</tr>

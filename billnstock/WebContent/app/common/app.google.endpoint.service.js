@@ -143,7 +143,7 @@ function googleEndpointSF($log, $q) {
 		});
 		return deferred.promise;
 	}
-	
+
 	UserService.getBusinessByEmailID = function(email_id) {
 		var deferred = $q.defer();
 		gapi.client.userService.getBusinessByEmailID({
@@ -181,7 +181,7 @@ function googleEndpointSF($log, $q) {
 		});
 		return deferred.promise;
 	}
-	
+
 	UserService.getEmpDepartments = function(id) {
 		var deferred = $q.defer();
 		gapi.client.userService.getEmpDepartments({
@@ -191,7 +191,14 @@ function googleEndpointSF($log, $q) {
 		});
 		return deferred.promise;
 	}
-	
+
+	UserService.addEmpDepartment = function(dept) {
+		var deferred = $q.defer();
+		gapi.client.userService.addEmpDepartment(dept).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}
 
 	UserService.updateUser = function(user) {
 		var deferred = $q.defer();
@@ -223,7 +230,7 @@ function googleEndpointSF($log, $q) {
 			deferred.resolve(resp);
 		});
 		return deferred.promise;
-	}	
+	}
 
 	UserService.isUserExists = function(bizId, email_id) {
 		var deferred = $q.defer();

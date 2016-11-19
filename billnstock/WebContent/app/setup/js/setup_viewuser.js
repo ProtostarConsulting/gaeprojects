@@ -10,29 +10,12 @@ angular.module("stockApp").controller(
 			};
 			// $scope.businessNo = $stateParams.businessNo;
 			// $scope.selecteduserNo = $stateParams.selecteduserNo;
-			$scope.userL = $stateParams.selectedUser;
-
-			$scope.items = [ "customer", "account", "stock", "salesOrder",
-					"purchaseOrder", "invoice", "warehouse", "hr", "crm",
-					"employee", "admin" ];
-			$scope.selection = [];
-
+			$scope.selectedUser = $stateParams.selectedUser;
+		
+		
 			$scope.curuser = appEndpointSF.getLocalUserService()
 					.getLoggedinUser();
 
-			// set toggled value onclick on check box and push in
-			// selection array only tru or false value
-			$scope.toggleSelection = function toggleSelection(index) {
-				$scope.selection[index] = !$scope.selection[index];
-			};
-
-			$scope.BankDetail = {
-				bankName : "",
-				bankIfscCode : "",
-				bankMircCode : "",
-				bankAccountNo : "",
-
-			}
 			$scope.condition = function() {
 				if ($scope.user.isGoogleUser == false) {
 					return true;
@@ -40,10 +23,21 @@ angular.module("stockApp").controller(
 					return false;
 				}
 			}
+			
+			$scope.getEmpDepartments = function() {
+				$scope.newDept = false;
+				
+				var userService = appEndpointSF.getUserService();
+				userService.getEmpDepartments($scope.selectedUser.business.id).then(
+						function(list) {
+							$scope.departmentList = list.items;
+						});
+
+			}
 
 			$scope.waitForServiceLoad = function() {
 				if (appEndpointSF.is_service_ready) {
-
+					$scope.getEmpDepartments();
 				} else {
 					$log.debug("Services Not Loaded, watiting...");
 					$timeout($scope.waitForServiceLoad, 1000);
@@ -52,11 +46,11 @@ angular.module("stockApp").controller(
 			$scope.waitForServiceLoad();
 
 			$scope.updateuser = function() {
-				$scope.userL.modifiedBy = $scope.curUser.email_id;
-				$scope.userL.bankDetail = $scope.BankDetail;
+				$scope.selectedUser.modifiedBy = $scope.curUser.email_id;
+				$scope.selectedUser.bankDetail = $scope.bankDetail;
 
 				var UserService = appEndpointSF.getUserService();
-				UserService.updateUser($scope.userL).then(function(msgBean) {
+				UserService.updateUser($scope.selectedUser).then(function(msgBean) {
 					$scope.showUpdateToast();
 				});
 			}
@@ -84,7 +78,7 @@ angular.module("stockApp").controller(
 					clickOutsideToClose : true,
 					fullscreen : useFullScreen,
 					locals : {
-						curuser : $scope.userL
+						curuser : $scope.selectedUser
 					}
 				}).then(
 						function(answer) {

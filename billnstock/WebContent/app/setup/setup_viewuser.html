@@ -12,139 +12,126 @@
 				aria-label="Prev Week"></md-icon> </md-button>
 
 		</div>
-		<br>
-		<br>
-	<div layout layout-xs="column">
-			
+		<br> <br>
+		<div layout layout-xs="column">
+
 
 			<md-input-container flex> <label>Enter
-				Email id </label> <input ng-model="userL.email_id" disabled> </md-input-container>
-				
-				<md-input-container flex><md-select	ng-model="userL.department"  placeholder="Select  Department" ><lable>Select Department</lable> 
-		<md-option
-			ng-value="department" ng-repeat="department in department">{{department.name}}
+				Email id </label> <input ng-model="selectedUser.email_id" disabled>
+			</md-input-container>
 
-
-		</md-option> </md-select></md-input-container>
+			<md-input-container flex>
+			<md-select ng-model="selectedUser.department"
+				placeholder="Select  Department">
+			<lable>Select Department</lable> <md-option  ng-value="department"
+				ng-repeat="department in departmentList">{{department.name}}
+			</md-option> </md-select></md-input-container>
 		</div>
 		<!-- 	<div layout layout-xs="column">
 			<md-input-container flex> <label>First
-				Name </label> <input ng-model="userL.firstName"> </md-input-container>
+				Name </label> <input ng-model="selectedUser.firstName"> </md-input-container>
 			<md-input-container flex> <label>Last
-				Name </label> <input ng-model="userL.lastName"> </md-input-container>
+				Name </label> <input ng-model="selectedUser.lastName"> </md-input-container>
 		</div> -->
 		<div layout layout-xs="column">
 			<md-input-container flex> <label>First
 				Name <span style="color: red"
-				ng-show="viewuser.fname.$error.required" class="mandatory">*</span></label> <input
-				id="fname" name="fname" ng-model="userL.firstName" ng-required="true">
+				ng-show="viewuser.fname.$error.required" class="mandatory">*</span>
+			</label> <input id="fname" name="fname" ng-model="selectedUser.firstName"
+				ng-required="true">
 			<div ng-messages="viewuser.fname.$error"
 				ng-if="viewuser.fname.$submitted || viewuser.fname.$touched">
 				<div ng-message="required">Please Enter First Name.</div>
 			</div>
 			</md-input-container>
 			<md-input-container flex> <label>Last
-				Name  <span style="color: red"
-				ng-show="viewuser.lname.$error.required" class="mandatory">*</span></label> <input
-				id="lname" name="lname" ng-model="userL.lastName" ng-required="true">
+				Name <span style="color: red"
+				ng-show="viewuser.lname.$error.required" class="mandatory">*</span>
+			</label> <input id="lname" name="lname" ng-model="selectedUser.lastName"
+				ng-required="true">
 			<div ng-messages="viewuser.lname.$error"
 				ng-if="viewuser.lname.$submitted || viewuser.lname.$touched">
 				<div ng-message="required">Please Enter Last Name.</div>
 			</div>
 			</md-input-container>
 		</div>
-		
-		
-		
-				<div layout layout-xs="column">
-				<md-input-container flex> <label>Bank
-					Name <span style="color: red"
-					ng-show="viewuser.bankName.$error.required" class="mandatory">*</span></label>
-				<input id="bankName" name="bankName" ng-model="BankDetail.bankName"
-					ng-required="true">
-				<div ng-messages="viewuser.bankName.$error"
-					ng-if="viewuser.bankName.$submitted || viewuser.bankName.$touched">
-					<div ng-message="required">Please Enter Bank Name.</div>
-				</div>
-				</md-input-container>
-					<md-input-container flex> <label>Branch Name <span style="color: red"
-					ng-show="viewuser.branchName.$error.required" class="mandatory">*</span></label>
-				<input id="branchName" name="branchName" ng-model="BankDetail.branchName"
-					ng-required="true">
-				<div ng-messages="viewuser.branchName.$error"
-					ng-if="viewuser.branchName.$submitted || viewuser.branchName.$touched">
-					<div ng-message="required">Please Enter MIRC Code.</div>
-				</div>
-				</md-input-container>
-			
+
+
+
+		<div layout layout-xs="column">
+			<md-input-container flex> <label>Bank
+				Name <span style="color: red"
+				ng-show="viewuser.bankName.$error.required" class="mandatory">*</span>
+			</label> <input id="bankName" name="bankName" ng-model="selectedUser.bankDetail.bankName"
+				ng-required="true">
+			<div ng-messages="viewuser.bankName.$error"
+				ng-if="viewuser.bankName.$submitted || viewuser.bankName.$touched">
+				<div ng-message="required">Please Enter Bank Name.</div>
 			</div>
-			<div layout layout-xs="column">
-				<md-input-container flex> <label>bankAccountNo
+			</md-input-container>
+			<md-input-container flex> <label>Branch
+				Name <span style="color: red"
+				ng-show="viewuser.branchName.$error.required" class="mandatory">*</span>
+			</label> <input id="branchName" name="branchName"
+				ng-model="selectedUser.bankDetail.branchName" ng-required="true">
+			<div ng-messages="viewuser.branchName.$error"
+				ng-if="viewuser.branchName.$submitted || viewuser.branchName.$touched">
+				<div ng-message="required">Please Enter MIRC Code.</div>
+			</div>
+			</md-input-container>
+
+		</div>
+		<div layout layout-xs="column">
+			<md-input-container flex> <label>bankAccountNo
 				<span style="color: red"
-					ng-show="viewuser.bankAccountNo.$error.required" class="mandatory">*</span></label>
-				<input id="bankAccountNo" name="bankAccountNo"
-					ng-model="BankDetail.bankAccountNo" ng-required="true">
-				<div ng-messages="viewuser.bankAccountNo.$error"
-					ng-if="viewuser.bankAccountNo.$submitted || viewuser.bankAccountNo.$touched">
-					<div ng-message="required">Please Enter Bank Name.</div>
-				</div>
-				</md-input-container>
-
-				<md-input-container flex> <label>Bank
-					IFSC Code <span style="color: red"
-					ng-show="viewuser.bankIfscCode.$error.required" class="mandatory">*</span></label>
-				<input id="bankIfscCode" name="bankIfscCode" ng-model="BankDetail.bankIfscCode"
-					ng-required="true">
-				<div ng-messages="viewuser.bankIfscCode.$error"
-					ng-if="viewuser.bankIfscCode.$submitted || viewuser.bankIfscCode.$touched">
-					<div ng-message="required">Please Enter IFSC Code.</div>
-				</div>
-				</md-input-container>
-			
-
+				ng-show="viewuser.bankAccountNo.$error.required" class="mandatory">*</span>
+			</label> <input id="bankAccountNo" name="bankAccountNo"
+				ng-model="selectedUser.bankDetail.bankAccountNo" ng-required="true">
+			<div ng-messages="viewuser.bankAccountNo.$error"
+				ng-if="viewuser.bankAccountNo.$submitted || viewuser.bankAccountNo.$touched">
+				<div ng-message="required">Please Enter Bank Name.</div>
 			</div>
-		
-		
-		
+			</md-input-container>
+
+			<md-input-container flex> <label>Bank
+				IFSC Code <span style="color: red"
+				ng-show="viewuser.bankIfscCode.$error.required" class="mandatory">*</span>
+			</label> <input id="bankIfscCode" name="bankIfscCode"
+				ng-model="selectedUser.bankDetail.bankIfscCode" ng-required="true">
+			<div ng-messages="viewuser.bankIfscCode.$error"
+				ng-if="viewuser.bankIfscCode.$submitted || viewuser.bankIfscCode.$touched">
+				<div ng-message="required">Please Enter IFSC Code.</div>
+			</div>
+			</md-input-container>
+
+
+		</div>
+
+
+
 		<div layout layout-sm="column" layout-align="end end">
 			<a href='' ng-click='ShowHide()'>Change Password +/-</a><br> <br>
 		</div>
 		<div layout layout-sm="column" ng-hide="IsHidden">
-			<md-input-container flex ng-hide="userL.isGoogleUser">
+			<md-input-container flex ng-hide="selectedUser.isGoogleUser">
 			<!-- <label style="color: blue">Enter New Password <span style="color: red;">*</span> </label>
-			 <input	type="password" style="color: red" ng-model="userL.password">
+			 <input	type="password" style="color: red" ng-model="selectedUser.password">
 			 --> <md-button class="md-primary md-raised"
 				ng-click="showAdvanced($event)"> Change Password </md-button> </md-input-container>
-			<md-input-container flex ng-show="userL.isGoogleUser">
+			<md-input-container flex ng-show="selectedUser.isGoogleUser">
 			<a target="_blank"
 				href="https://www.google.com/settings/passwordchange">Link
 				Change Password</a> </md-input-container>
 
 		</div>
-		
-		
-		<!-- <b>Authority given==={{userL.authority}}</b><br> <br>
-		<div flex="100" flex-gt-sm="50" layout="column">
-			<div>
-				<fieldset class="standard">
-					 <legend></legend>
-					<div layout="row" layout-wrap flex>
-						<div flex="50" ng-repeat="item in items">
-							<md-checkbox ng-checked="selection[$index]"
-								ng-click="toggleSelection($index)">"" {{
-							item }} </md-checkbox>
-						</div>
-					</div>
-				</fieldset>
-			</div>
-		</div> -->
+
 
 	</div>
 </form>
 
 <section layout="row" layout-xs="column" layout-align="left left">
-	<md-button class="md-raised md-primary" ng-disabled="viewuser.$invalid"ng-click="updateuser()">Update
-	User</md-button>
+	<md-button class="md-raised md-primary" ng-disabled="viewuser.$invalid"
+		ng-click="updateuser()">Update User</md-button>
 </section>
 </md-content>
 
