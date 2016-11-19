@@ -911,6 +911,19 @@ function googleEndpointSF($log, $q) {
 		});
 		return deferred.promise;
 	}
+	
+	
+	
+	hrService.getpayRollReport = function(id) {
+		var deferred = $q.defer();
+		gapi.client.hrService.getpayRollReport({
+			'id' : id
+		}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}
+	
 
 	// ------------------------- CRM ---------------------------------
 	var crmService = {};

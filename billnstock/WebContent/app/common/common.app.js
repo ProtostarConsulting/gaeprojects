@@ -636,6 +636,15 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		controller : 'LeaveDetails',
 	})
 
+	.state('hr.payRollRepo', {
+		url : "/payRollReport",
+		templateUrl : '/app/hr/payRollReports.html',
+		controller : 'payRollReports',
+	})
+	
+	
+	
+	
 	.state('hr.SalaryMaster', {
 		url : "/SalaryMaster",
 		templateUrl : '/app/hr/SalaryMaster.html',
