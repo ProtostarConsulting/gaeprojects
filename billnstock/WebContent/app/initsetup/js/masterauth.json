@@ -97,7 +97,7 @@
 	 					{
 	 					"authName":"PayrollReports",
 	 					"authDisplayName":"Payroll Reports",
-	 					"uiStateName":"hr.reports",
+	 					"uiStateName":"hr.payRollRepo",
 	 					"orderNumber":"3"
 	 					}
 					]
