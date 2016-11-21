@@ -1,0 +1,228 @@
+
+<md-content layout-padding>
+<form name="payRollRepo">
+	<div>
+
+
+
+		<table
+			style="font-family: arial, sans-serif; border-collapse: collapse; width: 60%;">
+			<caption
+				style="border: 1px solid #dddddd; text-align: center; font-size: 18px; padding: 2px;">
+				<span flex>PayRoll By Month</span>
+			</caption>
+<tr>
+				<th>Month Name</th>
+				<th>Total INR</th>
+				<th>Action</th>
+</tr>
+
+			</thead>
+
+			<tbody>
+				<tr
+					ng-repeat="emp in list | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+					<td style="border: 1px solid black; padding: 5px;">{{emp.month}}</td>
+					<td style="border: 1px solid black; padding: 5px;">{{emp.total}}</td>
+					<td style="border: 1px solid black; padding: 5px;">{{ }}</td>
+
+				</tr>
+				<tr>
+					<td style="border: 1px solid black; padding: 5px;">TOTAL</td>
+					<td style="border: 1px solid black; padding: 5px;">{{total}}</td>
+					<td style="border: 1px solid black; padding: 5px;">{{ }}</td>
+
+				</tr>
+			</tbody>
+		</table>
+
+
+<br></br>
+<hr>
+
+
+<!-- ------------------------------------------------------------------- -->
+
+		<table
+			style="font-family: arial, sans-serif; border-collapse: collapse; width: 60%;">
+			<caption
+				style="border: 1px solid #dddddd; text-align: center; font-size: 18px; padding: 2px;">
+				<span flex>PF Deduction</span>
+			</caption>
+<tr>
+				<th>Month Name</th>
+				<th>Total INR</th>
+				<th>Action</th>
+</tr>
+
+			</thead>
+
+			<tbody>
+				<tr
+					ng-repeat="emp in list | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+					<td style="border: 1px solid black; padding: 5px;">{{emp.month}}</td>
+					<td style="border: 1px solid black; padding: 5px;">{{emp.totalPF}}</td>
+					<td style="border: 1px solid black; padding: 5px;">{{ }}</td>
+
+				</tr>
+				<tr>
+					<td style="border: 1px solid black; padding: 5px;">TOTAL</td>
+					<td style="border: 1px solid black; padding: 5px;">{{totalPF}}</td>
+					<td style="border: 1px solid black; padding: 5px;">{{ }}</td>
+
+				</tr>
+			</tbody>
+		</table>
+
+
+<br></br>
+<hr>
+
+
+<!-- ------------------------------------------------------------------- -->
+
+		<table
+			style="font-family: arial, sans-serif; border-collapse: collapse; width: 60%;">
+			<caption
+				style="border: 1px solid #dddddd; text-align: center; font-size: 18px; padding: 2px;">
+				<span flex>PT Deduction</span>
+			</caption>
+<tr>
+				<th>Month Name</th>
+				<th>Total INR</th>
+				<th>Action</th>
+</tr>
+
+			</thead>
+
+			<tbody>
+				<tr
+					ng-repeat="emp in list | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+					<td style="border: 1px solid black; padding: 5px;">{{emp.month}}</td>
+					<td style="border: 1px solid black; padding: 5px;">{{emp.totalPT}}</td>
+					<td style="border: 1px solid black; padding: 5px;">{{ }}</td>
+
+				</tr>
+				<tr>
+					<td style="border: 1px solid black; padding: 5px;">TOTAL</td>
+					<td style="border: 1px solid black; padding: 5px;">{{totalPT}}</td>
+					<td style="border: 1px solid black; padding: 5px;">{{ }}</td>
+
+				</tr>
+			</tbody>
+		</table>
+<br></br>
+<hr>
+
+
+<!-- ------------------------------------------------------------------- -->
+
+		<table
+			style="font-family: arial, sans-serif; border-collapse: collapse; width: 60%;">
+			<caption
+				style="border: 1px solid #dddddd; text-align: center; font-size: 18px; padding: 2px;">
+				<span flex>Canteen Deduction</span>
+			</caption>
+<tr>
+				<th>Month Name</th>
+				<th>Total INR</th>
+				<th>Action</th>
+</tr>
+
+			</thead>
+
+			<tbody>
+				<tr
+					ng-repeat="emp in list | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+					<td style="border: 1px solid black; padding: 5px;">{{emp.month}}</td>
+					<td style="border: 1px solid black; padding: 5px;">{{emp.totalCanteen}}</td>
+					<td style="border: 1px solid black; padding: 5px;">{{ }}</td>
+
+				</tr>
+				<tr>
+					<td style="border: 1px solid black; padding: 5px;">TOTAL</td>
+					<td style="border: 1px solid black; padding: 5px;">{{totalCanteen}}</td>
+					<td style="border: 1px solid black; padding: 5px;">{{ }}</td>
+
+				</tr>
+			</tbody>
+		</table>
+<br></br>
+<hr>
+
+
+<!-- ------------------------------------------------------------------- -->
+
+		<table
+			style="font-family: arial, sans-serif; border-collapse: collapse; width: 60%;">
+			<caption
+				style="border: 1px solid #dddddd; text-align: center; font-size: 18px; padding: 2px;">
+				<span flex>IT Deduction</span>
+			</caption>
+<tr>
+				<th>Month Name</th>
+				<th>Total INR</th>
+				<th>Action</th>
+</tr>
+
+			</thead>
+
+			<tbody>
+				<tr
+					ng-repeat="emp in list | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+					<td style="border: 1px solid black; padding: 5px;">{{emp.month}}</td>
+					<td style="border: 1px solid black; padding: 5px;">{{emp.totalIT}}</td>
+					<td style="border: 1px solid black; padding: 5px;">{{ }}</td>
+
+				</tr>
+				<tr>
+					<td style="border: 1px solid black; padding: 5px;">TOTAL</td>
+					<td style="border: 1px solid black; padding: 5px;">{{totalIT}}</td>
+					<td style="border: 1px solid black; padding: 5px;">{{ }}</td>
+
+				</tr>
+			</tbody>
+		</table>
+<br></br>
+<hr>
+
+
+<!-- ------------------------------------------------------------------- -->
+
+		<table
+			style="font-family: arial, sans-serif; border-collapse: collapse; width: 60%;">
+			<caption
+				style="border: 1px solid #dddddd; text-align: center; font-size: 18px; padding: 2px;">
+				<span flex>Other Deduction</span>
+			</caption>
+<tr>
+				<th>Month Name</th>
+				<th>Total INR</th>
+				<th>Action</th>
+</tr>
+
+			</thead>
+
+			<tbody>
+				<tr
+					ng-repeat="emp in list | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+					<td style="border: 1px solid black; padding: 5px;">{{emp.month}}</td>
+					<td style="border: 1px solid black; padding: 5px;">{{emp.totalOther}}</td>
+					<td style="border: 1px solid black; padding: 5px;">{{ }}</td>
+
+				</tr>
+				<tr>
+					<td style="border: 1px solid black; padding: 5px;">TOTAL</td>
+					<td style="border: 1px solid black; padding: 5px;">{{totalOther}}</td>
+					<td style="border: 1px solid black; padding: 5px;">{{ }}</td>
+
+				</tr>
+			</tbody>
+		</table>
+
+
+
+
+	</div>
+</form>
+</md-content>
