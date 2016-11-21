@@ -432,7 +432,7 @@ public class HrService {
 			HrService hr = new HrService();
 			List<MonthlyPaymentDetailEntity> monthlyPaymentDetailEntity = hr
 					.getMonthlyPayment(busId, s.trim());
-			if (monthlyPaymentDetailEntity.size() != 0) {
+			if (( monthlyPaymentDetailEntity.equals(null))||(monthlyPaymentDetailEntity.size() != 0) ) {
 				for (int j = 0; j < monthlyPaymentDetailEntity.size(); j++) {
 					sal += monthlyPaymentDetailEntity.get(j)
 							.getCalculatedGrossSalary();
