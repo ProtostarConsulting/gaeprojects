@@ -6,30 +6,30 @@ angular.module("stockApp").controller(
 			$scope.newDept = false;
 			$scope.getdepartment = function() {
 				return {
-					name : $scope.department2.name,
-					parentDept : $scope.department2,
+					name : $scope.newDepartment.name,
+					parentDept : $scope.newDepartment,
 					business : $scope.curUser.business
 				}
 
 			};
 
-			$scope.department2 = {
+			$scope.newDepartment = {
 				name : "",
-				pname : "",
+				parentDept : null,
 				business : $scope.curUser.business
 			};
 
-			$scope.Parentdepartment = [ "HR", "Support", "Technical", "Admin",
-					"Production", "Office" ];
+			
 
 			$scope.saveDepartment = function() {
 				$scope.deptment = $scope.getdepartment();
 
 				var userService = appEndpointSF.getUserService();
 
-				userService.addEmpDepartment($scope.department2).then(
+				userService.addEmpDepartment($scope.newDepartment).then(
 						function() {
 							$scope.showAddToast();
+							$scope.newDepartment="";
 						});
 			}
 			$scope.dept = function() {
@@ -37,6 +37,7 @@ angular.module("stockApp").controller(
 			}
 			$scope.back = function() {
 				$scope.getEmpDepartments();
+				$scope.newDepartment="";
 
 			}
 
@@ -52,6 +53,14 @@ angular.module("stockApp").controller(
 
 			}			
 
+			$scope.editDepartment = function(editListobj) {
+				$scope.newDept = true;
+				$scope.newDepartment=editListobj;
+				
+			}
+			
+			
+			
 			$scope.waitForServiceLoad = function() {
 				if (appEndpointSF.is_service_ready) {
 					$scope.getEmpDepartments();
