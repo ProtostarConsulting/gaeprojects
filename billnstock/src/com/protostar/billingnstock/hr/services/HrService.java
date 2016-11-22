@@ -80,17 +80,17 @@ public class HrService {
 
 	@ApiMethod(name = "getAllempsSalStruct")
 	public List<SalStruct> getAllempsSalStruct(@Named("id") Long busId) {
-		System.out.println("salStructList#busId:" + busId);
+		//System.out.println("salStructList#busId:" + busId);
 		List<SalStruct> salStructList = ofy().load().type(SalStruct.class)
 				.ancestor(Key.create(BusinessEntity.class, busId)).list();
-		System.out.println("salStructList:" + salStructList.size());
+		//System.out.println("salStructList:" + salStructList.size());
 		return salStructList;
 
 	}
 
 	@ApiMethod(name = "findsalstruct")
 	public SalStruct findsalstruct(@Named("id") Long structId) {
-		System.out.println("findsalstruct#structId:" + structId);
+	//	System.out.println("findsalstruct#structId:" + structId);
 		// SalStruct salstruct =
 		// ofy().load().type(SalStruct.class).filterKey(Key.create(SalStruct.class,
 		// structId)).first().now();
@@ -102,7 +102,7 @@ public class HrService {
 				salstruct = struct;
 			}
 		}
-		System.out.println("!findsalstruct#salstruct:" + salstruct);
+		//System.out.println("!findsalstruct#salstruct:" + salstruct);
 		return salstruct;
 
 	}
@@ -407,8 +407,7 @@ public class HrService {
 			System.out.println("monthlyPaymentDetailEntity" + monthlyPaymen);
 		}
 
-		System.out.println("monthlyPaymentDetailEntity***********"
-				+ monthlyPaymen);
+		
 		return monthlyPaymen;
 
 	}
@@ -432,7 +431,11 @@ public class HrService {
 			HrService hr = new HrService();
 			List<MonthlyPaymentDetailEntity> monthlyPaymentDetailEntity = hr
 					.getMonthlyPayment(busId, s.trim());
-			if (( monthlyPaymentDetailEntity.equals(null))||(monthlyPaymentDetailEntity.size() != 0) ) {
+		
+			
+			
+			
+			if ((monthlyPaymentDetailEntity.get(0).getPayableDays()!=0)){//||(monthlyPaymentDetailEntity.size() != 0)||( monthlyPaymentDetailEntity.equals(null)) &&( monthlyPaymentDetailEntity.isEmpty()==false)) {
 				for (int j = 0; j < monthlyPaymentDetailEntity.size(); j++) {
 					sal += monthlyPaymentDetailEntity.get(j)
 							.getCalculatedGrossSalary();
@@ -467,6 +470,8 @@ public class HrService {
 			}
 
 		}
+int a=1;
+System.out.println("****"+a+"**o*"+(++a)+"qqq"+a++);
 
 		return payrolldatalist;
 
