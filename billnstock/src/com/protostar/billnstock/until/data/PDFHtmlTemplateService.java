@@ -303,7 +303,7 @@ public class PDFHtmlTemplateService {
 			EmpDepartment department = user.getDepartment();
 			root.put("department",
 					department == null ? "" : "" + department.getName());
-			root.put("empDesignation", "" + user.getDesignationName());
+			root.put("empDesignation", "" + user.getDesignation());
 			BankDetail bankDetail = user.getBankDetail();
 			if (bankDetail == null)
 				bankDetail = new BankDetail();
