@@ -180,7 +180,8 @@ angular
 						password : "",
 						isGoogleUser : true,
 						department : "",
-						authority : []
+						authority : [],
+						designation:""
 					}
 
 					$scope.checkDuplicateAndAddUser = function() {
@@ -189,8 +190,8 @@ angular
 								.isUserExists($scope.selectedBusiness.id,
 										emailid)
 								.then(
-										function(responce) {
-											if (responce.returnBool == false) {
+										function(response) {
+											if (response.returnBool == false) {
 												$scope.adduser();
 											} else {
 												$scope.userexists = "This user already exists.";
