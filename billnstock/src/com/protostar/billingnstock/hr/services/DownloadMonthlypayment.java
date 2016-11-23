@@ -67,6 +67,8 @@ public class DownloadMonthlypayment extends HttpServlet {
 			writer.append(',');
 			writer.append("Other Deduction");
 			writer.append(',');
+			writer.append("Net Salary");
+			writer.append(',');
 			writer.append(System.lineSeparator());
 			for (int i = 0; i < monthlypay.size(); i++) {
 				
@@ -96,6 +98,8 @@ public class DownloadMonthlypayment extends HttpServlet {
 					writer.append(""+monthlypay.get(i).getItDeductionAmt());
 					writer.append(',');
 					writer.append(""+monthlypay.get(i).getOtherDeductionAmt());
+					writer.append(',');
+					writer.append(""+monthlypay.get(i).getNetSalaryAmt());
 					writer.append(',');
 					writer.append(System.lineSeparator());
 					
