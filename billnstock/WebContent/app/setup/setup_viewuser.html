@@ -16,16 +16,23 @@
 		<div layout layout-xs="column">
 
 
-			<md-input-container flex> <label>Enter
+			<md-input-container flex=30> <label>Enter
 				Email id </label> <input ng-model="selectedUser.email_id" disabled>
 			</md-input-container>
 
-			<md-input-container flex>
+			<md-input-container flex=20>
 			<md-select ng-model="selectedUser.department"
 				placeholder="Select  Department">
 			<lable>Select Department</lable> <md-option  ng-value="department"
 				ng-repeat="department in departmentList">{{department.name}}
 			</md-option> </md-select></md-input-container>
+			<md-input-container flex=30> <label>Enter Designation<span style="color: red">*</span></label><input type="text" ng-model="selectedUser.designation" placeholder="Please enter your designation" ng-required="true" name="userDesignation">
+	<div ng-messages="viewuser.userDesignation.$error"
+			ng-if="viewuser.userDesignation.$submitted || viewuser.userDesignation.$touched">
+			<div ng-message="required">Please enter your designation.</div>
+	</div>
+	</md-input-container>
+			
 		</div>
 		<!-- 	<div layout layout-xs="column">
 			<md-input-container flex> <label>First
