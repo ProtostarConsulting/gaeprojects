@@ -29,7 +29,7 @@ public class UserEntity extends BaseEntity {
 	private Long empId;
 	@Index
 	private Ref<EmpDepartment> department;
-	private String designationName;
+	private String designation;
 	
 	private Date lastLoginDate;
 
@@ -161,12 +161,14 @@ public class UserEntity extends BaseEntity {
 		this.fullName = fullName;
 	}
 
-	public String getDesignationName() {
-		return designationName;
+	public String getDesignation() {
+		return designation;
 	}
 
-	public void setDesignationName(String designationName) {
-		this.designationName = designationName;
+	public void setDesignation(String designation) {
+		this.designation = designation;
 	}
+
+	
 
 }
