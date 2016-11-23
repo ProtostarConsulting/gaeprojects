@@ -150,5 +150,14 @@ angular
 						};
 
 					}
+					
+					$scope.downloadData = function() {
+						// window.open("DownloadSalaryMaster?id="+$scope.curUser.business.id+d);
+						document.location.href = "DownloadMonthlypayment?id="
+								+ $scope.curUser.business.id+"&month="
+								+ $scope.selectedMonth;
+					}
+					
+					
 
 				});

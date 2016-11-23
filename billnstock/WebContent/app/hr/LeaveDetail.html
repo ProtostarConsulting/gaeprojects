@@ -53,6 +53,8 @@
 						order-by="Employee Name"></th>
 					<th ng-style="getFormRowStyle()" name="Employee Name"
 						order-by="Employee Name"></th>
+						<th ng-style="getFormRowStyle()" name="Employee Department"
+						order-by="Employee Name"></th>
 					<th ng-style="getFormRowStyle()" name="Opening Balance"
 						order-by="Employee Name"></th>
 					<th ng-style="getFormRowStyle()" name="This Month Add"
@@ -73,6 +75,8 @@
 					<td ng-style="getFormRowStyle()"><span
 						ng-bind="empLeaveDetailObj.user.firstName + ' ' +empLeaveDetailObj.user.lastName"ng-style="highlightRed(monthlyPayObj.payableDays)">
 					</span></td>
+					<td ng-style="getFormRowStyle()"><span
+						ng-bind="empLeaveDetailObj.user.department.name"> </span></td>
 					
 					<td ng-style="getFormRowStyle()"><span
 						ng-bind="empLeaveDetailObj.openingBalance"> </span></td>

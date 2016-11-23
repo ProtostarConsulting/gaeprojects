@@ -43,6 +43,7 @@
 					<tr>
 						<th name="Emp. No." style="margin: 0; padding-right: 5px;"></th>
 						<th name="Employee Name" style="margin: 0; padding-right: 5px;"></th>
+						<th name="Employee Department" style="margin: 0; padding-right: 5px;"></th>
 						<th name="Monthly Gross" style="margin: 0; padding-right: 5px;"></th>
 
 						<th name="Pay Days" style="margin: 0; padding-right: 5px;"></th>
@@ -72,6 +73,12 @@
 							ng-bind="monthlyPayObj.leaveDetailEntity.user.firstName + ' ' + monthlyPayObj.leaveDetailEntity.user.lastName"
 							ng-style="highlightRed(monthlyPayObj.payableDays)"> </b>
 						</td>
+						
+						<td style="margin: 0; padding-left: 0; padding-right: 5px;"><b
+							ng-bind="monthlyPayObj.leaveDetailEntity.user.department.name"
+							ng-style="highlightRed(monthlyPayObj.payableDays)"> </b></td>
+						
+						
 						<td style="margin: 0; padding-left: 0; padding-right: 5px;"><b
 							ng-bind="monthlyPayObj.monthlyGrossSalary"
 							ng-style="highlightRed(monthlyPayObj.payableDays)"> </b></td>

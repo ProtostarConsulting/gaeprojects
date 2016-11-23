@@ -36,6 +36,10 @@
 						style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
 					<th name="Employee Name"
 						style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
+							<th name="Employee Department"
+						style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
+						
+						
 					<th name="Monthly Gross"
 						style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
 
@@ -73,6 +77,15 @@
 						<b
 							ng-bind="empSalaryMasterObj.empAccount.firstName + ' ' +empSalaryMasterObj.empAccount.lastName">
 						</b></md-input-container></td>
+						
+						
+						<td
+						style="min-width: 220px; margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
+							style="margin: 0; padding: 0; padding-left: 0; padding-right: 5px;">
+						<b
+							ng-bind="empSalaryMasterObj.empAccount.department.name">
+						</b></md-input-container></td>
+						
 					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
 							style="margin: 0; padding: 0;"> <input
 							ng-model="empSalaryMasterObj.monthlyGrossSal" type="number"
