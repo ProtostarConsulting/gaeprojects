@@ -448,9 +448,7 @@ public class HrService {
 					totalIT += monthlyPaymentDetailEntity.get(j)
 							.getItDeductionAmt();
 					totalOther += monthlyPaymentDetailEntity.get(j)
-							.getOtherDeductionAmt();
-
-				}
+							.getOtherDeductionAmt();}
 				PayRollMonthlyData payr = new PayRollMonthlyData();
 				payr.month = s.trim();
 				payr.total = sal;
@@ -469,11 +467,7 @@ public class HrService {
 
 			}
 
-		}
-int a=1;
-System.out.println("****"+a+"**o*"+(++a)+"qqq"+a++);
-
-		return payrolldatalist;
+		} return payrolldatalist;
 
 	}
 
