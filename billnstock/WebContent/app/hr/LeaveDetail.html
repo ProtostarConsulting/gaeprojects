@@ -69,7 +69,7 @@
 			</thead>
 			<tbody>
 				<tr ng-style="getFormRowStyle()"
-					ng-repeat="empLeaveDetailObj in employeeLeaveDetailsList | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+					ng-repeat="empLeaveDetailObj in employeeLeaveDetailsList track by $index | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
 					<td ng-style="getFormRowStyle()"><span ng-bind="empLeaveDetailObj.user.empId">
 					</span></td>
 					<td ng-style="getFormRowStyle()"><span
