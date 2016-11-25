@@ -6,13 +6,13 @@ import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
+import com.protostar.billingnstock.user.entities.UserEntity;
 import com.protostar.billnstock.entity.BaseEntity;
 
 @Entity
 public class MonthlyPaymentDetailEntity extends BaseEntity {
 
 	@Index
-	@Embedded
 	private Ref<LeaveDetailEntity> leaveDetailEntity;
 	private int totalDays;
 	private int payableDays;
@@ -28,11 +28,15 @@ public class MonthlyPaymentDetailEntity extends BaseEntity {
 	private float otherDeductionAmt;
 	private String otherDeductionAmtNote;
 	private float netSalaryAmt;
+
 	@Embedded
 	private SalStruct salStruct;
 
 	@Index
 	private String currentMonth;
+	@Index
+	private Ref<UserEntity> empAccount;
+	private boolean finalized = false;
 
 	public MonthlyPaymentDetailEntity() {
 		this.monthlyGrossSalary = 0;
@@ -42,11 +46,20 @@ public class MonthlyPaymentDetailEntity extends BaseEntity {
 			LeaveDetailEntity leaveDetailEntity, SalStruct salStruct,
 			String currentMonth) {
 		setBusiness(business);
+		setEmpAccount(salStruct.getEmpAccount());
 		this.currentMonth = currentMonth;
-		this.leaveDetailEntity = (leaveDetailEntity != null && leaveDetailEntity.getId() != null)? Ref
-				.create(leaveDetailEntity) : null;
+		this.leaveDetailEntity = (leaveDetailEntity != null && leaveDetailEntity
+				.getId() != null) ? Ref.create(leaveDetailEntity) : null;
 		this.salStruct = salStruct;
 		this.monthlyGrossSalary = salStruct.getMonthlyGrossSal();
+	}
+
+	public UserEntity getEmpAccount() {
+		return empAccount == null ? null : empAccount.get();
+	}
+
+	public void setEmpAccount(UserEntity empAccount) {
+		this.empAccount = Ref.create(empAccount);
 	}
 
 	public LeaveDetailEntity getleaveDetailEntity() {
@@ -54,8 +67,8 @@ public class MonthlyPaymentDetailEntity extends BaseEntity {
 	}
 
 	public void setleaveDetailEntity(LeaveDetailEntity leaveDetailEntity) {
-		this.leaveDetailEntity = (leaveDetailEntity != null && leaveDetailEntity.getId() != null)? Ref
-				.create(leaveDetailEntity) : null;
+		this.leaveDetailEntity = (leaveDetailEntity != null && leaveDetailEntity
+				.getId() != null) ? Ref.create(leaveDetailEntity) : null;
 	}
 
 	public String getCurrentMonth() {
@@ -184,6 +197,14 @@ public class MonthlyPaymentDetailEntity extends BaseEntity {
 
 	public void setOvertimeAmt(float overtimeAmt) {
 		this.overtimeAmt = overtimeAmt;
+	}
+
+	public boolean isFinalized() {
+		return finalized;
+	}
+
+	public void setFinalized(boolean finalized) {
+		this.finalized = finalized;
 	}
 
 }

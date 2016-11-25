@@ -1,6 +1,6 @@
 <div ng-if="loading">
 	<div layout="row" layout-sm="column" layout-align="space-around">
-		<md-progress-circular md-diameter="100" md-mode="indeterminate"></md-progress-circular>
+		<md-progress-circular md-diameter="60" md-mode="indeterminate"></md-progress-circular>
 	</div>
 </div>
 <md-content ng-if="!loading" ng-cloak layout-padding> <!-- <h3 class="md-headline">Salary Master</h3> -->
@@ -63,9 +63,9 @@
 				<tr
 					ng-repeat="empSalaryMasterObj in empSalaryMasterList | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
 
-					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
-							style="margin: 0; padding: 0; padding-left: 0; padding-right: 5px;">
-						<b ng-bind="empSalaryMasterObj.empAccount.empId"> </b></md-input-container></td>
+					<td style="margin: 0; padding-left: 5px; padding-right: 5px;">
+						<b ng-bind="empSalaryMasterObj.empAccount.empId"> </b>
+					</td>
 					<td
 						style="min-width: 220px; margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
 							style="margin: 0; padding: 0; padding-left: 0; padding-right: 5px;">
@@ -74,7 +74,7 @@
 						</b></md-input-container></td>
 
 					<td
-						style="min-width: 220px; margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
+						style="min-width: 100px; margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
 							style="margin: 0; padding: 0; padding-left: 0; padding-right: 5px;">
 						<b ng-bind="empSalaryMasterObj.empAccount.department.name"> </b></md-input-container></td>
 

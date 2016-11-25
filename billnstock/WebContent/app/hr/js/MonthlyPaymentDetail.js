@@ -81,11 +81,12 @@ angular
 
 					}
 
-					$scope.saveMonthlyPaymentDetailList = function() {
+					$scope.saveMonthlyPaymentDetailList = function(finalized) {
 						$scope.loading = true;
 						var hrService = appEndpointSF.gethrService();
 						for (var i = 0; i < $scope.monthlyPayDetailsList.length; i++) {
-							$scope.monthlyPayDetailsList[i].currentMonth = $scope.monthlyPayDetailsList[i].leaveDetailEntity.currentMonth;
+							$scope.monthlyPayDetailsList[i].finalized = finalized ? true
+									: false;
 						}
 						hrService.saveMonthlyPaymentDetailList({
 							'list' : $scope.monthlyPayDetailsList
@@ -97,8 +98,22 @@ angular
 
 					}
 
-					$scope.finalizeMonthlySalaryForTheMonth = function() {
+					$scope.finalizeMonthlySalaryForTheMonth = function(ev) {
+						var confirm = $mdDialog
+								.confirm()
+								.title(
+										'Do you want to finalize Salary Details for this month. Note, after this you will not be able to Edit Salary Details.')
+								.textContent('').ariaLabel('finalize?')
+								.targetEvent(ev).ok('Okay').cancel('cancel');
 
+						$mdDialog.show(confirm).then(saveFinalize, function() {
+							$log.debug("Cancelled...");
+						});
+					}
+
+					function saveFinalize() {
+						$log.debug("Saved.....");
+						$scope.saveMonthlyPaymentDetailList(true);
 					}
 
 					$scope.waitForServiceLoad = function() {

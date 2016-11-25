@@ -25,7 +25,7 @@
 	<div class="md-toolbar-tools">
 		<span>Employee Leave Detail List</span>
 		<div flex></div>
-		<section layout="row" layout-align="end end" flex>
+		<!-- <section layout="row" layout-align="end end" flex>
 			<md-button class="md-icon-button" id="uplodeExcel"
 				ng-click="UplodeExcel($event)"> <ng-md-icon
 				icon="file_upload" style="fill: md-default" size="24">
@@ -39,14 +39,14 @@
 				style="fill: md-default" size="24"> <md-tooltip>Refresh
 			List</md-tooltip></ng-md-icon></md-button>
 
-		</section>
+		</section> -->
 	</div>
 	</md-toolbar>
 
 
 	<div ng-if="loading">
 		<div layout="row" layout-sm="column" layout-align="space-around">
-			<md-progress-circular md-diameter="100" md-mode="indeterminate">
+			<md-progress-circular md-diameter="60" md-mode="indeterminate">
 			<lable style="color:red">Entry of current month in Leave
 			Detail not Done Please do it First!</lable></md-progress-circular>
 		</div>
@@ -78,8 +78,10 @@
 				<tbody>
 					<tr ng-style="getFormRowStyle()"
 						ng-repeat="empLeaveDetailObj in employeeLeaveDetailsList | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
-						<td ng-style="getFormRowStyle()"><span
-							ng-bind="empLeaveDetailObj.user.empId"> </span></td>
+
+						<td style="margin: 0; padding-left: 5px; padding-right: 5px;">
+							<b ng-bind="empLeaveDetailObj.user.empId"> </b>
+						</td>
 						<td ng-style="getFormRowStyle()"><span
 							ng-bind="empLeaveDetailObj.user.firstName + ' ' +empLeaveDetailObj.user.lastName"
 							ng-style="highlightRed(monthlyPayObj.payableDays)"> </span></td>
@@ -110,7 +112,7 @@
 						<td ng-style="getFormRowStyle()"><span
 							ng-bind="empLeaveDetailObj.withoutpay"
 							ng-style="getHighlightRedStyle(empLeaveDetailObj.withoutpay)">
-						</span></td>						
+						</span></td>
 						<td ng-style="getFormRowStyle()"><span
 							ng-bind="empLeaveDetailObj.nextOpeningBalance"> </span></td>
 					</tr>
