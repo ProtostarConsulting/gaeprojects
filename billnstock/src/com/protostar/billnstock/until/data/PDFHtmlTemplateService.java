@@ -267,6 +267,7 @@ public class PDFHtmlTemplateService {
 					/ mtlyPayObj.getTotalDays() * mtlyPayObj.getPayableDays();
 
 			float specialAllow2 = mtlyPayObj.getSpecialAllow();
+			float overtimeAmt = mtlyPayObj.getOvertimeAmt();
 			float totalEarnings = basicAmt + hraAmt + conAmt + medAmt + eduAmt
 					+ adhAmt + splAmt + specialAllow2;
 
@@ -325,6 +326,11 @@ public class PDFHtmlTemplateService {
 			 */
 			root.put("totalDays", mtlyPayObj.getTotalDays());
 			root.put("payableDays", mtlyPayObj.getPayableDays());
+			root.put("overtimeAmt", overtimeAmt > 0 ? df.format(overtimeAmt)
+					: "");
+			root.put("overtimeNote", overtimeAmt > 0 ? "("
+					+ mtlyPayObj.getleaveDetailEntity().getOvertimeDays()
+					+ " days)" : "");
 			root.put("leaveBalance", mtlyPayObj.getleaveDetailEntity()
 					.getNextOpeningBalance());
 
@@ -337,8 +343,7 @@ public class PDFHtmlTemplateService {
 			root.put("Education", df.format(eduAmt));
 			root.put("AdhocAllow", adhAmt > 0 ? df.format(adhAmt) : "");
 			root.put("SpecialAllow", splAmt > 0 ? df.format(splAmt) : "");
-			root.put(
-					"SpecialAllow2",
+			root.put("SpecialAllow2",
 					specialAllow2 > 0 ? df.format(specialAllow2) : "");
 			root.put("specialAllow2Note",
 					mtlyPayObj.getSpecialAllowNote() == null ? "" : "("

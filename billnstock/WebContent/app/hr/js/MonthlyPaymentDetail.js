@@ -6,24 +6,30 @@ angular
 						$mdUtil, $stateParams, $log, objectFactory,
 						appEndpointSF, $mdDialog, $mdMedia, $state) {
 					$scope.query = {
-							order : 'leaveDetailEntity.user.empId',
-							limit : 50,
-							page : 1
-						};
+						order : 'leaveDetailEntity.user.empId',
+						limit : 50,
+						page : 1
+					};
 
 					$scope.monthlyPayDetailsList = [];
 
 					$scope.totalDaysInSelectedMonth = 0;
 
-					$scope.calculateMonthlyPayment = function(monthlyPayDetailObj) {
+					$scope.calculateMonthlyPayment = function(
+							monthlyPayDetailObj) {
 
 						monthlyPayDetailObj.totalDays = $scope.totalDaysInSelectedMonth;
 						monthlyPayDetailObj.payableDays = $scope.totalDaysInSelectedMonth
 								+ monthlyPayDetailObj.leaveDetailEntity.withoutpay;
+
+						monthlyPayDetailObj.overtimeAmt = monthlyPayDetailObj.leaveDetailEntity.overtimeDays
+								* (monthlyPayDetailObj.monthlyGrossSalary / $scope.totalDaysInSelectedMonth);
+
 						monthlyPayDetailObj.calculatedGrossSalary = monthlyPayDetailObj.payableDays
 								* (monthlyPayDetailObj.monthlyGrossSalary / $scope.totalDaysInSelectedMonth);
 
-						monthlyPayDetailObj.netSalaryAmt = (monthlyPayDetailObj.calculatedGrossSalary + monthlyPayDetailObj.specialAllow)
+						monthlyPayDetailObj.netSalaryAmt = (monthlyPayDetailObj.calculatedGrossSalary
+								+ monthlyPayDetailObj.overtimeAmt + monthlyPayDetailObj.specialAllow)
 								- monthlyPayDetailObj.pfDeductionAmt
 								- monthlyPayDetailObj.ptDeductionAmt
 								- monthlyPayDetailObj.canteenDeductionAmt
@@ -65,8 +71,7 @@ angular
 						var currentMonthYear = Number(selectedMonth.split("-")[1]);
 
 						var nowDate = new Date();
-						var salaryMonth = new Date(
-								currentMonthYear,
+						var salaryMonth = new Date(currentMonthYear,
 								currentMonthNameIndex, 1);
 						$scope.totalDaysInSelectedMonth = $scope
 								.getDaysInMonth(currentMonthNameIndex + 1,
@@ -91,11 +96,10 @@ angular
 						});
 
 					}
-					
+
 					$scope.finalizeMonthlySalaryForTheMonth = function() {
-						
+
 					}
-					
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
@@ -153,14 +157,12 @@ angular
 						};
 
 					}
-					
+
 					$scope.downloadData = function() {
 						// window.open("DownloadSalaryMaster?id="+$scope.curUser.business.id+d);
 						document.location.href = "DownloadMonthlypayment?id="
-								+ $scope.curUser.business.id+"&month="
+								+ $scope.curUser.business.id + "&month="
 								+ $scope.selectedMonth;
 					}
-					
-					
 
 				});

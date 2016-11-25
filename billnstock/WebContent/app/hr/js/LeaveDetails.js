@@ -14,22 +14,14 @@ angular
 						page : 1
 					};
 
-					/*$scope.getEmptyEmployeeLeaveDetails = function(emp, month) {
-						return {
-							user : emp,
-							openingBalance : "",
-							mothLeave : "",
-							takenmothLeave : "",
-							withoutpay : "",
-							nextOpeningBalance : "",
-							currentMonth : month + "-"
-									+ new Date().getFullYear(),
-							business : $scope.curUser.business
-
-						};
-					}*/
-
-					
+					/*
+					 * $scope.getEmptyEmployeeLeaveDetails = function(emp,
+					 * month) { return { user : emp, openingBalance : "",
+					 * mothLeave : "", takenmothLeave : "", withoutpay : "",
+					 * nextOpeningBalance : "", currentMonth : month + "-" + new
+					 * Date().getFullYear(), business : $scope.curUser.business
+					 *  }; }
+					 */
 
 					$scope.monthSelectChange = function(selectedMonth) {
 						$scope.worning = false;
@@ -55,28 +47,24 @@ angular
 
 					$scope.employeeLeaveDetailsList = [];
 
-					/*$scope.getEmpList = function() {
-						var hrService = appEndpointSF.gethrService();
-
-						hrService
-								.getAllemp($scope.curUser.business.id)
-								.then(
-										function(list) {
-											$scope.employeeLeaveDetailsList.length = 0;
-
-											for (var i = 0; i < list.length; i++) {
-
-												$scope.employeeLeaveDetailsList
-														.push($scope
-																.getEmptyEmployeeLeaveDetails(
-																		list[i],
-																		$scope.Selectedmonth));
-
-											}
-
-										});
-
-					}*/
+					/*
+					 * $scope.getEmpList = function() { var hrService =
+					 * appEndpointSF.gethrService();
+					 * 
+					 * hrService .getAllemp($scope.curUser.business.id) .then(
+					 * function(list) { $scope.employeeLeaveDetailsList.length =
+					 * 0;
+					 * 
+					 * for (var i = 0; i < list.length; i++) {
+					 * 
+					 * $scope.employeeLeaveDetailsList .push($scope
+					 * .getEmptyEmployeeLeaveDetails( list[i],
+					 * $scope.Selectedmonth));
+					 *  }
+					 * 
+					 * });
+					 *  }
+					 */
 
 					$scope.getEmpLeavList = function(month, prevMonth) {
 						$scope.loading = true;
@@ -124,9 +112,7 @@ angular
 						} else {
 							empLeaveDetailObj.withoutpay = 0;
 							empLeaveDetailObj.nextOpeningBalance = cal;
-
 						}
-
 					}
 
 					$scope.getStandardLabelStyle = function() {

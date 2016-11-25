@@ -15,7 +15,7 @@ public class LeaveDetailEntity extends BaseEntity {
 	private int mothLeave;
 	private int takenmothLeave;
 	private int withoutpay;
-	private int overtimeDays;
+	private float overtimeDays;
 	private int nextOpeningBalance;
 	@Index
 	private String currentMonth;
@@ -77,11 +77,11 @@ public class LeaveDetailEntity extends BaseEntity {
 		this.nextOpeningBalance = nextOpeningBalance;
 	}
 
-	public int getOvertimeDays() {
+	public float getOvertimeDays() {
 		return overtimeDays;
 	}
 
-	public void setOvertimeDays(int overtimeDays) {
+	public void setOvertimeDays(float overtimeDays) {
 		this.overtimeDays = overtimeDays;
 	}
 

@@ -17,6 +17,7 @@ public class MonthlyPaymentDetailEntity extends BaseEntity {
 	private int totalDays;
 	private int payableDays;
 	private float monthlyGrossSalary;
+	private float overtimeAmt;
 	private float calculatedGrossSalary;
 	private float specialAllow;
 	private String specialAllowNote;
@@ -175,6 +176,14 @@ public class MonthlyPaymentDetailEntity extends BaseEntity {
 
 	public void setOtherDeductionAmtNote(String otherDeductionAmtNote) {
 		this.otherDeductionAmtNote = otherDeductionAmtNote;
+	}
+
+	public float getOvertimeAmt() {
+		return overtimeAmt;
+	}
+
+	public void setOvertimeAmt(float overtimeAmt) {
+		this.overtimeAmt = overtimeAmt;
 	}
 
 }

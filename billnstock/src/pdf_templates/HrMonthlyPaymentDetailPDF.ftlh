@@ -87,7 +87,7 @@ tab2 {
 				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px;"
 				align="center">INR</th>
 			<th
-				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px;">
+				style="width: 5%; border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px;">
 			</th>
 			<th
 				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
@@ -228,7 +228,20 @@ tab2 {
 			<td
 				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"></td>
 		</tr>
-
+		<tr>
+			<td
+				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;">Overtime
+				Amount ${overtimeNote}</td>
+			<td
+				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
+				align="right">${overtimeAmt}</td>
+			<td
+				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"></td>
+			<td
+				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"></td>
+			<td
+				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"></td>
+		</tr>
 		<tr>
 			<td
 				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"></td>
