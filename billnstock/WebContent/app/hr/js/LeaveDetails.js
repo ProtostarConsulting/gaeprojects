@@ -14,7 +14,7 @@ angular
 						page : 1
 					};
 
-					$scope.getEmptyEmployeeLeaveDetails = function(emp, month) {
+					/*$scope.getEmptyEmployeeLeaveDetails = function(emp, month) {
 						return {
 							user : emp,
 							openingBalance : "",
@@ -27,39 +27,35 @@ angular
 							business : $scope.curUser.business
 
 						};
-					}
+					}*/
 
-					$scope.monthList = [ "January", "February", "March",
-							"April", "May", "June", "July", "August",
-							"September", "October", "November", "December" ];
+					
 
 					$scope.monthSelectChange = function(selectedMonth) {
-						$scope.worning=false;
+						$scope.worning = false;
 						$log.debug("selectedMonth" + selectedMonth);
-						for (var i = 0; i < $scope.monthList.length - 1; i++) {
-							if (selectedMonth == $scope.monthList[i + 1]) {
-								$scope. prevMonth = $scope.monthList[i] + "-"
-										+ new Date().getFullYear();
-							
-								break;
 
-							}
+						var currentMonthNameIndex = $scope.monthNameList
+								.indexOf(selectedMonth.split("-")[0]);
 
+						var currentMonthYear = Number(selectedMonth.split("-")[1]);
+
+						if (currentMonthNameIndex == 0) {
+							$scope.prevMonth = "December-"
+									+ (currentMonthYear - 1);
+						} else {
+							$scope.prevMonth = $scope.monthNameList[currentMonthNameIndex - 1]
+									+ "-" + currentMonthYear;
 						}
-						$log.debug("e.prevMonth*&*&*&*&" + $scope. prevMonth);
-						if($scope. prevMonth==undefined){$scope.prevMonth=null;}
-						$log.debug("e.prevMonth*&*&*2222&*&" + $scope. prevMonth);
-						$scope.mon = selectedMonth + "-"
-								+ new Date().getFullYear();
-						$scope.getEmpLeavList($scope.mon, $scope.prevMonth);
-						// $scope.getEmpLeavList(month);
-						//	
-
+						$log.debug("prevMonth:" + $scope.prevMonth);
+						$scope.selectedMonth = selectedMonth;
+						$scope.getEmpLeavList($scope.selectedMonth,
+								$scope.prevMonth);
 					}
 
 					$scope.employeeLeaveDetailsList = [];
 
-					$scope.getEmpList = function() {
+					/*$scope.getEmpList = function() {
 						var hrService = appEndpointSF.gethrService();
 
 						hrService
@@ -67,10 +63,7 @@ angular
 								.then(
 										function(list) {
 											$scope.employeeLeaveDetailsList.length = 0;
-											
-											
-											
-											
+
 											for (var i = 0; i < list.length; i++) {
 
 												$scope.employeeLeaveDetailsList
@@ -83,30 +76,33 @@ angular
 
 										});
 
-					}
+					}*/
 
 					$scope.getEmpLeavList = function(month, prevMonth) {
 						$scope.loading = true;
+						$scope.employeeLeaveDetailsList = [];
 						var hrService = appEndpointSF.gethrService();
-						hrService.getLeaveListEmp($scope.curUser.business.id,
-								month, prevMonth).then(function(list) {
+						hrService
+								.getLeaveListEmp($scope.curUser.business.id,
+										month, prevMonth)
+								.then(
+										function(list) {
 
-							if (list.length == 0||list==null) {
-								$scope.worning=true;
-							} else
-								$scope.employeeLeaveDetailsList.length = 0;
-							for (var i = 0; i < list.length; i++) {
-								$scope.employeeLeaveDetailsList.push(list[i]);
-								$scope.calculation(i);
-							}
-							$scope.loading = false;
+											if (list.length == 0
+													|| list == null) {
+												$scope.worning = true;
+											} else
+												$scope.employeeLeaveDetailsList = list;
+											for (var i = 0; i < $scope.employeeLeaveDetailsList.length; i++) {
+												$scope
+														.calculation($scope.employeeLeaveDetailsList[i]);
+											}
+											$scope.loading = false;
 
-						});
+										});
 					}
 
 					$scope.saveLeaveDetailList = function() {
-						
-						
 
 						var hrService = appEndpointSF.gethrService();
 						// hrService.saveLeaveDetail($scope.employee1).then(function(){
@@ -114,20 +110,20 @@ angular
 							'list' : $scope.employeeLeaveDetailsList
 						}).then(function() {
 							$scope.showAddToast();
-						});						
+						});
 					}
 
-					$scope.calculation = function(index) {
-						var cal = $scope.employeeLeaveDetailsList[index].openingBalance
-								+ $scope.employeeLeaveDetailsList[index].mothLeave
-								- $scope.employeeLeaveDetailsList[index].takenmothLeave;
+					$scope.calculation = function(empLeaveDetailObj) {
+						var cal = empLeaveDetailObj.openingBalance
+								+ empLeaveDetailObj.mothLeave
+								- empLeaveDetailObj.takenmothLeave;
 
 						if (cal < 0) {
-							$scope.employeeLeaveDetailsList[index].withoutpay = cal;
-							$scope.employeeLeaveDetailsList[index].nextOpeningBalance = 0;
+							empLeaveDetailObj.withoutpay = cal;
+							empLeaveDetailObj.nextOpeningBalance = 0;
 						} else {
-							$scope.employeeLeaveDetailsList[index].withoutpay = 0;
-							$scope.employeeLeaveDetailsList[index].nextOpeningBalance = cal;
+							empLeaveDetailObj.withoutpay = 0;
+							empLeaveDetailObj.nextOpeningBalance = cal;
 
 						}
 
@@ -148,8 +144,5 @@ angular
 						};
 
 					}
-					
-					
-					
 
 				});

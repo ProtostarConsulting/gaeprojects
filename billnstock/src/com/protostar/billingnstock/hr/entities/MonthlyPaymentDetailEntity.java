@@ -2,6 +2,7 @@ package com.protostar.billingnstock.hr.entities;
 
 import javax.persistence.Embedded;
 
+import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
@@ -12,7 +13,7 @@ public class MonthlyPaymentDetailEntity extends BaseEntity {
 
 	@Index
 	@Embedded
-	private LeaveDetailEntity leaveDetailEntity;
+	private Ref<LeaveDetailEntity> leaveDetailEntity;
 	private int totalDays;
 	private int payableDays;
 	private float monthlyGrossSalary;
@@ -41,18 +42,19 @@ public class MonthlyPaymentDetailEntity extends BaseEntity {
 			String currentMonth) {
 		setBusiness(business);
 		this.currentMonth = currentMonth;
-		this.leaveDetailEntity = leaveDetailEntity;
+		this.leaveDetailEntity = (leaveDetailEntity != null && leaveDetailEntity.getId() != null)? Ref
+				.create(leaveDetailEntity) : null;
 		this.salStruct = salStruct;
 		this.monthlyGrossSalary = salStruct.getMonthlyGrossSal();
 	}
 
 	public LeaveDetailEntity getleaveDetailEntity() {
-		return leaveDetailEntity;
+		return leaveDetailEntity != null ? leaveDetailEntity.get() : null;
 	}
 
 	public void setleaveDetailEntity(LeaveDetailEntity leaveDetailEntity) {
-		this.leaveDetailEntity = leaveDetailEntity;
-
+		this.leaveDetailEntity = (leaveDetailEntity != null && leaveDetailEntity.getId() != null)? Ref
+				.create(leaveDetailEntity) : null;
 	}
 
 	public String getCurrentMonth() {

@@ -11,16 +11,11 @@ angular
 							page : 1
 						};
 
-					$scope.monthList = [ "January", "February", "March",
-							"April", "May", "June", "July", "August",
-							"September", "October", "November", "December" ];
-
 					$scope.monthlyPayDetailsList = [];
 
 					$scope.totalDaysInSelectedMonth = 0;
 
-					$scope.calculateMonthlyPayment = function(index) {
-						monthlyPayDetailObj = $scope.monthlyPayDetailsList[index];
+					$scope.calculateMonthlyPayment = function(monthlyPayDetailObj) {
 
 						monthlyPayDetailObj.totalDays = $scope.totalDaysInSelectedMonth;
 						monthlyPayDetailObj.payableDays = $scope.totalDaysInSelectedMonth
@@ -44,8 +39,8 @@ angular
 
 					$scope.getMonthlyPaymentList = function() {
 						$scope.loading = true;
+						$scope.monthlyPayDetailsList = [];
 						var hrService = appEndpointSF.gethrService();
-
 						hrService
 								.getMonthlyPayment($scope.curUser.business.id,
 										$scope.selectedMonth)
@@ -54,7 +49,7 @@ angular
 											$scope.monthlyPayDetailsList = list;
 											for (var i = 0; i < $scope.monthlyPayDetailsList.length; i++) {
 												$scope
-														.calculateMonthlyPayment(i);
+														.calculateMonthlyPayment($scope.monthlyPayDetailsList[i]);
 											}
 											$scope.loading = false;
 										});
@@ -62,18 +57,21 @@ angular
 					}
 
 					$scope.monthSelectChange = function(selectedMonth) {
-						var selectedMonthIndex = $scope.monthList
-								.indexOf(selectedMonth.trim());
+						$log.debug("selectedMonth" + selectedMonth);
+
+						var currentMonthNameIndex = $scope.monthNameList
+								.indexOf(selectedMonth.split("-")[0]);
+
+						var currentMonthYear = Number(selectedMonth.split("-")[1]);
+
 						var nowDate = new Date();
 						var salaryMonth = new Date(
-								nowDate.getFullYear(),
-								selectedMonthIndex == 11 ? selectedMonthIndex - 1
-										: selectedMonthIndex, 1);
+								currentMonthYear,
+								currentMonthNameIndex, 1);
 						$scope.totalDaysInSelectedMonth = $scope
-								.getDaysInMonth(selectedMonthIndex + 1,
-										salaryMonth.getFullYear());
-						$scope.selectedMonth = selectedMonth + "-"
-								+ salaryMonth.getFullYear();
+								.getDaysInMonth(currentMonthNameIndex + 1,
+										currentMonthYear);
+						$scope.selectedMonth = selectedMonth;
 						$scope.getMonthlyPaymentList();
 
 					}
@@ -93,6 +91,11 @@ angular
 						});
 
 					}
+					
+					$scope.finalizeMonthlySalaryForTheMonth = function() {
+						
+					}
+					
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {

@@ -8,11 +8,14 @@ import com.protostar.billnstock.entity.BaseEntity;
 
 @Entity
 public class LeaveDetailEntity extends BaseEntity {
+
+	@Index
 	private Ref<UserEntity> user;
 	private int openingBalance;
 	private int mothLeave;
 	private int takenmothLeave;
 	private int withoutpay;
+	private int overtimeDays;
 	private int nextOpeningBalance;
 	@Index
 	private String currentMonth;
@@ -72,6 +75,14 @@ public class LeaveDetailEntity extends BaseEntity {
 
 	public void setNextOpeningBalance(int nextOpeningBalance) {
 		this.nextOpeningBalance = nextOpeningBalance;
+	}
+
+	public int getOvertimeDays() {
+		return overtimeDays;
+	}
+
+	public void setOvertimeDays(int overtimeDays) {
+		this.overtimeDays = overtimeDays;
 	}
 
 }

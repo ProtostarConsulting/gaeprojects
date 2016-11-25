@@ -50,8 +50,12 @@ public class HrService {
 
 	@ApiMethod(name = "getSalStructByUser")
 	public SalStruct getSalStructByUser(UserEntity currRowUser) {
-		List<SalStruct> list = ofy().load().type(SalStruct.class)
-				.ancestor(Key.create(BusinessEntity.class, currRowUser.getBusiness().getId()))
+		List<SalStruct> list = ofy()
+				.load()
+				.type(SalStruct.class)
+				.ancestor(
+						Key.create(BusinessEntity.class, currRowUser
+								.getBusiness().getId()))
 				.filter("empAccount", currRowUser).list();
 		SalStruct salStruct = list.size() > 0 ? list.get(0) : null;
 		return salStruct;
@@ -80,17 +84,17 @@ public class HrService {
 
 	@ApiMethod(name = "getAllempsSalStruct")
 	public List<SalStruct> getAllempsSalStruct(@Named("id") Long busId) {
-		//System.out.println("salStructList#busId:" + busId);
+		// System.out.println("salStructList#busId:" + busId);
 		List<SalStruct> salStructList = ofy().load().type(SalStruct.class)
 				.ancestor(Key.create(BusinessEntity.class, busId)).list();
-		//System.out.println("salStructList:" + salStructList.size());
+		// System.out.println("salStructList:" + salStructList.size());
 		return salStructList;
 
 	}
 
 	@ApiMethod(name = "findsalstruct")
 	public SalStruct findsalstruct(@Named("id") Long structId) {
-	//	System.out.println("findsalstruct#structId:" + structId);
+		// System.out.println("findsalstruct#structId:" + structId);
 		// SalStruct salstruct =
 		// ofy().load().type(SalStruct.class).filterKey(Key.create(SalStruct.class,
 		// structId)).first().now();
@@ -102,7 +106,7 @@ public class HrService {
 				salstruct = struct;
 			}
 		}
-		//System.out.println("!findsalstruct#salstruct:" + salstruct);
+		// System.out.println("!findsalstruct#salstruct:" + salstruct);
 		return salstruct;
 
 	}
@@ -218,6 +222,11 @@ public class HrService {
 		// saveleaveDetail.setCurrentMonth();
 	}
 
+	public LeaveDetailEntity saveLeaveDetail(LeaveDetailEntity leaveDetailEntity) {
+		ofy().save().entity(leaveDetailEntity).now();
+		return leaveDetailEntity;
+	}
+
 	@ApiMethod(name = "saveSalaryMasterDetail", path = "saveSalaryMasterDetail")
 	public void saveSalaryMasterDetail(SalStruct salStruct) {
 
@@ -275,16 +284,15 @@ public class HrService {
 				.type(LeaveDetailEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, busId))
 				.filter("currentMonth", month.trim()).list();
-	
 
 		UserService userService = new UserService();
 		List<UserEntity> userList = userService.getUsersByBusinessId(busId);
 
-		if (userList.size() == empLeaveListToReturn.size()) {
+		/*if (userList.size() == empLeaveListToReturn.size()) {
 			// Meaning all employee leaves are updated. No need to process
 			// further, hence returning.
 			return empLeaveListCurrentMonth;
-		}
+		}*/
 
 		List<LeaveDetailEntity> empLeaveListPrevMonth = ofy().load()
 				.type(LeaveDetailEntity.class)
@@ -302,28 +310,26 @@ public class HrService {
 						foundLeaveDetail = leaveDetail;
 					}
 				}
-
-				if (foundLeaveDetail == null) {
-					foundLeaveDetail = new LeaveDetailEntity();
-					foundLeaveDetail.setUser(userEntity);
-					foundLeaveDetail.setBusiness(userEntity.getBusiness());
-				}
-
-			} else {
-				foundLeaveDetail = new LeaveDetailEntity();
-				foundLeaveDetail.setUser(userEntity);
-				foundLeaveDetail.setCurrentMonth(month);
-				foundLeaveDetail.setBusiness(userEntity.getBusiness());
-				for (LeaveDetailEntity prevMonthleaveDetail : empLeaveListPrevMonth) {
-					if (prevMonthleaveDetail.getUser().getId() == userEntity
-							.getId()) {
-						foundLeaveDetail.setOpeningBalance(prevMonthleaveDetail
-								.getNextOpeningBalance());
-
-					}
-				}
-
 			}
+
+			if (foundLeaveDetail == null) {
+				foundLeaveDetail = new LeaveDetailEntity();
+				foundLeaveDetail.setCurrentMonth(month.trim());
+				foundLeaveDetail.setUser(userEntity);
+				foundLeaveDetail.setBusiness(userEntity.getBusiness());				
+			}
+
+			for (LeaveDetailEntity prevMonthleaveDetail : empLeaveListPrevMonth) {
+				if (prevMonthleaveDetail.getUser().getId() == userEntity
+						.getId()) {
+					foundLeaveDetail.setOpeningBalance(prevMonthleaveDetail
+							.getNextOpeningBalance());
+
+				}
+			}
+			
+			saveLeaveDetail(foundLeaveDetail);
+
 			empLeaveListToReturn.add(foundLeaveDetail);
 
 		}
@@ -355,21 +361,23 @@ public class HrService {
 
 		List<SalStruct> salaryMasterlist = getSalaryMasterlist(busId);
 		String prevMonth = null;
-		List<LeaveDetailEntity> leaveListEmp = getLeaveListEmp(busId, currentmonth, prevMonth);
+		List<LeaveDetailEntity> leaveListEmp = getLeaveListEmp(busId,
+				currentmonth, prevMonth);
 		for (SalStruct salStruct : salaryMasterlist) {
-			System.out.println("salStruct:" + salStruct);
-			System.out.println("salStruct:" + salStruct.getEmpAccount().getFirstName());
 			MonthlyPaymentDetailEntity foundSalEntity = null;
 			for (MonthlyPaymentDetailEntity salEntity : monthlyPaymentDetailEntityList) {
-				if(salStruct.getEmpAccount().getId() == salEntity.getSalStruct().getEmpAccount().getId()){
+				if (salStruct.getEmpAccount().getId() == salEntity
+						.getSalStruct().getEmpAccount().getId()) {
 					foundSalEntity = salEntity;
 					break;
 				}
 			}
-			if(foundSalEntity == null){	
-				LeaveDetailEntity empLeaveDetail = getEmpLeaveDetail(salStruct.getEmpAccount(), leaveListEmp);
-				System.out.println("empLeaveDetail:" + empLeaveDetail);
-				foundSalEntity = new MonthlyPaymentDetailEntity(salStruct.getEmpAccount().getBusiness(), empLeaveDetail, salStruct, currentmonth);
+			if (foundSalEntity == null) {
+				LeaveDetailEntity empLeaveDetail = getEmpLeaveDetail(
+						salStruct.getEmpAccount(), leaveListEmp);
+				foundSalEntity = new MonthlyPaymentDetailEntity(salStruct
+						.getEmpAccount().getBusiness(), empLeaveDetail,
+						salStruct, currentmonth);
 			}
 			monthlyPaymentDetailEntityListToReturn.add(foundSalEntity);
 		}
@@ -377,15 +385,17 @@ public class HrService {
 		return monthlyPaymentDetailEntityListToReturn;
 
 	}
-	
-	private static LeaveDetailEntity getEmpLeaveDetail(UserEntity user, List<LeaveDetailEntity> leaveList){
+
+	private static LeaveDetailEntity getEmpLeaveDetail(UserEntity user,
+			List<LeaveDetailEntity> leaveList) {
 		for (LeaveDetailEntity leaveEntity : leaveList) {
-			if(leaveEntity.getUser().getId() == user.getId()){
+			if (leaveEntity.getUser().getId() == user.getId()) {
 				return leaveEntity;
 			}
-			
 		}
-		return null;
+		LeaveDetailEntity emptyLeaveDetail = new LeaveDetailEntity();
+		emptyLeaveDetail.setUser(user);
+		return emptyLeaveDetail;
 	}
 
 	@ApiMethod(name = "getMonthlyPaymentByID")
@@ -401,20 +411,15 @@ public class HrService {
 		for (MonthlyPaymentDetailEntity monthlyPaymentDetailEntityId : monthlyPaymentDetailEntity) {
 			if (monthlyPaymentDetailEntityId.getId().equals(empid)) {
 				monthlyPaymen = monthlyPaymentDetailEntityId;
-
 			}
 
-			System.out.println("monthlyPaymentDetailEntity" + monthlyPaymen);
+			// System.out.println("monthlyPaymentDetailEntity" + monthlyPaymen);
 		}
 
-		
 		return monthlyPaymen;
 
 	}
-	
-	
-	
-	
+
 	@ApiMethod(name = "getpayRollReport")
 	public List<PayRollMonthlyData> getpayRollReport(@Named("id") Long busId) {
 
@@ -431,11 +436,14 @@ public class HrService {
 			HrService hr = new HrService();
 			List<MonthlyPaymentDetailEntity> monthlyPaymentDetailEntity = hr
 					.getMonthlyPayment(busId, s.trim());
-		
-			
-			
-			
-			if ((monthlyPaymentDetailEntity.get(0).getPayableDays()!=0)){//||(monthlyPaymentDetailEntity.size() != 0)||( monthlyPaymentDetailEntity.equals(null)) &&( monthlyPaymentDetailEntity.isEmpty()==false)) {
+
+			if ((monthlyPaymentDetailEntity.get(0).getPayableDays() != 0)) {// ||(monthlyPaymentDetailEntity.size()
+																			// !=
+																			// 0)||(
+																			// monthlyPaymentDetailEntity.equals(null))
+																			// &&(
+																			// monthlyPaymentDetailEntity.isEmpty()==false))
+																			// {
 				for (int j = 0; j < monthlyPaymentDetailEntity.size(); j++) {
 					sal += monthlyPaymentDetailEntity.get(j)
 							.getCalculatedGrossSalary();
@@ -448,7 +456,8 @@ public class HrService {
 					totalIT += monthlyPaymentDetailEntity.get(j)
 							.getItDeductionAmt();
 					totalOther += monthlyPaymentDetailEntity.get(j)
-							.getOtherDeductionAmt();}
+							.getOtherDeductionAmt();
+				}
 				PayRollMonthlyData payr = new PayRollMonthlyData();
 				payr.month = s.trim();
 				payr.total = sal;
@@ -467,7 +476,8 @@ public class HrService {
 
 			}
 
-		} return payrolldatalist;
+		}
+		return payrolldatalist;
 
 	}
 
@@ -539,5 +549,3 @@ class PayRollMonthlyData implements Serializable {
 	}
 
 }
-	
-	

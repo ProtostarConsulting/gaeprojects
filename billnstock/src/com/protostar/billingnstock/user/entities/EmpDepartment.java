@@ -10,6 +10,7 @@ public class EmpDepartment extends BaseEntity {
 
 	@Index
 	private Ref<EmpDepartment> parentDept;
+	
 	@Index
 	private String name;
 
@@ -26,7 +27,10 @@ public class EmpDepartment extends BaseEntity {
 	}
 
 	public void setParentDept(EmpDepartment parentDept) {
-		this.parentDept = Ref.create(parentDept);
+		if (parentDept != null)
+			this.parentDept = Ref.create(parentDept);
+		else
+			this.parentDept = null;
 	}
 
 }

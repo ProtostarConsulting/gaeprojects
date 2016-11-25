@@ -248,32 +248,35 @@ public class PDFHtmlTemplateService {
 			document.open();
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 			Map<String, Object> root = new HashMap<String, Object>();
-			DecimalFormat df = new DecimalFormat("#.00");
+			DecimalFormat df = new DecimalFormat("#0.00");
 
 			SalStruct salStruct = mtlyPayObj.getSalStruct();
-			float basicAmt = salStruct.getMonthlyBasic() / mtlyPayObj.getTotalDays()
-					* mtlyPayObj.getPayableDays();
+			float basicAmt = salStruct.getMonthlyBasic()
+					/ mtlyPayObj.getTotalDays() * mtlyPayObj.getPayableDays();
 			float hraAmt = salStruct.getMonthlyHra()
 					/ mtlyPayObj.getTotalDays() * mtlyPayObj.getPayableDays();
-			float conAmt = salStruct.getMonthlyConvence() / mtlyPayObj.getTotalDays()
-					* mtlyPayObj.getPayableDays();
-			float medAmt = salStruct.getMonthlyMedical() / mtlyPayObj.getTotalDays()
-					* mtlyPayObj.getPayableDays();
-			float eduAmt = salStruct.getMonthlyEducation() / mtlyPayObj.getTotalDays()
-					* mtlyPayObj.getPayableDays();
+			float conAmt = salStruct.getMonthlyConvence()
+					/ mtlyPayObj.getTotalDays() * mtlyPayObj.getPayableDays();
+			float medAmt = salStruct.getMonthlyMedical()
+					/ mtlyPayObj.getTotalDays() * mtlyPayObj.getPayableDays();
+			float eduAmt = salStruct.getMonthlyEducation()
+					/ mtlyPayObj.getTotalDays() * mtlyPayObj.getPayableDays();
 			float adhAmt = salStruct.getMonthlyAdhocAllow()
 					/ mtlyPayObj.getTotalDays() * mtlyPayObj.getPayableDays();
 			float splAmt = salStruct.getMonthlySpecialAllow()
 					/ mtlyPayObj.getTotalDays() * mtlyPayObj.getPayableDays();
 
+			float specialAllow2 = mtlyPayObj.getSpecialAllow();
 			float totalEarnings = basicAmt + hraAmt + conAmt + medAmt + eduAmt
-					+ adhAmt + splAmt + mtlyPayObj.getSpecialAllow();
+					+ adhAmt + splAmt + specialAllow2;
 
-			float totalDeductions = mtlyPayObj.getPfDeductionAmt()
-					+ mtlyPayObj.getPtDeductionAmt()
-					+ mtlyPayObj.getCanteenDeductionAmt()
-					+ mtlyPayObj.getItDeductionAmt()
-					+ mtlyPayObj.getOtherDeductionAmt();
+			float pfDeductionAmt = mtlyPayObj.getPfDeductionAmt();
+			float ptDeductionAmt = mtlyPayObj.getPtDeductionAmt();
+			float canteenDeductionAmt = mtlyPayObj.getCanteenDeductionAmt();
+			float itDeductionAmt = mtlyPayObj.getItDeductionAmt();
+			float otherDeductionAmt = mtlyPayObj.getOtherDeductionAmt();
+			float totalDeductions = pfDeductionAmt + ptDeductionAmt
+					+ canteenDeductionAmt + itDeductionAmt + otherDeductionAmt;
 
 			UserEntity user = mtlyPayObj.getleaveDetailEntity().getUser();
 			BusinessEntity business = user.getBusiness();
@@ -309,7 +312,7 @@ public class PDFHtmlTemplateService {
 				bankDetail = new BankDetail();
 			root.put("bankName", "" + bankDetail.getBankName());
 			root.put("bankAccNumber", "" + bankDetail.getBankAccountNo());
-			
+
 			root.put("panNumber", "" + "");
 			root.put("pfNumber", "" + "");
 
@@ -332,27 +335,25 @@ public class PDFHtmlTemplateService {
 			root.put("Conveyance", df.format(conAmt));
 			root.put("Medical", df.format(medAmt));
 			root.put("Education", df.format(eduAmt));
-			root.put("AdhocAllow", df.format(adhAmt));
-			root.put("SpecialAllow", df.format(splAmt));
-			root.put("SpecialAllow2", df.format(mtlyPayObj.getSpecialAllow()));
+			root.put("AdhocAllow", adhAmt > 0 ? df.format(adhAmt) : "");
+			root.put("SpecialAllow", splAmt > 0 ? df.format(splAmt) : "");
 			root.put(
-					"specialAllow2Note",
-					mtlyPayObj.getSpecialAllowNote() == null ? "" : mtlyPayObj
-							.getSpecialAllowNote());
+					"SpecialAllow2",
+					specialAllow2 > 0 ? df.format(specialAllow2) : "");
+			root.put("specialAllow2Note",
+					mtlyPayObj.getSpecialAllowNote() == null ? "" : "("
+							+ mtlyPayObj.getSpecialAllowNote() + ")");
 			root.put("totalEarnings", df.format(totalEarnings));
 
 			// Deductions Col
-			root.put("PFDeductionAmt",
-					df.format(mtlyPayObj.getPfDeductionAmt()));
-			root.put("PTDeductionAmt",
-					df.format(mtlyPayObj.getPtDeductionAmt()));
-			root.put("ITDduction", df.format(mtlyPayObj.getItDeductionAmt()));
-			root.put("Canteen", df.format(mtlyPayObj.getCanteenDeductionAmt()));
-			root.put("OtherDeduction",
-					df.format(mtlyPayObj.getOtherDeductionAmt()));
+			root.put("PFDeductionAmt", df.format(pfDeductionAmt));
+			root.put("PTDeductionAmt", df.format(ptDeductionAmt));
+			root.put("ITDduction", df.format(itDeductionAmt));
+			root.put("Canteen", df.format(canteenDeductionAmt));
+			root.put("OtherDeduction", df.format(otherDeductionAmt));
 			root.put("otherDeductionNote",
-					mtlyPayObj.getOtherDeductionAmtNote() == null ? ""
-							: mtlyPayObj.getOtherDeductionAmtNote());
+					mtlyPayObj.getOtherDeductionAmtNote() == null ? "" : "("
+							+ mtlyPayObj.getOtherDeductionAmtNote() + ")");
 			root.put("totalDeductions", df.format(totalDeductions));
 
 			NumberToRupees numberToRupees = new NumberToRupees(

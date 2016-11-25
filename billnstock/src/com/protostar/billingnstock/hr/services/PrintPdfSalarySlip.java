@@ -25,12 +25,12 @@ public class PrintPdfSalarySlip extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		String idParam = request.getParameter("id");
-		System.out.println("idParam:" + idParam);
+				
 		Long id = Long.parseLong(request.getParameter("id"));
 		Long bid = Long.parseLong(request.getParameter("bid"));
 		String entity = request.getParameter("entityname");
 		String month = request.getParameter("month");
+		
 		PDFHtmlTemplateService pdfHtmlTemplateService = new PDFHtmlTemplateService();
 		response.setContentType("application/PDF");
 		ServletOutputStream outputStream = response.getOutputStream();

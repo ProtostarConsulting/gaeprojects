@@ -177,7 +177,7 @@ tab2 {
 				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"></td>
 			<td
 				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;">
-				Other Deduction (${otherDeductionNote})</td>
+				Other Deduction ${otherDeductionNote}</td>
 			<td
 				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
 				align="right" align="right">${OtherDeduction}</td>
@@ -217,7 +217,7 @@ tab2 {
 		<tr>
 			<td
 				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;">Special
-				Allow-2 (${specialAllow2Note})</td>
+				Allow-2 ${specialAllow2Note}</td>
 			<td
 				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
 				align="right">${SpecialAllow2}</td>
