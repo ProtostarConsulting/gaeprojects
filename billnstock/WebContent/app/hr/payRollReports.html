@@ -172,15 +172,19 @@
 					ng-repeat="emp in list | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
 					<td style="border: 1px solid black; padding: 5px;">{{emp.month}}</td>
 					<td style="border: 1px solid black; padding: 5px;">{{emp.totalIT}}</td>
-					<td style="border: 1px solid black; padding: 5px;">{{ }}</td>
+					<td style="border: 1px solid black;"><md-button class="md-raised md-primary" align="center"
+								ui-sref="" > Tax Details </md-button></td>
 
 				</tr>
 				<tr>
 					<td style="border: 1px solid black; padding: 5px;"><b>TOTAL</b></td>
 					<td style="border: 1px solid black; padding: 5px;"><b>{{totalIT}}</b></td>
-					<td style="border: 1px solid black; padding: 5px;">{{ }}</td>
-
+					<td style="border :1px solid black;padding: 5px;">{{}}
+							 
+						</td>
 				</tr>
+				<tr ng-repeat="item in list2 |orderBy: query.order"> 
+				<td style="border: 1px solid black;">{{item.totalIT}}</td></tr>
 			</tbody>
 		</table>
 <br></br>
