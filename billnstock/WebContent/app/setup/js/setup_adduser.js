@@ -125,26 +125,8 @@ angular
 					}
 					// -----------------end send mail-------------------
 
-					$scope.items = [ "customer", "account", "stock",
-							"salesOrder", "purchaseOrder", "invoice",
-							"warehouse", "hr", "crm", "employee", "admin" ];
-					$scope.selection = [];
-
 					$scope.curuser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
-
-					$scope.BankDetail = {
-						bankName : "",
-						bankIfscCode : "",
-						branchName : "",
-						bankAccountNo : "",
-
-					}
-					// use to set all item false to set
-					for ( var item in $scope.items) {
-						$scope.selection.push($scope.curuser.authority[0]
-								.indexOf(item) > -1);
-					}
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
@@ -172,36 +154,30 @@ angular
 					// -------------------------------------------------------------------------
 
 					$scope.user = {
-						bankDetail : "",
-						business : "",
+						business : $scope.user.business = $scope.selectedBusiness,
 						email_id : "",
 						firstName : "",
 						lastName : "",
 						password : "",
 						isGoogleUser : true,
-						department : "",
+						isLoginAllowed : true,
 						authority : [],
-						designation:""
+						employeeDetail : {
+							department:"",
+							phone1:"",
+							phone2:"",
+							bankDetail : {
+								bankName : "",
+								bankIfscCode : "",
+								branchName : "",
+								bankAccountNo : ""
+							}
+						}
 					}
 
-					$scope.checkDuplicateAndAddUser = function() {
-						var UserService = appEndpointSF.getUserService();
-						UserService
-								.isUserExists($scope.selectedBusiness.id,
-										emailid)
-								.then(
-										function(response) {
-											if (response.returnBool == false) {
-												$scope.adduser();
-											} else {
-												$scope.userexists = "This user already exists.";
-											}
-										});
-					}
-
+				
 					$scope.adduser = function() {
 						$scope.user.business = $scope.selectedBusiness;
-						$scope.user.bankDetail = $scope.BankDetail;
 						// use selection array true false value and push that
 						// numbered item on authority
 
@@ -258,21 +234,8 @@ angular
 												$scope.userexists = "This user already exists.";
 												$scope.user.firstName = "";
 												$scope.user.lastName = "";
-												angular
-														.element(document
-																.getElementById('fname'))[0].disabled = true;
-												angular
-														.element(document
-																.getElementById('lname'))[0].disabled = true;
 											} else {
 												$scope.userexists = "";
-												angular
-														.element(document
-																.getElementById('fname'))[0].disabled = false;
-												angular
-														.element(document
-																.getElementById('lname'))[0].disabled = false;
-
 											}
 
 										});
@@ -284,7 +247,8 @@ angular
 						UserService.getEmpDepartments(
 								$scope.curUser.business.id).then(
 								function(list) {
-									$scope.department = list.items;
+									$scope.departmentList = list.items;
+
 								});
 					}
 

@@ -1,120 +1,117 @@
-
 <md-content layout-padding>
 <form name="viewuser">
-
-
 	<div id="addField">
 		<div layout-sm="column" layout-align="start start" flex>
-
 			<md-button class="md-icon-button" aria-label="prev" ng-click="back()">
 			<md-tooltip> get back to user list</md-tooltip> <md-icon
 				md-svg-icon="img/icons/ic_reply_black_24px.svg"
 				aria-label="Prev Week"></md-icon> </md-button>
-
 		</div>
-		<br> <br>
-		<div layout layout-xs="column">
+		<h4 ng-init="basicDetailToogle=true"
+			ng-click="basicDetailToogle=!basicDetailToogle">
+			Basic Detail
+			<md-button class="md-icon-button" ng-show="basicDetailToogle">
+			<ng-md-icon icon="keyboard_arrow_up" style="fill: md-default"
+				size="24"> <md-tooltip> Expand</md-tooltip></ng-md-icon></md-button>
+			<md-button class="md-icon-button" ng-show="!basicDetailToogle">
+			<ng-md-icon icon="keyboard_arrow_down" style="fill: md-default"
+				size="24"> <md-tooltip> Collapse</md-tooltip></ng-md-icon></md-button>
+		</h4>
+		<div ng-show="basicDetailToogle">
+			<div layout layout-xs="column">
+				<md-input-container flex> <label>Email
+					Id/Username </label> <input ng-model="selectedUser.email_id" disabled>
+				</md-input-container>
+				<md-input-container flex> <md-checkbox
+					ng-model="selectedUser.isLoginAllowed" ng-true-value="true"
+					ng-false-value="false"></md-checkbox> Can User Login to System </md-input-container>
 
-
-			<md-input-container flex=30> <label>Enter
-				Email id </label> <input ng-model="selectedUser.email_id" disabled>
-			</md-input-container>
-
-			<md-input-container flex=20>
-			<md-select ng-model="selectedUser.department"
-				placeholder="Select  Department">
-			<lable>Select Department</lable> <md-option  ng-value="department"
-				ng-repeat="department in departmentList">{{department.name}}
-			</md-option> </md-select></md-input-container>
-			<md-input-container flex=30> <label>Enter Designation<span style="color: red">*</span></label><input type="text" ng-model="selectedUser.designation" placeholder="Please enter your designation" ng-required="true" name="userDesignation">
-	<div ng-messages="viewuser.userDesignation.$error"
-			ng-if="viewuser.userDesignation.$submitted || viewuser.userDesignation.$touched">
-			<div ng-message="required">Please enter your designation.</div>
-	</div>
-	</md-input-container>
-			
-		</div>
-		<!-- 	<div layout layout-xs="column">
-			<md-input-container flex> <label>First
-				Name </label> <input ng-model="selectedUser.firstName"> </md-input-container>
-			<md-input-container flex> <label>Last
-				Name </label> <input ng-model="selectedUser.lastName"> </md-input-container>
-		</div> -->
-		<div layout layout-xs="column">
-			<md-input-container flex> <label>First
-				Name <span style="color: red"
-				ng-show="viewuser.fname.$error.required" class="mandatory">*</span>
-			</label> <input id="fname" name="fname" ng-model="selectedUser.firstName"
-				ng-required="true">
-			<div ng-messages="viewuser.fname.$error"
-				ng-if="viewuser.fname.$submitted || viewuser.fname.$touched">
-				<div ng-message="required">Please Enter First Name.</div>
+				<md-input-container flex> <label>First
+					Name </label> <input id="fname" name="fname"
+					ng-model="selectedUser.firstName" ng-required="true">
+				<div ng-messages="viewuser.fname.$error"
+					ng-if="viewuser.fname.$submitted || viewuser.fname.$touched">
+					<div ng-message="required">Please Enter First Name.</div>
+				</div>
+				</md-input-container>
+				<md-input-container flex> <label>Last
+					Name </label> <input id="lname" name="lname"
+					ng-model="selectedUser.lastName" ng-required="true">
+				<div ng-messages="viewuser.lname.$error"
+					ng-if="viewuser.lname.$submitted || viewuser.lname.$touched">
+					<div ng-message="required">Please Enter Last Name.</div>
+				</div>
+				</md-input-container>
 			</div>
-			</md-input-container>
-			<md-input-container flex> <label>Last
-				Name <span style="color: red"
-				ng-show="viewuser.lname.$error.required" class="mandatory">*</span>
-			</label> <input id="lname" name="lname" ng-model="selectedUser.lastName"
-				ng-required="true">
-			<div ng-messages="viewuser.lname.$error"
-				ng-if="viewuser.lname.$submitted || viewuser.lname.$touched">
-				<div ng-message="required">Please Enter Last Name.</div>
+
+			<div layout layout-xs="column">
+				<md-input-container flex> <label>Employee
+					Department </label> <md-select
+					ng-model="selectedUser.employeeDetail.department"
+					placeholder="Select  Department"> <lable>Select
+				Department</lable> <md-option ng-value="department"
+					ng-repeat="department in departmentList">{{department.name}}
+				</md-option> </md-select></md-input-container>
+				<md-input-container flex> <label>Employee
+					Designation </label> <input type="text"
+					ng-model="selectedUser.employeeDetail.designation"
+					name="userDesignation"> </md-input-container>
+
+				<md-input-container flex> <label>Phone
+					1 </label> <input name="phone1"
+					ng-model="selectedUser.employeeDetail.phone1"> </md-input-container>
+				<md-input-container flex> <label>Phone
+					2 </label> <input name="phone2"
+					ng-model="selectedUser.employeeDetail.phone2"> </md-input-container>
 			</div>
-			</md-input-container>
-		</div>
-
-
-
-		<div layout layout-xs="column">
-			<md-input-container flex> <label>Bank
-				Name <span style="color: red"
-				ng-show="viewuser.bankName.$error.required" class="mandatory">*</span>
-			</label> <input id="bankName" name="bankName" ng-model="selectedUser.bankDetail.bankName"
-				ng-required="true">
-			<div ng-messages="viewuser.bankName.$error"
-				ng-if="viewuser.bankName.$submitted || viewuser.bankName.$touched">
-				<div ng-message="required">Please Enter Bank Name.</div>
-			</div>
-			</md-input-container>
-			<md-input-container flex> <label>Branch
-				Name <span style="color: red"
-				ng-show="viewuser.branchName.$error.required" class="mandatory">*</span>
-			</label> <input id="branchName" name="branchName"
-				ng-model="selectedUser.bankDetail.branchName" ng-required="true">
-			<div ng-messages="viewuser.branchName.$error"
-				ng-if="viewuser.branchName.$submitted || viewuser.branchName.$touched">
-				<div ng-message="required">Please Enter MIRC Code.</div>
-			</div>
-			</md-input-container>
-
-		</div>
-		<div layout layout-xs="column">
-			<md-input-container flex> <label>bankAccountNo
-				<span style="color: red"
-				ng-show="viewuser.bankAccountNo.$error.required" class="mandatory">*</span>
-			</label> <input id="bankAccountNo" name="bankAccountNo"
-				ng-model="selectedUser.bankDetail.bankAccountNo" ng-required="true">
-			<div ng-messages="viewuser.bankAccountNo.$error"
-				ng-if="viewuser.bankAccountNo.$submitted || viewuser.bankAccountNo.$touched">
-				<div ng-message="required">Please Enter Bank Name.</div>
-			</div>
-			</md-input-container>
-
-			<md-input-container flex> <label>Bank
-				IFSC Code <span style="color: red"
-				ng-show="viewuser.bankIfscCode.$error.required" class="mandatory">*</span>
-			</label> <input id="bankIfscCode" name="bankIfscCode"
-				ng-model="selectedUser.bankDetail.bankIfscCode" ng-required="true">
-			<div ng-messages="viewuser.bankIfscCode.$error"
-				ng-if="viewuser.bankIfscCode.$submitted || viewuser.bankIfscCode.$touched">
-				<div ng-message="required">Please Enter IFSC Code.</div>
-			</div>
-			</md-input-container>
-
-
 		</div>
 
+		<h4 ng-init="employeeDetailToogle=false"
+			ng-click="employeeDetailToogle=!employeeDetailToogle">
+			Employee Detail
+			<md-button class="md-icon-button" ng-show="employeeDetailToogle">
+			<ng-md-icon icon="keyboard_arrow_up" style="fill: md-default"
+				size="24"> <md-tooltip> Expand</md-tooltip></ng-md-icon></md-button>
+			<md-button class="md-icon-button" ng-show="!employeeDetailToogle">
+			<ng-md-icon icon="keyboard_arrow_down" style="fill: md-default"
+				size="24"> <md-tooltip> Collapse</md-tooltip></ng-md-icon></md-button>
+		</h4>
+		<div ng-show="employeeDetailToogle">
 
+
+			<div layout layout-xs="column">
+				<md-input-container flex> <label>PAN
+					Card Number </label> <input name="panCardNumber"
+					ng-model="selectedUser.employeeDetail.panCardNumber"> </md-input-container>
+				<md-input-container flex> <label>EPF
+					Number </label> <input name="epfNumber"
+					ng-model="selectedUser.employeeDetail.epfNumber"> </md-input-container>
+			</div>
+
+
+			<div layout layout-xs="column">
+				<md-input-container flex> <label>Bank
+					Name </label> <input id="bankName" name="bankName"
+					ng-model="selectedUser.employeeDetail.bankDetail.bankName">
+				</md-input-container>
+				<md-input-container flex> <label>Branch
+					Name </label> <input id="branchName" name="branchName"
+					ng-model="selectedUser.employeeDetail.bankDetail.branchName">
+				</md-input-container>
+			</div>
+			<div layout layout-xs="column">
+				<md-input-container flex> <label>Bank
+					Account No. </label> <input id="bankAccountNo" name="bankAccountNo"
+					ng-model="selectedUser.employeeDetail.bankDetail.bankAccountNo">
+				</md-input-container>
+
+				<md-input-container flex> <label>Bank
+					IFSC Code </label> <input id="bankIfscCode" name="bankIfscCode"
+					ng-model="selectedUser.employeeDetail.bankDetail.bankIfscCode">
+				</md-input-container>
+			</div>
+
+		</div>
 
 		<div layout layout-sm="column" layout-align="end end">
 			<a href='' ng-click='ShowHide()'>Change Password +/-</a><br> <br>
@@ -138,7 +135,7 @@
 
 <section layout="row" layout-xs="column" layout-align="left left">
 	<md-button class="md-raised md-primary" ng-disabled="viewuser.$invalid"
-		ng-click="updateuser()">Update User</md-button>
+		ng-click="updateuser()">Save</md-button>
 </section>
 </md-content>
 

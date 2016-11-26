@@ -56,7 +56,7 @@ public class DownloadMonthlypayment extends HttpServlet {
 
 					writer.append(""
 							+ monthlypay.get(i).getleaveDetailEntity()
-									.getUser().getEmpId());
+									.getUser().getEmployeeDetail().getEmpId());
 					writer.append(',');
 
 					writer.append(""
@@ -68,7 +68,7 @@ public class DownloadMonthlypayment extends HttpServlet {
 					writer.append(',');
 					writer.append(""
 							+ monthlypay.get(i).getleaveDetailEntity()
-									.getUser().getDepartment().getName());
+									.getUser().getEmployeeDetail().getDepartment().getName());
 					writer.append(',');
 					writer.append("" + monthlypay.get(i).getNetSalaryAmt());
 					writer.append(',');

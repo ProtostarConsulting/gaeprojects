@@ -107,7 +107,7 @@ public class DownloadSalaryMaster extends HttpServlet {
 					writer.append(',');
 
 					EmpDepartment department = userSalMaster.getEmpAccount()
-							.getDepartment();
+							.getEmployeeDetail().getDepartment();
 					if (department != null)
 						writer.append(department.getName());
 					else

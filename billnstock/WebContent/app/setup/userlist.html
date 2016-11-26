@@ -22,33 +22,28 @@
 		<md-content> <md-tabs md-dynamic-height md-border-bottom>
 		<md-tab label="Active"> <md-content class="md-padding">
 
-		<div layout layout-sm="column">
-			<md-input-container flex="33" flex-sm="100" flex-xs="100">
+		<div layout="row">
+			<md-input-container flex="33" flex-sm="50" flex-xs="100">
 			<label>Search</label> <input ng-model="searchTextActiveUsers">
 			</md-input-container>
-		</div>
-		<div>
 
-
-			<ng-md-icon icon="add_circle" style="fill: md-default" size="35"
+			<md-button class="md-icon-button"
 				ui-sref="setup.useradd({selectedBusiness: selectedBusiness})">
-			<md-tooltip> Add User</md-tooltip></ng-md-icon>
-			</ng-md-icon>
-
+			<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
+			<md-tooltip> Add User </md-tooltip></ng-md-icon> </md-button>
 		</div>
 
 		<div>
 			<md-data-table-container>
-
 			<table md-data-table md-progress="deferred">
 				<thead md-order="query.order" md-trigger="onOrderChange">
 					<tr>
 						<th name="First Name" order-by="firstName"></th>
 						<th name="Last Name" order-by="lastName"></th>
-						<th name="Department" order-by="department" hide-xs></th>
-						<th name="Designation" order-by="designation" hide-xs></th>
 						<th name="Login Allowed" order-by="isLoginAllowed" hide-xs></th>
-						<th name="Email" order-by="email_id" hide-xs></th>
+						<!-- 	<th name="Department" order-by="department" hide-xs></th>
+						<th name="Designation" order-by="designation" hide-xs></th>
+						<th name="Email" order-by="email_id" hide-xs></th> -->
 						<th name="Last Login" order-by="lastLoginDate" hide-xs></th>
 						<th name="Edit | Actions"></th>
 					</tr>
@@ -58,21 +53,21 @@
 						ng-repeat="user in activeUsers | filter: searchTextActiveUsers | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
 						<td>{{user.firstName}}</td>
 						<td>{{user.lastName}}</td>
-						<td hide-xs>{{user.department?user.department.name:'Default'}}</td>
-						<td hide-xs>{{user.designation}}</td>
 						<td hide-xs>{{user.isLoginAllowed?'Yes':'No'}}</td>
-						<td hide-xs>{{user.email_id}}</td>
+						<!-- <td hide-xs>{{user.department?user.department.name:'Default'}}</td>
+						<td hide-xs>{{user.designation}}</td>						
+						<td hide-xs>{{user.email_id}}</td> -->
 						<td hide-xs>{{user.lastLoginDate | formatDateWithTime}}</td>
 						<td>
 							<section layout="row">
 								<md-button class="md-icon-button"
 									ng-show="currentStateName == 'setup.userlist'"
-									ui-sref="setup.userview({selectedUser: user})" style="margin-top: 10px"> <ng-md-icon
-									icon="edit" style="fill: md-default" size="24" > <md-tooltip>
+									ui-sref="setup.userview({selectedUser: user})"> <ng-md-icon
+									icon="edit" style="fill: md-default" size="24"> <md-tooltip>
 								Edit Record</md-tooltip></ng-md-icon></md-button>
 								<md-button class="md-icon-button"
 									ng-show="currentStateName == 'proAdmin.editBusiness.userlist'"
-									ui-sref="proAdmin.editBusiness.userview({selectedUser: user})" style="margin-top: 10px">
+									ui-sref="proAdmin.editBusiness.userview({selectedUser: user})">
 								<ng-md-icon icon="edit" style="fill: md-default" size="24">
 								<md-tooltip> Edit Record</md-tooltip></ng-md-icon></md-button>
 
@@ -131,14 +126,16 @@
 							<section layout="row">
 								<md-button class="md-icon-button"
 									ng-show="currentStateName == 'setup.userlist'"
-									ui-sref="setup.userview({selectedUser: user})" style="margin-top: 10px"> <ng-md-icon
-									icon="edit" style="fill: md-default" size="24" > <md-tooltip>
+									ui-sref="setup.userview({selectedUser: user})"
+									style="margin-top: 10px"> <ng-md-icon icon="edit"
+									style="fill: md-default" size="24"> <md-tooltip>
 								Edit Record</md-tooltip></ng-md-icon></md-button>
 								<md-button class="md-icon-button"
 									ng-show="currentStateName == 'proAdmin.editBusiness.userlist'"
-									ui-sref="proAdmin.editBusiness.userview({selectedUser: user})" style="margin-top: 10px">
-								<ng-md-icon icon="edit" style="fill: md-default" size="24">
-								<md-tooltip> Edit Record</md-tooltip></ng-md-icon></md-button>
+									ui-sref="proAdmin.editBusiness.userview({selectedUser: user})"
+									style="margin-top: 10px"> <ng-md-icon icon="edit"
+									style="fill: md-default" size="24"> <md-tooltip>
+								Edit Record</md-tooltip></ng-md-icon></md-button>
 
 								<md-menu md-offset="0 -7"> <md-button
 									aria-label="Open Menu" class="md-icon-button"

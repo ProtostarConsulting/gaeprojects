@@ -3,11 +3,10 @@ package com.protostar.billingnstock.user.entities;
 import java.util.Date;
 import java.util.List;
 
-import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
 import com.protostar.billnstock.entity.BaseEntity;
-import com.protostar.billnstock.until.data.BankDetail;
+import com.protostar.billnstock.until.data.EmployeeDetail;
 
 @Entity
 public class UserEntity extends BaseEntity {
@@ -15,7 +14,7 @@ public class UserEntity extends BaseEntity {
 	private String firstName;
 	private String lastName;
 	private String fullName;
-	
+
 	private String status = "active";
 
 	@Index
@@ -25,18 +24,10 @@ public class UserEntity extends BaseEntity {
 	private Boolean isGoogleUser = true;
 	@Index
 	private Boolean isLoginAllowed = true;
-	@Index
-	private Long empId;
-	@Index
-	private Ref<EmpDepartment> department;
-	private String designation;
-	
 	private Date lastLoginDate;
-
-	/* private Address address; */
-	private BankDetail bankDetail = new BankDetail();
-
-	private String authorizations;
+	String authorizations;
+	@Index
+	private EmployeeDetail employeeDetail = new EmployeeDetail();
 
 	public String getStatus() {
 		return status;
@@ -52,15 +43,6 @@ public class UserEntity extends BaseEntity {
 
 	public void setAuthorizations(String authorizations) {
 		this.authorizations = authorizations;
-	}
-
-	public BankDetail getBankDetail() {
-		return bankDetail == null ? null : bankDetail;
-	}
-
-	public void setBankDetail(BankDetail bankDetail) {
-		this.bankDetail = bankDetail;
-
 	}
 
 	public Boolean getIsGoogleUser() {
@@ -129,22 +111,6 @@ public class UserEntity extends BaseEntity {
 		this.isLoginAllowed = isLoginAllowed;
 	}
 
-	public Long getEmpId() {
-		return empId;
-	}
-
-	public void setEmpId(Long empId) {
-		this.empId = empId;
-	}
-
-	public EmpDepartment getDepartment() {
-		return department == null ? null : department.get();
-	}
-
-	public void setDepartment(EmpDepartment department) {
-		this.department = Ref.create(department);
-	}
-
 	public Date getLastLoginDate() {
 		return lastLoginDate;
 	}
@@ -161,14 +127,12 @@ public class UserEntity extends BaseEntity {
 		this.fullName = fullName;
 	}
 
-	public String getDesignation() {
-		return designation;
+	public EmployeeDetail getEmployeeDetail() {
+		return employeeDetail;
 	}
 
-	public void setDesignation(String designation) {
-		this.designation = designation;
+	public void setEmployeeDetail(EmployeeDetail employeeDetail) {
+		this.employeeDetail = employeeDetail;
 	}
-
-	
 
 }

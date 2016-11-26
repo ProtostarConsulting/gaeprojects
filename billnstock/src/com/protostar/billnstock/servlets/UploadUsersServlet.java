@@ -103,14 +103,14 @@ public class UploadUsersServlet extends HttpServlet {
 					for (EmpDepartment empDepartment : empDepartments) {
 						if (dept.trim().equalsIgnoreCase(
 								empDepartment.getName())) {
-							userEntity.setDepartment(empDepartment);
+							userEntity.getEmployeeDetail().setDepartment(empDepartment);
 						}
 					}
 				}
-				if (userEntity.getDepartment() == null) {
+				if (userEntity.getEmployeeDetail().getDepartment() == null) {
 					for (EmpDepartment empDepartment : empDepartments) {
 						if ("Default".equalsIgnoreCase(empDepartment.getName())) {
-							userEntity.setDepartment(empDepartment);
+							userEntity.getEmployeeDetail().setDepartment(empDepartment);
 						}
 					}
 				}
@@ -122,7 +122,7 @@ public class UploadUsersServlet extends HttpServlet {
 						.setIsGoogleUser("1".equalsIgnoreCase(split[5].trim()));
 				userEntity.setPassword(split[6].trim());
 
-				userEntity.setEmpId(sequenceGenService.getNextSequenceNumber());
+				userEntity.getEmployeeDetail().setEmpId(sequenceGenService.getNextSequenceNumber());
 				// ofy().save().entity(userEntity).now();
 				userList.add(userEntity);
 

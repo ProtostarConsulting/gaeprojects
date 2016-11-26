@@ -300,15 +300,16 @@ public class PDFHtmlTemplateService {
 			root.put("buisinessName", "" + business.getBusinessName());
 			root.put("buisinessAddress", "" + buisinessAddress);
 
+			EmployeeDetail employeeDetail = user.getEmployeeDetail();
 			// Header Col1
-			root.put("empNumber", "" + user.getEmpId());
+			root.put("empNumber", "" + employeeDetail.getEmpId());
 			String empName = user.getFirstName() + " " + user.getLastName();
 			root.put("empName", empName);
-			EmpDepartment department = user.getDepartment();
+			EmpDepartment department = employeeDetail.getDepartment();
 			root.put("department",
 					department == null ? "" : "" + department.getName());
-			root.put("empDesignation", "" + user.getDesignation());
-			BankDetail bankDetail = user.getBankDetail();
+			root.put("empDesignation", "" + employeeDetail.getDesignation());
+			BankDetail bankDetail = employeeDetail.getBankDetail();
 			if (bankDetail == null)
 				bankDetail = new BankDetail();
 			root.put("bankName", "" + bankDetail.getBankName());

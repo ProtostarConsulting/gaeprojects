@@ -47,7 +47,7 @@ angular.module("stockApp").controller(
 			$scope.updateuser = function() {
 				$scope.selectedUser.modifiedBy = $scope.curUser.email_id;
 				var UserService = appEndpointSF.getUserService();
-				UserService.updateUser($scope.selectedUser).then(
+				UserService.addUser($scope.selectedUser).then(
 						function(msgBean) {
 							$scope.showUpdateToast();
 						});

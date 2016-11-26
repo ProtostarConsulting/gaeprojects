@@ -43,7 +43,7 @@ public class UserService {
 
 	@ApiMethod(name = "addUser", path = "addUser")
 	public void addUser(UserEntity usr) {
-		if (usr.getDepartment() == null)
+		if (usr.getEmployeeDetail().getDepartment() == null)
 			setDefaultDepartment(usr);
 
 		if (usr.getId() == null) {
@@ -52,7 +52,7 @@ public class UserService {
 			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
 					EntityUtil.getBusinessRawKey(usr.getBusiness()),
 					Constants.EMP_NO_COUNTER);
-			usr.setEmpId(sequenceGenService.getNextSequenceNumber());
+			usr.getEmployeeDetail().setEmpId(sequenceGenService.getNextSequenceNumber());
 		} else {
 			usr.setModifiedDate(new Date());
 			ofy().save().entity(usr).now();
@@ -119,7 +119,7 @@ public class UserService {
 				.getBusiness().getId());
 		for (EmpDepartment empDepartment : empDepartments) {
 			if ("Default".equalsIgnoreCase(empDepartment.getName())) {
-				usr.setDepartment(empDepartment);
+				usr.getEmployeeDetail().setDepartment(empDepartment);
 			}
 		}
 	}
