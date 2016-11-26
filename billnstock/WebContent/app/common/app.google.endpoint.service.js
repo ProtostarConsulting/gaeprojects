@@ -677,6 +677,19 @@ function googleEndpointSF($log, $q) {
 		});
 		return deferred.promise;
 	}
+	
+	
+	
+	hrService.getMonthlyPaymentByUser = function(id,user) {
+		var deferred = $q.defer();
+		gapi.client.hrService.fecthMonthlyPaymentByUser(user).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}
+	
+	
+	
 
 	hrService.getSalaryMasterlist = function(id) {
 		var deferred = $q.defer();

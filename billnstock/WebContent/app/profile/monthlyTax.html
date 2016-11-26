@@ -1,0 +1,99 @@
+<md-content layout-padding> <!-- <h3 class="md-headline">Monthly Payment Detail</h3> -->
+
+<form name="MonthlyDeductionDetail" layout="column">
+	<md-toolbar class="md-table-toolbar md-default">
+	<div class="md-toolbar-tools">
+		<span>My Monthly Deductions And Salary Slips </span>
+		<div flex></div>
+		<section layout="row" layout-align="end end" flex></section>
+	</div>
+	</md-toolbar>
+	<hr>
+
+	<div>
+
+		<table align="center"
+			style="font-family: arial, sans-serif; border-collapse: collapse; width: 95%; align: center;">
+			<thead md-order="query.order" md-trigger="onOrderChange">
+				<tr>
+					<th
+						style="border: 1px solid #ddd; width: 10%; padding: 5px; text-align: center;">Month</th>
+						<th
+						style="border: 1px solid #ddd; width: 15%; padding: 5px; text-align: center;">Net Salary
+				</th>
+					<th
+						style="border: 1px solid #ddd; width: 10%; padding: 5px; text-align: center;">P
+						F</th>
+					<th
+						style="border: 1px solid #ddd; width: 10%; padding: 5px; text-align: center;">P
+						T</th>
+					<th
+						style="border: 1px solid #ddd; width: 10%; padding: 5px; text-align: center;">Canteen</th>
+					<th
+						style="border: 1px solid #ddd; width: 15%; padding: 5px; text-align: center;">IT
+						Dduction</th>
+					<th
+						style="border: 1px solid #ddd; width: 15%; padding: 5px; text-align: center;">Other
+						Deduction</th>
+					<th
+						style="border: 1px solid #ddd; width: 15%; padding: 5px; text-align: center;">Salary
+						Slip</th>
+
+				</tr>
+			</thead>
+			<tbody>
+
+				<tr ng-repeat="monthlyPayObj in monthlyPayDetailsList">
+
+					<td
+						style="border: 1px solid #ddd; padding: 5px; text-align: center;"><b>{{monthlyPayObj.leaveDetailEntity.currentMonth}}
+					</b></td>
+					<td
+						style="border: 1px solid #ddd; padding: 5px; text-align: center;">{{monthlyPayObj.netSalaryAmt}}</td>
+					<td
+						style="border: 1px solid #ddd; padding: 5px; text-align: center;">{{monthlyPayObj.pfDeductionAmt}}</td>
+					<td
+						style="border: 1px solid #ddd; padding: 5px; text-align: center;">{{monthlyPayObj.ptDeductionAmt}}</td>
+					<td
+						style="border: 1px solid #ddd; padding: 5px; text-align: center;">{{monthlyPayObj.canteenDeductionAmt}}</td>
+					<td
+						style="border: 1px solid #ddd; padding: 5px; text-align: center;">{{monthlyPayObj.itDeductionAmt}}</td>
+					<td
+						style="border: 1px solid #ddd; padding: 5px; text-align: center;">{{monthlyPayObj.
+						otherDeductionAmt}}</td>
+					<td
+						style="border: 1px solid #ddd; text-align: center;">
+						<md-button class="md-icon-button" ng-show="monthlyPayObj.id"
+							ng-click="downloadSalarySlip(monthlyPayObj)"> <ng-md-icon
+							icon="print" style="fill: md-default" size="18"> <md-tooltip>
+						Download Salary Slip</md-tooltip></ng-md-icon></md-button>
+					</td>
+				<tr>
+					<td
+						style="border: 1px solid #ddd; padding: 5px; text-align: center;"><b>Total</b></td>
+						<td
+						style="border: 1px solid #ddd; padding: 5px; text-align: center;"><b>{{totalNetsalary}}</b></td>
+					<td
+						style="border: 1px solid #ddd; padding: 5px; text-align: center;"><b>{{totalPF}}</b></td>
+					<td
+						style="border: 1px solid #ddd; padding: 5px; text-align: center;"><b>{{totalPT}}</b></td>
+					<td
+						style="border: 1px solid #ddd; padding: 5px; text-align: center;"><b>{{totalCanteen}}</b></td>
+					<td
+						style="border: 1px solid #ddd; padding: 5px; text-align: center;"><b>{{totalIT}}</b></td>
+					<td
+						style="border: 1px solid #ddd; padding: 5px; text-align: center;"><b>{{totalOther}}</b></td>
+					<td
+						style="border: 1px solid #ddd; padding: 5px; text-align: center;"><b>{{}}</b></td>
+
+				</tr>
+
+			</tbody>
+		</table>
+	</div>
+
+
+
+
+
+</form>

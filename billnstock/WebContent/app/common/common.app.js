@@ -641,6 +641,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		templateUrl : '/app/hr/payRollReports.html',
 		controller : 'payRollReports',
 	})
+	.state('hr.monthlyTax', {
+		url : "/monthlyTax",
+		templateUrl : '/app/hr/monthlyTax.html',
+		controller : 'monthlyTax',
+	})
 	
 	
 	
@@ -881,7 +886,15 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/getAllSlip/:viewsalslips",
 		templateUrl : '/app/profile/getAllSalSlip.html',
 		controller : 'AllSalslip'
-	}).state('user_prof_detail.print', {
+	})
+.state('user_prof_detail.monthlyTax', {
+		url : "/MyMonthlyDeduction",
+		templateUrl : '/app/profile/monthlyTax.html',
+		controller : 'myMonthlyDeduction',
+	})	
+	
+	
+	.state('user_prof_detail.print', {
 		url : "/print/:printempidsalslip",
 		/*
 		 * templateUrl : '/app/profile/print_salaryslip.html', controller :
