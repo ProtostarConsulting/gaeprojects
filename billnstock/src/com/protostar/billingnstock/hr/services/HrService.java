@@ -420,6 +420,36 @@ public class HrService {
 
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	@ApiMethod(name = "fecthMonthlyPaymentByUser", path = "fecthMonthlyPaymentByUser")
+	public  List<MonthlyPaymentDetailEntity> fecthMonthlyPaymentByUser(UserEntity user ) {
+		
+		System.out.println("user.getBusiness()*******"+user.getBusiness());
+		System.out.println("user.getBusiness().getId()*******"+user.getBusiness().getId());
+		List<MonthlyPaymentDetailEntity> monthlyPaymentDetailEntity = ofy()
+				.load().type(MonthlyPaymentDetailEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, user.getBusiness().getId()))
+				.filter("empAccount", user).list();
+		System.out.println("monthlyPaymentDetailEntity******"+monthlyPaymentDetailEntity.size());
+	return monthlyPaymentDetailEntity;
+
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	@ApiMethod(name = "getpayRollReport")
 	public List<PayRollMonthlyData> getpayRollReport(@Named("id") Long busId) {
 
@@ -437,13 +467,7 @@ public class HrService {
 			List<MonthlyPaymentDetailEntity> monthlyPaymentDetailEntity = hr
 					.getMonthlyPayment(busId, s.trim());
 
-			if ((monthlyPaymentDetailEntity.get(0).getPayableDays() != 0)) {// ||(monthlyPaymentDetailEntity.size()
-																			// !=
-																			// 0)||(
-																			// monthlyPaymentDetailEntity.equals(null))
-																			// &&(
-																			// monthlyPaymentDetailEntity.isEmpty()==false))
-																			// {
+			if ((monthlyPaymentDetailEntity.get(0).getPayableDays() != 0)) {
 				for (int j = 0; j < monthlyPaymentDetailEntity.size(); j++) {
 					sal += monthlyPaymentDetailEntity.get(j)
 							.getCalculatedGrossSalary();
