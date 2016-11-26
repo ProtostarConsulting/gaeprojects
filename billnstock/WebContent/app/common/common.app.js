@@ -634,35 +634,23 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/LeaveDetail",
 		templateUrl : '/app/hr/LeaveDetail.html',
 		controller : 'LeaveDetails',
-	})
-
-	.state('hr.payRollRepo', {
+	}).state('hr.payRollRepo', {
 		url : "/payRollReport",
 		templateUrl : '/app/hr/payRollReports.html',
 		controller : 'payRollReports',
-	})
-	.state('hr.monthlyTax', {
+	}).state('hr.monthlyTax', {
 		url : "/monthlyTax",
 		templateUrl : '/app/hr/monthlyTax.html',
 		controller : 'monthlyTax',
-	})
-	
-	
-	
-	
-	.state('hr.SalaryMaster', {
+	}).state('hr.SalaryMaster', {
 		url : "/SalaryMaster",
 		templateUrl : '/app/hr/SalaryMaster.html',
 		controller : 'SalaryMaster',
-	})
-
-	.state('hr.MonthlyPaymentDetail', {
+	}).state('hr.MonthlyPaymentDetail', {
 		url : "/MonthlyPaymentDetail",
 		templateUrl : '/app/hr/MonthlyPaymentDetail.html',
 		controller : 'MonthlyPaymentDetail',
-	})
-
-	.state('crm', {
+	}).state('crm', {
 		url : "/crm",
 		templateUrl : '/app/crm/crm_module.html',
 		controller : 'crm',
@@ -752,8 +740,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/userview",
 		templateUrl : '/app/setup/setup_viewuser.html',
 		controller : 'setup.viewuser',
-		params:{
-			selectedUser: null
+		params : {
+			selectedUser : null
 		}
 
 	}).state('setup.footer', {
@@ -886,14 +874,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/getAllSlip/:viewsalslips",
 		templateUrl : '/app/profile/getAllSalSlip.html',
 		controller : 'AllSalslip'
-	})
-.state('user_prof_detail.monthlyTax', {
+	}).state('user_prof_detail.monthlyTax', {
 		url : "/MyMonthlyDeduction",
 		templateUrl : '/app/profile/monthlyTax.html',
 		controller : 'myMonthlyDeduction',
-	})	
-	
-	
+	})
+
 	.state('user_prof_detail.print', {
 		url : "/print/:printempidsalslip",
 		/*
@@ -994,53 +980,53 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/manageinstituteauth",
 		templateUrl : '/app/ProAdmin/manage_institute_auth.html',
 		controller : 'proAdminManageBizAuth',
-		params: {
-			selectedBusiness: null
+		params : {
+			selectedBusiness : null
 		}
 	}).state('proAdmin.editBusiness', {
 		url : "/editbusinesssetup",
-		templateUrl : '/app/ProAdmin/setup_module.html', 
+		templateUrl : '/app/ProAdmin/setup_module.html',
 		controller : 'setup',
-		params: {
-			selectedBusiness: null
+		params : {
+			selectedBusiness : null
 		}
 	}).state('proAdmin.editBusiness.useradd', {
 		url : "/useradd",
 		templateUrl : '/app/setup/setup_adduser.html',
 		controller : 'setup.adduser',
-		params: {
-			selectedBusiness: null
+		params : {
+			selectedBusiness : null
 		}
 
 	}).state('proAdmin.editBusiness.businesssetup', {
 		url : "/businesssetup",
 		templateUrl : '/app/setup/EditBusiness.html',
 		controller : 'editBusiness',
-		params: {
-			selectedBusiness: null
+		params : {
+			selectedBusiness : null
 		}
 
 	}).state('proAdmin.editBusiness.changeplan', {
 		url : "/changePaln",
 		templateUrl : '/app/setup/changeplan.html',
 		controller : 'setup.changeplan',
-		params: {
-			selectedBusiness: null
+		params : {
+			selectedBusiness : null
 		}
 
 	}).state('proAdmin.editBusiness.userlist', {
 		url : "/userlist",
 		templateUrl : '/app/setup/userlist.html',
 		controller : 'userlist',
-		params: {
-			selectedBusiness: null
+		params : {
+			selectedBusiness : null
 		}
 	}).state('proAdmin.editBusiness.userview', {
 		url : "/userview/:selecteduserNo",
 		templateUrl : '/app/setup/setup_viewuser.html',
 		controller : 'setup.viewuser',
-		params:{
-			selectedUser: null
+		params : {
+			selectedUser : null
 		}
 	})
 

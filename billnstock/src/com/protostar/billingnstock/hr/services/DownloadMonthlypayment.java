@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.protostar.billingnstock.hr.entities.MonthlyPaymentDetailEntity;
+import com.protostar.billingnstock.user.entities.EmpDepartment;
+import com.protostar.billingnstock.user.entities.UserEntity;
+import com.protostar.billnstock.until.data.EmployeeDetail;
 
 /**
  * Servlet implementation class DownloadMonthlypayment
@@ -54,23 +57,25 @@ public class DownloadMonthlypayment extends HttpServlet {
 
 				try {
 
+					MonthlyPaymentDetailEntity salaryObj = monthlypay.get(i);
+					UserEntity empAccount = salaryObj.getEmpAccount();
+					if (empAccount == null)
+						continue;
+					EmployeeDetail employeeDetail = empAccount
+							.getEmployeeDetail();
 					writer.append(""
-							+ monthlypay.get(i).getleaveDetailEntity()
-									.getUser().getEmployeeDetail().getEmpId());
+							+ (employeeDetail == null ? "" : employeeDetail
+									.getEmpId()));
 					writer.append(',');
 
-					writer.append(""
-							+ monthlypay.get(i).getleaveDetailEntity()
-									.getUser().getFirstName()
-							+ " "
-							+ monthlypay.get(i).getleaveDetailEntity()
-									.getUser().getLastName());
+					writer.append("" + empAccount.getFirstName() + " "
+							+ empAccount.getLastName());
 					writer.append(',');
-					writer.append(""
-							+ monthlypay.get(i).getleaveDetailEntity()
-									.getUser().getEmployeeDetail().getDepartment().getName());
+					EmpDepartment department = employeeDetail.getDepartment();
+					writer.append((department == null ? "" : department
+							.getName()));
 					writer.append(',');
-					writer.append("" + monthlypay.get(i).getNetSalaryAmt());
+					writer.append("" + salaryObj.getNetSalaryAmt());
 					writer.append(',');
 					writer.append(System.lineSeparator());
 
