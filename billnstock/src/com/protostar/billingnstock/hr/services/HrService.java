@@ -490,7 +490,7 @@ public class HrService {
 				payr.totalCanteen = totalCanteen;
 				payr.totalIT = totalIT;
 				payr.totalOther = totalOther;
-				payrolldatalist.add(i, payr);
+				payrolldatalist.add(payr);
 				sal = 0;
 				totalPF = 0;
 				totalPT = 0;
