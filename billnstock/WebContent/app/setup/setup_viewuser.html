@@ -50,6 +50,7 @@
 					ng-model="selectedUser.employeeDetail.department"
 					placeholder="Select  Department"> <lable>Select
 				Department</lable> <md-option ng-value="department"
+					ng-selected="selectedUser.employeeDetail.department.id==department.id"
 					ng-repeat="department in departmentList">{{department.name}}
 				</md-option> </md-select></md-input-container>
 				<md-input-container flex> <label>Employee
@@ -63,6 +64,14 @@
 				<md-input-container flex> <label>Phone
 					2 </label> <input name="phone2"
 					ng-model="selectedUser.employeeDetail.phone2"> </md-input-container>
+			</div>
+			<div layout layout-xs="column">
+				<md-input-container flex-gt-xs="25" flex-xs> <label>Emp.
+					No.</label> <input name="empNo"
+					ng-model="selectedUser.employeeDetail.empId"> </md-input-container>
+				<!-- <md-input-container flex-gt-xs="25" flex-xs> <label>Phone
+					2 </label> <input name="phone2"
+					ng-model="selectedUser.employeeDetail.phone2"> </md-input-container> -->
 			</div>
 		</div>
 
@@ -113,12 +122,54 @@
 
 		</div>
 
+		<h4 ng-init="addressDetailToogle=false"
+			ng-click="addressDetailToogle=!addressDetailToogle">
+			Address Detail
+			<md-button class="md-icon-button" ng-show="addressDetailToogle">
+			<ng-md-icon icon="keyboard_arrow_up" style="fill: md-default"
+				size="24"> <md-tooltip> Expand</md-tooltip></ng-md-icon></md-button>
+			<md-button class="md-icon-button" ng-show="!addressDetailToogle">
+			<ng-md-icon icon="keyboard_arrow_down" style="fill: md-default"
+				size="24"> <md-tooltip> Collapse</md-tooltip></ng-md-icon></md-button>
+		</h4>
+		<div ng-show="addressDetailToogle">
+
+			<div layout="row">
+				<md-input-container flex> <label>Line1
+				</label> <input name="line1"
+					ng-model="selectedUser.employeeDetail.address.line1"
+					ng-required="true"> </md-input-container>
+				<md-input-container flex> <label>Line2</label>
+				<input name="line2"
+					ng-model="selectedUser.employeeDetail.address.line2"> </md-input-container>
+			</div>
+			<div layout="row">
+				<md-input-container flex> <label>City </label>
+				<input name="city"
+					ng-model="selectedUser.employeeDetail.address.city"> </md-input-container>
+				<md-input-container flex> <label>State
+
+				</label> <input name="state"
+					ng-model="selectedUser.employeeDetail.address.state"
+					ng-required="true"> </md-input-container>
+			</div>
+			<div layout="row">
+				<md-input-container flex> <label>Pin</label> <input
+					name="pin" ng-model="selectedUser.employeeDetail.address.pin">
+				</md-input-container>
+				<md-input-container flex> <label>Country</label>
+				<input name="country"
+					ng-model="selectedUser.employeeDetail.address.country"> </md-input-container>
+			</div>
+
+		</div>
+
 		<div layout layout-sm="column" layout-align="end end">
 			<a href='' ng-click='ShowHide()'>Change Password +/-</a><br> <br>
 		</div>
 		<div layout layout-sm="column" ng-hide="IsHidden">
 			<md-input-container flex ng-hide="selectedUser.isGoogleUser">
-			<!-- <label style="color: blue">Enter New Password <span style="color: red;">*</span> </label>
+			<!-- <label style="color: blue">Enter New Password  </label>
 			 <input	type="password" style="color: red" ng-model="selectedUser.password">
 			 --> <md-button class="md-primary md-raised"
 				ng-click="showAdvanced($event)"> Change Password </md-button> </md-input-container>

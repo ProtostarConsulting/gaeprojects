@@ -9,7 +9,7 @@ angular
 					$scope.Selectedmonth;// +new Date().getFullYear();
 
 					$scope.query = {
-						order : 'user.empId',
+						order : 'user.employeeDetail.empId',
 						limit : 50,
 						page : 1
 					};

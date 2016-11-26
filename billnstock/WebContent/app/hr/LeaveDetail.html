@@ -64,7 +64,7 @@
 				<thead md-order="query.order" md-trigger="onOrderChange">
 					<tr>
 						<th ng-style="getFormRowStyle()" name="Emp. No."
-							order-by="user.empId"></th>
+							order-by="user.employeeDetail.empId"></th>
 						<th ng-style="getFormRowStyle()" name="Employee Name"></th>
 						<th ng-style="getFormRowStyle()" name="Department"></th>
 						<th ng-style="getFormRowStyle()" name="Opening Balance"></th>
@@ -80,7 +80,7 @@
 						ng-repeat="empLeaveDetailObj in employeeLeaveDetailsList | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
 
 						<td style="margin: 0; padding-left: 5px; padding-right: 5px;">
-							<b ng-bind="empLeaveDetailObj.user.empId"> </b>
+							<b ng-bind="empLeaveDetailObj.user.employeeDetail.empId"> </b>
 						</td>
 						<td ng-style="getFormRowStyle()"><span
 							ng-bind="empLeaveDetailObj.user.firstName + ' ' +empLeaveDetailObj.user.lastName"

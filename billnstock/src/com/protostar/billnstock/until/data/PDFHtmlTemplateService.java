@@ -315,8 +315,8 @@ public class PDFHtmlTemplateService {
 			root.put("bankName", "" + bankDetail.getBankName());
 			root.put("bankAccNumber", "" + bankDetail.getBankAccountNo());
 
-			root.put("panNumber", "" + "");
-			root.put("pfNumber", "" + "");
+			root.put("panNumber", "" + employeeDetail.getPanCardNumber());
+			root.put("pfNumber", "" + employeeDetail.getEpfNumber());
 
 			// Header Col2
 			root.put("ManthlyGross",

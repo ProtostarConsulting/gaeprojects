@@ -6,7 +6,7 @@ angular
 						$mdUtil, $stateParams, $log, objectFactory,
 						appEndpointSF, $mdDialog, $mdMedia, $state) {
 					$scope.query = {
-						order : 'leaveDetailEntity.user.empId',
+						order : 'leaveDetailEntity.user.employeeDetail.empId',
 						limit : 50,
 						page : 1
 					};

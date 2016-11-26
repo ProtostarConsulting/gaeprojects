@@ -7,7 +7,7 @@ angular
 						appEndpointSF, Upload, $mdDialog, $mdMedia, $state) {
 
 					$scope.query = {
-						order : 'empAccount.empId',
+						order : 'empAccount.employeeDetail.empId',
 						limit : 50,
 						page : 1
 					};
