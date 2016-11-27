@@ -75,6 +75,12 @@ public class UploadUsersServlet extends HttpServlet {
 
 		List<EmpDepartment> empDepartments = userService
 				.getEmpDepartments(businessId);
+		EmpDepartment defaultDept = null;
+		for (EmpDepartment empDepartment : empDepartments) {
+			if ("Default".equalsIgnoreCase(empDepartment.getName())) {
+				defaultDept = empDepartment;
+			}
+		}
 		Date todaysDate = new Date();
 		List<UserEntity> userList = new ArrayList<UserEntity>();
 		SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
@@ -85,7 +91,7 @@ public class UploadUsersServlet extends HttpServlet {
 		for (int row = 1; row < split2.length; row++) {
 			try {
 				String[] split = split2[row].split(",");
-				if (split == null || split.length < 7) {
+				if (split == null || split.length < 8) {
 					continue;
 				}
 
@@ -94,10 +100,16 @@ public class UploadUsersServlet extends HttpServlet {
 				userEntity.setCreatedDate(todaysDate);
 				userEntity.setModifiedBy(loggedInUser);
 
-				userEntity.setFirstName(split[0].trim());
-				userEntity.setLastName(split[1].trim());
-				userEntity.setEmail_id(split[2].trim());
-				String dept = split[3];
+				String empNo = split[0];
+				if(empNo == null || empNo.trim().isEmpty()){
+					userEntity.getEmployeeDetail().setEmpId(sequenceGenService.getNextSequenceNumber());
+				}else{
+					userEntity.getEmployeeDetail().setEmpId(Long.parseLong(empNo.trim()));
+				}
+				userEntity.setFirstName(split[1].trim());
+				userEntity.setLastName(split[2].trim());
+				userEntity.setEmail_id(split[3].trim());
+				String dept = split[4];
 
 				if (dept != null && !dept.isEmpty()) {
 					for (EmpDepartment empDepartment : empDepartments) {
@@ -108,21 +120,17 @@ public class UploadUsersServlet extends HttpServlet {
 					}
 				}
 				if (userEntity.getEmployeeDetail().getDepartment() == null) {
-					for (EmpDepartment empDepartment : empDepartments) {
-						if ("Default".equalsIgnoreCase(empDepartment.getName())) {
-							userEntity.getEmployeeDetail().setDepartment(empDepartment);
-						}
-					}
+					userEntity.getEmployeeDetail().setDepartment(defaultDept);
 				}
 
-				userEntity.setIsLoginAllowed("1".equalsIgnoreCase(split[4]
+				userEntity.setIsLoginAllowed("1".equalsIgnoreCase(split[5]
 						.trim()));
 
 				userEntity
-						.setIsGoogleUser("1".equalsIgnoreCase(split[5].trim()));
-				userEntity.setPassword(split[6].trim());
+						.setIsGoogleUser("1".equalsIgnoreCase(split[6].trim()));
+				userEntity.setPassword(split[7].trim());
 
-				userEntity.getEmployeeDetail().setEmpId(sequenceGenService.getNextSequenceNumber());
+				
 				// ofy().save().entity(userEntity).now();
 				userList.add(userEntity);
 

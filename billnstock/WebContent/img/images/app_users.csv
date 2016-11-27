@@ -1,7 +1,3 @@
-firstname,lastname,emailid,department,isLoginAllowed,isgoogleuser,password,,notes
-Ravi,Kadam,ravi@xyz.com,Default,1,0,123,,
-Avi,Kumkar,kuma@xyz.ocm,Default,0,0,123,,
-Kavi,Kur,k@xyz.ocm,Default,1,0,123,,
-push,pim,push@push.pus,Default,0,0,123,,
-aniket,bhalsing,ani@ani.ani,Default,1,0,123,,
-kareeshma,tambe,kareeshma@gmail.com,Default,1,0,123,,
+Employee No.,First Name,Last Name,Email Id /Username,Department,isLoginAllowed,isgoogleuser,password,notes
+1,Ravi,Kadam,ravi@xyz.com,Default,1,0,123,
+2,Avinash,Kumkar,akuma@xyz.ocm,Default,0,0,123,
