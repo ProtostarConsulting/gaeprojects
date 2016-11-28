@@ -14,6 +14,7 @@ public class StockItemEntity extends BaseEntity{
 	
 	@Index
 	private String itemName;
+	@Index
 	private String category;
 	private int qty;
 	private double price;
@@ -24,7 +25,7 @@ public class StockItemEntity extends BaseEntity{
 	private String slot;
 
 	
-	Ref<WarehouseEntity> warehouse;
+	private Ref<WarehouseEntity> warehouse;
 
 	public WarehouseEntity getWarehouse() {
 		return warehouse==null?null:warehouse.get();

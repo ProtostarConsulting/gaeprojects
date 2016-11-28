@@ -10,25 +10,61 @@
 	"authName": "Accounting",
 	"authDisplayName": "Accounting",
 	"uiStateName": "accounting",
-	"orderNumber": "3"
+	"orderNumber": "3",
+	"authorizations":[	    
+	     {
+		 "authName":"accounting",
+		 "authDisplayName":"Accounting",
+		 "uiStateName":"accounting",
+		 "orderNumber":"1",
+		 "authorizations":[]
+		 }
+		 ]
 	},
 	{
 	"authName": "Stock",
 	"authDisplayName": "Stock",
 	"uiStateName": "stock",
-	"orderNumber": "4"
+	"orderNumber": "4",
+	"authorizations":[	    
+	     {
+		 "authName":"stock",
+		 "authDisplayName":"Stock",
+		 "uiStateName":"stock",
+		 "orderNumber":"1",
+		 "authorizations":[]
+		 }
+		 ]
 	},
 	{
 	"authName": "CRM",
 	"authDisplayName": "CRM",
 	"uiStateName": "crm",
-	"orderNumber": "5"
+	"orderNumber": "5",
+	"authorizations":[	    
+	     {
+		 "authName":"crm",
+		 "authDisplayName":"CRM",
+		 "uiStateName":"crm",
+		 "orderNumber":"1",
+		 "authorizations":[]
+		 }
+		 ]
 	},
 	{
 	"authName": "Invoice",
 	"authDisplayName": "Invoice",
 	"uiStateName": "invoice",
-	"orderNumber": "6"
+	"orderNumber": "6",
+	"authorizations":[	    
+	     {
+		 "authName":"invoice",
+		 "authDisplayName":"Invoice",
+		 "uiStateName":"invoice",
+		 "orderNumber":"1",
+		 "authorizations":[]
+		 }
+		 ]
 	},
 	{
 	"authName": "report",

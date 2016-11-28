@@ -9,44 +9,35 @@
 		<h3 hide-xs>Task List Report</h3>
 	</div>
 	<form name="taskReportForm ">
-
 		<md-content>
-		<div layout="row" layout-xs="column" flex>
-
+		<div layout="row" layout-xs="column">
 			<div layout="row" layout-sm="column" flex>
-				<md-input-container> <label>Task Since
-					Date</label> <input name="assignedDate" ng-disabled="true" value=" "></md-input-container>
-				<md-datepicker flex ng-model="selectFilterData.assignedDate"
-					style="padding-top:13px;"></md-datepicker>
+				<md-input-container> <label>Task Since</label> <md-datepicker flex ng-model="selectFilterData.assignedDate"
+					style="padding-top:13px;"></md-datepicker> </md-input-container>
 			</div>
-
 			<md-input-container flex> <label>Filter
 				By Task Status </label> <md-select name="taskStatus"
 				ng-model="selectFilterData.taskStatus"> <md-option
 				ng-repeat="taskStatus in selectFilterData.taskStatusList"
 				ng-value="taskStatus">{{taskStatus}}</md-option> </md-select> </md-input-container>
 
-		</div>
-
-		<div layout="row" layout-xs="column" flex>
-
 			<md-input-container flex> <label>Filter
 				Assigned By </label> <md-select name="assignedBy" id="assignedBy"
-				ng-model="selectFilterData.assignedBy" ng-required="true">
+				ng-model="selectFilterData.assignedBy">
 			<md-option ng-value="user"
 				ng-repeat="user in selectFilterData.userList">{{(user.firstName
 			+ ' ' + user.lastName) | uppercase}}</md-option> </md-select> </md-input-container>
 			<md-input-container flex> <label>Filter
 				By Assigned To </label> <md-select name="assignedTo" id="assignedTo"
-				ng-model="selectFilterData.assignedTo" ng-required="true">
+				ng-model="selectFilterData.assignedTo">
 			<md-option ng-value="user"
 				ng-repeat="user in selectFilterData.userList">{{(user.firstName
 			+ ' ' + user.lastName) | uppercase}}</md-option> </md-select> </md-input-container>
 
 		</div>
 		<div layout="row" layout-align="center center">
-			<md-button class="md-raised md-primary" ng-click="filterTasksByFitlerData()">Display
-			Report</md-button>
+			<md-button class="md-raised md-primary"
+				ng-click="filterTasksByFitlerData()">Display Report</md-button>
 		</div>
 
 		<div ng-hide="loading">

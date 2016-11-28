@@ -1,82 +1,52 @@
 <div layout="column">
-
-
 	<div>
+		<div>
+			<section layout="row" style="margin:0;padding:0">
+				<md-content layout="row" layout-align="center start" style="margin:0;padding:0"> <md-button
+					ui-sref="setup.departmentList" ng-click="close()"
+					class="md-primary">Department List</md-button> <md-button
+					ui-sref="setup.businesssetup" ng-click="close()" class="md-primary"
+					>Edit Business </md-button> <md-button
+					ui-sref="setup.userlist" ng-click="close()" class="md-primary"
+					> Userlist </md-button> <md-button
+					ui-sref="setup.changeplan" ng-click="close()" class="md-primary"
+					>Change Plan</md-button> <md-button
+					ui-sref="setup.changetheme" ng-click="close()" class="md-primary"
+					>Change Theme</md-button> <md-button
+					ui-sref="setup.setlogo" ng-click="close()" class="md-primary"
+					>Set Company Logo</md-button> </md-content>
 
-		<section layout="row">
-		<span hide-xs> 
-			<div class="md-toolbar-tools">
-			<md-content layout="row" layout-align="center start">
-			<!-- 	<md-button ui-sref="setup.user"
-				ng-click="close()" class="md-primary" show-gt-md> User </md-button>
-
-			<md-button ui-sref="setup.printheaderfooter" ng-click="close()"
-				class="md-primary" show-gt-md> Print Header/Footer </md-button> -->
-			<!-- 	<md-button ui-sref="u"
-				ng-click="close()" class="md-primary" show-gt-md> Add User </md-button> -->
-				
-				
-				<md-button ui-sref="setup.departmentList"
-				ng-click="close()" class="md-primary" show-gt-md>Department List</md-button>
-				<md-button ui-sref="setup.businesssetup"
-				ng-click="close()" class="md-primary" show-gt-md>Edit Business  </md-button>
-				 <md-button ui-sref="setup.userlist"
-				ng-click="close()" class="md-primary" show-gt-md> Userlist </md-button>
- 				<md-button ui-sref="setup.changeplan"
-				ng-click="close()" class="md-primary" show-gt-md>Change Plan</md-button>
-				<md-button ui-sref="setup.changetheme"
-				ng-click="close()" class="md-primary" show-gt-md>Change Theme</md-button>
-				<md-button ui-sref="setup.setlogo"
-				ng-click="close()" class="md-primary" show-gt-md>Set Company Logo</md-button>
-				
-				
-				
-				
-			</md-content>
-			</div>
-		</span>
-		<!--  <span hide-gt-xs> -->
-			<div class="md-toolbar-tools">
 				<span flex></span>
-				<md-card>
-				<section layout="row">
-					<md-button class="md-icon-button" aria-label="More"
-						ng-click="toggleRight()"> <md-icon
-						md-svg-icon="img/icons/more_vert.svg"></md-icon> </md-button>
-				</section>
-				</md-card>
-			</div>
-		<!-- </span> -->
+
+				<md-button class="md-icon-button" aria-label="More"
+					ng-click="toggleRight()"> <md-icon
+					md-svg-icon="img/icons/more_vert.svg"></md-icon> </md-button>
+			</section>
+		</div>
 
 		<md-sidenav class="md-sidenav-right md-whiteframe-z2"
-				md-component-id="right"> <md-toolbar class="md-theme-light">
-					<h1 class="md-toolbar-tools">Sidenav Right</h1>
-			</md-toolbar> 
-			<md-content layout="column"> 
-			<md-button ui-sref="setup.useradd({businessNo:businessNo})"
-				ng-click="close()" class="md-primary" show-gt-md> Add User </md-button>
-				<md-button ui-sref="setup.businesssetup({businessNo:businessNo})"
-				ng-click="close()" class="md-primary" show-gt-md>Edit Business  </md-button>
-				 <md-button ui-sref="setup.userlist({businessNo:businessNo})"
-				ng-click="close()" class="md-primary" show-gt-md> Userlist </md-button>
- 				<md-button ui-sref="setup.changeplan({businessNo:businessNo})"
-				ng-click="close()" class="md-primary" show-gt-md>Change Plan</md-button>
-				<md-button ui-sref="setup.setlogo"
-				ng-click="close()" class="md-primary" show-gt-md>Set Company Logo</md-button>
-				<md-button ui-sref="setup.footer"
-				ng-click="close()" class="md-primary" show-gt-md>Set Company Footer</md-button>
-				<md-button ui-sref="setup.disclaimer"
-				ng-click="close()" class="md-primary" show-gt-md>Add Disclaimer</md-button>
-				<md-button ui-sref="setup.sendmail"
-				ng-click="close()" class="md-primary" show-gt-md>send Email</md-button>
-			</md-content> 
-		</md-sidenav>
-		</section>
-
+			md-component-id="right"> <md-toolbar
+			class="md-theme-light">
+		<h1 class="md-toolbar-tools">Sidenav Right</h1>
+		</md-toolbar> <md-content layout="column"> <md-button
+			ui-sref="setup.useradd({businessNo:businessNo})" ng-click="close()"
+			class="md-primary" > Add User </md-button> <md-button
+			ui-sref="setup.businesssetup({businessNo:businessNo})"
+			ng-click="close()" class="md-primary" >Edit
+		Business </md-button> <md-button ui-sref="setup.userlist({businessNo:businessNo})"
+			ng-click="close()" class="md-primary" >
+		Userlist </md-button> <md-button
+			ui-sref="setup.changeplan({businessNo:businessNo})"
+			ng-click="close()" class="md-primary" >Change
+		Plan</md-button> <md-button ui-sref="setup.setlogo" ng-click="close()"
+			class="md-primary" >Set Company Logo</md-button> <md-button
+			ui-sref="setup.footer" ng-click="close()" class="md-primary"
+			>Set Company Footer</md-button> <md-button
+			ui-sref="setup.disclaimer" ng-click="close()" class="md-primary"
+			>Add Disclaimer</md-button> <md-button
+			ui-sref="setup.sendmail" ng-click="close()" class="md-primary"
+			>send Email</md-button> </md-content> </md-sidenav>
 	</div>
-
-
-
 
 	<div ui-view></div>
 </div>

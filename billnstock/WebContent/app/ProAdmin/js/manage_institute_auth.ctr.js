@@ -62,26 +62,15 @@ angular
 
 					}
 
-					// for testing only. This will be fetched from server
-					var selectedbusinessTestAuths = {
-						name : "MBIS",
-						'authorizations' : [ {
-							'authName' : 'gfe',
-							'authorizations' : [ {
-								'authName' : 'list'
-							}, {
-								'authName' : 'edit',
-								'authorizations' : ''
-							} ]
-						}, {
-							'authName' : 'exams',
-							'authorizations' : ''
-						}, {
-							'authName' : 'setup',
-							'authorizations' : ''
-						} ]
-
-					};
+					
+					$scope.topAuthChange = function(auth) {
+						var childAuths = auth.authorizations;
+						if(childAuths && childAuths.length && childAuths.length > 0){
+							angular.forEach(childAuths, function(childAuth){
+								childAuth.selected = auth.selected;
+							});
+						}
+					}
 
 					$scope.saveAuthorization = function() {
 						$log.debug("Called saveAuthorization...");

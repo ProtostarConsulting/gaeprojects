@@ -10,8 +10,8 @@
 	<div ng-repeat="auth in authorizationMasterEntity.authorizations">
 		<hr>
 		<md-checkbox ng-model="auth.selected" ng-true-value="true"
-			ng-false-value="false" aria-label="auth"> <b
-			ng-bind="auth.authDisplayName"> </b> </md-checkbox>
+			ng-false-value="false" aria-label="auth" ng-change="topAuthChange(auth)">
+		<b ng-bind="auth.authDisplayName"> </b> </md-checkbox>
 
 		<div ng-repeat="subAuth in auth.authorizations">
 			<span>&nbsp;&nbsp;&nbsp;&nbsp; <md-checkbox

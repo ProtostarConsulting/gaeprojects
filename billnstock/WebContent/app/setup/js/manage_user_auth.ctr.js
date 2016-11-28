@@ -37,6 +37,15 @@ angular
 					$log.debug("$scope.curUser.business.authorizations: "
 							+ $scope.curUser.business.authorizations);
 
+					$scope.topAuthChange = function(auth) {
+						var childAuths = auth.authorizations;
+						if(childAuths && childAuths.length && childAuths.length > 0){
+							angular.forEach(childAuths, function(childAuth){
+								childAuth.selected = auth.selected;
+							});
+						}
+					}
+					
 					$scope.userAuthObject = null;
 
 					function getAuthorizationMasterEntity() {

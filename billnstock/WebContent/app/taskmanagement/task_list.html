@@ -7,20 +7,18 @@
 	<md-content laout="column" flex> <md-toolbar
 		class="md-table-toolbar md-default">
 	<div class="md-toolbar-tools">
-		<span flex hide-xs>{{(action == 'listmytask')?'My Task List':'All Task
-			List'}}</span>
-		<div>
-			<span>Since Date:-</span>
-			<md-datepicker flex ng-model="selectFilterData.assignedDate"
-				ng-change="filterTasksByFitlerData()"></md-datepicker>
-		</div>
+		<span flex hide-xs>{{(action == 'listmytask')?'My Task
+			List':'All Task List'}}</span>
+		<md-input-container style="padding-top:25px;"> <label>Since
+			Date </label> <md-datepicker flex ng-model="selectFilterData.assignedDate"
+			ng-change="filterTasksByFitlerData()"></md-datepicker> </md-input-container>
 	</div>
 	</md-toolbar> <md-data-table-container>
 	<table md-data-table class="md-primary" md-progress="deferred">
 		<thead md-order="query.order" md-trigger="onorderchange">
 			<tr>
 				<th name="Sr. No." unit="" flex="5"></th>
-				<th order-by="firstName" name="Assigned To"
+				<th order-by="assignedTo.firstName" name="Assigned To"
 					ng-if="action != 'listmytask'"></th>
 				<th order-by="firstName" name="Assigned By"
 					ng-if="action == 'listmytask'"></th>
