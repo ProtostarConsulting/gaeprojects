@@ -85,8 +85,8 @@
 		+ ' <'}}</h1>
 	</md-toolbar> <md-content layout="column">
 
-	<div>
-		<div class="md-accordion"
+	<md-content>
+		<md-content class="md-accordion"
 			ng-repeat="auth in curUser.userAuthMasterEntity.authorizations | orderBy: orderByAuthOrderValue"
 			ng-show="curUser!=null">
 			<md-toolbar ng-init="data.expanded[$index] = false"
@@ -118,32 +118,8 @@
 					aria-label="subAuth.authDisplayName" ng-hide="" show-gt-md>
 				<span ng-bind="subAuth.authDisplayName"> </span></md-button> </md-content>
 			</div>
-		</div>
-
-		<!-- <div class="md-accordion" ng-show="curUser!=null">
-					<md-toolbar ng-init="data.expanded5 = false"
-						ng-click="data.expanded5 = !data.expanded5">
-					<div class="md-toolbar-tools">
-						<h2>
-							<span>More Actions...</span>
-						</h2>
-						<span flex=""></span> <span
-							ng-class="{expandCollapse:true, active:data.expanded5}"></span>
-					</div>
-					</md-toolbar>
-					<div style="margin-left: 15px;"
-						ng-class="{dataContent:true, activeContent:data.expanded5}">
-						<md-content flex layout="column" layout-xs="column"
-							layout-align="center start"> <md-button
-							ng-repeat="auth in curUser.userAuthMasterEntity.authorizations"
-							ui-sref="{{auth.uiStateName}}" ng-click="close()"
-							class="menu-heading md-primary" aria-label="auth.authDisplayName"
-							ng-hide="auth.authName == 'grfbooks'" show-gt-md> <menu-toggle
-							section="child" ng-if="auth.authDisplayName === 'Setup'"></menu-toggle>
-						<span ng-bind="auth.authDisplayName"> </span></md-button> </md-content>
-					</div>
-				</div> -->
-	</div>
+		</md-content>
+	</md-content>
 
 	</md-content> </md-sidenav> <md-content flex layout-fill layout="column"> <!-- <div class="md-toolbar-tools" ng-hide="toggleMainMenuSwitch">
 					<div>
