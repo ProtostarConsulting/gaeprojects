@@ -180,7 +180,4 @@ app.controller("accountAddCtr", function($scope, $window, $mdToast, $timeout,
 				.position("top").hideDelay(3000));
 	};
 
-	$scope.back = function() {
-		window.history.back();
-	}
 });

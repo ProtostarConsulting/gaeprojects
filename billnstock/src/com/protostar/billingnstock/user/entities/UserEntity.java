@@ -1,5 +1,6 @@
 package com.protostar.billingnstock.user.entities;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class UserEntity extends BaseEntity {
 
 	@Index
 	private String email_id;
-	private List<String> authority;
+	private List<String> authority = new ArrayList<String>();
 
 	private Boolean isGoogleUser = true;
 	@Index

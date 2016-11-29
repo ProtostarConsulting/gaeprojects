@@ -5,7 +5,7 @@
 		<section layout="row">
 		<span hide-xs> 
 			<div class="md-toolbar-tools">
-			<md-button ui-sref="user_prof_detail.viewprofile" ng-click="close()"
+			<md-button ui-sref="setup.userview({selectedUser: curUser})" ng-click="close()"
 				class="md-primary"> View Profile </md-button>
 
 			<md-button ui-sref="user_prof_detail.changepassword"
@@ -58,6 +58,6 @@
 
 
 
-	<div ui-view></div>
+	<div ui-view layout-padding></div>
 </div>
 		 

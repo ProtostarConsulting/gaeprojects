@@ -1,4 +1,4 @@
-<md-content layout-padding>
+<md-content flex layout-padding md-scroll-y>
 <form name="viewuser">
 	<div id="addField">
 		<div layout-sm="column" layout-align="start start" flex>
@@ -68,7 +68,8 @@
 			<div layout layout-xs="column">
 				<md-input-container flex-gt-xs="25" flex-xs> <label>Emp.
 					No.</label> <input name="empNo"
-					ng-model="selectedUser.employeeDetail.empId"> </md-input-container>
+					ng-model="selectedUser.employeeDetail.empId"
+					ng-disabled="!hasUserAuthority(curuser, 'admin')"> </md-input-container>
 				<!-- <md-input-container flex-gt-xs="25" flex-xs> <label>Phone
 					2 </label> <input name="phone2"
 					ng-model="selectedUser.employeeDetail.phone2"> </md-input-container> -->
@@ -137,8 +138,7 @@
 			<div layout="row">
 				<md-input-container flex> <label>Line1
 				</label> <input name="line1"
-					ng-model="selectedUser.employeeDetail.address.line1"
-					> </md-input-container>
+					ng-model="selectedUser.employeeDetail.address.line1"> </md-input-container>
 				<md-input-container flex> <label>Line2</label>
 				<input name="line2"
 					ng-model="selectedUser.employeeDetail.address.line2"> </md-input-container>
@@ -150,8 +150,7 @@
 				<md-input-container flex> <label>State
 
 				</label> <input name="state"
-					ng-model="selectedUser.employeeDetail.address.state"
-					> </md-input-container>
+					ng-model="selectedUser.employeeDetail.address.state"> </md-input-container>
 			</div>
 			<div layout="row">
 				<md-input-container flex> <label>Pin</label> <input
@@ -163,30 +162,13 @@
 			</div>
 
 		</div>
-
-		<div layout layout-sm="column" layout-align="end end">
-			<a href='' ng-click='ShowHide()'>Change Password +/-</a><br> <br>
-		</div>
-		<div layout layout-sm="column" ng-hide="IsHidden">
-			<md-input-container flex ng-hide="selectedUser.isGoogleUser">
-			<!-- <label style="color: blue">Enter New Password  </label>
-			 <input	type="password" style="color: red" ng-model="selectedUser.password">
-			 --> <md-button class="md-primary md-raised"
-				ng-click="showAdvanced($event)"> Change Password </md-button> </md-input-container>
-			<md-input-container flex ng-show="selectedUser.isGoogleUser">
-			<a target="_blank"
-				href="https://www.google.com/settings/passwordchange">Link
-				Change Password</a> </md-input-container>
-
-		</div>
-
-
 	</div>
 </form>
 
 <section layout="row" layout-xs="column" layout-align="left left">
-	<md-button class="md-raised md-primary" ng-disabled="viewuser.$invalid"
-		ng-click="updateuser()">Save</md-button>
+	<md-button class="md-raised md-primary"
+		ng-disabled="viewuser.$invalid || actionProcessing.saving"
+		ng-click="updateuser()" ng-bind="actionProcessing.saveButtonText">Save</md-button>
 </section>
 </md-content>
 

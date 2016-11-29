@@ -105,12 +105,7 @@ angular
 								});
 
 					}
-
-					$scope.cancelButton = function() {
-						$scope.back();
-						// $state.go("^", {});
-					}
-
+					
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
 							getAuthorizationMasterEntity();

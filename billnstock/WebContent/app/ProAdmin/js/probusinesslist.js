@@ -65,11 +65,7 @@ angular.module("stockApp").controller(
 						});
 			}
 
-			// -----------------------------------------------------------------------------------------------
-			$scope.back = function() {
-				window.history.back();
-				// $state.go("^", {});
-			};
+			
 			// ----------hide and show ---------------------------
 
 			$scope.IsHidden = true;

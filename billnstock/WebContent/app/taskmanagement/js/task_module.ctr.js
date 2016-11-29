@@ -111,7 +111,7 @@ angular
 										$scope.showAddToast();
 										$state.reload();
 									}
-									$location.hash('topRight');
+									$location.hash('tp1');
 									$anchorScroll();
 									$scope.loading = false;
 								});

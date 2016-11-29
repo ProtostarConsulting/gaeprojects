@@ -108,11 +108,7 @@ angular.module("stockApp").controller(
 				}
 			$scope.user11=[];
 			$scope.userexist="";
-
-			$scope.back = function() {
-				window.history.back();
-				// $state.go("^", {});
-			};
+			
 			// //////////////////////////////////////////////////////////////////////////////
 
 			$scope.toggleRight = buildToggler('right');

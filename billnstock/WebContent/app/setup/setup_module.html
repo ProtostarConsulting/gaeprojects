@@ -1,7 +1,7 @@
-<div layout="column">
-	<div>
-		<div>
-			<section layout="row" style="margin:0;padding:0">
+<div layout="column" layout-fill>
+	<div layout-fill>
+		<div layout-fill>
+			<section layout="row" layout-fill>
 				<md-content layout="row" layout-align="center start" style="margin:0;padding:0"> <md-button
 					ui-sref="setup.departmentList" ng-click="close()"
 					class="md-primary">Department List</md-button> <md-button
@@ -48,5 +48,5 @@
 			>send Email</md-button> </md-content> </md-sidenav>
 	</div>
 
-	<div ui-view></div>
+	<md-content  flex ui-view md-scroll-y layout-padding></md-content>
 </div>

@@ -6,8 +6,7 @@ angular
 						$mdUtil, $stateParams, $log, objectFactory,
 						appEndpointSF) {
 					
-									
-					
+					$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();					
 					
 					$scope.toggleRight = buildToggler('right');
 

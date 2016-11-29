@@ -76,19 +76,16 @@ angular
 															.saveLoggedInUser(
 																	user);
 
-													$scope
-															.$emit(
-																	'customLoginEvent',
-																	{
-																		curUser : user
-																	});
-													$scope
-															.$broadcast(
-																	'customLoginEvent',
-																	{
-																		curUser : user
-																	});
-													$state.go("home");
+													$scope.$emit(
+															'customLoginEvent',
+															{
+																curUser : user
+															});
+													$scope.$broadcast(
+															'customLoginEvent',
+															{
+																curUser : user
+															});
 												}
 
 											} else {
@@ -112,6 +109,9 @@ angular
 						$scope.logBaseURL = $scope.curUser.business.logBlobKey;
 
 						getUserAuthTree();
+						// finally go to home...
+						$log.debug("Forwarding to home page...");
+						$state.go("home");
 					}
 					$scope.multiBizSelectUser = function(multiBizSelectedUser) {
 						appEndpointSF.getLocalUserService().saveLoggedInUser(
@@ -237,7 +237,8 @@ angular
 										appEndpointSF
 												.getUserService()
 												.getUserByEmailID(
-														profile.getEmail(), true)
+														profile.getEmail(),
+														true)
 												.then(
 														function(
 																loggedInUserList) {
@@ -311,10 +312,6 @@ angular
 
 														});
 
-										$log
-												.debug("Forwarding to home state...");
-										$state.go("home");
-
 									});
 
 					/*
@@ -359,7 +356,7 @@ angular
 							toState, toParams, fromState, fromParams) {
 						// On any state change go the the top
 						$timeout(function() {
-							$location.hash('topRight');
+							$location.hash('tp1');
 							$anchorScroll();
 						}, 10);
 
@@ -444,7 +441,15 @@ angular
 					}
 
 					$scope.back = function() {
-						window.history.back();
+						window.history.back();// for #tp1
+						window.history.back(); // to actual view
+					};
+
+					$scope.hasUserAuthority = function(user, authorityToCheck) {
+						return user.authority
+								&& user.authority.length
+								&& user.authority.indexOf(authorityToCheck
+										.trim()) > -1
 					};
 
 				})
