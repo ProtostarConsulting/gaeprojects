@@ -12,6 +12,8 @@ angular
 					};
 
 					$scope.monthlyPayDetailsList = [];
+					
+					$scope.selectedMonth = $stateParams.selectedMonth;
 
 					$scope.totalDaysInSelectedMonth = 0;
 
@@ -97,7 +99,22 @@ angular
 						});
 
 					}
+					$scope.indvIt = function() {
+						var hrService = appEndpointSF.gethrService();
 
+						$scope.totalIT = 0;
+						hrService.getpayRollReport($scope.curUser.business.id,
+								$scope.selectedMonth).then(function(list) {
+							$scope.list = list;
+							for (var i = 0; i < list.length; i++) {
+								if ($scope.selectedMonth == list[i].month) {
+									$scope.totalIT += list[i].totalIT;
+								}
+
+							}
+						});
+
+					}
 					$scope.finalizeMonthlySalaryForTheMonth = function(ev) {
 						var confirm = $mdDialog
 								.confirm()
@@ -118,8 +135,9 @@ angular
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
-							// get salary master list on page load.
-							// $scope.getSalaryMasterlist();
+
+							$scope.getMonthlyPaymentList();
+							$scope.indvIt();
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
 							$timeout($scope.waitForServiceLoad, 1000);
@@ -179,5 +197,11 @@ angular
 								+ $scope.curUser.business.id + "&month="
 								+ $scope.selectedMonth;
 					}
+					$scope.previousPage = function() {
+						window.history.back();
+					};
+
+					
+					
 
 				});

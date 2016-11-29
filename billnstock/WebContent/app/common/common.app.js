@@ -638,6 +638,13 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/payRollReport",
 		templateUrl : '/app/hr/payRollReports.html',
 		controller : 'payRollReports',
+	}).state('hr.taxDetails', {
+		url : "/taxDetails",
+		templateUrl : '/app/hr/taxDetails.html',
+		controller : 'MonthlyPaymentDetail',
+		params : {
+			selectedMonth : null
+		}
 	}).state('hr.monthlyTax', {
 		url : "/monthlyTax",
 		templateUrl : '/app/hr/monthlyTax.html',

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<md-button class="md-icon-button" ng-click="previousPage()">
+<ng-md-icon icon="arrow_back" size="24"> <md-tooltip>
+Back to PayRoll Reports</md-tooltip></ng-md-icon> </md-button>
+
+<h3>{{selectedMonth}} Income Tax Details</h3>
+</head>
+<body>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Emp.No</th>
+				<th>Employee Name</th>
+				<th>IT Deduction</th>
+			</tr>
+		</thead>
+
+		<tr ng-repeat="monthlyPayObj in monthlyPayDetailsList">
+			<td style="margin: 0; padding-left: 5px; padding-right: 5px;"><b
+				ng-bind="monthlyPayObj.leaveDetailEntity.user.employeeDetail.empId">
+			</b></td>
+			<td style="border: 1px solid black; padding: 5px;">
+				{{monthlyPayObj.leaveDetailEntity.user.firstName + ' ' +
+				monthlyPayObj.leaveDetailEntity.user.lastName}}</td>
+			<td style="border: 1px solid black; padding: 5px;">
+				{{monthlyPayObj.itDeductionAmt}}</td>
+		</tr>
+		<tfoot>
+			<td style="border: 1px solid black; padding: 5px;"><b>Total
+			</b></td>
+			<td style="border: 1px solid black; padding: 5px;"></td>
+			<td style="border: 1px solid black; padding: 5px;"><b>{{totalIT}}
+			</b></td>
+
+		</tfoot>
+
+	</table>
+</body>
+</html>
