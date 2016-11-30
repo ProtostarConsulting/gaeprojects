@@ -25,6 +25,7 @@ public class MonthlyPaymentDetailEntity extends BaseEntity {
 	private float ptDeductionAmt;
 	private float canteenDeductionAmt;
 	private float itDeductionAmt;
+	private float esiDeductionAmt;
 	private float otherDeductionAmt;
 	private String otherDeductionAmtNote;
 	private float netSalaryAmt;
@@ -205,6 +206,14 @@ public class MonthlyPaymentDetailEntity extends BaseEntity {
 
 	public void setFinalized(boolean finalized) {
 		this.finalized = finalized;
+	}
+
+	public float getEsiDeductionAmt() {
+		return esiDeductionAmt;
+	}
+
+	public void setEsiDeductionAmt(float esiDeductionAmt) {
+		this.esiDeductionAmt = esiDeductionAmt;
 	}
 
 }

@@ -275,9 +275,11 @@ public class PDFHtmlTemplateService {
 			float ptDeductionAmt = mtlyPayObj.getPtDeductionAmt();
 			float canteenDeductionAmt = mtlyPayObj.getCanteenDeductionAmt();
 			float itDeductionAmt = mtlyPayObj.getItDeductionAmt();
+			float esiDeductionAmt = mtlyPayObj.getEsiDeductionAmt();
 			float otherDeductionAmt = mtlyPayObj.getOtherDeductionAmt();
 			float totalDeductions = pfDeductionAmt + ptDeductionAmt
-					+ canteenDeductionAmt + itDeductionAmt + otherDeductionAmt;
+					+ canteenDeductionAmt + itDeductionAmt + esiDeductionAmt
+					+ otherDeductionAmt;
 
 			UserEntity user = mtlyPayObj.getleaveDetailEntity().getUser();
 			BusinessEntity business = user.getBusiness();
@@ -356,6 +358,7 @@ public class PDFHtmlTemplateService {
 			root.put("PTDeductionAmt", df.format(ptDeductionAmt));
 			root.put("ITDduction", df.format(itDeductionAmt));
 			root.put("Canteen", df.format(canteenDeductionAmt));
+			root.put("esiDeductionAmt", df.format(esiDeductionAmt));
 			root.put("OtherDeduction", df.format(otherDeductionAmt));
 			root.put("otherDeductionNote",
 					mtlyPayObj.getOtherDeductionAmtNote() == null ? "" : "("

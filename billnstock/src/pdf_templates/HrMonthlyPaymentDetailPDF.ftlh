@@ -177,10 +177,10 @@ tab2 {
 				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"></td>
 			<td
 				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;">
-				Other Deduction ${otherDeductionNote}</td>
+				ESI Deduction</td>
 			<td
 				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
-				align="right" align="right">${OtherDeduction}</td>
+				align="right" align="right">${esiDeductionAmt}</td>
 
 		</tr>
 		<tr>
@@ -194,9 +194,11 @@ tab2 {
 			<td
 				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"></td>
 			<td
-				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"></td>
+				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;">
+				Other Deduction ${otherDeductionNote}</td>
 			<td
-				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"></td>
+				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
+				align="right" align="right">${OtherDeduction}</td>
 
 		</tr>
 		<tr>

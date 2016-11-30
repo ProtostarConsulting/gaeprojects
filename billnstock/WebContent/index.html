@@ -27,7 +27,7 @@
 </head>
 <body layout="column" ng-cloak md-theme="{{theme}}"
 	md-theme-watch="true" layout="column" layout-fill>
-	<md-content id="tp1" layout="column">
+	<md-content layout="column">
 	<div ng-show="loading" style="padding-left: 8px;">
 		<h4 class="md-title">Loading...Please wait...</h4>
 
@@ -129,7 +129,7 @@
 					</div>
 				</div> --> <!-- <md-card> --> <md-content flex layout="column"
 		layout-align="top stretch" layout-fill> <!--<div ng-view></div>-->
-	<md-content flex ui-view layout-fill layout="column"> <!--This is the center page of all main modules for the index module. -->
+	<md-content id="tp1"  flex ui-view layout-fill layout="column"> <!--This is the center page of all main modules for the index module. -->
 	</md-content>
 
 	<p>&nbsp;</p>
@@ -179,7 +179,7 @@
 	<p>&nbsp;</p>
 
 	<md-content layout="column" layout-padding>
-	<hr></hr>
+	<hr>
 	<span flex>©2017-2018 ProERP Google Cloud Platform, a product of
 		Protostar Consulting Services, Pune. All rights reserved. </span> </md-content> </md-content> <!-- </md-card>  --></md-content>
 

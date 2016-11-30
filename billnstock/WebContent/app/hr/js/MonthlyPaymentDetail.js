@@ -12,7 +12,7 @@ angular
 					};
 
 					$scope.monthlyPayDetailsList = [];
-					
+
 					$scope.selectedMonth = $stateParams.selectedMonth;
 
 					$scope.totalDaysInSelectedMonth = 0;
@@ -30,12 +30,24 @@ angular
 						monthlyPayDetailObj.calculatedGrossSalary = monthlyPayDetailObj.payableDays
 								* (monthlyPayDetailObj.monthlyGrossSalary / $scope.totalDaysInSelectedMonth);
 
+						// Manual entry takes priority
+						if (!(monthlyPayDetailObj.esiDeductionAmt)) {
+							monthlyPayDetailObj.esiDeductionAmt = 0;
+						}
+						if (monthlyPayDetailObj.monthlyGrossSalary <= 15000
+								&& monthlyPayDetailObj.esiDeductionAmt == 0) {
+							// ESI is 6.5% of monthly salary
+							monthlyPayDetailObj.esiDeductionAmt = monthlyPayDetailObj.monthlyGrossSalary
+									* (6.50 / 100);
+						}
+
 						monthlyPayDetailObj.netSalaryAmt = (monthlyPayDetailObj.calculatedGrossSalary
 								+ monthlyPayDetailObj.overtimeAmt + monthlyPayDetailObj.specialAllow)
 								- monthlyPayDetailObj.pfDeductionAmt
 								- monthlyPayDetailObj.ptDeductionAmt
 								- monthlyPayDetailObj.canteenDeductionAmt
 								- monthlyPayDetailObj.itDeductionAmt
+								- monthlyPayDetailObj.esiDeductionAmt
 								- monthlyPayDetailObj.otherDeductionAmt;
 
 						monthlyPayDetailObj.calculatedGrossSalary = monthlyPayDetailObj.calculatedGrossSalary
@@ -200,8 +212,5 @@ angular
 					$scope.previousPage = function() {
 						window.history.back();
 					};
-
-					
-					
 
 				});
