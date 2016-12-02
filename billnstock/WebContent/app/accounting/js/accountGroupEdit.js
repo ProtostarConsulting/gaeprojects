@@ -1,9 +1,9 @@
 angular
 .module("stockApp")
-.controller('accountGrpEditCtr',function($scope,$log,appEndpointSF,$mdToast,$state,$stateParams,$injector,unpr){
+.controller('accountGrpEditCtr',function  ($scope,$log,appEndpointSF,$mdToast,$state,$stateParams/*,$injector,unpr*/){
 	
 	//$scope.tempAccountGrp={"groupName":"","description":"","displayOrderNo":""};
-	$injector:unpr;
+//	$injector:unpr;
 	$scope.tempAccountGrp=$stateParams.record;
 	$scope.accountGroupTypeList=["ASSETS", "EQUITY", "LIABILITIES","INCOME","EXPENSES","OTHERINCOMES","OTHEREXPENCES"];
 	

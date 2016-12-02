@@ -87,16 +87,7 @@ app
 										});
 
 					}
-/*
-					$scope.getAccByid = function() {
 
-						var getrecord = appEndpointSF.getAccountService();
-						getrecord.getAccountById($scope.accountId).then(
-								function(account) {
-									$scope.account = account;
-
-								});
-					}*/
 
 				$scope.getGrouplist();
 				//	$scope.getAccByid();

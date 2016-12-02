@@ -36,6 +36,7 @@
 				<th name="Description" order-by="description"></th>
 				<th name="Contra" order-by="contra"></th>
 				<th name="Account Group" order-by="accountgroup"></th>
+				<th name="Edit"></th>
 			</tr>
 		</thead>
 
@@ -52,10 +53,18 @@
 				<td>{{account.accountgroup.groupName}}</td>
 
 				<td><section layout="row" layout-sm="column">
-						 <md-button class="md-fab md-primary md-hue-2 "> <md-icon md-svg-src="img/icons/edit.svg"
+				
+				<md-button class="md-icon-button"
+									ui-sref="accounting.account_Edit({selectedAccount: account})">
+								<ng-md-icon icon="edit" style="fill: md-default" size="24">
+								<md-tooltip> Edit Record</md-tooltip></ng-md-icon></md-button>
+				
+				
+				
+						<!--  <md-button class="md-fab md-primary md-hue-2 "> <md-icon md-svg-src="img/icons/edit.svg"
 							ui-sref="accounting.account_Edit({selectedAccount: account})"></md-icon> <md-tooltip>Edit
 					</md-tooltip>
-						</md-button> 
+						</md-button>  -->
 					</section></td>
 					
 					<!-- <td><md-button class="md-fab md-primary md-hue-2"> <md-icon

@@ -11,9 +11,9 @@ angular
 					
 					
 					$scope.getdummy = function() {
-
+						$scope.loading = true;
 						var hrService = appEndpointSF.gethrService();
-					
+						
 						$scope.total=0;
 						$scope.totalPF=0;
 						$scope.totalPT=0;
@@ -29,7 +29,7 @@ angular
 								$scope.totalCanteen+=list[i].totalCanteen;
 								$scope.totalIT+=list[i].totalIT;
 								$scope.totalOther+=list[i].totalOther;
-								
+								$scope.loading = false;
 								
 							}
 							
@@ -38,9 +38,17 @@ angular
 
 					}
 					
+					$scope.waitForServiceLoad = function() {
+						if (appEndpointSF.is_service_ready) {
+							$scope.getdummy();
+						} else {
+							$log.debug("Services Not Loaded, watiting...");
+							$timeout($scope.waitForServiceLoad, 1000);
+						}
+					}
+					$scope.waitForServiceLoad();
 					
-					
-					$scope.getdummy();
+				
 					
 					
 					

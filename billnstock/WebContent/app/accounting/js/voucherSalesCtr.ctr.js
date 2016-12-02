@@ -141,7 +141,7 @@ app
 							$scope.getAccountList();
 
 						} else {
-							// $log.debug("Services Not Loaded, watiting...");
+							 $log.debug("Services Not Loaded, watiting...");
 							$timeout($scope.waitForServiceLoad, 1000);
 						}
 					}

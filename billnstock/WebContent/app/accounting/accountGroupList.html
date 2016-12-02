@@ -39,6 +39,7 @@
 					<th name="Primary" order-by="isPrimary"></th>
 					<th name="PrimaryType" order-by="PrimaryType"></th>
 					<th name="Parent Group Type" order-by="accountGroupType"></th>
+					<th name="Edit"></th>
 					
 					</tr>
 				</thead>
@@ -52,9 +53,10 @@
 					<td>{{acc.parent.groupName}}</td>		
 					 <td>
 						<section layout="row" layout-sm="column">
-						<md-button ui-sref="accounting.accountGroupEdit({record:acc})" ng-click="close()" class="md-fab md-primary md-hue-2">
-						<md-icon md-svg-src="img/icons/edit.svg"></md-icon>
-						</md-button>
+						<md-button class="md-icon-button"
+								ui-sref="accounting.accountGroupEdit({record:acc})"ng-click="close()">
+								<ng-md-icon icon="edit" style="fill: md-default" size="24">
+								<md-tooltip> Edit Record</md-tooltip></ng-md-icon></md-button>
 						</section>
 						</td>	
 						<!-- <td>

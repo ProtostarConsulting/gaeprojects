@@ -31,9 +31,17 @@ app.controller("voucherCtr", function($scope, $window, $mdToast, $timeout,
 		});
 	}
 
-	
+	$scope.waitForServiceLoad = function() {
+		if (appEndpointSF.is_service_ready) {
+			$scope.getAccountList();
+		} else {
+			$log.debug("Services Not Loaded, watiting...");
+			$timeout($scope.waitForServiceLoad, 1000);
+		}
+	}
+	$scope.waitForServiceLoad();
 
-	$scope.getAccountList();
+	
 
 	$scope.addvoucher = function() {
 
@@ -73,12 +81,12 @@ app.controller("voucherCtr", function($scope, $window, $mdToast, $timeout,
 				
 				for (i = 0; i < $scope.vaccounts2.length; i++) {
 					if (selected.accountName == $scope.vaccounts2[i].accountName) {
-						// vaccounts2.splice(i,1);
+						
 
 						$scope.vaccounts2.splice(i, 1);
 						flag=selected;
 						break;
-						// $log.debug(value);
+						
 
 					}
 				}

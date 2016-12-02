@@ -33,8 +33,16 @@ $scope.s=x;
 	}
 
 	
-
-	$scope.getAccountList();
+	$scope.waitForServiceLoad = function() {
+		if (appEndpointSF.is_service_ready) {
+			$scope.getAccountList();
+		} else {
+			$log.debug("Services Not Loaded, watiting...");
+			$timeout($scope.waitForServiceLoad, 1000);
+		}
+	}
+	$scope.waitForServiceLoad();
+	
 
 	$scope.addvoucher = function() {
 
