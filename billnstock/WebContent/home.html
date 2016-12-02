@@ -1,61 +1,13 @@
 <md-content layout="column" layout-padding> <md-content>
 <section layout="row">
 	<!-- View Specific Toolbar-->
-	<md-content class="md-toolbar-tools"> <span flex></span>
-
-	<section layout="row">
-		<!-- 	<md-button class="md-icon-button md-primary" aria-label="Settings">
-					<md-icon md-svg-icon="img/icons/menu.svg"></md-icon> </md-button> -->
-
-		<md-content layout="row" layout-align="center end" layout-sm="column">
-		<a ui-sref="newBusinessAccount">Business Registration</a> <!-- <a target="#"  ui-sref="login">Existing user</a> -->
-		</md-content>
-		<!--
-					<md-button href="#customer.list" ng-click="close()"
-					class="md-primary">
-					Student Registration
-					</md-button>
-					<md-button href="#customer.list" ng-click="close()"
-					class="md-primary">
-					Teacher Registration
-					</md-button>
-
-					<md-button class="md-icon-button md-accent" aria-label="Favorite">
-						<md-icon md-svg-icon="img/icons/favorite.svg"></md-icon>
-					</md-button>-->
-
-		<!-- 	<md-button class="md-icon-button" aria-label="More"
-						ng-click="toggleRight()"> <md-icon
-						md-svg-icon="img/icons/more_vert.svg"></md-icon> </md-button>
- -->
-	</section>
-	</md-content>
-
-	<!-- Right Navigation Pane -->
-	<md-sidenav class="md-sidenav-right md-whiteframe-z2"
-		md-component-id="right"> <md-toolbar
-		class="md-theme-light">
-	<h1 class="md-toolbar-tools">Sidenav Right</h1>
-	</md-toolbar> <md-content layout-padding>
-	<form>
-		<md-input-container> <label for="testInput">Test
-			input</label> <input type="text" id="testInput" ng-model="data"
-			md-sidenav-focus> </md-input-container>
-	</form>
-	<md-button ng-click="close()" class="md-primary"> Close
-	Sidenav Right </md-button>
-
-	<p hide-md show-gt-md>This shows the selected module links/actions.</p>
-	<md-button ng-click="close()" class="md-primary"> Current
-	Module Action 1 </md-button> <md-button ng-click="close()" class="md-primary">
-	Current Module Action 2 </md-button> <md-button ng-click="close()"
-		class="md-primary"> Current Module Action 3 </md-button> <md-button
-		href="#customer.list" ng-click="close()" class="md-primary">
-	Customer List </md-button> </md-content> </md-sidenav>
-
+	<span flex></span>
+	<div layout="row" layout-align="center end" layout-sm="column">
+		<a ui-sref="newBusinessAccount">Business Registration</a>
+		<!-- <a target="#"  ui-sref="login">Existing user</a> -->
+	</div>
 </section>
-
-</md-content> <md-content layout="column"> <md-content>
+<md-content layout="column"> <md-content>
 <h3 class="md-display-1">Welcome to ProERP</h3>
 <hr>
 <!-- <h3 class="md-display-1">Welcome to the {{institute.name}}</h3> -->
@@ -187,6 +139,6 @@
 		always considered part of ERP systems but rather Business Support
 		systems (BSS).
 	</li>
-	<li>Data services: Various self service interfaces for
-		customers, suppliers and/or employees</li>
+	<li>Data services: Various self service interfaces for customers,
+		suppliers and/or employees</li>
 </md-content> </md-content> </md-content>

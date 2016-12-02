@@ -44,10 +44,18 @@
 				aria-label="Mini FAB"> <md-icon
 				md-svg-src="img/icons/menu.svg"></md-icon> </md-button>
 		</div>
+		<div ng-show="toggleMainMenuSwitch">
+			<md-button ng-click="toggleMainMenu()" class="md-fab md-mini"
+				aria-label="Mini FAB"> <md-icon
+				md-svg-src="/img/icons/ic_keyboard_arrow_left_black_24px.svg"></md-icon>
+			</md-button>
+		</div>
 		<div hide-xs>
 			<img ng-show="curUser.business.logBlobKey" ng-click="show_info()"
 				ng-src="{{logBaseURL}}" class="md-card-image" height="60px"
 				width="120px" />
+			<h3 ng-hide="curUser.business.logBlobKey" class="md-toolbar-tools"
+				ng-bind="curUser.business.businessName "></h3>
 		</div>
 		<span flex></span>
 		<div layout="row" layout-align="end center">
@@ -76,118 +84,44 @@
 		</div>
 	</div>
 
-	</md-toolbar> <md-content layout="row" flex layout-fill layout="column">
-	<!-- Left Navigation Pane --> <md-sidenav
-		class="md-sidenav-left md-whiteframe-z2" md-component-id="left"
-		md-is-locked-open="toggleMainMenuSwitch"> <md-toolbar
-		class="md-theme-indigo">
-	<h1 class="md-toolbar-tools" ng-click="toggleMainMenu()">{{curUser.business.businessName
-		+ ' <'}}</h1>
-	</md-toolbar> <md-content layout="column">
-
-	<md-content>
-		<md-content class="md-accordion"
-			ng-repeat="auth in curUser.userAuthMasterEntity.authorizations | orderBy: orderByAuthOrderValue"
-			ng-show="curUser!=null">
-			<md-toolbar ng-init="data.expanded[$index] = false"
-				ng-click="data.expanded[$index] = !data.expanded[$index]">
-			<div class="md-toolbar-tools">
-				<h2>
-					<span ng-bind="auth.authDisplayName"></span>
-				</h2>
-				<span flex=""></span> <span
-					ng-class="{expandCollapse:true, active:data.expanded[$index]}"></span>
-			</div>
-			</md-toolbar>
-			<!-- <div style="margin-left: 15px;"
-						ng-class="{dataContent:true, activeContent:data.expanded[$index]}">
-						<md-content flex layout="column" layout-xs="column"
-							layout-align="center start"> <md-button
-							ui-sref="{{auth.uiStateName}}" ng-click="close()"
-							class="menu-heading md-primary" aria-label="auth.authDisplayName"
-							ng-hide="" show-gt-md> <span
-							ng-bind="auth.authDisplayName"> </span></md-button> </md-content>
-					</div> -->
-			<div style="margin-left: 15px;"
-				ng-class="{dataContent:true, activeContent:data.expanded[$index]}">
-				<md-content flex layout="column" layout-xs="column"
-					layout-align="center start"> <md-button
-					ng-repeat="subAuth in auth.authorizations | orderBy: orderByAuthOrderValue"
-					ui-sref="{{subAuth.uiStateName}}" ng-click="close()"
-					class="menu-heading md-primary"
-					aria-label="subAuth.authDisplayName" ng-hide="" show-gt-md>
-				<span ng-bind="subAuth.authDisplayName"> </span></md-button> </md-content>
-			</div>
-		</md-content>
-	</md-content>
-
-	</md-content> </md-sidenav> <md-content flex layout-fill layout="column"> <!-- <div class="md-toolbar-tools" ng-hide="toggleMainMenuSwitch">
-					<div>
-						<md-button ng-click="toggleMainMenu()" class="md-fab md-mini"
-							aria-label="Mini FAB"> <md-icon
-							md-svg-src="img/icons/menu.svg"></md-icon> </md-button>
-					</div>
-				</div> --> <!-- <md-card> --> <md-content flex layout="column"
-		layout-align="top stretch" layout-fill> <!--<div ng-view></div>-->
-	<md-content id="tp1"  flex ui-view layout-fill layout="column"> <!--This is the center page of all main modules for the index module. -->
-	</md-content>
-
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-
-	<md-content layout="column" layout-padding>
+	</md-toolbar> <md-content layout="row" flex layout-fill> <!-- Left Navigation Pane -->
+	<md-sidenav class="md-sidenav-left md-whiteframe-z2"
+		md-component-id="left" md-is-locked-open="toggleMainMenuSwitch">
+	<md-content layout="column" flex="100"> <md-content>
+	<md-content class="md-accordion"
+		ng-repeat="auth in curUser.userAuthMasterEntity.authorizations | orderBy: orderByAuthOrderValue"
+		ng-show="curUser!=null"> <md-toolbar
+		ng-init="data.expanded[$index] = false"
+		ng-click="data.expanded[$index] = !data.expanded[$index]">
+	<div class="md-toolbar-tools">
+		<h4>
+			<span ng-bind="auth.authDisplayName"></span>
+		</h4>
+		<span flex></span> <span
+			ng-class="{expandCollapse:true, active:data.expanded[$index]}"></span>
+	</div>
+	</md-toolbar>
+	<div style="margin-left: 15px;"
+		ng-class="{dataContent:true, activeContent:data.expanded[$index]}">
+		<md-content layout="column" layout-align="center start">
+		<md-button
+			ng-repeat="subAuth in auth.authorizations | orderBy: orderByAuthOrderValue"
+			ui-sref="{{subAuth.uiStateName}}" ng-click="close()"
+			class="menu-heading md-primary" aria-label="subAuth.authDisplayName"
+			ng-hide="" show-gt-md> <span
+			ng-bind="subAuth.authDisplayName"> </span></md-button> </md-content>
+	</div>
+	</md-content> </md-content> </md-content>
 	<hr>
 	<span flex>©2017-2018 ProERP Google Cloud Platform, a product of
-		Protostar Consulting Services, Pune. All rights reserved. </span> </md-content> </md-content> <!-- </md-card>  --></md-content>
+		Protostar Consulting Services, Pune. All rights reserved. </span></md-sidenav> <md-content
+		layout="column" layout-align="top stretch" layout-fill> <md-content
+		layout="column"> <md-content id="tp1" ui-view flex
+		layout="column" layout-align="top stretch"> <!--This is the center page of all main modules for the index module. -->
+	</md-content> </md-content><!-- <span flex>©2017-2018 ProERP Google Cloud Platform, a product
+		of Protostar Consulting Services, Pune. All rights reserved. </span> -->
+	</md-content> <!-- </md-card>  --></md-content> <!--This is a botton section of the app--> </md-content> </md-content>
 
-	<!--This is a botton section of the app--> <md-divider></md-divider> </md-content> </md-content>
-
-	</md-content>
-
-	<!-- </div> -->
 
 	<!-- All JS Dependencies -->
 	<!-- 	<script src="/lib/base/googleapi.client.js"></script> -->
