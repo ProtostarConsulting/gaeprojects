@@ -90,21 +90,39 @@ angular
 					$scope.creatAccountAndGroup = function() {
 
 						var proadminAddGroup = appEndpointSF
-								.getproadminService();
+								.getAccountGroupService();
 
+						
+						
 						proadminAddGroup
-								.creatAccountAndGroup()
-								.then(
-										function(resp) {
+						.getAllBusiness()
+						.then(
+								function(list) {
+									if(list==undefined ||list.length==0){
+									$scope.userMsg = "Cant Create Group...Business is Created !!!!!!";
+									$scope.step4 = true;
+									}
+									else{
+										var protostarAdminService = appEndpointSF
+										.getproadminService();
+										protostarAdminService
+										.creatAccountAndGroup(list[0].id)
+										.then(
+												function(resp) {
 
-											if (resp != undefined) {
+													if (resp != undefined) {
 
-												$scope.userMsg = "Settup of Group List is Done.........";
-												$scope.step4 = true;
-											}
-
-										});
-					}
+														$scope.userMsg = "Settup of Group List is Done.........";
+														$scope.step4 = true;
+													}
+													
+												});
+										}
+													
+												});
+										
+									}
+					
 
 					$scope.createAuthMaster = function() {
 

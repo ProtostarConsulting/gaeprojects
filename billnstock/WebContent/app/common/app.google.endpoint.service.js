@@ -267,6 +267,18 @@ function googleEndpointSF($log, $q) {
 		});
 		return deferred.promise;
 	}
+	
+	
+	AccountGroupService.getAllBusiness = function() {
+		var deferred = $q.defer();
+		gapi.client.accountGroupService.getAllBusiness().execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}
+	
+	
+	
 	AccountGroupService.getAccountGroupList = function(id) {
 		var deferred = $q.defer();
 		gapi.client.accountGroupService.getAccountGroupList({
@@ -466,7 +478,7 @@ function googleEndpointSF($log, $q) {
 
 	proadminService.creatAccountAndGroup = function(biz) {
 		var deferred = $q.defer();
-		gapi.client.proadminService.creatAccountAndGroup(biz).execute(
+		gapi.client.proadminService.creatAccountAndGroup({'id' : biz}).execute(
 				function(resp) {
 					deferred.resolve({
 						"done" : resp

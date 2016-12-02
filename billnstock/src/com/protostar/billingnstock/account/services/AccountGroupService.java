@@ -4,6 +4,7 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import com.google.api.server.spi.config.Api;
@@ -12,7 +13,6 @@ import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
-import com.protostar.billingnstock.account.entities.AccountEntity;
 import com.protostar.billingnstock.account.entities.AccountGroupEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billnstock.until.data.ServerMsg;
@@ -38,7 +38,7 @@ public class AccountGroupService {
 		System.out.println("busId:4444" + busId);
 		if(busId == null)
 			return new ArrayList<AccountGroupEntity>();
-		List<AccountGroupEntity> list= ofy().load().type(AccountGroupEntity.class).list();//ofy().load().type(AccountGroupEntity.class).ancestor(Key.create(BusinessEntity.class, busId)).list();
+		List<AccountGroupEntity> list= ofy().load().type(AccountGroupEntity.class).ancestor(Key.create(BusinessEntity.class, busId)).list();
 		System.out.println("list:" + list);
 		return list;
 	}
@@ -140,6 +140,20 @@ public class AccountGroupService {
 
 		return filteredAccounts;
 	}
+	
+	
+	
+	@ApiMethod(name = "getAllBusiness")
+	public List<BusinessEntity> getAllBusnes() {
+
+		List<BusinessEntity> businessList =  ofy().load()
+				.type(BusinessEntity .class).list();
+
+		return businessList;
+	}
+	
+	
+	
 
 	@ApiMethod(name = "getAccountGroupById")
 	public AccountGroupEntity getAccountGroupById(@Named("id") Long accountId) {
@@ -163,10 +177,10 @@ public class AccountGroupService {
 		accountGroupEntities.add(new AccountGroupEntity("Direct Expesnes", null));
 		accountGroupEntities.add(new AccountGroupEntity("Current Liabilities", null));
 		
-		//this.addAccountGroups(accountGroupEntities);
-		
+		  
 		
 
 	}
+	 
 
 }
