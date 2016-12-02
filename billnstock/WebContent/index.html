@@ -27,7 +27,7 @@
 </head>
 <body layout="column" ng-cloak md-theme="{{theme}}"
 	md-theme-watch="true" layout="column" layout-fill>
-	<md-content layout="column">
+	<md-content layout="column" style="height: 100%;" ng-cloak>
 	<div ng-show="loading" style="padding-left: 8px;">
 		<h4 class="md-title">Loading...Please wait...</h4>
 
@@ -35,7 +35,7 @@
 			md-buffer-value="70" ng-disabled="false"></md-progress-linear>
 	</div>
 	<md-content ng-hide="loading"
-		style="padding-left: 8px; padding-right: 8px;" ng-controller="AppCtrl"
+		style="padding-left: 8px; padding-right: 8px; height: 100%;" ng-controller="AppCtrl"
 		layout="column"> <!-- Top Navigation Pane --> <!-- <md-toolbar style="position: fixed;"> -->
 	<md-toolbar>
 	<div layout="row" class="md-toolbar-tools">
@@ -84,7 +84,7 @@
 		</div>
 	</div>
 
-	</md-toolbar> <md-content layout="row" flex layout-fill> <!-- Left Navigation Pane -->
+	</md-toolbar> <md-content layout="row" flex layout-fill style="height: 100%;"> <!-- Left Navigation Pane -->
 	<md-sidenav class="md-sidenav-left md-whiteframe-z2"
 		md-component-id="left" md-is-locked-open="toggleMainMenuSwitch">
 	<md-content layout="column" flex="100"> <md-content>
@@ -115,9 +115,9 @@
 	<hr>
 	<span flex>©2017-2018 ProERP Google Cloud Platform, a product of
 		Protostar Consulting Services, Pune. All rights reserved. </span></md-sidenav> <md-content
-		layout="column" layout-align="top stretch" layout-fill> <md-content
-		layout="column"> <md-content id="tp1" ui-view flex
-		layout="column" layout-align="top stretch"> <!--This is the center page of all main modules for the index module. -->
+		layout="column" layout-align="top stretch" layout-fill style="height: 100%;"> <md-content
+		layout="column" style="height: 100%;"> <md-content id="tp1" ui-view flex
+		layout="column" layout-align="top stretch" style="height: 100%;"> <!--This is the center page of all main modules for the index module. -->
 	</md-content> </md-content><!-- <span flex>©2017-2018 ProERP Google Cloud Platform, a product
 		of Protostar Consulting Services, Pune. All rights reserved. </span> -->
 	</md-content> <!-- </md-card>  --></md-content> <!--This is a botton section of the app--> </md-content> </md-content>
@@ -125,8 +125,8 @@
 
 	<!-- All JS Dependencies -->
 	<!-- 	<script src="/lib/base/googleapi.client.js"></script> -->
-	<script src="/lib/base/jquery.min.js"></script>
-	<script src="/lib/base/bootstrap.min.js"></script>
+<!-- 	<script src="/lib/base/jquery.min.js"></script>
+	<script src="/lib/base/bootstrap.min.js"></script> -->
 
 	<!-- Angular Material Dependencies -->
 	<script src="/lib/base/angular.min.js"></script>
