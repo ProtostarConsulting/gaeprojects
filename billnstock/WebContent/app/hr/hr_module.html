@@ -1,62 +1,36 @@
-<div layout="column">
+<md-content flex layout-fill layout="column">
 
+<section layout="row" flex>
+	<md-button ui-sref="hr.SalaryMaster" ng-click="close()"
+		class="md-primary"> Salary Master </md-button>
+	<md-button ui-sref="hr.LeaveDetail" ng-click="close()"
+		class="md-primary"> Leave Detail </md-button>
+	<md-button ui-sref="hr.MonthlyPaymentDetail" ng-click="close()"
+		class="md-primary">Monthly Payment </md-button>
 
-	<div>
-
-		<section layout="row">
-			<span>
-				<div class="md-toolbar-tools">
-					<md-content layout="row" layout-align="center start">
-					<!-- <md-button ui-sref="hr.employeelist" ng-click="close()"
-						class="md-primary"> employee List </md-button> <md-button
-						ui-sref="hr.salslip" ng-click="close()" class="md-primary">
-					Salary Structure List </md-button>  --> <md-button
-						ui-sref="hr.SalaryMaster" ng-click="close()" class="md-primary">
-					Salary Master </md-button> <md-button ui-sref="hr.LeaveDetail"
-						ng-click="close()" class="md-primary"> Leave Detail </md-button> <md-button
-						ui-sref="hr.MonthlyPaymentDetail" ng-click="close()"
-						class="md-primary">Monthly Payment </md-button> 
-						
-						<md-button
-						ui-sref="hr.monthlyTax" ng-click="close()"
-						class="md-primary">Emp Monthly Deductions </md-button> 
-						
-						
-						</md-content>
-				</div>
-			</span>
-			<!--  <span hide-gt-xs> -->
-			<div class="md-toolbar-tools">
-				<span flex></span>
-				<md-card>
-				<section layout="row">
-					<md-button class="md-icon-button" aria-label="More"
-						ng-click="toggleRight()"> <md-icon
-						md-svg-icon="img/icons/more_vert.svg"></md-icon> </md-button>
-				</section>
-				</md-card>
-			</div>
-			<!-- </span> -->
-
-			<md-sidenav class="md-sidenav-right md-whiteframe-z2"
-				md-component-id="right"> <md-toolbar
-				class="md-theme-light">
-			<h1 class="md-toolbar-tools">Sidenav Right</h1>
-			</md-toolbar> <md-content layout="column"> <md-button
-				ui-sref="hr.employeelist" ng-click="close()" class="md-primary">
-			employee List </md-button> <md-button ui-sref="hr.salslip" ng-click="close()"
-				class="md-primary"> Salary Structure List </md-button> <md-button
-				ui-sref="hr.generatesalslip" ng-click="close()" class="md-primary">
-			generate Salary Slip </md-button> <md-button ui-sref="hr.printgeneratesalslip"
-				ng-click="close()" class="md-primary"> SalarySlip List</md-button> <md-button
-				ui-sref="hr.timeSheet" ng-click="close()" class="md-primary">
-			Time Sheet </md-button> </md-content> </md-sidenav>
-		</section>
-
+	<md-button ui-sref="hr.monthlyTax" ng-click="close()"
+		class="md-primary">Emp Monthly Deductions </md-button>
+	<span flex></span>
+	<div layout="row" layout-align="center end" layout-sm="column">
+		<md-button class="md-icon-button" aria-label="More"
+			ng-click="toggleRight()"> <md-icon
+			md-svg-icon="img/icons/more_vert.svg"></md-icon> </md-button>
 	</div>
+</section>
 
+<section layout="row">
+	<md-sidenav class="md-sidenav-right md-whiteframe-z2"
+		md-component-id="right"> <md-toolbar
+		class="md-theme-light"> </md-toolbar> <md-content layout="column">
+	<md-button ui-sref="hr.employeelist" ng-click="close()"
+		class="md-primary"> employee List </md-button> <md-button
+		ui-sref="hr.salslip" ng-click="close()" class="md-primary">
+	Salary Structure List </md-button> <md-button ui-sref="hr.generatesalslip"
+		ng-click="close()" class="md-primary"> generate Salary
+	Slip </md-button> <md-button ui-sref="hr.printgeneratesalslip" ng-click="close()"
+		class="md-primary"> SalarySlip List</md-button> <md-button
+		ui-sref="hr.timeSheet" ng-click="close()" class="md-primary">
+	Time Sheet </md-button> </md-content> </md-sidenav>
+</section>
 
-
-
-	<div ui-view layout-padding></div>
-</div>
+<md-content ui-view flex layout-fill></md-content> </md-content>

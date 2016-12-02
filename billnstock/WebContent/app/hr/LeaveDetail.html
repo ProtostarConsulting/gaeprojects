@@ -1,4 +1,4 @@
-<md-content layout-padding> <!-- <h3 class="md-headline">Leave Detail</h3> -->
+<md-content layout-fill flex> 
 <form name="employeeForm" layout="column">
 	<div>
 		<md-input-container flex="50"> <lable>Select
@@ -7,18 +7,7 @@
 			ng-change="monthSelectChange(selectedMonth)"
 			aria-label="selectedMonth" id="month" name="month" ng-required="true">
 		<md-option ng-value="item" ng-repeat="item in monthList">{{item}}
-		</md-option> </md-select> </md-input-container>
-
-		<!-- <div layout-gt-sm="row">
-    <div flex-gt-sm class="date-picker-row">
-        <label for="email" translate>Signup date</label>
-        <md-datepicker ng-model="user.created_at" md-placeholder="Signup date"></md-datepicker>
-    </div>
-    <div flex-gt-sm class="date-picker-row">
-        <label for="email" translate>Last update</label>
-        <md-datepicker ng-model="user.updated_at" md-placeholder="Update date"></md-datepicker>
-    </div>
-</div> -->
+		</md-option> </md-select> </md-input-container>		
 	</div>
 
 	<md-toolbar class="md-table-toolbar md-default">

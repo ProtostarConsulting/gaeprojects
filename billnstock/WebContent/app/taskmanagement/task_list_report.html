@@ -1,128 +1,129 @@
-<div ng-if="loading">
-	<div layout="row" layout-sm="column" layout-align="space-around">
-		<md-progress-circular md-diameter="60" md-mode="indeterminate"></md-progress-circular>
+<div>
+	<div ng-if="loading">
+		<div layout="row" layout-sm="column" layout-align="space-around">
+			<md-progress-circular md-diameter="60" md-mode="indeterminate"></md-progress-circular>
+		</div>
 	</div>
-</div>
-<div ng-if="!loading">
+	<div ng-if="!loading">
 
-	<div class="md-headline">
-		<h3 hide-xs>Task List Report</h3>
-	</div>
-	<form name="taskReportForm ">
-		<md-content>
-		<div layout="row" layout-xs="column">
-			<div layout="row" layout-sm="column" flex>
-				<md-input-container> <label>Task Since</label> <md-datepicker flex ng-model="selectFilterData.assignedDate"
-					style="padding-top:13px;"></md-datepicker> </md-input-container>
+		<div class="md-headline">
+			<h3 hide-xs>Task List Report</h3>
+		</div>
+		<form name="taskReportForm ">
+			<md-content>
+			<div layout="row" layout-xs="column">
+				<div layout="row" layout-sm="column" flex>
+					<md-input-container> <label>Task Since</label>
+					<md-datepicker flex ng-model="selectFilterData.assignedDate"
+						style="padding-top:13px;"></md-datepicker> </md-input-container>
+				</div>
+				<md-input-container flex> <label>Filter
+					By Task Status </label> <md-select name="taskStatus"
+					ng-model="selectFilterData.taskStatus"> <md-option
+					ng-repeat="taskStatus in selectFilterData.taskStatusList"
+					ng-value="taskStatus">{{taskStatus}}</md-option> </md-select> </md-input-container>
+
+				<md-input-container flex> <label>Filter
+					Assigned By </label> <md-select name="assignedBy" id="assignedBy"
+					ng-model="selectFilterData.assignedBy"> <md-option
+					ng-value="user" ng-repeat="user in selectFilterData.userList">{{(user.firstName
+				+ ' ' + user.lastName) | uppercase}}</md-option> </md-select> </md-input-container>
+				<md-input-container flex> <label>Filter
+					By Assigned To </label> <md-select name="assignedTo" id="assignedTo"
+					ng-model="selectFilterData.assignedTo"> <md-option
+					ng-value="user" ng-repeat="user in selectFilterData.userList">{{(user.firstName
+				+ ' ' + user.lastName) | uppercase}}</md-option> </md-select> </md-input-container>
+
 			</div>
-			<md-input-container flex> <label>Filter
-				By Task Status </label> <md-select name="taskStatus"
-				ng-model="selectFilterData.taskStatus"> <md-option
-				ng-repeat="taskStatus in selectFilterData.taskStatusList"
-				ng-value="taskStatus">{{taskStatus}}</md-option> </md-select> </md-input-container>
+			<div layout="row" layout-align="center center">
+				<md-button class="md-raised md-primary"
+					ng-click="filterTasksByFitlerData()">Display Report</md-button>
+			</div>
 
-			<md-input-container flex> <label>Filter
-				Assigned By </label> <md-select name="assignedBy" id="assignedBy"
-				ng-model="selectFilterData.assignedBy">
-			<md-option ng-value="user"
-				ng-repeat="user in selectFilterData.userList">{{(user.firstName
-			+ ' ' + user.lastName) | uppercase}}</md-option> </md-select> </md-input-container>
-			<md-input-container flex> <label>Filter
-				By Assigned To </label> <md-select name="assignedTo" id="assignedTo"
-				ng-model="selectFilterData.assignedTo">
-			<md-option ng-value="user"
-				ng-repeat="user in selectFilterData.userList">{{(user.firstName
-			+ ' ' + user.lastName) | uppercase}}</md-option> </md-select> </md-input-container>
-
-		</div>
-		<div layout="row" layout-align="center center">
-			<md-button class="md-raised md-primary"
-				ng-click="filterTasksByFitlerData()">Display Report</md-button>
-		</div>
-
-		<div ng-hide="loading">
-			<md-toolbar class="md-table-toolbar md-default">
-			<div class="md-toolbar-tools">
-				<span flex>Task List Report</span>
-				<!-- <md-button class="md-raised md-primary" id="downloadExcel"
+			<div ng-hide="loading">
+				<md-toolbar class="md-table-toolbar md-default">
+				<div class="md-toolbar-tools">
+					<span flex>Task List Report</span>
+					<!-- <md-button class="md-raised md-primary" id="downloadExcel"
 					ng-click="downloadData()">Download CSV Data <md-tooltip>
 				Download All Schools Data</md-tooltip> </md-button> -->
-				<md-button class="md-icon-button md-accent"
-					ng-click="printDiv('reportContentDiv')" aria-label="Favorite">
-				<md-icon md-svg-icon="img/icons/print.svg"></md-icon> </md-button>
-			</div>
-			</md-toolbar>
-			<div id="reportContentDiv">
-				<div>
-					<table
-						style="font-family: arial, sans-serif; border-collapse: collapse; width: 100%;">
-						<caption style="text-align: center; padding: 2px;">
-							<!-- <span ng-hide="true" flex>Task Filtered List,
+					<md-button class="md-icon-button md-accent"
+						ng-click="printDiv('reportContentDiv')" aria-label="Favorite">
+					<md-icon md-svg-icon="img/icons/print.svg"></md-icon> </md-button>
+				</div>
+				</md-toolbar>
+				<div id="reportContentDiv">
+					<div>
+						<table
+							style="font-family: arial, sans-serif; border-collapse: collapse; width: 100%;">
+							<caption style="text-align: center; padding: 2px;">
+								<!-- <span ng-hide="true" flex>Task Filtered List,
 							Jalgaon</span> <br> <span ng-hide="true" flex>Display
 							Report: {{ schoolListsDate | date:"dd-MM-yyyy" }}</span> -->
-						</caption>
+							</caption>
 
-						<tr>
-							<th
-								style="border: 1px solid black; text-align: left; padding: 2px;">Sr.
-								No.</th>
-							<th
-								style="border: 1px solid black; text-align: left; padding: 2px;">Assigned
-								By</th>
-							<th
-								style="border: 1px solid black; text-align: left; padding: 2px;">Assigned
-								To</th>
-							<th
-								style="border: 1px solid black; text-align: left; padding: 2px;">Task
-								Status</th>
-							<th
-								style="border: 1px solid black; text-align: left; padding: 2px;">Assigned
-								Date</th>
-							<th
-								style="border: 1px solid black; text-align: left; padding: 2px;">Delayed
-								(in Days)</th>
-							<th
-								style="border: 1px solid black; text-align: left; padding: 2px;">Task
-								Title</th>
-							<th
-								style="border: 1px solid black; text-align: left; padding: 2px;">Task
-								Description</th>
+							<tr>
+								<th
+									style="border: 1px solid black; text-align: left; padding: 2px;">Sr.
+									No.</th>
+								<th
+									style="border: 1px solid black; text-align: left; padding: 2px;">Assigned
+									By</th>
+								<th
+									style="border: 1px solid black; text-align: left; padding: 2px;">Assigned
+									To</th>
+								<th
+									style="border: 1px solid black; text-align: left; padding: 2px;">Task
+									Status</th>
+								<th
+									style="border: 1px solid black; text-align: left; padding: 2px;">Assigned
+									Date</th>
+								<th
+									style="border: 1px solid black; text-align: left; padding: 2px;">Delayed
+									(in Days)</th>
+								<th
+									style="border: 1px solid black; text-align: left; padding: 2px;">Task
+									Title</th>
+								<th
+									style="border: 1px solid black; text-align: left; padding: 2px;">Task
+									Description</th>
 
-						</tr>
+							</tr>
 
-						<tr
-							ng-repeat="task in taskEntityList | proOrderObjectByDateField: 'assignedDate'">
-							<td
-								style="border: 1px solid black; text-align: left; padding: 2px;">{{$index
-								+ 1}}</td>
-							<td
-								style="border: 1px solid black; text-align: left; padding: 2px;">{{(task.assignedBy.firstName
-								+ ' ' + task.assignedBy.lastName) | uppercase}}</td>
-							<td
-								style="border: 1px solid black; text-align: left; padding: 2px;">{{(task.assignedTo.firstName
-								+ ' ' + task.assignedTo.lastName) | uppercase}}</td>
-							<td
-								style="border: 1px solid black; text-align: left; padding: 2px;">{{task.taskStatus}}</td>
-							<td
-								style="border: 1px solid black; text-align: left; padding: 2px;">{{task.assignedDate
-								| date:"dd-MM-yyyy"}}</td>
-							<td
-								style="border: 1px solid black; text-align: left; padding: 2px;">{{getDelayInDays(task.assignedDate)}}</td>
-							<td
-								style="border: 1px solid black; text-align: left; padding: 2px;">{{task.taskTitle}}</td>
-							<td
-								style="border: 1px solid black; text-align: left; padding: 2px;">{{task.taskDesc
-								| htmlToPlainText}}</td>
+							<tr
+								ng-repeat="task in taskEntityList | proOrderObjectByDateField: 'assignedDate'">
+								<td
+									style="border: 1px solid black; text-align: left; padding: 2px;">{{$index
+									+ 1}}</td>
+								<td
+									style="border: 1px solid black; text-align: left; padding: 2px;">{{(task.assignedBy.firstName
+									+ ' ' + task.assignedBy.lastName) | uppercase}}</td>
+								<td
+									style="border: 1px solid black; text-align: left; padding: 2px;">{{(task.assignedTo.firstName
+									+ ' ' + task.assignedTo.lastName) | uppercase}}</td>
+								<td
+									style="border: 1px solid black; text-align: left; padding: 2px;">{{task.taskStatus}}</td>
+								<td
+									style="border: 1px solid black; text-align: left; padding: 2px;">{{task.assignedDate
+									| date:"dd-MM-yyyy"}}</td>
+								<td
+									style="border: 1px solid black; text-align: left; padding: 2px;">{{getDelayInDays(task.assignedDate)}}</td>
+								<td
+									style="border: 1px solid black; text-align: left; padding: 2px;">{{task.taskTitle}}</td>
+								<td
+									style="border: 1px solid black; text-align: left; padding: 2px;">{{task.taskDesc
+									| htmlToPlainText}}</td>
 
-						</tr>
-					</table>
+							</tr>
+						</table>
+					</div>
 				</div>
 			</div>
-		</div>
-		</md-content>
+			</md-content>
 
-	</form>
+		</form>
+	</div>
+
+	<iframe name="print_frame" width="0" height="0" frameborder="0"
+		src="about:blank"></iframe>
 </div>
-
-<iframe name="print_frame" width="0" height="0" frameborder="0"
-	src="about:blank"></iframe>
