@@ -2,7 +2,7 @@ angular.module("stockApp").controller(
 		"newbusinessCtr",
 		function($scope, $window, $mdToast, $timeout, $mdSidenav, $mdUtil,
 				$log, $q, $location, objectFactory, appEndpointSF,
-				tableTestDataFactory, $state) {
+				$state) {
 
 			$scope.showSimpleToast = function(msgBean) {
 				$mdToast.show($mdToast.simple().content(msgBean)

@@ -125,8 +125,8 @@
 	 					"orderNumber":"2"
 	 					},
 	 					{
-	 					"authName":"Generate Monthly Salary",
-	 					"authDisplayName":"Generate Monthly Salary",
+	 					"authName":"Monthly Salary",
+	 					"authDisplayName":"Monthly Salary",
 	 					"uiStateName":"hr.MonthlyPaymentDetail",
 	 					"orderNumber":"3"
 	 					},

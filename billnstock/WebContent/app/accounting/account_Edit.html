@@ -9,13 +9,13 @@
 	<u>Edit Account</u>
 </h3>
 <form name="accountForm">
-	[<span style="color: red;">Field Marked as asterik (*) are 	mandetory</span>] <br>
+	[] <br>
 
 	<div layout layout-xs="column">
 
 
 		<md-input-container flex> <label>Account
-			Name <span style="color: red;">*</span>
+			Name 
 		</label> <input ng-model="tempAccount.accountName" name="accountName" id="accountName" 
 		                ng-required="true"  minlength="3">
 
@@ -27,7 +27,7 @@
 		</md-input-container>
 
 
-		<md-input-container flex> <label>AccountType<span style="color: red;">*</span></label><md-select
+		<md-input-container flex> <label>AccountType</label><md-select
 			ng-model="tempAccount.accountType" id="accountType" name="accountType" ng-required="true">
 		 <md-option
 			ng-repeat="type in accountType "> {{type}} </md-option> </md-select>
@@ -43,7 +43,7 @@
 
 	<div layout layout-xs="column">
 		<md-input-container flex> <label>Account
-			No <span style="color: red;">*</span>
+			No 
 		</label> <input ng-model="tempAccount.accountNo" name="accountNo" id="accountNo"
 			ng-required="true" minlength="3">
 
@@ -55,7 +55,7 @@
 
 
 		<md-input-container flex> <label>Description
-			<span style="color: red;">*</span>
+			
 		</label> <textarea name="description" ng-model="tempAccount.description" id="description"
 			ng-required="true" maxlength="300"></textarea>
 
@@ -72,7 +72,7 @@
 	<div layout layout-xs="column">
 
 		<md-input-container flex> <label>Display Order No
-			<span style="color: red;">*</span>
+			
 		</label> <input name="displayOrderNo" type="number" id="displayOrderNo"
 			ng-model="tempAccount.displayOrderNo" ng-required="true" maxlength="4"
 			min="1"></input>
@@ -85,7 +85,7 @@
 			<div ng-message="min">Please Enter Positive No!</div>
 		</div>
 		</md-input-container>
-		<md-input-container flex> <lable>Account Group<span style="color: red;">*</span></lable>
+		<md-input-container flex> <lable>Account Group</lable>
 		<md-select
 				ng-model="tempAccount.accountgroup.groupName" placeholder="AccountGroup" id="accountlist" name="accountlist" ng-required="true">
 			<md-option ng-value="accountlist.groupName"  ng-repeat="accountlist in accountgroupList">{{accountlist.groupName}}

@@ -8,7 +8,7 @@
 		[<span style="color: red;">Field Marked as asterik (*) are
 			mandetory</span>]
 		<div flex layout="row" layout-xs="column">
-			<span style="color: red;">*</span>
+			
 			<div layout="row" flex>
 				<md-autocomplete flex required ng-model="invoiceObj.customer"
 					md-input-name="autocompleteField" md-input-minlength="2"
@@ -32,7 +32,7 @@
 					ng-click="addCustomer()" class="name"
 					style="color: Green; height: 10px; width: 10px"></md-icon>
 			</div>
-			Due Date:<span style="color: red;">*</span>
+			Due Date:
 			<md-datepicker flex ng-model="invoiceObj.invoiceDueDate"
 				md-placeholder="Select Date"></md-datepicker>
 		</div>

@@ -16,7 +16,7 @@
 		ng-false-value="false"> </md-checkbox> </md-input-container>
 	<div layout="row" layout-xs="column">
 		<md-input-container flex ng-show="customer.isCompany">
-		<label>Enter Company Name <span style="color: red;">*</span>
+		<label>Enter Company Name 
 		</label> <input name="companyName" ng-model="customer.companyName"
 			ng-required="customer.isCompany">
 		<div ng-messages="custForm.companyName.$error"
@@ -36,7 +36,7 @@
 	</lable>
 	<div layout="row" layout-xs="column">
 		<md-input-container flex> <label>First
-			Name <span style="color: red;">*</span>
+			Name 
 		</label> <input name="firstName" ng-model="customer.firstName"
 			ng-required="true">
 		<div ng-messages="custForm.firstName.$error"
@@ -52,7 +52,7 @@
 		</md-input-container>
 
 		<md-input-container flex> <label>Last
-			Name <span style="color: red;">*</span>
+			Name 
 		</label> <input name="lastName" ng-model="customer.lastName"
 			ng-required="true">
 		<div ng-messages="custForm.lastName.$error"
@@ -83,7 +83,7 @@
 		</md-input-container>
 
 		<md-input-container flex ng-hide="customerId"> <label>Email
-			<span style="color: red;">*</span>
+			
 		</label> <input type="email" name="email" ng-model="customer.email"
 			ng-pattern="/^.+@.+\..+$/" ng-blur="Checkemail(customer.email)"
 			ng-required="true"> <span style="color: red">
@@ -96,7 +96,7 @@
 		</md-input-container>
 
 		<md-input-container flex ng-show="customerId"> <label
-			ng-show="customerId">Email <span style="color: red;">*</span></label>
+			ng-show="customerId">Email </label>
 		<input type="email" name="email" ng-model="customer.email" disabled>
 
 		</md-input-container>

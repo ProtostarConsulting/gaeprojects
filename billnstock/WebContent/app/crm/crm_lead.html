@@ -13,7 +13,7 @@
 				ng-model="lead.lid" disabled> </md-input-container>
 
 			<md-input-container flex> <label>Person
-				Name  <span style="color: red;">*</span> </label> <input name = "name"  ng-model="lead.name" ng-required="true"> 
+				Name   </label> <input name = "name"  ng-model="lead.name" ng-required="true"> 
 			<div ng-messages="leadform.name.$error"
 				ng-if="leadform.name.$submitted || leadform.name.$touched">
 				<div ng-message="required">Please Enter Employee Name.</div>
@@ -22,14 +22,14 @@
 			</md-input-container>
 		</div>
 		<div layout layout-sx="column">
-			<md-input-container flex> <label>Company  <span style="color: red;">*</span>
+			<md-input-container flex> <label>Company  
 			</label> <input name="company" ng-model="lead.company" ng-required="true">
 				<div ng-messages="leadform.company.$error"
 				ng-if="leadform.company.$submitted || leadform.company.$touched">
 				<div ng-message="required">Please Enter Company Name.</div>
 			</div>
 			 </md-input-container>
-			<md-input-container flex> <label>Phone  <span style="color: red;">*</span>  </label>
+			<md-input-container flex> <label>Phone    </label>
 			<input type="number" name="phone" ng-minlength="10" ng-maxlength="11" ng-model="lead.phone" ng-required="true">
 			<div ng-messages="leadform.phone.$error"
 				ng-if="leadform.phone.$submitted || leadform.phone.$touched">
@@ -41,7 +41,7 @@
 			</md-input-container>
 		</div>
 		<div layout layout-sx="column">
-			<md-input-container flex> <label>Email  <span style="color: red;">*</span></label>
+			<md-input-container flex> <label>Email  </label>
 			<input type="email" name="email" ng-model="lead.email" ng-pattern="/^.+@.+\..+$/" ng-required="true">
 			<div ng-messages="leadform.email.$error"
 				ng-if="leadform.email.$submitted || leadform.email.$touched">
@@ -52,7 +52,7 @@
 				Enter Valid Email Format </span>
 			</div>
 			 </md-input-container>
-			<md-input-container flex> <label>Designation  <span style="color: red;">*</span></label>
+			<md-input-container flex> <label>Designation  </label>
 			<input name="designation" ng-model="lead.designation" ng-required="true"> 
 			<div ng-messages="leadform.designation.$error"
 				ng-if="leadform.designation.$submitted || leadform.designation.$touched">
@@ -62,7 +62,7 @@
 			</md-input-container>
 		</div>
 		<!-- <div> 
-			<md-input-container flex> <label>Address  <span style="color: red;">*</span>
+			<md-input-container flex> <label>Address  
 			</label> <textarea name ="address"ng-model="lead.address" rows="4" cols="50" ng-required="true">
 			</textarea>
 			<div ng-messages="leadform.address.$error"
@@ -74,7 +74,7 @@
 	<h3 class="md-subhead">Address</h3>
     			<div layout="row" >
     				<md-input-container flex>
-      				<label>Line1 <span style="color: red;">*</span></label>
+      				<label>Line1 </label>
       				<input name="line1" ng-model="Address.line1" ng-required="true">
       				<div ng-messages="leadform.line1.$error"
 					ng-if="leadform.line1.$submitted || leadform.line1.$touched">
@@ -89,7 +89,7 @@
     			</div>
     			<div layout="row" >
     				<md-input-container flex>
-      				<label>State <span style="color: red;">*</span></label>
+      				<label>State </label>
       				<input name="state" ng-model="Address.state" ng-required="true" >
       				<div ng-messages="leadform.state.$error"
 					ng-if="leadform.state.$submitted || leadform.state.$touched">
@@ -106,7 +106,7 @@
     			</div>
     			<div layout="row" >
     				<md-input-container flex>
-      				<label>City <span style="color: red;">*</span></label>
+      				<label>City </label>
       				<input name="city" ng-model="Address.city" ng-required="true" >
       				<div ng-messages="leadform.city.$error"
 					ng-if="leadform.city.$submitted || leadform.city.$touched">

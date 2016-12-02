@@ -25,7 +25,7 @@
 	<div layout layout-sm="column" style= "margin-top: 20px">
 
 		<md-input-container flex>Dr &nbsp; <label>
-			Choose Debit Account<span style="color: red;">*</span>
+			Choose Debit Account
 		</label> <md-select name="debitAcc" ng-model="debitAccount" ng-change="callFunction(debitAccount)" ng-required="true">
 		<md-option ng-value="account" ng-repeat="account in generalAccountDebit">{{account.accountName}}</md-option>
 		</md-select>
@@ -54,7 +54,7 @@
 	<div layout layout-sm="column">
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<md-input-container flex>Cr &nbsp; <label>
-			Choose Credit Account<span style="color: red;">*</span>
+			Choose Credit Account
 		</label> <md-select name="creditAcc" ng-model="creditAccount"
 			ng-required="true"> <md-option ng-value="account"
 			ng-repeat="account in generalAccountCredit">{{account.accountName}}</md-option> </md-select>

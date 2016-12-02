@@ -2,7 +2,7 @@ angular.module("stockApp").controller(
 		"needbusinessCtr",
 		function($scope, $window, $mdToast, $timeout, $mdSidenav, $mdUtil,
 				$log, $q, $location, objectFactory, appEndpointSF,
-				tableTestDataFactory, $state) {
+				$state) {
 
 			$scope.showSavedToast = function(msg) {
 				$mdToast.show($mdToast.simple().content(msg).position("top")

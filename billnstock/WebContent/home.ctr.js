@@ -4,7 +4,7 @@ angular
 				"homeCtr",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
 						$mdUtil, $log, $q, $location, objectFactory,
-						appEndpointSF, tableTestDataFactory) {
+						appEndpointSF) {
 					console.log("Inside homeCtr");
 
 					$scope.showSimpleToast = function() {

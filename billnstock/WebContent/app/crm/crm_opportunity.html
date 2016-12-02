@@ -16,7 +16,7 @@
 		</div>
 
 		<div layout layout-sm="column">
-			<md-input-container flex> <span style="color: red;">*</span> <md-select
+			<md-input-container flex>  <md-select
 				name="leadcust" placeholder="Select Lead/Customer" id="selectedfrom"
 				ng-model="f" ng-change="getleadcust(f)"  ng-required="true"> <md-option
 				ng-repeat="f in from"> {{f}} </md-option> </md-select>
@@ -25,7 +25,7 @@
 				<div ng-message="required">Please select lead/customer Name.</div>
 			</div>
 			 </md-input-container>
-			<md-input-container flex> <span style="color: red;">*</span> <md-select name="ldcu"
+			<md-input-container flex>  <md-select name="ldcu"
 				placeholder="Lead/Customer" id="selectedfrom"
 				ng-model="opportunity.name"  ng-required="true"> <md-option
 				ng-repeat="list in leadorcustlist">
@@ -38,7 +38,7 @@
 			</md-input-container>
 		</div>
 		<div layout layout-sm="column">
-			<md-input-container flex> <label>description  <span style="color: red;">*</span>
+			<md-input-container flex> <label>description  
 			</label> <textarea  name="description" ng-model="opportunity.description" rows="2" cols="50" ng-required="true"> </textarea>
 			<div ng-messages="oppform.description.$error"
 				ng-if="oppform.description.$submitted || oppform.description.$touched">

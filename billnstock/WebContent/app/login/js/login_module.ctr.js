@@ -4,7 +4,7 @@ angular
 				"loginModuleCtr",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
 						$mdUtil, $log, $q, $location, objectFactory,
-						appEndpointSF, tableTestDataFactory, $state) {
+						appEndpointSF, $state) {
 
 					$scope.showSavedToast = function() {
 						$mdToast.show($mdToast.simple().content(

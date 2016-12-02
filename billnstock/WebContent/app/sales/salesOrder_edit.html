@@ -10,14 +10,14 @@
 				<u>Sales Order</u>
 			</h3>
 			<!-- 			<div align="right">
-				<span style="color: red;">*</span>SO Date:
+				SO Date:
 				<md-datepicker flex ng-model="salesOrderObjEdit.salesOrderDate"
 					md-placeholder="Enter SO Date"></md-datepicker>
 			</div>
  -->
 			<div layout="row" layout-xs="column">
 				<div layout="row" flex>
-					<span style="color: red;">*</span>
+					
 
 					<md-autocomplete flex required
 						ng-model="salesOrderObjEdit.customer"
@@ -64,7 +64,7 @@
 				<md-input-container flex> <label>Sales
 					Person </label> <input ng-model="salesOrderObjEdit.salesPerson"> </md-input-container>
 
-				<span style="color: red;">*</span>Delivery Date:
+				Delivery Date:
 				<md-datepicker flex ng-model="salesOrderObjEdit.deliveryDate"
 					md-placeholder="Enter Delivery Date"></md-datepicker>
 			</div>
@@ -73,7 +73,7 @@
 				<md-input-container flex> <label>Shipped
 					Via </label> <input ng-model="salesOrderObjEdit.shippedVia"> </md-input-container>
 
-				<span style="color: red;">*</span>Quotation Date:
+				Quotation Date:
 				<md-datepicker flex ng-model="salesOrderObjEdit.quotationDate"
 					md-placeholder="Enter Quotation Date"></md-datepicker>
 
@@ -84,7 +84,7 @@
 				<md-input-container flex> <label>Shipping
 					Terms </label> <input ng-model="salesOrderObjEdit.shippingTerms"> </md-input-container>
 
-				<span style="color: red;">*</span>Due Date:
+				Due Date:
 				<md-datepicker flex ng-model="salesOrderObjEdit.dueDate"
 					md-placeholder="Enter Due Date"></md-datepicker>
 
@@ -200,7 +200,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td><span style="color: red;">*</span>
+						<td>
 							<section layout="row" layout-sm="column" layout-align="left left">
 								<md-button class="md-raised md-primary" ng-click="addItem()">Add
 								Item</md-button>

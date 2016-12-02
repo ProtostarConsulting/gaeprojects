@@ -12,7 +12,7 @@
 		mandetory</span>]
 	<div layout="row" layout-xs="column">
 		<md-input-container flex> <label>Warehouse
-			Name <span style="color: red;">*</span>
+			Name 
 		</label> <textarea name="warehouseName" ng-model="warehouse.warehouseName"
 			ng-required="true"></textarea>
 		<div ng-messages="warehouseForm.warehouseName.$error"
@@ -26,7 +26,7 @@
 		</md-input-container>
 	
 		<md-input-container flex> <label>Description
-			<span style="color: red;">*</span>
+			
 		</label> <textarea name="description" ng-model="warehouse.description"
 			ng-required="true"></textarea>
 		<div ng-messages="warehouseForm.description.$error"
@@ -41,8 +41,8 @@
 	<h3 class="md-subhead">Address</h3>
 	
 	<div layout="row">
-		<md-input-container flex> <label>Line1 <span
-			style="color: red;">*</span></label> <input name="line1" id="line1"
+		<md-input-container flex> <label>Line1 
+			</label> <input name="line1" id="line1"
 			ng-model="warehouse.address.line1" ng-required="true">
 		<div ng-messages="warehouseForm.line1.$error"
 			ng-if="warehouseForm.line1.$submitted || warehouseForm.line1.$touched">
@@ -54,8 +54,8 @@
 			name="line2" ng-model="warehouse.address.line2"> </md-input-container>
 	</div>
 	<div layout="row">
-		<md-input-container flex> <label>State <span
-			style="color: red;">*</span></label> <input name="state" id="state"
+		<md-input-container flex> <label>State 
+			</label> <input name="state" id="state"
 			ng-model="warehouse.address.state" ng-required="true">
 		<div ng-messages="warehouseForm.state.$error"
 			ng-if="warehouseForm.state.$submitted || warehouseForm.state.$touched">
@@ -69,8 +69,8 @@
 
 	</div>
 	<div layout="row">
-		<md-input-container flex> <label>City <span
-			style="color: red;">*</span></label> <input name="city" id="city"
+		<md-input-container flex> <label>City 
+			</label> <input name="city" id="city"
 			ng-model="warehouse.address.city" ng-required="true">
 		<div ng-messages="warehouseForm.city.$error"
 			ng-if="warehouseForm.city.$submitted || warehouseForm.city.$touched">

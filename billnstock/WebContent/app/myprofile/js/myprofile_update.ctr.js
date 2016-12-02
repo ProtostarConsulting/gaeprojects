@@ -1,7 +1,7 @@
 angular.module("stockApp").controller(
 		"updateMyProfileCtr",
 		function($scope, $window, $mdToast, $timeout, $mdSidenav, $mdUtil,
-				$log, $q,tableTestDataFactory,appEndpointSF,$state) {
+				$log, $q, appEndpointSF,$state) {
 			
 			$scope.showSavedToast = function() {
 				$mdToast.show($mdToast.simple().content('Profile Updated!')

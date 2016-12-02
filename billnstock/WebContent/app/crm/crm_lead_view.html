@@ -15,7 +15,7 @@
 			</label> <input ng-model="leads.lid" disabled> </md-input-container>
 
 			<md-input-container flex> <label>Person
-				Name <span style="color: red;">*</span>
+				Name 
 			</label> <input name="name" ng-model="leads.name" ng-required="true">
 
 			<div ng-messages="leadform.name.$error"
@@ -44,7 +44,7 @@
 		</div> -->
 		<div layout layout-xs="column">
 			<md-input-container flex> <label>Company
-				<span style="color: red;">*</span>
+				
 			</label> <input name="company" ng-model="leads.company" ng-required="true">
 			<div ng-messages="leadform.company.$error"
 				ng-if="leadform.company.$submitted || leadform.company.$touched">
@@ -77,7 +77,7 @@
 			</div>
 			</md-input-container>
 			<md-input-container flex> <label>Designation
-				<span style="color: red;">*</span>
+				
 			</label> <input name="designation" ng-model="leads.designation"
 				ng-required="true">
 			<div ng-messages="leadform.designation.$error"
@@ -90,7 +90,7 @@
 		</div>
 	<!-- 	<div>
 			<md-input-container flex> <label>Address
-				<span style="color: red;">*</span>
+				
 			</label> <textarea name="address" ng-model="leads.address" rows="4" cols="50"
 				ng-required="true">
 			</textarea>
@@ -105,7 +105,7 @@
 			<h3 class="md-subhead">Address</h3><br>
     			<div layout="row" >
     				<md-input-container flex>
-      				<label>Line1 <span style="color: red;">*</span></label>
+      				<label>Line1 </label>
       				<input name="line1" ng-model="Address.line1" ng-required="true">
       				<div ng-messages="leadform.line1.$error"
 					ng-if="leadform.line1.$submitted || leadform.line1.$touched">
@@ -120,7 +120,7 @@
     			</div>
     			<div layout="row" >
     				<md-input-container flex>
-      				<label>State <span style="color: red;">*</span></label>
+      				<label>State </label>
       				<input name="state" ng-model="Address.state" ng-required="true" >
       				<div ng-messages="leadform.state.$error"
 					ng-if="leadform.state.$submitted || leadform.state.$touched">
@@ -137,7 +137,7 @@
     			</div>
     			<div layout="row" >
     				<md-input-container flex>
-      				<label>City <span style="color: red;">*</span></label>
+      				<label>City </label>
       				<input name="city" ng-model="Address.city" ng-required="true" >
       				<div ng-messages="leadform.city.$error"
 					ng-if="leadform.city.$submitted || leadform.city.$touched">

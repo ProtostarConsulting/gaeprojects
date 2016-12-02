@@ -16,7 +16,7 @@
 
 	<div layout layout-sm="column">
 		<md-input-container flex> <label>Enter
-			Account Group Name <span style="color: red;">*</span>
+			Account Group Name 
 		</label> <input type="text" ng-model="tempAccountGroup.groupName" id="grpName"
 			name="grpName" ng-required="true" account-group-userexists>
 
@@ -28,7 +28,7 @@
 		</md-input-container>
 
 		<md-input-container flex> <label>Enter
-			Description<span style="color: red;">*</span>
+			Description
 		</label> <input type="text" ng-model="tempAccountGroup.description"
 			id="descrip" name="descrip" ng-required="true">
 
@@ -43,7 +43,7 @@
 
 
 		<md-input-container flex> <label>Enter
-			Order No <span style="color: red;">*</span>
+			Order No 
 		</label> <input type="number" ng-model="tempAccountGroup.displayOrderNo"
 			id="orderNo" name="orderNo" ng-required="true">
 
@@ -68,7 +68,7 @@
 			ng-disabled="tempAccountGroup.isPrimary"
 			placeholder="AccountGroupType" id="accountGroupType"
 			name="accountGroupType" ng-required="true"> <lable>Account
-		Group Type<span style="color: red;">*</span></lable> <md-option
+		Group Type</lable> <md-option
 			ng-value="item" ng-repeat="item in accountGroupTypeList">{{item}}
 
 		</md-option> </md-select>

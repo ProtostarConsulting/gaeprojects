@@ -35,9 +35,9 @@
 			md-buffer-value="70" ng-disabled="false"></md-progress-linear>
 	</div>
 	<md-content ng-hide="loading"
-		style="padding-left: 8px; padding-right: 8px; height: 100%;" ng-controller="AppCtrl"
-		layout="column"> <!-- Top Navigation Pane --> <!-- <md-toolbar style="position: fixed;"> -->
-	<md-toolbar>
+		style="padding-left: 8px; padding-right: 8px; height: 100%;"
+		ng-controller="AppCtrl" layout="column"> <!-- Top Navigation Pane -->
+	<!-- <md-toolbar style="position: fixed;"> --> <md-toolbar>
 	<div layout="row" class="md-toolbar-tools">
 		<div ng-hide="toggleMainMenuSwitch">
 			<md-button ng-click="toggleMainMenu()" class="md-fab md-mini"
@@ -84,11 +84,12 @@
 		</div>
 	</div>
 
-	</md-toolbar> <md-content layout="row" flex layout-fill style="height: 100%;"> <!-- Left Navigation Pane -->
-	<md-sidenav class="md-sidenav-left md-whiteframe-z2"
-		md-component-id="left" md-is-locked-open="toggleMainMenuSwitch">
-	<md-content layout="column" flex="100"> <md-content>
-	<md-content class="md-accordion"
+	</md-toolbar> <md-content layout="row" flex layout-fill style="height: 100%;">
+	<!-- Left Navigation Pane --> <md-sidenav
+		class="md-sidenav-left md-whiteframe-z2" md-component-id="left"
+		md-is-locked-open="toggleMainMenuSwitch"> <md-content
+		layout="column" flex="100"> <md-content> <md-content
+		class="md-accordion"
 		ng-repeat="auth in curUser.userAuthMasterEntity.authorizations | orderBy: orderByAuthOrderValue"
 		ng-show="curUser!=null"> <md-toolbar
 		ng-init="data.expanded[$index] = false"
@@ -101,23 +102,24 @@
 			ng-class="{expandCollapse:true, active:data.expanded[$index]}"></span>
 	</div>
 	</md-toolbar>
-	<div style="margin-left: 15px;"
+	<div layout="column" style="margin-left: 15px;" 
 		ng-class="{dataContent:true, activeContent:data.expanded[$index]}">
-		<md-content layout="column" layout-align="center start">
+		<md-content layout="column" flex="100" layout-align="center start">
 		<md-button
 			ng-repeat="subAuth in auth.authorizations | orderBy: orderByAuthOrderValue"
 			ui-sref="{{subAuth.uiStateName}}" ng-click="close()"
 			class="menu-heading md-primary" aria-label="subAuth.authDisplayName"
-			ng-hide="" show-gt-md> <span
-			ng-bind="subAuth.authDisplayName"> </span></md-button> </md-content>
+			ng-bind="subAuth.authDisplayName"> </md-button> </md-content>
 	</div>
 	</md-content> </md-content> </md-content>
 	<hr>
 	<span flex>©2017-2018 ProERP Google Cloud Platform, a product of
 		Protostar Consulting Services, Pune. All rights reserved. </span></md-sidenav> <md-content
-		layout="column" layout-align="top stretch" layout-fill style="height: 100%;"> <md-content
-		layout="column" style="height: 100%;"> <md-content id="tp1" ui-view flex
-		layout="column" layout-align="top stretch" style="height: 100%;"> <!--This is the center page of all main modules for the index module. -->
+		layout="column" layout-align="top stretch" layout-fill
+		style="height: 100%;"> <md-content layout="column"
+		style="height: 100%;"> <md-content id="tp1" ui-view flex
+		layout="column" layout-align="top stretch" style="height: 100%;">
+	<!--This is the center page of all main modules for the index module. -->
 	</md-content> </md-content><!-- <span flex>©2017-2018 ProERP Google Cloud Platform, a product
 		of Protostar Consulting Services, Pune. All rights reserved. </span> -->
 	</md-content> <!-- </md-card>  --></md-content> <!--This is a botton section of the app--> </md-content> </md-content>
@@ -125,7 +127,7 @@
 
 	<!-- All JS Dependencies -->
 	<!-- 	<script src="/lib/base/googleapi.client.js"></script> -->
-<!-- 	<script src="/lib/base/jquery.min.js"></script>
+	<!-- 	<script src="/lib/base/jquery.min.js"></script>
 	<script src="/lib/base/bootstrap.min.js"></script> -->
 
 	<!-- Angular Material Dependencies -->
@@ -172,8 +174,6 @@
 	<script src="/app/common/app.endpoint.service.js"></script>
 
 	<script src="/home.ctr.js"></script>
-	<!-- <script src="/app/demo/js/state.ctr.js"></script> -->
-	<!-- <script src="/app/demo/js/drivefiles.js"></script> -->
 
 	<!-- 	Customer js  -->
 	<script src="/app/crm/js/customer_module.ctr.js"></script>
@@ -194,7 +194,6 @@
 	<script src="/app/account/js/account_receivable.ctr.js"></script>
 	<script src="/app/account/js/account_payableList.ctr.js"></script>
 	<script src="/app/account/js/account_receivableList.ctr.js"></script>
-	<script src="/app/demo/js/fileUpload.ctr.js"></script>
 	<!-- 	Complete Account js  -->
 
 	<!-- Accounting entity -->
@@ -281,21 +280,11 @@
 
 	<!-- 	Complete Stock js  -->
 
-	<!--<script src="/app/invoice/js/invoice.ctr.js"></script>
-		<script src="/app/fileupload/js/fileupload.ctr.js"></script>-->
-
-	<script src="/app/test/js/table.demo.data.service.js"></script>
-	<script src="/app/demo/js/table.demo.withservice.ctr2.js"></script>
 
 	<!-- 	Tax js  -->
 	<script src="/app/tax/js/tax.ctr.js"></script>
 	<!-- 	Complete Tax js  -->
 
-	<!-- 	Student js  -->
-	<script src="/app/student/js/student_module.ctr.js"></script>
-	<script src="/app/student/js/student.ctr.js"></script>
-	<script src="/app/student/js/student.list.ctr.js"></script>
-	<!-- 	Complete Student js  -->
 
 	<!-- 	Sales Order js  -->
 	<script src="/app/sales/js/salesOrder_add.ctr.js"></script>

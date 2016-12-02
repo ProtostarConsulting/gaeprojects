@@ -8,7 +8,7 @@
 				id </label> <input ng-model="emp.empid" disabled> </md-input-container>
 
 			<md-input-container flex> <label>Employee
-				Name  <span style="color: red;">*</span></label> <input name="empName" ng-model="emp.empName"
+				Name  </label> <input name="empName" ng-model="emp.empName"
 				ng-required="true">
 			<div ng-messages="empForm.empName.$error"
 				ng-if="empForm.empName.$submitted || empForm.empName.$touched">
@@ -18,14 +18,14 @@
 		</div>
 		<div layout layout-xs="column">
 			<md-input-container flex> <label> Email
-				id  <span style="color: red;">*</span></label> <input type="email" name="email" ng-model="emp.email" ng-required="true">
+				id  </label> <input type="email" name="email" ng-model="emp.email" ng-required="true">
 			<div ng-messages="empForm.email.$error"
 				ng-if="empForm.email.$submitted || empForm.email.$touched">
 				<div ng-message="required">Please Enter Employee email id.</div>
 			</div>
 			</md-input-container>
 			<md-input-container flex> <label>company
-				Email Id  <span style="color: red;">*</span></label> <input type="email" name="compemail" ng-model="emp.compemail"
+				Email Id  </label> <input type="email" name="compemail" ng-model="emp.compemail"
 				ng-required="true">
 			<div ng-messages="empForm.compemail.$error"
 				ng-if="empForm.compemail.$submitted || empForm.compemail.$touched">
@@ -34,7 +34,7 @@
 			</md-input-container>
 		</div>
 		<div layout layout-xs="column">
-			<md-input-container flex> <label>Designation  <span style="color: red;">*</span></label>
+			<md-input-container flex> <label>Designation  </label>
 			<input name="designation" ng-model="emp.designation"
 				ng-required="true">
 			<div ng-messages="empForm.designation.$error"
@@ -42,7 +42,7 @@
 				<div ng-message="required">Please Enter Designation Name.</div>
 			</div>
 			</md-input-container>
-			<md-input-container flex> <label>Address  <span style="color: red;">*</span>
+			<md-input-container flex> <label>Address  
 			</label> <textarea  name="address" ng-model="emp.empAddress" rows="4" cols="50"
 				ng-required="true"></textarea>
 			<div ng-messages="empForm.address.$error"
