@@ -81,6 +81,7 @@ public class PDFHtmlTemplateService {
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 			document.open();
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
+			
 
 			Map<String, Object> root = new HashMap<String, Object>();
 			root.put("DebitAccount", salesEntity.getAccountType1()
@@ -89,6 +90,36 @@ public class PDFHtmlTemplateService {
 					.getAccountName().toString());
 			root.put("Amount", salesEntity.getAmount().toString());
 			root.put("Narration", salesEntity.getNarration().toString());
+		
+						
+			 
+			// Top Header
+			root.put("buisinessName", "" + salesEntity.getBusiness().getBusinessName());
+			StringBuffer addressBuf = new StringBuffer();
+			Address address =  salesEntity.getBusiness().getAddress();
+			if (address != null) {
+				if (address.getLine1() != null && !address.getLine1().isEmpty())
+					addressBuf.append(address.getLine1());
+				if (address.getLine2() != null && !address.getLine2().isEmpty())
+					addressBuf.append(", " + address.getLine2());
+				if (address.getCity() != null && !address.getCity().isEmpty())
+					addressBuf.append(", " + address.getCity());
+				if (address.getState() != null && !address.getState().isEmpty())
+					addressBuf.append(", " + address.getState());
+			}
+
+			String buisinessAddress = addressBuf.toString();
+			// Top Header
+		//	root.put("buisinessName", "" + business.getBusinessName());
+			root.put("buisinessAddress", "" + buisinessAddress);
+			
+			
+			
+		//	root.put("buisinessAddress", "" + salesEntity.getBusiness().getAddress().toString());
+			
+			
+			// Top Header
+			
 			// root.put("DebitAccount",
 			// salesEntity.getAccountType1().toString());
 
@@ -128,7 +159,31 @@ public class PDFHtmlTemplateService {
 					.getAccountName().toString());
 			root.put("Amount", receiptEntity.getAmount().toString());
 			root.put("Narration", receiptEntity.getNarration().toString());
+			root.put("buisinessName", "" + receiptEntity.getBusiness().getBusinessName());
+			root.put("buisinessAddress", "" + receiptEntity.getBusiness().getAddress().toString());
+			
+			
 
+			// Top Header
+			root.put("buisinessName", "" +receiptEntity.getBusiness().getBusinessName());////getbusiness.getBusinessName());
+			StringBuffer addressBuf = new StringBuffer();
+			Address address =  receiptEntity.getBusiness().getAddress();
+			if (address != null) {
+				if (address.getLine1() != null && !address.getLine1().isEmpty())
+					addressBuf.append(address.getLine1());
+				if (address.getLine2() != null && !address.getLine2().isEmpty())
+					addressBuf.append(", " + address.getLine2());
+				if (address.getCity() != null && !address.getCity().isEmpty())
+					addressBuf.append(", " + address.getCity());
+				if (address.getState() != null && !address.getState().isEmpty())
+					addressBuf.append(", " + address.getState());
+			}
+
+			String buisinessAddress = addressBuf.toString();
+			// Top Header
+		//	root.put("buisinessName", "" + business.getBusinessName());
+			root.put("buisinessAddress", "" + buisinessAddress);
+			
 			Template temp = getConfiguration().getTemplate(
 					"pdf_templates/invoice_voucher_tmpl.ftlh");
 
@@ -168,6 +223,25 @@ public class PDFHtmlTemplateService {
 			root.put("Items", purchesEntity.getItem().toString());
 			root.put("Accdetail", purchesEntity.getAccdetail().toString());
 			root.put("Narration", purchesEntity.getNarration().toString());
+			root.put("buisinessName", "" + purchesEntity.getBusiness().getBusinessName());
+			StringBuffer addressBuf = new StringBuffer();
+			Address address =  purchesEntity.getBusiness().getAddress();
+			if (address != null) {
+				if (address.getLine1() != null && !address.getLine1().isEmpty())
+					addressBuf.append(address.getLine1());
+				if (address.getLine2() != null && !address.getLine2().isEmpty())
+					addressBuf.append(", " + address.getLine2());
+				if (address.getCity() != null && !address.getCity().isEmpty())
+					addressBuf.append(", " + address.getCity());
+				if (address.getState() != null && !address.getState().isEmpty())
+					addressBuf.append(", " + address.getState());
+			}
+
+			String buisinessAddress = addressBuf.toString();
+			// Top Header
+		//	root.put("buisinessName", "" + business.getBusinessName());
+			root.put("buisinessAddress", "" + buisinessAddress);
+			
 
 			Template temp = getConfiguration().getTemplate(
 					"pdf_templates/purches_voucher_tmpl.ftlh");

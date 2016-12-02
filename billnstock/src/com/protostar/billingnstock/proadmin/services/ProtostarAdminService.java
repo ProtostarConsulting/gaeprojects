@@ -56,9 +56,9 @@ public class ProtostarAdminService {
 
 		List<AccountGroupEntity> acList = ofy().load()
 				.type(AccountGroupEntity.class).list();
-		if (acList.size() > 0) {
+		/*if (acList.size() > 0) {
 			return;
-		}
+		}*/
 
 		AccountGroupEntity fixedAsetAccountGroupEntity = new AccountGroupEntity();
 

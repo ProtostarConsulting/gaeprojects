@@ -1,12 +1,15 @@
 <html>
- <div align="center" >
-<b>Protostar Consulting</b>
-<br></br>
-Kasarwadi,pune
+ 
+ <div align="center">
+ <b>${buisinessName}</b> <br></br> ${buisinessAddress}
 </div>
 <hr></hr>
+ 
+<div align="center">
+	<b>Sales Voucher</b>
+</div>
   
-<h4 align="center" style="font-size: 150%">Sales Voucher </h4>
+
 	
 	<table style="
      width: 100%;

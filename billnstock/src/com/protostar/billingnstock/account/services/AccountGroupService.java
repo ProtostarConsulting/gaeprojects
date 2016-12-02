@@ -35,11 +35,12 @@ public class AccountGroupService {
 	
 	@ApiMethod(name = "getAccountGroupList", path="getAccountGroupList")
 	public List<AccountGroupEntity> getAccountGroupList(@Named("id") Long busId) {
-		System.out.println("busId:" + busId);
+		System.out.println("busId:4444" + busId);
 		if(busId == null)
 			return new ArrayList<AccountGroupEntity>();
-		
-		return ofy().load().type(AccountGroupEntity.class).ancestor(Key.create(BusinessEntity.class, busId)).list();
+		List<AccountGroupEntity> list= ofy().load().type(AccountGroupEntity.class).list();//ofy().load().type(AccountGroupEntity.class).ancestor(Key.create(BusinessEntity.class, busId)).list();
+		System.out.println("list:" + list);
+		return list;
 	}
 	
 	
