@@ -40,7 +40,7 @@
 			</thead>
 			<tbody>
 
-				<tr ng-repeat="monthlyPayObj in monthlyPayDetailsList">
+				<tr ng-repeat="monthlyPayObj in monthlyPayDetailsList | filter:{finalized:true}">
 
 					<td
 						style="border: 1px solid #ddd; padding: 5px; text-align: center;"><b>{{monthlyPayObj.leaveDetailEntity.currentMonth}}
