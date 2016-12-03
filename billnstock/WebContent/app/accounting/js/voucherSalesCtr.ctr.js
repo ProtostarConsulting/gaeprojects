@@ -71,6 +71,7 @@ app
 					
 					
 					$scope.getAccountList=function(){
+						$scope.loading = true;
 					
 					var accountService = appEndpointSF.getAccountService();
 					accountService.getAccountList($scope.curUser.business.id).then(
@@ -79,7 +80,9 @@ app
 								$scope.vaccounts1.push(list[x]);
 								$scope.vaccounts2.push(list[x]);
 								}		
-						});
+						
+							$scope.loading = false;
+									});
 					}
 					
 					
@@ -145,15 +148,12 @@ app
 							$timeout($scope.waitForServiceLoad, 1000);
 						}
 					}
-				// $scope.waitForServiceLoad();
-					$scope.getAccountList();
+			
+					
 					
 					
 					$scope.downloadpdf=function(){
-					// window.location.href ="PdfSales";
-						window.open("PdfSales?id="+$scope.vouchersSaview1.id+"&entityname="+SalesVoucherEntity+"&bid="+$scope.curUser.business.id);
-					// myWindow=window.open('PdfSales','mypage.jsp','width=200,height=100');
-					// myWindow.focus();
+					
 						
 					}
 

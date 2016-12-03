@@ -12,21 +12,26 @@ app.controller("accountlistCtr", function($scope, $window, $mdToast, $timeout,
 	$scope.selected = [];
 
 	$scope.getAccountList = function(refresh) {
+		$scope.loading = true;
 		var AccountServiceCacheKey = "getAccountByName";
 
 		if (!angular.isUndefined(ajsCache.get(AccountServiceCacheKey))
 				&& !refresh) {
 			$log.debug("Found List in Cache, return it.");
 			$scope.List = ajsCache.get(AccountServiceCacheKey);
+			$scope.loading = false;
 			return;
+			
 		}
-
+		
 		var AccountService = appEndpointSF.getAccountService();
 		AccountService.getAccountList($scope.curUser.business.id).then(
 				function(list) {
 					$log.debug("list:"+angular.toJson(list));
 					$scope.accounts = list;
+					$scope.loading = false;
 					ajsCache.put(AccountServiceCacheKey, list);
+					
 
 				});
 	}

@@ -7,11 +7,12 @@ app.controller("voucherRecieptListCtr", function($scope, $window, $mdToast, $tim
 
 
 	$scope.voucherList=function(){
-		
+		$scope.loading = true;
 		var voucherServiceList=appEndpointSF.getVoucherService();
 		voucherServiceList.listVoucherReciept($scope.curUser.business.id).then(function(list){
 			$scope.VoucherReaccounts=list;
-		
+			
+			$scope.loading = false;
 				});
 			}
 	

@@ -2,30 +2,38 @@
 
 <md-content layout-padding>
 
-<section layout="row" layout-align="end end" flex>
-
- <md-button  class="md-raised md-primary"  id="downloadExcel" ng-click="downloadExcel()">Download AccountList
-  <md-tooltip> Download AccountList</md-tooltip> </md-button>
-
- <md-button class="md-raised md-primary" id="uplodeExcel" ng-click="uploadExcel($event)">Upload AccountList 
- 	<md-tooltip> Upload AccountList</md-tooltip> </md-button>
- 
-</section>
-<h3 class="md-headline" >
-	<u>Account List</u>
-</h3>
-
-
-<div flex>
-            <md-button class="md-icon-button" ng-click="getAccountList(true)">
-              <md-icon md-svg-src="img/icons/ic_refresh_24px.svg">refresh</md-icon>
-            </md-button>
-          </div>
-
-
-<div>
+<md-toolbar class="md-table-toolbar" style="max-height:30px">
+	<div class="md-toolbar-tools">
+		<span>Account List  </span>
+		<div flex></div>
+		<section layout="row" layout-align="end end" flex>
+		
+		<md-button class="md-icon-button" id="downloadExcel"
+					ng-click="downloadExcel()"> <ng-md-icon
+					icon="file_download" style="fill: md-default" size="24">
+				<md-tooltip>Download AccountList</md-tooltip></ng-md-icon></md-button>
+				<md-button class="md-icon-button" id="downloadExcel"
+					ng-click="downloadData()"> <ng-md-icon
+					icon="file_upload" style="fill: md-default" size="24">
+				<md-tooltip>Upload AccountList</md-tooltip></ng-md-icon></md-button>
+				
+				<md-button class="md-icon-button" id="refreshIcon"
+				ng-click="getAccountList(true)"> <ng-md-icon icon="refresh"
+				style="fill: md-default" size="24"> <md-tooltip>Refresh
+			List</md-tooltip></ng-md-icon></md-button>
+				
+					
+		</section>
+	</div>
+	</md-toolbar>
+	<div ng-if="loading">
+			<div layout="row" layout-sm="column" layout-align="space-around">
+				<md-progress-circular md-diameter="60" md-mode="indeterminate"></md-progress-circular>
+			</div>
+		</div>
+<div ng-if="!loading">
 	<md-data-table-container>
-	<table md-data-table md-row-select="selected" md-progress="deferred">
+	<table md-data-table md-progress="deferred">
 		<thead md-order="query.order" md-trigger="onOrderChange">
 		
 			<tr>
@@ -41,7 +49,7 @@
 		</thead>
 
 		<tbody>
-			<tr md-auto-select
+			<tr
 				ng-repeat="account in accounts | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit"">
 
 				<td>{{account.accountName}}</td>

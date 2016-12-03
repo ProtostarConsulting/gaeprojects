@@ -25,19 +25,20 @@ app
 					$scope.vaccounts1 = [];
 					$scope.vaccounts2 = [];
 					$scope.getAccountList = function() {
-
+						$scope.loading = true;
 						var accountService = appEndpointSF.getAccountService();
 						accountService.getAccountList($scope.curUser.business.id).then(function(list) {
 							for (var x = 0; x < list.length; x++) {
 								
-								if(list[x].accountgroup.groupName.trim()!="Purchase Accounts")
+								if(list[x].accountgroup.groupName.trim()!="PurchaseAccounts")
 								{
 								$scope.vaccounts1.push(list[x]);
 								}
-									if(list[x].accountgroup.groupName.trim()=="Purchase Accounts")
+									if(list[x].accountgroup.groupName.trim()=="PurchaseAccounts")
 										{
 								$scope.vaccounts2.push(list[x]);}
-
+									
+									$scope.loading = false;
 							}
 
 						});

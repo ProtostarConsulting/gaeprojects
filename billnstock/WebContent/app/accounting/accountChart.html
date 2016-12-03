@@ -13,22 +13,23 @@ div.one {
 	border: 1px solid black;
 }
 </style>
+<md-toolbar class="md-table-toolbar" style="max-height:30px">
+	<div class="md-toolbar-tools">
+		<span>Account Chart </span>
+		<div flex></div>
+		<section layout="row" layout-align="end end" flex>
+		<md-button class="md-icon-button" id="uplodeExcel" ng-click="saveToPDF()">
+				 <ng-md-icon icon="file_download"
+				style="fill: md-default" size="24"> <md-tooltip>Download In Pdf</md-tooltip></ng-md-icon></md-button>
+				<md-button class="md-icon-button"  ng-click="printDiv('accountChartDiv')">
+				 <ng-md-icon icon="print"
+				style="fill: md-default" size="24"> <md-tooltip>Print</md-tooltip></ng-md-icon></md-button>
+		</section>
+	</div>
+	</md-toolbar>
 
 <md-content ng-show="$loading"> Loding.... </md-content>
 <md-content layout-padding ng-show="!loading">
-
-<h3 class="md-headline">
-	<u>Account Chart</u>
-</h3>
-<section layout="row" layout-align="end end">
-		<md-button class="md-raised md-primary"
-			ng-click="saveToPDF()" >Save To PDF
-		</md-button>
-		
-		<md-button class="md-icon-button md-accent"
-			ng-click="printDiv('accountChartDiv')" aria-label="Favorite">
-		<md-icon md-svg-icon="img/icons/print.svg"></md-icon> </md-button>
-	</section>
 <div class="one" id="accountChartDiv">
 
 	<table>

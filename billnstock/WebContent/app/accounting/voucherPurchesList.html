@@ -12,65 +12,51 @@ td {
 table tr td a {
  
     margin-right: 100px;
-}
- 
+} 
 </style>
 <md-content layout-padding>
-
-<h3 class="md-headline" >
-	<u>Purches Voucher List</u>
-</h3>
-<div flex><!-- </div>
-            <md-button class="md-icon-button" ng-click="voucherList()">
-              <md-icon md-svg-src="img/icons/ic_refresh_24px.svg">refresh</md-icon>
-            </md-button>
-          </div> -->
-
-
-<div>
+<md-toolbar class="md-table-toolbar md-default" style="max-height:30px">
+	<div class="md-toolbar-tools">
+		<span>Purches Voucher List</span>
+		<div flex></div>
+		<section layout="row" layout-align="end end" flex>
+		</section>
+	</div>
+	</md-toolbar>
+<div flex>
+<div ng-if="loading">
+			<div layout="row" layout-sm="column" layout-align="space-around">
+				<md-progress-circular md-diameter="60" md-mode="indeterminate"></md-progress-circular>
+			</div>
+		</div>
+<div ng-if="!loading">
 	<table>
-	<!-- <table md-data-table md-row-select="selected" md-progress="deferred"> -->
-		<thead>
-		
-			<tr  style="border: 1px solid black; background-color: #ADD8E6">
-			
-			
-			
-				<th style=" padding-left:30px;">Debit Account </th>
-				<th style=" padding-left:30px;">Credit Account</th>
-				
-				<th style=" padding-left:30px;">Name of itemst</th>
-				<th style=" padding-left:30px;">Amount</th>
-				<th style=" padding-left:30px;">Is Cash?</th>
-				<th style=" padding-left:30px;">Account Details</th>
-				<th style=" padding-left:30px;">Narration</th>
-				
-			</tr>
-		</thead>
-
+	<thead>
+		<tr  style="border: 1px solid black; background-color: #ADD8E6">
+			<th style=" padding-left:30px;">Debit Account </th>
+			<th style=" padding-left:30px;">Credit Account</th>
+			<th style=" padding-left:30px;">Name of itemst</th>
+			<th style=" padding-left:30px;">Amount</th>
+			<th style=" padding-left:30px;">Is Cash?</th>
+			<th style=" padding-left:30px;">Account Details</th>
+			<th style=" padding-left:30px;">Narration</th>
+		</tr>
+	</thead>
 		<tbody>
 			<tr	ng-repeat="item in purcheslist">
 
 				<td style=" padding-left:30px;">{{item.accountType1.accountName}}</td>
 				<td style=" padding-left:30px;">{{item.accountType2.accountName}}</td>
 				<td style=" padding-left:30px;">{{item.item}}</td>
-				
 				<td><div style=" padding-left:30px; float:left;">{{item.amount|number:2}}</div> 
-  					 
-			   </td>
+  				</td>
 			   <td style=" padding-left:30px;">{{item.isCash}}</td>
 			   <td style=" padding-left:30px;">{{item.accdetail}}</td>
-			
-				<td><div style=" padding-left:30px; float:left;"> {{item.narration}}</div> 
+			   <td><div style=" padding-left:30px; float:left;"> {{item.narration}}</div> 
 				<div style="padding-right:0px;text-align:right;float:right;"><a ui-sref="accounting.voucherPurches({Account:item})" >View </a></div>
-				
-					</td>		
+				</td>		
 			</tr>
-
 		</tbody>
 	</table>
-
 </div>
-
-
 </md-content>

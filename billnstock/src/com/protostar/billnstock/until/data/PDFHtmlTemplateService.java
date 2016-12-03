@@ -53,7 +53,7 @@ public class PDFHtmlTemplateService {
 
 	public void generateVoucherPDF(VoucherEntity voucherEntity,
 			ServletOutputStream outputStream) {
-
+		
 		if (voucherEntity instanceof SalesVoucherEntity) {
 			generateSalesVoucherPDF((SalesVoucherEntity) voucherEntity,
 					outputStream);
@@ -224,6 +224,9 @@ public class PDFHtmlTemplateService {
 			root.put("Accdetail", purchesEntity.getAccdetail().toString());
 			root.put("Narration", purchesEntity.getNarration().toString());
 			root.put("buisinessName", "" + purchesEntity.getBusiness().getBusinessName());
+			
+			root.put("BankAccountNo.", "" + purchesEntity.getAccdetail().toString());
+			
 			StringBuffer addressBuf = new StringBuffer();
 			Address address =  purchesEntity.getBusiness().getAddress();
 			if (address != null) {

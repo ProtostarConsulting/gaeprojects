@@ -71,6 +71,7 @@ $scope.s=x;
 	}
 	
 	$scope.remSelected = function(selected,fl) {
+		$scope.loading = true;
 		$scope.getAccountEntryByAccountId(selected, fl);
 		
 			var accountService = appEndpointSF.getAccountService();
@@ -92,7 +93,7 @@ $scope.s=x;
 							$scope.creditCurrentBalance="";
 								$scope.vouchersRe.accountType2 = "";
 							$scope.voucherRecieptForm.Account.$touched = true;
-						}
+						}$scope.loading = false;
 						break;
 						// $log.debug(value);
 

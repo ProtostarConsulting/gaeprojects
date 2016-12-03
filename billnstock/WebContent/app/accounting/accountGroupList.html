@@ -1,29 +1,29 @@
 
 <md-content>
-<div><h3><u>Account Group List</u></h3></div>
-
-<section layout="row" layout-align="end end" flex>
-	 <md-button  class="md-raised md-primary"  id="downloadExcel" ng-click="downloadExcel()">Download GroupList
-  <md-tooltip> Download GroupList</md-tooltip> </md-button>
-
- <md-button class="md-raised md-primary" id="uplodeExcel" ng-click="uploadExcel($event)">Upload GroupList 
- 	<md-tooltip> Upload GroupList</md-tooltip> </md-button>
- 
-</section>
-	
-<br>
-<br>
-<div>
-<md-toolbar class="md-table-toolbar md-default" ng-hide="selected.length">
-          <div class="md-toolbar-tools">
-            <span>Account Group List</span>
-            <div flex></div>
-            <md-button class="md-icon-button" ng-click="getList(true)">
-              <md-icon md-svg-src="img/icons/ic_refresh_24px.svg">refresh</md-icon>
-            </md-button>
-          </div>
-        </md-toolbar>
-        
+<md-toolbar class="md-table-toolbar md-default">
+	<div class="md-toolbar-tools">
+		<span>Account Group List </span>
+		<div flex></div>
+		<section layout="row" layout-align="end end" flex>
+		
+		<md-button class="md-icon-button"  id="downloadExcel" ng-click="downloadExcel()">
+		 <ng-md-icon
+					icon="file_download" style="fill: md-default" size="24">
+				<md-tooltip>Download GroupList</md-tooltip></ng-md-icon></md-button>
+				<md-button class="md-icon-button" id="downloadExcel"
+					ng-click="downloadData()"> <ng-md-icon
+					icon="file_upload" style="fill: md-default" size="24">
+				<md-tooltip>Upload GroupList </md-tooltip></ng-md-icon></md-button>
+				
+				<md-button class="md-icon-button" id="uplodeExcel" ng-click="getList(true)">
+				 <ng-md-icon icon="refresh"
+				style="fill: md-default" size="24"> <md-tooltip>Refresh
+			List</md-tooltip></ng-md-icon></md-button>
+				
+					
+		</section>
+	</div>
+	</md-toolbar>
         <md-toolbar class="md-table-toolbar alternate" ng-show="selected.length">
           <div class="md-toolbar-tools">
             <span>{{selected.length}} {{selected.length > 1 ? 'Groups' : 'Group'}} selected</span>
@@ -31,10 +31,9 @@
         </md-toolbar>
         
 	<md-data-table-container>
-			<table md-data-table md-row-select="selected" md-progress="deferred">
+			<table md-data-table  md-progress="deferred">
 				<thead md-order="query.order" md-trigger="onorderchange">
 					<tr>
-					<th name="Order No" order-by="displayOrderNo"></th>
 					<th name="Group Name" order-by="groupName"></th>
 					<th name="Primary" order-by="isPrimary"></th>
 					<th name="PrimaryType" order-by="PrimaryType"></th>
@@ -45,8 +44,7 @@
 				</thead>
 
 				<tbody>
-					<tr md-auto-select ng-repeat="acc in List | orderBy:query.order | limitTo: query.limit: (query.page - 1) * query.limit">
-					<td>{{acc.displayOrderNo}}</td>
+					<tr ng-repeat="acc in List | orderBy:query.order | limitTo: query.limit: (query.page - 1) * query.limit">
 					<td>{{acc.groupName}}</td>
 					<td>{{acc.isPrimary}}</td>
 					<td>{{acc.primaryType||acc.parent.primaryType}}</td>	
@@ -59,21 +57,7 @@
 								<md-tooltip> Edit Record</md-tooltip></ng-md-icon></md-button>
 						</section>
 						</td>	
-						<!-- <td>
-						 <section>
-							<md-button class="md-fab md-primary md-hue-2" ng-click="deleteAccountGrp(acc.id)">
-							<md-icon md-svg-src="img/icons/remove.svg"></md-icon>
-							</md-button>
-						</section>
-						</td>
-						<td>
-						<section>
-							<md-button class="md-fab md-primary md-hue-2" ng-click="" ui-sref="accounting.accountGroupDisplay">
-							<md-icon md-svg-src="img/icons/view.svg"></md-icon>
-							</md-button>
-						</section>
-						</td>	
-								 -->		
+							
 					</tr>
 				</tbody>
 		

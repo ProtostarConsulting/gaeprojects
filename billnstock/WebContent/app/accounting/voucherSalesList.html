@@ -16,18 +16,26 @@ table tr td a {
  
 </style>
 <md-content layout-padding>
-
-<h3 class="md-headline" >
-	<u>Sales Voucher List</u>
-</h3>
+<md-toolbar class="md-table-toolbar" style="max-height:30px">
+	<div class="md-toolbar-tools">
+		<span>Sales Voucher List </span>
+		<div flex></div>
+		<section layout="row" layout-align="end end" flex>
+		</section>
+	</div>
+	</md-toolbar>
 <div flex><!-- </div>
             <md-button class="md-icon-button" ng-click="voucherList()">
               <md-icon md-svg-src="img/icons/ic_refresh_24px.svg">refresh</md-icon>
             </md-button>
           </div> -->
 
-
-<div>
+<div ng-if="loading">
+			<div layout="row" layout-sm="column" layout-align="space-around">
+				<md-progress-circular md-diameter="60" md-mode="indeterminate"></md-progress-circular>
+			</div>
+		</div>
+<div ng-if="!loading">
 	<table>
 	<!-- <table md-data-table md-row-select="selected" md-progress="deferred"> -->
 		<thead>
