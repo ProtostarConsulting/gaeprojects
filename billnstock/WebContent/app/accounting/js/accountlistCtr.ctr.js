@@ -5,10 +5,11 @@ app.controller("accountlistCtr", function($scope, $window, $mdToast, $timeout,
 		appEndpointSF, $mdDialog, $mdMedia, $state, ajsCache) {
 
 	$scope.query = {
-		order : 'name',
-		limit : 5,
+		order : 'accountName',
+		limit : 50,
 		page : 1
 	};
+
 	$scope.selected = [];
 
 	$scope.getAccountList = function(refresh) {
@@ -18,24 +19,22 @@ app.controller("accountlistCtr", function($scope, $window, $mdToast, $timeout,
 		if (!angular.isUndefined(ajsCache.get(AccountServiceCacheKey))
 				&& !refresh) {
 			$log.debug("Found List in Cache, return it.");
-			$scope.List = ajsCache.get(AccountServiceCacheKey);
+			$scope.accounts = ajsCache.get(AccountServiceCacheKey);
 			$scope.loading = false;
 			return;
-			
+
 		}
-		
+
 		var AccountService = appEndpointSF.getAccountService();
 		AccountService.getAccountList($scope.curUser.business.id).then(
 				function(list) {
-					$log.debug("list:"+angular.toJson(list));
+					$log.debug("list:" + angular.toJson(list));
 					$scope.accounts = list;
 					$scope.loading = false;
 					ajsCache.put(AccountServiceCacheKey, list);
-					
 
 				});
 	}
-	$scope.getAccountList();
 
 	$scope.waitForServiceLoad = function() {
 		if (appEndpointSF.is_service_ready) {
@@ -134,9 +133,7 @@ app.controller("accountlistCtr", function($scope, $window, $mdToast, $timeout,
 	}
 
 	$scope.downloadExcel = function() {
-
 		document.location.href = "DownloadAccountsServlet";
-
 	}
 
 });

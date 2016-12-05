@@ -1,4 +1,4 @@
-
+<md-content layout="column" layout-align="top stretch" layout-fill>
 <div layout="column">
 	<style>
 .animate-show {
@@ -18,107 +18,68 @@
 	padding: 0 10px;
 }
 </style>
-	<div>
-		<section>
-			<div layout="row" layout-align="left left" layout-wrap flex>
-				<md-button hide-xs ui-sref="accounting.account_add2"
-					ng-click="close()" class="md-primary"> Add Account</md-button>
 
-				<md-button hide-xs ui-sref="accounting.accountlist"
-					ng-click="close()" class="md-primary"> Account List</md-button>
-
-				<md-button hide-xs ui-sref="accounting.accountGroupAdd"
-					class="md-primary">Add Group</md-button>
-
-				<md-button hide-xs ui-sref="accounting.accountGroupList"
-					class="md-primary"> Group List</md-button>
-				<md-button hide-xs ui-sref="accounting.accountGroupView"
-					class="md-primary"> Group View</md-button>
-
-				<md-button hide-xs ui-sref="accounting.addGeneralEntry"
-					class="md-primary">Add General Entry</md-button>
-				<!-- <md-button hide-xs ui-sref="accounting.generalEntitylist"
-					class="md-primary"> General Entry List</md-button> -->
-				<md-button hide-xs ui-sref="accounting.entryList" class="md-primary">Account
-				View</md-button>
-				<md-button hide-xs ui-sref="accounting.voucherSales"
-					class="md-primary">Sales Voucher</md-button>
-				<md-button hide-xs ui-sref="accounting.voucherSalesList"
-					class="md-primary">Sales Voucher List</md-button>
-					
-					<md-button hide-xs ui-sref="accounting.voucherPurches"
-					class="md-primary">Purches Voucher</md-button>
-					<md-button hide-xs ui-sref="accounting.voucherPurchesList"
-					class="md-primary">Purches Voucher List</md-button>
-					
-					
-				<md-button hide-xs ui-sref="accounting.voucherReceipt"
-					class="md-primary">Receipt Voucher</md-button>
-				<md-button hide-xs ui-sref="accounting.voucherRecieptList"
-					class="md-primary">Receipt Voucher List</md-button>
-				<md-button hide-xs ui-sref="accounting.accountChart"
-					class="md-primary">Account Chart</md-button>
-				<md-button hide-xs ui-sref="accounting.balanceSheet"
-					class="md-primary">Balance Sheet</md-button>
-				<md-button hide-xs ui-sref="accounting.trialBalance"
-					class="md-primary">Trial Balance</md-button>
-
-				<!-- <!-- 	<md-button show-xs  ng-click="click(tv)" id="v" class="md-primary">Vouche2r</md-button>
-			</div><div class="animate-show"><md-button ng-show="vt" ui-sref="accounting.voucher"  id ="vt" class="md-primary animate-show">Voucher Type</md-button>
-						</div> -->
+	<div layout-wrap>
+		<section layout="row" layout-wrap style="margin: 0; padding: 0">
+			<md-content layout="row" layout-align="center start"> <md-button
+				class="md-icon-button" aria-label="prev" ng-click="back()">
+			<md-tooltip> go back</md-tooltip> <md-icon
+				md-svg-icon="img/icons/ic_reply_black_24px.svg" aria-label="go back"></md-icon>
+			</md-button> <md-button hide-xs ui-sref="accounting.account_add2"
+				ng-click="close()" class="md-primary"> Add Acc</md-button> <md-button
+				hide-xs ui-sref="accounting.accountlist" ng-click="close()"
+				class="md-primary"> Acc List</md-button> <md-button hide-xs
+				ui-sref="accounting.addGeneralEntry" class="md-primary">Add
+			GE</md-button> <md-button hide-xs ui-sref="accounting.entryList"
+				class="md-primary">View Acc</md-button> <md-button hide-xs
+				ui-sref="accounting.voucherSales" class="md-primary">
+			Add SV</md-button> <md-button hide-xs ui-sref="accounting.voucherSalesList"
+				class="md-primary">SV List</md-button> <md-button hide-xs
+				ui-sref="accounting.voucherPurches" class="md-primary">Add
+			PV</md-button> <md-button hide-xs ui-sref="accounting.voucherPurchesList"
+				class="md-primary">PV List</md-button> <md-button hide-xs
+				ui-sref="accounting.voucherReceipt" class="md-primary">Add
+			RV</md-button> <md-button hide-xs ui-sref="accounting.voucherRecieptList"
+				class="md-primary">RV List</md-button> </md-content>
 
 
-			</div>
+			<span flex></span>
+			<md-button hide-gt-md class="md-icon-button" aria-label="More"
+				ng-click="toggleRight()"> <md-icon
+				md-svg-icon="img/icons/more_vert.svg"></md-icon> </md-button>
+		</section>
 	</div>
+
+
+
+	<md-sidenav class="md-sidenav-right md-whiteframe-z2"
+		md-component-id="right" layout="column"> <md-toolbar
+		class="md-theme-light">
+	<h1 class="md-toolbar-tools">Accounting</h1>
+
+	</md-toolbar> <md-button show-xs ui-sref="accounting.account_add2"
+		ng-click="close()" class="md-primary"> Add Account</md-button> <md-button
+		show-xs ui-sref="accounting.accountlist" ng-click="close()"
+		class="md-primary"> Account List</md-button> <md-button show-xs
+		ui-sref="accounting.accountGroupAdd" class="md-primary">Add
+	Group</md-button> <md-button show-xs ui-sref="accounting.accountGroupList"
+		class="md-primary"> Group List</md-button> <md-button show-xs
+		ui-sref="accounting.accountGroupView" class="md-primary">
+	Group View</md-button> <md-button show-xs ui-sref="accounting.addGeneralEntry"
+		class="md-primary">Add General Entry</md-button> <!-- <md-button show-xs ui-sref="accounting.generalEntitylist"
+	class="md-primary"> General Entry List</md-button>  --> <md-button
+		show-xs ui-sref="accounting.entryList" class="md-primary">Account
+	View</md-button> <md-button show-xs ui-sref="accounting.voucherSales"
+		class="md-primary">Sales Voucher</md-button> <md-button show-xs
+		ui-sref="accounting.voucherSalesList" class="md-primary">Sales
+	Voucher List</md-button> <md-button show-xs ui-sref="accounting.voucherReceipt"
+		class="md-primary">Receipt Voucher</md-button> <md-button show-xs
+		ui-sref="accounting.voucherRecieptList" class="md-primary">Receipt
+	Voucher List</md-button> <md-button hide-xs ui-sref="accounting.accountChart"
+		class="md-primary">Account Chart</md-button> <md-button hide-xs
+		ui-sref="accounting.balanceSheet" class="md-primary">Balance
+	Sheet</md-button> <md-button hide-xs ui-sref="accounting.trialBalance"
+		class="md-primary">Trial Balance</md-button> <!-- 			Sidenav Buttons -->
+	</md-sidenav>
 </div>
-
-
-<div class="md-toolbar-tools">
-	<span flex></span>
-	<section layout="row">
-		<md-button hide-gt-md class="md-icon-button" aria-label="More"
-			ng-click="toggleRight()"> <md-icon
-			md-svg-icon="img/icons/more_vert.svg"></md-icon> </md-button>
-
-	</section>
-</div>
-
-
-<md-sidenav class="md-sidenav-right md-whiteframe-z2"
-	md-component-id="right"> <md-toolbar
-	class="md-theme-light">
-<h1 class="md-toolbar-tools">Accounting</h1>
-
-</md-toolbar> <md-button show-xs ui-sref="accounting.account_add2" ng-click="close()"
-	class="md-primary"> Add Account</md-button> <md-button show-xs
-	ui-sref="accounting.accountlist" ng-click="close()" class="md-primary">
-Account List</md-button> <md-button show-xs ui-sref="accounting.accountGroupAdd"
-	class="md-primary">Add Group</md-button> <md-button show-xs
-	ui-sref="accounting.accountGroupList" class="md-primary">
-Group List</md-button> <md-button show-xs ui-sref="accounting.accountGroupView"
-	class="md-primary"> Group View</md-button> <md-button show-xs
-	ui-sref="accounting.addGeneralEntry" class="md-primary">Add
-General Entry</md-button> <!-- <md-button show-xs ui-sref="accounting.generalEntitylist"
-	class="md-primary"> General Entry List</md-button>  -->
-<md-button show-xs ui-sref="accounting.entryList" class="md-primary">Account
-View</md-button> <md-button show-xs ui-sref="accounting.voucherSales"
-	class="md-primary">Sales Voucher</md-button> <md-button show-xs
-	ui-sref="accounting.voucherSalesList" class="md-primary">Sales
-Voucher List</md-button> <md-button show-xs ui-sref="accounting.voucherReceipt"
-	class="md-primary">Receipt Voucher</md-button> <md-button show-xs
-	ui-sref="accounting.voucherRecieptList" class="md-primary">Receipt
-Voucher List</md-button> <md-button hide-xs ui-sref="accounting.accountChart"
-	class="md-primary">Account Chart</md-button> <md-button hide-xs
-	ui-sref="accounting.balanceSheet" class="md-primary">Balance
-Sheet</md-button> <md-button hide-xs ui-sref="accounting.trialBalance"
-	class="md-primary">Trial Balance</md-button> <!-- 			Sidenav Buttons -->
-</md-sidenav>
-
-
-
-
-
-
-</div>
-<div ui-view layout-padding></div>
-</div>
+<md-content ui-view layout-padding></md-content> </md-content>
