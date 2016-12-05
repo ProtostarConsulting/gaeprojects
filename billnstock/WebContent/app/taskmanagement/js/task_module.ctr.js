@@ -4,7 +4,7 @@ angular
 				"taskModuleCtr",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
 						$mdUtil, $log, $q, $location, $anchorScroll, $state,
-						$stateParams, objectFactory, appEndpointSF, ajsCache) {
+						$stateParams, $filter, objectFactory, appEndpointSF, ajsCache) {
 
 					$log.debug("Inside taskModuleCtr");
 					$scope.loading = true;
@@ -12,7 +12,8 @@ angular
 					var taskService = appEndpointSF.getTaskService();
 					var UserService = appEndpointSF.getUserService();
 
-					$scope.taskStatusList = [ 'OPEN', 'INPROGRESS', 'COMPLETED' ];
+					//$scope.taskStatusList = [ 'OPEN', 'INPROGRESS', 'COMPLETED' ];
+					$scope.taskStatusList = [ 'OPEN', 'COMPLETED' ];
 
 					$scope.taskObj = $stateParams.taskObj;
 					$scope.action = $stateParams.action;
@@ -177,6 +178,7 @@ angular
 												if(user.status == "active")
 													activeUserList.push(user);
 											});
+											activeUserList = $filter('orderBy')(activeUserList, 'firstName');
 											ajsCache.put(
 													getAllUserOfOrgCacheKey,
 													activeUserList);
@@ -225,7 +227,7 @@ angular
 
 					$scope.selected = [];
 					$scope.query = {
-						order : 'name',
+						order : '-taskStatus',
 						limit : 10,
 						page : 1
 					};

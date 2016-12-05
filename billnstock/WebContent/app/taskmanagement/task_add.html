@@ -4,7 +4,7 @@
 	</div>
 </div>
 <div ng-if="!loading" layout="column" layout-wrap>
-	<md-subheader class="md-primary">
+	<md-content layout-wrap> <md-subheader class="md-primary">
 	<h3 class="md-headline" ng-show="!taskObj">Create Task</h3>
 	<h3 class="md-headline" ng-show="taskObj">Edit Task</h3>
 	</md-subheader>
@@ -30,55 +30,55 @@
 				</div>
 				</md-input-container>
 			</div>
-			<div layout="row" layout-xs="column">				
-					<md-input-container flex> <label>Assigned
-						Date </label> <md-datepicker name="assignedDate"
-						ng-model="taskEntity.assignedDate" ng-required="true"
-						md-placeholder="Select Date" style="padding-top:13px;" flex></md-datepicker>
-					<div ng-messages="taskAddForm.assignedDate.$error"
-						ng-if="taskAddForm.assignedDate.$submitted || taskAddForm.assignedDate.$touched">
-						<div ng-message="required" style="color: red">This is a
-							required field.</div>
-					</div>
-					</md-input-container>
+			<div layout="row" layout-xs="column">
+				<md-input-container flex> <label>Assigned
+					Date </label> <md-datepicker name="assignedDate"
+					ng-model="taskEntity.assignedDate" ng-required="true"
+					md-placeholder="Select Date" style="padding-top:13px;" flex></md-datepicker>
+				<div ng-messages="taskAddForm.assignedDate.$error"
+					ng-if="taskAddForm.assignedDate.$submitted || taskAddForm.assignedDate.$touched">
+					<div ng-message="required" style="color: red">This is a
+						required field.</div>
+				</div>
+				</md-input-container>
 
-					<md-input-container flex> <label>Est.
-						Completion Date </label> <md-datepicker name="estCompletionDate"
-						ng-model="taskEntity.estCompletionDate"
-						md-placeholder="Select Date" style="padding-top:13px;"
-						pro-before-date-check="{{taskEntity.assignedDate.getTime()}}" flex></md-datepicker>
-					<div ng-messages="taskAddForm.estCompletionDate.$error"
-						ng-if="taskAddForm.estCompletionDate.$submitted || taskAddForm.estCompletionDate.$touched">
-						<div ng-message="proBeforeDateCheck" style="color: red">This
-							date can not be before task Assigned Date. Please correct.</div>
-					</div>
-					</md-input-container>
+				<md-input-container flex> <label>Est.
+					Completion Date </label> <md-datepicker name="estCompletionDate"
+					ng-model="taskEntity.estCompletionDate"
+					md-placeholder="Select Date" style="padding-top:13px;"
+					pro-before-date-check="{{taskEntity.assignedDate.getTime()}}" flex></md-datepicker>
+				<div ng-messages="taskAddForm.estCompletionDate.$error"
+					ng-if="taskAddForm.estCompletionDate.$submitted || taskAddForm.estCompletionDate.$touched">
+					<div ng-message="proBeforeDateCheck" style="color: red">This
+						date can not be before task Assigned Date. Please correct.</div>
+				</div>
+				</md-input-container>
 
-					<md-input-container flex> <label>Task
-						Status </label> <md-select name="taskStatus" id="taskStatus"
-						placeholder="--Select Task Status--"
-						ng-model="taskEntity.taskStatus" ng-required="true"
-						ng-change="statusChanged()"> <md-option
-						ng-repeat="taskStatus in taskStatusList" ng-value="taskStatus">{{taskStatus}}</md-option>
-					</md-select>
-					<div ng-messages="taskAddForm.taskStatus.$error"
-						ng-if="taskAddForm.taskStatus.$submitted || taskAddForm.taskStatus.$touched">
-						<div ng-message="required">Please select task status.</div>
-					</div>
-					</md-input-container>
+				<md-input-container flex> <label>Task
+					Status </label> <md-select name="taskStatus" id="taskStatus"
+					placeholder="--Select Task Status--"
+					ng-model="taskEntity.taskStatus" ng-required="true"
+					ng-change="statusChanged()"> <md-option
+					ng-repeat="taskStatus in taskStatusList" ng-value="taskStatus">{{taskStatus}}</md-option>
+				</md-select>
+				<div ng-messages="taskAddForm.taskStatus.$error"
+					ng-if="taskAddForm.taskStatus.$submitted || taskAddForm.taskStatus.$touched">
+					<div ng-message="required">Please select task status.</div>
+				</div>
+				</md-input-container>
 
-					<md-input-container flex> <label>Completion
-						Date </label> <md-datepicker name="completionDate"
-						ng-model="taskEntity.completionDate"
-						ng-disabled="taskEntity.taskStatus != 'COMPLETED'"
-						md-placeholder="Select Date" style="padding-top:13px;"
-						pro-before-date-check="{{taskEntity.assignedDate.getTime()}}" flex></md-datepicker>
-					<div ng-messages="taskAddForm.completionDate.$error"
-						ng-if="taskAddForm.completionDate.$submitted || taskAddForm.completionDate.$touched">
-						<div ng-message="proBeforeDateCheck" style="color: red">This
-							date can not be before task Assigned Date. Please correct.</div>
-					</div>
-					</md-input-container>
+				<md-input-container flex> <label>Completion
+					Date </label> <md-datepicker name="completionDate"
+					ng-model="taskEntity.completionDate"
+					ng-disabled="taskEntity.taskStatus != 'COMPLETED'"
+					md-placeholder="Select Date" style="padding-top:13px;"
+					pro-before-date-check="{{taskEntity.assignedDate.getTime()}}" flex></md-datepicker>
+				<div ng-messages="taskAddForm.completionDate.$error"
+					ng-if="taskAddForm.completionDate.$submitted || taskAddForm.completionDate.$touched">
+					<div ng-message="proBeforeDateCheck" style="color: red">This
+						date can not be before task Assigned Date. Please correct.</div>
+				</div>
+				</md-input-container>
 			</div>
 
 			<div layout="column" flex>
@@ -106,4 +106,5 @@
 			|| taskAddForm.completionDate.$invalid || taskAddForm.taskDesc.$invalid || taskAddForm.estCompletionDate.$invalid || taskAddForm.completionDate.$invalid"
 			ng-click="saveTask()"> Save </md-button>
 	</section>
+	</md-content>
 </div>
