@@ -2,23 +2,7 @@ angular.module("stockApp").controller(
 		"stockModuleCtr",
 		function($scope, $window, $mdToast, $timeout, $mdSidenav, $mdUtil,
 				$log, objectFactory, appEndpointSF) {
-
 			$log.debug("Inside stockModuleCtr");
-
-			$scope.testGAPICall = function() {
-				console.log("in side testGAPICall");
-				var cars = appEndpointSF.getQuestionService().getCars()
-						.execute(function(resp) {
-							$log.debug("debug resp:" + resp);
-							$log.info("info resp:" + resp);
-							$log.warn("warn resp:" + resp);
-							//$log.error("error resp:" + resp);
-							var items = resp.items;
-							$log.debug("cars:" + resp.items);
-
-						});
-
-			};
 
 			/* Setup menu */
 			$scope.toggleRight = buildToggler('right');

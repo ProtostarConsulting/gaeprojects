@@ -29,155 +29,161 @@ import com.protostar.billingnstock.warehouse.services.WarehouseService;
  */
 public class ExcelStockUpload extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ExcelStockUpload() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public ExcelStockUpload() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	private BlobstoreService blobstoreService = BlobstoreServiceFactory
 			.getBlobstoreService();
 
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		System.out.println("hi i m in servlet ");
 		this.doGet(request, response);
 	}
-	  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		
 
-			Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(request);
-			List<BlobKey> blobKeys = blobs.get("myFile");
-			
-			Long WareHouseID = null; 
-			Long bizID= null; 
-			System.out.println("blobKeys:" + blobKeys);
-			blobKeys.get(0).getKeyString();
-			String[] split2 = null;
-			try {
-				ServletFileUpload upload = new ServletFileUpload();
-				// res.setContentType("text/plain");
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 
-				FileItemIterator iterator = upload.getItemIterator(request);
-				while (iterator.hasNext()) {
+		Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(request);
+		List<BlobKey> blobKeys = blobs.get("myFile");
 
-					FileItemStream item = iterator.next();
-					// InputStream stream = item.openStream();
-					BlobstoreInputStream stream = new BlobstoreInputStream(
-							new BlobKey(blobKeys.get(0).getKeyString()));
-					if (item.isFormField()) {
-						System.out.println("Got a form field: "+ item.getFieldName());
-						if(item.getFieldName().equals("WareHouseID")){
-							System.out.println("warehouse id=="+request.getParameter(item.getFieldName()));
-					if(!request.getParameter(item.getFieldName()).equals(""))
-							WareHouseID=Long.parseLong(request.getParameter(item.getFieldName()));
-						}
-						if(item.getFieldName().equals("bizID")){
-							System.out.println("bizID id=="+request.getParameter(item.getFieldName()));
-							if(!request.getParameter(item.getFieldName()).equals(""))
-							bizID=Long.parseLong(request.getParameter(item.getFieldName()));
-						}
-					} else {
+		Long WareHouseID = null;
+		Long bizID = null;
+		System.out.println("blobKeys:" + blobKeys);
+		blobKeys.get(0).getKeyString();
+		String[] split2 = null;
+		try {
+			ServletFileUpload upload = new ServletFileUpload();
+			// res.setContentType("text/plain");
 
-						int len;
-						byte[] fileContent = new byte[2000000]; // Can handle files
-																// upto 20 MB
+			FileItemIterator iterator = upload.getItemIterator(request);
+			while (iterator.hasNext()) {
 
-						int read = stream.read(fileContent);
-						// System.out.println("No of bytes read:" + read);
-						while ((len = stream.read(fileContent, 0,
-								fileContent.length)) != -1) {
-							// res.getOutputStream().write(fileContent, 0, len);
-						}
-						System.out.println("File content is : "
-								+ new String(fileContent));
-						System.out.println("File Read is Done!!");
-						// Write code here to parse sheet of patients and upload to
-						// database
-
-						String fileAsString = new String(fileContent);
-						// System.out.println("fileContent:" + fileAsString);
-						// List<PatientInfo> patientInfoList = new
-						// ArrayList<PatientInfo>();
-
-						split2 = fileAsString.split("\n");
-						// Start with 1 not 0, zero holds column headings
-
-						
-
+				FileItemStream item = iterator.next();
+				// InputStream stream = item.openStream();
+				BlobstoreInputStream stream = new BlobstoreInputStream(
+						new BlobKey(blobKeys.get(0).getKeyString()));
+				if (item.isFormField()) {
+					System.out.println("Got a form field: "
+							+ item.getFieldName());
+					if (item.getFieldName().equals("WareHouseID")) {
+						System.out.println("warehouse id=="
+								+ request.getParameter(item.getFieldName()));
+						if (!request.getParameter(item.getFieldName()).equals(
+								""))
+							WareHouseID = Long.parseLong(request
+									.getParameter(item.getFieldName()));
 					}
+					if (item.getFieldName().equals("bizID")) {
+						System.out.println("bizID id=="
+								+ request.getParameter(item.getFieldName()));
+						if (!request.getParameter(item.getFieldName()).equals(
+								""))
+							bizID = Long.parseLong(request.getParameter(item
+									.getFieldName()));
+					}
+				} else {
+
+					int len;
+					byte[] fileContent = new byte[2000000]; // Can handle files
+															// upto 20 MB
+
+					int read = stream.read(fileContent);
+					// System.out.println("No of bytes read:" + read);
+					while ((len = stream.read(fileContent, 0,
+							fileContent.length)) != -1) {
+						// res.getOutputStream().write(fileContent, 0, len);
+					}
+					System.out.println("File content is : "
+							+ new String(fileContent));
+					System.out.println("File Read is Done!!");
+					// Write code here to parse sheet of patients and upload to
+					// database
+
+					String fileAsString = new String(fileContent);
+					// System.out.println("fileContent:" + fileAsString);
+					// List<PatientInfo> patientInfoList = new
+					// ArrayList<PatientInfo>();
+
+					split2 = fileAsString.split("\n");
+					// Start with 1 not 0, zero holds column headings
 
 				}
-				
-				try {
-					//gte business entity
-					 UserService us = new UserService();
-					BusinessEntity getbusinessById = us.getBusinessById(bizID);
-					WarehouseService wc=new WarehouseService();
-					WarehouseEntity we;
-					if(WareHouseID != null){
-					we=wc.getWarehouseById(WareHouseID);
-					}else{
-						//check default is allready exits 
-						we=wc.getDefaultWarehouseByBizId(bizID);
-						if(we==null){
-						we=new WarehouseEntity();
+
+			}
+
+			try {
+				// gte business entity
+				UserService us = new UserService();
+				BusinessEntity getbusinessById = us.getBusinessById(bizID);
+				WarehouseService wc = new WarehouseService();
+				WarehouseEntity we;
+				if (WareHouseID != null) {
+					we = wc.getWarehouseById(WareHouseID);
+				} else {
+					// check default is allready exits
+					we = wc.getDefaultWarehouseByBizId(bizID);
+					if (we == null) {
+						we = new WarehouseEntity();
 						we.setBusiness(getbusinessById);
 						we.setWarehouseName("Default");
-						we=wc.addWarehouse(we);
-						}
+						we = wc.addWarehouse(we);
 					}
-					StockItemService ss=new StockItemService();
+				}
+				StockItemService ss = new StockItemService();
 
-					for (int row = 1; row < split2.length; row++) {
+				for (int row = 1; row < split2.length; row++) {
 
-						String[] split = split2[row].split(",");
-						if (split == null || split.length < 6) {
-							continue;
-						}
-						System.out.println(" Row: " + row);
-						System.out.println(" Col1: " + split[0]);
-						System.out.println(" Col2: " + split[1]);
-						System.out.println(" Col3: " + split[2]);
-						System.out.println(" Col4: " + split[3]);
-						System.out.println(" Col5: " + split[4]);
-						
-						//insert stocks
-						
-						
-						StockItemEntity si=new StockItemEntity();
-						
-						si.setItemName(split[0]);
-						si.setCategory(split[1]);
-						si.setQty(Integer.parseInt(split[2]));
-						si.setPrice(Double.parseDouble(split[3]));
-						si.setThresholdValue(Integer.parseInt(split[4]));
-						si.setBusiness(getbusinessById);
-						si.setWarehouse(we);
-						ss.addStock(si);
-						Thread.sleep(2000);
-						
+					String[] split = split2[row].split(",");
+					if (split == null || split.length < 6) {
+						continue;
 					}
+					System.out.println(" Row: " + row);
+					System.out.println(" Col1: " + split[0]);
+					System.out.println(" Col2: " + split[1]);
+					System.out.println(" Col3: " + split[2]);
+					System.out.println(" Col4: " + split[3]);
+					System.out.println(" Col5: " + split[4]);
 
-					response.sendRedirect("/#/stock/stockItemList");  
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					// insert stocks
+
+					StockItemEntity si = new StockItemEntity();
+
+					si.setItemName(split[0]);
+					si.setCategory(split[1]);
+					si.setQty(Integer.parseInt(split[2]));
+					si.setPrice(Double.parseDouble(split[3]));
+					si.setThresholdValue(Integer.parseInt(split[4]));
+					si.setBusiness(getbusinessById);
+					si.setWarehouse(we);
+					ss.addStock(si);
+					Thread.sleep(2000);
+
 				}
 
+				response.sendRedirect("/#/stock/stockItemList");
 			} catch (Exception e) {
-				response.getOutputStream().print(
-						"File Uploading Failed!" + e.getMessage());
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		
+
+		} catch (Exception e) {
+			response.getOutputStream().print(
+					"File Uploading Failed!" + e.getMessage());
 		}
+
+	}
+
 	private int parse(String string) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
+
 }

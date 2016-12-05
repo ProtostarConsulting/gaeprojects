@@ -2,16 +2,13 @@ package com.protostar.billingnstock.stock.entities;
 
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
-import com.protostar.billingnstock.user.entities.BusinessEntity;
-import com.protostar.billingnstock.user.entities.UserEntity;
 import com.protostar.billingnstock.warehouse.entities.WarehouseEntity;
 import com.protostar.billnstock.entity.BaseEntity;
 
 @Entity
-public class StockItemEntity extends BaseEntity{
-	
+public class StockItemEntity extends BaseEntity {
+
 	@Index
 	private String itemName;
 	@Index
@@ -24,15 +21,14 @@ public class StockItemEntity extends BaseEntity{
 	private String rack;
 	private String slot;
 
-	
 	private Ref<WarehouseEntity> warehouse;
 
 	public WarehouseEntity getWarehouse() {
-		return warehouse==null?null:warehouse.get();
+		return warehouse == null ? null : warehouse.get();
 	}
 
 	public void setWarehouse(WarehouseEntity warehouse) {
-		this.warehouse = Ref.create(warehouse);
+		this.warehouse = warehouse == null ? null : Ref.create(warehouse);
 	}
 
 	public String getCategory() {
@@ -74,7 +70,7 @@ public class StockItemEntity extends BaseEntity{
 	public void setCategory(String category) {
 		this.category = category;
 	}
-	
+
 	public String getNotes() {
 		return notes;
 	}
@@ -82,7 +78,7 @@ public class StockItemEntity extends BaseEntity{
 	public void setNotes(String notes) {
 		this.notes = notes;
 	}
-	
+
 	public String getSection() {
 		return section;
 	}
@@ -107,5 +103,4 @@ public class StockItemEntity extends BaseEntity{
 		this.slot = slot;
 	}
 
-	
 }// end of StockServicesEntity

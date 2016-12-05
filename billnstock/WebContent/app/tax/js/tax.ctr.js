@@ -80,7 +80,7 @@ angular.module("stockApp").controller(
 			}
 
 			$scope.cancelUpdate = function() {
-				$scope.selected[0] = "";
+				$scope.selected = [];
 			}
 
 			// Setup menu

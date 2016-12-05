@@ -1,22 +1,22 @@
-
-<md-content layout-padding>
-<section ng-hide="selectedStocksId" layout="row" layout-align="end end" flex>
-	<md-button class="md-raised md-primary" id="uplodeExcel"
-		ng-click="UplodeExcel($event)">UplodeExcel</md-button>
+<md-content layout-padding> <md-content layout-wrap>
+<section id="pagetoolbar" layout="row" layout-xs="column">
+	<md-subheader class="md-primary">
+	<h4 class="md-title"
+		ng-bind="stock.id?'Edit Stock Item':'Add Stock Item'"></h4>
+	</md-subheader>
+	<span flex> </span>
+	<div hide-xs>
+		<md-button class="md-primary" id="Bulk Upload"
+			ng-click="UplodeExcel($event)">Bulk Upload</md-button>
+	</div>
 </section>
-<h3 class="md-headline" ng-hide="stock.id">
-	<b>Add Stock</b>
-</h3>
-<h3 class="md-headline" ng-show="stock.id">
-	<u>Edit Stock</u>
-</h3>
 <form name="stockForm">
 	<div>
 		<div layout layout-xs="column">
 
 			<md-input-container flex> <label>Item
-				Name 
-			</label> <input name="itemName" ng-model="stock.itemName" ng-required="true">
+				Name </label> <input name="itemName" ng-model="stock.itemName"
+				ng-required="true">
 			<div ng-messages="stockForm.itemName.$error"
 				ng-if="stockForm.itemName.$submitted || stockForm.itemName.$touched">
 				<div ng-message="required">Please Enter Item
@@ -25,9 +25,9 @@
 			</md-input-container>
 
 			<md-input-container flex> <label>Categories
-				
+
 			</label> <input name="categories" ng-model="stock.category"
-				ng-required="true">
+				ng-required="false">
 			<div ng-messages="stockForm.categories.$error"
 				ng-if="stockForm.categories.$submitted || stockForm.categories.$touched">
 				<div ng-message="required">Please Enter First
@@ -40,8 +40,8 @@
 
 
 			<md-input-container flex> <label>Quantity
-				</label> <input name="quantity" type="number"
-				ng-model="stock.qty" ng-required="true">
+			</label> <input name="quantity" type="number" ng-model="stock.qty"
+				ng-required="true">
 			<div ng-messages="stockForm.quantity.$error"
 				ng-if="stockForm.quantity.$submitted || stockForm.quantity.$touched || stockForm.quantity.$dirty">
 				<div ng-message="required">Please Enter quantity.
@@ -49,21 +49,9 @@
 			</div>
 			</md-input-container>
 
-			<md-input-container flex> <label>Price
-				</label> <input name="price" type="number"
-				ng-model="stock.price" ng-required="true">
-			<div ng-messages="stockForm.price.$error"
-				ng-if="stockForm.price.$submitted || stockForm.price.$touched || stockForm.price.$dirty">
-				<div ng-message="required">Please Enter Price (Example.:1234)</div>
-			</div>
-			</md-input-container>
-		</div>
-
-		<div layout="row" layout-xs="column">
 			<md-input-container flex> <label>Threshold
-				Value
-			</label> <input name="threshold" type="number"
-				ng-model="stock.thresholdValue" ng-required="true">
+				Value </label> <input name="threshold" type="number"
+				ng-model="stock.thresholdValue" ng-required="false">
 			<div ng-messages="stockForm.threshold.$error"
 				ng-if="stockForm.threshold.$submitted || stockForm.threshold.$touched || stockForm.threshold.$dirty">
 				<div ng-message="required">Please Enter Threshold
@@ -71,12 +59,22 @@
 			</div>
 			</md-input-container>
 
-			<md-input-container flex> <label>Notes </span>
-			</label> <textarea name="note" ng-model="stock.notes" ng-required="true"></textarea>
-			</md-input-container>
+
 		</div>
 
-
+		<div layout="row" layout-xs="column">
+			<md-input-container flex> <label>Price </label>
+			<input name="price" type="number" ng-model="stock.price"
+				ng-required="true">
+			<div ng-messages="stockForm.price.$error"
+				ng-if="stockForm.price.$submitted || stockForm.price.$touched || stockForm.price.$dirty">
+				<div ng-message="required">Please Enter Price (Example.:1234)</div>
+			</div>
+			</md-input-container>
+			<md-input-container flex> <label>Notes </span>
+			</label> <textarea name="note" ng-model="stock.notes" ng-required="false"></textarea>
+			</md-input-container>
+		</div>
 
 		<h3 class="md-subhead">
 			<b>Location Details</b>
@@ -84,10 +82,10 @@
 		<div layout="row" layout-xs="column">
 
 			<div flex layout="row">
-				<md-select flex ng-model="selectedWarehouse"
-					placeholder="Warehouse Name"
-					ng-change="warehouseDDLChange($index, selectedWarehouse)">
-				<md-option ng-value="warehouse" 
+				<md-select flex ng-model="stock.warehouse"
+					placeholder="Select Warehouse"> <md-option
+					ng-value="warehouse"
+					ng-selected="stock.warehouse.id == warehouse.id"
 					ng-repeat="warehouse in warehouses">{{warehouse.warehouseName
 				}}</md-option> </md-select>
 				<md-icon md-svg-src="img/icons/ic_queue_black_24px.svg"
@@ -109,23 +107,11 @@
 				name="slot" ng-model="stock.slot"> </md-input-container>
 		</div>
 
-
-
-
 		<section layout="row" layout-sm="column" layout-align="left left">
-			<md-button class="md-raised md-primary" ng-hide="stock.id"
-				ng-click="addStock()"> <md-icon
-				md-svg-src="img/icons/ic_queue_black_24px.svg" class="name"
-				style="color: Green; height: 20px; width: 20px"></md-icon>Add</md-button>
-		</section>
-
-		<section layout="row" layout-sm="column" layout-align="left left">
-			<md-button class="md-raised md-primary" ng-show="stock.id"
-				ng-click="addStock()"> <md-icon
-				md-svg-src="img/icons/ic_queue_black_24px.svg" class="name"
-				style="color: Green; height: 20px; width: 20px"></md-icon>Update</md-button>
+			<md-button class="md-raised md-primary" ng-click="addStock()">
+			</md-icon>Save</md-button>
 		</section>
 
 	</div>
 </form>
-</md-content>
+</md-content> </md-content>

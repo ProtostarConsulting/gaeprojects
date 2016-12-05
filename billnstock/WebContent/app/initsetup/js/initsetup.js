@@ -17,8 +17,7 @@ angular
 					$scope.createUsers_Bool = false;
 					$scope.createAuthMaster_Bool = true;
 					$scope.creatAccountAndGroup_Bool = true;
-					
-					
+
 					$scope.createAccountTypes = function() {
 
 						var protostarAdminService = appEndpointSF
@@ -84,45 +83,42 @@ angular
 
 										});
 					}
-					
-					
 
 					$scope.creatAccountAndGroup = function() {
 
 						var proadminAddGroup = appEndpointSF
 								.getAccountGroupService();
 
-						
-						
 						proadminAddGroup
-						.getAllBusiness()
-						.then(
-								function(list) {
-									if(list==undefined ||list.length==0){
-									$scope.userMsg = "Cant Create Group...Business is Created !!!!!!";
-									$scope.step4 = true;
-									}
-									else{
-										var protostarAdminService = appEndpointSF
-										.getproadminService();
-										protostarAdminService
-										.creatAccountAndGroup(list[0].id)
-										.then(
-												function(resp) {
+								.getAllBusiness()
+								.then(
+										function(list) {
+											if (list == undefined
+													|| list.length == 0) {
+												$scope.userMsg = "Can't Create Group...Business is Not Created !!!!!!";
+												$scope.step4 = true;
+											} else {
+												var protostarAdminService = appEndpointSF
+														.getproadminService();
+												protostarAdminService
+														.creatAccountAndGroup(
+																list[0].id)
+														.then(
+																function(resp) {
 
-													if (resp != undefined) {
+																	if (resp != undefined) {
 
-														$scope.userMsg = "Settup of Group List is Done.........";
-														$scope.step4 = true;
-													}
-													
-												});
-										}
-													
-												});
-										
-									}
-					
+																		$scope.userMsg = "Settup of Group List is Done.........";
+																		$scope.step4 = true;
+																		$scope.creatAccountAndGroup_Bool = false;
+																	}
+
+																});
+											}
+
+										});
+
+					}
 
 					$scope.createAuthMaster = function() {
 
@@ -130,7 +126,6 @@ angular
 							authorizations : []
 						};
 
-					
 						var authService = appEndpointSF
 								.getAuthorizationService();
 
@@ -186,14 +181,14 @@ angular
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
-							//$scope.initsetup();
+							// $scope.initsetup();
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
 							$timeout($scope.waitForServiceLoad, 1000);
 						}
 					}
 					$scope.waitForServiceLoad();
-					
+
 					$scope.toggleRight = buildToggler('right');
 
 					function buildToggler(navID) {

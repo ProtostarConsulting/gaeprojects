@@ -1,49 +1,39 @@
-
 <md-content layout-padding>
-
-<h3 class="md-headline" ng-hide="warehouse.id">
-	<b>Add Warehouse</b>
-</h3>
-<h3 class="md-headline" ng-show="warehouse.id">
-	<b>edit Warehouse</b>
-</h3>
+<section id="pagetoolbar" layout="row" layout-xs="column">
+	<md-subheader class="md-primary">
+	<h4 class="md-title"
+		ng-bind="warehouse.id?'Edit Warehouse':'Add Warehouse'"></h4>
+	</md-subheader>
+	<span flex> </span>
+</section>
 <form name="warehouseForm">
 	[<span style="color: red;">Field Marked as asterik (*) are
 		mandetory</span>]
 	<div layout="row" layout-xs="column">
 		<md-input-container flex> <label>Warehouse
-			Name 
-		</label> <textarea name="warehouseName" ng-model="warehouse.warehouseName"
-			ng-required="true"></textarea>
+			Name </label> <textarea name="warehouseName"
+			ng-model="warehouse.warehouseName" ng-required="true"></textarea>
 		<div ng-messages="warehouseForm.warehouseName.$error"
 			ng-if="warehouseForm.warehouseName.$submitted || warehouseForm.warehouseName.$touched">
 			<div ng-message="required">Please Enter Warehouse Name</div>
-
 			<span class="help-block"
 				ng-show="((warehouseForm.warehouseName.$error.pattern) &&  warehouseForm.warehouseName.$dirty) ">Item
 				Name should be text only.(Example.:abc)</span>
 		</div>
 		</md-input-container>
-	
-		<md-input-container flex> <label>Description
-			
-		</label> <textarea name="description" ng-model="warehouse.description"
-			ng-required="true"></textarea>
-		<div ng-messages="warehouseForm.description.$error"
-			ng-if="warehouseForm.description.$submitted || warehouseForm.description.$touched">
-			<div ng-message="required">Please Enter
-				Description.(Example.:abc)</div>
-		</div>
+
+		<md-input-container flex> <label>Description</label>
+		<textarea name="description" ng-model="warehouse.description"></textarea>
 		</md-input-container>
 	</div>
 
 
 	<h3 class="md-subhead">Address</h3>
-	
+
 	<div layout="row">
-		<md-input-container flex> <label>Line1 
-			</label> <input name="line1" id="line1"
-			ng-model="warehouse.address.line1" ng-required="true">
+		<md-input-container flex> <label>Line1 </label> <input
+			name="line1" id="line1" ng-model="warehouse.address.line1"
+			ng-required="true">
 		<div ng-messages="warehouseForm.line1.$error"
 			ng-if="warehouseForm.line1.$submitted || warehouseForm.line1.$touched">
 			<div ng-message="required">Please Enter Address Name.</div>
@@ -54,9 +44,9 @@
 			name="line2" ng-model="warehouse.address.line2"> </md-input-container>
 	</div>
 	<div layout="row">
-		<md-input-container flex> <label>State 
-			</label> <input name="state" id="state"
-			ng-model="warehouse.address.state" ng-required="true">
+		<md-input-container flex> <label>State </label> <input
+			name="state" id="state" ng-model="warehouse.address.state"
+			ng-required="true">
 		<div ng-messages="warehouseForm.state.$error"
 			ng-if="warehouseForm.state.$submitted || warehouseForm.state.$touched">
 			<div ng-message="required">Please Enter State Name.</div>
@@ -69,9 +59,9 @@
 
 	</div>
 	<div layout="row">
-		<md-input-container flex> <label>City 
-			</label> <input name="city" id="city"
-			ng-model="warehouse.address.city" ng-required="true">
+		<md-input-container flex> <label>City </label> <input
+			name="city" id="city" ng-model="warehouse.address.city"
+			ng-required="true">
 		<div ng-messages="warehouseForm.city.$error"
 			ng-if="warehouseForm.city.$submitted || warehouseForm.city.$touched">
 			<div ng-message="required">Please Enter City Name.</div>
@@ -85,12 +75,14 @@
 
 	<section layout="row" layout-sm="column" layout-align="left left">
 		<md-button ng-disabled="warehouseForm.$invalid"
-			class="md-raised md-primary" ng-hide="warehouse.id" ng-click="addWarehouse()">Add</md-button>
+			class="md-raised md-primary" ng-hide="warehouse.id"
+			ng-click="addWarehouse()">Add</md-button>
 	</section>
-	
-		<section layout="row" layout-sm="column" layout-align="left left">
+
+	<section layout="row" layout-sm="column" layout-align="left left">
 		<md-button ng-disabled="warehouseForm.$invalid"
-			class="md-raised md-primary" ng-hide="warehouse.id == null" ng-click="addWarehouse()">Update</md-button>
+			class="md-raised md-primary" ng-hide="warehouse.id == null"
+			ng-click="addWarehouse()">Update</md-button>
 	</section>
 
 

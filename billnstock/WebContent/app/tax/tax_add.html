@@ -1,8 +1,14 @@
-
 <md-content layout-padding>
-<h3>
-	<u>Add Tax</u>
-</h3>
+<section id="pagetoolbar" layout="row" layout-xs="column">
+	<md-subheader class="md-primary">
+	<h4 class="md-title">Add New Tax</h4>
+	</md-subheader>
+	<span flex> </span>
+	<div hide-xs>
+		<md-button class="md-primary" id="Bulk Upload"
+			ng-click="UplodeExcel($event)">Bulk Upload</md-button>
+	</div>
+</section>
 <form name="taxForm">
 	<div>
 		<div layout="row" layout-xs="column">

@@ -203,19 +203,24 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		templateUrl : '/app/stock/stock_module.html',
 		controller : 'stockModuleCtr'
 	}).state('stock.stockItemAdd', {
-		url : "/stockItemAdd/:selectedStocksId",
+		url : "/stockitem",
 		templateUrl : '/app/stock/stockItem_add.html',
-		controller : 'stockAddCtr'
+		controller : 'stockAddCtr',
+		params:{
+			selectedStockItem: null
+		}
 	}).state('stock.stockItemList', {
 		url : "/stockItemList",
 		templateUrl : '/app/stock/stockItem_list.html',
 		controller : 'stockListCtr'
 	})
-
 	.state('stock.warehouseAdd', {
-		url : "/warehouseAdd/:selectedWarehouseId",
+		url : "/warehouse",
 		templateUrl : '/app/stock/warehouse_add.html',
-		controller : 'warehouseAddCtr'
+		controller : 'warehouseAddCtr',
+		params:{
+			selectedWarehouse: null
+		}
 	}).state('stock.warehouseList', {
 		url : "/warehouseList",
 		templateUrl : '/app/stock/warehouse_list.html',

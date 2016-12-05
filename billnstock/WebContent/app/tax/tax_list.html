@@ -1,16 +1,16 @@
-
 <md-content layout-padding>
-<h3>
-	<u>Tax List</u>
-</h3>
+<section id="pagetoolbar" layout="row" layout-xs="column">
+	<md-subheader class="md-primary">
+	<h4 class="md-title">Tax Item List</h4>
+	</md-subheader>
+	<span flex> </span>
+	<md-input-container flex-gt-xs="25"> <label>Search</label>
+	<input ng-model="searchText"> </md-input-container>
+	<md-button class="md-icon-button" ui-sref="stock.taxadd"> <ng-md-icon
+		icon="add_circle" style="fill: md-default" size="24"> <md-tooltip>
+	Add New Tax </md-tooltip></ng-md-icon> </md-button>
+</section>
 <div id="taxTable">
-	<div id="anothertax">
-		<section layout="row" layout-sm="column" layout-align="end end">
-			<md-button class="md-raised md-primary" ui-sref="stock.taxadd">Add
-			Tax</md-button>
-
-		</section>
-	</div>
 	<md-data-table-container>
 	<table md-data-table md-row-select="selected" md-progress="deferred">
 		<thead md-order="query.order" md-trigger="onOrderChange">
@@ -23,7 +23,7 @@
 
 		<tbody>
 			<tr md-auto-select
-				ng-repeat="tax in taxData | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit"">
+				ng-repeat="tax in taxData | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit"">
 
 				<td>{{tax.taxCodeName}}</td>
 				<td>{{tax.taxPercenatge}}</td>
@@ -32,19 +32,11 @@
 			</tr>
 		</tbody>
 	</table>
-	<!-- 			<md-data-table-toolbar class="alternate" ng-show="selected.length">
-			<div>
-				{{selected.length}} {{selected.length > 1 ? 'taxData' : 'tax'}} selected
-			</div>
-			<div>
-				{{selected}}
-			</div>
-		</md-data-table-toolbar>
- --> <md-data-table-pagination md-limit="query.limit"
-		md-page="query.page" md-total={{taxData.length}}
-		md-trigger="onpagechange"></md-data-table-pagination> </md-data-table-container>
+	<md-data-table-pagination md-limit="query.limit" md-page="query.page"
+		md-total={{taxData.length}} md-trigger="onpagechange"></md-data-table-pagination>
+	</md-data-table-container>
 </div>
-<form name="taxForm">
+<form name="taxForm" ng-show="selected.length">
 	<div>
 		<div layout="row" layout-xs="column">
 			<md-input-container flex> <label>Tax

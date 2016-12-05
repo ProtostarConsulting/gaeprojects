@@ -1,46 +1,45 @@
-
 <md-content layout-padding>
-<h3>
-	<u>Warehouse List</u>
-</h3>
-<div layout layout-sm="column">
-	<md-input-container flex> <label>Search</label> <input
-		ng-model="searchText"> </md-input-container>
-</div>
+<section id="pagetoolbar" layout="row" layout-xs="column">
+	<md-subheader class="md-primary">
+	<h4 class="md-title">Warehouse List</h4>
+	</md-subheader>
+	<span flex> </span>
+	<md-input-container flex-gt-xs="25"> <label>Search</label>
+	<input ng-model="searchText"> </md-input-container>
+</section>
 
 <div>
 	<md-data-table-container>
-	<table md-data-table md-row-select="selected" md-progress="deferred">
+	<table md-data-table md-progress="deferred">
 		<thead md-order="query.order" md-trigger="onOrderChange">
 			<tr>
 				<th name="Warehouse Name" order-by="warehouseName"></th>
-				<th name="Description" order-by="description"></th>
-				<th name="Address1" order-by="address1"></th>
-				<th name="PIN" order-by="pin"></th>
+				<th name="Description"></th>
+				<th name="Address1" order-by="address.city"></th>
+				<th name="PIN" order-by="address.pin"></th>
+				<th name="Actions"></th>
 			</tr>
 		</thead>
 
 		<tbody>
-			<tr md-auto-select
+			<tr
 				ng-repeat="warehouse in warehouses | orderBy: query.order | filter: searchText | limitTo: query.limit: (query.page - 1) * query.limit">
 				<td>{{warehouse.warehouseName}}</td>
 				<td>{{warehouse.description}}</td>
 				<td>{{warehouse.address.city}}</td>
 				<td>{{warehouse.address.pin}}</td>
-				<td><section layout="row" layout-sm="column">
-						<md-button class="md-raised md-primary"
-							ui-sref="stock.warehouseAdd({selectedWarehouseId: warehouse.id})">
-						Edit</md-button>
-					</section></td>
-				<td>
+				<td><md-button class="md-icon-button"
+						ui-sref="stock.warehouseAdd({selectedWarehouse: warehouse})">
+					<ng-md-icon icon="edit" style="fill: md-default" size="24">
+					<md-tooltip> Edit Record</md-tooltip></ng-md-icon></md-button></td>
 			</tr>
 		</tbody>
 	</table>
-	<md-data-table-pagination md-limit="query.limit"
-		md-page="query.page" md-total={{warehouses.length}}
-		md-trigger="onpagechange"></md-data-table-pagination> </md-data-table-container>
-		
-		<!-- 		<md-data-table-toolbar class="alternate" ng-show="selected.length">
+	<md-data-table-pagination md-limit="query.limit" md-page="query.page"
+		md-total={{warehouses.length}} md-trigger="onpagechange"></md-data-table-pagination>
+	</md-data-table-container>
+
+	<!-- 		<md-data-table-toolbar class="alternate" ng-show="selected.length">
 			<div>
 				{{selected.length}} {{selected.length > 1 ? 'stockData' : 'stock'}} selected
 			</div>

@@ -24,7 +24,6 @@ import com.google.api.server.spi.config.Named;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.googlecode.objectify.Key;
-import com.protostar.billingnstock.taskmangement.TaskManagementService;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.user.entities.EmpDepartment;
 import com.protostar.billingnstock.user.entities.UserEntity;
@@ -38,7 +37,7 @@ import com.protostar.billnstock.until.data.ServerMsg;
 		Constants.API_EXPLORER_CLIENT_ID }, audiences = { Constants.ANDROID_AUDIENCE }, scopes = { Constants.EMAIL_SCOPE }, namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.user.services", ownerName = "com.protostar.billingnstock.user.services", packagePath = ""))
 public class UserService {
 
-	private final Logger logger = Logger.getLogger(TaskManagementService.class
+	private final Logger logger = Logger.getLogger(UserService.class
 			.getName());
 
 	@ApiMethod(name = "addUser", path = "addUser")
