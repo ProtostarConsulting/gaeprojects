@@ -5,7 +5,10 @@ import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.Writer;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletOutputStream;
@@ -18,8 +21,14 @@ import com.protostar.billingnstock.account.entities.PurchaseVoucherEntity;
 import com.protostar.billingnstock.account.entities.ReceiptVoucherEntity;
 import com.protostar.billingnstock.account.entities.SalesVoucherEntity;
 import com.protostar.billingnstock.account.entities.VoucherEntity;
+import com.protostar.billingnstock.cust.entities.Customer;
 import com.protostar.billingnstock.hr.entities.MonthlyPaymentDetailEntity;
 import com.protostar.billingnstock.hr.entities.SalStruct;
+import com.protostar.billingnstock.invoice.entities.InvoiceEntity;
+import com.protostar.billingnstock.invoice.entities.InvoiceLineItem;
+import com.protostar.billingnstock.invoice.entities.ServiceLineItemList;
+import com.protostar.billingnstock.sales.entities.SalesOrderEntity;
+import com.protostar.billingnstock.tax.entities.TaxEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.user.entities.EmpDepartment;
 import com.protostar.billingnstock.user.entities.UserEntity;
@@ -341,7 +350,7 @@ public class PDFHtmlTemplateService {
 			float adhAmt = salStruct.getMonthlyAdhocAllow()
 					/ mtlyPayObj.getTotalDays() * mtlyPayObj.getPayableDays();
 			float splAmt = salStruct.getMonthlySpecialAllow()
-					/ mtlyPayObj.getTotalDays() * mtlyPayObj.getPayableDays();
+					/mtlyPayObj.getTotalDays() * mtlyPayObj.getPayableDays();
 
 			float specialAllow2 = mtlyPayObj.getSpecialAllow();
 			float overtimeAmt = mtlyPayObj.getOvertimeAmt();
@@ -466,5 +475,175 @@ public class PDFHtmlTemplateService {
 			e.printStackTrace();
 		}
 
+	}
+	
+	public void generateInvoiceViewPDF(InvoiceEntity invoiceEntity,
+			ServletOutputStream outputStream) {
+
+		if (invoiceEntity instanceof InvoiceEntity) {
+			generateInvoicePDF((InvoiceEntity)invoiceEntity,outputStream);
+		}
+		else {
+			throw new RuntimeException(
+					"Did not find this entity PDF handling methods: "
+							+ invoiceEntity.getClass());
+		}
+	}
+	
+	private void generateInvoicePDF(InvoiceEntity invoiceEntity,
+			ServletOutputStream outputStream) {
+		try {
+			Document document = new Document();
+			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
+			document.open();
+			
+			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
+
+			Map<String, Object> root = new HashMap<String, Object>();
+			
+			DecimalFormat df = new DecimalFormat("#0.00");
+            
+			
+			float discountAmt = invoiceEntity.getDiscAmount();
+			float serviceSubTotal = invoiceEntity.getServiceSubTotal();
+			float productSubTotal = invoiceEntity.getProductSubTotal();
+			float serviceTaxTotal = invoiceEntity.getServiceTaxTotal();
+			float productTotal = invoiceEntity.getProductTotal();
+			Long purchaseOrderNo = invoiceEntity.getpOrder();
+			float serviceTotal = invoiceEntity.getServiceTotal();
+			String finalTotal = invoiceEntity.getFinalTotal(); 
+			float productTaxTotal = invoiceEntity.getProductTaxTotal();
+			
+			//Imported Tax entity to get tax type
+			TaxEntity tx1 = invoiceEntity.getSelectedTaxItem();
+			
+			String taxType = tx1.getTaxCodeName();
+			double taxPercentage = tx1.getTaxPercenatge();
+			
+			//Imported Sales entity to get sales order number
+			//SalesOrderEntity soe = invoiceEntity.getSalesOrderId();
+			
+			//Long salesOrderNo = soe.getId(); 
+			
+			/*List<ServiceLineItemList> serviceList = invoiceEntity.getServiceLineItemList();
+			
+			for(int i=0;i<serviceList.size();i++){
+				
+				ServiceLineItemList serviceObj = serviceList.get(i);
+				root.put("ServiceName", serviceObj.getServiceName());
+				root.put("ServiceQuantity",serviceObj.getsQty());
+				root.put("ServicePrice", serviceObj.getsPrice());
+			}
+			*/
+			
+			//Imported ServiceLine entity to get price and quantity
+		  ServiceLineItemList sli = invoiceEntity.getServiceLineItemList().get(0);
+			
+			float sPrice = sli.getsPrice();
+			Integer sQty = sli.getsQty();
+			String serviceName = sli.getServiceName();
+			
+			//Imported InvoiceLine entity to get price
+			InvoiceLineItem ili = invoiceEntity.getInvoiceLineItemList().get(0);
+			
+			double price = ili.getPrice();
+			
+			//Imported Customer entity to get name and address
+			Customer cust1 = invoiceEntity.getCustomer();
+			
+			String custName = cust1.getCompanyName();
+			
+			StringBuffer custaddressBuf = new StringBuffer();
+			Address customerAddress = cust1.getAddress();
+			if (customerAddress != null) {
+				if (customerAddress.getLine1() != null && !customerAddress.getLine1().isEmpty())
+					custaddressBuf.append(customerAddress.getLine1());
+				if (customerAddress.getLine2() != null && !customerAddress.getLine2().isEmpty())
+					custaddressBuf.append(", " + customerAddress.getLine2());
+				if (customerAddress.getCity() != null && !customerAddress.getCity().isEmpty())
+					custaddressBuf.append(", " + customerAddress.getCity());
+				if (customerAddress.getState() != null && !customerAddress.getState().isEmpty())
+					custaddressBuf.append(", " + customerAddress.getState());
+			}
+			
+			String custAddress = custaddressBuf.toString();
+			
+			 SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
+			    Date now = new Date();
+			    String strDate = sdfDate.format(now);
+			    
+			//Customer Details    
+			root.put("CustomerName",custName);
+			root.put("CustomerAddress",custAddress);
+			//Invoice Details
+			root.put("InvoiceDate", invoiceEntity. getInvoiceDate());
+			root.put("InvoiceId", invoiceEntity.getId().toString());
+			root.put("Date", strDate);
+			
+			//root.put("SalesOrderNo", salesOrderNo);
+			
+			//Service Table
+			root.put("ServiceName", serviceName);
+			root.put("ServiceQuantity", sQty);
+			root.put("ServicePrice", df.format(sPrice));
+			root.put("ServiceSubTotal", df.format(serviceSubTotal));
+			root.put("ProductSubTotal", df.format(productSubTotal));
+			root.put("TaxType", taxType);
+			root.put("TaxPercentage", df.format(taxPercentage));
+			root.put("ServiceTaxTotal", df.format(serviceTaxTotal));
+			root.put("ServiceTotal", df.format(serviceTotal));
+			
+			
+			//Product Table
+			root.put("ItemName", ili.getItemName());
+			root.put("ItemQuantity", ili.getQty());
+			root.put("ItemPrice", df.format(price));
+			root.put("ProductTaxTotal",df.format(productTaxTotal));
+			root.put("ProductTotal", df.format(productTotal));
+			root.put("FinalTotal", finalTotal);
+			//root.put("FinalInWords", invoiceEntity.getFinalTotal());
+			root.put("PurchaseOrderNo",purchaseOrderNo);
+			root.put("NoteToCustomer", invoiceEntity.getNoteToCustomer());
+			
+			root.put("Discount",df.format(discountAmt));
+			
+			
+			BusinessEntity business = invoiceEntity.getBusiness();
+
+			StringBuffer addressBuf = new StringBuffer();
+			Address address = business.getAddress();
+			if (address != null) {
+				if (address.getLine1() != null && !address.getLine1().isEmpty())
+					addressBuf.append(address.getLine1());
+				if (address.getLine2() != null && !address.getLine2().isEmpty())
+					addressBuf.append(", " + address.getLine2());
+				if (address.getCity() != null && !address.getCity().isEmpty())
+					addressBuf.append(", " + address.getCity());
+				if (address.getState() != null && !address.getState().isEmpty())
+					addressBuf.append(", " + address.getState());
+			}
+
+			String businessAddress = addressBuf.toString();
+			// Top Header
+			root.put("businessName", "" + business.getBusinessName());
+			root.put("businessAddress", "" + businessAddress);
+			
+			Template temp = getConfiguration().getTemplate(
+					"pdf_templates/invoicePDF_tmpl.ftlh");
+
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
+					5000);
+			Writer out = new PrintWriter(byteArrayOutputStream);
+			temp.process(root, out);
+			// return escapeHtml(byteArrayOutputStream.toString());
+
+			String pdfXMLContent = byteArrayOutputStream.toString();
+
+			worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
+			document.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
