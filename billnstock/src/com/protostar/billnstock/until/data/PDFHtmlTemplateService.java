@@ -14,6 +14,7 @@ import java.util.Map;
 import javax.servlet.ServletOutputStream;
 
 import com.itextpdf.text.Document;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
 import com.protostar.billingnstock.account.entities.AccountGroupEntity;
@@ -89,10 +90,16 @@ public class PDFHtmlTemplateService {
 			Document document = new Document();
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 			document.open();
+			 Image logoURL = Image.getInstance("img/images/protostar_logo_pix_313_132.jpg");
+			   logoURL.setAbsolutePosition(50f, 750f);
+			   logoURL.scaleToFit(90f, 90f);
+			   String logo = String.valueOf(document.add(logoURL));
+			   
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 			
 
 			Map<String, Object> root = new HashMap<String, Object>();
+			 root.put("logo", logo);
 			root.put("DebitAccount", salesEntity.getAccountType1()
 					.getAccountName().toString());
 			root.put("CreditAccount", salesEntity.getAccountType2()
@@ -158,10 +165,16 @@ public class PDFHtmlTemplateService {
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 
 			document.open();
+			Image logoURL = Image.getInstance("img/images/protostar_logo_pix_313_132.jpg");
+			   logoURL.setAbsolutePosition(50f, 750f);
+			   logoURL.scaleToFit(90f, 90f);
+			   String logo = String.valueOf(document.add(logoURL));
+			   
 
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 
 			Map<String, Object> root = new HashMap<String, Object>();
+			
 			root.put("CreditAccount", receiptEntity.getAccountType1()
 					.getAccountName().toString());
 			root.put("DebitAccount", receiptEntity.getAccountType2()
@@ -220,10 +233,16 @@ public class PDFHtmlTemplateService {
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 
 			document.open();
+			Image logoURL = Image.getInstance("img/images/protostar_logo_pix_313_132.jpg");
+			   logoURL.setAbsolutePosition(50f, 800f);
+			   logoURL.scaleToFit(90f, 90f);
+			   String logo = String.valueOf(document.add(logoURL));
+			   
 
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 
 			Map<String, Object> root = new HashMap<String, Object>();
+			
 			root.put("CreditAccount", purchesEntity.getAccountType2()
 					.getAccountName().toString());
 			root.put("DebitAccount", purchesEntity.getAccountType1()
@@ -282,6 +301,10 @@ public class PDFHtmlTemplateService {
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 
 			document.open();
+			 Image logoURL = Image.getInstance("img/images/protostar_logo_pix_313_132.jpg");
+			   logoURL.setAbsolutePosition(50f, 750f);
+			   logoURL.scaleToFit(90f, 90f);
+			   String logo = String.valueOf(document.add(logoURL));
 
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 
@@ -331,7 +354,10 @@ public class PDFHtmlTemplateService {
 		try {
 			Document document = new Document();
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
-			document.open();
+			document.open(); Image logoURL = Image.getInstance("img/images/protostar_logo_pix_313_132.jpg");
+			   logoURL.setAbsolutePosition(50f, 800f);
+			   logoURL.scaleToFit(90f, 90f);
+			   String logo = String.valueOf(document.add(logoURL));
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 			Map<String, Object> root = new HashMap<String, Object>();
 			DecimalFormat df = new DecimalFormat("#0.00");
