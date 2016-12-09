@@ -74,7 +74,7 @@ angular.module("stockApp").controller(
 					$scope.existingLogURL = logBlobKey;	
 					if(!$scope.businessNo){
 						//to change log on index page if it is not pro-admin
-						$scope.initCommonSetting();
+						//$scope.initCommonSetting();
 					}
 				}
 			}
