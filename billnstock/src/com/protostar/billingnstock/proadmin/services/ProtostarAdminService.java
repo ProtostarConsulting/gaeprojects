@@ -71,7 +71,7 @@ public class ProtostarAdminService {
 		fixedAsetAccountGroupEntity.setModifiedDate(new Date());
 		fixedAsetAccountGroupEntity.setGroupName("Fixed Assets");
 		fixedAsetAccountGroupEntity.setIsPrimary(true);
-		fixedAsetAccountGroupEntity.setPrimaryType("ASSETS");
+		fixedAsetAccountGroupEntity.setPrimaryType("Assets");
 		ofy().save().entity(fixedAsetAccountGroupEntity).now();
 
 		AccountGroupEntity suspenseAcGroupEntity = new AccountGroupEntity();
@@ -80,7 +80,7 @@ public class ProtostarAdminService {
 		suspenseAcGroupEntity.setModifiedDate(new Date());
 		suspenseAcGroupEntity.setGroupName("SuspenseA/c");
 		suspenseAcGroupEntity.setIsPrimary(true);
-		suspenseAcGroupEntity.setPrimaryType("SuspenseA/c");
+		suspenseAcGroupEntity.setPrimaryType("Liabilities");
 		ofy().save().entity(suspenseAcGroupEntity).now();
 
 		AccountGroupEntity salesAccountsGroupEntity = new AccountGroupEntity();
@@ -89,25 +89,25 @@ public class ProtostarAdminService {
 		salesAccountsGroupEntity.setModifiedDate(new Date());
 		salesAccountsGroupEntity.setGroupName("SalesAccounts");
 		salesAccountsGroupEntity.setIsPrimary(true);
-		salesAccountsGroupEntity.setPrimaryType("SalesAccounts");
+		salesAccountsGroupEntity.setPrimaryType("Incomes");
 		ofy().save().entity(salesAccountsGroupEntity).now();
 
 		AccountGroupEntity purchaseAccountsGroupEntity = new AccountGroupEntity();
 		purchaseAccountsGroupEntity.setBusiness(business);
 		purchaseAccountsGroupEntity.setCreatedDate(new Date());
 		purchaseAccountsGroupEntity.setModifiedDate(new Date());
-		purchaseAccountsGroupEntity.setGroupName("PurchaseAccounts");
+		purchaseAccountsGroupEntity.setGroupName("Purchase Accounts");
 		purchaseAccountsGroupEntity.setIsPrimary(true);
-		purchaseAccountsGroupEntity.setPrimaryType(" PurchaseAccounts");
+		purchaseAccountsGroupEntity.setPrimaryType("Expenses");
 		ofy().save().entity(purchaseAccountsGroupEntity).now();
 
 		AccountGroupEntity miscExpensesASSETGroupEntity = new AccountGroupEntity();
 		miscExpensesASSETGroupEntity.setBusiness(business);
 		miscExpensesASSETGroupEntity.setCreatedDate(new Date());
 		miscExpensesASSETGroupEntity.setModifiedDate(new Date());
-		miscExpensesASSETGroupEntity.setGroupName(" MiscExpensesASSET");
+		miscExpensesASSETGroupEntity.setGroupName("Misc.ExpensesASSET");
 		miscExpensesASSETGroupEntity.setIsPrimary(true);
-		miscExpensesASSETGroupEntity.setPrimaryType(" MiscExpensesASSET");
+		miscExpensesASSETGroupEntity.setPrimaryType("Assets");
 		ofy().save().entity(miscExpensesASSETGroupEntity).now();
 
 		AccountGroupEntity loansLiabilityGroupEntity = new AccountGroupEntity();
@@ -116,88 +116,88 @@ public class ProtostarAdminService {
 		loansLiabilityGroupEntity.setModifiedDate(new Date());
 		loansLiabilityGroupEntity.setGroupName("Loans(Liability)");
 		loansLiabilityGroupEntity.setIsPrimary(true);
-		loansLiabilityGroupEntity.setPrimaryType(" Loans(Liability)");
+		loansLiabilityGroupEntity.setPrimaryType("Liabilities");
 		ofy().save().entity(loansLiabilityGroupEntity).now();
 
 		AccountGroupEntity investmentsGroupEntity = new AccountGroupEntity();
 		investmentsGroupEntity.setBusiness(business);
 		investmentsGroupEntity.setCreatedDate(new Date());
 		investmentsGroupEntity.setModifiedDate(new Date());
-		investmentsGroupEntity.setGroupName(" Investments");
+		investmentsGroupEntity.setGroupName("Investments");
 		investmentsGroupEntity.setIsPrimary(true);
-		investmentsGroupEntity.setPrimaryType(" Investments");
+		investmentsGroupEntity.setPrimaryType("Assets");
 		ofy().save().entity(investmentsGroupEntity).now();
 
 		AccountGroupEntity indirectIncomesGroupEntity = new AccountGroupEntity();
 		indirectIncomesGroupEntity.setBusiness(business);
 		indirectIncomesGroupEntity.setCreatedDate(new Date());
 		indirectIncomesGroupEntity.setModifiedDate(new Date());
-		indirectIncomesGroupEntity.setGroupName(" IndirectIncomes");
+		indirectIncomesGroupEntity.setGroupName("Indirect  Incomes");
 		indirectIncomesGroupEntity.setIsPrimary(true);
-		indirectIncomesGroupEntity.setPrimaryType(" IndirectIncomes");
+		indirectIncomesGroupEntity.setPrimaryType("Incomes");
 		ofy().save().entity(indirectIncomesGroupEntity).now();
 
 		AccountGroupEntity indirectExpensesGroupEntity = new AccountGroupEntity();
 		indirectExpensesGroupEntity.setBusiness(business);
 		indirectExpensesGroupEntity.setCreatedDate(new Date());
 		indirectExpensesGroupEntity.setModifiedDate(new Date());
-		indirectExpensesGroupEntity.setGroupName(" IndirectExpenses");
+		indirectExpensesGroupEntity.setGroupName("Indirect Expenses");
 		indirectExpensesGroupEntity.setIsPrimary(true);
-		indirectExpensesGroupEntity.setPrimaryType(" IndirectExpenses");
+		indirectExpensesGroupEntity.setPrimaryType("Expenses");
 		ofy().save().entity(indirectExpensesGroupEntity).now();
 
 		AccountGroupEntity directIncomesGroupEntity = new AccountGroupEntity();
 		directIncomesGroupEntity.setBusiness(business);
 		directIncomesGroupEntity.setCreatedDate(new Date());
 		directIncomesGroupEntity.setModifiedDate(new Date());
-		directIncomesGroupEntity.setGroupName(" DirectIncomes");
+		directIncomesGroupEntity.setGroupName("Direct Incomes");
 		directIncomesGroupEntity.setIsPrimary(true);
-		directIncomesGroupEntity.setPrimaryType(" DirectIncomes");
+		directIncomesGroupEntity.setPrimaryType("Incomes");
 		ofy().save().entity(directIncomesGroupEntity).now();
 
 		AccountGroupEntity directExpensesGroupEntity = new AccountGroupEntity();
 		directExpensesGroupEntity.setBusiness(business);
 		directExpensesGroupEntity.setCreatedDate(new Date());
 		directExpensesGroupEntity.setModifiedDate(new Date());
-		directExpensesGroupEntity.setGroupName(" DirectExpenses");
+		directExpensesGroupEntity.setGroupName("Direct Expenses");
 		directExpensesGroupEntity.setIsPrimary(true);
-		directExpensesGroupEntity.setPrimaryType(" DirectExpenses");
+		directExpensesGroupEntity.setPrimaryType("Expenses");
 		ofy().save().entity(directExpensesGroupEntity).now();
 
 		AccountGroupEntity currentLiabilitiesGroupEntity = new AccountGroupEntity();
 		currentLiabilitiesGroupEntity.setBusiness(business);
 		currentLiabilitiesGroupEntity.setCreatedDate(new Date());
 		currentLiabilitiesGroupEntity.setModifiedDate(new Date());
-		currentLiabilitiesGroupEntity.setGroupName(" CurrentLiabilities");
+		currentLiabilitiesGroupEntity.setGroupName("Current Liabilities");
 		currentLiabilitiesGroupEntity.setIsPrimary(true);
-		currentLiabilitiesGroupEntity.setPrimaryType(" CurrentLiabilities");
+		currentLiabilitiesGroupEntity.setPrimaryType("Liabilities");
 		ofy().save().entity(currentLiabilitiesGroupEntity).now();
 
 		AccountGroupEntity currentAssetsGroupEntity = new AccountGroupEntity();
 		currentAssetsGroupEntity.setBusiness(business);
 		currentAssetsGroupEntity.setCreatedDate(new Date());
 		currentAssetsGroupEntity.setModifiedDate(new Date());
-		currentAssetsGroupEntity.setGroupName(" CurrentAssets");
+		currentAssetsGroupEntity.setGroupName("Current Assets");
 		currentAssetsGroupEntity.setIsPrimary(true);
-		currentAssetsGroupEntity.setPrimaryType("CurrentAssets");
+		currentAssetsGroupEntity.setPrimaryType("Assets");
 		ofy().save().entity(currentAssetsGroupEntity).now();
 
 		AccountGroupEntity capitalAccountGroupEntity = new AccountGroupEntity();
 		capitalAccountGroupEntity.setBusiness(business);
 		capitalAccountGroupEntity.setCreatedDate(new Date());
 		capitalAccountGroupEntity.setModifiedDate(new Date());
-		capitalAccountGroupEntity.setGroupName(" CapitalAccount");
+		capitalAccountGroupEntity.setGroupName("Capital Account");
 		capitalAccountGroupEntity.setIsPrimary(true);
-		capitalAccountGroupEntity.setPrimaryType("CapitalAccount");
+		capitalAccountGroupEntity.setPrimaryType("Liabilities");
 		ofy().save().entity(capitalAccountGroupEntity).now();
 
 		AccountGroupEntity branchDivisionsGroupEntity = new AccountGroupEntity();
 		branchDivisionsGroupEntity.setBusiness(business);
 		branchDivisionsGroupEntity.setCreatedDate(new Date());
 		branchDivisionsGroupEntity.setModifiedDate(new Date());
-		branchDivisionsGroupEntity.setGroupName(" BranchDivisions");
+		branchDivisionsGroupEntity.setGroupName("BranchDivisions");
 		branchDivisionsGroupEntity.setIsPrimary(true);
-		branchDivisionsGroupEntity.setPrimaryType("BranchDivisions");
+		branchDivisionsGroupEntity.setPrimaryType("Liabilities");
 		ofy().save().entity(branchDivisionsGroupEntity).now();
 
 		// ***********************************SUB
