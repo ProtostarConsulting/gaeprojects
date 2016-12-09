@@ -1,48 +1,24 @@
-<h3 class="md-headline">
-	<u>Trial Balance</u>
-</h3>
-<!-- <form name="searchForm" novalidate>
-
-	<md-input-container flex> <label>Select
-		Group Name</label> <md-select ng-model="groupId" name="group"
-		ng-required="true"> <lable>Account Group<span
-		style="color: red;">*</span></lable> <md-option ng-value="group.id"
-		ng-repeat="group in GroupList">{{group.groupName}} </md-option> </md-select> </md-input-container>
-
-	<label style="margin-top: 10px">From Date</label>
-	<md-datepicker id="fromDate" name="fromDate" ng-model="fromDate"
-		md-placeholder="Enter From date" ng-required="true"
-		md-max-date="toDate"></md-datepicker>
 
 
-	<label style="margin-top: 10px">To Date</label>
-	<md-datepicker id="toDate" name="toDate" ng-model="toDate"
-		md-placeholder="Enter To date" ng-required="true"
-		md-min-date="fromDate"></md-datepicker>
 
-	<md-button class="md-raised md-primary"
-		ng-disabled="searchForm.$invalid"
-		ng-click="getAccountListByGroupId(groupId)">Group View</md-button>
-
-	<md-button class="md-raised md-primary" ng-click="clear()">Clear</md-button>
-
-</form> -->
 
 <md-content ng-show="loading && wait"> <md-progress-circular
 	layout-align="center center" class="md-accent md-accent"
 	md-diameter="60"></md-progress-circular></md-content>
 
-<!-- 
-<section
-	ng-show="!loading && !wait && wait!=undefined && accountList.length > 0"
-	layout="row" layout-align="end end">
-	<md-button class="md-icon-button md-accent"
-		ng-click="printDiv('accountGroupDiv')" aria-label="Favorite">
-	<md-icon md-svg-icon="img/icons/print.svg"></md-icon> </md-button>
-</section> -->
 
-
-
+<section layout="row" layout-xs="column">
+			<md-subheader class="md-primary">
+			<h4 class="md-title">Trial Balance</h4>
+			</md-subheader>
+			<span flex></span>
+			<md-button class="md-icon-button" id="uplodeExcel" ng-click="saveToPDF()">
+				 <ng-md-icon icon="file_download"
+				style="fill: md-default" size="24"> <md-tooltip>Download In Pdf</md-tooltip></ng-md-icon></md-button>
+				<md-button class="md-icon-button"  ng-click="printDiv('accountChartDiv')">
+				 <ng-md-icon icon="print"
+				style="fill: md-default" size="24"> <md-tooltip>Print</md-tooltip></ng-md-icon></md-button>
+</section>
 <div id="accountGroupDiv">
 
 

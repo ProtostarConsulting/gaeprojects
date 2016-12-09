@@ -13,25 +13,21 @@ div.one {
 	border: 1px solid black;
 }
 </style>
-<md-toolbar class="md-table-toolbar" style="max-height:30px">
-	<div class="md-toolbar-tools">
-		<span>Account Chart </span>
-		<div flex></div>
-		<section layout="row" layout-align="end end" flex>
-		<md-button class="md-icon-button" id="uplodeExcel" ng-click="saveToPDF()">
+<section layout="row" layout-xs="column">
+			<md-subheader class="md-primary">
+			<h4 class="md-title">Account Chart</h4>
+			</md-subheader>
+			<span flex></span>
+			<md-button class="md-icon-button" id="uplodeExcel" ng-click="saveToPDF()">
 				 <ng-md-icon icon="file_download"
 				style="fill: md-default" size="24"> <md-tooltip>Download In Pdf</md-tooltip></ng-md-icon></md-button>
 				<md-button class="md-icon-button"  ng-click="printDiv('accountChartDiv')">
 				 <ng-md-icon icon="print"
 				style="fill: md-default" size="24"> <md-tooltip>Print</md-tooltip></ng-md-icon></md-button>
-		</section>
-	</div>
-	</md-toolbar>
-
+</section>
 <md-content ng-show="$loading"> Loding.... </md-content>
 <md-content layout-padding ng-show="!loading">
 <div class="one" id="accountChartDiv">
-
 	<table>
 		<thead>
 			<th colspan="5">Accounts</th>			
@@ -59,8 +55,4 @@ div.one {
 
 <iframe name="print_frame" width="0" height="0" frameborder="0"
 		src="about:blank"></iframe>
-</div>
-
-
-
-</md-content>
+</div></md-content>

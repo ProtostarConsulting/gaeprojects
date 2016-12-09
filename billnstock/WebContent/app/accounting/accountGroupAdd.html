@@ -1,13 +1,15 @@
 
 <md-content layout-padding>
-<section layout="row" layout-align="end end" flex>
-	<md-button class="md-raised md-primary" id="uplodeExcel"
-		ng-click="UplodeExcel($event)">UplodeExcel</md-button>
+<section layout="row" layout-xs="column">
+			<md-subheader class="md-primary">
+			<h4 class="md-title">Add Account Group</h4>
+			</md-subheader>
+			<span flex></span>
+			<div hide-xs>
+		<md-button class="md-primary" id="Bulk Upload"
+			ng-click="UplodeExcel($event)">Bulk Upload</md-button>
+			</div>			
 </section>
-
-<div class="md-headline">
-	<u>Add Account Group</u>
-</div>
 <form name="accGroupForm">
 
 	[<span style="color: red;">Field Marked as asterik (*) are
@@ -39,10 +41,7 @@
 
 		</md-input-container>
 	</div>
-	<div layout layout-sm="column">
-
-
-		<md-input-container flex> <label>Enter
+	<div layout layout-sm="column"><md-input-container flex> <label>Enter
 			Order No 
 		</label> <input type="number" ng-model="tempAccountGroup.displayOrderNo"
 			id="orderNo" name="orderNo" ng-required="true">
@@ -51,24 +50,16 @@
 			ng-if="accGroupForm.orderNo.$submitted || accGroupForm.orderNo.$touched">
 			<div ng-message="required">Please Enter Order Number</div>
 		</div>
-		</md-input-container>
-
-
-
-
-	</div>
+		</md-input-container></div>
 
 	<div layout layout-sm="column">
 		<label>isPrimary </label>
 		<md-checkbox ng-model="tempAccountGroup.isPrimary"
 			ng-true-value="true" ng-false-value="false"> </md-checkbox>
 
-		<md-input-container flex ng-if="tempAccountGroup.isPrimary">
-		<md-select ng-model="tempAccountGroup.accountGroupType"
-			ng-disabled="tempAccountGroup.isPrimary"
-			placeholder="AccountGroupType" id="accountGroupType"
-			name="accountGroupType" ng-required="true"> <lable>Account
-		Group Type</lable> <md-option
+		<md-input-container flex ng-show="tempAccountGroup.isPrimary">
+		<md-select ng-model="tempAccountGroup.accountGroupType"			
+			name="accountGroupType" ng-required="true"> <lable>Select Nature</lable> <md-option
 			ng-value="item" ng-repeat="item in accountGroupTypeList">{{item}}
 
 		</md-option> </md-select>
@@ -76,14 +67,12 @@
 		<div ng-messages="accGroupForm.accountGroupType.$error"
 			ng-if="accGroupForm.accountGroupType.$submitted || accGroupForm.accountGroupType.$touched">
 			<div ng-message="required">Please Select the Group Type</div>
-
 		</div>
 		</md-input-container>
-		<md-input-container flex ng-if="!tempAccountGroup.isPrimary">
+		<md-input-container flex ng-hide="tempAccountGroup.isPrimary">
 		<md-select ng-model="tempAccountGroup.primaryGroup"
-			placeholder="PrimaryGroup" id="primaryGroup" name="primaryGroup"
-			ng-required="true"> <lable>Primary Group Type<span
-			style="color: red;">*</span></lable> <md-option ng-value="item"
+			name="primaryGroup"
+			ng-required="true"> <lable>Primary Group Type</lable> <md-option ng-value="item"
 			ng-repeat="item in accountGroupList">{{item.groupName}} </md-option>
 		</md-select>
 
@@ -93,21 +82,12 @@
 
 		</div>
 		</md-input-container>
-	</div>
-
-
-
-
-
-	<section layout="row" layout-sm="column" layout-align="center center">
+	</div><section layout="row" layout-sm="column" layout-align="center center">
 		<md-button class="md-raised md-primary" name="addButton"
 			id="addButton"
 			ng-disabled="accGroupForm.$invalid || accGroupForm.$pristine || accGroupForm.$touched"
 			ng-click="addAccountGroup()">Add</md-button>
 
 		<md-button class="md-raised md-primary" ng-click="cancelBtn()">Cancel</md-button>
-	</section>
-
-</form>
+	</section></form>
  </md-content>
-

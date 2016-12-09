@@ -23,6 +23,7 @@ app.controller("addAccountGeneralEntryCtr", function($scope, $window, $mdToast,
 		amount : "",
 		debitAccount : "",
 		creditAccount : ""
+		
 
 	};
 	var i, flag;

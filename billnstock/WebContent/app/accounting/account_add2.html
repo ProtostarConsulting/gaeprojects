@@ -26,11 +26,10 @@
 		</div>
 		</md-input-container>
 
-
-		<md-input-container flex> <md-select
-			ng-model="account.accountType" id="accountType" name="accountType"
-			ng-required="true"> <label>AccountType</label> <md-option
-			ng-repeat="type in accountType "> {{type}} </md-option> </md-select>
+		<md-input-container flex> <label>Account Type</label><md-select
+			ng-model="account.accountType" id="accountType" name="accountType" ng-required="true">
+		 <md-option
+			ng-repeat="type in accountType" ng-selected="account.accountType == type"> {{type}} </md-option> </md-select>
 
 		<div ng-messages="accountForm.accountType.$error"
 			ng-if="accountForm.accountType.$submitted || accountForm.accountType.$touched">

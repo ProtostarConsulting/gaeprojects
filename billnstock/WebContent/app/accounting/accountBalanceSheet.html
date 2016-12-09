@@ -1,59 +1,65 @@
 <style>
 table {
-
- font-family: arial, sans-serif;
- border-collapse: collapse;
- width: 100%;
+	font-family: arial, sans-serif;
+	border-collapse: collapse;
+	width: 100%;
 }
 
 td, th { /* //border: 1px solid #dddddd; */
- text-align: left;
- padding: 8px;
+	text-align: left;
+	padding: 8px;
 }
 </style>
+
+
+<section layout="row" layout-xs="column">
+	<md-subheader class="md-primary">
+	<h4 class="md-title">Balance Sheet</h4>
+	</md-subheader>
+	<span flex></span>
+	<md-button class="md-icon-button"
+		ng-click="printDiv('balanceSheetDiv')"> <ng-md-icon
+		icon="print" style="fill: md-default" size="24"> <md-tooltip>Print</md-tooltip></ng-md-icon></md-button>
+</section>
 <md-content ng-show="loading"> <md-progress-circular
 	class="md-accent md-accent" md-diameter="60"></md-progress-circular></md-content>
-<md-content layout-padding ng-show="!loading">
-
-<md-content layout-padding>
-<h3 class="md-headline">
- <u>Balance Sheet</u>
-</h3>
-<section layout="row" layout-align="end end">
- <md-button class="md-icon-button md-accent"
-  ng-click="printDiv('balanceSheetDiv')" aria-label="Favorite">
- <md-icon md-svg-icon="img/icons/print.svg"></md-icon> </md-button>
-</section>
+<md-content layout-padding ng-show="!loading"> <md-content
+	layout-padding>
 <form>
- <div id="balanceSheetDiv">
-  <table
-   style="width: 100%; border: 1px solid #dddddd; border-color: black;">
-   <tr>
-    <th colspan="2">Balance Sheet</th>
+	<div id="balanceSheetDiv">
+		<table
+			style="width: 100%; border: 1px solid #dddddd; border-color: black;">
+			<tr>
+				<th colspan="2">Balance Sheet</th>
 
-    <th style="text-align: center;">ProERP<br>
-    <span> {{date | formatDate}}</span></th>
-   </tr>
-   <tr>
-    <td colspan="3"></td>
+				<th style="text-align: center;">ProERP<br> <span>
+						{{date | formatDate}}</span></th>
+			</tr>
+			<tr>
+				<td colspan="3"></td>
 
-   </tr>
-   <tr>
-    <td colspan="3"><u><b>Sources of Funds:</b></u></td>
+			</tr>
+			<tr>
+				<td colspan="3"><u><b>Sources of Funds:</b></u></td>
 
-   </tr>
-   <tr ng-repeat="groupTypeObj in accountGroupTypeGroupList">
-    <td colspan="2">{{groupTypeObj.groupType}}</td>
-    <td style="text-align: right;">
-    <div  ng-repeat="grp in groupTypeObj.groupList">
-    <span ng-if="grp.totalBalance < 0">(</span>{{grp.totalBalance|positive|number:2}}<span ng-if="grp.totalBalance < 0">)</span></div></td>
-   </tr>  
-   
+			</tr>
+			<tr ng-repeat="groupTypeObj in accountGroupTypeGroupList">
+				<td colspan="2">{{groupTypeObj.groupType}}</td>
+				<td>
+					<div ng-repeat="grp in groupTypeObj.groupList" ng-show="grp.totalBalance">
+						<span>{{grp.groupName}}</span> 
+					    <span flex></span> 
+						<span ng-if="grp.totalBalance < 0">(</span>{{grp.totalBalance|positive|number:2}}<span
+							ng-if="grp.totalBalance < 0">)</span>
+					</div>
+				</td>
+			</tr>
 
-  </table>
- Total Asset:
-  <iframe name="print_frame" width="0" height="0" frameborder="0"
-   src="about:blank"></iframe>
- </div>
+
+		</table>
+		Total Asset:
+		<iframe name="print_frame" width="0" height="0" frameborder="0"
+			src="about:blank"></iframe>
+	</div>
 </form>
 </md-content>

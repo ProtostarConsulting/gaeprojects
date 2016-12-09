@@ -149,7 +149,7 @@ app
 						}
 					}
 			
-					
+					$scope.waitForServiceLoad ();
 					
 					
 					$scope.downloadpdf=function(){

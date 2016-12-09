@@ -10,9 +10,15 @@
 
 
 <md-content layout-padding  >
-<h3 class="md-headline" ng-hide="account.id"   ng-if="!vouchersReview1">
-	<u> Reciept Vaucher</u>
-</h3>
+
+<section layout="row" layout-xs="column">
+			<md-subheader class="md-primary">
+			<h4 class="md-title">Reciept Vaucher</h4>
+			</md-subheader>
+			<span flex></span>
+			<div layout="row" flex="33" flex-sm="50" flex-xs="100">
+			
+		</section>
 <section layout="row"  ng-if="vouchersReview1">
 		<md-button class="md-fab md-primary md-hue-1 "
 			ng-click="printDiv('reciptid')" aria-label="Favorite"><md-tooltip>Print</md-tooltip> 
@@ -20,7 +26,7 @@
 		
 		
 		<md-button class="md-fab md-primary md-hue-1 "
-			ng-click="downloadpdf()" aria-label="Favorite"><md-tooltip> Download GroupList</md-tooltip> 
+			ng-click="downloadpdf()" aria-label="Favorite"><md-tooltip> Download PDF</md-tooltip> 
 		<md-icon md-svg-icon="img/icons/pdfdownload.svg"></md-icon> </md-button>
 			
 	</section>
@@ -29,8 +35,7 @@
 
 <div layout layout-xs="column"  ng-if="!vouchersReview1">
 			
-			 <md-input-container flex>  <label>Credit Account <span
-			style="color: red;">*</span></label>
+			 <md-input-container flex>  <label>Credit Account </label>
 	 <md-select ng-model="vouchersRe.accountType1" id="accountName"
 		name="Account1" ng-required="true"  ng-change="remSelected(vouchersRe.accountType1,1)">
 			<md-option ng-value="type" ng-repeat="type in vaccounts1">
@@ -45,8 +50,7 @@
 		</div>
 			
 			</md-input-container>
-			<md-input-container flex>  <label>Debit Account<span
-			style="color: red;">*</span></label>
+			<md-input-container flex>  <label>Debit Account</label>
 	 <md-select ng-model="vouchersRe.accountType2" id="accountName"
 		name="Account" ng-required="true" ng-change="getAccountEntryByAccountId(vouchersRe.accountType2,2)" >
 			<md-option ng-value="type" ng-repeat="type in vaccounts2">
@@ -63,9 +67,7 @@
 	</div>
 	
 	<div layout layout-xs="column" ng-if="!vouchersReview1">
-		<md-input-container flex> <label>Amount <span
-			style="color: red;">*</span>
-		</label> <input ng-model="vouchersRe.amount" name="amount" type="number" ng-required="true">
+		<md-input-container flex> <label>Amount</label> <input ng-model="vouchersRe.amount" name="amount" type="number" ng-required="true">
 
 		<div ng-messages="voucherRecieptForm.amount.$error"
 			ng-if="voucherRecieptForm.amount.$submitted || voucherRecieptForm.amount.$touched">
@@ -88,8 +90,6 @@
 <div id="reciptid">
 
 <div  ng-if="vouchersReview1">
-<h4 align="center" style="font-size: 150%">Reciept Voucher </h4>
-
 <table style="
      width: 100%;
      hight:100%;" >

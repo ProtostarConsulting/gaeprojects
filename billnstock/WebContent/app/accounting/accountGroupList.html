@@ -1,29 +1,29 @@
 
 <md-content>
-<md-toolbar class="md-table-toolbar md-default">
-	<div class="md-toolbar-tools">
-		<span>Account Group List </span>
-		<div flex></div>
-		<section layout="row" layout-align="end end" flex>
-		
-		<md-button class="md-icon-button"  id="downloadExcel" ng-click="downloadExcel()">
-		 <ng-md-icon
+
+<section layout="row" layout-xs="column">
+			<md-subheader class="md-primary">
+			<h4 class="md-title">Account Group List</h4>
+			</md-subheader>
+			<span flex></span>
+			<div layout="row" flex="33" flex-sm="50" flex-xs="100">
+				<md-input-container flex> <label>Search</label>
+				<input ng-model=""> </md-input-container>
+				<md-button class="md-icon-button" id="downloadExcel"
+					ng-click="downloadData()"> <ng-md-icon
 					icon="file_download" style="fill: md-default" size="24">
-				<md-tooltip>Download GroupList</md-tooltip></ng-md-icon></md-button>
+				<md-tooltip>Download Group List</md-tooltip></ng-md-icon></md-button>
 				<md-button class="md-icon-button" id="downloadExcel"
 					ng-click="downloadData()"> <ng-md-icon
 					icon="file_upload" style="fill: md-default" size="24">
-				<md-tooltip>Upload GroupList </md-tooltip></ng-md-icon></md-button>
-				
-				<md-button class="md-icon-button" id="uplodeExcel" ng-click="getList(true)">
-				 <ng-md-icon icon="refresh"
-				style="fill: md-default" size="24"> <md-tooltip>Refresh
-			List</md-tooltip></ng-md-icon></md-button>
-				
-					
+				<md-tooltip>Upload Group List</md-tooltip></ng-md-icon></md-button>
+
+				<md-button class="md-icon-button" id="refreshIcon"
+					ng-click="getList(true)"> <ng-md-icon
+					icon="refresh" style="fill: md-default" size="24"> <md-tooltip>Refresh
+				List</md-tooltip></ng-md-icon></md-button>
+			</div>
 		</section>
-	</div>
-	</md-toolbar>
         <md-toolbar class="md-table-toolbar alternate" ng-show="selected.length">
           <div class="md-toolbar-tools">
             <span>{{selected.length}} {{selected.length > 1 ? 'Groups' : 'Group'}} selected</span>
