@@ -46,7 +46,7 @@ td, th { /* //border: 1px solid #dddddd; */
 			<tr ng-repeat="groupTypeObj in accountGroupTypeGroupList">
 				<td colspan="2">{{groupTypeObj.groupType}}</td>
 				<td>
-					<div ng-repeat="grp in groupTypeObj.groupList" ng-show="grp.totalBalance">
+					<div ng-repeat="grp in groupTypeObj.groupList" ng-show="grp.totalBalance" >
 						<span>{{grp.groupName}}</span> 
 					    <span flex></span> 
 						<span ng-if="grp.totalBalance < 0">(</span>{{grp.totalBalance|positive|number:2}}<span
