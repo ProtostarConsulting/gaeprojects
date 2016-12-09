@@ -21,7 +21,9 @@ public class AccountEntryService {
 	int flag=0;
 	@ApiMethod(name = "addAccountEntry")
 	public void addAccountEntry(AccountEntryEntity accountEntry) {
-
+		//System.out.println("accountEntry"+accountEntry.getBusiness().getBusinessName());
+		
+	
 		ofy().save().entity(accountEntry).now();
 
 	}
@@ -39,6 +41,7 @@ public class AccountEntryService {
 		if(AccId==null) return new ArrayList<AccountEntryEntity>();
 		
 		List<AccountEntryEntity> filteredEntries = new ArrayList<AccountEntryEntity>();
+	//	System.out.println("busId"+busId);
 					
 	List<AccountEntryEntity> accountEntries =	ofy().load().type(AccountEntryEntity.class).list();
 

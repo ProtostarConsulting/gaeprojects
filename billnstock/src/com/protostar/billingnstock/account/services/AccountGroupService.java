@@ -21,7 +21,8 @@ import com.protostar.billnstock.until.data.ServerMsg;
 public class AccountGroupService {
 
 	@ApiMethod(name = "addAccountGroup")
-	public AccountGroupEntity addAccountGroup(AccountGroupEntity accountGroupEntity) {
+	public AccountGroupEntity addAccountGroup(
+			AccountGroupEntity accountGroupEntity) {
 
 		if (accountGroupEntity.getId() == null) {
 			accountGroupEntity.setCreatedDate(new Date());
@@ -32,102 +33,97 @@ public class AccountGroupService {
 		ofy().save().entity(accountGroupEntity).now();
 		return accountGroupEntity;
 	}
-	
-	@ApiMethod(name = "getAccountGroupList", path="getAccountGroupList")
+
+	@ApiMethod(name = "getAccountGroupList", path = "getAccountGroupList")
 	public List<AccountGroupEntity> getAccountGroupList(@Named("id") Long busId) {
 		System.out.println("busId:4444" + busId);
-		if(busId == null)
+		if (busId == null)
 			return new ArrayList<AccountGroupEntity>();
-		List<AccountGroupEntity> list= ofy().load().type(AccountGroupEntity.class).ancestor(Key.create(BusinessEntity.class, busId)).list();
+		List<AccountGroupEntity> list = ofy().load()
+				.type(AccountGroupEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).list();
 		System.out.println("list:" + list);
 		return list;
 	}
-	
-	
-	
-/*	@ApiMethod(name = "getAccountGroupListByType",path="getAccountGroupListByType")
-	public List<AccountGroupEntity> getAccountGroupListByType(@Named("type") String type,@Named("bid") Long bid) {
-		if(bid == null)
-			return new ArrayList<AccountGroupEntity>();
-		List<AccountGroupEntity> list= ofy().load().type(AccountGroupEntity.class).ancestor(Key.create(BusinessEntity.class, bid)).list();//.filter("PrimaryType",type).list();
-		System.out.println("LIST:******"+list.toString());
-		
-		
-		return list;
-	}
-	*/
-	
-	
-	@ApiMethod(name = "getAccountGroupListByType", path="getAccountGroupListByType")
-	public List<AccountGroupEntity> getAccountGroupListByType(@Named("type") String type, @Named("bid") Long bid) {	
-		
-		System.out.println("type:******"+type);
-		System.out.println("bid:******"+bid);
-		List<AccountGroupEntity> filteraccount=new ArrayList<AccountGroupEntity>();
-		
-		List<AccountGroupEntity> list= ofy().load().type(AccountGroupEntity.class).ancestor(Key.create(BusinessEntity.class, bid)).list();
-		
+
+	/*
+	 * @ApiMethod(name =
+	 * "getAccountGroupListByType",path="getAccountGroupListByType") public
+	 * List<AccountGroupEntity> getAccountGroupListByType(@Named("type") String
+	 * type,@Named("bid") Long bid) { if(bid == null) return new
+	 * ArrayList<AccountGroupEntity>(); List<AccountGroupEntity> list=
+	 * ofy().load
+	 * ().type(AccountGroupEntity.class).ancestor(Key.create(BusinessEntity
+	 * .class, bid)).list();//.filter("PrimaryType",type).list();
+	 * System.out.println("LIST:******"+list.toString());
+	 * 
+	 * 
+	 * return list; }
+	 */
+
+	@ApiMethod(name = "getAccountGroupListByType", path = "getAccountGroupListByType")
+	public List<AccountGroupEntity> getAccountGroupListByType(
+			@Named("type") String type, @Named("bid") Long bid) {
+
+		List<AccountGroupEntity> filteraccount = new ArrayList<AccountGroupEntity>();
+
+		List<AccountGroupEntity> list = ofy().load()
+				.type(AccountGroupEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, bid)).list();
+
 		for (AccountGroupEntity ss : list) {
-			
-			if(ss.getIsPrimary()){
-			//	System.out.println("ss.getPrimaryType(): "+ss.getPrimaryType());
-				if (ss.getPrimaryType().equals(type)) {
+
+			if (ss.getIsPrimary()) {
+				if (ss.getPrimaryType().trim().equalsIgnoreCase(type)) {
 					filteraccount.add(ss);
-					System.out.println("ss:******"+ss);
-					
-					
+					System.out.println("ss:******" + ss);
+
 				}
-			} else{
-				if(ss.getParent().getPrimaryType().equals(type))
-				{
+			} else {
+				if (ss.getParent().getPrimaryType().trim()
+						.equalsIgnoreCase(type)) {
 					filteraccount.add(ss);
-					
+
 				}
-				
+
 			}
 		}
 		return filteraccount;
-		
+
 	}
-	
-	
-	
+
 	@ApiMethod(name = "updateAccountGrp")
 	public AccountGroupEntity updateAccountGrp(AccountGroupEntity update) {
 		return addAccountGroup(update);
 	}
-	
+
 	@ApiMethod(name = "deleteAccountGrp")
-	 public void deleteAccountGrp(@Named("id") Long id) {
+	public void deleteAccountGrp(@Named("id") Long id) {
 
-		  ofy().delete().type(AccountGroupEntity.class).id(id).now();
+		ofy().delete().type(AccountGroupEntity.class).id(id).now();
 
-		 
-		 }
-	
+	}
 
 	@ApiMethod(name = "checkAccountGrpAlreadyExist")
-	public ServerMsg checkAccountGrpAlreadyExist(@Named("groupName") String groupName) {
+	public ServerMsg checkAccountGrpAlreadyExist(
+			@Named("groupName") String groupName) {
 		ServerMsg serverMsg = new ServerMsg();
-		List<AccountGroupEntity> list = ofy().load().type(AccountGroupEntity.class).filter("groupName",groupName).list();
+		List<AccountGroupEntity> list = ofy().load()
+				.type(AccountGroupEntity.class).filter("groupName", groupName)
+				.list();
 
-		
-		System.out.println("list ######"+list);
-		if (list == null || list.size() == 0)
-		{
-			System.out.println("list888888888"+list);
+		System.out.println("list ######" + list);
+		if (list == null || list.size() == 0) {
+			System.out.println("list888888888" + list);
 			serverMsg.setReturnBool(false);
-		} 
-		else {
+		} else {
 			serverMsg.setReturnBool(true);
 		}
 
 		return serverMsg;
 	}
-	
 
-
-	@ApiMethod(name = "getAllAccountGroupsByBusiness", path="getAllAccountGroupsByBusiness")
+	@ApiMethod(name = "getAllAccountGroupsByBusiness", path = "getAllAccountGroupsByBusiness")
 	public List<AccountGroupEntity> getAllAccountGroupsByBusiness(
 			@Named("id") Long busId) {
 
@@ -140,20 +136,15 @@ public class AccountGroupService {
 
 		return filteredAccounts;
 	}
-	
-	
-	
+
 	@ApiMethod(name = "getAllBusiness")
 	public List<BusinessEntity> getAllBusnes() {
 
-		List<BusinessEntity> businessList =  ofy().load()
-				.type(BusinessEntity .class).list();
+		List<BusinessEntity> businessList = ofy().load()
+				.type(BusinessEntity.class).list();
 
 		return businessList;
 	}
-	
-	
-	
 
 	@ApiMethod(name = "getAccountGroupById")
 	public AccountGroupEntity getAccountGroupById(@Named("id") Long accountId) {
@@ -164,23 +155,21 @@ public class AccountGroupService {
 		return accountById;
 	}
 
-
 	public void createDefaltAccountGroups() {
-		
-		//check if not there then only add esle return;
-		
-		List<AccountGroupEntity> accountGroupEntities = new ArrayList<AccountGroupEntity>(10);  
-		accountGroupEntities.add(new AccountGroupEntity("Bank Accounts", null));
-		accountGroupEntities.add(new AccountGroupEntity("Capital Accounts", null));
-		accountGroupEntities.add(new AccountGroupEntity("Current Assests", null));
-		accountGroupEntities.add(new AccountGroupEntity("Direct Incomes", null));
-		accountGroupEntities.add(new AccountGroupEntity("Direct Expesnes", null));
-		accountGroupEntities.add(new AccountGroupEntity("Current Liabilities", null));
-		
-		  
-		
 
+		List<AccountGroupEntity> accountGroupEntities = new ArrayList<AccountGroupEntity>(
+				10);
+		accountGroupEntities.add(new AccountGroupEntity("Bank Accounts", null));
+		accountGroupEntities.add(new AccountGroupEntity("Capital Accounts",
+				null));
+		accountGroupEntities
+				.add(new AccountGroupEntity("Current Assests", null));
+		accountGroupEntities
+				.add(new AccountGroupEntity("Direct Incomes", null));
+		accountGroupEntities
+				.add(new AccountGroupEntity("Direct Expesnes", null));
+		accountGroupEntities.add(new AccountGroupEntity("Current Liabilities",
+				null));
 	}
-	 
 
 }
