@@ -16,6 +16,8 @@ public class ReceivableEntity extends BaseEntity {
 	private Date receivableDate;
 	private Date invoiceDate;
 	private Date invoiceDueDate;
+	private Date quotationDate;
+	private Date quotationDueDate;
 	private String finalTotal;
 	private String status = "NotPaid";
 
@@ -77,4 +79,21 @@ public class ReceivableEntity extends BaseEntity {
 	public void setFinalTotal(String finalTotal) {
 		this.finalTotal = finalTotal;
 	}
+
+	public Date getQuotationDate() {
+		return quotationDate;
+	}
+
+	public void setQuotationDate(Date quotationDate) {
+		this.quotationDate = quotationDate;
+	}
+
+	public Date getQuotationDueDate() {
+		return quotationDueDate;
+	}
+
+	public void setQuotationDueDate(Date quotationDueDate) {
+		this.quotationDueDate = quotationDueDate;
+	}
+	
 }
