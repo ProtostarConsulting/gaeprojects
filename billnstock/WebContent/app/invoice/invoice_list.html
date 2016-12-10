@@ -1,22 +1,24 @@
 <md-content layout-padding>
-<h3>
-	<u>Invoice List</u>
-</h3>
-<div layout layout-sm="column">
-	<md-input-container flex> <label>Search</label> <input
-		ng-model="searchText"> </md-input-container>
+<section layout="row" layout-xs="column">
+	<md-subheader class="md-primary">
+	<h4 class="md-title">Invoice List</h4>
+	</md-subheader>
+	<span flex></span>
+	<div layout="row" flex="33" flex-sm="50" flex-xs="100">
+		<md-input-container flex> <label>Search</label> <input
+			ng-model="searchText"> </md-input-container>
 </div>
+</section>			
 
 <div>
 	<md-data-table-container>
-	<table md-data-table class="md-primary" md-row-select="selected"
-		md-progress="deferred">
+	<table md-data-table class="md-primary" md-progress="deferred">
 		<thead md-order="query.order" md-trigger="onorderchange">
 			<tr>
 				<th name="Sr.No" order-by="sr_No"></th>
 				<th name="Customer Name" order-by="firstName"></th>
 				<th name="Final Total" order-by="finalTotal"></th>
-				<th name="Action"></th>
+				<th  name="Actions"></th>
 			</tr>
 		</thead>
 
@@ -29,9 +31,21 @@
 				<td>{{invoice.finalTotal}}</td>
 				<td>
 					<section layout="row" layout-sm="column">
-						<md-button class="md-raised md-primary"
-							ui-sref="invoice.view({selectedInvoiceNo: invoice.id})">View
-						Invoice</md-button>
+						<md-button class="md-icon-button" ui-sref="invoice.view({selectedInvoiceNo: invoice.id})"> <ng-md-icon
+									icon="receipt" style="fill: md-default" size="20"> <md-tooltip>
+								View Invoice</md-tooltip></ng-md-icon></md-button>
+						<md-button class="md-icon-button"
+							ui-sref="invoice.edit({selectedInvoiceNo: invoice.id})">
+						<ng-md-icon icon="edit" style="fill: md-default" size="20">
+						<md-tooltip> Edit</md-tooltip></ng-md-icon></md-button>
+						<md-button class="md-icon-button"
+							ng-click="updatePaidStatus(selectedInvoiceNo)">
+						<ng-md-icon icon="done" style="fill: md-default" size="20">
+						<md-tooltip> Paid</md-tooltip></ng-md-icon></md-button>
+						<md-button class="md-icon-button"
+							ng-click="updateNotPaidStatus(selectedInvoiceNo)">
+						<ng-md-icon icon="clear" style="fill: md-default" size="20">
+						<md-tooltip> Not Paid</md-tooltip></ng-md-icon></md-button>
 					</section> <!--  <md-button class="md-raised md-primary" ng-hide="true"
 						ng-show="selected.length==1"
 						ui-sref="invoice.edit({selectedInvoiceNo: invoice.id})">Edit</md-button>
@@ -51,7 +65,7 @@
 		md-trigger="onpagechange"></md-data-table-pagination> </md-data-table-container>
 </div>
 
-<div flex ng-show="selected.length == 1">
+<!--  <div flex ng-show="selected.length == 1">
 	<md-input-container flex> <md-button
 		class="md-raised md-primary"
 		ui-sref="invoice.edit({selectedInvoiceNo: selected[0].id})">Edit</md-button>
@@ -62,5 +76,5 @@
 <md-input-container flex>
 	<md-button class="md-raised md-primary"
 		ng-click="updateNotPaidStatus()">Not Paid</md-button> </md-input-container>
-</div>
+</div>-->
 </md-content>

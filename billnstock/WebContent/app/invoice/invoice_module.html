@@ -3,16 +3,35 @@
 	<div>
 		<section layout="row">
 			<div class="md-toolbar-tools">
-				<md-content layout="row" layout-align="center start"> <md-button
-					ui-sref="invoice.add" ng-click="close()" class="md-primary">
-				Add Invoice</md-button> </md-content>
-				<md-content layout="row" layout-align="center start"> <md-button
-					ui-sref="invoice.list" ng-click="close()" class="md-primary">
-				Invoice List</md-button> </md-content>
-			</div>
+				<md-button ui-sref="invoice.add" ng-click="close()"
+					class="md-primary"> Add Invoice</md-button>
+				<md-button ui-sref="invoice.list" ng-click="close()"
+					class="md-primary"> Invoice List</md-button>
 
-			<div class="md-toolbar-tools">
+				<md-button ui-sref="invoice.addQuotation" ng-click="close()"
+					class="md-primary"> Add Quotation</md-button>
+
+				<md-button ui-sref="invoice.quotationlist" ng-click="close()"
+					class="md-primary"> Quotation List</md-button>
+
 				<span flex></span>
+				<md-button layout-align="center end"
+					class="md-icon-button md-accent" ui-sref="invoice.settings"
+					aria-label="Favorite"> <md-icon
+					md-svg-icon="img/icons/ic_home_black_24px.svg"></md-icon> </md-button>
+				<md-button layout-align="center end"
+					class="md-icon-button md-accent" ui-sref="invoice.settings"
+					aria-label="Favorite"> <md-icon
+					md-svg-icon="img/icons/ic_lock_open_black_24px.svg"></md-icon> </md-button>
+
+				<md-button layout-align="center end"
+					class="md-icon-button md-accent" ui-sref="invoice.settings"
+					aria-label="Favorite"> <md-icon
+					md-svg-icon="img/icons/ic_lock_outline_black_24px.svg"></md-icon> </md-button>
+				<md-button layout-align="center end"
+					class="md-icon-button md-accent" ui-sref="invoice.settings"
+					aria-label="Favorite"> <md-icon
+					md-svg-icon="img/icons/ic_settings_black_24px.svg"></md-icon> </md-button>
 				<section layout="row">
 					<md-button class="md-icon-button" aria-label="More"
 						ng-click="toggleRight()"> <md-icon
@@ -20,7 +39,6 @@
 
 				</section>
 			</div>
-
 
 			<md-sidenav class="md-sidenav-right md-whiteframe-z2"
 				md-component-id="right"> <md-toolbar
@@ -34,25 +52,6 @@
 		</section>
 
 	</div>
-	<div>
-		<div flex="75"></div>
-		<md-button flex="25" layout-align="center end"
-			class="md-icon-button md-accent" ui-sref="invoice.settings"
-			aria-label="Favorite"> <md-icon
-			md-svg-icon="img/icons/ic_home_black_24px.svg"></md-icon> </md-button>
-		<md-button flex="25" layout-align="center end"
-			class="md-icon-button md-accent" ui-sref="invoice.settings"
-			aria-label="Favorite"> <md-icon
-			md-svg-icon="img/icons/ic_lock_open_black_24px.svg"></md-icon> </md-button>
 
-		<md-button flex="25" layout-align="center end"
-			class="md-icon-button md-accent" ui-sref="invoice.settings"
-			aria-label="Favorite"> <md-icon
-			md-svg-icon="img/icons/ic_lock_outline_black_24px.svg"></md-icon> </md-button>
-		<md-button flex="25" layout-align="center end"
-			class="md-icon-button md-accent" ui-sref="invoice.settings"
-			aria-label="Favorite"> <md-icon
-			md-svg-icon="img/icons/ic_settings_black_24px.svg"></md-icon> </md-button>
-	</div>
 	<div ui-view layout-padding></div>
 </div>
