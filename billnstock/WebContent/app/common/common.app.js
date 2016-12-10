@@ -276,6 +276,22 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/settings",
 		templateUrl : '/app/invoice/invoice_settings.html',
 		controller : 'invoiceSettingsCtr',
+	}).state('invoice.addQuotation', {
+		url : "/addQuotation",
+		templateUrl : '/app/invoice/quotation_add.html',
+		controller : 'quotationAddCtr',
+	}).state('invoice.quotationlist', {
+		url : "/listQuotation",
+		templateUrl : '/app/invoice/quotation_list.html',
+		controller : 'quotationListCtr',
+	}).state('invoice.viewquotation', {
+		url : "/viewQuotation/:selectedQuotationNo",
+		templateUrl : '/app/invoice/quotation_view.html',
+		controller : 'quotationViewCtr',
+	}).state('invoice.editquotation', {
+		url : "/editQuotation/:selectedQuotationNo",
+		templateUrl : '/app/invoice/quotation_edit.html',
+		controller : 'quotationEditCtr',
 	}).state('customer', {
 		url : "/customer",
 		templateUrl : '/app/customer/customer_module.html',

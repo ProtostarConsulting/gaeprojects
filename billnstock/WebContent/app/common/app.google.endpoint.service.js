@@ -1884,6 +1884,41 @@ function googleEndpointSF($log, $q) {
 		return deferred.promise;
 	}// End of InvoiceService
 
+	var QuotationService = {};
+
+	serviceFactory.getQuotationService = function() {
+		return QuotationService;
+	}
+	QuotationService.addQuotation = function(quotation) {
+		var deferred = $q.defer();
+
+		gapi.client.quotationService.addQuotation(quotation).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+
+		return deferred.promise;
+	}
+
+	QuotationService.getAllQuotation = function(id) {
+		var deferred = $q.defer();
+		gapi.client.quotationService.getAllQuotation({
+			"id" : id
+		}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}
+
+	QuotationService.getquotationByID = function(id) {
+		var deferred = $q.defer();
+		gapi.client.quotationService.getquotationByID({
+			"id" : id
+		}).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}
+	
 	/* =============================================================================================================================== */
 
 	// Start of SalesOrderService

@@ -160,6 +160,14 @@ function appEndpointSFFn($log, localDBServiceFactory, googleEndpointSF) {
 		else
 			return googleEndpointSF.getInvoiceService();
 	};
+	
+	//------------Quotation Service
+	endpointFactory.getQuotationService = function() {
+		if (isTestMode)
+			return localDBServiceFactory.getQuotationService();
+		else
+			return googleEndpointSF.getQuotationService();
+	};
 	// ----------------------------------------------------
 
 	endpointFactory.getInternetService = function() {
@@ -259,6 +267,12 @@ function appEndpointSFFn($log, localDBServiceFactory, googleEndpointSF) {
 			$log.debug("invoiceService Loaded....");
 		}, apiRoot);
 
+
+		gapi.client.load('quotationService', 'v0.1', function() {
+			$log.debug("quotationService Loaded....");
+		}, apiRoot);
+
+		
 		gapi.client.load('accountService', 'v0.1', function() {
 			$log.debug("accountService Loaded....");
 		}, apiRoot);
