@@ -18,7 +18,7 @@ Back to PayRoll Reports</md-tooltip></ng-md-icon> </md-button>
 			</tr>
 		</thead>
 
-		<tr ng-repeat="monthlyPayObj in monthlyPayDetailsList">
+		<tr ng-repeat="monthlyPayObj in monthlyPayDetailsList | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit"">
 			<td style="margin: 0; padding-left: 5px; padding-right: 5px;"><b
 				ng-bind="monthlyPayObj.leaveDetailEntity.user.employeeDetail.empId">
 			</b></td>
