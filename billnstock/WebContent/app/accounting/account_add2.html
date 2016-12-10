@@ -25,10 +25,10 @@
 			<div ng-message="userexists">Account Already Exists</div>
 		</div>
 		</md-input-container>
-
+		
 		<md-input-container flex> <label>Account Type</label><md-select
 			ng-model="account.accountType" id="accountType" name="accountType" ng-required="true">
-		 <md-option
+		 <md-option ng-value="type"
 			ng-repeat="type in accountType" ng-selected="account.accountType == type"> {{type}} </md-option> </md-select>
 
 		<div ng-messages="accountForm.accountType.$error"

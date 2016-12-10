@@ -19,8 +19,7 @@ app.controller("addAccountEntryController", function($scope, $window, $mdToast, 
 		accountName : "",
 		description : "",
 		createdDate : new Date(),
-		modifiedDate : new Date(),
-		modifiedBy : $scope.curUser,
+		modifiedDate : new Date(),		
 		business : ""
 	};
 

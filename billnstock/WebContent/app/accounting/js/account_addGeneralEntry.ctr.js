@@ -22,8 +22,8 @@ app.controller("addAccountGeneralEntryCtr", function($scope, $window, $mdToast,
 		narration : "",
 		amount : "",
 		debitAccount : "",
-		creditAccount : ""
-		
+		creditAccount : "",
+			modifiedBy :$scope.curUser.email_id,
 
 	};
 	var i, flag;
