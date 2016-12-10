@@ -551,24 +551,27 @@ public class PDFHtmlTemplateService {
 			
 			//Long salesOrderNo = soe.getId(); 
 			
-			/*List<ServiceLineItemList> serviceList = invoiceEntity.getServiceLineItemList();
+			List<ServiceLineItemList> serviceItemList = invoiceEntity.getServiceLineItemList();
 			
-			for(int i=0;i<serviceList.size();i++){
+			/*for(int i=0;i<serviceList.size();i++){
 				
 				ServiceLineItemList serviceObj = serviceList.get(i);
 				root.put("ServiceName", serviceObj.getServiceName());
 				root.put("ServiceQuantity",serviceObj.getsQty());
 				root.put("ServicePrice", serviceObj.getsPrice());
-			}
-			*/
+			}*/
+			
 			
 			//Imported ServiceLine entity to get price and quantity
-		  ServiceLineItemList sli = invoiceEntity.getServiceLineItemList().get(0);
+	/*  ServiceLineItemList sli = invoiceEntity.getServiceLineItemList().get(0);
 			
 			float sPrice = sli.getsPrice();
 			Integer sQty = sli.getsQty();
 			String serviceName = sli.getServiceName();
 			
+		/*
+		 * 
+		 */
 			//Imported InvoiceLine entity to get price
 			InvoiceLineItem ili = invoiceEntity.getInvoiceLineItemList().get(0);
 			
@@ -608,10 +611,11 @@ public class PDFHtmlTemplateService {
 			
 			//root.put("SalesOrderNo", salesOrderNo);
 			
+			root.put("serviceItemList", serviceItemList);
 			//Service Table
-			root.put("ServiceName", serviceName);
-			root.put("ServiceQuantity", sQty);
-			root.put("ServicePrice", df.format(sPrice));
+		//	root.put("ServiceName", serviceName);
+			//root.put("ServiceQuantity", sQty);
+			//root.put("ServicePrice", df.format(sPrice));
 			root.put("ServiceSubTotal", df.format(serviceSubTotal));
 			root.put("ProductSubTotal", df.format(productSubTotal));
 			root.put("TaxType", taxType);
@@ -629,7 +633,7 @@ public class PDFHtmlTemplateService {
 			root.put("FinalTotal", finalTotal);
 			//root.put("FinalInWords", invoiceEntity.getFinalTotal());
 			root.put("PurchaseOrderNo",purchaseOrderNo);
-			root.put("NoteToCustomer", invoiceEntity.getNoteToCustomer());
+			root.put("NoteToCustomer", "" + invoiceEntity.getNoteToCustomer());
 			
 			root.put("Discount",df.format(discountAmt));
 			
