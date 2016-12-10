@@ -28,7 +28,7 @@ public class GeneralEntryService {
 		debitAcc.setDebit(entryEntity.getAmount());
 		debitAcc.setAccountEntity(entryEntity.getDebitAccount());
 		debitAcc.setCreatedDate(new Date());
-	
+		debitAcc.setModifiedBy(entryEntity.getModifiedBy());
 	
 		AccountEntryService aes=new AccountEntryService();
 		aes.addAccountEntry(debitAcc);
@@ -41,7 +41,7 @@ public class GeneralEntryService {
 		creditAcc.setCredit(entryEntity.getAmount());
 		creditAcc.setAccountEntity(entryEntity.getCreditAccount());
 		creditAcc.setCreatedDate(new Date());
-		
+		creditAcc.setModifiedBy(entryEntity.getModifiedBy());
 		aes.addAccountEntry(creditAcc);
 		entryEntity.setCreatedDate(new Date());
 		entryEntity.setModifiedDate(new Date());
