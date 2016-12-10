@@ -88,31 +88,36 @@ tab2 {
 				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
 				align="center">Service SubTotal(INR)</th>
 		</tr>
-		<tr>
+		<#assign taxP=TaxPercentage> 
+		<#list serviceItemList as serviceItem>	
+		 
 		
+		<tr>
+		<#assign subTotal= serviceItem.sQty * serviceItem.sPrice> 
+		<#assign taxAmt= subTotal>
 			<td 
 				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
-				align="center">${ServiceName}</td>
+				align="center">${serviceItem.serviceName}</td>
 			<td 
 				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px;"
-				align="center">${ServiceQuantity}</td>
+				align="center">${serviceItem.sQty}</td>
 			<td 
-				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px;">${ServicePrice}
-			</td>
-			
+				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px;">${serviceItem.sPrice}
+			</td>			
 			<td
 				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
-				align="center">${ServiceSubTotal}</td>
+				align="center">${subTotal}</td>
 			<td
 				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
-				align="center">${TaxType}- ${TaxPercentage}%</td>
+				align="center">${TaxType} - ${taxP}%</td>
 			<td
 				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
-				align="center">${ServiceTaxTotal}</td>
+				align="center">${taxAmt}</td>
 			<td
 				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
-				align="center">${ServiceTotal}</td>
+				align="center">${subTotal + taxAmt}</td>
 		</tr>
+		</#list>		
 	</tbody>
 	
 	</table>
