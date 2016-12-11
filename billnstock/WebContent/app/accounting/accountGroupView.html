@@ -1,38 +1,36 @@
 <section layout="row" layout-xs="column">
-			<md-subheader class="md-primary">
-			<h4 class="md-title">Account Group View</h4>
-			</md-subheader>
-			<span flex></span>
-			<div layout="row" flex="33" flex-sm="50" flex-xs="100">
-				<md-input-container flex> <label>Search</label>
-				<input ng-model="searchText"> </md-input-container>
-				
-		</section>
-<form name="searchForm" novalidate>
+	<md-subheader class="md-primary">
+	<h4 class="md-title">Account Group View</h4>
+	</md-subheader>
+	<span flex></span>
+	<div layout="row" flex="33" flex-sm="50" flex-xs="100">
+		<md-input-container flex> <label>Search</label> <input
+			ng-model="searchText"> </md-input-container>
+</section>
+<form name="searchForm" novalidate layout="row">
+	<section layout="row" flex=65>
+		<md-input-container flex=40> <label>Select
+			Group Name</label> <md-select ng-model="groupId" name="group"
+			md-placeholder="Select
+			Group Name" ng-required="true">
+		<md-option ng-value="group.id" ng-repeat="group in GroupList">{{group.groupName}}
+		</md-option> </md-select> </md-input-container>
+		<md-input-container flex> <label>From
+			Date</label> <md-datepicker id="fromDate" name="fromDate" ng-model="fromDate"
+			md-placeholder="Enter From date" ng-required="true"
+			md-max-date="toDate"></md-datepicker> </md-input-container>
 
-	<md-input-container flex> <label>Select
-		Group Name</label> <md-select ng-model="groupId" name="group"
-		ng-required="true"> <lable>Account Group<span
-		style="color: red;">*</span></lable> <md-option ng-value="group.id"
-		ng-repeat="group in GroupList">{{group.groupName}} </md-option> </md-select> </md-input-container>
-
-	<label style="margin-top: 10px">From Date</label>
-	<md-datepicker id="fromDate" name="fromDate" ng-model="fromDate"
-		md-placeholder="Enter From date" ng-required="true"
-		md-max-date="toDate"></md-datepicker>
-
-
-	<label style="margin-top: 10px">To Date</label>
-	<md-datepicker id="toDate" name="toDate" ng-model="toDate"
-		md-placeholder="Enter To date" ng-required="true"
-		md-min-date="fromDate"></md-datepicker>
-
-	<md-button class="md-raised md-primary"
-		ng-disabled="searchForm.$invalid"
-		ng-click="getAccountListByGroupId(groupId)">Group View</md-button>
-
-	<md-button class="md-raised md-primary" ng-click="clear()">Clear</md-button>
-
+		<md-input-container flex> <label>To Date</label>
+		<md-datepicker id="toDate" name="toDate" ng-model="toDate"
+			md-placeholder="Enter To date" ng-required="true"
+			md-min-date="fromDate"></md-datepicker> </md-input-container>
+	</section>
+	<div flex>
+		<md-button class="md-raised md-primary"
+			ng-disabled="searchForm.$invalid"
+			ng-click="getAccountListByGroupId(groupId)">Group View</md-button>
+		<md-button class="md-raised md-primary" ng-click="clear()">Clear</md-button>
+	</div>
 </form>
 
 <md-content ng-show="loading && wait"> <md-progress-circular
@@ -57,7 +55,7 @@
 	<h2 align="center">{{selectedGroupName}}</h2>
 
 	<table
-		style="border: 1px solid black; border-collapse: collapse; width: 90%;">
+		style="border: 1px solid black; padding: 5px; border-collapse: collapse; width: 90%;">
 		<tr style="text-align: center;">
 			<td style="border: 1px solid black;" rowspan="4" colspan="3">Particulars</td>
 			<td colspan="2"><label style="margin-top: 10px"> <!-- Selected
@@ -69,10 +67,12 @@
 		</tr>
 		<tr style="text-align: center;">
 			<td style="border: 1px solid black;"><label
-				style="margin-top: 10px">From Date:</label>{{fromDate |formatDate}}</td>
+				style="margin-top: 10px">From Date:&nbsp;</label>{{fromDate
+				|formatDate}}</td>
 
 			<td style="border: 1px solid black;"><label
-				style="margin-top: 10px">To Date:</label>{{toDate | formatDate}}</td>
+				style="margin-top: 10px">To Date:&nbsp;</label>{{toDate |
+				formatDate}}</td>
 		</tr>
 		<tr style="text-align: center;">
 			<td style="border: 1px solid black;"><b>Debit</b></td>
@@ -84,21 +84,23 @@
 
 		<tr ng-repeat="acc in accountList">
 
-			<td style="border: 1px solid black;" colspan="3"><a
+			<td style="border: 1px solid black; padding: 5px;" colspan="3"><a
 				ui-sref="accounting.entryList({selectdAccount:acc,fromDate:fromDate,toDate:toDate})">{{acc.accountName}}</a></td>
-			<td style="text-align: right;"><span ng-if="acc.totaldebit < 0">(</span>{{acc.totaldebit
+			<td style="border: 1px solid black; text-align: right; padding: 5px;"><span
+				ng-if="acc.totaldebit < 0">(</span>{{acc.totaldebit
 				|positive|number:2}}<span ng-if="acc.totaldebit < 0">)</span></td>
-			<td style="text-align: right;"><span ng-if="acc.totalcredit < 0">(</span>{{acc.totalcredit
+			<td style="border: 1px solid black; text-align: right; padding: 5px;"><span
+				ng-if="acc.totalcredit < 0">(</span>{{acc.totalcredit
 				|positive|number:2}}<span ng-if="acc.totalcredit < 0">)</span></td>
 		</tr>
 
 		<tr>
 			<th colspan="3" style="border: 1px solid black; text-align: right;"><b>Grand
 					Total:</b></th>
-			<th style="border: 1px solid black; text-align: right;"><span
+			<th style="border: 1px solid black; text-align: right; padding: 5px;"><span
 				ng-if="grandDebitTotal < 0">(</span>{{grandDebitTotal|number:2}}<span
 				ng-if="grandDebitTotal < 0">)</span></th>
-			<th style="border: 1px solid black; text-align: right;"><span
+			<th style="border: 1px solid black; text-align: right; padding: 5px;"><span
 				ng-if="grandCreditTotal < 0">(</span>{{grandCreditTotal|number:2}}<span
 				ng-if="grandCreditTotal < 0">)</span></th>
 		</tr>
