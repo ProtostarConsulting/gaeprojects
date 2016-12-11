@@ -1,57 +1,54 @@
-
-
-<md-content layout-padding>
-
+<div ng-if="loading">
+	<div layout="row" layout-sm="column" layout-align="space-around">
+		<md-progress-circular md-diameter="60" md-mode="indeterminate"></md-progress-circular>
+	</div>
+</div>
+<md-content ng-if="!loading" layout-padding layout="column" ng-cloak>
 <div>
-	<md-data-table-container>
-	<div >
-<section layout="row" layout-align="end end" flex>
-	<md-button class="md-raised md-primary"
-	ui-sref="crm.addcontact">ADD NEW </md-button>
-</section>
+	<section layout="row" layout-xs="column">
+		<md-subheader class="md-primary">
+		<h4 class="md-title">Contact List</h4>
+		</md-subheader>
+		<span flex></span>
+		<div layout="row" flex="33" flex-sm="50" flex-xs="100">
+			<md-input-container flex> <label>Search
+				Users</label> <input ng-model="searchText"> </md-input-container>
+			<md-button class="md-icon-button" ui-sref="crm.addcontact">
+			<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
+			<md-tooltip> Add New </md-tooltip></ng-md-icon> </md-button>
+		</div>
+	</section>
 </div>
-<div layout layout-sm="column">
-	<md-input-container flex> <label>Search</label> <input
-		ng-model="searchText"> </md-input-container>
-</div>
-	<table md-data-table md-row-select="selected" md-progress="deferred">
-		<thead md-order="query.order" md-trigger="onOrderChange">
-			<tr>
-		
-		    	<th name="fName" order-by="fName"></th>
-				<th name="lName" order-by="lName"></th>
-				<th name="phone" order-by="Phone"></th>
-				<th name="Email" order-by="Email"></th>
-			    <th name="View" order-by="view"></th>
-			</tr>
-		</thead>
+<table md-data-table md-row-select="selected" md-progress="deferred">
+	<thead md-order="query.order" md-trigger="onOrderChange">
+		<tr>
 
-		<tbody>
-			<tr md-auto-select
-				ng-repeat="contact in contacts | orderBy: query.order| filter : searchText | limitTo: query.limit: (query.page - 1) * query.limit"">
-		
-				<td>{{contact.fName}}</td>
-				<td>{{contact.lName}}</td>
-				<td>{{contact.phone}}</td>
-				<td>{{contact.email}}</td> 
-				<td>
-					<section layout="row" layout-sm="column">
-						<md-button class="md-raised md-primary"
-							ui-sref="crm.viewContact({selectedcontactNo: contact.id})">Edit</md-button>
-					</section>
-	     		</td>
-			</tr>
-		</tbody>
-	</table>
- 
- <md-data-table-pagination md-limit="query.limit"
-		md-page="query.page" md-total={{contacts.length}}
-		md-trigger="onpagechange"></md-data-table-pagination> </md-data-table-container>
-</div>
+			<th name="fName" order-by="fName"></th>
+			<th name="lName" order-by="lName"></th>
+			<th name="phone" order-by="Phone"></th>
+			<th name="Email" order-by="Email"></th>
+			<th name="View" order-by="view"></th>
+		</tr>
+	</thead>
 
-<!-- vals: {{customers}}
-<md-button ui-sref="customer.list" ng-click="getAllemp()" class="md-primary">
-		Customer List in side List view 
-	</md-button>-->
+	<tbody>
+		<tr md-auto-select
+			ng-repeat="contact in contacts | orderBy: query.order| filter : searchText | limitTo: query.limit: (query.page - 1) * query.limit"">
 
-</md-content>
+			<td>{{contact.fName}}</td>
+			<td>{{contact.lName}}</td>
+			<td>{{contact.phone}}</td>
+			<td>{{contact.email}}</td>
+			<td>
+				<section layout="row" layout-sm="column">
+					<md-button class="md-raised md-primary"
+						ui-sref="crm.viewContact({selectedcontactNo: contact.id})">Edit</md-button>
+				</section>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<md-data-table-pagination md-limit="query.limit" md-page="query.page"
+	md-total={{contacts.length}} md-trigger="onpagechange"></md-data-table-pagination>
+</md-data-table-container> </md-content>

@@ -4,7 +4,7 @@ app.controller("customerListCtr", function($scope, $window, $mdToast, $timeout,
 		$mdSidenav, $mdUtil, $log, $stateParams, objectFactory, appEndpointSF) {
 
 	$log.debug("Inside customerListCtr");
-
+	$scope.loading = true;
 	$scope.query = {
 		order : 'name',
 		limit : 5,
@@ -16,7 +16,7 @@ app.controller("customerListCtr", function($scope, $window, $mdToast, $timeout,
 	$log.debug("$scope.curUser++++++++" + angular.toJson($scope.curUser));
 
 	$scope.getAllCustomersByBusiness = function() {
-
+		$scope.loading = true;
 		var customerService = appEndpointSF.getCustomerService();
 
 		customerService.getAllCustomersByBusiness(
@@ -26,6 +26,7 @@ app.controller("customerListCtr", function($scope, $window, $mdToast, $timeout,
 					$scope.customers = custList.items;					
 					$log.debug("Inside Ctr $scope.customers:"
 							+ angular.toJson($scope.customers));
+					$scope.loading = false;
 				});
 	}
 

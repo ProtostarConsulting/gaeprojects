@@ -1,19 +1,24 @@
-
-<md-content layout-padding> <!-- <h3>
-	<u>Customer List</u>
-</h3> -->
+<div ng-if="loading">
+	<div layout="row" layout-sm="column" layout-align="space-around">
+		<md-progress-circular md-diameter="60" md-mode="indeterminate"></md-progress-circular>
+	</div>
+</div>
+<md-content ng-if="!loading" layout-padding layout="column" ng-cloak>
 <div>
-	<section layout="row" layout-align="end end" flex>
-		<md-button class="md-raised md-primary" ui-sref="crm.addcustomer">ADD
-		NEW </md-button>
+	<section layout="row" layout-xs="column">
+		<md-subheader class="md-primary">
+		<h4 class="md-title">Customer List</h4>
+		</md-subheader>
+		<span flex></span>
+		<div layout="row" flex="33" flex-sm="50" flex-xs="100">
+			<md-input-container flex> <label>Search
+				Users</label> <input ng-model="searchText"> </md-input-container>
+			<md-button class="md-icon-button" ui-sref="crm.addcustomer">
+			<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
+			<md-tooltip> Add New </md-tooltip></ng-md-icon> </md-button>
+		</div>
 	</section>
 </div>
-
-<div layout layout-sm="column">
-	<md-input-container flex> <label>Search</label> <input
-		ng-model="searchText"> </md-input-container>
-</div>
-
 <div>
 	<md-data-table-container>
 	<table md-data-table md-row-select="selected" md-progress="deferred">
@@ -45,17 +50,20 @@
 		</tbody>
 	</table>
 	<div flex>
-			<md-button id="invoiceBtn" class="md-raised md-primary" ng-show="selected.length == 1 && selected[0].isCompany == true "
-				ui-sref="crm.listOfContact({selectedCustomerId: selected[0].id})">View
-			Contact</md-button>
+		<md-button id="invoiceBtn" class="md-raised md-primary"
+			ng-show="selected.length == 1 && selected[0].isCompany == true "
+			ui-sref="crm.listOfContact({selectedCustomerId: selected[0].id})">View
+		Contact</md-button>
 
 		<!-- use to show so and po -->
-			<md-button id="invoiceBtn" class="md-raised md-primary" ng-show="selected.length == 1"
-				ui-sref="crm.customerInvoiceList({selectedCustomerId:  selected[0].id})">Invoice</md-button>
+		<md-button id="invoiceBtn" class="md-raised md-primary"
+			ng-show="selected.length == 1"
+			ui-sref="crm.customerInvoiceList({selectedCustomerId:  selected[0].id})">Invoice</md-button>
 
-			<md-button id="sOBtn" class="md-raised md-primary" ng-show="selected.length == 1"
-				ui-sref="crm.customerSOList({selectedCustomerId:  selected[0].id})">SO
-			</md-button>
+		<md-button id="sOBtn" class="md-raised md-primary"
+			ng-show="selected.length == 1"
+			ui-sref="crm.customerSOList({selectedCustomerId:  selected[0].id})">SO
+		</md-button>
 
 	</div>
 
@@ -63,13 +71,4 @@
 		md-total={{customers.length}} md-trigger="onpagechange"></md-data-table-pagination>
 	</md-data-table-container>
 </div>
-
-<!-- <div id="display" layout="row" layout-xs="column" ng-hide="true" ng-show="selected.length == 1">
-
-	<md-button id="invoiceBtn" class="md-raised md-primary" ng-click="getInvoiceListByCustId()">Invoice</md-button>
-
-	<md-button id="sOBtn" class="md-raised md-primary" ng-click="getSOListByID()">Sales
-	Order</md-button>
-
-</div>
- --></md-content>
+</md-content>

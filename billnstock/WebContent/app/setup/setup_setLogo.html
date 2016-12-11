@@ -1,12 +1,11 @@
-
-<div layout="row" ng-cloak class="md-inline-form">
+<div layout="row" layout-padding ng-cloak class="md-inline-form">
 
 	<md-content layout="column"> <span class="md-headline">Current
 		Logo</span>
 	<div
 		style="height: 80px; width: 120px; float: left; margin: 3px; padding: 3px;">
-		<img ng-src="{{existingLogURL}}" class="md-card-image" alt="Compnay Logo"
-			style="max-width: 100%; max-height: 100%;" />
+		<img ng-src="{{existingLogURL}}" class="md-card-image"
+			alt="Compnay Logo" style="max-width: 100%; max-height: 100%;" />
 	</div>
 	<form name="fileUploadForm" method="post" enctype="multipart/form-data">
 
@@ -15,8 +14,9 @@
 
 		<div layout="row" layout-xs="column" flex>
 			<md-button class='md-raised' type="file" ngf-select
-				ng-model="fileObject" name="file2" accept="*.png, *.jpg, *.gif" ngf-max-size="2MB"
-				required ngf-model-invalid="errorFile">Choose Logo File</md-button>
+				ng-model="fileObject" name="file2" accept="*.png, *.jpg, *.gif"
+				ngf-max-size="2MB" required ngf-model-invalid="errorFile">Choose
+			Logo File</md-button>
 		</div>
 		<div layout="row" layout-xs="column" flex>
 			<label>{{uploadProgressMsg ==
@@ -31,13 +31,6 @@
 			<md-button class="md-raised md-primary" ng-click="back()">
 			Cancel </md-button>
 		</div>
-
-
-
-
-		<!-- <div class="dropzone" data-width="960" data-height="540" data-resize="true" data-url="canvas.php" style="width: 100%;">
-  <input type="file" name="thumb" />
-</div> -->
 	</form>
 
 	<div>

@@ -3,55 +3,66 @@
 		<md-progress-circular md-diameter="60" md-mode="indeterminate"></md-progress-circular>
 	</div>
 </div>
-<div ng-if="!loading">
-	<md-content laout="column" flex> <md-toolbar
-		class="md-table-toolbar md-default">
-	<div class="md-toolbar-tools">
-		<span flex hide-xs>{{(action == 'listmytask')?'My Task
-			List':'All Task List'}}</span>
-		<md-input-container style="padding-top:25px;"> <label>Since
-			Date </label> <md-datepicker flex ng-model="selectFilterData.assignedDate"
-			ng-change="filterTasksByFitlerData()"></md-datepicker> </md-input-container>
-	</div>
-	</md-toolbar> <md-data-table-container>
-	<table md-data-table class="md-primary" md-progress="deferred">
-		<thead md-order="query.order" md-trigger="onorderchange">
-			<tr>
-				<th name="Sr. No." unit="" flex="5"></th>
-				<th order-by="assignedTo.firstName" name="Assigned To"
-					ng-if="action != 'listmytask'"></th>
-				<th order-by="firstName" name="Assigned By"
-					ng-if="action == 'listmytask'"></th>
-				<th order-by="assignedDate" name="Assigned Date"></th>
-				<th order-by="assignedDate" name="Delayed Days" flex="5"></th>
-				<th order-by="taskStatus" name="Task Status"></th>
-				<th order-by="taskTitle" name="Task Title" unit=""></th>
-				<!-- <th numeric order-by="taskDesc" name="Task Description"></th> -->
-				<th name="Action"></th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr
-				ng-repeat="task in taskEntityList | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
-				<td flex="5">{{$index+1}}</td>
-				<td ng-if="action != 'listmytask'">{{(task.assignedTo.firstName
-					+ ' ' + task.assignedTo.lastName) | uppercase}}</td>
-				<td ng-if="action == 'listmytask'">{{(task.assignedBy.firstName
-					+ ' ' + task.assignedBy.lastName) | uppercase}}</td>
-				<td>{{task.assignedDate | formatDate}}</td>
-				<td>{{getDelayInDays(task.assignedDate)}}</td>
-				<td>{{task.taskStatus}}</td>
-				<td>{{task.taskTitle}}</td>
-				<!-- <td>{{task.taskDesc.substring(0, 100) + "..." |
-				htmlToPlainText}}</td> -->
-				<td><md-button class="md-icon-button" id="editRecord"
-						ng-click="changeEditView({taskObj:task})"> <ng-md-icon
-						icon="edit" style="fill: md-default" size="24"> <md-tooltip>
-					Edit Record</md-tooltip></ng-md-icon></md-button></td>
-			</tr>
-		</tbody>
-	</table>
-	</md-data-table-container> <md-data-table-pagination md-limit="query.limit" md-page="query.page"
-		md-total={{taskEntityList.length}} md-trigger="onpagechange"></md-data-table-pagination>
-	</md-content>
+<md-content ng-if="!loading" layout-padding layout="column" ng-cloak>
+<div>
+	<section layout="row" layout-xs="column">
+		<md-subheader class="md-primary">
+		<h4 class="md-title">
+			<span flex hide-xs>{{(action == 'listmytask')?'My Task
+				List':'All Task List'}}</span>
+		</h4>
+		</md-subheader>
+		<span flex></span>
+		<div layout="row" flex="40" flex-sm="50" flex-xs="100">
+			<md-input-container flex> <label>Search</label>
+			<input ng-model="searchText"> </md-input-container>
+			<md-button class="md-icon-button" ui-sref="taskmanagement.add">
+			<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
+			<md-tooltip> Add New </md-tooltip></ng-md-icon> </md-button>
+			<md-input-container> <label>Since
+				Date </label> <md-datepicker ng-model="selectFilterData.assignedDate"
+				ng-change="filterTasksByFitlerData()"></md-datepicker> </md-input-container>
+		</div>
+	</section>
 </div>
+<md-data-table-container>
+<table md-data-table class="md-primary" md-progress="deferred">
+	<thead md-order="query.order" md-trigger="onorderchange">
+		<tr>
+			<th name="Sr. No." unit="" flex="5"></th>
+			<th order-by="assignedTo.firstName" name="Assigned To"
+				ng-if="action != 'listmytask'"></th>
+			<th order-by="firstName" name="Assigned By"
+				ng-if="action == 'listmytask'"></th>
+			<th order-by="assignedDate" name="Assigned Date"></th>
+			<th order-by="assignedDate" name="Delayed Days" flex="5"></th>
+			<th order-by="taskStatus" name="Task Status"></th>
+			<th order-by="taskTitle" name="Task Title" unit=""></th>
+			<!-- <th numeric order-by="taskDesc" name="Task Description"></th> -->
+			<th name="Action"></th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr
+			ng-repeat="task in taskEntityList | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+			<td flex="5">{{$index+1}}</td>
+			<td ng-if="action != 'listmytask'">{{(task.assignedTo.firstName
+				+ ' ' + task.assignedTo.lastName) | uppercase}}</td>
+			<td ng-if="action == 'listmytask'">{{(task.assignedBy.firstName
+				+ ' ' + task.assignedBy.lastName) | uppercase}}</td>
+			<td>{{task.assignedDate | formatDate}}</td>
+			<td>{{getDelayInDays(task.assignedDate)}}</td>
+			<td>{{task.taskStatus}}</td>
+			<td>{{task.taskTitle}}</td>
+			<!-- <td>{{task.taskDesc.substring(0, 100) + "..." |
+				htmlToPlainText}}</td> -->
+			<td><md-button class="md-icon-button" id="editRecord"
+					ng-click="changeEditView({taskObj:task})"> <ng-md-icon
+					icon="edit" style="fill: md-default" size="24"> <md-tooltip>
+				Edit Record</md-tooltip></ng-md-icon></md-button></td>
+		</tr>
+	</tbody>
+</table>
+</md-data-table-container> <md-data-table-pagination md-limit="query.limit" md-page="query.page"
+	md-total={{taskEntityList.length}} md-trigger="onpagechange"></md-data-table-pagination>
+</md-content>

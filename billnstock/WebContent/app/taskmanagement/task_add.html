@@ -4,10 +4,16 @@
 	</div>
 </div>
 <div ng-if="!loading" layout="column" layout-wrap>
-	<md-content layout-wrap> <md-subheader class="md-primary">
-	<h3 class="md-headline" ng-show="!taskObj">Create Task</h3>
-	<h3 class="md-headline" ng-show="taskObj">Edit Task</h3>
-	</md-subheader>
+	<md-content layout-wrap>
+	<section layout="row" layout-xs="column">
+		<md-subheader class="md-primary">
+		<h4 class="md-title">
+			<span class="md-headline" ng-show="!taskObj">Create Task</span> <span
+				class="md-headline" ng-show="taskObj">Edit Task</span>
+		</h4>
+		</md-subheader>
+		<span flex></span>
+	</section>
 	<form name="taskAddForm">
 		<div layout="column">
 			<div layout="row" layout-xs="column">

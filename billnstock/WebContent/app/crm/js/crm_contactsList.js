@@ -34,10 +34,12 @@ angular.module("stockApp").controller(
 
 			
 			$scope.getAllcontact = function() {
+				$scope.loading = true;
 				var leadService = appEndpointSF.getleadService();
 				leadService.getAllcontact($scope.curUser.business.id).then(function(contactList) {
 					$log.debug("Inside Ctr getAllleads");
 					$scope.contacts = contactList.items;
+					$scope.loading = false;
 					$scope.cleadid = $scope.contacts.length + 1;
 					$scope.contact.cid = $scope.cleadid;
 

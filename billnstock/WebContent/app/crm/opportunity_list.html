@@ -1,54 +1,52 @@
-
-
-<md-content layout-padding>
-
+<div ng-if="loading">
+	<div layout="row" layout-sm="column" layout-align="space-around">
+		<md-progress-circular md-diameter="60" md-mode="indeterminate"></md-progress-circular>
+	</div>
+</div>
+<md-content ng-if="!loading" layout-padding layout="column" ng-cloak>
 <div>
-	<md-data-table-container>
-	<div >
-<section layout="row" layout-align="end end" flex>
-	<md-button class="md-raised md-primary"
-	ui-sref="crm.addopprtunity">ADD NEW</md-button>
-</section>
-</div>
-<div layout layout-sm="column">
-	<md-input-container flex> <label>Search</label> <input
-		ng-model="searchText"> </md-input-container>
-</div>
-	<table md-data-table md-row-select="selected" md-progress="deferred">
-		<thead md-order="query.order" md-trigger="onOrderChange">
-			<tr>
-		    	<th name="id" order-by="id"></th>
-				<th name="From" order-by="from"></th>
-				<th name="Name" order-by="name"></th>
-				<th name="View" order-by="view"></th>
-			</tr>
-		</thead>
-
-		<tbody>
-			<tr md-auto-select
-				ng-repeat="opportunity in opportunitys | orderBy: query.order | filter : searchText | limitTo: query.limit: (query.page - 1) * query.limit"">
-				<td>{{opportunity.oid}}</td>
-				<td>{{opportunity.from}}</td>
-				<td>{{opportunity.name}}</td>
-				
-				<td>
-					<section layout="row" layout-sm="column">
-						<md-button class="md-raised md-primary"
-							ui-sref="crm.opportunityView({selectedopportunityNo: opportunity.id})">Edit</md-button>
-					</section>
-	     		</td>
-			</tr>
-		</tbody>
-	</table>
- 
- <md-data-table-pagination md-limit="query.limit"
-		md-page="query.page" md-total={{opportunitys.length}}
-		md-trigger="onpagechange"></md-data-table-pagination> </md-data-table-container>
+	<section layout="row" layout-xs="column">
+		<md-subheader class="md-primary">
+		<h4 class="md-title">Opportunity List</h4>
+		</md-subheader>
+		<span flex></span>
+		<div layout="row" flex="33" flex-sm="50" flex-xs="100">
+			<md-input-container flex> <label>Search
+				Users</label> <input ng-model="searchText"> </md-input-container>
+			<md-button class="md-icon-button" ui-sref="crm.addopprtunity">
+			<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
+			<md-tooltip> Add New </md-tooltip></ng-md-icon> </md-button>
+		</div>
+	</section>
 </div>
 
-<!-- vals: {{customers}}
-<md-button ui-sref="customer.list" ng-click="getAllemp()" class="md-primary">
-		Customer List in side List view 
-	</md-button>-->
+<table md-data-table md-row-select="selected" md-progress="deferred">
+	<thead md-order="query.order" md-trigger="onOrderChange">
+		<tr>
+			<th name="id" order-by="id"></th>
+			<th name="From" order-by="from"></th>
+			<th name="Name" order-by="name"></th>
+			<th name="View" order-by="view"></th>
+		</tr>
+	</thead>
 
-</md-content>
+	<tbody>
+		<tr md-auto-select
+			ng-repeat="opportunity in opportunitys | orderBy: query.order | filter : searchText | limitTo: query.limit: (query.page - 1) * query.limit"">
+			<td>{{opportunity.oid}}</td>
+			<td>{{opportunity.from}}</td>
+			<td>{{opportunity.name}}</td>
+
+			<td>
+				<section layout="row" layout-sm="column">
+					<md-button class="md-raised md-primary"
+						ui-sref="crm.opportunityView({selectedopportunityNo: opportunity.id})">Edit</md-button>
+				</section>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<md-data-table-pagination md-limit="query.limit" md-page="query.page"
+	md-total={{opportunitys.length}} md-trigger="onpagechange"></md-data-table-pagination>
+</md-data-table-container></md-content>

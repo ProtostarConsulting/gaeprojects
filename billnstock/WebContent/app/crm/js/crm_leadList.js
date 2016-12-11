@@ -43,14 +43,17 @@ angular
 					
 					$scope.getAllleads = function() {
 						$log.debug("Inside Ctr $scope.getAlllead");
+						$scope.loading = true;
 						var leadService = appEndpointSF.getleadService();
 
 						leadService.getAllleads($scope.curUser.business.id).then(function(leadList) {
 							$log.debug("Inside Ctr getAllleads");
 							$scope.leads = leadList.items;
+							$scope.loading = false;
 							$log.debug("Inside Ctr getAllleads===="+angular.toJson($scope.leads ));
 							$scope.cleadid = $scope.leads.length + 1;
 							$scope.lead.lid = $scope.cleadid;
+							
 							
 						});
 					}

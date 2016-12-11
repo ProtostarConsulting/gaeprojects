@@ -64,6 +64,7 @@ angular
 				
 
 					$scope.getAllopportunity = function() {
+						$scope.loading = true;
 						var opportunityService = appEndpointSF
 								.getopportunityService();
 						opportunityService
@@ -74,6 +75,7 @@ angular
 											$log
 													.debug("Inside Ctr getAllleads");
 											$scope.opportunitys = opportunityList.items;
+											$scope.loading = false;
 											$scope.cleadid = $scope.opportunitys.length + 1;
 											$scope.opportunity.oid = $scope.cleadid;
 
