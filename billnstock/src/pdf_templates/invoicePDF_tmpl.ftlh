@@ -88,13 +88,15 @@ tab2 {
 				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
 				align="center">Service SubTotal(INR)</th>
 		</tr>
-		<#assign taxP=TaxPercentage> 
+		
+		
 		<#list serviceItemList as serviceItem>	
 		 
 		
 		<tr>
 		<#assign subTotal= serviceItem.sQty * serviceItem.sPrice> 
-		<#assign taxAmt= subTotal>
+		<#assign taxP=TaxPercentage>
+		
 			<td 
 				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
 				align="center">${serviceItem.serviceName}</td>
@@ -112,12 +114,13 @@ tab2 {
 				align="center">${TaxType} - ${taxP}%</td>
 			<td
 				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
-				align="center">${taxAmt}</td>
+				align="center">${subTotal}</td>
 			<td
 				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
-				align="center">${subTotal + taxAmt}</td>
+				align="center">${subTotal}</td>
 		</tr>
-		</#list>		
+		</#list>	
+		
 	</tbody>
 	
 	</table>
