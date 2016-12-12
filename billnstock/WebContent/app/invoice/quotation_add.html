@@ -1,0 +1,323 @@
+<md-content layout-padding>
+<section layout="row" layout-xs="column">
+	<md-subheader class="md-primary">
+	<h4 class="md-title">Quotation Add</h4>
+	</md-subheader>
+	<span flex></span>	
+</section>
+
+<div>
+	<form ng-submit="$event.preventDefault()" name="quotationAdd">
+		[<span style="color: red;">Field Marked as asterik (*) are
+			mandatory. </span>]
+		<div flex layout="row" layout-xs="column">
+			
+			<div layout="row" flex>
+				<md-autocomplete flex required ng-model="quotationObj.customer"
+					md-input-name="autocompleteField" md-input-minlength="2"
+					md-input-maxlength="18" md-no-cache=true
+					md-selected-item="quotationObj.customer"
+					md-search-text="searchTextInput"
+					md-items="item in querySearch(searchTextInput)"
+					md-item-text="item.isCompany?item.companyName:(item.firstName +' '+ item.lastName)" md-floating-label="Customer Name">
+				<md-item-template> <span
+					md-highlight-text="searchTextInput">{{item.isCompany?item.companyName:(item.firstName +' '+ item.lastName) }}</span> </md-item-template>
+				<div ng-messages="quotationAdd.autocompleteField.$error"
+					ng-if="quotationAdd.autocompleteField.$touched">
+					<div ng-message="required">
+						You <b>must</b> have to enter Customer Name.
+					</div>
+					<div ng-message="minlength">Your entry is not long enough.</div>
+					<div ng-message="maxlength">Your entry is too long.</div>
+				</div>
+				</md-autocomplete>
+				<md-icon md-svg-src="img/icons/ic_queue_black_24px.svg"
+					ng-click="addCustomer()" class="name"
+					style="color: Green; height: 10px; width: 10px"></md-icon>
+			</div>
+			<md-input-container flex> <label>Due
+				Date</label> <md-datepicker flex ng-model="quotationObj.quotationDueDate"
+				md-placeholder="Select Date"></md-datepicker> </md-input-container>
+		</div>
+		<!-- <div layout="row" layout-xs="column">
+
+			<md-input-container flex> <md-select
+				ng-model="invoiceObj.account" name="account"
+				placeholder="Account Name"
+				ng-change="AccountNameddlChange($index, selectedAccount)"
+				ng-required="true"> <md-option ng-value="Account"
+				ng-repeat="Account in accountforinvoice" ng-selected="$first">{{Account.accountName}}</md-option>
+			</md-select>
+
+			<div ng-messages="invoiceAdd.account.$error"
+				ng-if="invoiceAdd.account.$submitted || invoiceAdd.account.$touched">
+				<div ng-message="required">Please Select Account
+					(Example.:ABC)</div>
+			</div>
+			</md-input-container>
+
+			<md-input-container flex> <md-select
+				ng-model="invoiceObj.salesOrderId" placeholder="Sales Order No"
+				ng-change="SOddlChange($index, selectedSOId)" name="soId">
+			<md-option ng-value="SO" ng-repeat="SO in SOforinvoice">{{SO.id
+			}}</md-option> </md-select> </md-input-container>
+		</div>
+
+		<div layout="row" layout-xs="column">
+
+			<md-input-container flex="50"> <label>PO/WO
+			</label> <input name="pOrder" ng-model="invoiceObj.pOrder"> </md-input-container>
+
+			<md-input-container flex> <md-select
+				ng-model="selectedDiscount" placeholder="Discount"
+				ng-change="lineItemDiscountChange($index, selectedDiscount)">
+			<md-option ng-value="discount" ng-repeat="discount in discountType">{{discount
+			}}</md-option> </md-select> </md-input-container>
+
+			<md-input-container flex="25"> </label> <input
+				ng-model="discAmount" ng-change="calfinalTotal()" name="discAmount">
+			</md-input-container>
+		</div> -->
+
+		<div layout="row" layout-xs="column">
+
+			<md-input-container flex> <label>Note to
+				Customer</label> <textarea ng-model="quotationObj.noteToCustomer" rows="3"
+				cols="1"></textarea> </md-input-container>
+
+
+		</div>
+
+		<div layout="row" layout-align="center start"
+			style="margin-top: 20px; margin-bottom: 20px;">
+			<md-divider flex></md-divider>
+		</div>
+
+		<h2>Quotation</h2>
+		<span style="color: red">{{errorMsg}}</span> <span style="color: red">{{qtyErrorMsg}}</span>
+		<span style="color: red">{{qtyErrorMsg1}}</span>
+
+		==================================================================================
+
+
+		<h3>Services</h3>
+		<table md-data-table md-progress="deferred">
+			<thead md-order="query.order" md-trigger="onOrderChange">
+				<tr>
+					<th name="Sr_No" order-by="srNo"></th>
+					<th name="Service Name" order-by="serviceName"></th>
+					<th name="Quantity" order-by="qty"></th>
+					<th name="Price" order-by="price"></th>
+					<th name="Total" order-by="total"></th>
+					<th name="Actions"></th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr ng-repeat="service in quotationObj.serviceLineItemList">
+
+					<td>{{ service.srNo }}</td>
+					<td><md-input-container flex> <label>Service
+							Name </label> <input ng-model="service.serviceName"> </md-input-container></td>
+
+					<td><md-input-container flex> <label>Quantity
+						</label> <input ng-model="service.sQty" type="number"
+							ng-change="calServiceSubTotal()"> </md-input-container></td>
+					<td><md-input-container flex> <input
+							ng-model="service.sPrice" ng-change="calServiceSubTotal()"></md-input-container></td>
+					<td><md-input-container flex> <b>{{service.sQty
+							* service.sPrice | currency:"":"2"}} </b></td>
+					<td><md-icon
+							md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
+							ng-click="removeService($index)" class="name"
+							style="color: Green; height: 40px; width: 40px"></md-icon></td>
+					<td></td>
+				</tr>
+								
+				<tr>
+					<td><section layout="row" layout-sm="column"
+							layout-align="left left">
+							<md-button class="md-raised md-primary" ng-click="addService()">Add
+							Service</md-button>
+						</section></td>
+					<td></td>
+					<td></td>
+					<td><label><u>Service Sub Total</u> </label></td>
+					<td><md-input-container flex> <b>{{quotationObj.serviceSubTotal | currency:"":"2"}}</b>
+						</md-input-container></td>
+					<td></td>
+				</tr>
+				
+				<tr>
+					<td><label><u>Services Tax</u> </label></td>
+					<td></td>
+					<td><md-input-container flex
+							ng-hide="quotationObj.serviceLineItemList.length==0">
+						<md-select ng-model="quotationObj.selectedServiceTax" placeholder="select Tax"
+							ng-change="serviceTaxChange($index, selectedServiceTax, $event)"> <md-option ng-value="taxValue"
+							ng-repeat="taxValue in taxforquotation">{{taxValue.taxCodeName}}</md-option>
+						</md-select> </md-input-container></td>
+					<td>{{quotationObj.selectedServiceTax.taxPercenatge}}</td>
+					<td><md-input-container flex> <b>{{quotationObj.serviceTaxTotal | currency:"":"2"}}</b>
+						</md-input-container></td>
+					<td></td>
+				</tr>
+				
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td><label><u>Service Total</u> </label></td>
+					<td><md-input-container flex> <b>{{quotationObj.serviceTotal | currency:"":"2"}}</b>
+						</md-input-container></td>
+					<td></td>
+				</tr>
+				
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+
+
+
+
+		=====================================================================================
+
+
+		<h3>Product/Item </h3>
+		<table md-data-table md-progress="deferred">
+			<thead md-order="query.order" md-trigger="onOrderChange">
+				<tr>
+					<th name="Sr_No" order-by="srNo"></th>
+					<th name="Item Name" order-by="itemName"></th>
+					<th name="Quantity" order-by="qty"></th>
+					<th name="Price" order-by="price"></th>
+					<th name="Total" order-by="total"></th>
+					<th name="Actions" order-by="total"></th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr ng-repeat="item in quotationObj.invoiceLineItemList">
+
+					<td>{{ item.srNo }}</td>
+
+					<td><md-input-container flex> <md-select
+							ng-model="selectedStockItem" placeholder="Item Name"
+							ng-change="lineItemStockChange($index, selectedStockItem)">
+						<md-option ng-value="item" ng-repeat="item in stockforquotation">{{item.itemName
+						}}</md-option> </md-select> </md-input-container> <md-icon md-svg-src="img/icons/ic_queue_black_24px.svg"
+							ng-click="addStock()" class="name"
+							style="color: Green; height: 25px; width: 25px"></md-icon>New <!-- 							<md-button
+							class="md-raised md-primary" id="addInvoice"><md-icon md-svg-src="img/icons/ic_queue_black_24px.svg"
+				ng-click="addCustomer()" class="name"
+				style="color: Green; height: 25px; width: 25px"></md-icon>New
+						</md-button>
+						
+--></td>
+
+					<td><md-input-container flex> <label>Quantity
+						</label> <input ng-model="item.qty" ng-blur="checkStock(item,$event)"
+							type="number" ng-change="calProductSubTotal()"> </md-input-container></td>
+					<td><md-input-container flex> <input
+							ng-model="item.price" ng-change="calProductSubTotal()"></md-input-container></td>
+					<td><md-input-container flex> <b>{{item.qty
+							* item.price | currency:"":"2"}} </b></td>
+					<td>
+						<!-- 						<section layout="row" layout-sm="column">
+							<md-button class="md-raised md-primary"
+								ng-click="removeItem($index)">Remove Item</md-button>
+						</section>
+ --> <md-icon md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
+							ng-click="removeItem($index)" class="name"
+							style="color: Green; height: 40px; width: 40px"></md-icon>
+					</td>
+
+				</tr>
+				<tr>
+					<td><section layout="row" layout-sm="column"
+							layout-align="left left">
+							<md-button class="md-raised md-primary" ng-click="addItem()">Add
+							Item</md-button>
+						</section></td>
+					<td></td>
+					<td></td>
+					<td><label><u>Product Sub Total</u> </label></td>
+					<td><md-input-container flex> <b>{{quotationObj.productSubTotal | currency:"":"2"}}</b>
+						</md-input-container></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><label><u>Product Tax</u> </label></td>
+					<td></td>
+					<td><md-input-container flex
+							ng-hide="quotationObj.invoiceLineItemList.length==0">
+						<md-select ng-model="quotationObj.selectedTaxItem"
+							placeholder="select Tax"
+							ng-change="lineItemTaxChange($index, selectedTaxItem, $event)">
+						<md-option ng-value="taxValue"
+							ng-repeat="taxValue in taxforquotation">{{taxValue.taxCodeName}}</md-option>
+						</md-select> </md-input-container></td>
+					<td>{{quotationObj.selectedTaxItem.taxPercenatge}}</td>
+					<td><md-input-container flex> <b>{{quotationObj.productTaxTotal | currency:"":"2"}}</b>
+						</md-input-container></td>
+					<td></td>
+				</tr>
+
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td><label><u>Product Total</u> </label></td>
+					<td><md-input-container flex> <b>{{quotationObj.productTotal | currency:"":"2"}}</b>
+						</md-input-container></td>
+					<td></td>
+				</tr>
+				
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td><label><u>Discount</u> </label></td>
+					<td><md-input-container flex> <b>
+							{{tempDiscAmount | currency:"":"2"}}</b> </md-input-container></td>
+					<td></td>
+				</tr>
+
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td><label><u>Final Total</u> </label></td>
+					<td><md-input-container flex> <b>
+							{{quotationObj.finalTotal | currency:"":"2"}}</b> </md-input-container></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+
+			</tbody>
+		</table>
+	</form>
+</div>
+<div layout layout-sm="column">
+	<section layout="row" layout-sm="column">
+		<md-button class="md-raised md-primary" id="addQuotation"
+			ng-disabled="quotationAdd.$invalid" ng-click="addQuotation()">Save
+		Quotation</md-button>
+	</section>
+</div>
+<iframe name="print_frame" width="0" height="0" frameborder="0"
+	src="about:blank"></iframe> </md-content>

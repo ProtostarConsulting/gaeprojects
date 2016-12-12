@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+<md-content>
+<div class="md-toolbar-tools">
+	<h3>
+		<u>Quotation View</u>
+	</h3>
+	<span flex></span>
+	<section layout="row">
+		<md-button class="md-icon-button md-accent">
+		<md-icon md-svg-icon="img/icons/print.svg"></md-icon> </md-button>
+	</section>
+</div>
+</md-content>
+<md-content>
+<div id="quotationDiv">
+	<div>
+		<table ng-show="myValue" class="ng-hide">
+			<tbody>
+				<tr>
+					<td style="width: 30%"><img ng-src="{{logBaseURL}}"
+						class="md-card-image" alt="Compnay Logo" height="60px"
+						width="120px" /></td>
+					<td style="width: 30%; color: red">{{quotationDetail.business.businessName}}</td>
+					<td style="width: 10%"></td>
+					<td style="width: 30%"><b style="color: blue"><h3
+								style="color: green">
+								{{quotationDetail.business.address.line1}} <br>
+								{{quotationDetail.business.address.line2}} <br>
+								{{quotationDetail.business.address.city}} <br>
+								{{quotationDetail.business.address.pin}}</b></td>
+				</tr>
+			</tbody>
+		</table>
+		<!-- 		<table ng-show="myValue" class="ng-hide">
+			<tbody>
+				<tr>
+					<td style="width: 20%"><img alt="Logo"
+						src="img/images/protostar_logo_pix_313_132.jpg"></td>
+
+					<td style="width: 40%"><b style="color: blue"><h3
+								style="color: green">Protostar Consulting Services</h3> <br>
+							E-101, Manimangar Appartment <br> Kasarwadi-414141. <br>
+							Ph.(020)4141414. <br> info@protostar.co.in </b></td>
+				</tr>
+			</tbody>
+		</table>
+ -->
+		<!--
+			<div layout="row" layout-align="center start"
+			style="margin-top: 20px; margin-bottom: 20px;">
+			<md-divider flex></md-divider>
+			</div>-->
+		<hr>
+		<h4 style="text-align: center;">
+			<u>Quotation</u>
+		</h4>
+		<table style="line-height: 20px;">
+
+
+			<tbody>
+				<tr>
+					<td style="width: 20%"><b>Customer Name :</b>
+						{{quotationDetail.customer.isCompany?quotationDetail.customer.companyName:(quotationDetail.customer.firstName +' '+ quotationDetail.customer.lastName)}}</td>
+					<td style="width: 20%"><label>Quotation ID :</label>
+						{{quotationDetail.id}}</td>
+					<td style="width: 20%"><label>Date :</label>
+						{{quotationDetail.quotationDate | formatDate}}</td>
+				</tr>
+
+
+				<tr>
+					<td><label>Customer Address :</label>
+						{{quotationDetail.customer.address.line1}},{{quotationDetail.customer.address.line2}},
+						{{quotationDetail.customer.address.city}},{{quotationDetail.customer.address.pin}},<br>
+					</td>
+
+					<td style="width: 20%"><b>Sales Order No. :</b>
+						{{quotationDetail.salesOrderId.id}}</td>
+
+					<td style="width: 20%"><b>Discount :</b>
+						{{quotationDetail.discValue}}</td>
+				</tr>
+				<tr>
+					<td colspan="3" style="width: 20%"><label>Note :</label>{{quotationDetail.noteToCustomer}}</td>
+				</tr>
+		</table>
+		<div layout="row" layout-align="center start"
+			style="margin-top: 20px; margin-bottom: 20px;">
+			<md-divider flex></md-divider>
+		</div>
+		<hr>
+
+		<div id="servicesDiv">
+			<h3>Services</h3>
+			<table  style="width: 100%">
+				<thead>
+					<tr style="background-color: gray">
+						<th style="width: 3%; text-align: left">Sr.No.</th>
+						<th style="width: 50%; text-align: left">Item Name</th>
+						<th style="width: 10%; text-align: right">Quantity</th>
+						<th style="width: 20%; text-align: right">Price</th>
+						<th style="width: 10%; text-align: right">Total</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr
+						ng-repeat="serviceLineItem in quotationDetail.serviceLineItemList">
+
+						<td>{{ $index+1 }}</td>
+						<td>{{serviceLineItem.serviceName}}</td>
+						<td style="text-align: right">{{serviceLineItem.sQty}}</td>
+						<td style="text-align: right">{{serviceLineItem.sPrice |
+							currency :"": 2}}</td>
+						<td style="text-align: right">{{serviceLineItem.sQty *
+							serviceLineItem.sPrice | currency :"": 2 }}</td>
+					</tr>
+					<tr>
+						<td colspan="5"><b>_</b></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td><label><u>Service Sub Total</u> </label></td>
+						<td style="text-align: right"><b>{{quotationDetail.serviceSubTotal
+								| currency :"": 2}} </b></td>
+					</tr>
+					<tr>
+						<td colspan="5"><b>_</b></td>
+					</tr>
+					<tr>
+						<td colspan="5"><b><u>Services Tax</u> </b></td>
+					</tr>
+					<tr style="background-color: gray">
+						<td></td>
+						<td></td>
+						<td><b>Tax Type </b></td>
+						<td><b>Tax </b></td>
+						<td style="text-align: right"><b>Tax Total </b></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>{{quotationDetail.selectedServiceTax.taxCodeName}}</td>
+						<td>{{quotationDetail.selectedServiceTax.taxPercenatge}}%</td>
+						<td style="text-align: right">{{quotationDetail.serviceTaxTotal
+							| currency :"": 2}}</td>
+					</tr>
+
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td><label><u>Service Total</u> </label></td>
+						<td style="text-align: right">{{quotationDetail.serviceTotal |
+							currency :"": 2}}</td>
+					</tr>
+				</tbody>
+			</table>
+
+		</div>
+
+		<div id="productsDiv">
+			<h3>Product/Item Sold</h3>
+			<table  style="width: 100%">
+				<thead style="background-color: gray">
+					<tr>
+						<th style="width: 3%">Sr.No.</th>
+						<th style="width: 50%">Item Name</th>
+						<th style="width: 10%">Quantity</th>
+						<th style="width: 20%">Price</th>
+						<th style="width: 17%">Total</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr
+						ng-repeat="invoiceLineItem in quotationDetail.invoiceLineItemList">
+
+						<td>{{ $index+1 }}</td>
+						<td>{{invoiceLineItem.itemName}}</td>
+						<td>{{invoiceLineItem.qty}}</td>
+						<td>{{invoiceLineItem.price | currency :"": 2}}</td>
+						<td>{{invoiceLineItem.qty * invoiceLineItem.price | currency
+							:"": 2}}</td>
+					</tr>
+
+					<tr>
+						<td>-</td>
+						<td></td>
+						<td></td>
+						<td><label><u>Product Sub Total</u> </label></td>
+						<td style="text-align: right">{{quotationDetail.productSubTotal
+							| currency :"": 2}}</td>
+					</tr>
+
+					<tr>
+						<td colspan="5"><b><u>Product Tax</u> </b></td>
+					</tr>
+					<tr style="background-color: gray">
+						<td></td>
+						<td></td>
+						<td><b>Tax Type </b></td>
+						<td><b>Tax </b></td>
+						<td style="text-align: left"><b>Tax Total </b></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td>{{quotationDetail.selectedTaxItem.taxCodeName}}</td>
+						<td>{{quotationDetail.selectedTaxItem.taxPercenatge}}%</td>
+						<td>{{quotationDetail.productTaxTotal | currency :"": 2}}</td>
+					</tr>
+					<tr>
+						<td>-</td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>-</td>
+						<td></td>
+						<td></td>
+						<td><label><u>Product Total</u> </label></td>
+						<td style="text-align: right">{{quotationDetail.productTotal |
+							currency :"": 2}}</td>
+					</tr>
+<!-- 					<tr>
+						<td>-</td>
+						<td></td>
+						<td></td>
+						<td><label><u>Discount</u> </label></td>
+						<td style="text-align: right">{{invoiceDetail.discAmount |
+							currency :"": 2}}</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td><label><u>Final Total</u> </label></td>
+						<td style="text-align: right">{{invoiceDetail.finalTotal |
+							currency :"INR ": 2 }}</td>
+					</tr>
+					<tr>
+						<td colspan="5"><br></td>
+					</tr>
+					
+ -->				
+ </tbody>
+			</table>
+		</div>
+
+		<div>
+			<table style="width: 100%">
+
+				<tbody>
+
+
+					<tr>
+						<td style="width: 3%"></td>
+						<td style="width: 50%"></td>
+						<td style="width: 10%"></td>
+						<td style="width: 20%"><label><u>Discount</u> </label></td>
+						<td style="width: 17%; text-align: right">{{quotationDetail.discAmount
+							| currency :"": 2}}</td>
+					</tr>
+
+					<tr>
+						<td style="width: 3%"></td>
+						<td style="width: 50%"></td>
+						<td style="width: 10%"></td>
+						<td style="width: 20%"><label><u>Final Total</u> </label></td>
+						<td style="width: 17%; text-align: right">{{quotationDetail.finalTotal
+							| currency :"INR ": 2 }}</td>
+					</tr>
+					<td colspan="5"><br></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<hr>
+
+	<div style="text-align: right">
+		<b> <u>{{"Rupees :" + finalTotalInWord + " Only"}}</u>
+	</div>
+	<!-- 	<div style="position: fixed; bottom: 0;" ng-show="myValue"
+		class="ng-hide">
+		<b><u>Note</u>:</b>This is electronically generated invoice. Needs no
+		stamp or signature.
+	</div>
+ -->
+	<!--  <div style="position: fixed; bottom: 0;" ng-show="myValue"
+		class="ng-hide">
+		<b><u>Note</u>:</b>This is electronically generated invoice. Needs no
+		stamp or signature. <img src="{{logFooterURL}}">
+	</div>-->
+
+	<iframe name="print_frame" width="0" height="0" frameborder="0"
+		src="about:blank"></iframe>
+</div>
+</html>
