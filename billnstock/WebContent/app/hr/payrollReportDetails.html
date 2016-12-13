@@ -5,23 +5,24 @@
 </div>
 <md-content ng-if="!loading" ng-cloak layout-padding>
 <h3>{{selectedMonth}} Income Tax Details</h3>
-<table class="table table-striped">
+<table
+	style="font-family: arial, sans-serif; border-collapse: collapse; width: 60%;">
 	<thead>
 		<tr>
-			<th>Emp.No</th>
-			<th>Employee Name</th>
-			<th ng-show="toShow == 'calculatedGrossSalary'">Gross Salary</th>
-			<th ng-show="toShow == 'pfDeductionAmt'">PF Deduction</th>
-			<th ng-show="toShow == 'ptDeductionAmt'">PT Deduction</th>
-			<th ng-show="toShow == 'canteenDeductionAmt'">Canteen Deduction</th>
-			<th ng-show="toShow == 'itDeductionAmt'">IT Deduction</th>
-			<th ng-show="toShow == 'otherDeductionAmt'">Other Deduction</th>
-			<th ng-show="toShow == 'esiDeductionAmt'">ESI Deduction</th>
+			<th style="border: 1px solid black; padding: 5px;">Emp.No</th>
+			<th style="border: 1px solid black; padding: 5px;">Employee Name</th>
+			<th ng-show="toShow == 'calculatedGrossSalary'" style="border: 1px solid black; padding: 5px;">Gross Salary</th>
+			<th ng-show="toShow == 'pfDeductionAmt'" style="border: 1px solid black; padding: 5px;">PF Deduction</th>
+			<th ng-show="toShow == 'ptDeductionAmt'" style="border: 1px solid black; padding: 5px;">PT Deduction</th>
+			<th ng-show="toShow == 'canteenDeductionAmt'" style="border: 1px solid black; padding: 5px;">Canteen Deduction</th>
+			<th ng-show="toShow == 'itDeductionAmt'" style="border: 1px solid black; padding: 5px;">IT Deduction</th>
+			<th ng-show="toShow == 'otherDeductionAmt'" style="border: 1px solid black; padding: 5px;">Other Deduction</th>
+			<th ng-show="toShow == 'esiDeductionAmt'" style="border: 1px solid black; padding: 5px;">ESI Deduction</th>
 		</tr>
 	</thead>
 	<tr
 		ng-repeat="monthlyPayObj in monthlyPayDetailsList | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit"">
-		<td style="margin: 0; padding-left: 5px; padding-right: 5px;"><b
+		<td style="border: 1px solid black; padding: 5px;"><b
 			ng-bind="monthlyPayObj.leaveDetailEntity.user.employeeDetail.empId">
 		</b></td>
 		<td style="border: 1px solid black; padding: 5px;">
