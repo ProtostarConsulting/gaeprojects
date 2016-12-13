@@ -659,12 +659,13 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/payRollReport",
 		templateUrl : '/app/hr/payRollReports.html',
 		controller : 'payRollReports',
-	}).state('hr.taxDetails', {
-		url : "/taxDetails",
-		templateUrl : '/app/hr/taxDetails.html',
-		controller : 'MonthlyPaymentDetail',
+	}).state('hr.payrollReportDetails', {
+		url : "/payrollReportDetails",
+		templateUrl : '/app/hr/payrollReportDetails.html',
+		controller : 'payrollReportDetailsCtr',
 		params : {
-			selectedMonth : null
+			selectedMonth : null,
+			toShow: ''
 		}
 	}).state('hr.monthlyTax', {
 		url : "/monthlyTax",

@@ -1,87 +1,81 @@
-
-
+<div ng-if="loading">
+	<div layout="row" layout-sm="column" layout-align="space-around">
+		<md-progress-circular md-diameter="60" md-mode="indeterminate"></md-progress-circular>
+	</div>
+</div>
 <md-content ng-if="!loading" ng-cloak layout-padding>
 <form name="payRollRepo">
 	<div>
-
-
-
 		<table
 			style="font-family: arial, sans-serif; border-collapse: collapse; width: 60%;">
 			<caption
 				style="border: 1px solid #dddddd; text-align: center; font-size: 18px; padding: 2px;">
 				<span flex>PayRoll By Month</span>
 			</caption>
-<tr>
+			<tr>
 
 				<th>Month Name</th>
 				<th>Total INR</th>
-				<th style="text-align:center;padding: 5px">Action</th>
-</tr>
-
-			
-
+				<th style="text-align: center; padding: 5px">Details</th>
+			</tr>
 			<tbody>
 				<tr
-					ng-repeat="emp in list | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+					ng-repeat="emp in list | orderBy: query.order">
 					<td style="border: 1px solid black; padding: 5px;">{{emp.month}}</td>
-					<td style="border: 1px solid black; padding: 5px;">{{emp.total}}</td>
-					<td style="border: 1px solid black; padding: 5px;">{{ }}</td>
-
+					<td style="border: 1px solid black; padding: 5px;">{{emp.totalSal}}</td>
+					<td align="left" style="border: 1px solid black; padding: 5px;"><md-button
+							class="md-primary md-hue-1"
+							ui-sref="hr.payrollReportDetails({selectedMonth: emp.month, toShow : 'calculatedGrossSalary'})">
+						Details </md-button></td>
 				</tr>
 				<tr>
 					<td style="border: 1px solid black; padding: 5px;"><b>TOTAL</b></td>
 					<td style="border: 1px solid black; padding: 5px;"><b>{{total}}</b></td>
-					<td style="border: 1px solid black; padding: 5px;">{{ }}</td>
+					<td style="border: 1px solid black; padding: 5px;"></td>
 
 				</tr>
 			</tbody>
 		</table>
-
-
-<br></br>
-<hr>
-
-
-<!-- ------------------------------------------------------------------- -->
-
+		<br></br>
+		<hr>
+		<!-- ------------------------------------------------------------------- -->
 		<table
 			style="font-family: arial, sans-serif; border-collapse: collapse; width: 60%;">
 			<caption
 				style="border: 1px solid #dddddd; text-align: center; font-size: 18px; padding: 2px;">
 				<span flex>PF Deduction</span>
 			</caption>
-<tr>
+			<tr>
 				<th>Month Name</th>
 				<th>Total INR</th>
-				<th>Action</th>
-</tr>
-
-			</thead>
-
+				<th>Details</th>
+			</tr>
 			<tbody>
 				<tr
-					ng-repeat="emp in list | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+					ng-repeat="emp in list | orderBy: query.order">
 					<td style="border: 1px solid black; padding: 5px;">{{emp.month}}</td>
 					<td style="border: 1px solid black; padding: 5px;">{{emp.totalPF}}</td>
-					<td style="border: 1px solid black; padding: 5px;">{{ }}</td>
+					<td align="left" style="border: 1px solid black; padding: 5px;"><md-button
+							class="md-primary md-hue-1"
+							ui-sref="hr.payrollReportDetails({selectedMonth: emp.month, toShow : 'ptDeductionAmt'})">
+						Details </md-button></td>
 
 				</tr>
 				<tr>
 					<td style="border: 1px solid black; padding: 5px;"><b>TOTAL</b></td>
 					<td style="border: 1px solid black; padding: 5px;"><b>{{totalPF}}</b></td>
-					<td style="border: 1px solid black; padding: 5px;">{{ }}</td>
+					<td style="border: 1px solid black; padding: 5px;"></td>
 
 				</tr>
 			</tbody>
 		</table>
 
 
-<br></br>
-<hr>
+		<br></br>
+		<hr>
 
 
-<!-- ------------------------------------------------------------------- -->
+		<!-- ------------------------------------------------------------------- -->
 
 		<table
 			style="font-family: arial, sans-serif; border-collapse: collapse; width: 60%;">
@@ -89,35 +83,36 @@
 				style="border: 1px solid #dddddd; text-align: center; font-size: 18px; padding: 2px;">
 				<span flex>PT Deduction</span>
 			</caption>
-<tr>
+			<tr>
 				<th>Month Name</th>
 				<th>Total INR</th>
-				<th>Action</th>
-</tr>
-
-			</thead>
+				<th>Details</th>
+			</tr>
 
 			<tbody>
 				<tr
-					ng-repeat="emp in list | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+					ng-repeat="emp in list | orderBy: query.order">
 					<td style="border: 1px solid black; padding: 5px;">{{emp.month}}</td>
 					<td style="border: 1px solid black; padding: 5px;">{{emp.totalPT}}</td>
-					<td style="border: 1px solid black; padding: 5px;">{{ }}</td>
+					<td align="left" style="border: 1px solid black; padding: 5px;"><md-button
+							class="md-primary md-hue-1"
+							ui-sref="hr.payrollReportDetails({selectedMonth: emp.month, toShow : 'pfDeductionAmt'})">
+						Details </md-button></td>
 
 				</tr>
 				<tr>
 					<td style="border: 1px solid black; padding: 5px;"><b>TOTAL</b></td>
 					<td style="border: 1px solid black; padding: 5px;"><b>{{totalPT}}</b></td>
-					<td style="border: 1px solid black; padding: 5px;">{{ }}</td>
+					<td style="border: 1px solid black; padding: 5px;"></td>
 
 				</tr>
 			</tbody>
 		</table>
-<br></br>
-<hr>
+		<br></br>
+		<hr>
 
 
-<!-- ------------------------------------------------------------------- -->
+		<!-- ------------------------------------------------------------------- -->
 
 		<table
 			style="font-family: arial, sans-serif; border-collapse: collapse; width: 60%;">
@@ -125,79 +120,75 @@
 				style="border: 1px solid #dddddd; text-align: center; font-size: 18px; padding: 2px;">
 				<span flex>Canteen Deduction</span>
 			</caption>
-<tr>
+			<tr>
 				<th>Month Name</th>
 				<th>Total INR</th>
-				<th>Action</th>
-</tr>
+				<th>Details</th>
+			</tr>
 
-			</thead>
 
 			<tbody>
 				<tr
-					ng-repeat="emp in list | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+					ng-repeat="emp in list | orderBy: query.order">
 					<td style="border: 1px solid black; padding: 5px;">{{emp.month}}</td>
 					<td style="border: 1px solid black; padding: 5px;">{{emp.totalCanteen}}</td>
-					<td style="border: 1px solid black; padding: 5px;">{{ }}</td>
+					<td align="left" style="border: 1px solid black; padding: 5px;"><md-button
+							class="md-primary md-hue-1"
+							ui-sref="hr.payrollReportDetails({selectedMonth: emp.month, toShow : 'canteenDeductionAmt'})">
+						Details </md-button></td>
 
 				</tr>
 				<tr>
 					<td style="border: 1px solid black; padding: 5px;"><b>TOTAL</b></td>
 					<td style="border: 1px solid black; padding: 5px;"><b>{{totalCanteen}}</b></td>
-					<td style="border: 1px solid black; padding: 5px;">{{ }}</td>
+					<td style="border: 1px solid black; padding: 5px;"></td>
 
 				</tr>
 			</tbody>
 		</table>
-<br></br>
-<hr>
+		<br></br>
+		<hr>
 
 
-<!-- ------------------------------------------------------------------- -->
+		<!-- ------------------------------------------------------------------- -->
 
-		<table 
-			style="font-family: arial, sans-serif; border-collapse: collapse; width: 60%;table-layout:fixed";>
+		<table
+			style="font-family: arial, sans-serif; border-collapse: collapse; width: 60%; table-layout: fixed";>
 			<caption
 				style="border: 1px solid #dddddd; text-align: center; font-size: 18px; padding: 2px;">
 				<span flex>IT Deduction</span>
 			</caption>
-<tr>
-
+			<tr>
 				<th>Month Name</th>
 				<th>Total INR</th>
-				<th>Action</th>
-				
-				
-</tr>
-
-			</thead>
-
+				<th>Details</th>
+			</tr>
 			<tbody>
 				<tr
-					ng-repeat="emp in list | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+					ng-repeat="emp in list | orderBy: query.order">
 					<td style="border: 1px solid black; padding: 5px;">{{emp.month}}</td>
 					<td style="border: 1px solid black; padding: 5px;">{{emp.totalIT}}</td>
-					<td  align="left" style="border: 1px solid black; padding: 5px;"><md-button class="md-primary md-hue-1" 
-								ui-sref="hr.taxDetails({selectedMonth: emp.month})"> Details </md-button></td>
+					<td align="left" style="border: 1px solid black; padding: 5px;"><md-button
+							class="md-primary md-hue-1"
+							ui-sref="hr.payrollReportDetails({selectedMonth: emp.month, toShow : 'itDeductionAmt'})">
+						Details </md-button></td>
 				</tr>
-				
-				
+
 				<tr>
 					<td style="border: 1px solid black; padding: 5px;"><b>TOTAL</b></td>
 					<td style="border: 1px solid black; padding: 5px;"><b>{{totalIT}}</b></td>
-					<td style="border :1px solid black;padding: 5px;">{{}}
-							 
-						</td>
+					<td style="border: 1px solid black; padding: 5px;"></td>
 				</tr>
-				<tr ng-repeat="item in list2 |orderBy: query.order"> 
-				<td style="border: 1px solid black;">{{item.totalIT}}</td></tr>
+				<tr ng-repeat="item in list2 |orderBy: query.order">
+					<td style="border: 1px solid black;">{{item.totalIT}}</td>
+				</tr>
 			</tbody>
 		</table>
-<br></br>
-<hr>
+		<br></br>
+		<hr>
 
 
-<!-- ------------------------------------------------------------------- -->
+		<!-- ------------------------------------------------------------------- -->
 
 		<table
 			style="font-family: arial, sans-serif; border-collapse: collapse; width: 60%;">
@@ -205,34 +196,62 @@
 				style="border: 1px solid #dddddd; text-align: center; font-size: 18px; padding: 2px;">
 				<span flex>Other Deduction</span>
 			</caption>
-<tr>
+			<tr>
 				<th>Month Name</th>
 				<th>Total INR</th>
-				<th>Action</th>
-</tr>
-
-			</thead>
-
+				<th>Details</th>
+			</tr>
 			<tbody>
 				<tr
-					ng-repeat="emp in list | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+					ng-repeat="emp in list | orderBy: query.order">
 					<td style="border: 1px solid black; padding: 5px;">{{emp.month}}</td>
 					<td style="border: 1px solid black; padding: 5px;">{{emp.totalOther}}</td>
-					<td style="border: 1px solid black; padding: 5px;">{{ }}</td>
-
+					<td align="left" style="border: 1px solid black; padding: 5px;"><md-button
+							class="md-primary md-hue-1"
+							ui-sref="hr.payrollReportDetails({selectedMonth: emp.month, toShow : 'otherDeductionAmt'})">
+						Details </md-button></td>
 				</tr>
 				<tr>
 					<td style="border: 1px solid black; padding: 5px;"><b>TOTAL</b></td>
 					<td style="border: 1px solid black; padding: 5px;"><b>{{totalOther}}</b></td>
-					<td style="border: 1px solid black; padding: 5px;">{{ }}</td>
-
+					<td style="border: 1px solid black; padding: 5px;"></td>
 				</tr>
 			</tbody>
 		</table>
+		<br></br>
+		<hr>
 
 
+		<!-- ------------------------------------------------------------------- -->
 
-
+		<table
+			style="font-family: arial, sans-serif; border-collapse: collapse; width: 60%;">
+			<caption
+				style="border: 1px solid #dddddd; text-align: center; font-size: 18px; padding: 2px;">
+				<span flex>ESI Deduction</span>
+			</caption>
+			<tr>
+				<th>Month Name</th>
+				<th>Total INR</th>
+				<th>Details</th>
+			</tr>
+			<tbody>
+				<tr
+					ng-repeat="emp in list | orderBy: query.order">
+					<td style="border: 1px solid black; padding: 5px;">{{emp.month}}</td>
+					<td style="border: 1px solid black; padding: 5px;">{{emp.totalESI}}</td>
+					<td align="left" style="border: 1px solid black; padding: 5px;"><md-button
+							class="md-primary md-hue-1"
+							ui-sref="hr.payrollReportDetails({selectedMonth: emp.month, toShow : 'esiDeductionAmt'})">
+						Details </md-button></td>
+				</tr>
+				<tr>
+					<td style="border: 1px solid black; padding: 5px;"><b>TOTAL</b></td>
+					<td style="border: 1px solid black; padding: 5px;"><b>{{totalESI}}</b></td>
+					<td style="border: 1px solid black; padding: 5px;"></td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 </form>
 </md-content>

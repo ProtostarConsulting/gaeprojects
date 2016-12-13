@@ -1,0 +1,77 @@
+<div ng-if="loading">
+	<div layout="row" layout-sm="column" layout-align="space-around">
+		<md-progress-circular md-diameter="60" md-mode="indeterminate"></md-progress-circular>
+	</div>
+</div>
+<md-content ng-if="!loading" ng-cloak layout-padding>
+<h3>{{selectedMonth}} Income Tax Details</h3>
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>Emp.No</th>
+			<th>Employee Name</th>
+			<th ng-show="toShow == 'calculatedGrossSalary'">Gross Salary</th>
+			<th ng-show="toShow == 'pfDeductionAmt'">PF Deduction</th>
+			<th ng-show="toShow == 'ptDeductionAmt'">PT Deduction</th>
+			<th ng-show="toShow == 'canteenDeductionAmt'">Canteen Deduction</th>
+			<th ng-show="toShow == 'itDeductionAmt'">IT Deduction</th>
+			<th ng-show="toShow == 'otherDeductionAmt'">Other Deduction</th>
+			<th ng-show="toShow == 'esiDeductionAmt'">ESI Deduction</th>
+		</tr>
+	</thead>
+	<tr
+		ng-repeat="monthlyPayObj in monthlyPayDetailsList | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit"">
+		<td style="margin: 0; padding-left: 5px; padding-right: 5px;"><b
+			ng-bind="monthlyPayObj.leaveDetailEntity.user.employeeDetail.empId">
+		</b></td>
+		<td style="border: 1px solid black; padding: 5px;">
+			{{monthlyPayObj.leaveDetailEntity.user.firstName + ' ' +
+			monthlyPayObj.leaveDetailEntity.user.lastName}}</td>
+		<td ng-show="toShow == 'calculatedGrossSalary'"
+			style="border: 1px solid black; padding: 5px;">
+			{{monthlyPayObj.calculatedGrossSalary}}</td>
+		<td ng-show="toShow == 'pfDeductionAmt'"
+			style="border: 1px solid black; padding: 5px;">
+			{{monthlyPayObj.pfDeductionAmt}}</td>
+		<td ng-show="toShow == 'ptDeductionAmt'"
+			style="border: 1px solid black; padding: 5px;">
+			{{monthlyPayObj.ptDeductionAmt}}</td>
+		<td ng-show="toShow == 'canteenDeductionAmt'"
+			style="border: 1px solid black; padding: 5px;">
+			{{monthlyPayObj.canteenDeductionAmt}}</td>
+		<td ng-show="toShow == 'itDeductionAmt'"
+			style="border: 1px solid black; padding: 5px;">
+			{{monthlyPayObj.itDeductionAmt}}</td>
+		<td ng-show="toShow == 'otherDeductionAmt'"
+			style="border: 1px solid black; padding: 5px;">
+			{{monthlyPayObj.otherDeductionAmt}}</td>
+		<td ng-show="toShow == 'esiDeductionAmt'"
+			style="border: 1px solid black; padding: 5px;">
+			{{monthlyPayObj.esiDeductionAmt}}</td>
+	</tr>
+	<tfoot>
+		<tr>
+			<td style="border: 1px solid black; padding: 5px;"><b>Total
+			</b></td>
+			<td style="border: 1px solid black; padding: 5px;"></td>
+			<td ng-show="toShow == 'calculatedGrossSalary'"
+				style="border: 1px solid black; padding: 5px;"><b>{{totalSal}}</b></td>
+			<td ng-show="toShow == 'pfDeductionAmt'"
+				style="border: 1px solid black; padding: 5px;"><b>{{totalPF}}</b></td>
+			<td ng-show="toShow == 'ptDeductionAmt'"
+				style="border: 1px solid black; padding: 5px;"><b>{{totalPT}}</b></td>
+			<td ng-show="toShow == 'canteenDeductionAmt'"
+				style="border: 1px solid black; padding: 5px;"><b>{{totalCanteen}}</b></td>
+			<td ng-show="toShow == 'itDeductionAmt'"
+				style="border: 1px solid black; padding: 5px;"><b>{{totalIT}}</b></td>
+			<td ng-show="toShow == 'otherDeductionAmt'"
+				style="border: 1px solid black; padding: 5px;"><b>{{totalOther}}</b></td>
+			</b>
+			</td>
+			<td ng-show="toShow == 'esiDeductionAmt'"
+				style="border: 1px solid black; padding: 5px;"><b>{{totalESI}}
+			</b></td>
+		</tr>
+	</tfoot>
+</table>
+</md-content>

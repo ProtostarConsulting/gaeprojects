@@ -26,7 +26,6 @@ public class LeaveDetailEntity extends BaseEntity {
 
 	public void setUser(UserEntity user) {
 		this.user = Ref.create(user);
-
 	}
 
 	public String getCurrentMonth() {
