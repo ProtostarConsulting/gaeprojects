@@ -99,6 +99,7 @@ public class ProtostarAdminService {
 		purchaseAccountsGroupEntity.setGroupName("Purchase Accounts");
 		purchaseAccountsGroupEntity.setIsPrimary(true);
 		purchaseAccountsGroupEntity.setPrimaryType("Expenses");
+		
 		ofy().save().entity(purchaseAccountsGroupEntity).now();
 
 		AccountGroupEntity miscExpensesASSETGroupEntity = new AccountGroupEntity();
@@ -108,6 +109,7 @@ public class ProtostarAdminService {
 		miscExpensesASSETGroupEntity.setGroupName("Misc.ExpensesASSET");
 		miscExpensesASSETGroupEntity.setIsPrimary(true);
 		miscExpensesASSETGroupEntity.setPrimaryType("Assets");
+		
 		ofy().save().entity(miscExpensesASSETGroupEntity).now();
 
 		AccountGroupEntity loansLiabilityGroupEntity = new AccountGroupEntity();
@@ -117,6 +119,7 @@ public class ProtostarAdminService {
 		loansLiabilityGroupEntity.setGroupName("Loans(Liability)");
 		loansLiabilityGroupEntity.setIsPrimary(true);
 		loansLiabilityGroupEntity.setPrimaryType("Liabilities");
+		
 		ofy().save().entity(loansLiabilityGroupEntity).now();
 
 		AccountGroupEntity investmentsGroupEntity = new AccountGroupEntity();
@@ -126,6 +129,7 @@ public class ProtostarAdminService {
 		investmentsGroupEntity.setGroupName("Investments");
 		investmentsGroupEntity.setIsPrimary(true);
 		investmentsGroupEntity.setPrimaryType("Assets");
+		
 		ofy().save().entity(investmentsGroupEntity).now();
 
 		AccountGroupEntity indirectIncomesGroupEntity = new AccountGroupEntity();
@@ -135,6 +139,7 @@ public class ProtostarAdminService {
 		indirectIncomesGroupEntity.setGroupName("Indirect  Incomes");
 		indirectIncomesGroupEntity.setIsPrimary(true);
 		indirectIncomesGroupEntity.setPrimaryType("Incomes");
+		
 		ofy().save().entity(indirectIncomesGroupEntity).now();
 
 		AccountGroupEntity indirectExpensesGroupEntity = new AccountGroupEntity();
@@ -144,6 +149,7 @@ public class ProtostarAdminService {
 		indirectExpensesGroupEntity.setGroupName("Indirect Expenses");
 		indirectExpensesGroupEntity.setIsPrimary(true);
 		indirectExpensesGroupEntity.setPrimaryType("Expenses");
+		
 		ofy().save().entity(indirectExpensesGroupEntity).now();
 
 		AccountGroupEntity directIncomesGroupEntity = new AccountGroupEntity();
@@ -153,6 +159,7 @@ public class ProtostarAdminService {
 		directIncomesGroupEntity.setGroupName("Direct Incomes");
 		directIncomesGroupEntity.setIsPrimary(true);
 		directIncomesGroupEntity.setPrimaryType("Incomes");
+	
 		ofy().save().entity(directIncomesGroupEntity).now();
 
 		AccountGroupEntity directExpensesGroupEntity = new AccountGroupEntity();
@@ -162,6 +169,7 @@ public class ProtostarAdminService {
 		directExpensesGroupEntity.setGroupName("Direct Expenses");
 		directExpensesGroupEntity.setIsPrimary(true);
 		directExpensesGroupEntity.setPrimaryType("Expenses");
+	
 		ofy().save().entity(directExpensesGroupEntity).now();
 
 		AccountGroupEntity currentLiabilitiesGroupEntity = new AccountGroupEntity();
@@ -171,6 +179,7 @@ public class ProtostarAdminService {
 		currentLiabilitiesGroupEntity.setGroupName("Current Liabilities");
 		currentLiabilitiesGroupEntity.setIsPrimary(true);
 		currentLiabilitiesGroupEntity.setPrimaryType("Liabilities");
+		
 		ofy().save().entity(currentLiabilitiesGroupEntity).now();
 
 		AccountGroupEntity currentAssetsGroupEntity = new AccountGroupEntity();
@@ -180,6 +189,7 @@ public class ProtostarAdminService {
 		currentAssetsGroupEntity.setGroupName("Current Assets");
 		currentAssetsGroupEntity.setIsPrimary(true);
 		currentAssetsGroupEntity.setPrimaryType("Assets");
+		
 		ofy().save().entity(currentAssetsGroupEntity).now();
 
 		AccountGroupEntity capitalAccountGroupEntity = new AccountGroupEntity();
@@ -189,6 +199,7 @@ public class ProtostarAdminService {
 		capitalAccountGroupEntity.setGroupName("Capital Account");
 		capitalAccountGroupEntity.setIsPrimary(true);
 		capitalAccountGroupEntity.setPrimaryType("Liabilities");
+		
 		ofy().save().entity(capitalAccountGroupEntity).now();
 
 		AccountGroupEntity branchDivisionsGroupEntity = new AccountGroupEntity();
@@ -198,6 +209,7 @@ public class ProtostarAdminService {
 		branchDivisionsGroupEntity.setGroupName("BranchDivisions");
 		branchDivisionsGroupEntity.setIsPrimary(true);
 		branchDivisionsGroupEntity.setPrimaryType("Liabilities");
+		
 		ofy().save().entity(branchDivisionsGroupEntity).now();
 
 		// ***********************************SUB
@@ -245,8 +257,7 @@ public class ProtostarAdminService {
 		DutiesandTaxesAccountGroupEntity1.setModifiedDate(new Date());
 		DutiesandTaxesAccountGroupEntity1.setGroupName("Duties & Taxes");
 		DutiesandTaxesAccountGroupEntity1.setIsPrimary(false);
-		DutiesandTaxesAccountGroupEntity1
-				.setParent(currentLiabilitiesGroupEntity);
+		DutiesandTaxesAccountGroupEntity1.setParent(currentLiabilitiesGroupEntity);
 		ofy().save().entity(DutiesandTaxesAccountGroupEntity1).now();
 
 		AccountGroupEntity loansandAdvancesAssetAccountGroupEntity = new AccountGroupEntity();

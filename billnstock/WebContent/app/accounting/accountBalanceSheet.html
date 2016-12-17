@@ -23,6 +23,10 @@ td, th { /* //border: 1px solid #dddddd; */
 	<md-button class="md-icon-button"
 		ng-click="printDiv('balanceSheetDiv')"> <ng-md-icon
 		icon="print" style="fill: md-default" size="24"> <md-tooltip>Print</md-tooltip></ng-md-icon></md-button>
+		<md-button	class="md-icon-button"	
+		ng-click="load_pdf()"><ng-md-icon icon="file_download" ><md-tooltip>Balance sheet Pdf</md-tooltip></ng-md-icon>
+		
+		</md-button>
 </section>
 <md-content ng-show="loading"> <md-progress-circular
 	class="md-accent md-accent" md-diameter="60"></md-progress-circular></md-content>
@@ -47,15 +51,15 @@ td, th { /* //border: 1px solid #dddddd; */
 
 			</tr>
 			<tr ng-repeat="groupTypeObj in accountGroupTypeGroupList">
-				<td colspan="2">{{groupTypeObj.groupType}}</td>
+				<td colspan="2">{{groupTypeObj.typeName}}</td>
 				<td style="text-align: left;">
-					<div ng-repeat="grp in groupTypeObj.groupList" ng-show="grp.totalBalance" style="text-align: left;">
-						<span>{{grp.groupName}}</span> 
+					<div ng-repeat="grp in groupTypeObj.groupList" style="text-align: left;">
+					<span style="padding-right: 65%;">{{grp.groupName}}</span> 
 					    <span flex></span> 
 					 
-						<span style="text-align: right;"  ng-if="grp.totalBalance < 0" >(</span>{{grp.totalBalance|positive|number:2}}<span style="text-align: right;"
-							ng-if="grp.totalBalance < 0">)</span>
-					</div>	</td>			
+						<span style="text-align: right;"  ng-if="grp.groupBalance < 0" >(</span>{{grp.groupBalance|positive|number:2}}<span style="text-align: right;"
+							ng-if="grp.groupBalance < 0">)</span>
+					</div></div>	</td>			
 			</tr>
 
 

@@ -2,9 +2,10 @@ package com.protostar.billingnstock.account.services;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 
 import com.google.api.server.spi.config.Api;
@@ -13,12 +14,17 @@ import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
+import com.protostar.billingnstock.account.entities.AccountEntity;
 import com.protostar.billingnstock.account.entities.AccountGroupEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
+import com.protostar.billnstock.entity.BaseEntity;
 import com.protostar.billnstock.until.data.ServerMsg;
 
 @Api(name = "accountGroupService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.services", ownerName = "com.protostar.billingnstock.services", packagePath = ""))
 public class AccountGroupService {
+	
+	String accountGroupTypeList[] = { "Assets", "EQUITY", "Liabilities",
+			"Incomes", "Expenses", "OTHERINCOMES", "OTHEREXPENCES" };
 
 	@ApiMethod(name = "addAccountGroup")
 	public AccountGroupEntity addAccountGroup(
@@ -44,52 +50,6 @@ public class AccountGroupService {
 				.ancestor(Key.create(BusinessEntity.class, busId)).list();
 		System.out.println("list:" + list);
 		return list;
-	}
-
-	/*
-	 * @ApiMethod(name =
-	 * "getAccountGroupListByType",path="getAccountGroupListByType") public
-	 * List<AccountGroupEntity> getAccountGroupListByType(@Named("type") String
-	 * type,@Named("bid") Long bid) { if(bid == null) return new
-	 * ArrayList<AccountGroupEntity>(); List<AccountGroupEntity> list=
-	 * ofy().load
-	 * ().type(AccountGroupEntity.class).ancestor(Key.create(BusinessEntity
-	 * .class, bid)).list();//.filter("PrimaryType",type).list();
-	 * System.out.println("LIST:******"+list.toString());
-	 * 
-	 * 
-	 * return list; }
-	 */
-
-	@ApiMethod(name = "getAccountGroupListByType", path = "getAccountGroupListByType")
-	public List<AccountGroupEntity> getAccountGroupListByType(
-			@Named("type") String type, @Named("bid") Long bid) {
-
-		List<AccountGroupEntity> filteraccount = new ArrayList<AccountGroupEntity>();
-
-		List<AccountGroupEntity> list = ofy().load()
-				.type(AccountGroupEntity.class)
-				.ancestor(Key.create(BusinessEntity.class, bid)).list();
-
-		for (AccountGroupEntity ss : list) {
-
-			if (ss.getIsPrimary()) {
-				if (ss.getPrimaryType().trim().equalsIgnoreCase(type)) {
-					filteraccount.add(ss);
-					System.out.println("ss:******" + ss);
-
-				}
-			} else {
-				if (ss.getParent().getPrimaryType().trim()
-						.equalsIgnoreCase(type)) {
-					filteraccount.add(ss);
-
-				}
-
-			}
-		}
-		return filteraccount;
-
 	}
 
 	@ApiMethod(name = "updateAccountGrp")
@@ -170,6 +130,131 @@ public class AccountGroupService {
 				.add(new AccountGroupEntity("Direct Expesnes", null));
 		accountGroupEntities.add(new AccountGroupEntity("Current Liabilities",
 				null));
+	}
+
+	@ApiMethod(name = "getAccountGroupListByType", path = "getAccountGroupListByType")
+	public List<AccountGroupEntity> getAccountGroupListByType(
+			@Named("type") String type, @Named("bid") Long bid) {
+
+	
+		List<AccountGroupEntity> filteraccount = new ArrayList<AccountGroupEntity>();
+
+		List<AccountGroupEntity> list = ofy().load()
+				.type(AccountGroupEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, bid)).list();
+
+		for (AccountGroupEntity ss : list) {
+
+			if (ss.getIsPrimary()) {
+				if (ss.getPrimaryType().trim().equalsIgnoreCase(type)) {
+					filteraccount.add(ss);
+
+				}
+			} else {
+				if (ss.getParent().getPrimaryType().trim()
+						.equalsIgnoreCase(type)) {
+					filteraccount.add(ss);
+
+				}
+
+			}
+		}
+
+		System.out.println("filteraccount.length-1***" + filteraccount.size());
+		return filteraccount;
+
+	}
+
+	@ApiMethod(name = "getBalanceSheet", path = "getBalanceSheet")
+	public List<TypeInfo> getBalanceSheet(@Named("bid") Long bid) {
+		
+				
+		List<TypeInfo> typeList = new ArrayList<TypeInfo>();
+
+		for (int i = 0; i < accountGroupTypeList.length; i++) {// get type
+			TypeInfo typeInfo = new TypeInfo();
+			double typeBalance = 0;
+			typeInfo.typeName = accountGroupTypeList[i];
+			typeInfo.groupList = new ArrayList<GroupInfo>();
+
+			List<AccountGroupEntity> typeAccountList = getAccountGroupListByType(
+					typeInfo.typeName, bid);
+
+			double typeTotal = 0;
+			for (int j = 0; j < typeAccountList.size(); j++) {
+				GroupInfo groupInfo = new GroupInfo();
+				groupInfo.groupName = typeAccountList.get(j).getGroupName();
+
+				// fetch all accounts and calculate typeTotal.
+				AccountService as = new AccountService();
+				List<AccountEntity> accList = as
+						.getAccountListByGroupId(typeAccountList.get(j).getId());
+				double groupTotal = 0;
+				for (AccountEntity accountEntity : accList) {
+					ServerMsg accountBalance = as.getAccountBalance(
+							accountEntity.getId(), bid);
+					groupTotal += accountBalance.getReturnBalance();
+					System.out.println("getAccountName:" + accountEntity.getAccountName());
+					System.out.println("accountBalance:" + accountBalance.getReturnBalance());
+				}
+
+				if (groupTotal != 0) {
+					groupInfo.groupBalance = groupTotal;
+					typeTotal += groupTotal;
+					typeInfo.groupList.add(groupInfo);
+				}
+
+			}
+
+			typeInfo.typeBalance = typeTotal;
+			typeList.add(typeInfo);
+		}
+
+		System.out.println("typeList:******" + typeList.size());
+
+		return typeList;
+	}
+
+	public  class TypeInfo   implements Serializable{
+		String typeName;
+		double typeBalance;
+		List<GroupInfo> groupList;
+		public String getTypeName() {
+			return typeName;
+		}
+		public void setTypeName(String typeName) {
+			this.typeName = typeName;
+		}
+		public double getTypeBalance() {
+			return typeBalance;
+		}
+		public void setTypeBalance(double typeBalance) {
+			this.typeBalance = typeBalance;
+		}
+		public List<GroupInfo> getGroupList() {
+			return groupList;
+		}
+		public void setGroupList(List<GroupInfo> groupList) {
+			this.groupList = groupList;
+		}
+	}
+
+	public  class GroupInfo  implements Serializable{
+		String groupName;
+		double groupBalance;
+		// List<AccList> acclist;
+		public String getGroupName() {
+			return groupName;
+		}
+		public void setGroupName(String groupName) {
+			this.groupName = groupName;
+		}
+		public double getGroupBalance() {
+			return groupBalance;
+		}
+		public void setGroupBalance(double groupBalance) {
+			this.groupBalance = groupBalance;
+		}
 	}
 
 }

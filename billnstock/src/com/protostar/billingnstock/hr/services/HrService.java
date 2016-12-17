@@ -435,6 +435,7 @@ public class HrService {
 								.getId())).filter("empAccount", user).list();
 		System.out.println("monthlyPaymentDetailEntity******"
 				+ monthlyPaymentDetailEntity.size());
+	
 		return monthlyPaymentDetailEntity;
 
 	}

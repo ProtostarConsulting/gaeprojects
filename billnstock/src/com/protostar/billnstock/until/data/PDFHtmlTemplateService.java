@@ -13,6 +13,7 @@ import java.util.Map;
 
 import javax.servlet.ServletOutputStream;
 
+import com.google.appengine.api.users.UserService;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -22,13 +23,13 @@ import com.protostar.billingnstock.account.entities.PurchaseVoucherEntity;
 import com.protostar.billingnstock.account.entities.ReceiptVoucherEntity;
 import com.protostar.billingnstock.account.entities.SalesVoucherEntity;
 import com.protostar.billingnstock.account.entities.VoucherEntity;
+import com.protostar.billingnstock.account.services.AccountGroupService.TypeInfo;
 import com.protostar.billingnstock.cust.entities.Customer;
 import com.protostar.billingnstock.hr.entities.MonthlyPaymentDetailEntity;
 import com.protostar.billingnstock.hr.entities.SalStruct;
 import com.protostar.billingnstock.invoice.entities.InvoiceEntity;
 import com.protostar.billingnstock.invoice.entities.InvoiceLineItem;
 import com.protostar.billingnstock.invoice.entities.ServiceLineItemList;
-import com.protostar.billingnstock.sales.entities.SalesOrderEntity;
 import com.protostar.billingnstock.tax.entities.TaxEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.user.entities.EmpDepartment;
@@ -59,6 +60,56 @@ public class PDFHtmlTemplateService {
 		cfg.setLogTemplateExceptions(false);
 		return cfg;
 
+	}
+	public void  generatePdfBalanceSheet(List<TypeInfo> balanceSheetList,ServletOutputStream outputStream,Long bid){
+		
+		try {
+			
+			BusinessEntity businessEntity=new BusinessEntity();
+			com.protostar.billingnstock.user.services.UserService user = new com.protostar.billingnstock.user.services.UserService();
+			businessEntity=user.getBusinessById(bid);
+			Document document = new Document();
+			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
+			document.open();
+			
+			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
+		Map<String, Object> root = new HashMap<String, Object>();
+		root.put("balanceSheetList", balanceSheetList);
+		root.put("buisinessName" ,""+ businessEntity.getBusinessName());
+		StringBuffer addressBuf = new StringBuffer();
+		Address address =  businessEntity.getAddress();
+		if (address != null) {
+			if (address.getLine1() != null && !address.getLine1().isEmpty())
+				addressBuf.append(address.getLine1());
+			if (address.getLine2() != null && !address.getLine2().isEmpty())
+				addressBuf.append(", " + address.getLine2());
+			if (address.getCity() != null && !address.getCity().isEmpty())
+				addressBuf.append(", " + address.getCity());
+			if (address.getState() != null && !address.getState().isEmpty())
+				addressBuf.append(", " + address.getState());
+		}
+
+		String buisinessAddress = addressBuf.toString();
+		
+		root.put("buisinessAddress", "" + buisinessAddress);
+		Template temp = getConfiguration().getTemplate(
+				"pdf_templates/balanceSheet_tmpl.ftlh");
+
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
+				5000);
+		Writer out = new PrintWriter(byteArrayOutputStream);
+		temp.process(root, out);
+	
+		String pdfXMLContent = byteArrayOutputStream.toString();
+
+		worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
+		document.close();
+		
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	public void generateVoucherPDF(VoucherEntity voucherEntity,
@@ -106,10 +157,6 @@ public class PDFHtmlTemplateService {
 					.getAccountName().toString());
 			root.put("Amount", salesEntity.getAmount().toString());
 			root.put("Narration", salesEntity.getNarration().toString());
-		
-						
-			 
-			// Top Header
 			root.put("buisinessName", "" + salesEntity.getBusiness().getBusinessName());
 			StringBuffer addressBuf = new StringBuffer();
 			Address address =  salesEntity.getBusiness().getAddress();
@@ -125,20 +172,10 @@ public class PDFHtmlTemplateService {
 			}
 
 			String buisinessAddress = addressBuf.toString();
-			// Top Header
-		//	root.put("buisinessName", "" + business.getBusinessName());
+			
 			root.put("buisinessAddress", "" + buisinessAddress);
 			
 			
-			
-		//	root.put("buisinessAddress", "" + salesEntity.getBusiness().getAddress().toString());
-			
-			
-			// Top Header
-			
-			// root.put("DebitAccount",
-			// salesEntity.getAccountType1().toString());
-
 			Template temp = getConfiguration().getTemplate(
 					"pdf_templates/sales_voucher_tmpl.ftlh");
 
@@ -146,8 +183,7 @@ public class PDFHtmlTemplateService {
 					5000);
 			Writer out = new PrintWriter(byteArrayOutputStream);
 			temp.process(root, out);
-			// return escapeHtml(byteArrayOutputStream.toString());
-
+			
 			String pdfXMLContent = byteArrayOutputStream.toString();
 
 			worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
@@ -213,8 +249,7 @@ public class PDFHtmlTemplateService {
 					5000);
 			Writer out = new PrintWriter(byteArrayOutputStream);
 			temp.process(root, out);
-			// return escapeHtml(byteArrayOutputStream.toString());
-
+		
 			String pdfXMLContent = byteArrayOutputStream.toString();
 
 			worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
@@ -676,4 +711,16 @@ public class PDFHtmlTemplateService {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	private void generatePdfBalanceSheet(ServletOutputStream outputStream){
+		
+		
+		
+		
+		
+		
+		
+	}
+	
 }
