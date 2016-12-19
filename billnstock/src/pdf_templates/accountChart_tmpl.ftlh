@@ -3,7 +3,7 @@
 <style type="text/css">
 table {
 	
-	 border-color:#1aa3ff
+	 border-color:#0099ff;
 	  border: 1px solid black;
 }</style>
 
@@ -17,7 +17,7 @@ table {
 </p>
 
 <div align="center">
-	<b>BalanceSheet</b>
+	<b>Account Chart</b>
 </div>
 <p>
 	<br></br>
@@ -39,16 +39,17 @@ table {
 				<td colspan="3"><u><b>Sources of Funds:</b></u></td>
 
 			</tr>
-			<#list balanceSheetList as groupTypeObj>	
+			<#list accountChart as groupTypeObj>	
 			<tr>
 				<td colspan="2">${groupTypeObj.typeName}</td>
 				<td style="text-align: left;">
 					<#list groupTypeObj.groupList as grp>
 					<p style="padding-right: 65%;text-align: left;">${grp.groupName}</p> 
-					   
-					 <p style="text-align: right;">${grp.groupBalance}</p>
+					   <#list  grp.accInfoList as acc>
+					   <p style="text-align: right;"><b>${acc.accName}</b>  	&nbsp;	&nbsp;	&nbsp; 	${acc.accBalance}</p>
+		
 					
-					
+					</#list>	
 						</#list>	
 					
 					</td>			

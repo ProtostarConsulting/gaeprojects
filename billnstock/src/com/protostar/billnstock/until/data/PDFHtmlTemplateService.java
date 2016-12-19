@@ -61,6 +61,64 @@ public class PDFHtmlTemplateService {
 		return cfg;
 
 	}
+	
+	
+	
+public void  generatePdfAccountChart(List<TypeInfo> accountChart,ServletOutputStream outputStream,Long bid){
+		
+		try {
+			BusinessEntity businessEntity=new BusinessEntity();
+			com.protostar.billingnstock.user.services.UserService user = new com.protostar.billingnstock.user.services.UserService();
+			businessEntity=user.getBusinessById(bid);
+			Document document = new Document();
+			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
+			document.open();
+			
+			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
+		Map<String, Object> root = new HashMap<String, Object>();
+		root.put("accountChart", accountChart);
+		root.put("buisinessName" ,""+ businessEntity.getBusinessName());
+		StringBuffer addressBuf = new StringBuffer();
+		Address address =  businessEntity.getAddress();
+		if (address != null) {
+			if (address.getLine1() != null && !address.getLine1().isEmpty())
+				addressBuf.append(address.getLine1());
+			if (address.getLine2() != null && !address.getLine2().isEmpty())
+				addressBuf.append(", " + address.getLine2());
+			if (address.getCity() != null && !address.getCity().isEmpty())
+				addressBuf.append(", " + address.getCity());
+			if (address.getState() != null && !address.getState().isEmpty())
+				addressBuf.append(", " + address.getState());
+		}
+
+		String buisinessAddress = addressBuf.toString();
+		
+		root.put("buisinessAddress", "" + buisinessAddress);
+		Template temp = getConfiguration().getTemplate(
+				"pdf_templates/accountChart_tmpl.ftlh");
+
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
+				5000);
+		Writer out = new PrintWriter(byteArrayOutputStream);
+		temp.process(root, out);
+	
+		String pdfXMLContent = byteArrayOutputStream.toString();
+
+		worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
+		document.close();
+			
+			
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+
+}
+	
+	
+	
+	
 	public void  generatePdfBalanceSheet(List<TypeInfo> balanceSheetList,ServletOutputStream outputStream,Long bid){
 		
 		try {

@@ -309,7 +309,21 @@ function googleEndpointSF($log, $q) {
 		return deferred.promise;
 	}
 
-
+	//----------------------------------
+	
+	AccountGroupService.getChartSheet = function(bid) {
+		var deferred = $q.defer();
+		gapi.client.accountGroupService.getChartSheet({"bid" : bid
+			}
+			).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}
+	
+	
+	//-------------------
+	
 	AccountGroupService.updateAccountGrp = function(updateAccountGrp) {
 		var deferred = $q.defer();
 		gapi.client.accountGroupService.updateAccountGrp(updateAccountGrp)

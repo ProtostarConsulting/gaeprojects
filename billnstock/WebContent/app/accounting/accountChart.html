@@ -37,14 +37,14 @@ div.one {
 	</table>
 	<br> <br>
 	<div ng-repeat="groupTypeObj in accountGroupTypeGroupList">
-		<p>{{groupTypeObj.groupType}}</p>
+		<p>{{groupTypeObj.typeName}}</p>
 		<div ng-repeat="grp in groupTypeObj.groupList">
 			<p style="margin-left: 50px">{{grp.groupName}}</p>
 
-			<div ng-repeat="acc in grp.accountList">
+			<div ng-repeat="acc in grp.accInfoList">
 				<p style="margin-left: 100px">
-					{{acc.accountName}}  <span align="right"
-						style="position: absolute; right: 400px;""><b><span ng-if="acc.balance < 0">(</span>{{acc.balance|positive|number:2}}<span ng-if="acc.balance < 0">)</span></b></span> 
+					{{acc.accName}}  <span align="right"
+						style="position: absolute; right: 400px;""><b><span ng-if="acc.accBalance < 0">(</span>{{acc.accBalance|positive|number:2}}<span ng-if="acc.accBalance < 0">)</span></b></span> 
 						<!-- <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>{{acc.balance}}</b> --> 
 				</p>
 				

@@ -16,87 +16,7 @@ app.controller(
 						appEndpointSF, $mdDialog, $mdMedia) {
 
 					$scope.loading = true;
-						var flag=0;
-					$scope.accountGroupTypeList = [ "Assets", "EQUITY",
-							"Liabilities", "Incomes", "Expenses",
-							"OTHERINCOMES", "OTHEREXPENCES" ];
-
-					$scope.totalTypeCount = $scope.accountGroupTypeList.length;
 					$scope.accountGroupTypeGroupList = [];
-
-					$scope.getAccountListByGroup = function(groupObj) {
-						$scope.accountList = [];
-
-						var AccountService = appEndpointSF.getAccountService();
-						AccountService.getAccountListByGroupId(groupObj.id,$scope.curUser.business.id)
-								.then(function(list) {
-
-									for (var i = 0; i < list.length; i++) {
-										getAccountBalance(list[i]);
-
-									}
-
-									$scope.accountList = list;
-									if (list == null) {
-										groupObj.accountList = [];
-									} else {
-										groupObj.accountList = list;
-									}
-
-								})
-
-					};
-
-					function getAccountBalance(accounObj) {
-						var AccountService = appEndpointSF.getAccountService();
-						AccountService.getAccountBalance(accounObj.id).then(
-								function(objResp) {
-									accounObj.balance = objResp.returnBalance;
-								});
-					}
-
-					$scope.getAccountGroupListByType = function(groupTypeObj) {
-
-						var AccountGroupService = appEndpointSF
-								.getAccountGroupService();
-						AccountGroupService
-								.getAccountGroupListByType(
-										groupTypeObj.groupType,$scope.curUser.business.id)
-								.then(
-										
-										function(list) {
-											flag=0;
-											$scope.GroupList = list;
-											$scope.accountList = [];
-											groupTypeObj.groupList = list;
-											$scope.totalTypeCount--;
-
-											if (groupTypeObj.groupList != undefined) {
-												for (var i = 0; i < groupTypeObj.groupList.length; i++) {
-													$scope.getAccountListByGroup(groupTypeObj.groupList[i]);
-												}
-											}
-
-											if ($scope.totalTypeCount == 0) {
-												$scope.loading = false;
-											}
-
-										})
-
-					};
-
-					function getGroupTypeObject(groupTypeValue) {
-						return {
-							groupType : groupTypeValue,
-							groupList : []
-						};
-					}
-					function getGroupAccObject(groupObj) {
-						return {
-							groupObj : groupObj,
-							accountList : []
-						};
-					}
 
 					
 					var printDivCSS = new String(
@@ -112,24 +32,23 @@ app.controller(
 				
 					
 				$scope.saveToPDF = function() {
-						document.location.href = "DownloadAccountChartServlet";
+						window.open("DownloadAccountChartServlet?bid="+$scope.curUser.business.id);
 					}
 					
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
-
-							
-							
-							for (var i = 0; i < $scope.accountGroupTypeList.length; i++) {
+							var AccountGroupService = appEndpointSF
+							.getAccountGroupService();
+					AccountGroupService.getChartSheet(
+									$scope.curUser.business.id).then(
+							function(list) {
+								$scope.accountGroupTypeGroupList=list;
+								$scope.loading = false;
 								
-								groupTypeObj = getGroupTypeObject($scope.accountGroupTypeList[i]);
-								$scope.accountGroupTypeGroupList
-										.push(groupTypeObj);
-								$scope.getAccountGroupListByType(groupTypeObj);
-								//flag=1;
+							});
 							
-							}
-
+							
+						
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
 							$timeout($scope.waitForServiceLoad, 1000);

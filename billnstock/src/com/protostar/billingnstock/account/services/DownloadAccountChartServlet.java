@@ -19,6 +19,8 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.protostar.billingnstock.account.entities.AccountEntity;
 import com.protostar.billingnstock.account.entities.AccountGroupEntity;
+import com.protostar.billingnstock.account.services.AccountGroupService.TypeInfo;
+import com.protostar.billnstock.until.data.PDFHtmlTemplateService;
 
 /**
  * Servlet implementation class DownloadAccountChartServlet
@@ -80,93 +82,25 @@ public class DownloadAccountChartServlet extends HttpServlet {
 		String DATE_FORMAT = "dd/MMM/yyyy";
 		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 		Document document = new Document();
-		response.setContentType("pdf");
 
-		response.setHeader("Content-Disposition",
-				"attachment; filename=AccountChartData_" + sdf.format(date)
-						+ ".pdf");
-
+		Long bid = Long.parseLong(request.getParameter("bid"));
+		PDFHtmlTemplateService pdfHtmlTemplateService = new PDFHtmlTemplateService();
+		response.setContentType("application/PDF");
 		ServletOutputStream outputStream = response.getOutputStream();
-		try {
-			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
-			document.open();
-			document.addTitle("AccountChart");
-			document.addAuthor("Protostar");
-			document.addCreationDate();				
-			
-			ArrayList accountGroupTypeList = new ArrayList();
-			accountGroupTypeList.add("ASSETS");
-			accountGroupTypeList.add("EQUITY");
-			accountGroupTypeList.add("LIABILITIES");
-			accountGroupTypeList.add("INCOME");
-			accountGroupTypeList.add("EXPENSES");
-			accountGroupTypeList.add("OTHERINCOMES");
-			accountGroupTypeList.add("OTHEREXPENCES");
+		Date today = new Date();
+		String fileNameAppend = today.getDay() + "_" + today.getMonth() + "_"
+				+ today.getYear();
+		response.setHeader("Content-disposition",
+				"inline; filename='Downloaded_" + fileNameAppend + ".pdf'");
+AccountGroupService accountgroup=new AccountGroupService();
+AccountGroupEntity accGroupEntity=new AccountGroupEntity();
 
-			Integer totalTypeCount = accountGroupTypeList.size();
-			ArrayList<GroupTypeObject> accountGroupTypeGroupList=new ArrayList<GroupTypeObject>();		
-			
-			AccountGroupService accountGroupService=new AccountGroupService();
-			AccountService accountService=new AccountService();
-			
-			ArrayList<AccountGroupEntity> groupList=new ArrayList<AccountGroupEntity>();
-			List gList=new ArrayList<AccountGroupEntity>();
-			
-			for (int i = 0; i < accountGroupTypeList.size(); i++) {
-				
-				GroupTypeObject groupTypeObj=new GroupTypeObject ();
-				groupTypeObj.setGroupType(accountGroupTypeList.get(i).toString());	
-				
-				//bid bid=new bid();
-				
-				
-			//	ArrayList<AccountGroupEntity> groupList=new ArrayList<AccountGroupEntity>();
-				gList=accountGroupService.getAccountGroupListByType(groupTypeObj.getGroupType(), 45654L);				
-			
-				
-				groupTypeObj.setGroupList(groupList);
-				accountGroupTypeGroupList.add(groupTypeObj);
-				
-				if (groupTypeObj.groupList !=null) {
-					for (int j = 0; j < groupTypeObj.groupList.size(); j++) {
-						
-						System.out.println(groupTypeObj.groupList.get(j));
-					//Long groupId=groupTypeObj.groupList.get(j);
-						//accountService.getAccountListByGroupId(groupId);
-						
-								
-					}
-					
-				}
-
-				
-			}	
-			//System.out.println("accountGroupTypeGroupList"+ accountGroupTypeGroupList.get(0).getGroupType());
+List<TypeInfo> accountChart = accountgroup.getChartSheet(bid);
+pdfHtmlTemplateService.generatePdfAccountChart(accountChart,
+		outputStream,bid);
 		
-			document.add(new Paragraph("Account Chart"));
-			//document.addHeader("Account Chart", "");
-			PdfPTable pdfPTable = new PdfPTable(2);
 		
-			 // header row:
-			pdfPTable.addCell("Accounts");
-			pdfPTable.addCell("Value");
-			pdfPTable.setHeaderRows(1);
-			
-			for (int i = 0; i < accountGroupTypeList.size(); i++)
-			{
-				pdfPTable.addCell(new PdfPCell(new Paragraph(accountGroupTypeList.get(i)+"")));
-				pdfPTable.addCell(new PdfPCell(new Paragraph("Value")));
+		
 	
-			}
-			document.add(pdfPTable);
-
-			// XMLWorkerHelper.getInstance().parseXHtml(writer, document,new
-			// FileInputStream(HTML));
-
-		} catch (Exception e) {
-		}
-
-		document.close();
 	}
-
 }
