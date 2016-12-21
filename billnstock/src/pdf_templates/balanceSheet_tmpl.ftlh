@@ -3,8 +3,8 @@
 <style type="text/css">
 table {
 	
-	 border-color:#1aa3ff
-	  border: 1px solid black;
+	 border-color:black;
+	  border: 1px solid;
 }</style>
 
 <div align="center">
@@ -16,7 +16,7 @@ table {
 	<br></br>
 </p>
 
-<div align="center">
+<div align="center"  >
 	<b>BalanceSheet</b>
 </div>
 <p>
