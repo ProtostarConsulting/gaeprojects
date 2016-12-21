@@ -13,7 +13,6 @@ import java.util.Map;
 
 import javax.servlet.ServletOutputStream;
 
-import com.google.appengine.api.users.UserService;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -28,8 +27,7 @@ import com.protostar.billingnstock.cust.entities.Customer;
 import com.protostar.billingnstock.hr.entities.MonthlyPaymentDetailEntity;
 import com.protostar.billingnstock.hr.entities.SalStruct;
 import com.protostar.billingnstock.invoice.entities.InvoiceEntity;
-import com.protostar.billingnstock.invoice.entities.InvoiceLineItem;
-import com.protostar.billingnstock.invoice.entities.ServiceLineItemList;
+import com.protostar.billingnstock.invoice.entities.StockLineItem;
 import com.protostar.billingnstock.tax.entities.TaxEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.user.entities.EmpDepartment;
@@ -59,7 +57,6 @@ public class PDFHtmlTemplateService {
 		cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 		cfg.setLogTemplateExceptions(false);
 		return cfg;
-
 	}
 	
 	
@@ -172,7 +169,7 @@ public void  generatePdfAccountChart(List<TypeInfo> accountChart,ServletOutputSt
 
 	public void generateVoucherPDF(VoucherEntity voucherEntity,
 			ServletOutputStream outputStream) {
-		
+
 		if (voucherEntity instanceof SalesVoucherEntity) {
 			generateSalesVoucherPDF((SalesVoucherEntity) voucherEntity,
 					outputStream);
@@ -199,25 +196,24 @@ public void  generatePdfAccountChart(List<TypeInfo> accountChart,ServletOutputSt
 			Document document = new Document();
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 			document.open();
-			 Image logoURL = Image.getInstance("img/images/protostar_logo_pix_313_132.jpg");
+			Image logoURL = Image.getInstance("img/images/protostar_logo_pix_313_132.jpg");
 			   logoURL.setAbsolutePosition(50f,788f);
 			   logoURL.scaleToFit(90f, 90f);
 			   String logo = String.valueOf(document.add(logoURL));
-			   
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
-			
 
 			Map<String, Object> root = new HashMap<String, Object>();
-			 root.put("logo", logo);
+			root.put("logo", logo);
 			root.put("DebitAccount", salesEntity.getAccountType1()
 					.getAccountName().toString());
 			root.put("CreditAccount", salesEntity.getAccountType2()
 					.getAccountName().toString());
 			root.put("Amount", salesEntity.getAmount().toString());
 			root.put("Narration", salesEntity.getNarration().toString());
-			root.put("buisinessName", "" + salesEntity.getBusiness().getBusinessName());
+			root.put("buisinessName", ""
+					+ salesEntity.getBusiness().getBusinessName());
 			StringBuffer addressBuf = new StringBuffer();
-			Address address =  salesEntity.getBusiness().getAddress();
+			Address address = salesEntity.getBusiness().getAddress();
 			if (address != null) {
 				if (address.getLine1() != null && !address.getLine1().isEmpty())
 					addressBuf.append(address.getLine1());
@@ -230,10 +226,7 @@ public void  generatePdfAccountChart(List<TypeInfo> accountChart,ServletOutputSt
 			}
 
 			String buisinessAddress = addressBuf.toString();
-			
 			root.put("buisinessAddress", "" + buisinessAddress);
-			
-			
 			Template temp = getConfiguration().getTemplate(
 					"pdf_templates/sales_voucher_tmpl.ftlh");
 
@@ -258,32 +251,31 @@ public void  generatePdfAccountChart(List<TypeInfo> accountChart,ServletOutputSt
 			Document document = new Document();
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 
-			document.open();
-			Image logoURL = Image.getInstance("img/images/protostar_logo_pix_313_132.jpg");
+			document.open();Image logoURL = Image.getInstance("img/images/protostar_logo_pix_313_132.jpg");
 			   logoURL.setAbsolutePosition(50f, 788f);
 			   logoURL.scaleToFit(90f, 90f);
 			   String logo = String.valueOf(document.add(logoURL));
-			   
 
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 
 			Map<String, Object> root = new HashMap<String, Object>();
-			
+
 			root.put("CreditAccount", receiptEntity.getAccountType1()
 					.getAccountName().toString());
 			root.put("DebitAccount", receiptEntity.getAccountType2()
 					.getAccountName().toString());
 			root.put("Amount", receiptEntity.getAmount().toString());
 			root.put("Narration", receiptEntity.getNarration().toString());
-			root.put("buisinessName", "" + receiptEntity.getBusiness().getBusinessName());
-			root.put("buisinessAddress", "" + receiptEntity.getBusiness().getAddress().toString());
-			
-			
+			root.put("buisinessName", ""
+					+ receiptEntity.getBusiness().getBusinessName());
+			root.put("buisinessAddress", ""
+					+ receiptEntity.getBusiness().getAddress().toString());
 
 			// Top Header
-			root.put("buisinessName", "" +receiptEntity.getBusiness().getBusinessName());////getbusiness.getBusinessName());
+			root.put("buisinessName", ""
+					+ receiptEntity.getBusiness().getBusinessName());// //getbusiness.getBusinessName());
 			StringBuffer addressBuf = new StringBuffer();
-			Address address =  receiptEntity.getBusiness().getAddress();
+			Address address = receiptEntity.getBusiness().getAddress();
 			if (address != null) {
 				if (address.getLine1() != null && !address.getLine1().isEmpty())
 					addressBuf.append(address.getLine1());
@@ -297,9 +289,9 @@ public void  generatePdfAccountChart(List<TypeInfo> accountChart,ServletOutputSt
 
 			String buisinessAddress = addressBuf.toString();
 			// Top Header
-		//	root.put("buisinessName", "" + business.getBusinessName());
+			// root.put("buisinessName", "" + business.getBusinessName());
 			root.put("buisinessAddress", "" + buisinessAddress);
-			
+
 			Template temp = getConfiguration().getTemplate(
 					"pdf_templates/invoice_voucher_tmpl.ftlh");
 
@@ -326,16 +318,16 @@ public void  generatePdfAccountChart(List<TypeInfo> accountChart,ServletOutputSt
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 
 			document.open();
-			Image logoURL = Image.getInstance("img/images/protostar_logo_pix_313_132.jpg");
-			   logoURL.setAbsolutePosition(50f, 800f);
-			   logoURL.scaleToFit(90f, 90f);
-			   String logo = String.valueOf(document.add(logoURL));
-			   
+			Image logoURL = Image
+					.getInstance("img/images/protostar_logo_pix_313_132.jpg");
+			logoURL.setAbsolutePosition(50f, 800f);
+			logoURL.scaleToFit(90f, 90f);
+			String logo = String.valueOf(document.add(logoURL));
 
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 
 			Map<String, Object> root = new HashMap<String, Object>();
-			
+
 			root.put("CreditAccount", purchesEntity.getAccountType2()
 					.getAccountName().toString());
 			root.put("DebitAccount", purchesEntity.getAccountType1()
@@ -344,12 +336,14 @@ public void  generatePdfAccountChart(List<TypeInfo> accountChart,ServletOutputSt
 			root.put("Items", purchesEntity.getItem().toString());
 			root.put("Accdetail", purchesEntity.getAccdetail().toString());
 			root.put("Narration", purchesEntity.getNarration().toString());
-			root.put("buisinessName", "" + purchesEntity.getBusiness().getBusinessName());
-			
-			root.put("BankAccountNo.", "" + purchesEntity.getAccdetail().toString());
-			
+			root.put("buisinessName", ""
+					+ purchesEntity.getBusiness().getBusinessName());
+
+			root.put("BankAccountNo.", ""
+					+ purchesEntity.getAccdetail().toString());
+
 			StringBuffer addressBuf = new StringBuffer();
-			Address address =  purchesEntity.getBusiness().getAddress();
+			Address address = purchesEntity.getBusiness().getAddress();
 			if (address != null) {
 				if (address.getLine1() != null && !address.getLine1().isEmpty())
 					addressBuf.append(address.getLine1());
@@ -363,9 +357,8 @@ public void  generatePdfAccountChart(List<TypeInfo> accountChart,ServletOutputSt
 
 			String buisinessAddress = addressBuf.toString();
 			// Top Header
-		//	root.put("buisinessName", "" + business.getBusinessName());
+			// root.put("buisinessName", "" + business.getBusinessName());
 			root.put("buisinessAddress", "" + buisinessAddress);
-			
 
 			Template temp = getConfiguration().getTemplate(
 					"pdf_templates/purches_voucher_tmpl.ftlh");
@@ -394,10 +387,11 @@ public void  generatePdfAccountChart(List<TypeInfo> accountChart,ServletOutputSt
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 
 			document.open();
-			 Image logoURL = Image.getInstance("img/images/protostar_logo_pix_313_132.jpg");
-			   logoURL.setAbsolutePosition(50f, 750f);
-			   logoURL.scaleToFit(90f, 90f);
-			   String logo = String.valueOf(document.add(logoURL));
+			Image logoURL = Image
+					.getInstance("img/images/protostar_logo_pix_313_132.jpg");
+			logoURL.setAbsolutePosition(50f, 750f);
+			logoURL.scaleToFit(90f, 90f);
+			String logo = String.valueOf(document.add(logoURL));
 
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 
@@ -447,10 +441,12 @@ public void  generatePdfAccountChart(List<TypeInfo> accountChart,ServletOutputSt
 		try {
 			Document document = new Document();
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
-			document.open(); Image logoURL = Image.getInstance("img/images/protostar_logo_pix_313_132.jpg");
-			   logoURL.setAbsolutePosition(50f, 800f);
-			   logoURL.scaleToFit(90f, 90f);
-			   String logo = String.valueOf(document.add(logoURL));
+			document.open();
+			Image logoURL = Image
+					.getInstance("img/images/protostar_logo_pix_313_132.jpg");
+			logoURL.setAbsolutePosition(50f, 800f);
+			logoURL.scaleToFit(90f, 90f);
+			String logo = String.valueOf(document.add(logoURL));
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 			Map<String, Object> root = new HashMap<String, Object>();
 			DecimalFormat df = new DecimalFormat("#0.00");
@@ -469,7 +465,7 @@ public void  generatePdfAccountChart(List<TypeInfo> accountChart,ServletOutputSt
 			float adhAmt = salStruct.getMonthlyAdhocAllow()
 					/ mtlyPayObj.getTotalDays() * mtlyPayObj.getPayableDays();
 			float splAmt = salStruct.getMonthlySpecialAllow()
-					/mtlyPayObj.getTotalDays() * mtlyPayObj.getPayableDays();
+					/ mtlyPayObj.getTotalDays() * mtlyPayObj.getPayableDays();
 
 			float specialAllow2 = mtlyPayObj.getSpecialAllow();
 			float overtimeAmt = mtlyPayObj.getOvertimeAmt();
@@ -595,142 +591,115 @@ public void  generatePdfAccountChart(List<TypeInfo> accountChart,ServletOutputSt
 		}
 
 	}
-	
+
 	public void generateInvoiceViewPDF(InvoiceEntity invoiceEntity,
 			ServletOutputStream outputStream) {
-
 		if (invoiceEntity instanceof InvoiceEntity) {
-			generateInvoicePDF((InvoiceEntity)invoiceEntity,outputStream);
-		}
-		else {
+			generateInvoicePDF((InvoiceEntity) invoiceEntity, outputStream);
+		} else {
 			throw new RuntimeException(
 					"Did not find this entity PDF handling methods: "
 							+ invoiceEntity.getClass());
 		}
 	}
-	
+
 	private void generateInvoicePDF(InvoiceEntity invoiceEntity,
 			ServletOutputStream outputStream) {
 		try {
 			Document document = new Document();
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 			document.open();
-			
+
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 
 			Map<String, Object> root = new HashMap<String, Object>();
-			
+
 			DecimalFormat df = new DecimalFormat("#0.00");
-            
-			
-			float discountAmt = invoiceEntity.getDiscAmount();
-			float serviceSubTotal = invoiceEntity.getServiceSubTotal();
-			float productSubTotal = invoiceEntity.getProductSubTotal();
-			float serviceTaxTotal = invoiceEntity.getServiceTaxTotal();
-			float productTotal = invoiceEntity.getProductTotal();
-			Long purchaseOrderNo = invoiceEntity.getpOrder();
-			float serviceTotal = invoiceEntity.getServiceTotal();
-			String finalTotal = invoiceEntity.getFinalTotal(); 
-			float productTaxTotal = invoiceEntity.getProductTaxTotal();
-			
-			//Imported Tax entity to get tax type
-			TaxEntity tx1 = invoiceEntity.getSelectedTaxItem();
-			
-			String taxType = tx1.getTaxCodeName();
-			double taxPercentage = tx1.getTaxPercenatge();
-			
-			//Imported Sales entity to get sales order number
-			//SalesOrderEntity soe = invoiceEntity.getSalesOrderId();
-			
-			//Long salesOrderNo = soe.getId(); 
-			
-			List<ServiceLineItemList> serviceItemList = invoiceEntity.getServiceLineItemList();
-			
-			/*for(int i=0;i<serviceList.size();i++){
-				
-				ServiceLineItemList serviceObj = serviceList.get(i);
-				root.put("ServiceName", serviceObj.getServiceName());
-				root.put("ServiceQuantity",serviceObj.getsQty());
-				root.put("ServicePrice", serviceObj.getsPrice());
-			}*/
-			
-			
-			//Imported ServiceLine entity to get price and quantity
-	/*  ServiceLineItemList sli = invoiceEntity.getServiceLineItemList().get(0);
-			
-			float sPrice = sli.getsPrice();
-			Integer sQty = sli.getsQty();
-			String serviceName = sli.getServiceName();
-			
-		/*
-		 * 
-		 */
-			//Imported InvoiceLine entity to get price
-			InvoiceLineItem ili = invoiceEntity.getInvoiceLineItemList().get(0);
-			
-			double price = ili.getPrice();
-			
-			//Imported Customer entity to get name and address
+
+			double discountAmt = invoiceEntity.getDiscAmount();
+			String purchaseOrderNo = invoiceEntity.getpOrder();
+			double finalTotal = invoiceEntity.getFinalTotal();
+
+			TaxEntity serviceTax = invoiceEntity.getSelectedServiceTax();
+			TaxEntity productTax = invoiceEntity.getSelectedProductTax();
+
+			// Imported Sales entity to get sales order number
+			// SalesOrderEntity soe = invoiceEntity.getSalesOrderId();
+
+			// Long salesOrderNo = soe.getId();
+
+			List<StockLineItem> serviceLineItemList = invoiceEntity
+					.getServiceLineItemList();
+			List<StockLineItem> productLineItemList = invoiceEntity
+					.getProductLineItemList();
+
+			// Imported Customer entity to get name and address
 			Customer cust1 = invoiceEntity.getCustomer();
-			
+
 			String custName = cust1.getCompanyName();
-			
+
 			StringBuffer custaddressBuf = new StringBuffer();
 			Address customerAddress = cust1.getAddress();
 			if (customerAddress != null) {
-				if (customerAddress.getLine1() != null && !customerAddress.getLine1().isEmpty())
+				if (customerAddress.getLine1() != null
+						&& !customerAddress.getLine1().isEmpty())
 					custaddressBuf.append(customerAddress.getLine1());
-				if (customerAddress.getLine2() != null && !customerAddress.getLine2().isEmpty())
-					custaddressBuf.append(", " + customerAddress.getLine2());
-				if (customerAddress.getCity() != null && !customerAddress.getCity().isEmpty())
-					custaddressBuf.append(", " + customerAddress.getCity());
-				if (customerAddress.getState() != null && !customerAddress.getState().isEmpty())
+				if (customerAddress.getLine2() != null
+						&& !customerAddress.getLine2().isEmpty())
+					custaddressBuf.append(", <br></br>" + customerAddress.getLine2());
+				if (customerAddress.getCity() != null
+						&& !customerAddress.getCity().isEmpty())
+					custaddressBuf.append(",<br></br>" + customerAddress.getCity());
+				if (customerAddress.getState() != null
+						&& !customerAddress.getState().isEmpty())
 					custaddressBuf.append(", " + customerAddress.getState());
 			}
-			
+
 			String custAddress = custaddressBuf.toString();
-			
-			 SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
-			    Date now = new Date();
-			    String strDate = sdfDate.format(now);
-			    
-			//Customer Details    
-			root.put("CustomerName",custName);
-			root.put("CustomerAddress",custAddress);
-			//Invoice Details
-			root.put("InvoiceDate", invoiceEntity. getInvoiceDate());
-			root.put("InvoiceId", invoiceEntity.getId().toString());
+
+			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
+			Date now = new Date();
+			String strDate = sdfDate.format(now);
+
+			// Customer Details
+			root.put("CustomerName", custName);
+			root.put("CustomerAddress", custAddress);
+			// Invoice Details
+			root.put("InvoiceDate", invoiceEntity.getCreatedDate());
+			root.put("invoiceNumber", invoiceEntity.getInvoiceNumber());
 			root.put("Date", strDate);
-			
-			//root.put("SalesOrderNo", salesOrderNo);
-			
-			root.put("serviceItemList", serviceItemList);
-			//Service Table
-		//	root.put("ServiceName", serviceName);
-			//root.put("ServiceQuantity", sQty);
-			//root.put("ServicePrice", df.format(sPrice));
-			root.put("ServiceSubTotal", df.format(serviceSubTotal));
-			root.put("ProductSubTotal", df.format(productSubTotal));
-			root.put("TaxType", taxType);
-			root.put("TaxPercentage", df.format(taxPercentage));
-			root.put("ServiceTaxTotal", df.format(serviceTaxTotal));
-			root.put("ServiceTotal", df.format(serviceTotal));
-			
-			
-			//Product Table
-			root.put("ItemName", ili.getItemName());
-			root.put("ItemQuantity", ili.getQty());
-			root.put("ItemPrice", df.format(price));
-			root.put("ProductTaxTotal",df.format(productTaxTotal));
-			root.put("ProductTotal", df.format(productTotal));
-			root.put("FinalTotal", finalTotal);
-			//root.put("FinalInWords", invoiceEntity.getFinalTotal());
-			root.put("PurchaseOrderNo",purchaseOrderNo);
+
+			// root.put("SalesOrderNo", salesOrderNo);
+
+			if (serviceLineItemList != null && serviceLineItemList.size() > 0) {
+				root.put("serviceItemList", serviceLineItemList);
+				root.put("serviceTax", serviceTax);
+			}
+			if (productLineItemList != null && productLineItemList.size() > 0) {
+				root.put("productItemList", productLineItemList);
+				root.put("productTax", productTax);
+			}
+
+			root.put("serviceTax", serviceTax);
+			// root.put("TaxPercentage", df.format(taxPercentage));
+			// root.put("ServiceTaxTotal", df.format(serviceTaxTotal));
+			// root.put("ServiceTotal", df.format(serviceTotal));
+
+			// Product Table
+			// root.put("productTotal", df.format(productTotal));
+			root.put("finalTotal", finalTotal);
+			NumberToRupees numberToRupees = new NumberToRupees(
+					Math.round(finalTotal));
+			String netInWords = numberToRupees.getAmountInWords();
+			root.put("finalTotalInWord", netInWords);
+			// root.put("FinalInWords", invoiceEntity.getFinalTotal());
+			root.put("PurchaseOrderNo", purchaseOrderNo);
 			root.put("NoteToCustomer", "" + invoiceEntity.getNoteToCustomer());
-			
-			root.put("Discount",df.format(discountAmt));
-			
-			
+
+			if (discountAmt > 0) {
+				root.put("Discount", df.format(discountAmt));
+			}
+
 			BusinessEntity business = invoiceEntity.getBusiness();
 
 			StringBuffer addressBuf = new StringBuffer();
@@ -750,7 +719,7 @@ public void  generatePdfAccountChart(List<TypeInfo> accountChart,ServletOutputSt
 			// Top Header
 			root.put("businessName", "" + business.getBusinessName());
 			root.put("businessAddress", "" + businessAddress);
-			
+
 			Template temp = getConfiguration().getTemplate(
 					"pdf_templates/invoicePDF_tmpl.ftlh");
 
