@@ -6,6 +6,7 @@ import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
+import com.googlecode.objectify.annotation.OnSave;
 import com.googlecode.objectify.annotation.Parent;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 
@@ -71,6 +72,22 @@ public abstract class BaseEntity {
 
 	public void setNote(String note) {
 		this.note = note;
+	}
+
+	@OnSave
+	public void beforeSave() {
+		if (getBusiness() == null) {
+			throw new RuntimeException("Business entity is not set on"
+					+ this.getClass().getSimpleName()
+					+ "This is required field. Aborting save operation...");
+		}
+
+		if (getId() == null) {
+			setCreatedDate(new Date());
+		} else {
+			setModifiedDate(new Date());
+		}
+
 	}
 
 }

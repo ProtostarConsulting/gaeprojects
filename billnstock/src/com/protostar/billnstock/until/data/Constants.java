@@ -18,6 +18,11 @@ public class Constants {
 	public static final String EMP_NO_COUNTER = "EMP_NO_COUNTER";
 	public static final String ACC_ACCOUNT_NO_COUNTER = "ACC_ACCOUNT_NO_COUNTER";
 	public static final String INVOICE_NO_COUNTER = "INVOICE_NO_COUNTER";
+	public static final String STOCKITEM_NO_COUNTER = "STOCKITEM_NO_COUNTER";
+	public static final String STOCKRECEIPT_NO_COUNTER = "STOCKRECEIPT_NO_COUNTER";
+	public static final String STOCKSHIPMENT_NO_COUNTER = "STOCKSHIPMENT_NO_COUNTER";
+	public static final String PURCHASE_ORDER_NO_COUNTER = "PURCHASE_ORDER_NO_COUNTER";
+	public static final String QUOTATION_NO_COUNTER = "QUOTATION_NO_COUNTER";
 	public static final String VOUCHER_NO_COUNTER = "VOUCHER_NO_COUNTER";
 
 	// Default Authorizations
@@ -26,8 +31,6 @@ public class Constants {
 	public static final String NEW_BIZ_ADMIN_USER_DEFAULT_AUTHS = "{\"authorizations\":[{\"authName\":\"More Actions\",\"authorizations\":[{\"authName\":\"setup\",\"authorizations\":[]},{\"authName\":\"updatemyprofile\",\"authorizations\":[]}]}]}";
 	public static final String NEW_BIZ_USER_DEFAULT_AUTHS = "{\"authorizations\":[{\"authName\":\"More Actions\",\"authorizations\":[{\"authName\":\"updatemyprofile\",\"authorizations\":[]}]}]}";
 
-	
-	
-	//Misc
+	// Misc
 	public static final String DEFAULT_EMP_DEPT = "Default";
 }

@@ -31,11 +31,14 @@ import com.protostar.billingnstock.hr.entities.TimeSheet;
 import com.protostar.billingnstock.invoice.entities.InvoiceEntity;
 import com.protostar.billingnstock.invoice.entities.InvoiceSettingsEntity;
 import com.protostar.billingnstock.invoice.entities.QuotationEntity;
+import com.protostar.billingnstock.invoice.entities.StockItemsReceiptEntity;
+import com.protostar.billingnstock.invoice.entities.StockItemsShipmentEntity;
 import com.protostar.billingnstock.proadmin.entities.AccountType;
 import com.protostar.billingnstock.purchase.entities.PurchaseOrderEntity;
 import com.protostar.billingnstock.purchase.entities.SupplierEntity;
 import com.protostar.billingnstock.sales.entities.SalesOrderEntity;
 import com.protostar.billingnstock.stock.entities.StockItemEntity;
+import com.protostar.billingnstock.stock.entities.StockItemTxnEntity;
 import com.protostar.billingnstock.taskmangement.TaskEntity;
 import com.protostar.billingnstock.tax.entities.TaxEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
@@ -74,6 +77,10 @@ public class AppServletContextListener implements ServletContextListener {
 		
 		ObjectifyService.register(Customer.class);
 		ObjectifyService.register(StockItemEntity.class);
+		ObjectifyService.register(StockItemsReceiptEntity.class);
+		ObjectifyService.register(StockItemsShipmentEntity.class);
+		ObjectifyService.register(StockItemTxnEntity.class);
+		
 		ObjectifyService.register(InvoiceEntity.class);
 		ObjectifyService.register(QuotationEntity.class);
 		ObjectifyService.register(TaxEntity.class);

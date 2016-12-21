@@ -11,10 +11,10 @@ public class NumberToRupees {
 	String tens[] = { "", "TEN ", "TWENTY ", "THIRTY ", "FORTY ", "FIFTY ",
 			"SIXTY ", "SEVENTY ", "EIGHTY ", "NINETY " };
 
-	public NumberToRupees(int amount) {
+	public NumberToRupees(long amount) {
 		String tword;
 		if (amount > (10000000 - 1)) {
-			int crore = amount / 10000000;
+			long crore = amount / 10000000;
 			tword = threeDigits(crore);
 			if (tword.length() > 1)
 				words += tword + "CRORE ";
@@ -23,14 +23,14 @@ public class NumberToRupees {
 		}
 
 		if (amount > (100000 - 1)) {
-			int lakh = amount / 100000;
+			long lakh = amount / 100000;
 			tword = threeDigits(lakh);
 			if (tword.length() > 1)
 				words += tword + "LAKH ";
 
 			amount -= lakh * 100000;
 		}
-		int thousands = amount / 1000;
+		long thousands = amount / 1000;
 		tword = threeDigits(thousands);
 		if (tword.length() > 1)
 			words += tword + "THOUSAND ";
@@ -41,7 +41,8 @@ public class NumberToRupees {
 
 	}
 
-	public String threeDigits(int digits) {
+	public String threeDigits(long digits2) {
+		int digits = (int)digits2;
 		String digWord = "";
 		int hnd = digits / 100;
 		if (hnd > 0)

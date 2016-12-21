@@ -15,8 +15,9 @@ public class UserEntity extends BaseEntity {
 	private String firstName;
 	private String lastName;
 	private String fullName;
-
-	private String status = "active";
+	
+	@Index
+	private Boolean isActive = true;
 
 	@Index
 	private String email_id;
@@ -29,15 +30,7 @@ public class UserEntity extends BaseEntity {
 	String authorizations;
 	@Index
 	private EmployeeDetail employeeDetail = new EmployeeDetail();
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
+	
 	public String getAuthorizations() {
 		return authorizations;
 	}
@@ -134,6 +127,14 @@ public class UserEntity extends BaseEntity {
 
 	public void setEmployeeDetail(EmployeeDetail employeeDetail) {
 		this.employeeDetail = employeeDetail;
+	}
+
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
 	}
 
 }

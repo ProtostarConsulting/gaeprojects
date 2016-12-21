@@ -101,10 +101,12 @@ public class UploadUsersServlet extends HttpServlet {
 				userEntity.setModifiedBy(loggedInUser);
 
 				String empNo = split[0];
-				if(empNo == null || empNo.trim().isEmpty()){
-					userEntity.getEmployeeDetail().setEmpId(sequenceGenService.getNextSequenceNumber());
-				}else{
-					userEntity.getEmployeeDetail().setEmpId(Long.parseLong(empNo.trim()));
+				if (empNo == null || empNo.trim().isEmpty()) {
+					userEntity.getEmployeeDetail().setEmpId(
+							sequenceGenService.getNextSequenceNumber());
+				} else {
+					userEntity.getEmployeeDetail().setEmpId(
+							Integer.parseInt(empNo.trim()));
 				}
 				userEntity.setFirstName(split[1].trim());
 				userEntity.setLastName(split[2].trim());
@@ -115,7 +117,8 @@ public class UploadUsersServlet extends HttpServlet {
 					for (EmpDepartment empDepartment : empDepartments) {
 						if (dept.trim().equalsIgnoreCase(
 								empDepartment.getName())) {
-							userEntity.getEmployeeDetail().setDepartment(empDepartment);
+							userEntity.getEmployeeDetail().setDepartment(
+									empDepartment);
 						}
 					}
 				}
@@ -130,7 +133,6 @@ public class UploadUsersServlet extends HttpServlet {
 						.setIsGoogleUser("1".equalsIgnoreCase(split[6].trim()));
 				userEntity.setPassword(split[7].trim());
 
-				
 				// ofy().save().entity(userEntity).now();
 				userList.add(userEntity);
 

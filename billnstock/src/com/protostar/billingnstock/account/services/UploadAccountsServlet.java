@@ -18,26 +18,27 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.protostar.billingnstock.account.entities.AccountEntity;
 
-
 public class UploadAccountsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private final Logger log = Logger.getLogger(UploadAccountsServlet.class.getName());
-    
+	private final Logger log = Logger.getLogger(UploadAccountsServlet.class
+			.getName());
+
 	class SizeEntry {
 		public int size;
 		public Date time;
 	}
-	
+
 	static Map<String, SizeEntry> sizeMap = new ConcurrentHashMap<>();
 	int counter;
-    public UploadAccountsServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
-	
-	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
+	public UploadAccountsServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	protected void service(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+
 		try {
 			if (request.getHeader("Content-Type") != null
 					&& request.getHeader("Content-Type").startsWith(
@@ -77,39 +78,41 @@ public class UploadAccountsServlet extends HttpServlet {
 
 					try {
 						String[] split = split2[row].split(",");
-						if(split.length < 6 ) {
+						if (split.length < 6) {
 							continue;
 						}
-						/*log.fine(" Row: " + row);
-						log.fine(" AccountName: " + split[0]);
-						log.fine(" AccountNo: " + split[1]);
-						log.fine(" Description: " + split[2]);
-						log.fine(" DisplayOrderNo: " + split[3]);
-						log.fine(" AccountType: " + split[4]);*/
+						/*
+						 * log.fine(" Row: " + row); log.fine(" AccountName: " +
+						 * split[0]); log.fine(" AccountNo: " + split[1]);
+						 * log.fine(" Description: " + split[2]);
+						 * log.fine(" DisplayOrderNo: " + split[3]);
+						 * log.fine(" AccountType: " + split[4]);
+						 */
 
 						AccountEntity accountEntity = new AccountEntity();
 						accountEntity.setAccountName(split[0].trim());
-						accountEntity.setAccountNo(split[1].trim());
-						accountEntity.setDescription(split[2].trim());				
-						accountEntity.setDisplayOrderNo(Integer.parseInt(split[3].trim()));
+						accountEntity.setAccountNo(Integer.parseInt(split[1]));
+						accountEntity.setDescription(split[2].trim());
+						accountEntity.setDisplayOrderNo(Integer
+								.parseInt(split[3].trim()));
 						accountEntity.setAccountType(split[4].trim());
-						
-/*						System.out.println("split[5].trim()"+ split[5].trim());
-						System.out.println("split[5].trim()"+ split[5].trim().toLowerCase());
-*/							String temp = split[5].trim().toLowerCase();
-						
-							if(temp.equals("true")){
-								accountEntity.setContra(true);
-							}
-							else{
-								accountEntity.setContra(false);
-							}
-							
 
+						/*
+						 * System.out.println("split[5].trim()"+
+						 * split[5].trim());
+						 * System.out.println("split[5].trim()"+
+						 * split[5].trim().toLowerCase());
+						 */String temp = split[5].trim().toLowerCase();
 
-						AccountService accService= new AccountService();
-						accService.addAccount1(accountEntity);	
-						
+						if (temp.equals("true")) {
+							accountEntity.setContra(true);
+						} else {
+							accountEntity.setContra(false);
+						}
+
+						AccountService accService = new AccountService();
+						accService.addAccount1(accountEntity);
+
 					} catch (Exception e) {
 						log.warning(e.getMessage());
 						e.printStackTrace();

@@ -71,7 +71,7 @@ public class DownloadAccountsServlet extends HttpServlet {
 					writer.append(accEntity.get(i).getAccountName());
 					writer.append(',');
 
-					writer.append(accEntity.get(i).getAccountNo());
+					writer.append(""+accEntity.get(i).getAccountNo());
 					writer.append(',');
 					writer.append(accEntity.get(i).getDescription());
 					writer.append(',');

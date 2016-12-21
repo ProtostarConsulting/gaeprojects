@@ -8,59 +8,51 @@ import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Ignore;
 import com.protostar.billnstock.entity.BaseEntity;
 
-
 @Entity
 public class AccountEntity extends BaseEntity {
 
-/*	public static enum AccountType {
-		PERSONAL, REAL, NOMINAL
-	};
-*/ 
+	/*
+	 * public static enum AccountType { PERSONAL, REAL, NOMINAL };
+	 */
 
 	@Index
 	private String accountName;
-//	private AccountType accountType;
-	//private Long accountNo;
-	private String accountNo;
+	// private AccountType accountType;
+	// private Long accountNo;
+	private int accountNo;
 	private String description;
 	private Integer displayOrderNo;
 	private Boolean contra = false;
 	private String accountType;
-	
-		
+
 	Ref<AccountGroupEntity> accountgroup;
-	
 
 	public AccountGroupEntity getaccountgroup() {
-		return accountgroup == null?null:accountgroup.get();
+		return accountgroup == null ? null : accountgroup.get();
 	}
 
 	public void setaccountgroup(AccountGroupEntity accountgroup) {
-		this.accountgroup =Ref.create(accountgroup);
+		this.accountgroup = Ref.create(accountgroup);
 	}
 
-	public AccountEntity(){
-		
+	public AccountEntity() {
+
 	}
 
-
-
-	/*	public AccountEntity(String accountName, AccountType accountType){
-		this.accountName = accountName;
-		this.accountType = accountType;
-		
-	}
-*/
+	/*
+	 * public AccountEntity(String accountName, AccountType accountType){
+	 * this.accountName = accountName; this.accountType = accountType;
+	 * 
+	 * }
+	 */
 	@Ignore
 	private List<AccountEntryEntity> accountLedgerEntries;
 
-	
-
-	public String getAccountNo() {
+	public int getAccountNo() {
 		return accountNo;
 	}
 
-	public void setAccountNo(String accountNo) {
+	public void setAccountNo(int accountNo) {
 		this.accountNo = accountNo;
 	}
 
@@ -79,17 +71,14 @@ public class AccountEntity extends BaseEntity {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-/*
-	public AccountType getAccountType() {
-		return accountType;
-	}
 
-	public void setAccountType(AccountType accountType) {
-		this.accountType = accountType;
-	}
-*/
-	
-	
+	/*
+	 * public AccountType getAccountType() { return accountType; }
+	 * 
+	 * public void setAccountType(AccountType accountType) { this.accountType =
+	 * accountType; }
+	 */
+
 	public Integer getDisplayOrderNo() {
 		return displayOrderNo;
 	}

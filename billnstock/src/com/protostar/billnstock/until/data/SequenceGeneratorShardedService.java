@@ -1,5 +1,10 @@
 package com.protostar.billnstock.until.data;
 
+import java.util.ConcurrentModificationException;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -12,11 +17,6 @@ import com.google.appengine.api.memcache.Expiration;
 import com.google.appengine.api.memcache.MemcacheService;
 import com.google.appengine.api.memcache.MemcacheService.SetPolicy;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
-
-import java.util.ConcurrentModificationException;
-import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * A counter which can be incremented rapidly.
@@ -140,20 +140,21 @@ public class SequenceGeneratorShardedService {
 	 *
 	 * @return Summed total of all shards' counts
 	 */
-	public final long getNextSequenceNumber() {
-		Long value = (Long) mc.get(kind);
+	public final int getNextSequenceNumber() {
+		Integer value = (Integer) mc.get(kind);
 		if (value == null) {
-			long sum = 0;
+			int sum = 0;
 			Query query = new Query(kind);
 			for (Entity shard : DS.prepare(query).asIterable()) {
-				sum += (Long) shard.getProperty(CounterShard.COUNT);
+				Long shardCount = (Long) shard.getProperty(CounterShard.COUNT);
+				sum += shardCount.intValue();
 			}
 			mc.put(kind, sum, Expiration.byDeltaSeconds(CACHE_PERIOD),
 					SetPolicy.ADD_ONLY_IF_NOT_PRESENT);
 			value = sum;
 		}
 		increment();
-		return value+1;
+		return value + 1;
 	}
 
 	/**
@@ -164,7 +165,7 @@ public class SequenceGeneratorShardedService {
 		int numShards = getShardCount();
 
 		// Choose the shard randomly from the available shards.
-		long shardNum = generator.nextInt(numShards);
+		int shardNum = generator.nextInt(numShards);
 
 		Key shardKey = KeyFactory.createKey(kind, Long.toString(shardNum));
 		incrementPropertyTx(shardKey, CounterShard.COUNT, 1, 1);

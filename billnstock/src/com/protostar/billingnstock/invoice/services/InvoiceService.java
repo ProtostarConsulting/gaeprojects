@@ -12,103 +12,38 @@ import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
-import com.protostar.billingnstock.account.entities.ReceivableEntity;
 import com.protostar.billingnstock.cust.entities.Customer;
-import com.protostar.billingnstock.hr.entities.SalStruct;
 import com.protostar.billingnstock.invoice.entities.InvoiceEntity;
 import com.protostar.billingnstock.invoice.entities.InvoiceSettingsEntity;
-import com.protostar.billingnstock.stock.entities.StockItemEntity;
+import com.protostar.billingnstock.invoice.entities.QuotationEntity;
+import com.protostar.billingnstock.stock.services.StockItemService;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
+import com.protostar.billnstock.until.data.Constants;
+import com.protostar.billnstock.until.data.EntityUtil;
+import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 
 @Api(name = "invoiceService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.stock.services", ownerName = "com.protostar.billingnstock.stock.services", packagePath = ""))
 public class InvoiceService {
 
 	@ApiMethod(name = "addInvoice")
-	public void addInvoice(InvoiceEntity invoiceEntity) {
-
-		if (invoiceEntity.getId() != null) {
-
-			ReceivableEntity receiveByID = ofy().load()
-					.type(ReceivableEntity.class).id(invoiceEntity.getId())
-					.now();
-
-			receiveByID.setCustomer(invoiceEntity.getCustomer());
-			receiveByID.setFinalTotal(invoiceEntity.getFinalTotal());
-			receiveByID.setInvoiceDate(invoiceEntity.getInvoiceDate());
-			receiveByID.setInvoiceDueDate(invoiceEntity.getInvoiceDueDate());
-			receiveByID.setInvoiceId(invoiceEntity.getId());
-			receiveByID.setBusiness(invoiceEntity.getBusiness());
-			receiveByID.setCreatedDate(invoiceEntity.getCreatedDate());
-			receiveByID.setModifiedDate(invoiceEntity.getModifiedDate());
-			receiveByID.setModifiedBy(invoiceEntity.getModifiedBy());
-			ofy().save().entity(receiveByID).now();
-
-		} else {
-			ReceivableEntity receivableEntity = new ReceivableEntity();
-
-			receivableEntity.setCustomer(invoiceEntity.getCustomer());
-			receivableEntity.setFinalTotal(invoiceEntity.getFinalTotal());
-			receivableEntity.setInvoiceDate(invoiceEntity.getInvoiceDate());
-			receivableEntity.setInvoiceDueDate(invoiceEntity
-					.getInvoiceDueDate());
-			receivableEntity.setInvoiceId(invoiceEntity.getId());
-			receivableEntity.setBusiness(invoiceEntity.getBusiness());
-			receivableEntity.setCreatedDate(invoiceEntity.getCreatedDate());
-			receivableEntity.setModifiedDate(invoiceEntity.getModifiedDate());
-			receivableEntity.setModifiedBy(invoiceEntity.getModifiedBy());
-			ofy().save().entity(receivableEntity).now();
-		}
+	public void saveInvoice(InvoiceEntity invoiceEntity) {
 
 		if (invoiceEntity.getId() == null) {
-			invoiceEntity.setCreatedDate(new Date());
-			// stockItemEntity.setModifiedDate(new Date());
-		} else {
-			invoiceEntity.setModifiedDate(new Date());
+			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
+					EntityUtil.getBusinessRawKey(invoiceEntity.getBusiness()),
+					Constants.INVOICE_NO_COUNTER);
+			invoiceEntity.setInvoiceNumber(sequenceGenService
+					.getNextSequenceNumber());
 		}
+
+		StockItemService.adjustStockItems(invoiceEntity.getBusiness(),
+				invoiceEntity.getProductLineItemList());
 
 		ofy().save().entity(invoiceEntity).now();
 
-		System.out.println(invoiceEntity.getInvoiceLineItemList());
-
-		List<StockItemEntity> stockItemEntity = ofy().load()
-				.type(StockItemEntity.class).list();
-
-		/* For Reduce the Stock Quantity */
-
-		for (int i = 0; i < invoiceEntity.getInvoiceLineItemList().size(); i++) {
-			for (int j = 0; j < stockItemEntity.size(); j++) {
-				if (invoiceEntity.getInvoiceLineItemList().get(i).getItemName()
-						.equals(stockItemEntity.get(j).getItemName())) {
-					StockItemEntity a = stockItemEntity.get(j);
-
-					a.setQty((stockItemEntity.get(j).getQty())
-							- (Integer.valueOf((invoiceEntity
-									.getInvoiceLineItemList().get(i).getQty()))));
-					ofy().save().entity(a).now();
-				}
-			}
-		}
-
-		/* For Add in ReceivableEntity */
-
 	}
 
-	@ApiMethod(name = "updateInvoiceStatus")
-	public void updateInvoiceStatus(InvoiceEntity valueToUpdateStatus) {
-
-		ofy().save().entity(valueToUpdateStatus).now();
-
-		long invoiceId = valueToUpdateStatus.getId();
-
-		ReceivableEntity fetchedReceivableEntity = ofy().load()
-				.type(ReceivableEntity.class).filter("invoiceId = ", invoiceId)
-				.first().now();
-
-		if (fetchedReceivableEntity != null) {
-			fetchedReceivableEntity.setStatus(valueToUpdateStatus.getStatus());
-			ofy().save().entity(fetchedReceivableEntity).now();
-		}
-	}
+	
 
 	@ApiMethod(name = "getAllInvoice")
 	public List<InvoiceEntity> getAllInvoice(@Named("id") Long busId) {
@@ -177,10 +112,9 @@ public class InvoiceService {
 
 		if (invoiceSettingsEntity.getId() == null) {
 			invoiceSettingsEntity.setCreatedDate(new Date());
-			invoiceSettingsEntity.setModifiedDate(new Date());
-		} else {
-			invoiceSettingsEntity.setModifiedDate(new Date());
 		}
+		invoiceSettingsEntity.setModifiedDate(new Date());
+
 		ofy().save().entity(invoiceSettingsEntity).now();
 		return invoiceSettingsEntity;
 	}
@@ -194,6 +128,31 @@ public class InvoiceService {
 				.now();
 
 		return filteredSettings;
+
+	}
+
+	@ApiMethod(name = "addQuotation")
+	public void addInvoice(QuotationEntity quotationEntity) {
+
+		if (quotationEntity.getId() != null) {
+			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
+					EntityUtil.getBusinessRawKey(quotationEntity.getBusiness()),
+					Constants.QUOTATION_NO_COUNTER);
+			quotationEntity.setQuotationNumber(sequenceGenService
+					.getNextSequenceNumber());
+		}
+
+		ofy().save().entity(quotationEntity).now();
+
+	}
+
+	@ApiMethod(name = "getAllQuotation")
+	public List<QuotationEntity> getAllQuotation(@Named("id") Long busId) {
+
+		List<QuotationEntity> filteredquotation = ofy().load()
+				.type(QuotationEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).list();
+		return filteredquotation;
 
 	}
 

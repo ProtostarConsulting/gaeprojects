@@ -5,15 +5,15 @@ import com.protostar.billingnstock.user.entities.EmpDepartment;
 import com.protostar.billnstock.entity.Address;
 
 public class EmployeeDetail {
-	
+
 	private String designation;
 	private String panCardNumber;
 	private String epfNumber;
 	private String phone1;
 	private String phone2;
-	private String personalEmail;	
-	private Long empId;
-		
+	private String personalEmail;
+	private int empId;
+
 	private Address address = new Address();
 	private BankDetail bankDetail = new BankDetail();
 	private Ref<EmpDepartment> department;
@@ -26,12 +26,12 @@ public class EmployeeDetail {
 		this.bankDetail = bankDetail;
 
 	}
-	
-	public Long getEmpId() {
+
+	public int getEmpId() {
 		return empId;
 	}
 
-	public void setEmpId(Long empId) {
+	public void setEmpId(int empId) {
 		this.empId = empId;
 	}
 
@@ -42,6 +42,7 @@ public class EmployeeDetail {
 	public void setDepartment(EmpDepartment department) {
 		this.department = Ref.create(department);
 	}
+
 	public String getDesignation() {
 		return designation;
 	}
@@ -89,7 +90,6 @@ public class EmployeeDetail {
 	public void setPersonalEmail(String personalEmail) {
 		this.personalEmail = personalEmail;
 	}
-	
 
 	public String getEpfNumber() {
 		return epfNumber;

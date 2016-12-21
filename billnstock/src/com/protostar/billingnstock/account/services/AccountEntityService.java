@@ -29,10 +29,10 @@ public class AccountEntityService {
 		} else {
 			accountEntity.setModifiedDate(new Date());
 		}
-		Long nextSequenceNumber = new SequenceGeneratorShardedService(
+		int nextSequenceNumber = new SequenceGeneratorShardedService(
 				EntityUtil.getBusinessRawKey(accountEntity.getBusiness()),
 				Constants.ACC_ACCOUNT_NO_COUNTER).getNextSequenceNumber();
-		accountEntity.setAccountNo(nextSequenceNumber.toString());
+		accountEntity.setAccountNo(nextSequenceNumber);
 		ofy().save().entity(accountEntity).now();
 
 	}

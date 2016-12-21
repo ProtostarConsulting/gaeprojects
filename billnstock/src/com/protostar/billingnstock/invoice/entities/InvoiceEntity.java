@@ -1,69 +1,56 @@
 package com.protostar.billingnstock.invoice.entities;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
-import com.protostar.billingnstock.account.entities.AccountEntity;
 import com.protostar.billingnstock.cust.entities.Customer;
-import com.protostar.billingnstock.sales.entities.SalesOrderEntity;
 import com.protostar.billingnstock.tax.entities.TaxEntity;
 import com.protostar.billnstock.entity.BaseEntity;
 
 @Entity
 public class InvoiceEntity extends BaseEntity {
+
+	public static enum DiscountType {
+		Fixed, Percentage
+	};
+
 	@Index
-	private Date invoiceDate;
+	private int invoiceNumber;
 	@Index
 	private Date invoiceDueDate;
-	private float productSubTotal;
-
-	private float serviceSubTotal;
-	private float productTaxTotal;
-	private float serviceTaxTotal;
-	private float serviceTotal;
-	private Long productTotal;
-	private String finalTotal;
+	private double finalTotal;
 	private String noteToCustomer;
-	private String status = "NotPaid";
 
-	private String discount;
-	private float discAmount;
-	private float discValue;
+	private String discountType;
+	private float discountPercent;
+	private double discAmount;
+	@Index
+	private boolean isPaid = false;
+	@Index
+	private boolean isDraft = false;
+	private Date paidDate;
 
-	private Long pOrder;
+	private List<StockLineItem> productLineItemList = new ArrayList<StockLineItem>();
+	private List<StockLineItem> serviceLineItemList = new ArrayList<StockLineItem>();
 
-	private List<InvoiceLineItem> invoiceLineItemList;
-	private List<ServiceLineItemList> serviceLineItemList;
-
-	Ref<SalesOrderEntity> salesOrderId;
-	Ref<AccountEntity> account;
-	Ref<TaxEntity> selectedTaxItem;
-	Ref<TaxEntity> selectedServiceTax;
+	private Ref<TaxEntity> selectedProductTax;
+	private Ref<TaxEntity> selectedServiceTax;
 
 	@Index
-	Ref<Customer> customer;
+	private Ref<Customer> customer;
+	private String pOrder;
 
 	public Customer getCustomer() {
-		return customer.get();
+		return customer == null ? null : customer.get();
 	}
 
 	public void setCustomer(Customer customer) {
-		this.customer = Ref.create(customer);
-	}
-
-	public TaxEntity getSelectedTaxItem() {
-		return selectedTaxItem == null ? null : selectedTaxItem.get();
-	}
-
-	public void setSelectedTaxItem(TaxEntity selectedTaxItem) {
-		if (selectedTaxItem == null) {
-			this.selectedTaxItem = null;
-		} else {
-			this.selectedTaxItem = Ref.create(selectedTaxItem);
-		}
+		if (customer != null)
+			this.customer = Ref.create(customer);
 	}
 
 	public TaxEntity getSelectedServiceTax() {
@@ -71,83 +58,24 @@ public class InvoiceEntity extends BaseEntity {
 	}
 
 	public void setSelectedServiceTax(TaxEntity selectedServiceTax) {
-		if (selectedServiceTax == null) {
-			this.selectedServiceTax = null;
-		} else {
+		if (selectedServiceTax != null)
 			this.selectedServiceTax = Ref.create(selectedServiceTax);
-		}
 	}
 
-	public SalesOrderEntity getSalesOrderId() {
-		return salesOrderId == null ? null : salesOrderId.get();
+	public TaxEntity getSelectedProductTax() {
+		return selectedProductTax == null ? null : selectedProductTax.get();
 	}
 
-	public void setSalesOrderId(SalesOrderEntity salesOrderId) {
-		if (salesOrderId == null) {
-			this.salesOrderId = null;
-		} else {
-			this.salesOrderId = Ref.create(salesOrderId);
-		}
+	public void setSelectedProductTax(TaxEntity selectedProductTax) {
+		if (selectedProductTax != null)
+			this.selectedProductTax = Ref.create(selectedProductTax);
 	}
 
-	public AccountEntity getAccount() {
-		return account == null ? null : account.get();
-	}
-
-	public void setAccount(AccountEntity account) {
-		if (account == null) {
-			this.account = null;
-		} else {
-			this.account = Ref.create(account);
-		}
-	}
-
-	public List<InvoiceLineItem> getInvoiceLineItemList() {
-		return invoiceLineItemList;
-	}
-
-	public void setInvoiceLineItemList(List<InvoiceLineItem> invoiceLineItemList) {
-		this.invoiceLineItemList = invoiceLineItemList;
-	}
-
-	public List<ServiceLineItemList> getServiceLineItemList() {
-		return serviceLineItemList;
-	}
-
-	public void setServiceLineItemList(
-			List<ServiceLineItemList> serviceLineItemList) {
-		this.serviceLineItemList = serviceLineItemList;
-	}
-
-	public float getProductSubTotal() {
-		return productSubTotal;
-	}
-
-	public void setProductSubTotal(float productSubTotal) {
-		this.productSubTotal = productSubTotal;
-	}
-
-	public float getProductTaxTotal() {
-		return productTaxTotal;
-	}
-
-	public void setProductTaxTotal(float productTaxTotal) {
-		this.productTaxTotal = productTaxTotal;
-	}
-
-	public float getServiceTaxTotal() {
-		return serviceTaxTotal;
-	}
-
-	public void setServiceTaxTotal(float serviceTaxTotal) {
-		this.serviceTaxTotal = serviceTaxTotal;
-	}
-
-	public String getFinalTotal() {
+	public double getFinalTotal() {
 		return finalTotal;
 	}
 
-	public void setFinalTotal(String finalTotal) {
+	public void setFinalTotal(double finalTotal) {
 		this.finalTotal = finalTotal;
 	}
 
@@ -159,22 +87,6 @@ public class InvoiceEntity extends BaseEntity {
 		this.noteToCustomer = noteToCustomer;
 	}
 
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public Date getInvoiceDate() {
-		return invoiceDate;
-	}
-
-	public void setInvoiceDate(Date invoiceDate) {
-		this.invoiceDate = invoiceDate;
-	}
-
 	public Date getInvoiceDueDate() {
 		return invoiceDueDate;
 	}
@@ -183,60 +95,84 @@ public class InvoiceEntity extends BaseEntity {
 		this.invoiceDueDate = invoiceDueDate;
 	}
 
-	public String getDiscount() {
-		return discount;
-	}
-
-	public void setDiscount(String discount) {
-		this.discount = discount;
-	}
-
-	public float getDiscAmount() {
+	public double getDiscAmount() {
 		return discAmount;
 	}
 
-	public void setDiscAmount(float discAmount) {
+	public void setDiscAmount(double discAmount) {
 		this.discAmount = discAmount;
 	}
 
-	public Long getpOrder() {
+	public Date getPaidDate() {
+		return paidDate;
+	}
+
+	public void setPaidDate(Date paidDate) {
+		this.paidDate = paidDate;
+	}
+
+	public String getDiscountType() {
+		return discountType;
+	}
+
+	public void setDiscountType(String discountType) {
+		this.discountType = discountType;
+	}
+
+	public String getpOrder() {
 		return pOrder;
 	}
 
-	public void setpOrder(Long pOrder) {
+	public void setpOrder(String pOrder) {
 		this.pOrder = pOrder;
 	}
 
-	public float getServiceSubTotal() {
-		return serviceSubTotal;
+	public boolean isPaid() {
+		return isPaid;
 	}
 
-	public void setServiceSubTotal(float serviceSubTotal) {
-		this.serviceSubTotal = serviceSubTotal;
+	public void setPaid(boolean isPaid) {
+		this.isPaid = isPaid;
 	}
 
-	public float getDiscValue() {
-		return discValue;
+	public boolean isDraft() {
+		return isDraft;
 	}
 
-	public void setDiscValue(float discValue) {
-		this.discValue = discValue;
+	public void setDraft(boolean isDraft) {
+		this.isDraft = isDraft;
 	}
 
-	public float getServiceTotal() {
-		return serviceTotal;
+	public List<StockLineItem> getProductLineItemList() {
+		return productLineItemList;
 	}
 
-	public void setServiceTotal(float serviceTotal) {
-		this.serviceTotal = serviceTotal;
+	public void setProductLineItemList(List<StockLineItem> productLineItemList) {
+		this.productLineItemList = productLineItemList;
 	}
 
-	public Long getProductTotal() {
-		return productTotal;
+	public List<StockLineItem> getServiceLineItemList() {
+		return serviceLineItemList;
 	}
 
-	public void setProductTotal(Long productTotal) {
-		this.productTotal = productTotal;
+	public void setServiceLineItemList(List<StockLineItem> serviceLineItemList) {
+		this.serviceLineItemList = serviceLineItemList;
+	}
+
+	public int getInvoiceNumber() {
+		return invoiceNumber;
+	}
+
+	public void setInvoiceNumber(int invoiceNumber) {
+		this.invoiceNumber = invoiceNumber;
+	}
+
+	public float getDiscountPercent() {
+		return discountPercent;
+	}
+
+	public void setDiscountPercent(float discountPercent) {
+		this.discountPercent = discountPercent;
 	}
 
 }// end of InvoiceEntity

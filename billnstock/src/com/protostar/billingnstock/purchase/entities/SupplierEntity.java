@@ -1,6 +1,7 @@
 package com.protostar.billingnstock.purchase.entities;
 
 import com.googlecode.objectify.annotation.Entity;
+import com.protostar.billnstock.entity.Address;
 import com.protostar.billnstock.entity.BaseEntity;
 
 @Entity
@@ -12,6 +13,7 @@ public class SupplierEntity extends BaseEntity{
 	private String email;
 	private String phone1 ;
 	private String mobile;
+	private Address address;
 	
 	public String getSupplierName() {
 		return supplierName;
@@ -48,6 +50,12 @@ public class SupplierEntity extends BaseEntity{
 	}
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
+	}
+	public Address getAddress() {
+		return address;
+	}
+	public void setAddress(Address address) {
+		this.address = address;
 	}
 	
 

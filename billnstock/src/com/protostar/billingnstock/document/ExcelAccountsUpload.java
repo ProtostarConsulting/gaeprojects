@@ -31,16 +31,16 @@ import com.twilio.sdk.resource.instance.Account;
  */
 public class ExcelAccountsUpload extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ExcelAccountsUpload() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
-    private BlobstoreService blobstoreService = BlobstoreServiceFactory
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public ExcelAccountsUpload() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	private BlobstoreService blobstoreService = BlobstoreServiceFactory
 			.getBlobstoreService();
 
 	protected void doPost(HttpServletRequest request,
@@ -126,17 +126,16 @@ public class ExcelAccountsUpload extends HttpServlet {
 					System.out.println(" Col1: " + split[0]);
 					System.out.println(" Col2: " + split[1]);
 					System.out.println(" Col3: " + split[2]);
-				
-					
+
 					// insert customer
-					AccountEntity acc=new AccountEntity();
+					AccountEntity acc = new AccountEntity();
 					acc.setBusiness(getbusinessById);
 					acc.setAccountName(split[0]);
-					acc.setAccountNo(split[1]);
+					acc.setAccountNo(Integer.parseInt(split[1]));
 					acc.setDescription(split[2]);
-					AccountService accser=new AccountService();
+					AccountService accser = new AccountService();
 					accser.addAccount(acc);
-						
+
 				}
 				response.sendRedirect("/#/account/accountList");
 			} catch (Exception e) {
