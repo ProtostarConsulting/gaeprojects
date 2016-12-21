@@ -1,38 +1,23 @@
-<md-content layout-padding flex> 
+<md-content layout-padding flex>
 <form name="employeeForm" layout="column">
-	<div>
-		<md-input-container flex="50"> <lable>Select
-		a Month to View Leave Details</lable> <md-select
-			placeholder="Select Month" ng-model="selectedMonth"
-			ng-change="monthSelectChange(selectedMonth)"
-			aria-label="selectedMonth" id="month" name="month" ng-required="true">
-		<md-option ng-value="item" ng-repeat="item in monthList">{{item}}
-		</md-option> </md-select> </md-input-container>		
-	</div>
 
-	<md-toolbar class="md-table-toolbar md-default">
-	<div class="md-toolbar-tools">
-		<span>Employee Leave Detail List</span>
-		<div flex></div>
-		<!-- <section layout="row" layout-align="end end" flex>
-			<md-button class="md-icon-button" id="uplodeExcel"
-				ng-click="UplodeExcel($event)"> <ng-md-icon
-				icon="file_upload" style="fill: md-default" size="24">
-			<md-tooltip>Upload CSV Data</md-tooltip></ng-md-icon></md-button>
-			<md-button class="md-icon-button" id="downloadExcel"
-				ng-click="downloadData()"> <ng-md-icon
-				icon="file_download" style="fill: md-default" size="24">
-			<md-tooltip>Download CSV Data</md-tooltip></ng-md-icon></md-button>
-			<md-button class="md-icon-button" id="refreshIcon"
-				ng-click="refreshListPage()"> <ng-md-icon icon="refresh"
-				style="fill: md-default" size="24"> <md-tooltip>Refresh
-			List</md-tooltip></ng-md-icon></md-button>
+	<section layout="row" layout-xs="column">
+		<md-subheader class="md-primary">
+		<h4 class="md-title">Employee Leave Detail</h4>
+		</md-subheader>
+		<span flex></span>
+		<div layout="row" flex="40" flex-sm="50" flex-xs="100">
+			<md-input-container flex> <md-select
+				placeholder="Select Month" ng-model="selectedMonth"
+				ng-change="monthSelectChange(selectedMonth)"
+				aria-label="selectedMonth" id="month" name="month"
+				ng-required="true"> <md-option ng-value="item"
+				ng-repeat="item in monthList">{{item}} </md-option> </md-select> </md-input-container>
 
-		</section> -->
-	</div>
-	</md-toolbar>
-
-
+			<md-input-container flex> <label>Search
+				Employee</label> <input ng-model="searchText"> </md-input-container>
+		</div>
+	</section>
 	<div ng-if="loading">
 		<div layout="row" layout-sm="column" layout-align="space-around">
 			<md-progress-circular md-diameter="60" md-mode="indeterminate">
@@ -66,7 +51,7 @@
 				</thead>
 				<tbody>
 					<tr ng-style="getFormRowStyle()"
-						ng-repeat="empLeaveDetailObj in employeeLeaveDetailsList | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+						ng-repeat="empLeaveDetailObj in employeeLeaveDetailsList | filter:searchText | limitTo: query.limit: (query.page - 1) * query.limit">
 
 						<td style="margin: 0; padding-left: 5px; padding-right: 5px;">
 							<b ng-bind="empLeaveDetailObj.user.employeeDetail.empId"> </b>

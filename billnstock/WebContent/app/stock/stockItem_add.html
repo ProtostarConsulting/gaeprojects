@@ -37,34 +37,23 @@
 		</div>
 
 		<div layout="row" layout-xs="column">
-
-
-			<md-input-container flex> <label>Quantity
-			</label> <input name="quantity" type="number" ng-model="stock.qty"
+			<md-input-container flex> <label> Cost </label>
+			<input name="cost" type="number" ng-model="stock.cost"
 				ng-required="true">
-			<div ng-messages="stockForm.quantity.$error"
-				ng-if="stockForm.quantity.$submitted || stockForm.quantity.$touched || stockForm.quantity.$dirty">
-				<div ng-message="required">Please Enter quantity.
-					(Example.:0123456789)</div>
+			<div ng-messages="stockForm.cost.$error"
+				ng-if="stockForm.cost.$submitted || stockForm.cost.$touched || stockForm.cost.$dirty">
+				<div ng-message="required">Please Enter Cost (Example.:1234)</div>
 			</div>
 			</md-input-container>
-
-			<md-input-container flex> <label>Threshold
-				Value </label> <input name="threshold" type="number"
-				ng-model="stock.thresholdValue" ng-required="false">
-			<div ng-messages="stockForm.threshold.$error"
-				ng-if="stockForm.threshold.$submitted || stockForm.threshold.$touched || stockForm.threshold.$dirty">
-				<div ng-message="required">Please Enter Threshold
-					Value.(Example.:012)</div>
-			</div>
-			</md-input-container>
-
-
+			<md-input-container flex> <label>Moving
+				Avg. Cost </span>
+			</label> <textarea name="note" ng-model="stock.movingAvgCost"
+				ng-disabled="true"></textarea> </md-input-container>
 		</div>
 
 		<div layout="row" layout-xs="column">
-			<md-input-container flex> <label>Price </label>
-			<input name="price" type="number" ng-model="stock.price"
+			<md-input-container flex> <label> Price
+			</label> <input name="price" type="number" ng-model="stock.price"
 				ng-required="true">
 			<div ng-messages="stockForm.price.$error"
 				ng-if="stockForm.price.$submitted || stockForm.price.$touched || stockForm.price.$dirty">
@@ -74,6 +63,21 @@
 			<md-input-container flex> <label>Notes </span>
 			</label> <textarea name="note" ng-model="stock.notes" ng-required="false"></textarea>
 			</md-input-container>
+		</div>
+		<div layout="row" layout-xs="column">
+			<md-input-container flex> <label>Threshold
+				Value </label> <input name="threshold" type="number"
+				ng-model="stock.thresholdValue" ng-required="false">
+			<div ng-messages="stockForm.threshold.$error"
+				ng-if="stockForm.threshold.$submitted || stockForm.threshold.$touched || stockForm.threshold.$dirty">
+				<div ng-message="required">Please Enter Threshold
+					Value.(Example.:120)</div>
+			</div>
+			</md-input-container>
+
+			<md-input-container flex> <label>Quantity
+			</label> <input name="quantity" type="number" ng-model="stock.qty"
+				ng-disabled="true"> </md-input-container>
 		</div>
 
 		<h3 class="md-subhead">

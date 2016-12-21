@@ -8,10 +8,11 @@ angular
 
 					$scope.monthlyPayDetailsList = [];
 
-					$scope.selectedMonth = function(user) {
-
+					$scope.empIdChange = function(empId) {
+						$scope.userEntity = null
 						for (var int = 0; int < $scope.listUser.length; int++) {
-							if ($scope.listUser[int].empId == user) {
+							var employeeDetail = $scope.listUser[int].employeeDetail;
+							if (employeeDetail && employeeDetail.empId == empId) {
 								$scope.userEntity = $scope.listUser[int];
 								var hrService = appEndpointSF.gethrService();
 								hrService
@@ -41,11 +42,7 @@ angular
 						}
 					}
 
-					$scope.getMonthlyPaymentByUser = function(user) {
-
-					}
-
-					$scope.getdummy = function() {
+					$scope.getUserList = function() {
 
 						var hrService = appEndpointSF.gethrService();
 						hrService.getAllemp($scope.curUser.business.id).then(
@@ -54,6 +51,6 @@ angular
 								});
 					}
 
-					$scope.getdummy();
+					$scope.getUserList();
 
 				});

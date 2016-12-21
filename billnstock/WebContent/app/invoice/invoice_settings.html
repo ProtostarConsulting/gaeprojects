@@ -1,23 +1,28 @@
-
 <md-content layout-padding>
-<h3 class="md-title">
-	General Configuration Options</u>
-</h3>
+<h3 class="md-title">Invoice Settings</h3>
 </md-content>
-</br>
-<h4 class="md-subhead">Note to Customer</h4>
 <hr>
-<div>
-	<form name="invoiceSettings">
+<md-content>
+<form name="invoiceSettings" layout="column">
+	<h4 class="md-subhead">Setup Default Invoice Items</h4>
+	<hr>
+	<md-content layout="row"> <md-checkbox
+		ng-model="settingsObj.showDefaultServiceItems" ng-true-value="true"
+		ng-false-value="false" aria-label="isGoogleUser"> Show
+	Service Items by Default in Invoice</md-checkbox> <md-checkbox
+		ng-model="settingsObj.showDefaultProductItems" ng-true-value="true"
+		ng-false-value="false" aria-label="isGoogleUser"> Show
+	Products Items by Default in Invoice</md-checkbox> </md-content>
+	<h4 class="md-subhead">Note to Customer</h4>
+	<hr>
+	<md-input-container flex="80" layout="row"> <label>Note
+		to Customer</label> <textarea ng-model="settingsObj.noteToCustomer" rows="4"
+		cols="1"></textarea> </md-input-container>
+</form>
 
-		<md-input-container flex="50" layout="row"> <label>Note
-			to Customer</label> <textarea ng-model="settingsObj.noteToCustomer" rows="4"
-			cols="1"></textarea> </md-input-container>
-	</form>
-
-	<section layout="row" layout-sm="column">
-		<md-button class="md-raised md-primary" id="addInvoice"
-			ng-click="addInvoiceSettings()">Save Changes </md-button>
-	</section>
-</div>
+<section layout="row" layout-sm="column">
+	<md-button class="md-raised md-primary" id="addInvoice"
+		ng-click="addInvoiceSettings()">Save Changes </md-button>
+</section>
+</md-content>
 

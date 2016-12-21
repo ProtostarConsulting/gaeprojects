@@ -1,0 +1,163 @@
+<md-content layout-padding>
+<section layout="row" layout-xs="column">
+	<md-subheader class="md-primary">
+	<h4 class="md-title"
+		ng-bind="stockReceiptObj.id?'Edit Stock Receipt':'Create Stock Receipt'"></h4>
+	</md-subheader>
+	<span flex></span>
+</section>
+<div>
+	<form ng-submit="$event.preventDefault()" name="stockReceiptAddForm">
+		<div flex layout="row" layout-xs="column">
+			<md-input-container flex> <label>PO
+				Number </label> <input type="number" ng-model="stockReceiptObj.poNumber"
+				ng-change="getItemsByPO(stockReceiptObj.poNumber)"> </md-input-container>
+			<md-input-container flex> <label>Receipt
+				Date</label> <md-datepicker flex ng-model="stockReceiptObj.receiptDate"
+				md-placeholder="Select Date"></md-datepicker> </md-input-container>
+		</div>
+
+
+		<div layout="row" layout-xs="column">
+			<md-input-container flex> <label>Receipt
+				Notes</label> <textarea ng-model="stockReceiptObj.note" rows="3" cols="1"></textarea>
+			</md-input-container>
+		</div>
+
+		<div layout="row" layout-align="center start"
+			style="margin-top: 20px; margin-bottom: 20px;">
+			<md-divider flex></md-divider>
+		</div>
+
+		<div
+			ng-show="stockReceiptObj.productLineItemList && stockReceiptObj.productLineItemList.length > 0">
+			<h3>Product Line Items</h3>
+			<table md-data-table md-progress="deferred">
+				<thead md-order="query.order" md-trigger="onOrderChange">
+					<tr>
+						<th name="Sr. No."></th>
+						<th name="Item Name" order-by="itemName"></th>
+						<th name="Quantity" order-by="qty"></th>
+						<th name="Purchase Price" order-by="cost"></th>
+						<th name="Total" order-by="total"></th>
+						<th name="Actions" order-by="total"></th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr ng-repeat="item in stockReceiptObj.productLineItemList">
+
+						<td>{{ $index +1 }}</td>
+						<td>
+							<div layout="row">
+								<md-input-container flex> <md-select
+									ng-model="item.stockItem" placeholder="Item Name"
+									ng-change="productLineItemChanged(item)"> <md-option
+									ng-value="stockItem"
+									ng-selected="item.stockItem.id == stockItem.id"
+									ng-repeat="stockItem in stockItemList">{{stockItem.itemName
+								}}</md-option> </md-select> </md-input-container>
+								<md-button class="md-icon-button"
+									ng-click="addStock($event, item)" aria-label="as">
+								<md-icon md-svg-src="img/icons/ic_queue_black_24px.svg"
+									class="name" style="color: Green; height: 25px; width: 25px"></md-icon></md-button>
+							</div>
+						</td>
+
+						<td><md-input-container flex> <label>Quantity
+							</label> <input type="number" ng-model="item.qty"
+								ng-change="calProductSubTotal()"> </md-input-container></td>
+						<td><md-input-container flex> <input
+								type="number" ng-model="item.cost"
+								ng-change="calProductSubTotal()" aria-label="iprice"></md-input-container></td>
+						<td><md-input-container flex> <b>{{item.qty
+								* item.cost | currency:"":"2"}} </b></td>
+						<td><md-icon
+								md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
+								ng-click="removeProductItem($index)" class="name"
+								style="color: Green; height: 18px; width: 18px"></md-icon></td>
+
+					</tr>
+					<tr>
+						<td><md-button class="md-icon-button"
+								ng-click="addProductLineItem()"> <ng-md-icon
+								icon="add_circle" style="fill: md-default" size="24">
+							<md-tooltip> New Entry </md-tooltip></ng-md-icon> </md-button></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div ng-show="stockReceiptObj.serviceLineItemList.length == 0">
+			Add New Other Cost Items:
+			<md-button class="md-icon-button" ng-click="addServiceLineItem()">
+			<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
+			<md-tooltip> Add New Other Costs</md-tooltip></ng-md-icon> </md-button>
+
+		</div>
+		<div
+			ng-show="stockReceiptObj.serviceLineItemList && stockReceiptObj.serviceLineItemList.length > 0">
+			<h3>Other Cost Line Items</h3>
+			<table md-data-table md-progress="deferred">
+				<thead md-order="query.order" md-trigger="onOrderChange">
+					<tr>
+						<th name="Sr_No" order-by="srNo"></th>
+						<th name="Service Name" order-by="serviceName"></th>
+						<th name="Quantity" order-by="qty"></th>
+						<th name="Cost Price" order-by="cost"></th>
+						<th name="Total" order-by="total"></th>
+						<th name="Actions"></th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr ng-repeat="serviceItem in stockReceiptObj.serviceLineItemList">
+
+						<td>{{ $index +1 }}</td>
+						<td><md-input-container flex> <label>Service
+								Name </label> <input ng-model="serviceItem.itemName"> </md-input-container></td>
+
+						<td><md-input-container flex> <label>Quantity
+							</label> <input type="number" ng-model="serviceItem.qty"
+								ng-change="calServiceSubTotal()"> </md-input-container></td>
+						<td><md-input-container flex> <input
+								type="number" ng-model="serviceItem.cost"
+								ng-change="calServiceSubTotal()"></md-input-container></td>
+						<td><md-input-container flex> <b>{{serviceItem.qty
+								* serviceItem.cost | currency:"":"2"}} </b></td>
+						<td><md-icon
+								md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
+								ng-click="removeServiceItem($index)" class="name"
+								style="color: Green; height: 18px; width: 18px"></md-icon></td>
+						<td></td>
+					</tr>
+
+					<tr>
+						<td><md-button class="md-icon-button"
+								ng-click="addServiceLineItem()"> <ng-md-icon
+								icon="add_circle" style="fill: md-default" size="24">
+							<md-tooltip> Add New </md-tooltip></ng-md-icon> </md-button></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+
+		</div>
+	</form>
+</div>
+<div layout layout-sm="column">
+	<section layout="row" layout-sm="column">
+		<md-button class="md-raised md-primary"
+			ng-disabled="stockReceiptAddForm.$invalid"
+			ng-click="addStockReceipt()">Save Stock Receipt</md-button>
+	</section>
+</div>

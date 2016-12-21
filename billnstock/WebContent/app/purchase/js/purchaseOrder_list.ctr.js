@@ -1,49 +1,22 @@
 app = angular.module("stockApp");
+app.controller("purchaseOrderListCtr", function($scope, $window, $mdToast,
+		$timeout, $mdSidenav, $mdUtil, $log, $state, $http, $stateParams,
+		$routeParams, $filter, objectFactory, appEndpointSF) {
 
-app.controller("purchaseOrderListCtr", function($scope, $window, $mdToast, $timeout,
-		$mdSidenav, $mdUtil, $log, $state, $http, $stateParams, $routeParams,
-		$filter, objectFactory, appEndpointSF) {
-
-	  $scope.query = {
-			    order: 'name',
-			    limit: 5,
-			    page: 1
-			  };
-	  
-	$scope.curUser = appEndpointSF.getLocalUserService()
-	.getLoggedinUser();
-	$log.debug("$scope.curUser++++++++"+angular.toJson($scope.curUser));
-	
-	$scope.purchaseOrderObj = {
-			
-			purchaseOrderNo: '',
-			customer:'',
-			to: '',
-			shipTo: '',
-			poDate:'',
-			requisitioner: '',
-			shippedVia: '',
-			fOBPoint: '',
-			terms: '',
-			pOLineItemList : [],
-			subTotal : '',
-			taxCodeName : '',
-			taxPercenatge : '',
-			taxTotal : 0,
-			finalTotal : ''
+	$scope.query = {
+		order : '-itemNumber',
+		limit : 50,
+		page : 1
 	};
 
+	$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
+
 	$scope.getAllPurchaseOrder = function() {
-		$log.debug("Inside Ctr $scope.getAllPurchaseOrder");
 		var purchaseService = appEndpointSF.getPurchaseOrderService();
 
 		purchaseService.getAllPurchaseOrder($scope.curUser.business.id).then(
 				function(purchaseOrderList) {
-					$log.debug("Inside Ctr getAllPurchaseOrder");
 					$scope.purchaseOrderList = purchaseOrderList;
-					$log.debug("@@@@@@@getAllPurchaseOrder"+angular.toJson($scope.purchaseOrderList));
-//					$scope.temppurchaseOrder = $scope.purchaseOrderList.length + 1;
-//					$scope.purchaseOrderObj.purchaseOrderNo = $scope.temppurchaseOrder;
 				});
 	}
 
@@ -55,14 +28,10 @@ app.controller("purchaseOrderListCtr", function($scope, $window, $mdToast, $time
 			$timeout($scope.waitForServiceLoad, 1000);
 		}
 	}
-	
+
 	$scope.purchaseOrderList = [];
-//	$scope.temppurchaseOrder;
+
 	$scope.waitForServiceLoad();
-	
-	
-//	$scope.temppurchaseOrder;
-	
 
 	/* Setup menu */
 	$scope.toggleRight = buildToggler('right');
@@ -84,14 +53,13 @@ app.controller("purchaseOrderListCtr", function($scope, $window, $mdToast, $time
 			$log.debug("close RIGHT is done");
 		});
 	};
-	
+
 	$scope.showSimpleToast = function() {
-		$mdToast.show($mdToast.simple().content(
-				'Purchase Order Saved!').position("top")
-				.hideDelay(3000));
+		$mdToast.show($mdToast.simple().content('Purchase Order Saved!')
+				.position("top").hideDelay(3000));
 	};
-	
+
 	$scope.back = function() {
-		 window.history.back();
+		window.history.back();
 	}
 });

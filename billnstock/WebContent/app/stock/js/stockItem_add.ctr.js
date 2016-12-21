@@ -23,6 +23,8 @@ angular
 							category : "",
 							qty : "",
 							price : "",
+							cost:0,
+							movingAvgCost:0,
 							thresholdValue : '',
 							notes : '',
 							createdDate : new Date(),
@@ -38,7 +40,9 @@ angular
 					
 					$scope.addStock = function() {
 						var stockService = appEndpointSF.getStockService();
-						
+						if(!$scope.stock.movingAvgCost){
+							$scope.stock.movingAvgCost = $scope.stock.cost;
+						}
 						$scope.stock.modifiedBy = $scope.curUser.email_id;
 						stockService.addStock($scope.stock).then(
 								function(msgBean) {

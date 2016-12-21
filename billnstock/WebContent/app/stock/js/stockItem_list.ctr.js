@@ -6,7 +6,7 @@ angular.module("stockApp").controller(
 			$log.debug("Inside stockListCtr");
 
 			$scope.query = {
-				order : 'itemName',
+				order : '-stockItemNumber',
 				limit : 50,
 				page : 1
 			};

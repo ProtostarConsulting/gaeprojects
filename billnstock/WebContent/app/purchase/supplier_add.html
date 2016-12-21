@@ -1,9 +1,14 @@
+<section layout="row" layout-xs="column">
+	<md-subheader class="md-primary">
+	<h4 class="md-title"
+		ng-bind="supplier.id?'Edit Supplier':'Create Supplier'"></h4>
+	</md-subheader>
+	<span flex></span>
+</section>
 <form name="supplierForm">
-	<h3>Supplier</h3>
 	<div layout="row" layout-xs="column">
 		<md-input-container flex> <label>Supplier
-			Name 
-		</label> <input name="supplierName" ng-model="supplier.supplierName"
+			Name </label> <input name="supplierName" ng-model="supplier.supplierName"
 			ng-required="true">
 		<div ng-messages="supplierForm.supplierName.$error"
 			ng-if="supplierForm.supplierName.$submitted || supplierForm.supplierName.$touched">
@@ -20,9 +25,8 @@
 	</div>
 	<div layout="row" layout-xs="column">
 		<md-input-container flex> <label>Contact
-			First Name 
-		</label> <input name="contactFName" ng-model="supplier.contactFName"
-			ng-required="true">
+			First Name </label> <input name="contactFName"
+			ng-model="supplier.contactFName" ng-required="true">
 		<div ng-messages="supplierForm.contactFName.$error"
 			ng-if="supplierForm.contactFName.$submitted || supplierForm.contactFName.$touched">
 			<div ng-message="required">Please Enter First
@@ -31,9 +35,8 @@
 		</md-input-container>
 
 		<md-input-container flex> <label>Contact
-			Last Name 
-		</label> <input name="contactLName" ng-model="supplier.contactLName"
-			ng-required="true">
+			Last Name </label> <input name="contactLName"
+			ng-model="supplier.contactLName" ng-required="true">
 		<div ng-messages="supplierForm.contactLName.$error"
 			ng-if="supplierForm.contactLName.$submitted || supplierForm.contactLName.$touched">
 			<div ng-message="required">Please Enter Last
@@ -124,8 +127,7 @@
 	</section>
 
 	<section layout="row" layout-sm="column" layout-align="left left">
-		<md-button 
-			class="md-raised md-primary" ng-hide="supplier.id == null"
+		<md-button class="md-raised md-primary" ng-hide="supplier.id == null"
 			ng-click="addSupplier()">Update</md-button>
 	</section>
 </form>

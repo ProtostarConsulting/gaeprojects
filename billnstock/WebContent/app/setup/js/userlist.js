@@ -78,48 +78,27 @@ angular
 										function(users) {
 											$scope.userslist = users.items;
 											$scope.activeUsers = [];
-											$scope.inActiveUsers = [];
 											$scope.suspendedUsers = [];
 											for (var i = 0; i < $scope.userslist.length; i++) {
-												if ($scope.userslist[i].status == "active") {
+												if ($scope.userslist[i].isActive) {
 													$scope.activeUsers
 															.push($scope.userslist[i]);
 													$scope.fabMenuData.activeUsersIsOpen
 															.push(false);
-												} else if ($scope.userslist[i].status == "inactive") {
-													$scope.inActiveUsers
-															.push($scope.userslist[i]);
-													$scope.fabMenuData.inActiveUsersIsOpen
-															.push(false);
-												}
-												if ($scope.userslist[i].status == "suspended") {
+												} else {													
 													$scope.suspendedUsers
 															.push($scope.userslist[i]);
 													$scope.fabMenuData.suspendedUsersIsOpen
 															.push(false);
 												}
 											}
-											$scope.loading = false;
-
-											/*
-											 * $log .debug("Active Users" +
-											 * angular
-											 * .toJson($scope.activeUsers));
-											 * $log .debug("In-Active Users" +
-											 * angular
-											 * .toJson($scope.inActiveUsers));
-											 * $log .debug("Suspended Users" +
-											 * angular
-											 * .toJson($scope.suspendedUsers));
-											 */
+											$scope.loading = false;											
 										});
 
 					}
 
 					$scope.activeUsers = [];
-					$scope.inActiveUsers = [];
-					$scope.suspendedUsers = [];
-
+					$scope.suspendedUsers = [];	
 					$scope.userslist = [];
 
 					$scope.waitForServiceLoad = function() {
@@ -133,19 +112,18 @@ angular
 					$scope.waitForServiceLoad();
 
 					$scope.suspendUser = function(user) {
-						var suspended = "suspended";
 						var UserService = appEndpointSF.getUserService();
-						user.status = suspended;
+						user.isActive = false;
 						UserService.updateUser(user).then(
 								function(msgBean) {
 									$scope.showSimpleToast(msgBean.msg);
 									$scope.getAllUserOfOrg();
 								});
 					}
+					
 					$scope.activateUser = function(user) {
-						var active = "active";
 						var UserService = appEndpointSF.getUserService();
-						user.status = active;
+						user.isActive = true;
 						UserService.updateUser(user).then(
 								function(msgBean) {
 									$scope.showSimpleToast(msgBean.msg);

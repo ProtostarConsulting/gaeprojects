@@ -14,7 +14,7 @@ app.controller("warehouseAddCtr", function($scope, $window, $mdToast, $timeout,
 		return {
 			warehouseName : "",
 			description : "",
-			address : [],
+			address : {},
 			createdDate : new Date(),
 			modifiedDate : new Date(),
 			modifiedBy : $scope.curUser.email_id,

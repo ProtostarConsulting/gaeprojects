@@ -6,13 +6,17 @@
 				class="md-icon-button" aria-label="prev" ng-click="back()">
 			<md-tooltip> go back</md-tooltip> <md-icon
 				md-svg-icon="img/icons/ic_reply_black_24px.svg" aria-label="go back"></md-icon>
-			</md-button> <md-button ui-sref="stock.stockItemAdd" ng-click="close()"
-				class="md-primary"> Add Stock</md-button> <md-button
-				ui-sref="stock.stockItemList" ng-click="close()" class="md-primary">
-			Stock List</md-button> <md-button ui-sref="stock.warehouseAdd" ng-click="close()"
-				class="md-primary"> Add Warehouse</md-button> <md-button
-				ui-sref="stock.warehouseList" ng-click="close()" class="md-primary">
-			Warehouse List</md-button> <!-- <md-button ui-sref="stock.reportByTaxPaid" ng-click="close()"
+			</md-button> <md-button ui-sref="stock.stockReceiptAdd" ng-click="close()"
+				class="md-primary"> Add Stock Receipt</md-button> <md-button
+				ui-sref="stock.stockReceiptList" ng-click="close()"
+				class="md-primary"> List Stock Receipt</md-button> <md-button
+				ui-sref="stock.stockShipmentAdd" ng-click="close()"
+				class="md-primary"> Add Stock Shipment</md-button> <md-button
+				ui-sref="stock.stockShipmentList" ng-click="close()"
+				class="md-primary"> List Stock Shipment</md-button> <md-button
+				ui-sref="stock.stockItemAdd" ng-click="close()" class="md-primary">
+			Add Stock</md-button> <md-button ui-sref="stock.stockItemList" ng-click="close()"
+				class="md-primary"> Stock List</md-button> <!-- <md-button ui-sref="stock.reportByTaxPaid" ng-click="close()"
 					class="md-primary">
 				<md-icon md-svg-src="img/icons/ic_trending_flat_black_24px.svg"
 					ui-sref="warehouse.add" class="name"
@@ -35,15 +39,21 @@
 	<md-sidenav class="md-sidenav-right md-whiteframe-z2"
 		md-component-id="right"> <md-toolbar
 		class="md-theme-light"> <!--<h1 class="md-toolbar-tools">More Actions...</h1>-->
-	</md-toolbar> <md-content layout-padding> <md-button flex
+	</md-toolbar> <md-content layout-padding> <md-button
 		ui-sref="stock.taxadd" ng-click="close()" class="md-primary">
 	<md-icon md-svg-src="img/icons/ic_queue_black_24px.svg"
 		ui-sref="warehouse.add" class="name"
 		style="color: Green; height: 20px; width: 20px"></md-icon> Add Tax </md-button> <md-button
-		flex ui-sref="stock.taxlist" ng-click="close()" class="md-primary">
+		ui-sref="stock.taxlist" ng-click="close()" class="md-primary">
 	<md-icon md-svg-src="img/icons/ic_view_list_black_24px.svg"
 		ui-sref="warehouse.add" class="name"
-		style="color: Green; height: 20px; width: 20px"></md-icon> Tax List </md-button>
+		style="color: Green; height: 20px; width: 20px"></md-icon> Tax List </md-button> <md-button
+		ui-sref="stock.warehouseAdd" ng-click="close()" class="md-primary">
+	Add Warehouse</md-button> <md-button ui-sref="stock.warehouseList"
+		ng-click="close()" class="md-primary"> Warehouse List</md-button> <md-button
+		ui-sref="purchaseOrder" ng-click="close()" class="md-primary">
+	Purchase Module</md-button>
+
 	<h3>
 		<md-icon md-svg-src="img/icons/ic_receipt_black_24px.svg"
 			ui-sref="warehouse.add" class="name"

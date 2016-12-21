@@ -206,20 +206,41 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/stockitem",
 		templateUrl : '/app/stock/stockItem_add.html',
 		controller : 'stockAddCtr',
-		params:{
-			selectedStockItem: null
+		params : {
+			selectedStockItem : null
 		}
 	}).state('stock.stockItemList', {
 		url : "/stockItemList",
 		templateUrl : '/app/stock/stockItem_list.html',
 		controller : 'stockListCtr'
-	})
-	.state('stock.warehouseAdd', {
+	}).state('stock.stockReceiptAdd', {
+		url : "/stockreceiptadd",
+		templateUrl : '/app/stock/stock_receipt_add.html',
+		controller : 'stockReceiptAddCtr',
+		params : {
+			stockReceiptObj : null
+		}
+	}).state('stock.stockReceiptList', {
+		url : "/stockreceiptlist",
+		templateUrl : '/app/stock/stock_receipt_list.html',
+		controller : 'stockReceiptListCtr'
+	}).state('stock.stockShipmentAdd', {
+		url : "/stockshipmentadd",
+		templateUrl : '/app/stock/stock_shipment_add.html',
+		controller : 'stockShipmentAddCtr',
+		params : {
+			stockShipmentObj : null
+		}
+	}).state('stock.stockShipmentList', {
+		url : "/stockshipmentlist",
+		templateUrl : '/app/stock/stock_shipment_list.html',
+		controller : 'stockShipmentListCtr'
+	}).state('stock.warehouseAdd', {
 		url : "/warehouse",
 		templateUrl : '/app/stock/warehouse_add.html',
 		controller : 'warehouseAddCtr',
-		params:{
-			selectedWarehouse: null
+		params : {
+			selectedWarehouse : null
 		}
 	}).state('stock.warehouseList', {
 		url : "/warehouseList",
@@ -259,7 +280,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	}).state('invoice.add', {
 		url : "/add",
 		templateUrl : '/app/invoice/invoice_add.html',
-		controller : 'invoiceAddCtr'
+		controller : 'invoiceAddCtr',
+		params : {
+			invoiceObj : null
+		}
 	}).state('invoice.list', {
 		url : "/list/:selectedCustomerId",
 		templateUrl : '/app/invoice/invoice_list.html',
@@ -562,27 +586,26 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/SalesOrderview/:selectedSOId",
 		templateUrl : '/app/sales/salesOder_view.html',
 		controller : 'salesOrderViewCtr'
-
 	}).state('salesOrder.edit', {
 		url : "/edit/:selectedSOId",
 		templateUrl : '/app/sales/salesOrder_edit.html',
 		controller : 'salesOrderEditCtr'
-
 	}).state('purchaseOrder', {
 		url : "/purchaseOrder",
 		templateUrl : '/app/purchase/purchaseOrder_module.html',
 		controller : 'purchaseOrderCtr'
 
-	}).state('purchaseOrder.PurchaseOrderAdd', {
+	}).state('purchaseOrder.purchaseOrderAdd', {
 		url : "/PurchaseOrderAdd",
 		templateUrl : '/app/purchase/purchaseOrder_add.html',
-		controller : 'purchaseOrderAddCtr'
-
-	}).state('purchaseOrder.PurchaseOrderList', {
+		controller : 'purchaseOrderAddCtr',
+		params : {
+			purchaseOrderObj : null
+		}
+	}).state('purchaseOrder.purchaseOrderList', {
 		url : "/PurchaseOrderList",
 		templateUrl : '/app/purchase/purchaseOrder_list.html',
 		controller : 'purchaseOrderListCtr'
-
 	}).state('purchaseOrder.POview', {
 		url : "/POview/:selectedPONo",
 		templateUrl : '/app/purchase/purchaseOrder_view.html',
@@ -594,16 +617,17 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		controller : 'purchaseOrderEditCtr'
 
 	}).state('purchaseOrder.supplierAdd', {
-		url : "/supplierAdd/:selectedSupplierNo",
+		url : "/supplierAdd",
 		templateUrl : '/app/purchase/supplier_add.html',
-		controller : 'supplierAddCtr'
+		controller : 'supplierAddCtr',
+		params : {
+			selectedSupplier : null
+		}
 	})
-
 	.state('purchaseOrder.supplierList', {
 		url : "supplierList",
 		templateUrl : '/app/purchase/supplier_list.html',
 		controller : 'supplierListCtr'
-
 	}).state('hr', {
 		url : "/hr",
 		templateUrl : '/app/hr/hr_module.html',
@@ -665,7 +689,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		controller : 'payrollReportDetailsCtr',
 		params : {
 			selectedMonth : null,
-			toShow: ''
+			toShow : ''
 		}
 	}).state('hr.monthlyTax', {
 		url : "/monthlyTax",

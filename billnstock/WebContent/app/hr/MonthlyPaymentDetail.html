@@ -1,37 +1,29 @@
 <md-content layout-padding> <!-- <h3 class="md-headline">Monthly Payment Detail</h3> -->
 
 <form name="MonthlyPaymentDetail" layout="column">
-	<div>
-		<md-input-container flex="50"> <lable>Select
-		a Month to Prepare Salary Details</lable> <md-select
-			placeholder="Select Month" ng-model="selectedMonth"
-			ng-change="monthSelectChange(selectedMonth)"
-			aria-label="selectedMonth" id="month" name="month" ng-required="true">
-		<md-option ng-value="item" ng-repeat="item in monthList">{{item}}
-		</md-option> </md-select> </md-input-container>
-	</div>
-	<div ng-show="selectedMonth">
-		<md-toolbar class="md-table-toolbar md-default">
-		<div class="md-toolbar-tools">
-			<span>Monthly Salary List</span>
-			<div flex></div>
-			<section layout="row" layout-align="end end" flex>
-				<!-- <md-button class="md-icon-button" id="uplodeExcel"
-				ng-click="UplodeExcel($event)"> <ng-md-icon
-				icon="file_upload" style="fill: md-default" size="24">
-			<md-tooltip>Upload CSV Data</md-tooltip></ng-md-icon></md-button> -->
-				<md-button class="md-icon-button" id="downloadExcel"
-					ng-click="downloadData()"> <ng-md-icon
-					icon="file_download" style="fill: md-default" size="24">
-				<md-tooltip>Download Salary Data</md-tooltip></ng-md-icon></md-button>
-				<!-- <md-button class="md-icon-button" id="refreshIcon"
-				ng-click="refreshListPage()"> <ng-md-icon icon="refresh"
-				style="fill: md-default" size="24"> <md-tooltip>Refresh
-			List</md-tooltip></ng-md-icon></md-button> -->
 
-			</section>
+	<section layout="row" layout-xs="column">
+		<md-subheader class="md-primary">
+		<h4 class="md-title">Employee Monthly Salary</h4>
+		</md-subheader>
+		<span flex></span>
+		<div layout="row" flex="40" flex-sm="50" flex-xs="100">
+			<md-input-container flex> <md-select
+				placeholder="Select Month" ng-model="selectedMonth"
+				ng-change="monthSelectChange(selectedMonth)"
+				aria-label="selectedMonth" id="month" name="month"
+				ng-required="true"> <md-option ng-value="item"
+				ng-repeat="item in monthList">{{item}} </md-option> </md-select> </md-input-container>
+
+			<md-input-container flex> <label>Search
+				Employee</label> <input ng-model="searchText"> </md-input-container>
+			<md-button class="md-icon-button" id="downloadExcel"
+				ng-click="downloadData()"> <ng-md-icon
+				icon="file_download" style="fill: md-default" size="24">
+			<md-tooltip>Download Salary Data</md-tooltip></ng-md-icon></md-button>
 		</div>
-		</md-toolbar>
+	</section>
+	<div ng-show="selectedMonth">
 		<div ng-if="loading">
 			<div layout="row" layout-sm="column" layout-align="space-around">
 				<md-progress-circular md-diameter="60" md-mode="indeterminate"></md-progress-circular>
@@ -79,7 +71,7 @@
 					<tbody>
 
 						<tr
-							ng-repeat="monthlyPayObj in monthlyPayDetailsList | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+							ng-repeat="monthlyPayObj in monthlyPayDetailsList | filter: searchText | limitTo: query.limit: (query.page - 1) * query.limit">
 							<td style="margin: 0; padding-left: 5px; padding-right: 5px;"><b
 								ng-bind="monthlyPayObj.leaveDetailEntity.user.employeeDetail.empId"
 								ng-style="highlightRed(monthlyPayObj.payableDays)"> </b></td>

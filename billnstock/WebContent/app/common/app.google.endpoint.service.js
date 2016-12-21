@@ -1,6 +1,6 @@
 angular.module("stockApp").factory('googleEndpointSF', googleEndpointSF);
 
-function googleEndpointSF($log, $q) {
+function googleEndpointSF($q) {
 
 	var serviceFactory = {};
 
@@ -753,8 +753,7 @@ function googleEndpointSF($log, $q) {
 		gapi.client.hrService.getempByID({
 			'id' : selectedempNo
 		}).execute(function(resp) {
-			/* $log.debug("internet cost:=" + resp); */
-
+		
 			gapi.client.hrService.getempByID({
 				'id' : selectedempNo
 			}).execute(function(resp) {
@@ -1713,10 +1712,43 @@ function googleEndpointSF($log, $q) {
 		});
 		return deferred.promise;
 	}
+	StockService.addStockReceipt = function(stockR) {
+		var deferred = $q.defer();
+		gapi.client.stockService.addStockReceipt(stockR).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}
+	StockService.addStockShipment = function(stockShip) {
+		var deferred = $q.defer();
+		gapi.client.stockService.addStockShipment(stockShip).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}
 
 	StockService.getAllStock = function(id) {
 		var deferred = $q.defer();
 		gapi.client.stockService.getAllStock({
+			"id" : id
+		}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}
+	
+	StockService.getStockReceiptList = function(id) {
+		var deferred = $q.defer();
+		gapi.client.stockService.getStockReceiptList({
+			"id" : id
+		}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}
+	StockService.getStockShipmentList = function(id) {
+		var deferred = $q.defer();
+		gapi.client.stockService.getStockShipmentList({
 			"id" : id
 		}).execute(function(resp) {
 			deferred.resolve(resp.items);
@@ -1751,7 +1783,38 @@ function googleEndpointSF($log, $q) {
 			deferred.resolve(resp.items);
 		});
 		return deferred.promise;
-	} // End of StockService
+	} 
+	
+	StockService.addSupplier = function(cust) {
+		var deferred = $q.defer();
+
+		gapi.client.supplierService.addSupplier(cust).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+
+		return deferred.promise;
+	}
+
+	StockService.getAllSuppliersByBusiness = function(id) {
+		var deferred = $q.defer();
+		gapi.client.supplierService.getAllSuppliersByBusiness({
+			"id" : id
+		}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}
+
+	StockService.getSupplierByID = function(Id) {
+		var deferred = $q.defer();
+		gapi.client.supplierService.getSupplierByID({
+			"id" : Id
+		}).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}
+	// End of StockService
 
 	/* =============================================================================================================================== */
 

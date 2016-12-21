@@ -178,13 +178,7 @@ angular
 															return (parseFloat(a.orderNumber) > parseFloat(b.orderNumber)) ? 1
 																	: -1
 														});
-
-												/*
-												 * $log
-												 * .debug("userAuthMasterEntity:" +
-												 * angular
-												 * .toJson(userAuthMasterEntity));
-												 */
+											
 
 												var curUser = appEndpointSF
 														.getLocalUserService()
@@ -320,7 +314,6 @@ angular
 					 */
 
 					$scope.signOut = function() {
-						$log.debug('signOut1');
 						if (gapi.auth2 == undefined) {
 							$scope.curUser = null;
 							$scope.curUser = appEndpointSF
@@ -329,11 +322,9 @@ angular
 							$state.go("home");
 							return;
 						}
-						$log.debug('signOut2');
 						var auth2 = gapi.auth2.getAuthInstance();
 						auth2.signOut().then(
 								function() {
-									$log.debug('User signed out.');
 									// also remove login details from chrome
 									// browser
 
@@ -413,7 +404,7 @@ angular
 						if (!appEndpointSF.is_service_ready) {
 							$log
 									.debug("Index: Services Not Loaded, watiting...");
-							$timeout($scope.waitForServiceLoad, 1000);
+							$timeout($scope.waitForServiceLoad, 2000);
 							return;
 						}
 

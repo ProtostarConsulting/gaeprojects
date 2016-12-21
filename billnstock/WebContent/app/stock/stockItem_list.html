@@ -6,6 +6,9 @@
 	<span flex> </span>
 	<md-input-container flex-gt-xs="25"> <label>Search</label>
 	<input ng-model="searchText"> </md-input-container>
+	<md-button class="md-icon-button" ui-sref="stock.stockItemAdd">
+	<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
+	<md-tooltip> Add New </md-tooltip></ng-md-icon> </md-button>
 </section>
 
 <div id="stockTable">
@@ -13,11 +16,13 @@
 	<table md-data-table md-progress="deferred">
 		<thead md-order="query.order" md-trigger="onOrderChange">
 			<tr>
+				<th name="Stock Item No" order-by="stockItemNumber"></th>
 				<th name="Item Name" order-by="itemName"></th>
 				<th name="Category" order-by="category"></th>
 				<th name="Quantity" order-by="qty"></th>
+				<th name="Cost" order-by="cost"></th>
+				<th name="Moving Avg. Cost" order-by="movingAvgCost"></th>
 				<th name="Price" order-by="price"></th>
-				<th name="Threshold" order-by="thresholdValue"></th>
 				<th name="Actions"></th>
 			</tr>
 		</thead>
@@ -25,11 +30,13 @@
 		<tbody>
 			<tr md-auto-select
 				ng-repeat="stockItem in stockItemList | orderBy: query.order| filter: searchText | limitTo: query.limit: (query.page - 1) * query.limit"">
+				<td>{{stockItem.stockItemNumber}}</td>
 				<td>{{stockItem.itemName}}</td>
 				<td>{{stockItem.category}}</td>
 				<td>{{stockItem.qty}}</td>
-				<td>{{stockItem.price}}</td>
-				<td style="color: red">{{stockItem.thresholdValue}}</td>
+				<td>{{stockItem.cost}}</td>
+				<td>{{stockItem.movingAvgCost}}</td>
+				<td>{{stockItem.price}}</td>				
 				<td><md-button class="md-icon-button"
 						ui-sref="stock.stockItemAdd({selectedStockItem: stockItem})">
 					<ng-md-icon icon="edit" style="fill: md-default" size="24">

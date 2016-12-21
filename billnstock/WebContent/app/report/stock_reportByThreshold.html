@@ -1,50 +1,39 @@
 <md-content layout-padding>
-<h3><u>Threshold Report</u></h3>
-<div layout layout-sm="column">
-		<md-input-container flex> <label>Search</label> <input
-			ng-model="searchText"> </md-input-container>
-	</div>
-
+<section id="pagetoolbar" layout="row" layout-xs="column">
+	<md-subheader class="md-primary">
+	<h4 class="md-title">Stock Items By Threshold Qty</h4>
+	</md-subheader>
+	<span flex> </span>
+	<md-input-container flex-gt-xs="25"> <label>Search</label>
+	<input ng-model="searchText"> </md-input-container>
+</section>
 <div>
 	<md-data-table-container>
-		<table md-data-table class="md-primary" md-row-select="selected" md-progress="deferred">
-				<thead md-order="query.order" md-trigger="onorderchange">
+	<table md-data-table class="md-primary" md-progress="deferred">
+		<thead md-order="query.order" md-trigger="onorderchange">
 			<tr>
-				<th name="Sr.No" order-by="sr_No"></th>
+				<th name="Stock Item No." order-by="stockItemNumber"></th>
 				<th name="Item Name" order-by="itemName"></th>
 				<th name="Quantity" order-by="qty"></th>
-				<th name="Threshold Value" order-by="thresholdValue"></th>
-
+				<th name="Threshold Qty" order-by="thresholdValue"></th>
 			</tr>
 		</thead>
-
 		<tbody>
-			<tr md-auto-select
+			<tr 
 				ng-repeat="stock in thresholdStock | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
 				<!-- <a ng-href="#/invoice.list/{{invoiceId.id}}">{{invoice.finalTotal}}</a> -->
-				<td>{{$index+1}}</td>
+
+				<td>{{stock.stockItemNumber}}</td>
 				<td>{{stock.itemName}}</td>
 				<td>{{stock.qty}}</td>
 				<td style="color: red">{{stock.thresholdValue}}</td>
-				<td>
-					<section layout="row" layout-sm="column">
-						<md-button class="md-raised md-primary"
-							ui-sref="invoice.view({selectedInvoiceNo: invoice.invoiceId})">View Invoice</md-button>
-					</section>
-					<!--  <a ui-sref="invoice.view({selectedInvoiceNo: invoice.invoiceId})">View Invoice
-						</a> -->
-				</td>
+				<td></td>
 			</tr>
 		</tbody>
 	</table>
 
-	<!-- 			<md-data-table-toolbar class="alternate" ng-show="selected.length">
-			<div>{{selected.length}} {{selected.length > 1 ? 'billsItem' :
-				'items'}} selected</div>
-			<div>{{selected}}</div>
-			</md-data-table-toolbar> 
- --> <md-data-table-pagination md-limit="query.limit"
-		md-page="query.page" md-total={{invoiceData.length}}
-		md-trigger="onpagechange"></md-data-table-pagination> </md-data-table-container>
+	<md-data-table-pagination md-limit="query.limit" md-page="query.page"
+		md-total={{invoiceData.length}} md-trigger="onpagechange"></md-data-table-pagination>
+	</md-data-table-container>
 </div>
 </md-content>

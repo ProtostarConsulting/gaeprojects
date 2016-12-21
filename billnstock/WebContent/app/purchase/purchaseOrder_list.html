@@ -1,65 +1,53 @@
-<md-content layout-padding> <!-- <div>
-	<section layout="row" layout-align="end end" flex>
-		<md-button class="md-raised md-primary" ng-click="back()">ADD
-		NEW</md-button>
-	</section>
-</div>
- -->
-<div layout="row" layout-xs="column">
-	<md-input-container flex> <label>Search</label> <input
-		ng-model="searchText"> </md-input-container>
-
-</div>
+<md-content layout-padding>
+<section layout="row" layout-xs="column">
+	<md-subheader class="md-primary">
+	<h4 class="md-title"> Purchase Order List</h4>
+	</md-subheader>
+	<span flex></span>
+	<div layout="row" flex="33" flex-sm="50" flex-xs="100">
+		<md-input-container flex> <label>Search</label> <input
+			ng-model="searchText"> </md-input-container>
+	</div>
+</section>
 
 <div>
 	<md-data-table-container>
-	<table md-data-table class="md-primary" md-row-select="selected"
-		md-progress="deferred">
+	<table md-data-table class="md-primary" md-progress="deferred">
 		<thead md-order="query.order" md-trigger="onorderchange">
 			<tr>
-				<th name="Supplier" order-by="supplierName"></th>
-				<th name="PO Date" order-by="PODate"></th>
+				<th name="PO No." order-by="itemNumber"></th>
+				<th name="PO Date" order-by="createdDate"></th>
+				<th name="Supplier Name" order-by="supplier.supplierName"></th>
 				<th name="Final Total" order-by="finalTotal"></th>
 				<th name="Actions"></th>
-
 			</tr>
 		</thead>
 
 		<tbody>
-			<tr md-auto-select
+			<tr 
 				ng-repeat="pOItem in purchaseOrderList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
-				<!-- <a ng-href="#/invoice.list/{{invoiceId.id}}">{{invoice.finalTotal}}</a> -->
-				<td>{{pOItem.supplier.supplierName}}</td>
-				<td>{{pOItem.poDate | formatDate}}</td>
-				<td>{{pOItem.finalTotal}}</td>
-				<td>
-					<!-- 		<section layout="row" layout-sm="column">
-						<md-button class="md-raised md-primary"
-							ui-sref="purchaseOrder.POview({selectedPONo: pOItem.id})">View PO</md-button>
-					</section>
-			 --> <md-icon md-svg-src="img/icons/ic_description_black_24px.svg"
-						ui-sref="purchaseOrder.POview({selectedPONo: pOItem.id})"
-						class="name" style="color: Green; height: 30px; width: 30px;"> <md-tooltip>
-            View
-          </md-tooltip></md-icon>&nbsp&nbsp&nbsp&nbsp&nbsp
 
-					<md-icon md-svg-src="img/icons/ic_mode_edit_black_24px.svg"
-						ui-sref="purchaseOrder.POedit({selectedPONo: pOItem.id})"
-						class="name" style="color: Green; height: 30px; width: 30px"> <md-tooltip>
-            Edit
-          </md-tooltip></md-icon>
+				<td>{{pOItem.itemNumber}}</td>
+				<td>{{pOItem.createdDate | formatDate}}</td>
+				<td>{{pOItem.supplier.supplierName}}</td>
+				<td>{{pOItem.finalTotal | currency:"":"2"}}</td>
+				<td>
+					<section layout="row">
+						<md-button class="md-icon-button"
+							ui-sref="purchaseOrder.purchaseOrderAdd({purchaseOrderObj: pOItem})"> <ng-md-icon
+							icon="edit" style="fill: md-default" size="20"> <md-tooltip>
+						Edit</md-tooltip></ng-md-icon></md-button>
+						<md-button class="md-icon-button"
+							ng-click="printpPI(pOItem.id)"> <ng-md-icon
+							icon="print" style="fill: md-default" size="20"> <md-tooltip>
+						Print PO</md-tooltip></ng-md-icon></md-button>						
+					</section>
 				</td>
 			</tr>
 		</tbody>
 	</table>
-
-	<!-- 			<md-data-table-toolbar class="alternate" ng-show="selected.length">
-			<div>{{selected.length}} {{selected.length > 1 ? 'billsItem' :
-				'items'}} selected</div>
-			<div>{{selected}}</div>
-			</md-data-table-toolbar> 
- --> <md-data-table-pagination md-limit="query.limit"
-		md-page="query.page" md-total={{invoiceData.length}}
-		md-trigger="onpagechange"></md-data-table-pagination> </md-data-table-container>
+	<md-data-table-pagination md-limit="query.limit" md-page="query.page"
+		md-total={{purchaseOrderList.length}} md-trigger="onpagechange"></md-data-table-pagination>
+	</md-data-table-container>
 </div>
 </md-content>

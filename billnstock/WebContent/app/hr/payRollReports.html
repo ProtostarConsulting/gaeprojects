@@ -57,15 +57,13 @@
 					<td style="border: 1px solid black; padding: 5px;">{{emp.totalPF}}</td>
 					<td align="left" style="border: 1px solid black; padding: 5px;"><md-button
 							class="md-primary md-hue-1"
-							ui-sref="hr.payrollReportDetails({selectedMonth: emp.month, toShow : 'ptDeductionAmt'})">
+							ui-sref="hr.payrollReportDetails({selectedMonth: emp.month, toShow : 'pfDeductionAmt'})">
 						Details </md-button></td>
-
 				</tr>
 				<tr>
 					<td style="border: 1px solid black; padding: 5px;"><b>TOTAL</b></td>
 					<td style="border: 1px solid black; padding: 5px;"><b>{{totalPF}}</b></td>
 					<td style="border: 1px solid black; padding: 5px;"></td>
-
 				</tr>
 			</tbody>
 		</table>
@@ -73,7 +71,6 @@
 
 		<br></br>
 		<hr>
-
 
 		<!-- ------------------------------------------------------------------- -->
 
@@ -96,7 +93,7 @@
 					<td style="border: 1px solid black; padding: 5px;">{{emp.totalPT}}</td>
 					<td align="left" style="border: 1px solid black; padding: 5px;"><md-button
 							class="md-primary md-hue-1"
-							ui-sref="hr.payrollReportDetails({selectedMonth: emp.month, toShow : 'pfDeductionAmt'})">
+							ui-sref="hr.payrollReportDetails({selectedMonth: emp.month, toShow : 'ptDeductionAmt'})">
 						Details </md-button></td>
 
 				</tr>
@@ -136,13 +133,11 @@
 							class="md-primary md-hue-1"
 							ui-sref="hr.payrollReportDetails({selectedMonth: emp.month, toShow : 'canteenDeductionAmt'})">
 						Details </md-button></td>
-
 				</tr>
 				<tr>
 					<td style="border: 1px solid black; padding: 5px;"><b>TOTAL</b></td>
 					<td style="border: 1px solid black; padding: 5px;"><b>{{totalCanteen}}</b></td>
 					<td style="border: 1px solid black; padding: 5px;"></td>
-
 				</tr>
 			</tbody>
 		</table>
