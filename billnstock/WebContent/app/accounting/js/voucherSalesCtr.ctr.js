@@ -154,7 +154,7 @@ app
 					
 					$scope.downloadpdf=function(){
 					
-						
+						window.open("PdfVouchers?id="+$scope.vouchersSaview1.id+"&entityname="+SalesVoucherEntity+"&bid="+$scope.curUser.business.id);
 					}
 
 				});

@@ -64,7 +64,7 @@ app
 					
 					$scope.downloadpdf=function(){
 						//	window.location.href ="PdfSales";
-							window.open("PdfSales?id="+	$scope.vouchersPuraview.id+"&entityname="+PurchesVoucherEntity+"&bid="+$scope.curUser.business.id);
+							window.open("PdfVouchers?id="+	$scope.vouchersPuraview.id+"&entityname="+PurchesVoucherEntity+"&bid="+$scope.curUser.business.id);
 						//	myWindow=window.open('PdfSales','mypage.jsp','width=200,height=100'); myWindow.focus();
 							
 						}

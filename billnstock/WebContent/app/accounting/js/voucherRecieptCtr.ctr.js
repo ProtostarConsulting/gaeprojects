@@ -121,7 +121,7 @@ $scope.s=x;
 	
 	$scope.downloadpdf=function(){
 		//	window.location.href ="PdfSales";
-			window.open("PdfSales?id="+$scope.vouchersReview1.id+"&entityname="+ReceiptVoucherEntity+"&bid="+$scope.curUser.business.id);
+			window.open("PdfVouchers?id="+$scope.vouchersReview1.id+"&entityname="+ReceiptVoucherEntity+"&bid="+$scope.curUser.business.id);
 		//	myWindow=window.open('PdfSales','mypage.jsp','width=200,height=100'); myWindow.focus();
 			
 		}

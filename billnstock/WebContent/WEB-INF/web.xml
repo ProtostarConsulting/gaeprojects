@@ -142,13 +142,13 @@
   </servlet-mapping>
   <servlet>
     <description/>
-    <display-name>PdfSales</display-name>
-    <servlet-name>PdfSales</servlet-name>
-    <servlet-class>com.protostar.billingnstock.account.services.PdfSales</servlet-class>
+    <display-name>PdfVouchers</display-name>
+    <servlet-name>PdfVouchers</servlet-name>
+    <servlet-class>com.protostar.billingnstock.account.services.PdfVouchers</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>PdfSales</servlet-name>
-    <url-pattern>/PdfSales</url-pattern>
+    <servlet-name>PdfVouchers</servlet-name>
+    <url-pattern>/PdfVouchers</url-pattern>
   </servlet-mapping>
   
   
