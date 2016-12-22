@@ -3,6 +3,10 @@
 	<div>
 		<section layout="row">
 			<div class="md-toolbar-tools">
+				<md-button class="md-icon-button" aria-label="prev"
+					ng-click="back()"> <md-tooltip> go back</md-tooltip> <md-icon
+					md-svg-icon="img/icons/ic_reply_black_24px.svg"
+					aria-label="go back"></md-icon> </md-button>
 				<md-button ui-sref="invoice.add" ng-click="close()"
 					class="md-primary"> Add Invoice</md-button>
 				<md-button ui-sref="invoice.list" ng-click="close()"

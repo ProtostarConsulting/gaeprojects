@@ -20,10 +20,10 @@ public class PurchaseOrderEntity extends InvoiceEntity {
 	private String fOBPoint;
 	private String terms;
 
-	Ref<SupplierEntity> supplier;
+	private Ref<SupplierEntity> supplier;
 
 	public SupplierEntity getSupplier() {
-		return supplier.get();
+		return supplier == null ? null : supplier.get();
 	}
 
 	public void setSupplier(SupplierEntity supplier) {

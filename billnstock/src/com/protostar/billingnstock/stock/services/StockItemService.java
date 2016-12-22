@@ -93,7 +93,7 @@ public class StockItemService {
 
 	@ApiMethod(name = "getAllStock", path = "getAllStock")
 	public List<StockItemEntity> getAllStock(@Named("id") Long busId) {
-		System.out.println("getAllStock#busId:" + busId);
+		//System.out.println("getAllStock#busId:" + busId);
 		List<StockItemEntity> filteredStocks = ofy().load()
 				.type(StockItemEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, busId)).list();
@@ -104,7 +104,7 @@ public class StockItemService {
 	@ApiMethod(name = "getStockReceiptList", path = "getStockReceiptList")
 	public List<StockItemsReceiptEntity> getStockReceiptList(
 			@Named("id") Long busId) {
-		System.out.println("getAllStock#busId:" + busId);
+		//System.out.println("getAllStock#busId:" + busId);
 		List<StockItemsReceiptEntity> stockItemsShipmentList = ofy().load()
 				.type(StockItemsReceiptEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, busId)).list();

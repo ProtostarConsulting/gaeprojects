@@ -3,8 +3,13 @@
 		<section layout="row">
 			<div class="md-toolbar-tools">
 				<md-content layout="row" layout-align="center start"> <md-button
-					ui-sref="purchaseOrder.purchaseOrderAdd" ng-click="close()"
-					class="md-primary"> Create Purchase Order</md-button> </md-content>
+					class="md-icon-button" aria-label="prev" ng-click="back()">
+				<md-tooltip> go back</md-tooltip> <md-icon
+					md-svg-icon="img/icons/ic_reply_black_24px.svg"
+					aria-label="go back"></md-icon> </md-button>
+				<md-button ui-sref="purchaseOrder.purchaseOrderAdd"
+					ng-click="close()" class="md-primary"> Create Purchase
+				Order</md-button> </md-content>
 				<md-content layout="row" layout-align="center start"> <md-button
 					ui-sref="purchaseOrder.purchaseOrderList" ng-click="close()"
 					class="md-primary"> Purchase Order List</md-button> <md-button

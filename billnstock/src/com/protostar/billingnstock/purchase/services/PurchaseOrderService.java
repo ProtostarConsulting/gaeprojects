@@ -43,7 +43,15 @@ public class PurchaseOrderService {
 		return filteredPO;
 	}
 
-	@ApiMethod(name = "getPOByID")
+	@ApiMethod(name = "fetchPOByID", path = "fetchPOByID")
+	public PurchaseOrderEntity fetchPOByID(@Named("itemNumber") int itemNumber) {
+		List<PurchaseOrderEntity> list = ofy().load()
+				.type(PurchaseOrderEntity.class)
+				.filter("itemNumber", itemNumber).list();
+		return list.size() > 0 ? list.get(0) : null;
+	}
+
+	@ApiMethod(name = "getPOByID", path = "getPOByID")
 	public PurchaseOrderEntity getPOByID(@Named("id") Long id) {
 
 		PurchaseOrderEntity POById = ofy().load()

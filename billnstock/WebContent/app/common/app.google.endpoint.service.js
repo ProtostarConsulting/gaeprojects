@@ -2081,7 +2081,17 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-
+	
+	PurchaseOrderService.getPOByItemNumber = function(itemNumber) {
+		var deferred = $q.defer();
+		gapi.client.purchaseOrderService.fetchPOByID({
+			"itemNumber" : itemNumber
+		}).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}
+	
 	PurchaseOrderService.getPOByID = function(id) {
 		var deferred = $q.defer();
 		gapi.client.purchaseOrderService.getPOByID({

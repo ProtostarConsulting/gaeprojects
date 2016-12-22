@@ -42,8 +42,6 @@ app
 
 					// list of `state` value/display objects
 					$scope.supplierList = [];
-
-					$scope.supplier = null;
 					$scope.searchTextInput = null;
 
 					$scope.querySearch = function(query) {
@@ -71,8 +69,6 @@ app
 								});
 					}
 
-					$scope.tempSupp = [];
-
 					function createFilterFor(query) {
 						var lowercaseQuery = angular.lowercase(query);
 						return function filterFn(supp) {
@@ -85,8 +81,8 @@ app
 					$scope.purchaseOrderObj = $stateParams.purchaseOrderObj ? $stateParams.purchaseOrderObj
 							: $scope.getEmptyPurchaseOrderObj();
 
-					$scope.purchaseOrderObj.invoiceDueDate = $scope.purchaseOrderObj.invoiceDueDate ? new Date(
-							$scope.purchaseOrderObj.invoiceDueDate)
+					$scope.purchaseOrderObj.poDueDate = $scope.purchaseOrderObj.poDueDate ? new Date(
+							$scope.purchaseOrderObj.poDueDate)
 							: new Date();
 
 					$scope.addPurchaseOrder = function() {

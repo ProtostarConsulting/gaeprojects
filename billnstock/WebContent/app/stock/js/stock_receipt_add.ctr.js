@@ -12,7 +12,7 @@ app
 
 					$scope.getEmptyStockReceiptObj = function() {
 						return {
-							customer : null,
+							supplier : null,
 							discAmount : 0,
 							poNumber : null,
 							serviceLineItemList : [],
@@ -84,7 +84,7 @@ app
 							itemName : "",
 							qty : 1,
 							price : "",
-							cost : "",							
+							cost : "",
 							stockItem : null,
 							selectedTaxItem : null
 						};
@@ -312,28 +312,26 @@ app
 					}
 					$scope.taxData = [];
 
-					$scope.getAllSalesOrder = function() {
-						var salesService = appEndpointSF.getSalesOrderService();
-
-						salesService.getAllSalesOrder(
-								$scope.curUser.business.id).then(
-								function(salesOrderList) {
-									$scope.SOforinvoice = salesOrderList;
-								});
+					$scope.getPOByItemNumber = function(itemNumber) {
+						$log.debug("Inside function $scope.getPOByItemNumber");
+						var purchaseService = appEndpointSF
+								.getPurchaseOrderService();
+						purchaseService
+								.getPOByItemNumber(itemNumber)
+								.then(
+										function(poObj) {
+											$log
+													.debug("Returned getPOByItemNumber:"
+															+ poObj);
+											if (poObj && poObj.id) {
+												$log.debug("Found PO");
+												$scope.stockReceiptObj.serviceLineItemList = poObj.serviceLineItemList;
+												$scope.stockReceiptObj.productLineItemList = poObj.productLineItemList;
+												$scope.stockReceiptObj.selectedServiceTax = poObj.selectedServiceTax;
+												$scope.stockReceiptObj.selectedProductTax = poObj.selectedProductTax;
+											}
+										});
 					}
-
-					$scope.SOforinvoice = [];
-
-					$scope.getAllAccountsByBusiness = function() {
-						var accountService = appEndpointSF.getAccountService();
-
-						accountService.getAllAccountsByBusiness(
-								$scope.curUser.business.id).then(
-								function(accountList) {
-									$scope.accountforinvoice = accountList;
-								});
-					}
-					$scope.accountforinvoice = [];
 
 					$scope.getAllWarehouseByBusiness = function() {
 						$log
@@ -348,8 +346,50 @@ app
 								});
 					}
 
+					// Select supplier
+
+					// list of `state` value/display objects
+					$scope.supplierList = [];
+					$scope.searchTextInput = null;
+
+					$scope.querySearch = function(query) {
+						var results = query ? $scope.supplierList
+								.filter(createFilterFor(query)) : [];
+						var deferred = $q.defer();
+						$timeout(function() {
+							deferred.resolve(results);
+
+						}, Math.random() * 1000, false);
+						return deferred.promise;
+					}
+
+					function loadAllSuppliers() {
+
+						var supplierService = appEndpointSF
+								.getSupplierService();
+
+						supplierService.getAllSuppliersByBusiness(
+								$scope.curUser.business.id).then(
+								function(supplierList) {
+
+									$scope.supplierList = supplierList;
+
+								});
+					}
+
+					function createFilterFor(query) {
+						var lowercaseQuery = angular.lowercase(query);
+						return function filterFn(supp) {
+
+							return (angular.lowercase(supp.supplierName)
+									.indexOf(lowercaseQuery) >= 0);
+						};
+					}
+					// End Select supplier
+
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
+							loadAllSuppliers();
 							$scope.getAllStock();
 							$scope.getTaxesByVisibility();
 							$scope.getAllWarehouseByBusiness();
@@ -365,6 +405,59 @@ app
 					}
 
 					$scope.waitForServiceLoad();
+
+					$scope.addSupplier = function(ev) {
+						var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))
+								&& $scope.customFullscreen;
+						$mdDialog
+								.show(
+										{
+											controller : addSupplierDialogController,
+											templateUrl : '/app/purchase/supplier_add.html',
+											parent : angular
+													.element(document.body),
+											targetEvent : ev,
+											clickOutsideToClose : true,
+											fullscreen : useFullScreen,
+											locals : {
+												curBusi : $scope.curUser.business,
+												supplier : $scope.supplier,
+												curUser : $scope.curUser
+											}
+										})
+								.then(
+										function(answer) {
+											$scope.status = 'You said the information was "'
+													+ answer + '".';
+										},
+										function() {
+											$scope.status = 'You cancelled the dialog.';
+										});
+
+					};
+
+					function addSupplierDialogController($scope, $mdDialog,
+							curBusi, curUser, supplier) {
+
+						$scope.addSupplier = function() {
+							$scope.supplier.business = curUser.business;
+							$scope.supplier.createdDate = new Date();
+							$scope.supplier.modifiedBy = curUser.email_id;
+							var supplierService = appEndpointSF
+									.getSupplierService();
+
+							supplierService.addSupplier($scope.supplier).then(
+									function(msgBean) {
+
+									});
+							$scope.hide();
+							// window.history.back();
+						}
+
+						$scope.hide = function() {
+							$mdDialog.hide();
+						};
+					}
 
 					// For Add Stock from Invoice Page through popup
 					$scope.addStock = function(ev, lineItem) {

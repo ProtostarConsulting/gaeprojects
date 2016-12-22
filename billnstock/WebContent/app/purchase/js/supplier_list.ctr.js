@@ -1,29 +1,22 @@
 app = angular.module("stockApp");
-
 app.controller("supplierListCtr", function($scope, $window, $mdToast, $timeout,
 		$mdSidenav, $mdUtil, $log, $state, $http, $stateParams, $routeParams,
 		$filter, objectFactory, appEndpointSF) {
 
-	  $scope.query = {
-			    order: 'name',
-			    limit: 5,
-			    page: 1
-			  };
-	  
-	$scope.curUser = appEndpointSF.getLocalUserService()
-	.getLoggedinUser();
-	$log.debug("$scope.curUser++++++++"+angular.toJson($scope.curUser));
-	
+	$scope.query = {
+		order : 'supplierName',
+		limit : 50,
+		page : 1
+	};
+
+	$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
+
 	$scope.getAllSuppliersByBusiness = function() {
 		var supplierService = appEndpointSF.getSupplierService();
 
-		supplierService.getAllSuppliersByBusiness($scope.curUser.business.id).then(
-				function(supplierList) {
-
+		supplierService.getAllSuppliersByBusiness($scope.curUser.business.id)
+				.then(function(supplierList) {
 					$scope.supplierList = supplierList;
-					$log.debug("@@@@@@@getAllSuppliersByBusiness"+angular.toJson($scope.supplierList));
-//					$scope.temppurchaseOrder = $scope.purchaseOrderList.length + 1;
-//					$scope.purchaseOrderObj.purchaseOrderNo = $scope.temppurchaseOrder;
 				});
 	}
 
@@ -35,9 +28,9 @@ app.controller("supplierListCtr", function($scope, $window, $mdToast, $timeout,
 			$timeout($scope.waitForServiceLoad, 1000);
 		}
 	}
-	
+
 	$scope.supplierList = [];
-//	$scope.temppurchaseOrder;
+	// $scope.temppurchaseOrder;
 	$scope.waitForServiceLoad();
 
 	/* Setup menu */
@@ -60,8 +53,8 @@ app.controller("supplierListCtr", function($scope, $window, $mdToast, $timeout,
 			$log.debug("close RIGHT is done");
 		});
 	};
-		
+
 	$scope.back = function() {
-		 window.history.back();
+		window.history.back();
 	}
 });

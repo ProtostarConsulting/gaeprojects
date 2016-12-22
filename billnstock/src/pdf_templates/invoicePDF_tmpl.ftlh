@@ -5,13 +5,27 @@ table {
 	border-collapse: collapse;
 }
 
-tab2 {
-	
+th {
+	border: 1px solid black; 
+	border-color: #cccccc; 
+	border-spacing: 5px; 
+	height: 30px; 
+	padding: 7px;
 }
+
+td {
+	border: 1px solid black; 
+	border-color: #cccccc; 
+	border-spacing: 5px; 
+	height: 30px; 
+	padding: 5px;
+}
+
 </style>
 
 <div align="center">
- <b>${businessName}</b> <br></br> ${businessAddress}
+ <h3 align="center">${businessName}</h3>
+ ${businessAddress}
 </div>
 <hr></hr>
 <p>
@@ -29,162 +43,174 @@ tab2 {
 
 			<tbody>
 				<tr>
-					<td style="width: 20%">Customer Name :
+					<td style="width: 20%; border: 0px;"><b>Customer Name:</b>
 						</td>
-					<td style="width: 40%">${CustomerName}</td>
-					<td></td>
-					<td >Invoice Id :</td>
-					<td >${InvoiceId}</td>
+					<td style="width: 40%; border: 0px;">${CustomerName}</td>
+					<td style="border: 0px;"></td>
+					<td align="right" style="width: 20%; border: 0px;"><b>Invoice No:</b></td>
+					<td align="right" style="width: 15%; border: 0px;">${invoiceNumber}</td>
 				</tr>
 
 				<tr>
-				<td style="width: 20%">Customer Address
-						</td>
-					<td style="width: 20%">${CustomerAddress}</td>
-					<td></td>
-					<td align="left">Date:</td>
-					<td align="left">${Date}</td>
-				
+				    <td style="border: 0px;"><b>Customer Address:</b></td>
+					<td style="border: 0px;">${CustomerAddress}</td>
+					<td style="border: 0px;"></td>
+					<td align="right" style="border: 0px;"><b>Invoice Date:</b></td>
+					<td align="right" style="border: 0px;">${Date}</td>				
 				</tr>
 				
 				<tr>
-				<td style="width: 20%">Note To Customer:
+				<td style="width: 20%" style="border: 0px;">
 						</td>
-				<td style="width :20%">${NoteToCustomer}</td>		
-				<td></td>
-				<td align="left">Discount</td>
-				<td align="left">${Discount}</td>		
+				<td style="width :20%; border: 0px;"></td>		
+				<td style="border: 0px;"></td>
+				<#if Discount??>
+					<td align="left" style="border: 0px;"><b>Discount:</b></td>
+					<td align="left" style="border: 0px;">${Discount}</td>	
+				<#else>
+					<td style="border: 0px;"></td>		
+					<td style="border: 0px;"></td>
+				</#if>	
+				</tr>
+				
+				<tr>
+				<td style="border: 0px;"><b>Note To Customer:</b></td>
+				<td style="border: 0px;"></td>		
+				<td style="border: 0px;"></td>
+				<td style="border: 0px;"></td>
+				<td style="border: 0px;"></td>	
+				</tr>
+				<tr style="border: 0px;">
+				<td colspan="5" style="width: 80%; border: 0px;">${NoteToCustomer}</td>	
+				<td style="border: 0px;"></td>
+				<td style="border: 0px;"></td>
+				<td style="border: 0px;"></td>
+				<td style="border: 0px;"></td>	
 				</tr>
 		</tbody>
 			</table>
 	<p>
 	<br> </br>
 	</p>
+	<#if serviceItemList??>
 		<table
-	style="width: 100%; height: 100%; border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;">
-	
+	style="width: 100%; height: 100%; ">
+	<caption align="left" style="border-spacing: 5px; height: 30px; padding: 10px;"><b>Services: </b></caption>
 	<tbody>
 
 		<tr>
 			<th
-				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
-				align="center">Service Name </th>
+				style=""
+				align="center">Service Desc</th>
 			<th
-				style=" width:10%;border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px;"
-				align="center">Quantity</th>
+				style="width:6%;"
+				align="center">Qty</th>
 			<th
-				style="width:10%;border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px;">Price
+				style="width:10%;">Price
 			</th>
 			<th
-				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
-				align="center">Service Total(INR)</th>
+				style=""
+				align="center">Sub Total</th>
 			<th
-				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
 				align="center">Tax Type</th>
 			<th
-				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
-				align="center">Tax Total(INR)</th>
+				align="center">Tax Total</th>
 			<th
-				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
-				align="center">Service SubTotal(INR)</th>
+				align="center">Total</th>
 		</tr>
-		
-		
-		<#list serviceItemList as serviceItem>	
-		 
-		
-		<tr>
-		<#assign subTotal= serviceItem.sQty * serviceItem.sPrice> 
-		<#assign taxP=TaxPercentage>
-		
-			<td 
-				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
-				align="center">${serviceItem.serviceName}</td>
-			<td 
-				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px;"
-				align="center">${serviceItem.sQty}</td>
-			<td 
-				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px;">${serviceItem.sPrice}
-			</td>			
-			<td
-				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
-				align="center">${subTotal}</td>
-			<td
-				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
-				align="center">${TaxType} - ${taxP}%</td>
-			<td
-				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
-				align="center">${subTotal}</td>
-			<td
-				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
-				align="center">${subTotal}</td>
+		<#list serviceItemList as lineItem>
+		    <#assign subTotal = lineItem.qty * lineItem.price>
+			<#if serviceTax??>
+				<#assign taxAmt = serviceTax.taxPercenatge/100 * subTotal>
+				<#assign taxCodeName = productTax.taxCodeName + "(" +productTax.taxPercenatge + "%)">
+		    <#else>
+  				<#assign taxAmt = 0>
+  				<#assign taxCodeName = "">
+			</#if>	
+			<tr>
+			<td align="left">${lineItem.itemName}</td>
+			<td align="center">${lineItem.qty}</td>
+			<td align="right">${lineItem.price}</td>			
+			<td align="right">${subTotal}</td>
+			<td align="center">${taxCodeName}</td>
+			<td align="right">${taxAmt}</td>
+			<td align="right">${subTotal + taxAmt}</td>
 		</tr>
 		</#list>	
-		
-	</tbody>
-	
-	</table>
+		</tbody>
+		</table>
+	<#else>
+  No service items
+</#if>
 	<p>
 	<br></br>
 	<br></br>
 	<br></br>
-	</p>
-	<table
-	style="width: 100%; height: 100%; border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;">
 	
+	</p>
+	<#if productItemList??>
+  	
+	<table 
+	style="width: 100%; height: 100%; ">
+	<caption align="left" style="border-spacing: 5px; height: 30px; padding: 10px;"><b>Products: </b></caption>
 	<tbody>
 
 		<tr>
+			<th align="center">Product Name </th>
 			<th
-				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
-				align="center">Product Name </th>
+				style="width:6%;"
+				align="center">Qty</th>
 			<th
-				style=" width:10%;border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px;"
-				align="center">Quantity</th>
-			<th
-				style="width:10%;border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px;">Price
+				style="width:10%;">Price
 			</th>
-			<th
-				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
-				align="center">Product Total(INR)</th>
-			<th
-				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
-				align="center">Tax Type</th>
-			<th
-				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
-				align="center">Tax Total(INR)</th>
-			<th
-				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
-				align="center">Final Total(INR)</th>
+			<th align="center">Sub Total</th>
+			<th align="center">Tax Type</th>
+			<th align="center">Tax Total</th>
+			<th align="center">Total</th>
 		</tr>
+		<#list productItemList as lineItem>
+		    <#assign subTotal = lineItem.qty * lineItem.price>
+			<#if productTax??>
+				<#assign taxAmt = productTax.taxPercenatge/100 * subTotal>
+				<#assign taxCodeName = productTax.taxCodeName + "(" +productTax.taxPercenatge + "%)">
+		    <#else>
+  				<#assign taxAmt = 0>
+  				<#assign taxCodeName = "">
+			</#if>	
 			<tr>
-			<td
-				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
-				align="center">${ItemName}</td>
-			<td
-				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px;"
-				align="center">${ItemQuantity}</td>
-			<td
-				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px;">${ItemPrice}
-			</td>
-			
-			<td
-				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
-				align="center">${ProductTotal}</td>
-			<td
-				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
-				align="center">${TaxType}- ${TaxPercentage}%</td>
-			<td
-				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
-				align="center">${ProductTaxTotal}</td>
-			<td
-				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
-				align="center">${FinalTotal}</td>
+			<td align="left">${lineItem.stockItem.itemName}</td>
+			<td align="center">${lineItem.qty}</td>
+			<td align="right">${lineItem.price}
+			</td>			
+			<td align="right">${subTotal}</td>
+			<td align="center">${taxCodeName}</td>
+			<td align="right">${taxAmt}</td>
+			<td align="right">${subTotal + taxAmt}</td>
 		</tr>
-		
+		</#list>	
 		</tbody>
-		</table>
-		
+		</table>		
+<#else>
+  NO products items
+</#if>		
+
+<table
+	style="width: 100%; height: 100%; border-spacing: 5px; height: 30px; padding: 5px;">
+	
+	<tbody>
+
+		<tr>			
+			<th
+				style="width:100%;"
+				align="right">Final Total:&nbsp;${finalTotal}</th>			
+		</tr>
+		<tr>
+			<th
+				style="width:100%;"
+				align="right">${finalTotalInWord}</th>					
+		</tr>
+	</tbody>
+</table>	
 		<p>
 	<br></br>
 	<br></br>
