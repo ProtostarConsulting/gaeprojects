@@ -32,7 +32,7 @@ public class InvoiceService {
 			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
 					EntityUtil.getBusinessRawKey(invoiceEntity.getBusiness()),
 					Constants.INVOICE_NO_COUNTER);
-			invoiceEntity.setInvoiceNumber(sequenceGenService
+			invoiceEntity.setItemNumber(sequenceGenService
 					.getNextSequenceNumber());
 		}
 

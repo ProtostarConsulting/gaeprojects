@@ -4,13 +4,10 @@ import java.util.Date;
 
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Index;
 import com.protostar.billingnstock.invoice.entities.InvoiceEntity;
 
 @Entity
 public class PurchaseOrderEntity extends InvoiceEntity {
-	@Index
-	private int itemNumber;
 	private String to;
 	private String shipTo;
 	private Date poDate;
@@ -93,13 +90,5 @@ public class PurchaseOrderEntity extends InvoiceEntity {
 
 	public void setPoDueDate(Date poDueDate) {
 		this.poDueDate = poDueDate;
-	}
-
-	public int getItemNumber() {
-		return itemNumber;
-	}
-
-	public void setItemNumber(int itemNumber) {
-		this.itemNumber = itemNumber;
 	}
 }

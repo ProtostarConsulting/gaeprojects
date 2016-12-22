@@ -317,7 +317,7 @@ app
 						var purchaseService = appEndpointSF
 								.getPurchaseOrderService();
 						purchaseService
-								.getPOByItemNumber(itemNumber)
+								.getEntityByItemNumber(itemNumber)
 								.then(
 										function(poObj) {
 											$log

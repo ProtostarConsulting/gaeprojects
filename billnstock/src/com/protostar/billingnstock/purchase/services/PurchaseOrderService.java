@@ -11,12 +11,14 @@ import com.google.api.server.spi.config.Named;
 import com.googlecode.objectify.Key;
 import com.protostar.billingnstock.purchase.entities.PurchaseOrderEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
+import com.protostar.billnstock.service.BaseService;
 import com.protostar.billnstock.until.data.Constants;
+import com.protostar.billnstock.until.data.EntityPagingInfo;
 import com.protostar.billnstock.until.data.EntityUtil;
 import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 
 @Api(name = "purchaseOrderService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.purchase.services", ownerName = "com.protostar.billingnstock.purchase.services", packagePath = ""))
-public class PurchaseOrderService {
+public class PurchaseOrderService extends BaseService {
 
 	@ApiMethod(name = "addPurchaseOrder", path = "addPurchaseOrder")
 	public PurchaseOrderEntity addPurchaseOrder(
@@ -43,19 +45,22 @@ public class PurchaseOrderService {
 		return filteredPO;
 	}
 
-	@ApiMethod(name = "fetchPOByID", path = "fetchPOByID")
-	public PurchaseOrderEntity fetchPOByID(@Named("itemNumber") int itemNumber) {
-		List<PurchaseOrderEntity> list = ofy().load()
-				.type(PurchaseOrderEntity.class)
-				.filter("itemNumber", itemNumber).list();
-		return list.size() > 0 ? list.get(0) : null;
+	@ApiMethod(name = "fetchEntityListByPaging", path = "fetchEntityListByPaging")
+	public EntityPagingInfo fetchEntityListByPaging(@Named("id") Long busId,
+			EntityPagingInfo pagingInfo) {
+		return super.fetchEntityListByPaging(busId, PurchaseOrderEntity.class,
+				pagingInfo);
 	}
 
-	@ApiMethod(name = "getPOByID", path = "getPOByID")
-	public PurchaseOrderEntity getPOByID(@Named("id") Long id) {
-
-		PurchaseOrderEntity POById = ofy().load()
-				.type(PurchaseOrderEntity.class).id(id).now();
-		return POById;
+	@ApiMethod(name = "getEntityByItemNumber", path = "getEntityByItemNumber")
+	public PurchaseOrderEntity getEntityByItemNumber(
+			@Named("itemNumber") int itemNumber) {
+		Object entityByItemNumber = super.getEntityByItemNumber(
+				PurchaseOrderEntity.class, itemNumber);
+		if (entityByItemNumber != null)
+			return (PurchaseOrderEntity) entityByItemNumber;
+		else
+			return null;
 	}
+
 }

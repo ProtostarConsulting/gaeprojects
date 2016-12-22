@@ -19,8 +19,6 @@ public class InvoiceEntity extends BaseEntity {
 	};
 
 	@Index
-	private int invoiceNumber;
-	@Index
 	private Date invoiceDueDate;
 	private double finalTotal;
 	private String noteToCustomer;
@@ -157,14 +155,6 @@ public class InvoiceEntity extends BaseEntity {
 
 	public void setServiceLineItemList(List<StockLineItem> serviceLineItemList) {
 		this.serviceLineItemList = serviceLineItemList;
-	}
-
-	public int getInvoiceNumber() {
-		return invoiceNumber;
-	}
-
-	public void setInvoiceNumber(int invoiceNumber) {
-		this.invoiceNumber = invoiceNumber;
 	}
 
 	public float getDiscountPercent() {

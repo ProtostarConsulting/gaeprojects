@@ -14,6 +14,8 @@ import com.protostar.billingnstock.user.entities.BusinessEntity;
 public abstract class BaseEntity {
 	@Id
 	private Long id;
+	@Index
+	private int itemNumber;
 	@Parent
 	private Ref<BusinessEntity> business;
 	@Index
@@ -88,6 +90,14 @@ public abstract class BaseEntity {
 			setModifiedDate(new Date());
 		}
 
+	}
+
+	public int getItemNumber() {
+		return itemNumber;
+	}
+
+	public void setItemNumber(int itemNumber) {
+		this.itemNumber = itemNumber;
 	}
 
 }

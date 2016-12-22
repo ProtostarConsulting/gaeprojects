@@ -2082,11 +2082,21 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 	
-	PurchaseOrderService.getPOByItemNumber = function(itemNumber) {
+	PurchaseOrderService.getEntityByItemNumber = function(itemNumber) {
 		var deferred = $q.defer();
-		gapi.client.purchaseOrderService.fetchPOByID({
+		gapi.client.purchaseOrderService.getEntityByItemNumber({
 			"itemNumber" : itemNumber
 		}).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}
+	
+	PurchaseOrderService.fetchEntityListByPaging = function(busId, pagingInfo) {
+		var deferred = $q.defer();
+		gapi.client.purchaseOrderService.fetchEntityListByPaging({
+			"id" : busId
+		}, pagingInfo).execute(function(resp) {
 			deferred.resolve(resp);
 		});
 		return deferred.promise;

@@ -1,7 +1,7 @@
 <md-content layout-padding>
 <section layout="row" layout-xs="column">
 	<md-subheader class="md-primary">
-	<h4 class="md-title"> Purchase Order List</h4>
+	<h4 class="md-title">Purchase Order List</h4>
 	</md-subheader>
 	<span flex></span>
 	<div layout="row" flex="33" flex-sm="50" flex-xs="100">
@@ -24,7 +24,7 @@
 		</thead>
 
 		<tbody>
-			<tr 
+			<tr
 				ng-repeat="pOItem in purchaseOrderList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
 
 				<td>{{pOItem.itemNumber}}</td>
@@ -34,20 +34,19 @@
 				<td>
 					<section layout="row">
 						<md-button class="md-icon-button"
-							ui-sref="purchaseOrder.purchaseOrderAdd({purchaseOrderObj: pOItem})"> <ng-md-icon
-							icon="edit" style="fill: md-default" size="20"> <md-tooltip>
-						Edit</md-tooltip></ng-md-icon></md-button>
-						<md-button class="md-icon-button"
-							ng-click="printpPI(pOItem.id)"> <ng-md-icon
-							icon="print" style="fill: md-default" size="20"> <md-tooltip>
-						Print PO</md-tooltip></ng-md-icon></md-button>						
+							ui-sref="purchaseOrder.purchaseOrderAdd({purchaseOrderObj: pOItem})">
+						<ng-md-icon icon="edit" style="fill: md-default" size="20">
+						<md-tooltip> Edit</md-tooltip></ng-md-icon></md-button>
+						<md-button class="md-icon-button" ng-click="printpPI(pOItem.id)">
+						<ng-md-icon icon="print" style="fill: md-default" size="20">
+						<md-tooltip> Print PO</md-tooltip></ng-md-icon></md-button>
 					</section>
 				</td>
 			</tr>
 		</tbody>
 	</table>
 	<md-data-table-pagination md-limit="query.limit" md-page="query.page"
-		md-total={{purchaseOrderList.length}} md-trigger="onpagechange"></md-data-table-pagination>
+		md-total={{query.totalSize}} md-trigger="onpagechange"></md-data-table-pagination>
 	</md-data-table-container>
 </div>
 </md-content>

@@ -666,7 +666,7 @@ public void  generatePdfAccountChart(List<TypeInfo> accountChart,ServletOutputSt
 			root.put("CustomerAddress", custAddress);
 			// Invoice Details
 			root.put("InvoiceDate", invoiceEntity.getCreatedDate());
-			root.put("invoiceNumber", invoiceEntity.getInvoiceNumber());
+			root.put("invoiceNumber", invoiceEntity.getItemNumber());
 			root.put("Date", strDate);
 
 			// root.put("SalesOrderNo", salesOrderNo);
