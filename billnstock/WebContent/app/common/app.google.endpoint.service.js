@@ -1971,24 +1971,20 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}// End of InvoiceService
 
-	var QuotationService = {};
-
-	serviceFactory.getQuotationService = function() {
-		return QuotationService;
-	}
-	QuotationService.addQuotation = function(quotation) {
+	
+	InvoiceService.addQuotation = function(quotation) {
 		var deferred = $q.defer();
 
-		gapi.client.quotationService.addQuotation(quotation).execute(function(resp) {
+		gapi.client.invoiceService.addQuotation(quotation).execute(function(resp) {
 			deferred.resolve(resp);
 		});
 
 		return deferred.promise;
 	}
 
-	QuotationService.getAllQuotation = function(id) {
+	InvoiceService.getAllQuotation = function(id) {
 		var deferred = $q.defer();
-		gapi.client.quotationService.getAllQuotation({
+		gapi.client.invoiceService.getAllQuotation({
 			"id" : id
 		}).execute(function(resp) {
 			deferred.resolve(resp.items);
@@ -1996,16 +1992,7 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
-	QuotationService.getquotationByID = function(id) {
-		var deferred = $q.defer();
-		gapi.client.quotationService.getquotationByID({
-			"id" : id
-		}).execute(function(resp) {
-			deferred.resolve(resp);
-		});
-		return deferred.promise;
-	}
-	
+		
 	/* =============================================================================================================================== */
 
 	// Start of SalesOrderService

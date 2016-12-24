@@ -4,7 +4,7 @@ app.controller("invoiceListCtr", function($scope, $window, $mdToast, $timeout,
 		$filter, objectFactory, appEndpointSF) {
 
 	$scope.query = {
-		order : '-invoiceNumber',
+		order : '-itemNumber',
 		limit : 50,
 		page : 1
 	};
@@ -26,8 +26,6 @@ app.controller("invoiceListCtr", function($scope, $window, $mdToast, $timeout,
 				function(invoiceList) {
 					$scope.invoiceData = invoiceList;
 					angular.forEach($scope.invoiceData, function(invoice) {
-						invoice.invoiceNumber = parseInt(
-								invoice.invoiceNumber);
 						invoice.createdDate = new Date(invoice.createdDate);
 						invoice.invoiceDueDate = new Date(
 								invoice.invoiceDueDate);

@@ -36,7 +36,7 @@ app
 
 					$scope.invoiceObj = $stateParams.invoiceObj ? $stateParams.invoiceObj
 							: $scope.getEmptyInvoiceObj();
-				
+
 					$scope.invoiceObj.invoiceDueDate = $scope.invoiceObj.invoiceDueDate ? new Date(
 							$scope.invoiceObj.invoiceDueDate)
 							: new Date();
@@ -81,6 +81,7 @@ app
 						$scope.invoiceObj.serviceLineItemList.push(item);
 					};
 
+					
 					$scope.addProductLineItem = function() {
 						var item = {
 							isProduct : true,
@@ -95,6 +96,26 @@ app
 						}
 						$scope.invoiceObj.productLineItemList.push(item);
 					};
+					
+					$scope.removeServices = function(toAddRemove) {
+						if (toAddRemove) {
+							$scope.settingsObj.showDefaultServiceItems = true;
+							$scope.addServiceLineItem();
+						} else {
+							$scope.settingsObj.showDefaultServiceItems = false;
+							$scope.invoiceObj.serviceLineItemList = [];
+						}
+					};
+					$scope.removeProducts = function(toAddRemove) {
+						if (toAddRemove) {
+							$scope.settingsObj.showDefaultProductItems = true;
+							$scope.addProductLineItem();
+						} else {
+							$scope.settingsObj.showDefaultProductItems = false;
+							$scope.invoiceObj.productLineItemList = [];
+						}
+					};
+					
 
 					$scope.productLineItemChanged = function(selectedLineItem) {
 						selectedLineItem.price = selectedLineItem.stockItem.price;
@@ -102,15 +123,15 @@ app
 					};
 
 					$scope.calProductSubTotal = function() {
-						$log.debug("##Came to calSubTotal...");
 						$scope.invoiceObj.productSubTotal = 0;
+						if ($scope.invoiceObj.productLineItemList) {
+							for (var i = 0; i < $scope.invoiceObj.productLineItemList.length; i++) {
+								var lineItem = $scope.invoiceObj.productLineItemList[i];
+								$scope.invoiceObj.productSubTotal += (lineItem.qty * lineItem.price);
+							}
 
-						for (var i = 0; i < $scope.invoiceObj.productLineItemList.length; i++) {
-							var lineItem = $scope.invoiceObj.productLineItemList[i];
-							$scope.invoiceObj.productSubTotal += (lineItem.qty * lineItem.price);
+							$scope.productTaxChanged();
 						}
-
-						$scope.productTaxChanged();
 					}
 
 					$scope.serviceLineItemChanged = function(selectedLineItem) {
@@ -120,13 +141,14 @@ app
 
 					$scope.calServiceSubTotal = function() {
 						$scope.invoiceObj.serviceSubTotal = 0;
+						if ($scope.invoiceObj.serviceLineItemList) {
+							for (var i = 0; i < $scope.invoiceObj.serviceLineItemList.length; i++) {
+								var lineItem = $scope.invoiceObj.serviceLineItemList[i];
+								$scope.invoiceObj.serviceSubTotal += (lineItem.qty * lineItem.price);
+							}
 
-						for (var i = 0; i < $scope.invoiceObj.serviceLineItemList.length; i++) {
-							var lineItem = $scope.invoiceObj.serviceLineItemList[i];
-							$scope.invoiceObj.serviceSubTotal += (lineItem.qty * lineItem.price);
+							$scope.serviceTaxChanged();
 						}
-
-						$scope.serviceTaxChanged();
 					}
 
 					$scope.serviceTaxChanged = function() {
@@ -277,9 +299,7 @@ app
 					};
 
 					$scope.getAllStock = function() {
-						$log.debug("Inside Ctr $scope.getAllStock");
 						var stockService = appEndpointSF.getStockService();
-
 						stockService.getAllStock($scope.curUser.business.id)
 								.then(function(stockList) {
 									$scope.stockItemList = stockList;
@@ -324,33 +344,8 @@ app
 					}
 					$scope.taxData = [];
 
-					$scope.getAllSalesOrder = function() {
-						var salesService = appEndpointSF.getSalesOrderService();
-
-						salesService.getAllSalesOrder(
-								$scope.curUser.business.id).then(
-								function(salesOrderList) {
-									$scope.SOforinvoice = salesOrderList;
-								});
-					}
-
-					$scope.SOforinvoice = [];
-
-					$scope.getAllAccountsByBusiness = function() {
-						var accountService = appEndpointSF.getAccountService();
-
-						accountService.getAllAccountsByBusiness(
-								$scope.curUser.business.id).then(
-								function(accountList) {
-									$scope.accountforinvoice = accountList;
-								});
-					}
-					$scope.accountforinvoice = [];
-
 					$scope.getInvoiceSettingsByBiz = function() {
-
 						var invoiceService = appEndpointSF.getInvoiceService();
-
 						invoiceService
 								.getInvoiceSettingsByBiz(
 										$scope.curUser.business.id)
@@ -367,19 +362,6 @@ app
 												$scope.addProductLineItem();
 											}
 										});
-					}
-
-					var printDivCSS = new String(
-							'<link href="/lib/base/css/angular-material.min.css"" rel="stylesheet" type="text/css">'
-									+ '<link href="/lib/base/css/bootstrap.min.css"" rel="stylesheet" type="text/css">')
-					$scope.printDiv = function(divId) {
-						// window.frames["print_frame"].document.body.innerHTML
-						// = printDivCSS
-						// + document.getElementById(divId).innerHTML;
-						window.frames["print_frame"].document.body.innerHTML = document
-								.getElementById(divId).innerHTML;
-						window.frames["print_frame"].window.focus();
-						window.frames["print_frame"].window.print();
 					}
 
 					$scope.querySearch = function(query) {
@@ -405,8 +387,6 @@ app
 								.then(
 										function(custList) {
 											$scope.customersforinvoice = custList.items;
-											// $scope.invoiceObj.customer =
-											// $scope.invoiceObj.customer;
 										});
 
 					}
@@ -446,6 +426,8 @@ app
 							// $scope.getAllAccountsByBusiness();
 							$scope.getInvoiceSettingsByBiz();
 							// $scope.getAllWarehouseByBusiness();
+							$scope.calServiceSubTotal();
+							$scope.calProductSubTotal();
 
 						} else {
 							$log.debug("Services Not Loaded, watiting...");

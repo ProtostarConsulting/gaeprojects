@@ -39,6 +39,9 @@
 			<md-input-container flex> <label>Due
 				Date</label> <md-datepicker flex ng-model="invoiceObj.invoiceDueDate"
 				md-placeholder="Select Date"></md-datepicker> </md-input-container>
+			<md-input-container flex> <label>Invoice
+				Number</label> <input ng-model="invoiceObj.itemNumber"
+				placeholder="Auto generated number" ng-disabled="true"></input> </md-input-container>
 		</div>
 
 
@@ -56,16 +59,30 @@
 		<span style="color: red">{{errorMsg}}</span> <span style="color: red">{{qtyErrorMsg}}</span>
 		<span style="color: red">{{qtyErrorMsg1}}</span>
 
-		<div ng-show="settingsObj.showDefaultServiceItems">
-			<h3>Service Line Items</h3>
+		<div ng-hide="settingsObj.showDefaultServiceItems && invoiceObj.serviceLineItemList">
+			<md-button class="md-icon-button" id="removeStudent"
+				ng-click="removeServices(true)"> <ng-md-icon
+				icon="add_circle" style="fill: md-default" size="24"> <md-tooltip>Add
+			Service Line Items</md-tooltip></ng-md-icon></md-button>
+		</div>
+
+		<div
+			ng-show="settingsObj.showDefaultServiceItems && invoiceObj.serviceLineItemList">
+			<h3>
+				Service Line Items
+				<md-button class="md-icon-button" id="removeStudent"
+					ng-click="removeServices(false)"> <ng-md-icon
+					icon="remove_circle_outline" style="fill: md-default" size="24">
+				<md-tooltip>Remove Service Line Items</md-tooltip></ng-md-icon></md-button>
+			</h3>
 			<table md-data-table md-progress="deferred">
 				<thead md-order="query.order" md-trigger="onOrderChange">
 					<tr>
-						<th name="Sr_No" order-by="srNo"></th>
-						<th name="Service Name" order-by="serviceName"></th>
-						<th name="Quantity" order-by="qty"></th>
-						<th name="Price" order-by="price"></th>
-						<th name="Total" order-by="total"></th>
+						<th name="Sr.No." width="4%"></th>
+						<th name="Service Name" width="40%"></th>
+						<th name="Quantity"></th>
+						<th name="Price"></th>
+						<th name="Total"></th>
 						<th name="Actions"></th>
 					</tr>
 				</thead>
@@ -73,23 +90,23 @@
 				<tbody>
 					<tr ng-repeat="serviceItem in invoiceObj.serviceLineItemList">
 
-						<td>{{ $index +1 }}</td>
-						<td><md-input-container flex> <label>Service
-								Name </label> <input ng-model="serviceItem.itemName"> </md-input-container></td>
+						<td width="4%">{{ $index +1 }}</td>
+						<td width="40%"><div layout="row">
+								<md-input-container flex style="padding-left:2px; padding-right:0px;"><input ng-model="serviceItem.itemName" aria-label="iname">
+								</md-input-container>
+							</div></td>
 
-						<td><md-input-container flex> <label>Quantity
-							</label> <input type="number" ng-model="serviceItem.qty"
-								ng-change="calServiceSubTotal()"> </md-input-container></td>
-						<td><md-input-container flex> <input
+						<td><md-input-container flex style="padding-left:2px; padding-right:0px;"><input type="number" ng-model="serviceItem.qty"
+								ng-change="calServiceSubTotal()" aria-label="iqty"/> </md-input-container></td>
+						<td><md-input-container flex style="padding-left:2px; padding-right:0px;"> <input
 								type="number" ng-model="serviceItem.price"
-								ng-change="calServiceSubTotal()"></md-input-container></td>
-						<td><md-input-container flex> <b>{{serviceItem.qty
+								ng-change="calServiceSubTotal()" aria-label="iprice"/></md-input-container></td>
+						<td><b>{{serviceItem.qty
 								* serviceItem.price | currency:"":"2"}} </b></td>
 						<td><md-icon
 								md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
 								ng-click="removeServiceItem($index)" class="name"
-								style="color: Green; height: 18px; width: 18px"></md-icon></td>
-						<td></td>
+								style="color: Green; height: 18px; width: 18px"></md-icon></td>						
 					</tr>
 
 					<tr>
@@ -99,25 +116,26 @@
 							<md-tooltip> Add New </md-tooltip></ng-md-icon> </md-button></td>
 						<td></td>
 						<td></td>
-						<td><label><u>Service Sub Total</u> </label></td>
-						<td><md-input-container flex> <b>{{invoiceObj.serviceSubTotal
-								| currency:"":"2"}}</b> </md-input-container></td>
+						<td><label>Service Sub Total</label></td>
+						<td><b>{{invoiceObj.serviceSubTotal
+								| currency:"":"2"}}</b></td>
 						<td></td>
 					</tr>
 
 					<tr>
-						<td><label><u>Services Tax</u> </label></td>
 						<td></td>
+						<td><label>Services Tax</label></td>
 						<td><md-input-container flex
 								ng-hide="invoiceObj.serviceLineItemList.length==0">
 							<md-select ng-model="invoiceObj.selectedServiceTax"
 								placeholder="Select Tax" ng-change="serviceTaxChanged()">
 							<md-option ng-value="taxValue"
-								ng-repeat="taxValue in taxforinvoice">{{taxValue.taxCodeName}}</md-option>
+								ng-repeat="taxValue in taxforinvoice"
+								ng-selected="invoiceObj.selectedServiceTax.id == taxValue.id">{{taxValue.taxCodeName}}</md-option>
 							</md-select> </md-input-container></td>
 						<td>{{invoiceObj.selectedServiceTax.taxPercenatge}}</td>
-						<td><md-input-container flex> <b>{{invoiceObj.serviceTaxTotal
-								| currency:"":"2"}}</b> </md-input-container></td>
+						<td><b>{{invoiceObj.serviceTaxTotal
+								| currency:"":"2"}}</b></td>
 						<td></td>
 					</tr>
 
@@ -125,9 +143,9 @@
 						<td></td>
 						<td></td>
 						<td></td>
-						<td><label><u>Service Total</u> </label></td>
-						<td><md-input-container flex> <b>{{invoiceObj.serviceTotal
-								| currency:"":"2"}}</b> </md-input-container></td>
+						<td><label>Service Total</label></td>
+						<td><b>{{invoiceObj.serviceTotal
+								| currency:"":"2"}}</b></td>
 						<td></td>
 					</tr>
 
@@ -144,13 +162,26 @@
 
 		</div>
 
-		<div ng-show="settingsObj.showDefaultProductItems">
-			<h3>Product Line Items</h3>
+		<div ng-hide="settingsObj.showDefaultProductItems && invoiceObj.productLineItemList">
+			<md-button class="md-icon-button" id="removeStudent"
+				ng-click="removeProducts(true)"> <ng-md-icon
+				icon="add_circle" style="fill: md-default" size="24"> <md-tooltip>Add
+			Product Line Items</md-tooltip></ng-md-icon></md-button>
+		</div>
+		<div
+			ng-show="settingsObj.showDefaultProductItems && invoiceObj.productLineItemList">
+			<h3>
+				Product Line Items
+				<md-button class="md-icon-button" id="removeStudent"
+					ng-click="removeProducts(false)"> <ng-md-icon
+					icon="remove_circle_outline" style="fill: md-default" size="24">
+				<md-tooltip>Remove Product Line Items</md-tooltip></ng-md-icon></md-button>
+			</h3>
 			<table md-data-table md-progress="deferred">
 				<thead md-order="query.order" md-trigger="onOrderChange">
 					<tr>
 						<th name="Sr. No."></th>
-						<th name="Item Name" order-by="itemName"></th>
+						<th name="Item Name" order-by="itemName" width="40%"></th>
 						<th name="Quantity" order-by="qty"></th>
 						<th name="Price" order-by="price"></th>
 						<th name="Total" order-by="total"></th>
@@ -162,7 +193,7 @@
 					<tr ng-repeat="item in invoiceObj.productLineItemList">
 
 						<td>{{ $index +1 }}</td>
-						<td>
+						<td width="40%">
 							<div layout="row">
 								<md-input-container flex> <md-select
 									ng-model="item.stockItem" placeholder="Item Name"
@@ -174,18 +205,17 @@
 								<md-button class="md-icon-button"
 									ng-click="addStock($event, item)" aria-label="as">
 								<md-icon md-svg-src="img/icons/ic_queue_black_24px.svg"
-									class="name" style="color: Green; height: 25px; width: 25px"></md-icon></md-button>
+									class="name" style="color: Green; height: 18px; width: 18px"></md-icon></md-button>
 							</div>
 						</td>
 
-						<td><md-input-container flex> <label>Quantity
-							</label> <input type="number" ng-model="item.qty"
+						<td><md-input-container flex><input type="number" ng-model="item.qty"
 								ng-blur="checkStock(item,$event)"
-								ng-change="calProductSubTotal()"> </md-input-container></td>
+								ng-change="calProductSubTotal()" aria-label="iqty"/> </md-input-container></td>
 						<td><md-input-container flex> <input
 								type="number" ng-model="item.price"
-								ng-change="calProductSubTotal()" aria-label="iprice"></md-input-container></td>
-						<td><md-input-container flex> <b>{{item.qty
+								ng-change="calProductSubTotal()" aria-label="iprice"/></md-input-container></td>
+						<td><b>{{item.qty
 								* item.price | currency:"":"2"}} </b></td>
 						<td><md-icon
 								md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
@@ -200,14 +230,14 @@
 							<md-tooltip> New Entry </md-tooltip></ng-md-icon> </md-button></td>
 						<td></td>
 						<td></td>
-						<td><label><u>Product Sub Total</u> </label></td>
-						<td><md-input-container flex> <b>{{invoiceObj.productSubTotal
-								| currency:"":"2"}}</b> </md-input-container></td>
+						<td><label>Product Sub Total</label></td>
+						<td><b>{{invoiceObj.productSubTotal
+								| currency:"":"2"}}</b></td>
 						<td></td>
 					</tr>
 					<tr>
-						<td><label><u>Product Tax</u> </label></td>
 						<td></td>
+						<td><label>Product Tax</label></td>
 						<td><md-input-container flex
 								ng-hide="invoiceObj.productLineItemList.length==0">
 							<md-select ng-model="invoiceObj.selectedProductTax"
@@ -217,8 +247,8 @@
 								ng-repeat="taxValue in taxforinvoice">{{taxValue.taxCodeName}}</md-option>
 							</md-select> </md-input-container></td>
 						<td>{{invoiceObj.selectedProductTax.taxPercenatge}}</td>
-						<td><md-input-container flex> <b>{{invoiceObj.productTaxTotal
-								| currency:"":"2"}}</b> </md-input-container></td>
+						<td><b>{{invoiceObj.productTaxTotal
+								| currency:"":"2"}}</b></td>
 						<td></td>
 					</tr>
 
@@ -226,9 +256,19 @@
 						<td></td>
 						<td></td>
 						<td></td>
-						<td><label><u>Product Total</u> </label></td>
-						<td><md-input-container flex> <b>{{invoiceObj.productTotal
-								| currency:"":"2"}}</b> </md-input-container></td>
+						<td><label>Product Total </label></td>
+						<td><b>{{invoiceObj.productTotal
+								| currency:"":"2"}}</b></td>
+						<td></td>
+					</tr>
+
+					<tr ng-show="tempDiscAmount">
+						<td></td>
+						<td></td>
+						<td></td>
+						<td><label>Discount</label></td>
+						<td><b>
+								{{tempDiscAmount | currency:"":"2"}}</b></td>
 						<td></td>
 					</tr>
 
@@ -236,19 +276,9 @@
 						<td></td>
 						<td></td>
 						<td></td>
-						<td><label><u>Discount</u> </label></td>
-						<td><md-input-container flex> <b>
-								{{tempDiscAmount | currency:"":"2"}}</b> </md-input-container></td>
-						<td></td>
-					</tr>
-
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td><label><u>Final Total</u> </label></td>
-						<td><md-input-container flex> <b>
-								{{invoiceObj.finalTotal | currency:"":"2"}}</b> </md-input-container></td>
+						<td><label>Final Total</label></td>
+						<td><b>
+								{{invoiceObj.finalTotal | currency:"":"2"}}</b></td>
 						<td></td>
 					</tr>
 					<tr>
@@ -272,5 +302,3 @@
 		Invoice</md-button>
 	</section>
 </div>
-<iframe name="print_frame" width="0" height="0" frameborder="0"
-	src="about:blank"></iframe> </md-content>

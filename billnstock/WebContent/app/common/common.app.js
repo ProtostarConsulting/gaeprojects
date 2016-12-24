@@ -304,6 +304,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/addQuotation",
 		templateUrl : '/app/invoice/quotation_add.html',
 		controller : 'quotationAddCtr',
+		params : {
+			invoiceObj : null
+		}
 	}).state('invoice.quotationlist', {
 		url : "/listQuotation",
 		templateUrl : '/app/invoice/quotation_list.html',

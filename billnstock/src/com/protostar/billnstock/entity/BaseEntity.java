@@ -16,6 +16,7 @@ public abstract class BaseEntity {
 	private Long id;
 	@Index
 	private int itemNumber;
+
 	@Parent
 	private Ref<BusinessEntity> business;
 	@Index
@@ -57,7 +58,8 @@ public abstract class BaseEntity {
 	}
 
 	public void setBusiness(BusinessEntity business) {
-		this.business = Ref.create(business);
+		if (business != null)
+			this.business = Ref.create(business);
 	}
 
 	public Long getId() {
@@ -79,9 +81,9 @@ public abstract class BaseEntity {
 	@OnSave
 	public void beforeSave() {
 		if (getBusiness() == null) {
-			throw new RuntimeException("Business entity is not set on"
+			throw new RuntimeException("Business entity is not set on: "
 					+ this.getClass().getSimpleName()
-					+ "This is required field. Aborting save operation...");
+					+ " This is required field. Aborting save operation...");
 		}
 
 		if (getId() == null) {

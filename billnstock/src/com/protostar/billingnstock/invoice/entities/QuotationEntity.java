@@ -1,20 +1,22 @@
 package com.protostar.billingnstock.invoice.entities;
 
+import javax.persistence.Embedded;
+
 import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Index;
+import com.protostar.billnstock.entity.BaseEntity;
 
 @Entity
-public class QuotationEntity extends InvoiceEntity {
+public class QuotationEntity extends BaseEntity {
 
-	@Index
-	private long quotationNumber;
+	@Embedded
+	private InvoiceEntity invoiceObj;
 
-	public long getQuotationNumber() {
-		return quotationNumber;
+	public InvoiceEntity getInvoiceObj() {
+		return invoiceObj;
 	}
 
-	public void setQuotationNumber(long quotationNumber) {
-		this.quotationNumber = quotationNumber;
+	public void setInvoiceObj(InvoiceEntity invoiceObj) {
+		this.invoiceObj = invoiceObj;
 	}
 
 }// end of QuotationEntity

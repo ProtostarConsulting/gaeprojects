@@ -25,7 +25,7 @@ import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 @Api(name = "invoiceService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.stock.services", ownerName = "com.protostar.billingnstock.stock.services", packagePath = ""))
 public class InvoiceService {
 
-	@ApiMethod(name = "addInvoice")
+	@ApiMethod(name = "addInvoice", path = "addInvoice")
 	public void saveInvoice(InvoiceEntity invoiceEntity) {
 
 		if (invoiceEntity.getId() == null) {
@@ -42,8 +42,6 @@ public class InvoiceService {
 		ofy().save().entity(invoiceEntity).now();
 
 	}
-
-	
 
 	@ApiMethod(name = "getAllInvoice")
 	public List<InvoiceEntity> getAllInvoice(@Named("id") Long busId) {
@@ -131,14 +129,14 @@ public class InvoiceService {
 
 	}
 
-	@ApiMethod(name = "addQuotation")
-	public void addInvoice(QuotationEntity quotationEntity) {
+	@ApiMethod(name = "addQuotation", path = "addQuotation") 
+	public void addQuotation(QuotationEntity quotationEntity) {
 
-		if (quotationEntity.getId() != null) {
+		if (quotationEntity.getId() == null) {
 			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
 					EntityUtil.getBusinessRawKey(quotationEntity.getBusiness()),
 					Constants.QUOTATION_NO_COUNTER);
-			quotationEntity.setQuotationNumber(sequenceGenService
+			quotationEntity.setItemNumber(sequenceGenService
 					.getNextSequenceNumber());
 		}
 
