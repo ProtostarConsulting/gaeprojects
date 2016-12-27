@@ -142,21 +142,40 @@ app
 						$scope.purchaseOrderObj.productLineItemList.push(item);
 					};
 
+					$scope.removeServices = function(toAddRemove) {
+						if (toAddRemove) {
+							$scope.settingsObj.showDefaultServiceItems = true;
+							$scope.addServiceLineItem();
+						} else {
+							$scope.settingsObj.showDefaultServiceItems = false;
+							$scope.purchaseOrderObj.serviceLineItemList = [];
+						}
+					};
+					$scope.removeProducts = function(toAddRemove) {
+						if (toAddRemove) {
+							$scope.settingsObj.showDefaultProductItems = true;
+							$scope.addProductLineItem();
+						} else {
+							$scope.settingsObj.showDefaultProductItems = false;
+							$scope.purchaseOrderObj.productLineItemList = [];
+						}
+					};
+
 					$scope.productLineItemChanged = function(selectedLineItem) {
 						selectedLineItem.price = selectedLineItem.stockItem.price;
 						$scope.calProductSubTotal();
 					};
 
 					$scope.calProductSubTotal = function() {
-						$log.debug("##Came to calSubTotal...");
 						$scope.purchaseOrderObj.productSubTotal = 0;
+						if ($scope.purchaseOrderObj.productLineItemList) {
+							for (var i = 0; i < $scope.purchaseOrderObj.productLineItemList.length; i++) {
+								var lineItem = $scope.purchaseOrderObj.productLineItemList[i];
+								$scope.purchaseOrderObj.productSubTotal += (lineItem.qty * lineItem.price);
+							}
 
-						for (var i = 0; i < $scope.purchaseOrderObj.productLineItemList.length; i++) {
-							var lineItem = $scope.purchaseOrderObj.productLineItemList[i];
-							$scope.purchaseOrderObj.productSubTotal += (lineItem.qty * lineItem.price);
+							$scope.productTaxChanged();
 						}
-
-						$scope.productTaxChanged();
 					}
 
 					$scope.serviceLineItemChanged = function(selectedLineItem) {
@@ -166,13 +185,14 @@ app
 
 					$scope.calServiceSubTotal = function() {
 						$scope.purchaseOrderObj.serviceSubTotal = 0;
+						if ($scope.purchaseOrderObj.serviceLineItemList) {
+							for (var i = 0; i < $scope.purchaseOrderObj.serviceLineItemList.length; i++) {
+								var lineItem = $scope.purchaseOrderObj.serviceLineItemList[i];
+								$scope.purchaseOrderObj.serviceSubTotal += (lineItem.qty * lineItem.price);
+							}
 
-						for (var i = 0; i < $scope.purchaseOrderObj.serviceLineItemList.length; i++) {
-							var lineItem = $scope.purchaseOrderObj.serviceLineItemList[i];
-							$scope.purchaseOrderObj.serviceSubTotal += (lineItem.qty * lineItem.price);
+							$scope.serviceTaxChanged();
 						}
-
-						$scope.serviceTaxChanged();
 					}
 
 					$scope.serviceTaxChanged = function() {
@@ -281,6 +301,21 @@ app
 						$scope.calfinalTotal();
 					};
 
+					$scope.discountType = [ "%", "Fixed" ];
+					$scope.lineItemDiscountChange = function(index,
+							selectedDiscount) {
+						$log.debug("##Came to lineItemStockChange...");
+						$scope.lineSelectedDiscount = selectedDiscount;
+						$scope.purchaseOrderObj.discount = selectedDiscount;
+						// $scope.calSubTotal();
+						// $scope.calfinalTotal();
+					};
+
+					$scope.printInvoice = function(invoiceId) {
+						var bid = $scope.curUser.business.id;
+						window.open("PrintPdfInvoice?bid=" + bid
+								+ "&invoiceId=" + invoiceId);
+					}
 					/* Setup menu */
 					$scope.toggleRight = buildToggler('right');
 					/**
@@ -315,14 +350,41 @@ app
 					};
 
 					$scope.getAllStock = function() {
-						$log.debug("Inside Ctr $scope.getAllStock");
+						$scope.loading = true;
 						var stockService = appEndpointSF.getStockService();
-
 						stockService.getAllStock($scope.curUser.business.id)
 								.then(function(stockList) {
 									$scope.stockItemList = stockList;
+									$scope.loading = false;
 								});
 					}
+
+					$scope.checkStock = function(item, $event) {
+						for (var i = 0; i <= $scope.stockItemList.length; i++) {
+							if ($scope.stockItemList[i].itemName == item.itemName) {
+								$scope.qtyErrorMsg = "";
+								if ($scope.stockItemList[i].qty < item.qty) {
+									$scope.qtyErrorMsg = "Quantity entered is not available in stock";
+									// $scope.showSimpleToastError();
+									$scope.dialogBox();
+								}
+							}
+						}
+					}
+
+					$scope.dialogBox = function(ev) {
+						$mdDialog
+								.show($mdDialog
+										.alert()
+										.targetEvent(ev)
+										.clickOutsideToClose(true)
+										.parent('body')
+										.title('Error')
+										.textContent(
+												'Quantity entered is not available in stock!')
+										.ok('OK'));
+						ev = null;
+					};
 
 					$scope.getTaxesByVisibility = function() {
 						var taxService = appEndpointSF.getTaxService();
@@ -336,9 +398,7 @@ app
 					$scope.taxData = [];
 
 					$scope.getInvoiceSettingsByBiz = function() {
-
 						var invoiceService = appEndpointSF.getInvoiceService();
-
 						invoiceService
 								.getInvoiceSettingsByBiz(
 										$scope.curUser.business.id)
@@ -360,13 +420,11 @@ app
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
 							loadAllSuppliers();
-							// loadContacts();
 							$scope.getAllStock();
-							// $scope.getAllSalesOrder();
 							$scope.getTaxesByVisibility();
-							// $scope.getAllAccountsByBusiness();
 							$scope.getInvoiceSettingsByBiz();
-							// $scope.getAllWarehouseByBusiness();
+							$scope.calServiceSubTotal();
+							$scope.calProductSubTotal();
 
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
@@ -376,6 +434,77 @@ app
 
 					$scope.waitForServiceLoad();
 
+					// For Add Stock from Invoice Page through popup
+					$scope.addStock = function(ev, lineItem) {
+						var getAllWarehouseByBusiness = function() {
+							var warehouseService = appEndpointSF
+									.getWarehouseManagementService();
+
+							warehouseService.getAllWarehouseByBusiness(
+									$scope.curUser.business.id).then(
+									function(warehouseList) {
+										$scope.warehouses = warehouseList;
+									});
+						}
+
+						getAllWarehouseByBusiness();
+
+						var useFullScreen = $mdMedia('xs');
+						$mdDialog
+								.show(
+										{
+											controller : addStockItemDialogController,
+											templateUrl : '/app/stock/stockitem_add_dialog.html',
+											parent : angular
+													.element(document.body),
+											targetEvent : ev,
+											clickOutsideToClose : true,
+											fullscreen : useFullScreen,
+											locals : {
+												curUser : $scope.curUser,
+												stock : $scope.stock,
+												warehouses : $scope.warehouses,
+												stockItemList : $scope.stockItemList,
+												lineItem : lineItem,
+												calProductSubTotalFn : $scope.calProductSubTotal
+											}
+										})
+								.then(
+										function(answer) {
+											$scope.status = 'You said the information was'
+													+ answer + '".';
+										},
+										function() {
+											$scope.status = 'You cancelled the dialog.';
+										});
+					};
+
+					function addStockItemDialogController($scope, $mdDialog,
+							curUser, stock, warehouses, stockItemList,
+							lineItem, calProductSubTotalFn) {
+						$scope.warehouses = warehouses;
+						$scope.addStock = function() {
+							$scope.stock.business = curUser.business;
+							$scope.stock.createdDate = new Date();
+							$scope.stock.modifiedBy = curUser.email_id;
+							var stockService = appEndpointSF.getStockService();
+							stockService.addStock($scope.stock).then(
+									function(addedItem) {
+										if (addedItem.id) {
+											lineItem.stockItem = addedItem;
+											lineItem.price = addedItem.price;
+											stockItemList.push(addedItem);
+											calProductSubTotalFn();
+										}
+									});
+							$scope.cancel();
+						}
+
+						$scope.cancel = function() {
+							$mdDialog.cancel();
+						};
+					}
+
 					$scope.addSupplier = function(ev) {
 						var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))
 								&& $scope.customFullscreen;
@@ -383,7 +512,7 @@ app
 								.show(
 										{
 											controller : addSupplierDialogController,
-											templateUrl : '/app/purchase/supplier_add.html',
+											templateUrl : '/app/purchase/supplier_add_dialog.html',
 											parent : angular
 													.element(document.body),
 											targetEvent : ev,
@@ -391,8 +520,9 @@ app
 											fullscreen : useFullScreen,
 											locals : {
 												curBusi : $scope.curUser.business,
-												supplier : $scope.supplier,
-												curUser : $scope.curUser
+												curUser : $scope.curUser,
+												supplierList : $scope.supplierList,
+												purchaseOrderObj : $scope.purchaseOrderObj
 											}
 										})
 								.then(
@@ -407,7 +537,7 @@ app
 					};
 
 					function addSupplierDialogController($scope, $mdDialog,
-							curBusi, curUser, supplier) {
+							curBusi, curUser, supplierList, purchaseOrderObj) {
 
 						$scope.addSupplier = function() {
 							$scope.supplier.business = curUser.business;
@@ -417,69 +547,16 @@ app
 									.getSupplierService();
 
 							supplierService.addSupplier($scope.supplier).then(
-									function(msgBean) {
-
+									function(supplierObj) {
+										purchaseOrderObj.supplier = supplierObj
+										supplierList.push(supplierObj);
 									});
-							$scope.hide();
+							$scope.cancel();
 							// window.history.back();
 						}
 
-						$scope.hide = function() {
-							$mdDialog.hide();
-						};
-					}
-
-					// For Add Stock from Invoice Page through popup
-					$scope.addStock = function(ev, lineItem) {
-						var useFullScreen = $mdMedia('xs');
-						$mdDialog
-								.show(
-										{
-											controller : addStockItemDialogController,
-											templateUrl : '/app/stock/stockItem_add.html',
-											parent : angular
-													.element(document.body),
-											targetEvent : ev,
-											clickOutsideToClose : true,
-											fullscreen : useFullScreen,
-											locals : {
-												curUser : $scope.curUser,
-												stock : $scope.stock,
-												warehouses : $scope.warehouses,
-												stockItemList : $scope.stockItemList,
-												lineItem : lineItem
-											}
-										})
-								.then(
-										function(answer) {
-											$scope.status = 'You said the information was'
-													+ answer + '".';
-										},
-										function() {
-											$scope.status = 'You cancelled the dialog.';
-										});
-					};
-
-					function addStockItemDialogController($scope, $mdDialog,
-							curUser, stock, warehouses, stockItemList, lineItem) {
-
-						$scope.addStock = function() {
-							$scope.stock.business = curUser.business;
-							$scope.stock.createdDate = new Date();
-							$scope.stock.modifiedBy = curUser.email_id;
-							var stockService = appEndpointSF.getStockService();
-							stockService.addStock($scope.stock).then(
-									function(addedItem) {
-										if (addedItem.id) {
-											lineItem.stockItem = addedItem;
-											stockItemList.push(addedItem);
-										}
-									});
-							$scope.hide();
-						}
-
-						$scope.hide = function() {
-							$mdDialog.hide();
+						$scope.cancel = function() {
+							$mdDialog.cancel();
 						};
 					}
 

@@ -15,23 +15,14 @@ app
 							.getLoggedinUser();
 
 					$scope.getAllQuotationList = function() {
+						$scope.loading = true;
 						var invoiceService = appEndpointSF.getInvoiceService();
-						invoiceService
-								.getAllQuotation($scope.curUser.business.id)
-								.then(
-										function(quotationList) {
-											$scope.quotationData = quotationList;
-											angular
-													.forEach(
-															$scope.quotationData,
-															function(invoice) {
-																invoice.invoiceNumber = parseInt(invoice.invoiceNumber);
-																invoice.createdDate = new Date(
-																		invoice.createdDate);
-																invoice.invoiceDueDate = new Date(
-																		invoice.invoiceDueDate);
-															});
-										});
+						invoiceService.getAllQuotation(
+								$scope.curUser.business.id).then(
+								function(quotationList) {
+									$scope.quotationList = quotationList;
+									$scope.loading = false;
+								});
 					}
 
 					$scope.waitForServiceLoad = function() {
@@ -43,7 +34,7 @@ app
 						}
 					}
 
-					$scope.quotationData = [];
+					$scope.quotationList = [];
 					$scope.waitForServiceLoad();
 
 					/* Setup menu */

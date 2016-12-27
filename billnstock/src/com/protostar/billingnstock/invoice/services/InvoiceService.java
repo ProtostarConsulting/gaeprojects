@@ -43,7 +43,7 @@ public class InvoiceService {
 
 	}
 
-	@ApiMethod(name = "getAllInvoice")
+	@ApiMethod(name = "getAllInvoice", path = "getAllInvoice")
 	public List<InvoiceEntity> getAllInvoice(@Named("id") Long busId) {
 
 		List<InvoiceEntity> filteredinvoice = ofy().load()
@@ -55,22 +55,18 @@ public class InvoiceService {
 
 	}
 
-	@ApiMethod(name = "getinvoiceByID")
-	public InvoiceEntity getinvoiceByID(@Named("id") Long invoiceId) {
+	@ApiMethod(name = "getInvoiceByID", path = "getInvoiceByID")
+	public InvoiceEntity getInvoiceByID(@Named("busId") Long busId,
+			@Named("id") Long invoiceId) {
 
-		/*
-		 * InvoiceEntity invoiceByID = ofy().load().type(InvoiceEntity.class)
-		 * .id(invoiceId).now();
-		 */
-		InvoiceEntity foundInvoice = null;
-		List<InvoiceEntity> list = ofy().load().type(InvoiceEntity.class)
-				.list();
-		for (InvoiceEntity invoice : list) {
-			if (invoice.getId().longValue() == invoiceId.longValue()) {
-				foundInvoice = invoice;
-			}
-		}
-		System.out.println("getinvoiceByID Recored is:" + foundInvoice);
+		List<InvoiceEntity> list = ofy()
+				.load()
+				.type(InvoiceEntity.class)
+				.filterKey(
+						Key.create(Key.create(BusinessEntity.class, busId),
+								InvoiceEntity.class, invoiceId)).list();
+		InvoiceEntity foundInvoice = list.size() > 0 ? list.get(0) : null;
+		System.out.println("getInvoiceByID Recored is:" + foundInvoice);
 
 		return foundInvoice;
 	}
@@ -129,15 +125,17 @@ public class InvoiceService {
 
 	}
 
-	@ApiMethod(name = "addQuotation", path = "addQuotation") 
+	@ApiMethod(name = "addQuotation", path = "addQuotation")
 	public void addQuotation(QuotationEntity quotationEntity) {
 
 		if (quotationEntity.getId() == null) {
 			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
 					EntityUtil.getBusinessRawKey(quotationEntity.getBusiness()),
 					Constants.QUOTATION_NO_COUNTER);
-			quotationEntity.setItemNumber(sequenceGenService
-					.getNextSequenceNumber());
+			int nextSequenceNumber = sequenceGenService
+					.getNextSequenceNumber();
+			quotationEntity.setItemNumber(nextSequenceNumber);
+			quotationEntity.getInvoiceObj().setItemNumber(nextSequenceNumber);
 		}
 
 		ofy().save().entity(quotationEntity).now();

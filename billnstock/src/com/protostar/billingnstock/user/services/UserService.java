@@ -24,6 +24,7 @@ import com.google.api.server.spi.config.Named;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.googlecode.objectify.Key;
+import com.protostar.billingnstock.invoice.entities.InvoiceEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.user.entities.EmpDepartment;
 import com.protostar.billingnstock.user.entities.UserEntity;
@@ -37,8 +38,7 @@ import com.protostar.billnstock.until.data.ServerMsg;
 		Constants.API_EXPLORER_CLIENT_ID }, audiences = { Constants.ANDROID_AUDIENCE }, scopes = { Constants.EMAIL_SCOPE }, namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.user.services", ownerName = "com.protostar.billingnstock.user.services", packagePath = ""))
 public class UserService {
 
-	private final Logger logger = Logger.getLogger(UserService.class
-			.getName());
+	private final Logger logger = Logger.getLogger(UserService.class.getName());
 
 	@ApiMethod(name = "addUser", path = "addUser")
 	public void addUser(UserEntity usr) {
@@ -51,7 +51,8 @@ public class UserService {
 			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
 					EntityUtil.getBusinessRawKey(usr.getBusiness()),
 					Constants.EMP_NO_COUNTER);
-			usr.getEmployeeDetail().setEmpId(sequenceGenService.getNextSequenceNumber());
+			usr.getEmployeeDetail().setEmpId(
+					sequenceGenService.getNextSequenceNumber());
 		} else {
 			usr.setModifiedDate(new Date());
 			ofy().save().entity(usr).now();
@@ -177,9 +178,15 @@ public class UserService {
 	}
 
 	@ApiMethod(name = "getUserByID", path = "getUserByID")
-	public UserEntity getUserByID(@Named("id") Long id) {
-		UserEntity userE = ofy().load().type(UserEntity.class)
-				.id(id.longValue()).now();
+	public UserEntity getUserByID(@Named("busId") Long busId,
+			@Named("id") Long id) {
+		List<UserEntity> list = ofy()
+				.load()
+				.type(UserEntity.class)
+				.filterKey(
+						Key.create(Key.create(BusinessEntity.class, busId),
+								UserEntity.class, id)).list();
+		UserEntity userE = list.size() > 0 ? list.get(0) : null;
 		return userE;
 	}
 

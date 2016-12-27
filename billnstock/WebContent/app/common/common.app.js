@@ -28,6 +28,32 @@ app.filter('htmlToPlainText', function() {
 		return text ? String(text).replace(/<[^>]+>/gm, '') : '';
 	};
 });
+app.directive('stringToNumber', function() {
+	return {
+		require : 'ngModel',
+		link : function(scope, element, attrs, ngModel) {
+			ngModel.$parsers.push(function(value) {
+				return '' + value;
+			});
+			ngModel.$formatters.push(function(value) {
+				return parseFloat(value);
+			});
+		}
+	}
+});
+app.directive('stringToDate', function() {
+	return {
+		require : 'ngModel',
+		link : function(scope, element, attrs, ngModel) {
+			ngModel.$parsers.push(function(value) {
+				return value;
+			});
+			ngModel.$formatters.push(function(value) {
+				return new Date(value);
+			});
+		}
+	}
+});
 app.directive('focusOn', function($timeout) {
 	return {
 		restrict : 'A',
@@ -626,8 +652,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		params : {
 			selectedSupplier : null
 		}
-	})
-	.state('purchaseOrder.supplierList', {
+	}).state('purchaseOrder.supplierList', {
 		url : "supplierList",
 		templateUrl : '/app/purchase/supplier_list.html',
 		controller : 'supplierListCtr'

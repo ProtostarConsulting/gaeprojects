@@ -146,7 +146,7 @@ angular
 					}
 
 					$scope.getMyAllTask = function() {
-						taskService.getMyAllTask($scope.curUser.id).then(
+						taskService.getMyAllTask($scope.curUser.business.id, $scope.curUser.id).then(
 								function(resp) {
 									$scope.taskEntityList = resp.items;
 									$scope.loading = false;

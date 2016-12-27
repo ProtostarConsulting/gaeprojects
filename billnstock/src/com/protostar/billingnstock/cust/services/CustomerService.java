@@ -13,7 +13,6 @@ import com.googlecode.objectify.Key;
 import com.protostar.billingnstock.crm.entities.Contact;
 import com.protostar.billingnstock.crm.services.CrmService;
 import com.protostar.billingnstock.cust.entities.Customer;
-import com.protostar.billingnstock.invoice.entities.InvoiceEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billnstock.until.data.ServerMsg;
 

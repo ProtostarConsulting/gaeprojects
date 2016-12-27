@@ -20,16 +20,12 @@ app.controller("invoiceListCtr", function($scope, $window, $mdToast, $timeout,
 
 	$scope.getAllInvoice = function() {
 		$log.debug("Inside Ctr $scope.getAllInvoice");
+		$scope.loading = true;
 		var invoiceService = appEndpointSF.getInvoiceService();
-
 		invoiceService.getAllInvoice($scope.curUser.business.id).then(
 				function(invoiceList) {
 					$scope.invoiceData = invoiceList;
-					angular.forEach($scope.invoiceData, function(invoice) {
-						invoice.createdDate = new Date(invoice.createdDate);
-						invoice.invoiceDueDate = new Date(
-								invoice.invoiceDueDate);
-					});
+					$scope.loading = false;
 				});
 	}
 
@@ -109,10 +105,8 @@ app.controller("invoiceListCtr", function($scope, $window, $mdToast, $timeout,
 	};
 
 	$scope.printInvoice = function(invoiceId) {
-		var InvoiceEntity = "InvoiceEntity";
-		window.open("PrintPdfInvoice?InvoiceNo=" + invoiceId
-				+ "&entityname=InvoiceEntity");
-
+		var bid = $scope.curUser.business.id;
+		window.open("PrintPdfInvoice?bid=" + bid + "&invoiceId=" + invoiceId);
 	}
 
 	$scope.showSimpleToast = function() {

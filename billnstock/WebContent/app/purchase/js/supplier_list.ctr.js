@@ -12,11 +12,13 @@ app.controller("supplierListCtr", function($scope, $window, $mdToast, $timeout,
 	$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
 
 	$scope.getAllSuppliersByBusiness = function() {
+		$scope.loading = true;
 		var supplierService = appEndpointSF.getSupplierService();
 
 		supplierService.getAllSuppliersByBusiness($scope.curUser.business.id)
 				.then(function(supplierList) {
 					$scope.supplierList = supplierList;
+					$scope.loading = false;
 				});
 	}
 

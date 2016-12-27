@@ -50,10 +50,10 @@ public class TaskManagementService {
 	}
 
 	@ApiMethod(name = "getMyAllTask", path = "getMyAllTask")
-	public List<TaskEntity> getMyAllTask(@Named("userId") Long userId) {
+	public List<TaskEntity> getMyAllTask(@Named("busId") Long busId, @Named("userId") Long userId) {
 		UserService userService = new UserService();
 		// logger.info("getMyAllTask#email_id:" + email_id);
-		UserEntity user = userService.getUserByID(userId);
+		UserEntity user = userService.getUserByID(busId, userId);
 		// logger.info("user:" + user);
 		List<TaskEntity> list = ofy().load().type(TaskEntity.class)
 				.filter("assignedTo", user).list();

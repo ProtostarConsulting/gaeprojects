@@ -13,7 +13,7 @@ app
 					$scope.getEmptyInvoiceObj = function() {
 						return {
 							customer : null,
-							invoiceDueDate : null,
+							invoiceDueDate : new Date(),
 							noteToCustomer : '',
 							createdDate : new Date(),
 							modifiedDate : new Date(),
@@ -34,47 +34,54 @@ app
 						};
 					}
 
-					$scope.invoiceObj = $stateParams.invoiceObj ? $stateParams.invoiceObj.invoiceObj
-							: $scope.getEmptyInvoiceObj();
-					
+					if ($stateParams.invoiceObj) {
+						$scope.invoiceObj = $stateParams.invoiceObj.invoiceObj;
+						$scope.invoiceObj.id = $stateParams.invoiceObj.id;
+					} else {
+						$scope.invoiceObj = $scope.getEmptyInvoiceObj();
+					}
 
-					$scope.invoiceObj.invoiceDueDate = $scope.invoiceObj.invoiceDueDate ? new Date(
-							$scope.invoiceObj.invoiceDueDate)
-							: new Date();
-
-							
 					$scope.addInvoice = function() {
+						$scope.loading = true;
 						if (!$scope.invoiceObj.serviceLineItemList
 								&& !$scope.invoiceObj.productLineItemList) {
 
 							$scope.errorMsg = "Please select atleast one item.";
 						} else {
-														
-							$scope.invoiceObj.business = $scope.curUser.business;
-							
-							$scope.invoiceObjTemp = {};
-							$scope.invoiceObjTemp.business = $scope.curUser.business;
-							$scope.invoiceObjTemp.modifiedBy = $scope.curUser.email_id;
-							$scope.invoiceObjTemp.discAmount = $scope.discAmount;
-							
-							$scope.invoiceObjTemp.invoiceObj = $scope.invoiceObj
 							var InvoiceService = appEndpointSF
 									.getInvoiceService();
-							
-							InvoiceService.addQuotation($scope.invoiceObjTemp)
-									.then(
-											function(msgBean) {
-												$scope.showAddToast();
-												$scope.invoiceAdd
-														.$setPristine();
-												$scope.invoiceAdd
-														.$setValidity();
-												$scope.invoiceAdd
-														.$setUntouched();
+							var quotationObj = {
+								itemNumber : $scope.invoiceObj.itemNumber,
+								id : $scope.invoiceObj.id,
+								invoiceObj : $scope.invoiceObj
+							};
 
-												$scope.invoiceObj = $scope
-														.getEmptyInvoiceObj();
-											});
+							quotationObj.business = $scope.curUser.business;
+							quotationObj.modifiedBy = $scope.curUser.email_id;
+							quotationObj.invoiceObj = $scope.invoiceObj;
+
+							$scope.invoiceObj.business = $scope.curUser.business;
+							$scope.invoiceObj.modifiedBy = $scope.curUser.email_id;
+
+							InvoiceService.addQuotation(quotationObj).then(
+									function(msgBean) {
+										if ($scope.invoiceObj.id) {
+											// for edit
+											$scope.showUpdateToast();
+										} else {
+											// for new add
+
+											$scope.showAddToast();
+											$scope.invoiceObj = $scope
+													.getEmptyInvoiceObj();
+										}
+										$scope.loading = false;
+
+										$scope.invoiceAdd.$setPristine();
+										$scope.invoiceAdd.$setValidity();
+										$scope.invoiceAdd.$setUntouched();
+
+									});
 
 						}
 					}
@@ -276,6 +283,11 @@ app
 						// $scope.calfinalTotal();
 					};
 
+					$scope.printInvoice = function(invoiceId) {
+						var bid = $scope.curUser.business.id;
+						window.open("PrintPdfInvoice?bid=" + bid
+								+ "&invoiceId=" + invoiceId);
+					}
 					/* Setup menu */
 					$scope.toggleRight = buildToggler('right');
 					/**
@@ -310,10 +322,12 @@ app
 					};
 
 					$scope.getAllStock = function() {
+						$scope.loading = true;
 						var stockService = appEndpointSF.getStockService();
 						stockService.getAllStock($scope.curUser.business.id)
 								.then(function(stockList) {
 									$scope.stockItemList = stockList;
+									$scope.loading = false;
 								});
 					}
 
@@ -376,9 +390,9 @@ app
 					}
 
 					$scope.querySearch = function(query) {
-						var results = query ? $scope.customersforinvoice
+						var results = query ? $scope.customerList
 								.filter(createFilterFor(query))
-								: $scope.customersforinvoice;
+								: $scope.customerList;
 						var deferred = $q.defer();
 						$timeout(function() {
 							deferred.resolve(results);
@@ -392,13 +406,11 @@ app
 
 						var customerService = appEndpointSF
 								.getCustomerService();
-						customerService
-								.getAllCustomersByBusiness(
-										$scope.curUser.business.id)
-								.then(
-										function(custList) {
-											$scope.customersforinvoice = custList.items;
-										});
+						customerService.getAllCustomersByBusiness(
+								$scope.curUser.business.id).then(
+								function(custList) {
+									$scope.customerList = custList.items;
+								});
 
 					}
 					/**
@@ -414,29 +426,12 @@ app
 						};
 					}
 
-					$scope.getAllWarehouseByBusiness = function() {
-						$log
-								.debug("Inside function $scope.getAllWarehouseByBusiness");
-						var warehouseService = appEndpointSF
-								.getWarehouseManagementService();
-
-						warehouseService.getAllWarehouseByBusiness(
-								$scope.curUser.business.id).then(
-								function(warehouseList) {
-									$scope.warehouses = warehouseList;
-								});
-					}
-
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
 							loadAllCustomers();
-							// loadContacts();
 							$scope.getAllStock();
-							// $scope.getAllSalesOrder();
 							$scope.getTaxesByVisibility();
-							// $scope.getAllAccountsByBusiness();
 							$scope.getInvoiceSettingsByBiz();
-							// $scope.getAllWarehouseByBusiness();
 							$scope.calServiceSubTotal();
 							$scope.calProductSubTotal();
 
@@ -449,7 +444,7 @@ app
 					$scope.waitForServiceLoad();
 
 					// For Add Customer from Invoice Page through popup
-					$scope.addCustomer = function(ev) {
+					$scope.addCustomer = function(ev, invoiceObj) {
 						var useFullScreen = $mdMedia('xs');
 						$mdDialog
 								.show(
@@ -463,7 +458,9 @@ app
 											fullscreen : useFullScreen,
 											locals : {
 												curUser : $scope.curUser,
-												customer : $scope.customer
+												customer : $scope.customer,
+												invoiceObj : invoiceObj,
+												customerList : $scope.customerList
 											}
 										})
 								.then(
@@ -478,7 +475,7 @@ app
 					};
 
 					function addCustDialogController($scope, $mdDialog,
-							curUser, customer) {
+							curUser, customer, invoiceObj, customerList) {
 
 						$scope.addCustomer = function() {
 							$scope.customer.business = curUser.business;
@@ -489,8 +486,9 @@ app
 									.getCustomerService();
 
 							customerService.addCustomer($scope.customer).then(
-									function(msgBean) {
-
+									function(customerObj) {
+										invoiceObj.customer = customerObj;
+										customerList.push(customerObj);
 									});
 							$scope.hide();
 						}
@@ -506,12 +504,25 @@ app
 
 					// For Add Stock from Invoice Page through popup
 					$scope.addStock = function(ev, lineItem) {
+						var getAllWarehouseByBusiness = function() {
+							var warehouseService = appEndpointSF
+									.getWarehouseManagementService();
+
+							warehouseService.getAllWarehouseByBusiness(
+									$scope.curUser.business.id).then(
+									function(warehouseList) {
+										$scope.warehouses = warehouseList;
+									});
+						}
+
+						getAllWarehouseByBusiness();
+
 						var useFullScreen = $mdMedia('xs');
 						$mdDialog
 								.show(
 										{
 											controller : addStockItemDialogController,
-											templateUrl : '/app/stock/stockItem_add.html',
+											templateUrl : '/app/stock/stockitem_add_dialog.html',
 											parent : angular
 													.element(document.body),
 											targetEvent : ev,
@@ -522,7 +533,8 @@ app
 												stock : $scope.stock,
 												warehouses : $scope.warehouses,
 												stockItemList : $scope.stockItemList,
-												lineItem : lineItem
+												lineItem : lineItem,
+												calProductSubTotalFn : $scope.calProductSubTotal
 											}
 										})
 								.then(
@@ -536,8 +548,9 @@ app
 					};
 
 					function addStockItemDialogController($scope, $mdDialog,
-							curUser, stock, warehouses, stockItemList, lineItem) {
-
+							curUser, stock, warehouses, stockItemList,
+							lineItem, calProductSubTotalFn) {
+						$scope.warehouses = warehouses;
 						$scope.addStock = function() {
 							$scope.stock.business = curUser.business;
 							$scope.stock.createdDate = new Date();
@@ -547,14 +560,16 @@ app
 									function(addedItem) {
 										if (addedItem.id) {
 											lineItem.stockItem = addedItem;
+											lineItem.price = addedItem.price;
 											stockItemList.push(addedItem);
+											calProductSubTotalFn();
 										}
 									});
-							$scope.hide();
+							$scope.cancel();
 						}
 
-						$scope.hide = function() {
-							$mdDialog.hide();
+						$scope.cancel = function() {
+							$mdDialog.cancel();
 						};
 					}
 

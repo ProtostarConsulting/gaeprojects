@@ -1,4 +1,9 @@
-<md-content layout-padding>
+<div ng-if="loading">
+	<div layout="row" layout-sm="column" layout-align="space-around">
+		<md-progress-circular md-diameter="60" md-mode="indeterminate"></md-progress-circular>
+	</div>
+</div>
+<md-content ng-if="!loading" layout-padding>
 <section layout="row" layout-xs="column">
 	<md-subheader class="md-primary">
 	<h4 class="md-title">Quotation List</h4>
@@ -27,7 +32,7 @@
 
 		<tbody>
 			<tr
-				ng-repeat="quotation in quotationData | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+				ng-repeat="quotation in quotationList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
 
 				<td>{{quotation.itemNumber}}</td>
 				<td>{{quotation.invoiceObj.customer.isCompany?quotation.invoiceObj.customer.companyName:(quotation.invoiceObj.customer.firstName
@@ -51,14 +56,8 @@
 			</tr>
 		</tbody>
 	</table>
-
-	<!-- 			<md-data-table-toolbar class="alternate" ng-show="selected.length">
-			<div>{{selected.length}} {{selected.length > 1 ? 'billsItem' :
-				'items'}} selected</div>
-			<div>{{selected}}</div>
-			</md-data-table-toolbar> 
- --> <md-data-table-pagination md-limit="query.limit"
-		md-page="query.page" md-total={{quotationData.length}}
-		md-trigger="onpagechange"></md-data-table-pagination> </md-data-table-container>
+	<md-data-table-pagination md-limit="query.limit" md-page="query.page"
+		md-total={{quotationList.length}} md-trigger="onpagechange"></md-data-table-pagination>
+	</md-data-table-container>
 </div>
 </md-content>

@@ -1,5 +1,4 @@
 app = angular.module("stockApp");
-
 app
 		.controller(
 				"supplierAddCtr",
@@ -18,31 +17,31 @@ app
 							contactLName : '',
 							phone1 : '',
 							mobile : '',
-							address : [],
+							address : {},
 							email : '',
 							business : ''
 						}
 					};
 
 					$scope.addSupplier = function() {
+
+						$scope.supplier.business = $scope.curUser.business;
+						$scope.supplier.modifiedBy = $scope.curUser.email_id;
+
 						var supplierService = appEndpointSF
 								.getSupplierService();
-						// $scope.supplier.business = $scope.curUser.business;
+						supplierService
+								.addSupplier($scope.supplier)
+								.then(
+										function(msgBean) {
+											$scope.showUpdateToast();
+											$scope.supplierForm.$setPristine();
+											$scope.supplierForm.$setValidity();
+											$scope.supplierForm.$setUntouched();
+											$scope.supplier = $scope
+													.getEmptySupplier();
+										});
 
-						if ($scope.selectedSupplierNo == "") {
-							$scope.supplier.business = $scope.curUser.business;
-							$scope.supplier.modifiedBy = $scope.curUser.email_id;
-						}
-
-						supplierService.addSupplier($scope.supplier).then(
-								function(msgBean) {
-									$scope.showSimpleToast();
-									// $scope.getAllPurchaseOrder();
-								});
-						$scope.supplierForm.$setPristine();
-						$scope.supplierForm.$setValidity();
-						$scope.supplierForm.$setUntouched();
-						$scope.supplier = $scope.getEmptySupplier();
 					}
 
 					$scope.supplier = $stateParams.selectedSupplier ? $stateParams.selectedSupplier
@@ -50,9 +49,7 @@ app
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
-							if ($scope.selectedSupplierNo != undefined) {
-
-							}
+							// do nothing...
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
 							$timeout($scope.waitForServiceLoad, 1000);
@@ -82,9 +79,4 @@ app
 						});
 					};
 
-					$scope.showSimpleToast = function() {
-						$mdToast.show($mdToast.simple().content(
-								'Supplier Order Saved!').position("top")
-								.hideDelay(3000));
-					};
 				});

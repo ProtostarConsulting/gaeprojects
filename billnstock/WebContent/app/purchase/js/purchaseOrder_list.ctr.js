@@ -20,6 +20,7 @@ app
 							.getLoggedinUser();
 
 					$scope.getAllPurchaseOrder = function() {
+						$scope.loading = true;
 						var purchaseService = appEndpointSF
 								.getPurchaseOrderService();
 
@@ -29,10 +30,10 @@ app
 										function(purchaseOrderList) {
 											$scope.purchaseOrderList = purchaseOrderList;
 											query.totalSize = purchaseOrderList.length;
+											$scope.loading = false;
 										});
 					}
 					$scope.onpagechange = function() {
-						$scope.loading = true;
 						$location.hash('tp1');
 						$anchorScroll();
 						if ($scope.query.page > $scope.query.pagesLoaded) {

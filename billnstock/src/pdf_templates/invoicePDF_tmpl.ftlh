@@ -122,7 +122,7 @@ td {
 		    <#assign subTotal = lineItem.qty * lineItem.price>
 			<#if serviceTax??>
 				<#assign taxAmt = serviceTax.taxPercenatge/100 * subTotal>
-				<#assign taxCodeName = productTax.taxCodeName + "(" +productTax.taxPercenatge + "%)">
+				<#assign taxCodeName = serviceTax.taxCodeName + "(" + serviceTax.taxPercenatge + "%)">
 		    <#else>
   				<#assign taxAmt = 0>
   				<#assign taxCodeName = "">

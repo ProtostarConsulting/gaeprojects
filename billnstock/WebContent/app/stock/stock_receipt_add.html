@@ -22,7 +22,7 @@
 		<div layout="row" layout-xs="column">
 			<div layout="row" flex>
 				<md-autocomplete flex required md-input-name="autocompleteField"
-					md-input-minlength="2" md-input-maxlength="18" md-no-cache=true
+					md-no-cache=true
 					md-selected-item="stockReceiptObj.supplier"
 					md-search-text="searchTextInput"
 					md-items="item in querySearch(searchTextInput)"
@@ -33,9 +33,7 @@
 					ng-if="stockReceiptAddForm.autocompleteField.$touched">
 					<div ng-message="required">
 						You <b>must</b> have to enter Supplier Name.
-					</div>
-					<div ng-message="minlength">Your entry is not long enough.</div>
-					<div ng-message="maxlength">Your entry is too long.</div>
+					</div>					
 				</div>
 				</md-autocomplete>
 				<md-icon md-svg-src="img/icons/ic_queue_black_24px.svg"
