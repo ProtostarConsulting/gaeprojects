@@ -38,7 +38,9 @@ import com.protostar.billingnstock.purchase.entities.PurchaseOrderEntity;
 import com.protostar.billingnstock.purchase.entities.SupplierEntity;
 import com.protostar.billingnstock.sales.entities.SalesOrderEntity;
 import com.protostar.billingnstock.stock.entities.StockItemEntity;
+import com.protostar.billingnstock.stock.entities.StockItemInstanceEntity;
 import com.protostar.billingnstock.stock.entities.StockItemTxnEntity;
+import com.protostar.billingnstock.stock.entities.StockItemTypeEntity;
 import com.protostar.billingnstock.taskmangement.TaskEntity;
 import com.protostar.billingnstock.tax.entities.TaxEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
@@ -76,7 +78,9 @@ public class AppServletContextListener implements ServletContextListener {
 		ObjectifyService.register(BusinessEntity.class);
 		
 		ObjectifyService.register(Customer.class);
+		ObjectifyService.register(StockItemTypeEntity.class);
 		ObjectifyService.register(StockItemEntity.class);
+		ObjectifyService.register(StockItemInstanceEntity.class);
 		ObjectifyService.register(StockItemsReceiptEntity.class);
 		ObjectifyService.register(StockItemsShipmentEntity.class);
 		ObjectifyService.register(StockItemTxnEntity.class);

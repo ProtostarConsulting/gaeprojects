@@ -20,7 +20,7 @@
 			<tr>
 				<th name="Stock Receipt No." order-by="receiptNumber"></th>
 				<th name="Receipt Date" order-by="createdDate"></th>
-				<th name="Supplier Name" order-by="customer.companyName"></th>
+				<th name="Supplier Name" order-by="supplier.supplierName"></th>
 				<th name="Actions"></th>
 			</tr>
 		</thead>
@@ -31,8 +31,7 @@
 
 				<td>{{stockReceipt.receiptNumber}}</td>
 				<td>{{stockReceipt.createdDate | formatDate}}</td>
-				<td>{{stockReceipt.customer.isCompany?stockReceipt.customer.companyName:(stockReceipt.customer.firstName
-					+' '+ stockReceipt.customer.lastName)}}</td>
+				<td>{{stockReceipt.supplier.supplierName}}</td>
 				<td>
 					<section layout="row">
 						<!-- <md-button class="md-icon-button"

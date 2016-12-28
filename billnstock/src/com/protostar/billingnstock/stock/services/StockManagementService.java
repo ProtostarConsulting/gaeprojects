@@ -47,14 +47,6 @@ public class StockManagementService {
 		return stockItemTypeEntity;
 	}
 
-	@ApiMethod(name = "getStockItemTypes", path = "getStockItemTypes")
-	public List<StockItemTypeEntity> getStockItemTypes(@Named("id") Long busId) {
-		List<StockItemTypeEntity> typeList = ofy().load()
-				.type(StockItemTypeEntity.class)
-				.ancestor(Key.create(BusinessEntity.class, busId)).list();
-		return typeList;
-	}
-
 	@ApiMethod(name = "addStockItem", path = "addStockItem")
 	public StockItemEntity addStockItem(StockItemEntity stockItemEntity) {
 		ofy().save().entity(stockItemEntity).now();
@@ -77,8 +69,8 @@ public class StockManagementService {
 			// stock items
 			stockLineItem.setStockMaintainedQty(stockLineItem.getQty() * 2);
 		}
-		StockManagementService.adjustStockItems(stockItemsReceipt.getBusiness(),
-				productLineItemList);
+		StockManagementService.adjustStockItems(
+				stockItemsReceipt.getBusiness(), productLineItemList);
 
 		ofy().save().entity(stockItemsReceipt).now();
 		// update stock items here...
@@ -93,22 +85,23 @@ public class StockManagementService {
 			stockItemsShipment.setShipmentNumber(sequenceGenService
 					.getNextSequenceNumber());
 		}
-		StockManagementService.adjustStockItems(stockItemsShipment.getBusiness(),
+		StockManagementService.adjustStockItems(
+				stockItemsShipment.getBusiness(),
 				stockItemsShipment.getProductLineItemList());
 		ofy().save().entity(stockItemsShipment).now();
 	}
 
-	@ApiMethod(name = "getStockItemById", path = "getStockItemById")
-	public StockItemEntity getStockItemById(@Named("id") Long id) {
-		logger.info("getStockById#id:" + id);
-		StockItemEntity stock = ofy().load().type(StockItemEntity.class).id(id)
-				.now();
-		logger.info("getStockById#stock:" + stock);
-		return stock;
+	@ApiMethod(name = "getStockItemTypes", path = "getStockItemTypes")
+	public List<StockItemTypeEntity> getStockItemTypes(
+			@Named("busId") Long busId) {
+		List<StockItemTypeEntity> typeList = ofy().load()
+				.type(StockItemTypeEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).list();
+		return typeList;
 	}
 
 	@ApiMethod(name = "getAllStockItems", path = "getAllStockItems")
-	public List<StockItemEntity> getAllStockItems(@Named("id") Long busId) {
+	public List<StockItemEntity> getAllStockItems(@Named("busId") Long busId) {
 		// System.out.println("getAllStock#busId:" + busId);
 		List<StockItemEntity> filteredStocks = ofy().load()
 				.type(StockItemEntity.class)
@@ -119,7 +112,7 @@ public class StockManagementService {
 
 	@ApiMethod(name = "getStockReceiptList", path = "getStockReceiptList")
 	public List<StockItemsReceiptEntity> getStockReceiptList(
-			@Named("id") Long busId) {
+			@Named("busId") Long busId) {
 		// System.out.println("getAllStock#busId:" + busId);
 		List<StockItemsReceiptEntity> stockItemsShipmentList = ofy().load()
 				.type(StockItemsReceiptEntity.class)
@@ -130,7 +123,7 @@ public class StockManagementService {
 
 	@ApiMethod(name = "getStockShipmentList", path = "getStockShipmentList")
 	public List<StockItemsShipmentEntity> getStockShipmentList(
-			@Named("id") Long busId) {
+			@Named("busId") Long busId) {
 		// System.out.println("getAllStock#busId:" + busId);
 		List<StockItemsShipmentEntity> stockItemsShipmentList = ofy().load()
 				.type(StockItemsShipmentEntity.class)
@@ -141,7 +134,7 @@ public class StockManagementService {
 
 	@ApiMethod(name = "getReportByThreshold", path = "getReportByThreshold")
 	public List<StockItemEntity> getReportByThreshold(
-			@Named("id") Long bussinessId) {
+			@Named("busId") Long bussinessId) {
 		List<StockItemEntity> stocks = ofy().load().type(StockItemEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, bussinessId)).list();
 		List<StockItemEntity> filteredThresholdStocks = new ArrayList<StockItemEntity>();
@@ -154,11 +147,6 @@ public class StockManagementService {
 		logger.info("filteredThresholdStocks#size:"
 				+ filteredThresholdStocks.size());
 		return filteredThresholdStocks;
-	}
-
-	@ApiMethod(name = "updateStock")
-	public void updateStock(StockItemEntity stockItemEntity) {
-		ofy().save().entity(stockItemEntity).now();
 	}
 
 	public static void adjustStockItems(BusinessEntity business,
@@ -224,7 +212,7 @@ public class StockManagementService {
 
 	@ApiMethod(name = "getStockItemTxnList", path = "getStockItemTxnList")
 	public List<StockItemTxnEntity> getStockItemTxnList(
-			@Named("id") Long busId, @Named("fromDate") Date fromDate,
+			@Named("busId") Long busId, @Named("fromDate") Date fromDate,
 			@Named("txnType") String txnType) {
 
 		Query<StockItemTxnEntity> filterQuery = ofy().load()
@@ -246,7 +234,7 @@ public class StockManagementService {
 
 	@ApiMethod(name = "getAllSuppliersByBusiness", path = "getAllSuppliersByBusiness")
 	public List<SupplierEntity> getAllSuppliersByBusiness(
-			@Named("id") Long busId) {
+			@Named("busId") Long busId) {
 
 		List<SupplierEntity> filteredSuppliers = ofy()
 				.load()
@@ -256,14 +244,6 @@ public class StockManagementService {
 				.list();
 
 		return filteredSuppliers;
-	}
-
-	@ApiMethod(name = "getSupplierByID", path = "getSupplierByID")
-	public SupplierEntity getPOByID(@Named("id") Long id) {
-		SupplierEntity supplierByID = ofy().load().type(SupplierEntity.class)
-				.id(id).now();
-
-		return supplierByID;
 	}
 
 }// end of StockServices

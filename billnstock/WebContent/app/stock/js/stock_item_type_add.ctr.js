@@ -1,156 +1,50 @@
 angular
 		.module("stockApp")
 		.controller(
-				"stockAddCtr",
+				"stockItemTypeAddCtr",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
 						$mdUtil, $log, $http, $stateParams, $mdMedia,
 						$mdDialog, objectFactory, appEndpointSF) {
 
-					$log.debug("Inside customerCtr");
-
-					$log.debug("$stateParams.selectedStockItem:",
-							$stateParams.selectedStockItem);
 					$scope.selectedStockItem = $stateParams.selectedStockItem;
 
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
 
-					function getEmptyStockItem() {
+					function getEmptyStockItemType() {
 						return {
 							id : "",
-							warehouse : null,
 							itemName : "",
-							category : "",
-							qty : "",
-							price : "",
-							cost:0,
-							movingAvgCost:0,
-							thresholdValue : '',
-							notes : '',
+							category : "",						
 							createdDate : new Date(),
 							modifiedDate : new Date(),
 							modifiedBy : $scope.curUser.email_id,
 							business : $scope.curUser.business
 						};
 					}
-					$scope.stock = getEmptyStockItem();
+					$scope.stock = getEmptyStockItemType();
 
 					$scope.stock = $scope.selectedStockItem ? $scope.selectedStockItem
 							: $scope.stock;
 					
-					$scope.addStock = function() {
+					$scope.addStockItemType = function() {
 						var stockService = appEndpointSF.getStockService();
-						if(!$scope.stock.movingAvgCost){
-							$scope.stock.movingAvgCost = $scope.stock.cost;
-						}
 						$scope.stock.modifiedBy = $scope.curUser.email_id;
-						stockService.addStockItem($scope.stock).then(
+						stockService.addStockItemType($scope.stock).then(
 								function(msgBean) {
 									if ($scope.selectedStockItem) {
 										$scope.showUpdateToast();										
 									} else {
 										$scope.showAddToast();
-										$scope.stock = getEmptyStockItem();
+										$scope.stock = getEmptyStockItemType();
 										$scope.stockForm.$setPristine();
 										$scope.stockForm.$setValidity();
 										$scope.stockForm.$setUntouched();
 									}
 								});
 					}
-
-					$scope.getAllWarehouseByBusiness = function() {
-						var warehouseService = appEndpointSF
-								.getWarehouseManagementService();
-						warehouseService.getAllWarehouseByBusiness(
-								$scope.curUser.business.id).then(
-								function(warehouseList) {
-									$scope.warehouses = warehouseList;
-								});
-					}					
-
-					// Setup menu
-					$scope.toggleRight = buildToggler('right');
-
-					function buildToggler(navID) {
-						var debounceFn = $mdUtil.debounce(function() {
-							$mdSidenav(navID).toggle().then(function() {
-								$log.debug("toggle " + navID + " is done");
-							});
-						}, 200);
-						return debounceFn;
-					}
-
-					$scope.close = function() {
-						$mdSidenav('right').close().then(function() {
-							$log.debug("close RIGHT is done");
-						});
-					};
-
-					$scope.query = {
-						order : 'name',
-						limit : 5,
-						page : 1
-					};
-
-					$scope.addWarehouse = function(ev) {
-						var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))
-								&& $scope.customFullscreen;
-						$mdDialog
-								.show(
-										{
-											controller : DialogController,
-											templateUrl : '/app/stock/warehouse_add.html',
-											parent : angular
-													.element(document.body),
-											targetEvent : ev,
-											clickOutsideToClose : true,
-											fullscreen : useFullScreen,
-											locals : {
-												curBusi : $scope.curUser.business,
-												warehouse : $scope.warehouse,
-												curUser : $scope.curUser
-											}
-										})
-								.then(
-										function(answer) {
-											$scope.status = 'You said the information was "'
-													+ answer + '".';
-										},
-										function() {
-											$scope.status = 'You cancelled the dialog.';
-										});
-
-					};
-
-					function DialogController($scope, $mdDialog, curBusi,
-							curUser, $state, warehouse) {
-
-						$scope.addWarehouse = function() {
-							$scope.warehouse.business = curUser.business;
-							$scope.warehouse.createdDate = new Date();
-							$scope.warehouse.modifiedBy = curUser.email_id;
-							var warehouseService = appEndpointSF
-									.getWarehouseManagementService();
-
-							warehouseService
-									.addWarehouse($scope.warehouse)
-									.then(
-											function(warehouse) {
-												$scope.selectedWarehouse = warehouse.warehouseName;
-												$log
-														.debug("$scope.selectedWarehouse"
-																+ $scope.selectedWarehouse);
-												console
-														.log("####################");
-												$state.reload();
-											});
-							$scope.hide();
-						}
-						$scope.hide = function() {
-							$mdDialog.hide();
-						};
-					}
-
+					
+					
 					// ----------------------UPLODE EXCEL
 					// FILE-------------------------------
 
@@ -232,7 +126,7 @@ angular
 					// -------------------------------------------------------
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
-							$scope.getAllWarehouseByBusiness();
+							
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
 							$timeout($scope.waitForServiceLoad, 1000);

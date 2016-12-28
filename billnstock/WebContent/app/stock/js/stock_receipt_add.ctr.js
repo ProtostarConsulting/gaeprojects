@@ -268,7 +268,7 @@ app
 						$log.debug("Inside Ctr $scope.getAllStock");
 						var stockService = appEndpointSF.getStockService();
 
-						stockService.getAllStock($scope.curUser.business.id)
+						stockService.getAllStockItems($scope.curUser.business.id)
 								.then(function(stockList) {
 									$scope.stockItemList = stockList;
 								});

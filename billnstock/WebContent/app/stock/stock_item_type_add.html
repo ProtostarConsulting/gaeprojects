@@ -1,0 +1,47 @@
+<md-content layout-padding> <md-content layout-wrap>
+<section id="pagetoolbar" layout="row" layout-xs="column">
+	<md-subheader class="md-primary">
+	<h4 class="md-title"
+		ng-bind="stock.id?'Edit Stock Item':'Add Stock Item'"></h4>
+	</md-subheader>
+	<span flex> </span>
+	<div hide-xs>
+		<md-button class="md-primary" id="Bulk Upload"
+			ng-click="UplodeExcel($event)">Bulk Upload</md-button>
+	</div>
+</section>
+<form name="stockForm">
+	<div>
+		<div layout layout-xs="column">
+
+			<md-input-container flex> <label>Item
+				Name </label> <input name="itemName" ng-model="stock.itemName"
+				ng-required="true">
+			<div ng-messages="stockForm.itemName.$error"
+				ng-if="stockForm.itemName.$submitted || stockForm.itemName.$touched">
+				<div ng-message="required">Please Enter Item
+					Name(Example.:John)</div>
+			</div>
+			</md-input-container>
+
+			<md-input-container flex> <label>Categories
+
+			</label> <input name="categories" ng-model="stock.category"
+				ng-required="false">
+			<div ng-messages="stockForm.categories.$error"
+				ng-if="stockForm.categories.$submitted || stockForm.categories.$touched">
+				<div ng-message="required">Please Enter First
+					Name(Example.:John)</div>
+			</div>
+			</md-input-container>
+		</div>
+
+
+		<section layout="row" layout-sm="column" layout-align="left left">
+			<md-button class="md-raised md-primary" ng-click="addStockItemType()">
+			</md-icon>Save</md-button>
+		</section>
+
+	</div>
+</form>
+</md-content> </md-content>

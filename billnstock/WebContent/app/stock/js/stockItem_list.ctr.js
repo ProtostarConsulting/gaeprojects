@@ -6,7 +6,7 @@ angular.module("stockApp").controller(
 			$log.debug("Inside stockListCtr");
 
 			$scope.query = {
-				order : '-stockItemNumber',
+				order : '-itemNumber',
 				limit : 50,
 				page : 1
 			};
@@ -15,11 +15,11 @@ angular.module("stockApp").controller(
 					.getLoggedinUser();
 			
 			
-			$scope.getAllStock = function() {
+			$scope.getAllStockItems = function() {
 				$log.debug("Inside Ctr $scope.getAllStock");
 				var stockService = appEndpointSF.getStockService();
 
-				stockService.getAllStock($scope.curUser.business.id).then(
+				stockService.getAllStockItems($scope.curUser.business.id).then(
 						function(stockList) {
 							$scope.stockItemList = stockList;
 						});
@@ -27,7 +27,7 @@ angular.module("stockApp").controller(
 
 			$scope.waitForServiceLoad = function() {
 				if (appEndpointSF.is_service_ready) {
-					$scope.getAllStock();
+					$scope.getAllStockItems();
 				} else {
 					$log.debug("Services Not Loaded, watiting...");
 					$timeout($scope.waitForServiceLoad, 1000);

@@ -228,6 +228,17 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/stock",
 		templateUrl : '/app/stock/stock_module.html',
 		controller : 'stockModuleCtr'
+	}).state('stock.stockItemTypeAdd', {
+		url : "/stockItemType",
+		templateUrl : '/app/stock/stock_item_type_add.html',
+		controller : 'stockItemTypeAddCtr',
+		params : {
+			selectedStockItem : null
+		}
+	}).state('stock.stockItemTypeList', {
+		url : "/stockItemTypeList",
+		templateUrl : '/app/stock/stock_item_type_list.html',
+		controller : 'stockItemTypeListCtr'
 	}).state('stock.stockItemAdd', {
 		url : "/stockitem",
 		templateUrl : '/app/stock/stockItem_add.html',
