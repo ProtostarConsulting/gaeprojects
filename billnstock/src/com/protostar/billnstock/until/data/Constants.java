@@ -18,7 +18,7 @@ public class Constants {
 	public static final String EMP_NO_COUNTER = "EMP_NO_COUNTER";
 	public static final String ACC_ACCOUNT_NO_COUNTER = "ACC_ACCOUNT_NO_COUNTER";
 	public static final String INVOICE_NO_COUNTER = "INVOICE_NO_COUNTER";
-	public static final String STOCKITEM_NO_COUNTER = "STOCKITEM_NO_COUNTER";
+	public static final String STOCKITEMTYPE_NO_COUNTER = "STOCKITEMTYPE_NO_COUNTER";
 	public static final String STOCKRECEIPT_NO_COUNTER = "STOCKRECEIPT_NO_COUNTER";
 	public static final String STOCKSHIPMENT_NO_COUNTER = "STOCKSHIPMENT_NO_COUNTER";
 	public static final String PURCHASE_ORDER_NO_COUNTER = "PURCHASE_ORDER_NO_COUNTER";

@@ -13,7 +13,7 @@ import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
 import com.protostar.billingnstock.account.entities.AccountGroupEntity;
-import com.protostar.billingnstock.proadmin.entities.AccountType;
+import com.protostar.billingnstock.proadmin.entities.BusinessPlanType;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.user.entities.EmpDepartment;
 import com.protostar.billingnstock.user.entities.UserEntity;
@@ -28,16 +28,16 @@ public class ProtostarAdminService {
 			.getLogger(ProtostarAdminService.class.getName());
 
 	@ApiMethod(name = "addAccountType")
-	public void addAccountType(AccountType account) {
+	public void addAccountType(BusinessPlanType account) {
 		ofy().save().entity(account).now();
 
 	}
 
 	@ApiMethod(name = "getallAccountType")
-	public List<AccountType> getallAccountType() {
+	public List<BusinessPlanType> getallAccountType() {
 		log.info("Inside getallAccountType.");
 		try {
-			return ofy().load().type(AccountType.class).list();
+			return ofy().load().type(BusinessPlanType.class).list();
 		} catch (Exception e) {
 			log.info("Error Ocuured: " + e.getStackTrace());
 		}
@@ -47,8 +47,8 @@ public class ProtostarAdminService {
 	}
 
 	@ApiMethod(name = "getAccountTypeById")
-	public AccountType getAccountTypeById(@Named("id") Long id) {
-		return ofy().load().type(AccountType.class).id(id).now();
+	public BusinessPlanType getAccountTypeById(@Named("id") Long id) {
+		return ofy().load().type(BusinessPlanType.class).id(id).now();
 	}
 
 	@ApiMethod(name = "creatAccountAndGroup")
@@ -56,16 +56,16 @@ public class ProtostarAdminService {
 
 		List<AccountGroupEntity> acList = ofy().load()
 				.type(AccountGroupEntity.class).list();
-		/*if (acList.size() > 0) {
-			return;
-		}*/
+		/*
+		 * if (acList.size() > 0) { return; }
+		 */
 		UserService userService = new UserService();
 
 		BusinessEntity business = userService.getBusinessById(bizId);
 
 		AccountGroupEntity fixedAsetAccountGroupEntity = new AccountGroupEntity();
-		//BusinessEntity business= new BusinessEntity();
-		
+		// BusinessEntity business= new BusinessEntity();
+
 		fixedAsetAccountGroupEntity.setBusiness(business);
 		fixedAsetAccountGroupEntity.setCreatedDate(new Date());
 		fixedAsetAccountGroupEntity.setModifiedDate(new Date());
@@ -99,7 +99,7 @@ public class ProtostarAdminService {
 		purchaseAccountsGroupEntity.setGroupName("Purchase Accounts");
 		purchaseAccountsGroupEntity.setIsPrimary(true);
 		purchaseAccountsGroupEntity.setPrimaryType("Expenses");
-		
+
 		ofy().save().entity(purchaseAccountsGroupEntity).now();
 
 		AccountGroupEntity miscExpensesASSETGroupEntity = new AccountGroupEntity();
@@ -109,7 +109,7 @@ public class ProtostarAdminService {
 		miscExpensesASSETGroupEntity.setGroupName("Misc.ExpensesASSET");
 		miscExpensesASSETGroupEntity.setIsPrimary(true);
 		miscExpensesASSETGroupEntity.setPrimaryType("Assets");
-		
+
 		ofy().save().entity(miscExpensesASSETGroupEntity).now();
 
 		AccountGroupEntity loansLiabilityGroupEntity = new AccountGroupEntity();
@@ -119,7 +119,7 @@ public class ProtostarAdminService {
 		loansLiabilityGroupEntity.setGroupName("Loans(Liability)");
 		loansLiabilityGroupEntity.setIsPrimary(true);
 		loansLiabilityGroupEntity.setPrimaryType("Liabilities");
-		
+
 		ofy().save().entity(loansLiabilityGroupEntity).now();
 
 		AccountGroupEntity investmentsGroupEntity = new AccountGroupEntity();
@@ -129,7 +129,7 @@ public class ProtostarAdminService {
 		investmentsGroupEntity.setGroupName("Investments");
 		investmentsGroupEntity.setIsPrimary(true);
 		investmentsGroupEntity.setPrimaryType("Assets");
-		
+
 		ofy().save().entity(investmentsGroupEntity).now();
 
 		AccountGroupEntity indirectIncomesGroupEntity = new AccountGroupEntity();
@@ -139,7 +139,7 @@ public class ProtostarAdminService {
 		indirectIncomesGroupEntity.setGroupName("Indirect  Incomes");
 		indirectIncomesGroupEntity.setIsPrimary(true);
 		indirectIncomesGroupEntity.setPrimaryType("Incomes");
-		
+
 		ofy().save().entity(indirectIncomesGroupEntity).now();
 
 		AccountGroupEntity indirectExpensesGroupEntity = new AccountGroupEntity();
@@ -149,7 +149,7 @@ public class ProtostarAdminService {
 		indirectExpensesGroupEntity.setGroupName("Indirect Expenses");
 		indirectExpensesGroupEntity.setIsPrimary(true);
 		indirectExpensesGroupEntity.setPrimaryType("Expenses");
-		
+
 		ofy().save().entity(indirectExpensesGroupEntity).now();
 
 		AccountGroupEntity directIncomesGroupEntity = new AccountGroupEntity();
@@ -159,7 +159,7 @@ public class ProtostarAdminService {
 		directIncomesGroupEntity.setGroupName("Direct Incomes");
 		directIncomesGroupEntity.setIsPrimary(true);
 		directIncomesGroupEntity.setPrimaryType("Incomes");
-	
+
 		ofy().save().entity(directIncomesGroupEntity).now();
 
 		AccountGroupEntity directExpensesGroupEntity = new AccountGroupEntity();
@@ -169,7 +169,7 @@ public class ProtostarAdminService {
 		directExpensesGroupEntity.setGroupName("Direct Expenses");
 		directExpensesGroupEntity.setIsPrimary(true);
 		directExpensesGroupEntity.setPrimaryType("Expenses");
-	
+
 		ofy().save().entity(directExpensesGroupEntity).now();
 
 		AccountGroupEntity currentLiabilitiesGroupEntity = new AccountGroupEntity();
@@ -179,7 +179,7 @@ public class ProtostarAdminService {
 		currentLiabilitiesGroupEntity.setGroupName("Current Liabilities");
 		currentLiabilitiesGroupEntity.setIsPrimary(true);
 		currentLiabilitiesGroupEntity.setPrimaryType("Liabilities");
-		
+
 		ofy().save().entity(currentLiabilitiesGroupEntity).now();
 
 		AccountGroupEntity currentAssetsGroupEntity = new AccountGroupEntity();
@@ -189,7 +189,7 @@ public class ProtostarAdminService {
 		currentAssetsGroupEntity.setGroupName("Current Assets");
 		currentAssetsGroupEntity.setIsPrimary(true);
 		currentAssetsGroupEntity.setPrimaryType("Assets");
-		
+
 		ofy().save().entity(currentAssetsGroupEntity).now();
 
 		AccountGroupEntity capitalAccountGroupEntity = new AccountGroupEntity();
@@ -199,7 +199,7 @@ public class ProtostarAdminService {
 		capitalAccountGroupEntity.setGroupName("Capital Account");
 		capitalAccountGroupEntity.setIsPrimary(true);
 		capitalAccountGroupEntity.setPrimaryType("Liabilities");
-		
+
 		ofy().save().entity(capitalAccountGroupEntity).now();
 
 		AccountGroupEntity branchDivisionsGroupEntity = new AccountGroupEntity();
@@ -209,7 +209,7 @@ public class ProtostarAdminService {
 		branchDivisionsGroupEntity.setGroupName("BranchDivisions");
 		branchDivisionsGroupEntity.setIsPrimary(true);
 		branchDivisionsGroupEntity.setPrimaryType("Liabilities");
-		
+
 		ofy().save().entity(branchDivisionsGroupEntity).now();
 
 		// ***********************************SUB
@@ -257,7 +257,8 @@ public class ProtostarAdminService {
 		DutiesandTaxesAccountGroupEntity1.setModifiedDate(new Date());
 		DutiesandTaxesAccountGroupEntity1.setGroupName("Duties & Taxes");
 		DutiesandTaxesAccountGroupEntity1.setIsPrimary(false);
-		DutiesandTaxesAccountGroupEntity1.setParent(currentLiabilitiesGroupEntity);
+		DutiesandTaxesAccountGroupEntity1
+				.setParent(currentLiabilitiesGroupEntity);
 		ofy().save().entity(DutiesandTaxesAccountGroupEntity1).now();
 
 		AccountGroupEntity loansandAdvancesAssetAccountGroupEntity = new AccountGroupEntity();
@@ -349,11 +350,11 @@ public class ProtostarAdminService {
 		String DATE_FORMAT = "dd/MM/yyyy";
 		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 
-		List<AccountType> accountt = ofy().load().type(AccountType.class)
-				.list();
-		AccountType filteredaccount = new AccountType();
+		List<BusinessPlanType> accountt = ofy().load()
+				.type(BusinessPlanType.class).list();
+		BusinessPlanType filteredaccount = new BusinessPlanType();
 		for (int i = 0; i < accountt.size(); i++) {
-			if (accountt.get(i).getAccountName().equals("Platinum")) {
+			if (accountt.get(i).getPlanName().equals("Platinum")) {
 				filteredaccount = accountt.get(i);
 			}
 		}
@@ -460,34 +461,39 @@ public class ProtostarAdminService {
 	public void initsetup() {
 		// try{
 
-		List<AccountType> accountList = ofy().load().type(AccountType.class)
-				.list();
+		List<BusinessPlanType> accountList = ofy().load()
+				.type(BusinessPlanType.class).list();
 		if (accountList.size() > 0) {
 			return;
 		}
 
-		AccountType accounttype = new AccountType();
-		accounttype.setAccountName("Free");
-		accounttype.setDescription("Free for upto 2 users");
-		accounttype.setMaxuser("2");
-		accounttype.setPaymentDesc("Free no charges");
+		BusinessPlanType accounttype = new BusinessPlanType();
+		accounttype.setPlanName("Free");
+		accounttype.setMaxuser(20);
+		accounttype.setBaseCost(0f);
+		accounttype.setDescription("Free for upto 20 users and 2 GB of data");
+
+		accounttype.setPaymentDesc("Free");
 		ofy().save().entity(accounttype).now();
-		AccountType accounttype1 = new AccountType();
-		accounttype1.setAccountName("Silver");
-		accounttype1.setDescription("Good for upto 20 users");
-		accounttype1.setMaxuser("20");
+		BusinessPlanType accounttype1 = new BusinessPlanType();
+		accounttype1.setPlanName("Silver");
+		accounttype1.setDescription("Upto 200 users and 10 GB of data");
+		accounttype1.setMaxuser(100);
+		accounttype1.setBaseCost(4000f);
 		accounttype1.setPaymentDesc("Rs. 4000 PM + Tax");
 		ofy().save().entity(accounttype1).now();
-		AccountType accounttype2 = new AccountType();
-		accounttype2.setAccountName("Gold");
-		accounttype2.setDescription("20 to 50 users");
-		accounttype2.setMaxuser("50");
+		BusinessPlanType accounttype2 = new BusinessPlanType();
+		accounttype2.setPlanName("Gold");
+		accounttype2.setDescription("Upto 500 users and 50 GB of data");
+		accounttype2.setMaxuser(500);
+		accounttype2.setBaseCost(8000f);
 		accounttype2.setPaymentDesc("Rs. 8000 PM + Tax");
 		ofy().save().entity(accounttype2).now();
-		AccountType accounttype3 = new AccountType();
-		accounttype3.setAccountName("Platinum");
-		accounttype3.setDescription("50 to 500 users");
-		accounttype3.setMaxuser("500");
+		BusinessPlanType accounttype3 = new BusinessPlanType();
+		accounttype3.setPlanName("Platinum");
+		accounttype3.setDescription("Upto 1000 users and 100 GB of data");
+		accounttype3.setMaxuser(1000);
+		accounttype3.setBaseCost(25000f);
 		accounttype3.setPaymentDesc("Rs. 25,000 PM + Tax");
 		ofy().save().entity(accounttype3).now();
 

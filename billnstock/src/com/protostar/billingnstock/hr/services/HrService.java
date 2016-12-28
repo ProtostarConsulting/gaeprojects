@@ -257,7 +257,8 @@ public class HrService {
 		for (UserEntity usere : userList) {
 			SalStruct foundSalMaster = null;
 			for (SalStruct salStruct : salStructlist) {
-				if (usere.getId() == salStruct.getEmpAccount().getId()) {
+				if (salStruct.getEmpAccount() != null
+						&& usere.getId() == salStruct.getEmpAccount().getId()) {
 					foundSalMaster = salStruct;
 				}
 			}
@@ -435,7 +436,7 @@ public class HrService {
 								.getId())).filter("empAccount", user).list();
 		System.out.println("monthlyPaymentDetailEntity******"
 				+ monthlyPaymentDetailEntity.size());
-	
+
 		return monthlyPaymentDetailEntity;
 
 	}

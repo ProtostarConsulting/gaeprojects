@@ -2,21 +2,12 @@ package com.protostar.billingnstock.stock.entities;
 
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Index;
-import com.protostar.billingnstock.tax.entities.TaxEntity;
+import com.googlecode.objectify.annotation.OnSave;
 import com.protostar.billingnstock.warehouse.entities.WarehouseEntity;
 import com.protostar.billnstock.entity.BaseEntity;
 
 @Entity
 public class StockItemEntity extends BaseEntity {
-
-	@Index
-	private String itemName;
-	@Index
-	private long stockItemNumber;
-	
-	@Index
-	private String category;
 	private int qty;
 	private double price;
 	private double cost;
@@ -27,36 +18,39 @@ public class StockItemEntity extends BaseEntity {
 	private String rack;
 	private String slot;
 	private boolean maintainStock = true;
+	private boolean maintainStockBySerialNumber = false;
 
 	private Ref<WarehouseEntity> warehouse;
-	private Ref<TaxEntity> selectedTaxItem;
+	private Ref<StockItemTypeEntity> stockItemType;
 
-	public TaxEntity getSelectedTaxItem() {
-		return selectedTaxItem == null ? null : selectedTaxItem.get();
-	}
-
-	public void setSelectedTaxItem(TaxEntity selectedTaxItem) {
-		this.selectedTaxItem = Ref.create(selectedTaxItem);
+	@OnSave
+	public void beforeSave() {
+		if (getWarehouse() == null) {
+			throw new RuntimeException("Warehouse entity is not set on: "
+					+ this.getClass().getSimpleName()
+					+ " This is required field. Aborting save operation...");
+		}
+		if (getStockItemType() == null) {
+			throw new RuntimeException("StockItemType entity is not set on: "
+					+ this.getClass().getSimpleName()
+					+ " This is required field. Aborting save operation...");
+		}
 	}
 
 	public WarehouseEntity getWarehouse() {
-		return warehouse == null ? null : warehouse.get();
+		return warehouse.get();
 	}
 
 	public void setWarehouse(WarehouseEntity warehouse) {
-		this.warehouse = warehouse == null ? null : Ref.create(warehouse);
+		this.warehouse = Ref.create(warehouse);
 	}
 
-	public String getCategory() {
-		return category;
+	public StockItemTypeEntity getStockItemType() {
+		return this.stockItemType.get();
 	}
 
-	public String getItemName() {
-		return itemName;
-	}
-
-	public void setItemName(String itemName) {
-		this.itemName = itemName;
+	public void setStockItemType(StockItemTypeEntity stockItemType) {
+		this.stockItemType = Ref.create(stockItemType);
 	}
 
 	public int getQty() {
@@ -81,10 +75,6 @@ public class StockItemEntity extends BaseEntity {
 
 	public void setThresholdValue(int thresholdValue) {
 		this.thresholdValue = thresholdValue;
-	}
-
-	public void setCategory(String category) {
-		this.category = category;
 	}
 
 	public String getNotes() {
@@ -135,14 +125,6 @@ public class StockItemEntity extends BaseEntity {
 		this.cost = cost;
 	}
 
-	public long getStockItemNumber() {
-		return stockItemNumber;
-	}
-
-	public void setStockItemNumber(long stockItemNumber) {
-		this.stockItemNumber = stockItemNumber;
-	}
-
 	public double getMovingAvgCost() {
 		return movingAvgCost;
 	}
@@ -151,4 +133,11 @@ public class StockItemEntity extends BaseEntity {
 		this.movingAvgCost = movingAvgCost;
 	}
 
+	public boolean isMaintainStockBySerialNumber() {
+		return maintainStockBySerialNumber;
+	}
+
+	public void setMaintainStockBySerialNumber(boolean maintainStockBySerialNumber) {
+		this.maintainStockBySerialNumber = maintainStockBySerialNumber;
+	}
 }// end of StockServicesEntity

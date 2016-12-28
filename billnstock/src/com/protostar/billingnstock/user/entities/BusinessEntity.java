@@ -6,13 +6,13 @@ import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
-import com.protostar.billingnstock.proadmin.entities.AccountType;
+import com.protostar.billingnstock.proadmin.entities.BusinessPlanType;
 import com.protostar.billnstock.entity.Address;
 
 @Entity
 public class BusinessEntity {
 
-	private Ref<AccountType> accounttype;
+	private Ref<BusinessPlanType> accounttype;
 
 	@Id
 	private Long id;
@@ -120,11 +120,11 @@ public class BusinessEntity {
 		return registerDate;
 	}
 
-	public AccountType getAccounttype() {
+	public BusinessPlanType getAccounttype() {
 		return accounttype == null ? null : accounttype.get();
 	}
 
-	public void setAccounttype(AccountType accounttype) {
+	public void setAccounttype(BusinessPlanType accounttype) {
 		if (accounttype == null)
 			return;
 		this.accounttype = Ref.create(accounttype);

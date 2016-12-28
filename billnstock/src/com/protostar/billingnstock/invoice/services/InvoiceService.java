@@ -16,7 +16,7 @@ import com.protostar.billingnstock.cust.entities.Customer;
 import com.protostar.billingnstock.invoice.entities.InvoiceEntity;
 import com.protostar.billingnstock.invoice.entities.InvoiceSettingsEntity;
 import com.protostar.billingnstock.invoice.entities.QuotationEntity;
-import com.protostar.billingnstock.stock.services.StockItemService;
+import com.protostar.billingnstock.stock.services.StockManagementService;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billnstock.until.data.Constants;
 import com.protostar.billnstock.until.data.EntityUtil;
@@ -36,7 +36,7 @@ public class InvoiceService {
 					.getNextSequenceNumber());
 		}
 
-		StockItemService.adjustStockItems(invoiceEntity.getBusiness(),
+		StockManagementService.adjustStockItems(invoiceEntity.getBusiness(),
 				invoiceEntity.getProductLineItemList());
 
 		ofy().save().entity(invoiceEntity).now();

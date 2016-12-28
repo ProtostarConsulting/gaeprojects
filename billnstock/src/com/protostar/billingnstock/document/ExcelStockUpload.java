@@ -17,8 +17,8 @@ import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreInputStream;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
-import com.protostar.billingnstock.stock.entities.StockItemEntity;
-import com.protostar.billingnstock.stock.services.StockItemService;
+import com.protostar.billingnstock.stock.entities.StockItemTypeEntity;
+import com.protostar.billingnstock.stock.services.StockManagementService;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.user.services.UserService;
 import com.protostar.billingnstock.warehouse.entities.WarehouseEntity;
@@ -137,7 +137,7 @@ public class ExcelStockUpload extends HttpServlet {
 						we = wc.addWarehouse(we);
 					}
 				}
-				StockItemService ss = new StockItemService();
+				StockManagementService ss = new StockManagementService();
 
 				for (int row = 1; row < split2.length; row++) {
 
@@ -154,16 +154,16 @@ public class ExcelStockUpload extends HttpServlet {
 
 					// insert stocks
 
-					StockItemEntity si = new StockItemEntity();
+					StockItemTypeEntity stockItemType = new StockItemTypeEntity();
 
-					si.setItemName(split[0]);
-					si.setCategory(split[1]);
-					si.setQty(Integer.parseInt(split[2]));
+					stockItemType.setItemName(split[0]);
+					stockItemType.setCategory(split[1]);
+					/*si.setQty(Integer.parseInt(split[2]));
 					si.setPrice(Double.parseDouble(split[3]));
 					si.setThresholdValue(Integer.parseInt(split[4]));
 					si.setBusiness(getbusinessById);
-					si.setWarehouse(we);
-					ss.addStock(si);
+					si.setWarehouse(we);*/
+					ss.addStockItemType(stockItemType);
 					Thread.sleep(2000);
 
 				}

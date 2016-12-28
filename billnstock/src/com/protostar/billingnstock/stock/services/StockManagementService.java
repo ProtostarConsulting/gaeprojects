@@ -20,27 +20,43 @@ import com.protostar.billingnstock.invoice.entities.StockLineItem;
 import com.protostar.billingnstock.purchase.entities.SupplierEntity;
 import com.protostar.billingnstock.stock.entities.StockItemEntity;
 import com.protostar.billingnstock.stock.entities.StockItemTxnEntity;
+import com.protostar.billingnstock.stock.entities.StockItemTypeEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billnstock.until.data.Constants;
 import com.protostar.billnstock.until.data.EntityUtil;
 import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 
 @Api(name = "stockService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.stock.services", ownerName = "com.protostar.billingnstock.stock.services", packagePath = ""))
-public class StockItemService {
+public class StockManagementService {
 
-	private final Logger logger = Logger.getLogger(StockItemService.class
+	private final Logger logger = Logger.getLogger(StockManagementService.class
 			.getName());
 
-	@ApiMethod(name = "addStock", path = "addStock")
-	public StockItemEntity addStock(StockItemEntity stockItemEntity) {
-		if (stockItemEntity.getId() == null) {
+	@ApiMethod(name = "addStockItemType", path = "addStockItemType")
+	public StockItemTypeEntity addStockItemType(
+			StockItemTypeEntity stockItemTypeEntity) {
+		if (stockItemTypeEntity.getId() == null) {
 			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
-					EntityUtil.getBusinessRawKey(stockItemEntity.getBusiness()),
-					Constants.STOCKITEM_NO_COUNTER);
-			stockItemEntity.setStockItemNumber(sequenceGenService
+					EntityUtil.getBusinessRawKey(stockItemTypeEntity
+							.getBusiness()), Constants.STOCKITEMTYPE_NO_COUNTER);
+			stockItemTypeEntity.setItemNumber(sequenceGenService
 					.getNextSequenceNumber());
 		}
 
+		ofy().save().entity(stockItemTypeEntity).now();
+		return stockItemTypeEntity;
+	}
+
+	@ApiMethod(name = "getStockItemTypes", path = "getStockItemTypes")
+	public List<StockItemTypeEntity> getStockItemTypes(@Named("id") Long busId) {
+		List<StockItemTypeEntity> typeList = ofy().load()
+				.type(StockItemTypeEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).list();
+		return typeList;
+	}
+
+	@ApiMethod(name = "addStockItem", path = "addStockItem")
+	public StockItemEntity addStockItem(StockItemEntity stockItemEntity) {
 		ofy().save().entity(stockItemEntity).now();
 		return stockItemEntity;
 	}
@@ -61,7 +77,7 @@ public class StockItemService {
 			// stock items
 			stockLineItem.setStockMaintainedQty(stockLineItem.getQty() * 2);
 		}
-		StockItemService.adjustStockItems(stockItemsReceipt.getBusiness(),
+		StockManagementService.adjustStockItems(stockItemsReceipt.getBusiness(),
 				productLineItemList);
 
 		ofy().save().entity(stockItemsReceipt).now();
@@ -77,13 +93,13 @@ public class StockItemService {
 			stockItemsShipment.setShipmentNumber(sequenceGenService
 					.getNextSequenceNumber());
 		}
-		StockItemService.adjustStockItems(stockItemsShipment.getBusiness(),
+		StockManagementService.adjustStockItems(stockItemsShipment.getBusiness(),
 				stockItemsShipment.getProductLineItemList());
 		ofy().save().entity(stockItemsShipment).now();
 	}
 
-	@ApiMethod(name = "getStockById")
-	public StockItemEntity getStockById(@Named("id") Long id) {
+	@ApiMethod(name = "getStockItemById", path = "getStockItemById")
+	public StockItemEntity getStockItemById(@Named("id") Long id) {
 		logger.info("getStockById#id:" + id);
 		StockItemEntity stock = ofy().load().type(StockItemEntity.class).id(id)
 				.now();
@@ -91,9 +107,9 @@ public class StockItemService {
 		return stock;
 	}
 
-	@ApiMethod(name = "getAllStock", path = "getAllStock")
-	public List<StockItemEntity> getAllStock(@Named("id") Long busId) {
-		//System.out.println("getAllStock#busId:" + busId);
+	@ApiMethod(name = "getAllStockItems", path = "getAllStockItems")
+	public List<StockItemEntity> getAllStockItems(@Named("id") Long busId) {
+		// System.out.println("getAllStock#busId:" + busId);
 		List<StockItemEntity> filteredStocks = ofy().load()
 				.type(StockItemEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, busId)).list();
@@ -104,7 +120,7 @@ public class StockItemService {
 	@ApiMethod(name = "getStockReceiptList", path = "getStockReceiptList")
 	public List<StockItemsReceiptEntity> getStockReceiptList(
 			@Named("id") Long busId) {
-		//System.out.println("getAllStock#busId:" + busId);
+		// System.out.println("getAllStock#busId:" + busId);
 		List<StockItemsReceiptEntity> stockItemsShipmentList = ofy().load()
 				.type(StockItemsReceiptEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, busId)).list();
