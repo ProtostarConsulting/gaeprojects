@@ -81,7 +81,7 @@ public class StockManagementService {
 		if (stockItemsShipment.getId() == null) {
 			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
 					EntityUtil.getBusinessRawKey(stockItemsShipment
-							.getBusiness()), Constants.STOCKRECEIPT_NO_COUNTER);
+							.getBusiness()), Constants.STOCKSHIPMENT_NO_COUNTER);
 			stockItemsShipment.setShipmentNumber(sequenceGenService
 					.getNextSequenceNumber());
 		}

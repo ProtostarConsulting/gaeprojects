@@ -27,32 +27,190 @@ public class ProtostarAdminService {
 	private static final Logger log = Logger
 			.getLogger(ProtostarAdminService.class.getName());
 
-	@ApiMethod(name = "addAccountType")
-	public void addAccountType(BusinessPlanType account) {
+	@ApiMethod(name = "addBusinessPlan", path = "addBusinessPlan")
+	public void addBusinessPlan(BusinessPlanType account) {
 		ofy().save().entity(account).now();
 
 	}
 
-	@ApiMethod(name = "getallAccountType")
-	public List<BusinessPlanType> getallAccountType() {
-		log.info("Inside getallAccountType.");
-		try {
-			return ofy().load().type(BusinessPlanType.class).list();
-		} catch (Exception e) {
-			log.info("Error Ocuured: " + e.getStackTrace());
+	@ApiMethod(name = "getBusinessPlans", path = "getBusinessPlans")
+	public List<BusinessPlanType> getBusinessPlans() {
+		log.info("Inside getBusinessPlans.");
+		return ofy().load().type(BusinessPlanType.class).list();
+	}
+	
+	@ApiMethod(name = "getBusinessList", path = "getBusinessList")
+	public List<BusinessEntity> getBusinessList() {
+		log.info("Inside getBusinessList.");
+		List<BusinessEntity> list = ofy().load().type(BusinessEntity.class).list();		
+		return list;
+	}
+
+	@ApiMethod(name = "createDefaultBusiness", path = "createDefaultBusiness")
+	public void createDefaultBusiness() {
+
+		createDefaultBusinessPlans();
+		List<BusinessEntity> bizList = ofy().load().type(BusinessEntity.class)
+				.list();
+		if (bizList.size() > 0) {
+			return;
 		}
 
-		return null;
+		Date date = new Date();
+		String DATE_FORMAT = "dd/MM/yyyy";
+		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+
+		List<BusinessPlanType> accountt = ofy().load()
+				.type(BusinessPlanType.class).list();
+		BusinessPlanType businessPlan = new BusinessPlanType();
+		for (int i = 0; i < accountt.size(); i++) {
+			if (accountt.get(i).getPlanName().equals("Platinum")) {
+				businessPlan = accountt.get(i);
+			}
+		}
+
+		BusinessEntity businessEntity = new BusinessEntity();
+		/*
+		 * businessEntity.setAdminFirstName("ganesh");
+		 * businessEntity.setAdminEmailId("ganesh.lawande@protostar.co.in");
+		 * businessEntity.setAdminLastName("Lawande");
+		 */
+		businessEntity.setBusinessName("Protostar Consulting Services");
+		businessEntity.setBusinessPlan(businessPlan);
+		businessEntity.setRegisterDate(sdf.format(date));
+		String authorizations = Constants.PROTOSTAR_DEFAULT_AUTHS;
+		businessEntity.setAuthorizations(authorizations);
+
+		Address address = new Address();
+		businessEntity.setAddress(address);
+		address.setLine1("E101, Manaimangal Apt, Behind Sharda Motor, Old Mumbai Highway");
+		address.setLine2("Kasarwadi");
+		address.setCity("Pune");
+		address.setState("MH");
+		address.setPin("411034");
+
+		UserService userService = new UserService();
+		// ofy().save().entity(businessEntity).now();
+		userService.addBusiness(businessEntity);
+
+		createDefaultDepartments(businessEntity.getId());
+
+		UserEntity userEntity = new UserEntity();
+		userEntity.setBusiness(businessEntity);
+		userEntity.setEmail_id("ganesh.lawande@protostar.co.in");
+		userEntity.setFirstName("Ganesh");
+		userEntity.setLastName("Lawande");
+		userEntity.setIsGoogleUser(true);
+		userEntity.setAuthority(Arrays.asList("admin"));
+		userEntity.setAuthorizations(authorizations);
+		// ofy().save().entity(userEntity).now();
+		userService.addUser(userEntity);
+
+		// ------------------------------
+
+		UserEntity userEntity1 = new UserEntity();
+		userEntity1.setBusiness(businessEntity);
+		userEntity1.setEmail_id("shantanu@protostar.co.in");
+		userEntity1.setFirstName("Shantanu");
+		userEntity1.setLastName("Lawande");
+		userEntity1.setIsGoogleUser(true);
+		userEntity1.setAuthority(Arrays.asList("admin"));
+		userEntity1.setAuthorizations(authorizations);
+		// ofy().save().entity(userEntity1).now();
+		userService.addUser(userEntity1);
+
+		UserEntity userEntity2 = new UserEntity();
+		userEntity2.setBusiness(businessEntity);
+		userEntity2.setEmail_id("sagar@protostar.co.in");
+		userEntity2.setFirstName("Sagar");
+		userEntity2.setLastName("Sadawatre");
+		userEntity2.setIsGoogleUser(true);
+		userEntity2.setAuthority(Arrays.asList("admin"));
+		userEntity2.setAuthorizations(authorizations);
+		// ofy().save().entity(userEntity2).now();
+		userService.addUser(userEntity2);
+
+		UserEntity userEntity3 = new UserEntity();
+		userEntity3.setBusiness(businessEntity);
+		userEntity3.setEmail_id("deepali@protostar.co.in");
+		userEntity3.setFirstName("Deepali");
+		userEntity3.setLastName("Mate");
+		userEntity3.setIsGoogleUser(true);
+		userEntity3.setAuthority(Arrays.asList("admin"));
+		userEntity3.setAuthorizations(authorizations);
+		// ofy().save().entity(userEntity3).now();
+		userService.addUser(userEntity3);
+	}
+
+	@ApiMethod(name = "createDefaultDepartments", path = "createDefaultDepartments")
+	public void createDefaultDepartments(@Named("businessId") Long id) {
+
+		UserService userService = new UserService();
+
+		BusinessEntity businessEntity = userService.getBusinessById(id);
+
+		EmpDepartment department = new EmpDepartment();
+		department.setName("Default");
+		department.setBusiness(businessEntity);
+		userService.addEmpDepartment(department);
+
+		department = new EmpDepartment();
+		department.setName("Staff");
+		department.setBusiness(businessEntity);
+		userService.addEmpDepartment(department);
+
+		department = new EmpDepartment();
+		department.setName("Workmen");
+		department.setBusiness(businessEntity);
+		userService.addEmpDepartment(department);
+	}
+
+	@ApiMethod(name = "createDefaultBusinessPlans", path = "createDefaultBusinessPlans")
+	public void createDefaultBusinessPlans() {
+		// try{
+
+		List<BusinessPlanType> accountList = ofy().load()
+				.type(BusinessPlanType.class).list();
+		if (accountList.size() > 0) {
+			return;
+		}
+
+		BusinessPlanType accounttype = new BusinessPlanType();
+		accounttype.setPlanName("Free");
+		accounttype.setDescription("Free for upto 20 users and 2 GB of data");
+		accounttype.setMaxuser(20);
+		accounttype.setBaseCost(0f);
+		accounttype.setPaymentDesc("Free Plan");
+		ofy().save().entity(accounttype).now();
+
+		BusinessPlanType accounttype1 = new BusinessPlanType();
+		accounttype1.setPlanName("Silver");
+		accounttype1.setDescription("Upto 200 users and 10 GB of data");
+		accounttype1.setMaxuser(100);
+		accounttype1.setBaseCost(4000f);
+		accounttype1.setPaymentDesc("Rs. 4000 PM + Tax");
+		ofy().save().entity(accounttype1).now();
+
+		BusinessPlanType accounttype2 = new BusinessPlanType();
+		accounttype2.setPlanName("Gold");
+		accounttype2.setDescription("Upto 500 users and 50 GB of data");
+		accounttype2.setMaxuser(500);
+		accounttype2.setBaseCost(8000f);
+		accounttype2.setPaymentDesc("Rs. 8000 PM + Tax");
+		ofy().save().entity(accounttype2).now();
+
+		BusinessPlanType accounttype3 = new BusinessPlanType();
+		accounttype3.setPlanName("Platinum");
+		accounttype3.setDescription("Upto 1000 users and 100 GB of data");
+		accounttype3.setMaxuser(1000);
+		accounttype3.setBaseCost(25000f);
+		accounttype3.setPaymentDesc("Rs. 25,000 PM + Tax");
+		ofy().save().entity(accounttype3).now();
 
 	}
 
-	@ApiMethod(name = "getAccountTypeById")
-	public BusinessPlanType getAccountTypeById(@Named("id") Long id) {
-		return ofy().load().type(BusinessPlanType.class).id(id).now();
-	}
-
-	@ApiMethod(name = "creatAccountAndGroup")
-	public void creatAccountAndGroup(@Named("id") Long bizId) {
+	@ApiMethod(name = "createAccountingGroups", path = "createAccountingGroups")
+	public void createAccountingGroups(@Named("id") Long bizId) {
 
 		List<AccountGroupEntity> acList = ofy().load()
 				.type(AccountGroupEntity.class).list();
@@ -335,183 +493,6 @@ public class ProtostarAdminService {
 		unsecuredLoans.setParent(loansLiabilityGroupEntity);
 		ofy().save().entity(unsecuredLoans).now();
 
-	}
-
-	@ApiMethod(name = "initsetupnext")
-	public void initsetupnext() {
-
-		List<BusinessEntity> bizList = ofy().load().type(BusinessEntity.class)
-				.list();
-		if (bizList.size() > 0) {
-			return;
-		}
-
-		Date date = new Date();
-		String DATE_FORMAT = "dd/MM/yyyy";
-		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-
-		List<BusinessPlanType> accountt = ofy().load()
-				.type(BusinessPlanType.class).list();
-		BusinessPlanType filteredaccount = new BusinessPlanType();
-		for (int i = 0; i < accountt.size(); i++) {
-			if (accountt.get(i).getPlanName().equals("Platinum")) {
-				filteredaccount = accountt.get(i);
-			}
-		}
-
-		BusinessEntity businessEntity = new BusinessEntity();
-		/*
-		 * businessEntity.setAdminFirstName("ganesh");
-		 * businessEntity.setAdminEmailId("ganesh.lawande@protostar.co.in");
-		 * businessEntity.setAdminLastName("Lawande");
-		 */
-		businessEntity.setBusinessName("Protostar Consulting Services");
-		businessEntity.setAccounttype(filteredaccount);
-		businessEntity.setRegisterDate(sdf.format(date));
-		String authorizations = Constants.PROTOSTAR_DEFAULT_AUTHS;
-		businessEntity.setAuthorizations(authorizations);
-
-		Address address = new Address();
-		businessEntity.setAddress(address);
-		address.setLine1("E101, Manaimangal Apt, Behind Sharda Motor, Old Mumbai Highway");
-		address.setLine2("Kasarwadi");
-		address.setCity("Pune");
-		address.setState("MH");
-		address.setPin("411034");
-
-		UserService userService = new UserService();
-		// ofy().save().entity(businessEntity).now();
-		userService.addBusiness(businessEntity);
-
-		createDefaultDepartments(businessEntity.getId());
-
-		UserEntity userEntity = new UserEntity();
-		userEntity.setBusiness(businessEntity);
-		userEntity.setEmail_id("ganesh.lawande@protostar.co.in");
-		userEntity.setFirstName("Ganesh");
-		userEntity.setLastName("Lawande");
-		userEntity.setIsGoogleUser(true);
-		userEntity.setAuthority(Arrays.asList("admin"));
-		userEntity.setAuthorizations(authorizations);
-		// ofy().save().entity(userEntity).now();
-		userService.addUser(userEntity);
-
-		// ------------------------------
-
-		UserEntity userEntity1 = new UserEntity();
-		userEntity1.setBusiness(businessEntity);
-		userEntity1.setEmail_id("shantanu@protostar.co.in");
-		userEntity1.setFirstName("Shantanu");
-		userEntity1.setLastName("Lawande");
-		userEntity1.setIsGoogleUser(true);
-		userEntity1.setAuthority(Arrays.asList("admin"));
-		userEntity1.setAuthorizations(authorizations);
-		// ofy().save().entity(userEntity1).now();
-		userService.addUser(userEntity1);
-
-		UserEntity userEntity2 = new UserEntity();
-		userEntity2.setBusiness(businessEntity);
-		userEntity2.setEmail_id("sagar@protostar.co.in");
-		userEntity2.setFirstName("Sagar");
-		userEntity2.setLastName("Sadawatre");
-		userEntity2.setIsGoogleUser(true);
-		userEntity2.setAuthority(Arrays.asList("admin"));
-		userEntity2.setAuthorizations(authorizations);
-		// ofy().save().entity(userEntity2).now();
-		userService.addUser(userEntity2);
-
-		UserEntity userEntity3 = new UserEntity();
-		userEntity3.setBusiness(businessEntity);
-		userEntity3.setEmail_id("deepali@protostar.co.in");
-		userEntity3.setFirstName("Deepali");
-		userEntity3.setLastName("Mate");
-		userEntity3.setIsGoogleUser(true);
-		userEntity3.setAuthority(Arrays.asList("admin"));
-		userEntity3.setAuthorizations(authorizations);
-		// ofy().save().entity(userEntity3).now();
-		userService.addUser(userEntity3);
-		// ///////////////////
-
-	}
-
-	@ApiMethod(name = "createDefaultDepartments", path = "createDefaultDepartments")
-	public void createDefaultDepartments(@Named("businessId") Long id) {
-
-		UserService userService = new UserService();
-
-		BusinessEntity businessEntity = userService.getBusinessById(id);
-
-		EmpDepartment department = new EmpDepartment();
-		department.setName("Default");
-		department.setBusiness(businessEntity);
-		userService.addEmpDepartment(department);
-
-		department = new EmpDepartment();
-		department.setName("Staff");
-		department.setBusiness(businessEntity);
-		userService.addEmpDepartment(department);
-
-		department = new EmpDepartment();
-		department.setName("Workmen");
-		department.setBusiness(businessEntity);
-		userService.addEmpDepartment(department);
-	}
-
-	@ApiMethod(name = "initsetup")
-	public void initsetup() {
-		// try{
-
-		List<BusinessPlanType> accountList = ofy().load()
-				.type(BusinessPlanType.class).list();
-		if (accountList.size() > 0) {
-			return;
-		}
-
-		BusinessPlanType accounttype = new BusinessPlanType();
-		accounttype.setPlanName("Free");
-		accounttype.setMaxuser(20);
-		accounttype.setBaseCost(0f);
-		accounttype.setDescription("Free for upto 20 users and 2 GB of data");
-
-		accounttype.setPaymentDesc("Free");
-		ofy().save().entity(accounttype).now();
-		BusinessPlanType accounttype1 = new BusinessPlanType();
-		accounttype1.setPlanName("Silver");
-		accounttype1.setDescription("Upto 200 users and 10 GB of data");
-		accounttype1.setMaxuser(100);
-		accounttype1.setBaseCost(4000f);
-		accounttype1.setPaymentDesc("Rs. 4000 PM + Tax");
-		ofy().save().entity(accounttype1).now();
-		BusinessPlanType accounttype2 = new BusinessPlanType();
-		accounttype2.setPlanName("Gold");
-		accounttype2.setDescription("Upto 500 users and 50 GB of data");
-		accounttype2.setMaxuser(500);
-		accounttype2.setBaseCost(8000f);
-		accounttype2.setPaymentDesc("Rs. 8000 PM + Tax");
-		ofy().save().entity(accounttype2).now();
-		BusinessPlanType accounttype3 = new BusinessPlanType();
-		accounttype3.setPlanName("Platinum");
-		accounttype3.setDescription("Upto 1000 users and 100 GB of data");
-		accounttype3.setMaxuser(1000);
-		accounttype3.setBaseCost(25000f);
-		accounttype3.setPaymentDesc("Rs. 25,000 PM + Tax");
-		ofy().save().entity(accounttype3).now();
-
-		// Thread.sleep(30000);
-
-		// }
-		// catch(Exception e)
-		// {
-
-		// }
-		// //////////////////////// create 2 protostar user
-		// /////////////////////////
-
-	}
-
-	@ApiMethod(name = "getAllemp")
-	public List<UserEntity> getAllemp() {
-		return ofy().load().type(UserEntity.class).list();
 	}
 
 }// end of InternetService

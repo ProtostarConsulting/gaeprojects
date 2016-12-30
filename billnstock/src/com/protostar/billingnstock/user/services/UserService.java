@@ -24,7 +24,6 @@ import com.google.api.server.spi.config.Named;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.googlecode.objectify.Key;
-import com.protostar.billingnstock.invoice.entities.InvoiceEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.user.entities.EmpDepartment;
 import com.protostar.billingnstock.user.entities.UserEntity;
@@ -147,12 +146,6 @@ public class UserService {
 		return ofy().load().type(BusinessEntity.class).id(id.longValue()).now();
 	}
 
-	@ApiMethod(name = "updateUser")
-	public void updateUser(UserEntity usr) {
-		usr.setModifiedDate(new Date());
-		Key<UserEntity> now = ofy().save().entity(usr).now();
-	}
-
 	@ApiMethod(name = "getUserList")
 	public List<UserEntity> getUserList() {
 		return ofy().load().type(UserEntity.class).list();
@@ -208,8 +201,18 @@ public class UserService {
 	@ApiMethod(name = "login")
 	public List<UserEntity> login(@Named("email_id") String email,
 			@Named("password") String pass) {
-		List<UserEntity> list = ofy().load().type(UserEntity.class)
-				.filter("email_id", email).order("createdDate").list();
+		List<UserEntity> list = null;
+		if (email.contains("@")) {
+			list = ofy().load().type(UserEntity.class)
+					.filter("email_id", email).order("createdDate").list();
+		} else if (email.length() == 10) {
+			list = ofy().load().type(UserEntity.class)
+					.filter("employeeDetail.phone1", email).list();
+		} else if (isInteger(email)) {
+			list = ofy().load().type(UserEntity.class)
+					.filter("employeeDetail.empId", Integer.parseInt(email))
+					.list();
+		}
 
 		if (list != null & list.size() > 0) {
 			// Login will be checked against first/the created first. Notice
@@ -225,6 +228,15 @@ public class UserService {
 			}
 		} else {
 			return null;
+		}
+	}
+
+	private static boolean isInteger(String input) {
+		try {
+			Integer.parseInt(input);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
 		}
 	}
 

@@ -12,11 +12,10 @@ import com.protostar.billnstock.entity.Address;
 @Entity
 public class BusinessEntity {
 
-	private Ref<BusinessPlanType> accounttype;
-
 	@Id
 	private Long id;
 
+	@Index
 	private String businessName;
 	private String registerDate;
 	private Integer totalUser = 1;
@@ -31,10 +30,13 @@ public class BusinessEntity {
 	private String disclaimer;
 	private String authorizations;
 
+	@Index
 	private Date createdDate;
 	private Date modifiedDate;
 	private String modifiedBy;
 	private String note;
+
+	private Ref<BusinessPlanType> businessPlan;
 
 	public Date getCreatedDate() {
 		return createdDate;
@@ -120,14 +122,14 @@ public class BusinessEntity {
 		return registerDate;
 	}
 
-	public BusinessPlanType getAccounttype() {
-		return accounttype == null ? null : accounttype.get();
+	public BusinessPlanType getBusinessPlan() {
+		return businessPlan == null ? null : businessPlan.get();
 	}
 
-	public void setAccounttype(BusinessPlanType accounttype) {
-		if (accounttype == null)
+	public void setBusinessPlan(BusinessPlanType businessPlan) {
+		if (businessPlan == null)
 			return;
-		this.accounttype = Ref.create(accounttype);
+		this.businessPlan = Ref.create(businessPlan);
 	}
 
 	public void setRegisterDate(String registerDate) {
