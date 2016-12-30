@@ -461,41 +461,41 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
-	proadminService.getallAccountType = function() {
+	proadminService.getBusinessPlans = function() {
 		var deferred = $q.defer();
-		gapi.client.proadminService.getallAccountType().execute(function(resp) {
+		gapi.client.proadminService.getBusinessPlans().execute(function(resp) {
 			deferred.resolve(resp);
 		});
 		return deferred.promise;
 	}
 
-	proadminService.getAccountTypeById = function(id) {
+	proadminService.getBusinessList = function(id) {
 		var deferred = $q.defer();
-		gapi.client.proadminService.getAccountTypeById({
-			'id' : id
-		}).execute(function(resp) {
+		gapi.client.proadminService.getBusinessList().execute(function(resp) {
 			deferred.resolve(resp);
 		});
 		return deferred.promise;
 	}
 
-	proadminService.initsetup = function() {
+	proadminService.createDefaultBusinessPlans = function() {
 		var deferred = $q.defer();
-		gapi.client.proadminService.initsetup().execute(function(resp) {
-			deferred.resolve({
-				"msg" : resp
-			});
-		});
+		gapi.client.proadminService.createDefaultBusinessPlans().execute(
+				function(resp) {
+					deferred.resolve({
+						"msg" : resp
+					});
+				});
 		return deferred.promise;
 	}
 
-	proadminService.initsetupnext = function() {
+	proadminService.createDefaultBusiness = function() {
 		var deferred = $q.defer();
-		gapi.client.proadminService.initsetupnext().execute(function(resp) {
-			deferred.resolve({
-				"msg" : resp
-			});
-		});
+		gapi.client.proadminService.createDefaultBusiness().execute(
+				function(resp) {
+					deferred.resolve({
+						"msg" : resp
+					});
+				});
 		return deferred.promise;
 	}
 
@@ -510,22 +510,6 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-
-	proadminService.getAllemp = function() {
-		var deferred = $q.defer();
-		gapi.client.proadminService.getAllemp().execute(function(resp) {
-			deferred.resolve(resp);
-		});
-		return deferred.promise;
-	}
-
-	/*
-	 * proadminService.getfreeAccountTypeRecord=function() { var deferred =
-	 * $q.defer();
-	 * gapi.client.proadminService.getfreeAccountTypeRecord({'accountName':"Free"}).execute(function(resp) {
-	 * deferred.resolve(resp); }); return deferred.promise; }
-	 */
-
 	/*------------------------------------------------------------------------------------------------------*/
 	// start of AuthorizationService
 	var authorizationService = null;
@@ -1756,9 +1740,10 @@ function googleEndpointSF($q) {
 
 	StockService.addStockItemType = function(stock) {
 		var deferred = $q.defer();
-		gapi.client.stockService.addStockItemType(stock).execute(function(resp) {
-			deferred.resolve(resp);
-		});
+		gapi.client.stockService.addStockItemType(stock).execute(
+				function(resp) {
+					deferred.resolve(resp);
+				});
 		return deferred.promise;
 	}
 	StockService.addStockItem = function(stock) {
@@ -1784,7 +1769,7 @@ function googleEndpointSF($q) {
 				});
 		return deferred.promise;
 	}
-	
+
 	StockService.getStockItemTypes = function(busId) {
 		var deferred = $q.defer();
 		gapi.client.stockService.getStockItemTypes({
@@ -1822,7 +1807,7 @@ function googleEndpointSF($q) {
 			deferred.resolve(resp.items);
 		});
 		return deferred.promise;
-	}	
+	}
 
 	StockService.getReportByThreshold = function(id) {
 		var deferred = $q.defer();

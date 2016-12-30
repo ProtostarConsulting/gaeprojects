@@ -7,18 +7,6 @@ angular.module("stockApp").controller(
 			$scope.curuser = appEndpointSF.getLocalUserService()
 					.getLoggedinUser();
 
-			$scope.leaveApp = {
-				startDate : new Date(),
-				endDate : new Date(),
-				approved : false,
-				halfDay : false,
-				totalDays : 0,
-				approvedDate : null,
-				user : $scope.curuser,
-				manager : null,
-				note : null
-			};
-
 			$scope.myLeaveAppList = [];
 
 			$scope.leaveAppListFilterFunc = function() {
@@ -50,7 +38,6 @@ angular.module("stockApp").controller(
 
 			$scope.waitForServiceLoad = function() {
 				if (appEndpointSF.is_service_ready) {
-
 					$scope.leaveAppListFilterFunc();
 
 				} else {

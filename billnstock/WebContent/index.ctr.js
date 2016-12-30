@@ -91,7 +91,7 @@ angular
 											} else {
 												$log.debug("User Not logged  "
 														+ $scope.user.email_id);
-												$scope.loginMsg = "Authontication failed. Username/Password not correct.";
+												$scope.loginMsg = "Authontication failed. Username/Password did not match.";
 											}
 
 										});

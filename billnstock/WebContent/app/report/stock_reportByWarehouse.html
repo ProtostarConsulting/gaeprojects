@@ -18,8 +18,8 @@
 	<table md-data-table class="md-primary" md-progress="deferred">
 		<thead md-order="query.order" md-trigger="onorderchange">
 			<tr>
-				<th name="Stock Item No." order-by="stockItemNumber"></th>
-				<th name="Item Name" order-by="itemName"></th>
+				<th name="Item No." order-by="stockItemType.itemNumber"></th>
+				<th name="Item Name" order-by="stockItemType.itemName"></th>
 				<th name="Quantity" order-by="qty"></th>
 				<th name="Threshold Value" order-by="thresholdValue"></th>
 
@@ -30,8 +30,8 @@
 			<tr
 				ng-repeat="stock in filteredWarehouseData | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
 				<!-- <a ng-href="#/invoice.list/{{invoiceId.id}}">{{invoice.finalTotal}}</a> -->
-				<td>{{stock.stockItemNumber}}</td>
-				<td>{{stock.itemName}}</td>
+				<td>{{stock.stockItemType.itemNumber}}</td>
+				<td>{{stock.stockItemType.itemName}}</td>			
 				<td>{{stock.qty}}</td>
 				<td style="color: red">{{stock.thresholdValue}}</td>
 			</tr>

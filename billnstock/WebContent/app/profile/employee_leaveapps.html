@@ -21,7 +21,7 @@
 
 			</tr>
 
-			<tr ng-repeat="empLeaveAppObj in employeeLeaveAppList">
+			<tr ng-repeat="empLeaveAppObj in employeeLeaveAppList | orderBy: query.order">
 				<td>{{empLeaveAppObj.startDate|formatDate}}</td>
 				<td>{{empLeaveAppObj.endDate |formatDate}}</td>
 				<td style="text-align: center">{{empLeaveAppObj.totalDays}}</td>

@@ -19,6 +19,7 @@ angular
 						user : $scope.curuser,
 						manager : "",
 						note : null,
+						business : $scope.curUser.business
 					};
 
 					$scope.leaveApp = $stateParams.selectedLeaveAppObj ? $stateParams.selectedLeaveAppObj

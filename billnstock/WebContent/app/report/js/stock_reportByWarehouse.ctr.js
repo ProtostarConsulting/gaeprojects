@@ -20,18 +20,8 @@ angular
 									$scope.stockData = stockList;
 								});
 					}
-
-					$scope.waitForServiceLoad = function() {
-						if (appEndpointSF.is_service_ready) {
-							$scope.getAllStockItems();
-						} else {
-							$log.debug("Services Not Loaded, watiting...");
-							$timeout($scope.waitForServiceLoad, 1000);
-						}
-					}
+					
 					$scope.stockData = [];
-					$scope.waitForServiceLoad();
-
 					$scope.getAllWarehouseByBusiness = function() {
 						$log
 								.debug("Inside function $scope.getAllWarehouseByBusiness");
@@ -47,6 +37,7 @@ angular
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
+							$scope.getAllStockItems();
 							$scope.getAllWarehouseByBusiness();
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
@@ -70,23 +61,5 @@ angular
 							}
 						}
 
-					};
-
-					// Setup menu
-					$scope.toggleRight = buildToggler('right');
-
-					function buildToggler(navID) {
-						var debounceFn = $mdUtil.debounce(function() {
-							$mdSidenav(navID).toggle().then(function() {
-								$log.debug("toggle " + navID + " is done");
-							});
-						}, 200);
-						return debounceFn;
-					}
-
-					$scope.close = function() {
-						$mdSidenav('right').close().then(function() {
-							$log.debug("close RIGHT is done");
-						});
-					};
+					}					
 				});

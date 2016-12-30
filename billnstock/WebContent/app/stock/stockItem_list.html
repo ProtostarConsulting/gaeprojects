@@ -4,6 +4,11 @@
 	<h4 class="md-title">Current Stock Items</h4>
 	</md-subheader>
 	<span flex> </span>
+	<md-input-container flex> <md-select
+		ng-model="selectedWarehouse" placeholder="Select Warehouse"
+		ng-change="warehouseDDLChange($index, selectedWarehouse)">
+	<md-option ng-value="warehouse" ng-repeat="warehouse in warehouses">{{warehouse.warehouseName
+	}}</md-option> </md-select> </md-input-container>
 	<md-input-container flex-gt-xs="25"> <label>Search</label>
 	<input ng-model="searchText"> </md-input-container>
 	<!-- <md-button class="md-icon-button" ui-sref="stock.stockItemAdd">
@@ -17,8 +22,8 @@
 		<thead md-order="query.order" md-trigger="onOrderChange">
 			<tr>
 				<th name="Item No" order-by="stockItemType.itemNumber"></th>
-				<th name="Item Name" order-by="itemName"></th>
-				<th name="Category" order-by="category"></th>
+				<th name="Item Name" order-by="stockItemType.itemName"></th>
+				<th name="Category" order-by="stockItemType.category"></th>
 				<th name="Quantity" order-by="qty"></th>
 				<th name="Cost" order-by="cost"></th>
 				<th name="Moving Avg. Cost" order-by="movingAvgCost"></th>

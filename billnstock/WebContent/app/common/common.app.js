@@ -630,42 +630,27 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/edit/:selectedSOId",
 		templateUrl : '/app/sales/salesOrder_edit.html',
 		controller : 'salesOrderEditCtr'
-	}).state('purchaseOrder', {
-		url : "/purchaseOrder",
-		templateUrl : '/app/purchase/purchaseOrder_module.html',
-		controller : 'purchaseOrderCtr'
-
-	}).state('purchaseOrder.purchaseOrderAdd', {
+	}).state('stock.purchaseOrderAdd', {
 		url : "/PurchaseOrderAdd",
-		templateUrl : '/app/purchase/purchaseOrder_add.html',
+		templateUrl : '/app/stock/purchaseOrder_add.html',
 		controller : 'purchaseOrderAddCtr',
 		params : {
 			purchaseOrderObj : null
 		}
-	}).state('purchaseOrder.purchaseOrderList', {
+	}).state('stock.purchaseOrderList', {
 		url : "/PurchaseOrderList",
-		templateUrl : '/app/purchase/purchaseOrder_list.html',
+		templateUrl : '/app/stock/purchaseOrder_list.html',
 		controller : 'purchaseOrderListCtr'
-	}).state('purchaseOrder.POview', {
-		url : "/POview/:selectedPONo",
-		templateUrl : '/app/purchase/purchaseOrder_view.html',
-		controller : 'purchaseOrderViewCtr'
-
-	}).state('purchaseOrder.POedit', {
-		url : "/POedit/:selectedPONo",
-		templateUrl : '/app/purchase/purchaseOrder_edit.html',
-		controller : 'purchaseOrderEditCtr'
-
-	}).state('purchaseOrder.supplierAdd', {
+	}).state('stock.supplierAdd', {
 		url : "/supplierAdd",
-		templateUrl : '/app/purchase/supplier_add.html',
+		templateUrl : '/app/stock/supplier_add.html',
 		controller : 'supplierAddCtr',
 		params : {
 			selectedSupplier : null
 		}
-	}).state('purchaseOrder.supplierList', {
+	}).state('stock.supplierList', {
 		url : "supplierList",
-		templateUrl : '/app/purchase/supplier_list.html',
+		templateUrl : '/app/stock/supplier_list.html',
 		controller : 'supplierListCtr'
 	}).state('hr', {
 		url : "/hr",
