@@ -1,0 +1,40 @@
+<md-subheader class="md-primary">
+<h4 class="md-title">Employee Leave Applications</h4>
+</md-subheader>
+<div ng-if="loading">
+	<div layout="row" layout-sm="column" layout-align="space-around">
+		<md-progress-circular md-diameter="60" md-mode="indeterminate"></md-progress-circular>
+	</div>
+</div>
+<div>
+	<md-data-table-container>
+	<table md-data-table md-progress="deferred">
+		<thead>
+			<tr>
+				<th name="From" order-by="startDate"></th>
+				<th name="To"></th>
+				<th name="No of Days"></th>
+				<th name="Employee"></th>
+				<th name="Status" order-by="approved"></th>
+				<th name="Note"></th>
+				<th name="Edit"></th>
+
+			</tr>
+
+			<tr ng-repeat="empLeaveAppObj in employeeLeaveAppList">
+				<td>{{empLeaveAppObj.startDate|formatDate}}</td>
+				<td>{{empLeaveAppObj.endDate |formatDate}}</td>
+				<td style="text-align: center">{{empLeaveAppObj.totalDays}}</td>
+				<td>{{(empLeaveAppObj.user.firstName + ' ' +
+					empLeaveAppObj.user.lastName) | uppercase}}</td>
+				<td>{{empLeaveAppObj.approved?'Approved':'Applied'}}</td>
+				<td>{{empLeaveAppObj.note}}</td>
+				<td><md-button class="md-icon-button"
+						ng-if="empLeaveAppObj.approved==false"
+						ui-sref="user_prof_detail.editLeaves({selectedLeaveAppObj: empLeaveAppObj})">
+
+					<ng-md-icon icon="edit" style="fill: md-default" size="24">
+					<md-tooltip> Edit Leave</md-tooltip></ng-md-icon></md-button></td>
+			</tr>
+	</table>
+</div>
