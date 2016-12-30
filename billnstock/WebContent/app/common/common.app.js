@@ -970,9 +970,29 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/MyMonthlyDeduction",
 		templateUrl : '/app/profile/monthlyTax.html',
 		controller : 'myMonthlyDeduction',
-	})
-
-	.state('user_prof_detail.print', {
+	}).state('user_prof_detail.viewLeaves', {
+		url : "/MyMonthlyLeaves",
+		templateUrl : '/app/profile/my_monthlyleaves.html',
+		controller : 'view_monthlyleaveApps',
+	}).state('user_prof_detail.addLeaves', {
+		url : "/AddMonthlyLeaves",
+		templateUrl : '/app/profile/add_leaveapp.html',
+		controller : 'add_andviewemployeeleaves',
+		params : {
+			selectedLeaveAppObj : null
+		}
+	}).state('user_prof_detail.employeeLeaves', {
+		url : "/EmployeeLeaves",
+		templateUrl : '/app/profile/employee_leaveapps.html',
+		controller : 'add_andviewemployeeleaves',
+	}).state('user_prof_detail.editLeaves', {
+		url : "/EditLeaves",
+		templateUrl : '/app/profile/edit_employeeleaves.html',
+		controller : 'edit_employeeleaveapps',
+		params : {
+			selectedLeaveAppObj : null
+		}
+	}).state('user_prof_detail.print', {
 		url : "/print/:printempidsalslip",
 		/*
 		 * templateUrl : '/app/profile/print_salaryslip.html', controller :
