@@ -1,0 +1,59 @@
+
+<div ng-if="loading">
+	<div layout="row" layout-sm="column" layout-align="space-around">
+		<md-progress-circular md-diameter="60" md-mode="indeterminate"></md-progress-circular>
+	</div>
+</div>
+
+
+<div layout="column" ng-cloak>
+	<section layout="row" layout-xs="column">
+		<md-subheader class="md-primary">
+		<h4 class="md-title">My Leave Applications</h4>
+		</md-subheader>
+		<span flex></span>
+		<div layout="row" flex="33" flex-sm="50" flex-xs="100">
+			<md-input-container flex> <label>Search
+				Employee Leaves</label> <input ng-model="searchEmpLeaves"> </md-input-container>
+			<md-button class="md-icon-button"
+				ui-sref="user_prof_detail.addLeaves"> <ng-md-icon
+				icon="add_circle" style="fill: md-default" size="24"> <md-tooltip>
+			Add Leave </md-tooltip></ng-md-icon> </md-button>
+		</div>
+	</section>
+</div>
+
+
+<div>
+	<md-data-table-container>
+	<table md-data-table md-progress="deferred">
+		<thead>
+			<tr>
+				<th name="From" order-by="startDate"></th>
+				<th name="To"></th>
+				<th name="No of Days"></th>
+				<th name="Manager"></th>
+				<th name="Status" order-by="approved"></th>
+				<th name="Note"></th>
+				<th name="Edit"></th>
+			</tr>
+
+			<tr ng-repeat="empLeaveAppObj in myLeaveAppList|filter:searchEmpLeaves">
+				<td>{{empLeaveAppObj.startDate|formatDate}}</td>
+				<td>{{empLeaveAppObj.endDate |formatDate}}</td>
+				<td style="text-align: center">{{empLeaveAppObj.totalDays}}</td>
+				<td>{{(empLeaveAppObj.manager.firstName + ' ' +
+					empLeaveAppObj.manager.lastName) | uppercase}}</td>
+				<td>{{empLeaveAppObj.approved?'Approved':'Applied'}}</td>
+				<td>{{empLeaveAppObj.note}}</td>
+				<td><md-button class="md-icon-button"
+						ng-if="empLeaveAppObj.approved==false"
+						ui-sref="user_prof_detail.addLeaves({selectedLeaveAppObj: empLeaveAppObj})">
+
+					<ng-md-icon icon="edit" style="fill: md-default" size="24">
+					<md-tooltip> Edit Leave</md-tooltip></ng-md-icon></md-button></td>
+
+
+			</tr>
+	</table>
+</div>
