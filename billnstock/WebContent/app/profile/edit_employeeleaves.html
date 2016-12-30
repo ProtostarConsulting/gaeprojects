@@ -1,0 +1,32 @@
+
+<div layout="row" layout-xs="column">
+	<md-input-container flex> <label>From Date
+	</label> <md-datepicker name="startDate" ng-model="leaveApp.startDate"
+		md-placeholder="Select Date" disabled="true"></md-datepicker> </md-input-container>
+
+	<md-input-container flex> <label>To Date </label>
+	<md-datepicker name="endDate" ng-model="leaveApp.endDate"
+		md-placeholder="Select Date" disabled="true"></md-datepicker> </md-input-container>
+	<md-input-container flex> <md-checkbox
+			ng-model="leaveApp.halfDay" ng-true-value="true" ng-false-value="false"
+			aria-label="Checkbox 1" disabled="true">
+		Half Day Leave </md-checkbox> </md-input-container>
+</div>
+<div layout="row" layout-xs="column">
+	<md-input-container flex=25> <label>
+		Manager</label> <md-select name="manager" placeholder="Manager"
+		ng-model="leaveApp.manager"> <md-option
+		ng-repeat="user in userList" ng-value="user"
+		ng-selected="leaveApp.manager.id == user.id" ng-disabled="!isDisabled">{{(user.firstName
+	+ ' ' + user.lastName) | uppercase}} </md-option> </md-select> </md-input-container>
+	<md-input-container flex> <label>Note</label> <input
+		type="text" ng-model="leaveApp.note"> </md-input-container>
+
+</div>
+
+
+<section layout="row" layout-align="left left">
+	<md-button class="md-raised md-primary" ng-click="previousPage()">Back</md-button>
+	<md-button class="md-raised md-primary"
+		ng-click="approveLeaveAppFunc()" ng-disabled="isDisabled">Approve</md-button>
+</section>
