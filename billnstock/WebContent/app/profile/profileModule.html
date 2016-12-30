@@ -19,6 +19,12 @@
 				ui-sref="user_prof_detail.monthlyTax"
 				ng-click="close()" class="md-primary">View Salary Slip
 			</md-button>
+			<md-button ui-sref="user_prof_detail.viewLeaves" 
+			ng-click="close()" class="md-primary"> My Leaves
+			</md-button>
+			<md-button ui-sref="user_prof_detail.employeeLeaves" 
+			ng-click="close()" class="md-primary"> Employee Leaves
+			</md-button>
 			</div>
 		</span>
 		<!--  <span hide-gt-xs> -->
@@ -47,6 +53,7 @@
 				ui-sref="user_prof_detail.getAllSlip({viewsalslips: curuser.id})"
 				ng-click="close()" class="md-primary"> View Salary Slip
 			</md-button>
+			
 			</md-content> 
 		</md-sidenav>
 		</section>
