@@ -18,6 +18,7 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
 import com.protostar.billingnstock.cust.entities.Customer;
 import com.protostar.billingnstock.hr.entities.Employee;
+import com.protostar.billingnstock.hr.entities.LeaveAppEntity;
 import com.protostar.billingnstock.hr.entities.LeaveDetailEntity;
 import com.protostar.billingnstock.hr.entities.MonthlyPaymentDetailEntity;
 import com.protostar.billingnstock.hr.entities.SalSlip;
@@ -399,6 +400,56 @@ public class HrService {
 		return emptyLeaveDetail;
 	}
 
+	@ApiMethod(name = "addLeaveApp", path = "addLeaveApp")
+	public void addLeaveApp(LeaveAppEntity leaveApp) {
+		ofy().save().entity(leaveApp).now();
+
+	}
+	
+	@ApiMethod(name = "updateLeaveApp", path="updateLeaveApp")
+	public void updateLeaveApp(LeaveAppEntity leaveApp) {
+		leaveApp.setModifiedDate(new Date());
+		Key<LeaveAppEntity> now = ofy().save().entity(leaveApp).now();
+}
+	
+	
+	@ApiMethod(name = "getLeaveAppList")
+	public List<LeaveAppEntity> getLeaveAppList() {
+
+		List<LeaveAppEntity> leaveAppList = ofy().load()
+				.type(LeaveAppEntity.class).list();
+
+		return leaveAppList;
+
+	}
+
+	@ApiMethod(name = "getLeaveAppListByUser", path = "getLeaveAppListByUser")
+	public List<LeaveAppEntity> getLeaveAppListByUser(
+			@Named("busId") Long busId, @Named("userId") Long userId) {
+		UserService userService = new UserService();
+		
+		UserEntity user = userService.getUserByID(busId, userId);
+		
+		List<LeaveAppEntity> leaveList = ofy().load()
+				.type(LeaveAppEntity.class).filter("user", user).list();
+	
+		return leaveList;
+	}
+
+	@ApiMethod(name = "getLeaveAppListByManager", path = "getLeaveAppListByManager")
+	public List<LeaveAppEntity> getLeaveAppListByManager(
+			@Named("busId") Long busId, @Named("userId") Long userId) {
+		UserService userService = new UserService();
+		
+		UserEntity user = userService.getUserByID(busId, userId);
+		
+		List<LeaveAppEntity> empLeaveAppList = ofy().load()
+				.type(LeaveAppEntity.class).filter("manager", user).list();
+		
+		return empLeaveAppList;
+	}
+	
+
 	@ApiMethod(name = "getMonthlyPaymentByID")
 	public MonthlyPaymentDetailEntity getMonthlyPaymentByID(
 			@Named("bid") Long busId, @Named("month") String currentmonth,
@@ -425,17 +476,13 @@ public class HrService {
 	public List<MonthlyPaymentDetailEntity> fecthMonthlyPaymentByUser(
 			UserEntity user) {
 
-		System.out.println("user.getBusiness()*******" + user.getBusiness());
-		System.out.println("user.getBusiness().getId()*******"
-				+ user.getBusiness().getId());
 		List<MonthlyPaymentDetailEntity> monthlyPaymentDetailEntity = ofy()
 				.load()
 				.type(MonthlyPaymentDetailEntity.class)
 				.ancestor(
 						Key.create(BusinessEntity.class, user.getBusiness()
 								.getId())).filter("empAccount", user).list();
-		System.out.println("monthlyPaymentDetailEntity******"
-				+ monthlyPaymentDetailEntity.size());
+
 
 		return monthlyPaymentDetailEntity;
 
