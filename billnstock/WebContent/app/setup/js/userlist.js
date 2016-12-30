@@ -223,7 +223,7 @@ angular
 										.then(
 												function(msgBean) {
 													$scope
-															.showSimpleToast(msgBean.msg);
+															.showUpdateToast(msgBean.msg);
 
 												});
 

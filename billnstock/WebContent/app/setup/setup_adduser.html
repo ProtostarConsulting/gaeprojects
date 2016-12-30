@@ -82,8 +82,13 @@
 						ng-model="user.employeeDetail.designation" name="userDesignation">
 					</md-input-container>
 
-					<md-input-container flex> <label>Phone
-						1 </label> <input name="phone1" ng-model="user.employeeDetail.phone1">
+					<md-input-container flex> <label>Mobile
+					</label> <input name="phone1" ng-model="user.employeeDetail.phone1"
+						ng-minlength="10" ng-maxlength="10">
+					<div ng-messages="addform.phone1.$error">
+						<div ng-message="minlength, maxlength">Please enter 10 digit
+							number</div>
+					</div>
 					</md-input-container>
 					<md-input-container flex> <label>Phone
 						2 </label> <input name="phone2" ng-model="user.employeeDetail.phone2">

@@ -14,73 +14,62 @@ angular
 					$scope.userMsg;
 					$scope.step2;
 					$scope.createAccountTypes_Bool = true;
-					$scope.createUsers_Bool = false;
+					$scope.createDefaultBiz_Bool = false;
 					$scope.createAuthMaster_Bool = true;
 					$scope.creatAccountAndGroup_Bool = true;
 
-					$scope.createAccountTypes = function() {
+					$scope.createDefaultBusinessPlans = function() {
 
 						var protostarAdminService = appEndpointSF
 								.getproadminService();
 						protostarAdminService
-								.getallAccountType()
+								.getBusinessPlans()
 								.then(
 										function(gotAccountList) {
 
-											$scope.accountlist = (gotAccountList == undefined || gotAccountList.items == undefined) ? 0
+											var noOfBusinessPlans = (gotAccountList == undefined || gotAccountList.items == undefined) ? 0
 													: gotAccountList.items.length;
-											if ($scope.accountlist == 0) {
+											if (noOfBusinessPlans == 0) {
 												protostarAdminService
-														.initsetup()
+														.createDefaultBusinessPlans()
 														.then(
 																function(
 																		msgBean) {
 																	$scope.createAccountTypes_Bool = false;
-																	$scope.createUsers_Bool = true;
-																	$scope.userMsg = "Account types are created. ";
+																	$scope.createDefaultBiz_Bool = true;
+																	$scope.userMsg = "Default Business Plans created. ";
 																});
 											} else {
 												$scope.createAccountTypes_Bool = false;
-												$scope.createUsers_Bool = true;
-												$scope.userMsg = "Account types are already created. No action was taken.";
+												$scope.createDefaultBiz_Bool = true;
+												$scope.userMsg = "Default Business Plans are already created. No action was taken.";
 											}
 
 										});
 					}
 
-					$scope.createUsers = function() {
+					$scope.createDefaultBusiness = function() {
 						var protostarAdminService = appEndpointSF
 								.getproadminService();
 						protostarAdminService
-								.getallAccountType()
+								.getBusinessList()
 								.then(
-										function(gotAccountList) {
-											$scope.accountlist = (gotAccountList == undefined || gotAccountList.items == undefined) ? 0
-													: gotAccountList.items.length;
-
-											protostarAdminService
-													.getAllemp()
-													.then(
-															function(gotEmpList) {
-																$scope.emps = (gotEmpList == undefined || gotEmpList.items == undefined) ? 0
-																		: gotEmpList.items.length;
-
-																if ($scope.emps == 0) {
-																	protostarAdminService
-																			.initsetupnext()
-																			.then(
-																					function(
-																							msgBean) {
-																						$scope.userMsg = "Users created successfully.";
-																						$scope.createUsers_Bool = false;
-																					});
-																} else {
-																	$scope.userMsg = "Users are already created. No action was taken.";
-																	$scope.createUsers_Bool = false;
-																}
-
-															});
-
+										function(bizList) {
+											$scope.count = (bizList == undefined || bizList.items == undefined) ? 0
+													: bizList.items.length;
+											if ($scope.count == 0) {
+												protostarAdminService
+														.createDefaultBusiness()
+														.then(
+																function(
+																		msgBean) {
+																	$scope.userMsg = "Default Biz and Users created successfully.";
+																	$scope.createDefaultBiz_Bool = false;
+																});
+											} else {
+												$scope.userMsg = "Default Biz was already created. No action was taken.";
+												$scope.createDefaultBiz_Bool = false;
+											}
 										});
 					}
 
@@ -181,7 +170,7 @@ angular
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
-							// $scope.initsetup();
+							
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
 							$timeout($scope.waitForServiceLoad, 1000);

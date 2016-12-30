@@ -12,8 +12,8 @@ angular
 					var taskService = appEndpointSF.getTaskService();
 					var UserService = appEndpointSF.getUserService();
 
-					//$scope.taskStatusList = [ 'OPEN', 'INPROGRESS', 'COMPLETED' ];
-					$scope.taskStatusList = [ 'OPEN', 'COMPLETED' ];
+					$scope.taskStatusList = [ 'OPEN', 'INPROGRESS', 'COMPLETED' ];
+					//$scope.taskStatusList = [ 'OPEN', 'COMPLETED' ];
 
 					$scope.taskObj = $stateParams.taskObj;
 					$scope.action = $stateParams.action;

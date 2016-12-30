@@ -413,7 +413,7 @@ app
 								.show(
 										{
 											controller : addSupplierDialogController,
-											templateUrl : '/app/purchase/supplier_add.html',
+											templateUrl : '/app/stock/supplier_add_dialog.html',
 											parent : angular
 													.element(document.body),
 											targetEvent : ev,

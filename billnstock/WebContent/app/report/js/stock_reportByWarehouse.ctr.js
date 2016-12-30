@@ -8,14 +8,14 @@ angular
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
 					$scope.query = {
-						order : '-stockItemNumber',
+						order : '-itemNumber',
 						limit : 50,
 						page : 1
 					};
 
-					$scope.getAllStock = function() {
+					$scope.getAllStockItems = function() {
 						var stockService = appEndpointSF.getStockService();
-						stockService.getAllStock($scope.curUser.business.id)
+						stockService.getAllStockItems($scope.curUser.business.id)
 								.then(function(stockList) {
 									$scope.stockData = stockList;
 								});
@@ -23,7 +23,7 @@ angular
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
-							$scope.getAllStock();
+							$scope.getAllStockItems();
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
 							$timeout($scope.waitForServiceLoad, 1000);

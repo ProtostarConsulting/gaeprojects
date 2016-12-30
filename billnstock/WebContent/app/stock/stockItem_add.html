@@ -14,26 +14,27 @@
 	<div>
 		<div layout layout-xs="column">
 
-			<md-input-container flex> <label>Item
-				Name </label> <input name="itemName" ng-model="stock.itemName"
-				ng-required="true">
-			<div ng-messages="stockForm.itemName.$error"
-				ng-if="stockForm.itemName.$submitted || stockForm.itemName.$touched">
-				<div ng-message="required">Please Enter Item
-					Name(Example.:John)</div>
+			<div layout="row" flex>
+				<md-autocomplete flex required md-input-name="autocompleteField"
+					md-no-cache=true md-selected-item="stock.stockItemType"
+					md-search-text="searchTextInput"
+					md-items="item in querySearch(searchTextInput)"
+					md-item-text="item.itemName" md-floating-label="Select Stock Item">
+				<md-item-template> <span
+					md-highlight-text="searchTextInput">{{item.itemName}}</span> </md-item-template>
+				<div ng-messages="stockForm.autocompleteField.$error"
+					ng-if="stockForm.autocompleteField.$touched">
+					<div ng-message="required">This is required field.</div>
+				</div>
+				</md-autocomplete>
+				<md-icon md-svg-src="img/icons/ic_queue_black_24px.svg"
+					ng-click="addStockType()" class="name"
+					style="color: Green; height: 18px; width: 18px"></md-icon>
 			</div>
-			</md-input-container>
-
 			<md-input-container flex> <label>Categories
-
-			</label> <input name="categories" ng-model="stock.category"
-				ng-required="false">
-			<div ng-messages="stockForm.categories.$error"
-				ng-if="stockForm.categories.$submitted || stockForm.categories.$touched">
-				<div ng-message="required">Please Enter First
-					Name(Example.:John)</div>
-			</div>
-			</md-input-container>
+			</label> <input name="categories"
+				ng-value="stock.stockItemType?stock.stockItemType.category:''"
+				ng-disabled="true"></md-input-container>
 		</div>
 
 		<div layout="row" layout-xs="column">
@@ -86,15 +87,16 @@
 		<div layout="row" layout-xs="column">
 
 			<div flex layout="row">
-				<md-select flex ng-model="stock.warehouse"
+				<md-input-container flex> <label>Warehouse
+				</label> <md-select flex ng-model="stock.warehouse"
 					placeholder="Select Warehouse"> <md-option
-					ng-value="warehouse"
-					ng-selected="stock.warehouse.id == warehouse.id"
+					ng-value="warehouse" ng-required="true"
+					ng-selected="(stock.warehouse.id)?(stock.warehouse.id == warehouse.id):($index == 0)"
 					ng-repeat="warehouse in warehouses">{{warehouse.warehouseName
-				}}</md-option> </md-select>
+				}}</md-option> </md-select> </md-input-container>
 				<md-icon md-svg-src="img/icons/ic_queue_black_24px.svg"
 					ng-click="addWarehouse()" class="name"
-					style="color: Green; height: 35px; width: 35px"></md-icon>
+					style="color: Green; height: 18px; width: 18px"></md-icon>
 
 			</div>
 			<md-input-container flex> <label>Section
@@ -112,7 +114,7 @@
 		</div>
 
 		<section layout="row" layout-sm="column" layout-align="left left">
-			<md-button class="md-raised md-primary" ng-click="addStock()">
+			<md-button class="md-raised md-primary"  ng-disabled="stockForm.$invalid" ng-click="addStock()">
 			</md-icon>Save</md-button>
 		</section>
 

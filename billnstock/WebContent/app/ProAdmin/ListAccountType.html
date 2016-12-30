@@ -22,25 +22,25 @@
 		<table md-data-table md-progress="deferred">
 			<thead md-order="query.order" md-trigger="onOrderChange">
 				<tr>
-					<th name="Business Plan" order-by="accountName"></th>
-					<th name="Discription" order-by="description"></th>
+					<th name="Business Plan" order-by="planName"></th>
+					<th name="Discription"></th>
 					<th name="Maxuser" order-by="maxuser"></th>
-					<th name="Payment Description" order-by="paymentDesc"></th>
-					<th name="Edit" order-by="edit"></th>
+					<th name="Payment Description""></th>
+					<th name="Edit"></th>
 				</tr>
 			</thead>
 
 			<tbody>
 				<tr md-auto-select
 					ng-repeat="account in accountlist | orderBy: 'maxuser' | filter: searchText | limitTo: query.limit: (query.page - 1) * query.limit"">
-					<td>{{account.accountName}}</td>
+					<td>{{account.planName}}</td>
 					<td>{{account.description}}</td>
 					<td>{{account.maxuser}}</td>
 					<td>{{account.paymentDesc}}</td>
 					<td><section layout="row" layout-sm="column">
 							<md-button class="md-raised md-primary"
-								ui-sref="proAdmin.editAccoutType({typeid:account.id})">
-							Edit Account </md-button>
+								ui-sref="proAdmin.editAccoutType({plan: account})">
+							Edit Plan </md-button>
 						</section></td>
 				</tr>
 			</tbody>

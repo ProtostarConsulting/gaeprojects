@@ -116,23 +116,22 @@ app
 						$scope.invoiceObj.productLineItemList.push(item);
 					};
 
-					$scope.removeServices = function(toAddRemove) {
-						if (toAddRemove) {
-							$scope.settingsObj.showDefaultServiceItems = true;
+					$scope.toggleServices = function() {
+						$scope.settingsObj.showDefaultServiceItems =!$scope.settingsObj.showDefaultServiceItems
+						$scope.invoiceObj.serviceLineItemList = [];
+						if ($scope.settingsObj.showDefaultServiceItems) {
 							$scope.addServiceLineItem();
-						} else {
-							$scope.settingsObj.showDefaultServiceItems = false;
-							$scope.invoiceObj.serviceLineItemList = [];
 						}
+						$scope.calServiceSubTotal();
 					};
-					$scope.removeProducts = function(toAddRemove) {
-						if (toAddRemove) {
-							$scope.settingsObj.showDefaultProductItems = true;
+					
+					$scope.toggleProducts = function() {						
+						$scope.settingsObj.showDefaultProductItems = !$scope.settingsObj.showDefaultProductItems;
+						$scope.invoiceObj.productLineItemList = [];
+						if ($scope.settingsObj.showDefaultProductItems) {
 							$scope.addProductLineItem();
-						} else {
-							$scope.settingsObj.showDefaultProductItems = false;
-							$scope.invoiceObj.productLineItemList = [];
-						}
+						}					
+						$scope.calProductSubTotal();
 					};
 
 					$scope.productLineItemChanged = function(selectedLineItem) {
@@ -288,43 +287,12 @@ app
 						window.open("PrintPdfInvoice?bid=" + bid
 								+ "&invoiceId=" + invoiceId);
 					}
-					/* Setup menu */
-					$scope.toggleRight = buildToggler('right');
-					/**
-					 * Build handler to open/close a SideNav; when animation
-					 * finishes report completion in console
-					 */
-					function buildToggler(navID) {
-						var debounceFn = $mdUtil.debounce(function() {
-							$mdSidenav(navID).toggle().then(function() {
-								$log.debug("toggle " + navID + " is done");
-							});
-						}, 200);
-						return debounceFn;
-					}
+					
 
-					$scope.close = function() {
-						$mdSidenav('right').close().then(function() {
-							$log.debug("close RIGHT is done");
-						});
-					};
-
-					$scope.showSimpleToast = function() {
-						$mdToast.show($mdToast.simple().content(
-								'Customer Data Saved!').position("top")
-								.hideDelay(3000));
-					};
-
-					$scope.showSimpleToastError = function() {
-						$mdToast.show($mdToast.simple().content(
-								'Stock not sufficient!').position("right")
-								.hideDelay(10000));
-					};
-
-					$scope.getAllStock = function() {
+					$scope.getAllStockItems = function() {
 						$scope.loading = true;
 						var stockService = appEndpointSF.getStockService();
-						stockService.getAllStock($scope.curUser.business.id)
+						stockService.getAllStockItems($scope.curUser.business.id)
 								.then(function(stockList) {
 									$scope.stockItemList = stockList;
 									$scope.loading = false;
@@ -392,7 +360,7 @@ app
 					$scope.querySearch = function(query) {
 						var results = query ? $scope.customerList
 								.filter(createFilterFor(query))
-								: $scope.customerList;
+								: [];
 						var deferred = $q.defer();
 						$timeout(function() {
 							deferred.resolve(results);
@@ -422,14 +390,14 @@ app
 							var a = cus.isCompany ? cus.companyName
 									: (cus.firstName + "" + cus.lastName);
 							return (angular.lowercase(a)
-									.indexOf(lowercaseQuery) === 0);
+									.indexOf(lowercaseQuery) >= 0);
 						};
 					}
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
 							loadAllCustomers();
-							$scope.getAllStock();
+							$scope.getAllStockItems();
 							$scope.getTaxesByVisibility();
 							$scope.getInvoiceSettingsByBiz();
 							$scope.calServiceSubTotal();

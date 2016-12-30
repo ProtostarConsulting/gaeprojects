@@ -9,7 +9,7 @@ angular.module("stockApp").controller(
 			$scope.getallAccountType = function() {
 				$scope.loading = true;
 				var proadminService = appEndpointSF.getproadminService();
-				proadminService.getallAccountType().then(function(assetList) {
+				proadminService.getBusinessPlans().then(function(assetList) {
 					$scope.accountlist = assetList.items;
 					$scope.loading = false;
 				});
@@ -20,7 +20,7 @@ angular.module("stockApp").controller(
 				/* $scope.AccountType.loggedInUser = $scope.curUser; */
 
 				var proadminService = appEndpointSF.getproadminService();
-				proadminService.updateAccountType($scope.accounttype).then(
+				proadminService.addBusinessPlan($scope.accounttype).then(
 						function(msgBean) {
 							$scope.showUpdateToast();
 

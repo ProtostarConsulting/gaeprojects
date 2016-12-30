@@ -1,12 +1,12 @@
 <md-content layout-padding>
 <section id="pagetoolbar" layout="row" layout-xs="column">
 	<md-subheader class="md-primary">
-	<h4 class="md-title">Stock Items</h4>
+	<h4 class="md-title">Stock Item Type List</h4>
 	</md-subheader>
 	<span flex> </span>
 	<md-input-container flex-gt-xs="25"> <label>Search</label>
 	<input ng-model="searchText"> </md-input-container>
-	<md-button class="md-icon-button" ui-sref="stock.stockItemAdd">
+	<md-button class="md-icon-button" ui-sref="stock.stockItemTypeAdd">
 	<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
 	<md-tooltip> Add New </md-tooltip></ng-md-icon> </md-button>
 </section>
@@ -30,8 +30,8 @@
 				<td>{{stockItem.itemName}}</td>
 				<td>{{stockItem.category}}</td>
 				<td><md-button class="md-icon-button"
-						ui-sref="stock.stockItemAdd({selectedStockItem: stockItem})">
-					<ng-md-icon icon="edit" style="fill: md-default" size="24">
+						ui-sref="stock.stockItemTypeAdd({selectedStockItem: stockItem})">
+					<ng-md-icon icon="edit" style="fill: md-default" size="18">
 					<md-tooltip> Edit Record</md-tooltip></ng-md-icon></md-button></td>
 			</tr>
 		</tbody>

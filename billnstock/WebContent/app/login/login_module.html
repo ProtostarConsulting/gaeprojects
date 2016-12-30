@@ -7,82 +7,51 @@
 	<md-content> <md-tabs md-dynamic-height md-border-bottom>
 	<md-tab label="Login with Google"> <md-content
 		class="md-padding">
-	<h1 class="md-display-2">Login with Google Account</h1>
+	<h1 class="md-headline">Login with Google Account</h1>
 	<div>
 		<!-- ProERP DEV  -->
 		<!-- <google-plus-signin
 			clientid="212292411606-4l7lvgniidvq9djckr5cb1ei0iiu3a3c.apps.googleusercontent.com"></google-plus-signin>
-		 -->	
+		 -->
 		<!-- Suruchi Dairy Prod  -->
 		<google-plus-signin
 			clientid="87556941487-36krkq9mr6iltvqpjd3k0r0il83h0b76.apps.googleusercontent.com"></google-plus-signin>
 	</div>
-	</md-content> </md-tab> <md-tab label="Loging with Facebook"> <md-content
+	</md-content> </md-tab> <md-tab label="Login with ProERP Account"> <md-content
 		class="md-padding">
-	<h1 class="md-display-2">Loging with Facebook Account</h1>
-	<p>Under dev...</p>
-	</md-content> </md-tab> <md-tab label="Login with Prostudy Account"> <md-content
-		class="md-padding">
-	<h1 class="md-display-2">Login with ProERP Account</h1>
+	<h1 class="md-headline">Login with ProERP Account</h1>
 
-	<div>
+	<div layout="column">
 		<form name="loginForm">
-			<md-input-container flex> <label>User
-				Name / Email 
-			</label> <input name="userid" ng-model="user.email_id " ng-required="true">
+			<div layout="row" layout-xs="column" layout-padding>
+				<md-input-container flex-gt-xs="30" flex> <label>User
+					Name-Email or Mobile or Employee Id </label> <input name="userid"
+					ng-model="user.email_id " ng-required="true">
 
-			<div ng-messages="loginForm.userid.$error"
-				ng-if="loginForm.userid.$submitted || loginForm.userid.$touched">
-				<div ng-message="required">Please Enter User Id</div>
+				<div ng-messages="loginForm.userid.$error"
+					ng-if="loginForm.userid.$submitted || loginForm.userid.$touched">
+					<div ng-message="required">Please Enter User Id</div>
+				</div>
+				</md-input-container>
+
+				<md-input-container flex-gt-xs="30" flex> <label>Enter
+					Password </label> <input name="password" ng-model="user.password"
+					type="password" ng-required="true">
+
+				<div ng-messages="loginForm.password.$error"
+					ng-if="loginForm.password.$submitted || loginForm.password.$touched">
+					<div ng-message="required">Please Enter User Id</div>
+				</div>
+				</md-input-container>
+				<div flex>
+					<md-button ng-disabled="loginForm.$invalid"
+						class="md-raised md-primary" ng-click="login()"> LOGIN
+					</md-button>
+				</div>
 			</div>
-			</md-input-container>
-
-			<md-input-container flex> <label>Enter
-				Password 
-			</label> <input name="password" ng-model="user.password" type="password"
-				ng-required="true">
-
-			<div ng-messages="loginForm.password.$error"
-				ng-if="loginForm.password.$submitted || loginForm.password.$touched">
-				<div ng-message="required">Please Enter User Id</div>
-			</div>
-			</md-input-container>
-			<md-button ng-disabled="loginForm.$invalid"
-				class="md-raised md-primary" ng-click="login()"> LOGIN </md-button>
 		</form>
 
-		<b>{{loginMsg}}</b>
+		<b style="color: red;">{{loginMsg}}</b>
 	</div>
 	</md-content> </md-tab> </md-tabs> </md-content>
 </div>
-<!-- Right Navigation Pane -->
-<!-- 
-<md-sidenav class="md-sidenav-right md-whiteframe-z2"
-	md-component-id="right"> <md-toolbar
-	class="md-theme-light">
-<h1 class="md-toolbar-tools">Student Page Sub Menu</h1>
-</md-toolbar> <md-content layout-padding> <md-button ng-click="close()"
-	class="md-primary"> Close More Actions... </md-button>
-
-<p hide-md show-gt-md>This shows the selected module links/actions.</p>
-<md-button ng-click="close()" class="md-primary"> Current
-Module Action 1 </md-button> <md-button ng-click="close()" class="md-primary">
-Current Module Action 2 </md-button> <md-button ui-sref="institute.add"
-	ng-click="close()" class="md-primary"> Add New Institute </md-button> <md-button
-	ui-sref="institute.view" ng-click="close()" class="md-primary">
-View Institute </md-button> </md-content> </md-sidenav> -->
-
-<!-- </section>
-</div>
-
-
-
-
-</div>
-
-
-</md-content>
-</md-tab>
-</md-tabs>
-</md-content>
-</div> -->

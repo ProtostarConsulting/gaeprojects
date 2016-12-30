@@ -14,29 +14,22 @@ angular
 
 					/* get Account Type */
 
-					$scope.getallAccountType = function() {
+					$scope.getBusinessPlans = function() {
 						var proadminService = appEndpointSF
 								.getproadminService();
 						proadminService
-								.getallAccountType()
+								.getBusinessPlans()
 								.then(
-										function(assetList) {
-											$scope.accountlist1 = assetList.items;
-											for (i = 0; i < $scope.accountlist1.length; i++) {
-												if ($scope.selectedBusiness.accounttype.maxuser <= $scope.accountlist1[i].maxuser) {
-													$scope.accountlist
-															.push($scope.accountlist1[i]);
-												}
-											}
-
+										function(planList) {
+											$scope.planList = planList.items;
 										});
 					}
 					$scope.accountlist = [];
-					$scope.newSelectedPlan = $scope.selectedBusiness.accounttype;
+					$scope.newSelectedPlan = $scope.selectedBusiness.businessPlan;
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
-							$scope.getallAccountType();
+							$scope.getBusinessPlans();
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
 							$timeout($scope.waitForServiceLoad, 1000);
@@ -45,31 +38,14 @@ angular
 					$scope.waitForServiceLoad();
 
 					$scope.updatePlan = function() {
-						$scope.selectedBusiness.accounttype = $scope.newSelectedPlan;
+						$scope.selectedBusiness.businessPlan = $scope.newSelectedPlan;
 						var UserService = appEndpointSF.getUserService();
 						// addbusiness use in number of
 						// place don't update service method
-						UserService.updateBusiness($scope.selectedBusiness).then(
-								function(business) {
+						UserService.updateBusiness($scope.selectedBusiness)
+								.then(function(business) {
 									$scope.showUpdateToast();
 								});
 					}
-
-					$scope.toggleRight = buildToggler('right');
-
-					function buildToggler(navID) {
-						var debounceFn = $mdUtil.debounce(function() {
-							$mdSidenav(navID).toggle().then(function() {
-								$log.debug("toggle " + navID + " is done");
-							});
-						}, 200);
-						return debounceFn;
-					}
-
-					$scope.close = function() {
-						$mdSidenav('right').close().then(function() {
-							$log.debug("close RIGHT is done");
-						});
-					};
 
 				});

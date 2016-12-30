@@ -2,7 +2,7 @@ angular
 		.module("stockApp")
 		.controller(
 				"stockAddCtr",
-				function($scope, $window, $mdToast, $timeout, $mdSidenav,
+				function($scope, $window, $mdToast, $q, $timeout, $mdSidenav,
 						$mdUtil, $log, $http, $stateParams, $mdMedia,
 						$mdDialog, objectFactory, appEndpointSF) {
 
@@ -19,8 +19,7 @@ angular
 						return {
 							id : "",
 							warehouse : null,
-							itemName : "",
-							category : "",
+							stockItemType: null,
 							qty : "",
 							price : "",
 							cost:0,
@@ -67,30 +66,36 @@ angular
 									$scope.warehouses = warehouseList;
 								});
 					}					
+					// Select Stock Type
+					$scope.stockItemTypeList = [];					
+					$scope.searchTextInput = null;
 
-					// Setup menu
-					$scope.toggleRight = buildToggler('right');
-
-					function buildToggler(navID) {
-						var debounceFn = $mdUtil.debounce(function() {
-							$mdSidenav(navID).toggle().then(function() {
-								$log.debug("toggle " + navID + " is done");
-							});
-						}, 200);
-						return debounceFn;
+					$scope.querySearch = function(query) {
+						var results = query ? $scope.stockItemTypeList
+								.filter(createFilterFor(query)) : [];
+						var deferred = $q.defer();
+						$timeout(function() {
+							deferred.resolve(results);
+						}, Math.random() * 1000, false);
+						return deferred.promise;
 					}
 
-					$scope.close = function() {
-						$mdSidenav('right').close().then(function() {
-							$log.debug("close RIGHT is done");
-						});
-					};
+					function getStockItemTypes() {
+						var stockService = appEndpointSF.getStockService();
+						stockService.getStockItemTypes($scope.curUser.business.id).then(
+								function(list) {
+									$scope.stockItemTypeList = list;
+								});
+					}
 
-					$scope.query = {
-						order : 'name',
-						limit : 5,
-						page : 1
-					};
+					function createFilterFor(query) {
+						var lowercaseQuery = angular.lowercase(query);
+						return function filterFn(item) {
+							return (angular.lowercase(item.itemName)
+									.indexOf(lowercaseQuery) >= 0);
+						};
+					}
+					// End Stock Type
 
 					$scope.addWarehouse = function(ev) {
 						var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))
@@ -233,6 +238,7 @@ angular
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
 							$scope.getAllWarehouseByBusiness();
+							getStockItemTypes();
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
 							$timeout($scope.waitForServiceLoad, 1000);
