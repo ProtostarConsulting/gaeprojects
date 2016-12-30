@@ -17,8 +17,10 @@ public class LeaveAppEntity extends BaseEntity {
 	private Ref<UserEntity> manager;
 	
 	private Date startDate;
-	private Date endtDate;
-	private Boolean approved;
+	private Date endDate;
+	private boolean halfDay = false;
+	private float totalDays;
+	private boolean approved = false;
 	private Date approvedDate;
 
 	public UserEntity getUser() {
@@ -45,12 +47,14 @@ public class LeaveAppEntity extends BaseEntity {
 		this.startDate = startDate;
 	}
 
-	public Date getEndtDate() {
-		return endtDate;
+	
+
+	public Date getEndDate() {
+		return endDate;
 	}
 
-	public void setEndtDate(Date endtDate) {
-		this.endtDate = endtDate;
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
 	}
 
 	public Boolean getApproved() {
@@ -67,6 +71,22 @@ public class LeaveAppEntity extends BaseEntity {
 
 	public void setApprovedDate(Date approvedDate) {
 		this.approvedDate = approvedDate;
+	}
+
+	public boolean isHalfDay() {
+		return halfDay;
+	}
+
+	public void setHalfDay(boolean halfDay) {
+		this.halfDay = halfDay;
+	}
+
+	public float getTotalDays() {
+		return totalDays;
+	}
+
+	public void setTotalDays(float totalDays) {
+		this.totalDays = totalDays;
 	}
 
 }
