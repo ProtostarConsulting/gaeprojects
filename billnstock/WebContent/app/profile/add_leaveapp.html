@@ -1,0 +1,51 @@
+<md-subheader class="md-primary">
+<h4 class="md-title">
+	<span ng-bind="leaveApp.id?'Edit Leave': 'Add Leave'"> </span>
+</h4>
+</md-subheader>
+<form name="addLeaves" novalidate>
+	<div layout="row" layout-xs="column">
+		<md-input-container flex-gt-sm="30" flex> <label>From
+			Date </label> <md-datepicker name="startDate" ng-model="leaveApp.startDate"
+			md-placeholder="Select Date"
+			ng-change="calculateTotalNoOfLeaves(leaveApp)"></md-datepicker> </md-input-container>
+
+		<md-input-container flex> <label>To Date
+		</label> <md-datepicker name="endDate" md-min-date="leaveApp.startDate"
+			ng-model="leaveApp.endDate" md-placeholder="Select Date"
+			ng-change="calculateTotalNoOfLeaves(leaveApp)"></md-datepicker> </md-input-container>
+		<md-input-container flex> <md-checkbox
+			ng-model="leaveApp.halfDay" ng-true-value="true"
+			ng-false-value="false" aria-label="Checkbox 1"
+			ng-change="calculateTotalNoOfLeaves(leaveApp)"> Half
+		Day Leave </md-checkbox> </md-input-container>
+		<md-input-container flex> <label>Total
+			Leaves</label> <input type="text" ng-disabled="true"
+			ng-model="leaveApp.totalDays"> </md-input-container>
+	</div>
+
+	<div layout="row" layout-xs="column">
+		<md-input-container flex-gt-sm="30" flex> <label>Select
+			Manager</label> <md-select name="manager" placeholder="Manager"
+			ng-model="leaveApp.manager"> <md-option
+			ng-repeat="user in userList" ng-value="user" ng-required="true"
+			ng-selected="leaveApp.manager.id == user.id">{{(user.firstName
+		+ ' ' + user.lastName) | uppercase}} </md-option> </md-select>
+		<div ng-messages="addLeaves.manager.$error"
+			ng-if="addLeaves.manager.$submitted || addLeaves.manager.$touched">
+			<div ng-message="required">This is a required field.</div>
+
+		</div>
+		</md-input-container>
+		<md-input-container flex> <label>Note</label> <input
+			type="text" ng-model="leaveApp.note"> </md-input-container>
+
+	</div>
+
+
+	<section layout="row" layout-align="left left">
+		<md-button class="md-raised md-primary"
+			ng-disabled="addLeaves.$invalid" ng-click="addMoreLeaves()">
+		<span ng-bind="leaveApp.id?'Save': 'Add'"></md-button>
+	</section>
+</form>
