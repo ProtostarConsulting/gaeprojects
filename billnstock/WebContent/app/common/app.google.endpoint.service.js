@@ -124,12 +124,13 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	UserService.getUserByID = function(userId) {
+	UserService.getUserByID = function(busId,id) {
 		var deferred = $q.defer();
 		gapi.client.userService.getUserByID({
-			'id' : userId
+			'busId':busId,
+			'id' : id
 		}).execute(function(resp) {
-			deferred.resolve(resp.result);
+			deferred.resolve(resp);
 		});
 		return deferred.promise;
 	}
@@ -962,6 +963,62 @@ function googleEndpointSF($q) {
 		}).execute(function(resp) {
 			deferred.resolve(resp.items);
 		});
+		return deferred.promise;
+	}
+	hrService.addLeaveApp = function(leaveApp) {
+
+		var deferred = $q.defer();
+
+		gapi.client.hrService.addLeaveApp(leaveApp).execute(
+				function(resp) {
+					deferred.resolve({
+						"msg" : "EmpLeaveApp added succsefully."
+					});
+				});
+		return deferred.promise;
+	}
+	
+	hrService.updateLeaveApp = function(leaveApp) {
+
+		var deferred = $q.defer();
+		gapi.client.hrService.updateLeaveApp(leaveApp).execute(function() {
+
+			deferred.resolve({
+				"msg" : "leaveApp Updated Successfully."
+			});
+
+		});
+		return deferred.promise;
+	}
+	
+	
+
+	hrService.getLeaveAppList = function() {
+
+		var deferred = $q.defer();
+
+		gapi.client.hrService.getLeaveAppList().execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+
+	}
+	
+	hrService.getLeaveAppListByUser = function(busId,userId) {
+		var deferred = $q.defer();
+		gapi.client.hrService.getLeaveAppListByUser({"busId":busId,"userId":userId}).execute(
+				function(resp) {
+					deferred.resolve(resp.items);
+				});
+		return deferred.promise;
+	}
+	
+	hrService.getLeaveAppListByManager = function(busId,userId) {
+		var deferred = $q.defer();
+		gapi.client.hrService.getLeaveAppListByManager({"busId":busId,"userId":userId}).execute(
+				function(resp) {
+					deferred.resolve(resp.items);
+				});
 		return deferred.promise;
 	}
 
