@@ -204,7 +204,7 @@ function googleEndpointSF($q) {
 
 	UserService.updateUser = function(user) {
 		var deferred = $q.defer();
-		gapi.client.userService.updateUser(user).execute(function() {
+		gapi.client.userService.addUser(user).execute(function() {
 			deferred.resolve({
 				"msg" : "user Successfully Updated"
 			});
@@ -1785,6 +1785,13 @@ function googleEndpointSF($q) {
 		gapi.client.stockService.getAllStockItems({
 			"busId" : busId
 		}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}
+	StockService.filterStockItemsByWarehouse = function(warehouse) {
+		var deferred = $q.defer();
+		gapi.client.stockService.filterStockItemsByWarehouse(warehouse).execute(function(resp) {
 			deferred.resolve(resp.items);
 		});
 		return deferred.promise;
