@@ -13,8 +13,9 @@ public class StockLineItem {
 	Ref<TaxEntity> selectedTaxItem;
 
 	private boolean isProduct = false;
-	private Ref<StockItemEntity> stockItem;
+
 	private int stockMaintainedQty;
+	private StockItemEntity stockItem;
 
 	public TaxEntity getSelectedTaxItem() {
 		return selectedTaxItem == null ? null : selectedTaxItem.get();
@@ -57,15 +58,6 @@ public class StockLineItem {
 		this.isProduct = isProduct;
 	}
 
-	public StockItemEntity getStockItem() {
-		return stockItem == null ? null : stockItem.get();
-	}
-
-	public void setStockItem(StockItemEntity stockItem) {
-		if (stockItem != null)
-			this.stockItem = Ref.create(stockItem);
-	}
-
 	public int getStockMaintainedQty() {
 		return stockMaintainedQty;
 	}
@@ -80,5 +72,26 @@ public class StockLineItem {
 
 	public void setCost(double cost) {
 		this.cost = cost;
+	}
+
+	public StockItemEntity getStockItem() {
+		return stockItem;
+	}
+
+	public void setStockItem(StockItemEntity stockItem) {
+		this.stockItem = stockItem;
+	}
+
+	public static StockLineItem getCopy(StockLineItem fromCopy) {
+		StockLineItem toCopy = new StockLineItem();
+		toCopy.setCost(fromCopy.cost);
+		toCopy.setItemName(fromCopy.itemName);
+		toCopy.setPrice(fromCopy.price);
+		toCopy.setProduct(fromCopy.isProduct);
+		toCopy.setQty(fromCopy.qty);
+		if (fromCopy.selectedTaxItem != null)
+			toCopy.setSelectedTaxItem(fromCopy.selectedTaxItem.get());
+		toCopy.setStockItem(fromCopy.stockItem);
+		return toCopy;
 	}
 }

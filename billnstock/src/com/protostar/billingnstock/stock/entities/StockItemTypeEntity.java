@@ -1,10 +1,16 @@
 package com.protostar.billingnstock.stock.entities;
 
+import java.util.Date;
+
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
+import com.googlecode.objectify.annotation.OnSave;
 import com.protostar.billingnstock.tax.entities.TaxEntity;
 import com.protostar.billnstock.entity.BaseEntity;
+import com.protostar.billnstock.until.data.Constants;
+import com.protostar.billnstock.until.data.EntityUtil;
+import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 
 @Entity
 public class StockItemTypeEntity extends BaseEntity {
@@ -15,6 +21,18 @@ public class StockItemTypeEntity extends BaseEntity {
 	private String category;
 
 	private Ref<TaxEntity> selectedTaxItem;
+
+	@OnSave
+	public void beforeSave() {
+		super.beforeSave();
+
+		if (getId() == null) {
+			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
+					EntityUtil.getBusinessRawKey(getBusiness()),
+					Constants.STOCKITEMTYPE_NO_COUNTER);
+			setItemNumber(sequenceGenService.getNextSequenceNumber());
+		}
+	}
 
 	public TaxEntity getSelectedTaxItem() {
 		return selectedTaxItem == null ? null : selectedTaxItem.get();

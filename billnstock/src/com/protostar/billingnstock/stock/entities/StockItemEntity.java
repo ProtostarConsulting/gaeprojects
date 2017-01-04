@@ -2,6 +2,7 @@ package com.protostar.billingnstock.stock.entities;
 
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.OnSave;
 import com.protostar.billingnstock.warehouse.entities.WarehouseEntity;
 import com.protostar.billnstock.entity.BaseEntity;
@@ -13,14 +14,19 @@ public class StockItemEntity extends BaseEntity {
 	private double cost;
 	private double movingAvgCost;
 	private String notes;
+	@Index
 	private int thresholdValue;
+	@Index
 	private String section;
+	@Index
 	private String rack;
 	private String slot;
 	private boolean maintainStock = true;
 	private boolean maintainStockBySerialNumber = false;
 
+	@Index
 	private Ref<WarehouseEntity> warehouse;
+	@Index
 	private Ref<StockItemTypeEntity> stockItemType;
 
 	@OnSave
@@ -38,7 +44,7 @@ public class StockItemEntity extends BaseEntity {
 	}
 
 	public WarehouseEntity getWarehouse() {
-		return warehouse.get();
+		return warehouse == null ? null : warehouse.get();
 	}
 
 	public void setWarehouse(WarehouseEntity warehouse) {
@@ -137,7 +143,8 @@ public class StockItemEntity extends BaseEntity {
 		return maintainStockBySerialNumber;
 	}
 
-	public void setMaintainStockBySerialNumber(boolean maintainStockBySerialNumber) {
+	public void setMaintainStockBySerialNumber(
+			boolean maintainStockBySerialNumber) {
 		this.maintainStockBySerialNumber = maintainStockBySerialNumber;
 	}
 }// end of StockServicesEntity

@@ -7,14 +7,30 @@ import java.util.List;
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
+import com.googlecode.objectify.annotation.OnSave;
 import com.protostar.billingnstock.cust.entities.Customer;
 import com.protostar.billingnstock.warehouse.entities.WarehouseEntity;
 import com.protostar.billnstock.entity.BaseEntity;
+import com.protostar.billnstock.until.data.Constants;
+import com.protostar.billnstock.until.data.Constants.DocumentStatus;
+import com.protostar.billnstock.until.data.EntityUtil;
+import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 
 @Entity
 public class StockItemsShipmentEntity extends BaseEntity {
+
+	public enum ShipmentType {
+		TO_CUSTOMER, TO_OTHER_WAREHOUSE, TO_PARTNER
+	};
+
 	@Index
-	private int shipmentNumber;
+	private ShipmentType shipmentType = ShipmentType.TO_CUSTOMER;
+
+	@Index
+	private DocumentStatus status = DocumentStatus.DRAFT;
+	@Index
+	private boolean isStatusAlreadyFinalized = false;
+
 	private Date shipmentDate;
 	private Date deliveredDate;
 	private List<StockLineItem> productLineItemList = new ArrayList<StockLineItem>();
@@ -23,19 +39,37 @@ public class StockItemsShipmentEntity extends BaseEntity {
 
 	private Ref<WarehouseEntity> fromWH;
 	private Ref<WarehouseEntity> toWH;
+
 	@Index
 	private Ref<Customer> customer;
 	@Index
 	private long poNumber;
 
-	public int getShipmentNumber() {
-		return shipmentNumber;
+	@OnSave
+	public void beforeSave() {
+		super.beforeSave();
+
+		if (this.getStatus() == DocumentStatus.FINALIZED) {
+			this.setStatusAlreadyFinalized(true);
+		}
+
+		if (getId() == null) {
+			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
+					EntityUtil.getBusinessRawKey(getBusiness()),
+					Constants.STOCKSHIPMENT_NO_COUNTER);
+			setItemNumber(sequenceGenService.getNextSequenceNumber());
+		}
 	}
 
-	public void setShipmentNumber(int shipmentNumber) {
-		this.shipmentNumber = shipmentNumber;
+	public Customer getCustomer() {
+		return customer == null ? null : customer.get();
 	}
 
+	public void setCustomer(Customer customer) {
+		if (customer != null)
+			this.customer = Ref.create(customer);
+	}
+	
 	public List<StockLineItem> getProductLineItemList() {
 		return productLineItemList;
 	}
@@ -101,6 +135,30 @@ public class StockItemsShipmentEntity extends BaseEntity {
 
 	public void setDeliveredDate(Date deliveredDate) {
 		this.deliveredDate = deliveredDate;
+	}
+
+	public ShipmentType getShipmentType() {
+		return shipmentType;
+	}
+
+	public void setShipmentType(ShipmentType shipmentType) {
+		this.shipmentType = shipmentType;
+	}
+
+	public DocumentStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(DocumentStatus status) {
+		this.status = status;
+	}
+
+	public boolean isStatusAlreadyFinalized() {
+		return isStatusAlreadyFinalized;
+	}
+
+	public void setStatusAlreadyFinalized(boolean isStatusAlreadyFinalized) {
+		this.isStatusAlreadyFinalized = isStatusAlreadyFinalized;
 	}
 
 }// end of InvoiceEntity

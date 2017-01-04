@@ -7,13 +7,22 @@ import java.util.List;
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
+import com.googlecode.objectify.annotation.OnSave;
 import com.protostar.billingnstock.purchase.entities.SupplierEntity;
+import com.protostar.billingnstock.warehouse.entities.WarehouseEntity;
 import com.protostar.billnstock.entity.BaseEntity;
+import com.protostar.billnstock.until.data.Constants;
+import com.protostar.billnstock.until.data.Constants.DocumentStatus;
+import com.protostar.billnstock.until.data.EntityUtil;
+import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 
 @Entity
 public class StockItemsReceiptEntity extends BaseEntity {
+
 	@Index
-	private int receiptNumber;
+	private DocumentStatus status = DocumentStatus.DRAFT;
+	@Index
+	private boolean isStatusAlreadyFinalized = false;
 	@Index
 	private long poNumber;
 	private Date receiptDate;
@@ -22,6 +31,38 @@ public class StockItemsReceiptEntity extends BaseEntity {
 	// store other costs in serviceLineItems
 
 	private Ref<SupplierEntity> supplier;
+	@Index
+	private Ref<WarehouseEntity> warehouse;
+
+	@OnSave
+	public void beforeSave() {
+		super.beforeSave();
+
+		if (getWarehouse() == null) {
+			throw new RuntimeException("Warehouse entity is not set on: "
+					+ this.getClass().getSimpleName()
+					+ " This is required field. Aborting save operation...");
+		}
+
+		if (this.status == DocumentStatus.FINALIZED) {
+			this.isStatusAlreadyFinalized = true;
+		}
+
+		if (getId() == null) {
+			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
+					EntityUtil.getBusinessRawKey(getBusiness()),
+					Constants.STOCKRECEIPT_NO_COUNTER);
+			setItemNumber(sequenceGenService.getNextSequenceNumber());
+		}
+	}
+
+	public WarehouseEntity getWarehouse() {
+		return warehouse.get();
+	}
+
+	public void setWarehouse(WarehouseEntity warehouse) {
+		this.warehouse = Ref.create(warehouse);
+	}
 
 	public SupplierEntity getSupplier() {
 		return supplier == null ? null : supplier.get();
@@ -30,22 +71,6 @@ public class StockItemsReceiptEntity extends BaseEntity {
 	public void setSupplier(SupplierEntity supplier) {
 		if (supplier != null)
 			this.supplier = Ref.create(supplier);
-	}
-
-	public int getReceiptNumber() {
-		return receiptNumber;
-	}
-
-	public void setReceiptNumber(int receiptNumber) {
-		this.receiptNumber = receiptNumber;
-	}
-
-	public List<StockLineItem> getProductLineItemList() {
-		return productLineItemList;
-	}
-
-	public void setProductLineItemList(List<StockLineItem> productLineItemList) {
-		this.productLineItemList = productLineItemList;
 	}
 
 	public List<StockLineItem> getServiceLineItemList() {
@@ -70,6 +95,30 @@ public class StockItemsReceiptEntity extends BaseEntity {
 
 	public void setReceiptDate(Date receiptDate) {
 		this.receiptDate = receiptDate;
+	}
+
+	public List<StockLineItem> getProductLineItemList() {
+		return productLineItemList;
+	}
+
+	public void setProductLineItemList(List<StockLineItem> productLineItemList) {
+		this.productLineItemList = productLineItemList;
+	}
+
+	public DocumentStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(DocumentStatus status) {
+		this.status = status;
+	}
+
+	public boolean isStatusAlreadyFinalized() {
+		return isStatusAlreadyFinalized;
+	}
+
+	public void setStatusAlreadyFinalized(boolean isStatusAlreadyFinalized) {
+		this.isStatusAlreadyFinalized = isStatusAlreadyFinalized;
 	}
 
 }// end of InvoiceEntity

@@ -33,4 +33,8 @@ public class Constants {
 
 	// Misc
 	public static final String DEFAULT_EMP_DEPT = "Default";
+
+	public enum DocumentStatus {
+		DRAFT, FINALIZED
+	};
 }
