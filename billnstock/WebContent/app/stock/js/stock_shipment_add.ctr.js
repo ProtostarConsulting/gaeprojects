@@ -10,6 +10,9 @@ app
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
 
+					$scope.shipmentTypes = [ 'TO_CUSTOMER',
+							'TO_OTHER_WAREHOUSE', 'TO_PARTNER' ];
+
 					$scope.getEmptystockShipmentObj = function() {
 						return {
 							customer : null,
@@ -23,7 +26,8 @@ app
 							isPaid : false,
 							isDraft : false,
 							paidDate : null,
-							business : null
+							business : null,
+							status : 'DRAFT'
 						};
 					}
 
@@ -35,6 +39,7 @@ app
 							: new Date();
 					$scope.stockShipmentObj.poNumber = $scope.stockShipmentObj.poNumber ? Number($scope.stockShipmentObj.poNumber)
 							: '';
+
 					$scope.addStockShipment = function() {
 						$scope.stockShipmentObj.business = $scope.curUser.business;
 						$scope.stockShipmentObj.modifiedBy = $scope.curUser.email_id;
@@ -59,6 +64,23 @@ app
 											}
 										});
 
+					}
+
+					$scope.finalizeStockShipment = function(ev) {
+						var confirm = $mdDialog
+								.confirm()
+								.title(
+										'Do you want to finalize this Shipment? Note, after this you will not be able to make any changes in this document.')
+								.textContent('').ariaLabel('finalize?')
+								.targetEvent(ev).ok('Yes').cancel('No');
+
+						$mdDialog.show(confirm).then(function() {
+							$log.debug("Inside Yes, function");
+							$scope.stockShipmentObj.status = 'FINALIZED';
+							$scope.addStockShipment();
+						}, function() {
+							$log.debug("Cancelled...");
+						});
 					}
 
 					$scope.addServiceLineItem = function() {
@@ -240,37 +262,6 @@ app
 						// $scope.calfinalTotal();
 					};
 
-					/* Setup menu */
-					$scope.toggleRight = buildToggler('right');
-					/**
-					 * Build handler to open/close a SideNav; when animation
-					 * finishes report completion in console
-					 */
-					function buildToggler(navID) {
-						var debounceFn = $mdUtil.debounce(function() {
-							$mdSidenav(navID).toggle().then(function() {
-								$log.debug("toggle " + navID + " is done");
-							});
-						}, 200);
-						return debounceFn;
-					}
-
-					$scope.close = function() {
-						$mdSidenav('right').close().then(function() {
-							$log.debug("close RIGHT is done");
-						});
-					};
-
-					$scope.getAllStock = function() {
-						$log.debug("Inside Ctr $scope.getAllStock");
-						var stockService = appEndpointSF.getStockService();
-
-						stockService.getAllStockItems($scope.curUser.business.id)
-								.then(function(stockList) {
-									$scope.stockItemList = stockList;
-								});
-					}
-
 					$scope.checkStock = function(item, $event) {
 						for (var i = 0; i <= $scope.stockItemList.length; i++) {
 							if ($scope.stockItemList[i].itemName == item.itemName) {
@@ -332,25 +323,84 @@ app
 					}
 					$scope.accountforinvoice = [];
 
+					$scope.filterStockItemsByWarehouse = function(
+							selectedWarehouse) {
+						$scope.loading = true;
+						$scope.selectedWarehouse = selectedWarehouse;
+						var stockService = appEndpointSF.getStockService();
+
+						stockService.filterStockItemsByWarehouse(
+								$scope.selectedWarehouse).then(
+								function(stockList) {
+									$scope.stockItemList = stockList;
+									$scope.loading = false;
+								});
+					}
+
 					$scope.getAllWarehouseByBusiness = function() {
 						$log
 								.debug("Inside function $scope.getAllWarehouseByBusiness");
+						$scope.loading = true;
 						var warehouseService = appEndpointSF
 								.getWarehouseManagementService();
 
-						warehouseService.getAllWarehouseByBusiness(
+						warehouseService
+								.getAllWarehouseByBusiness(
+										$scope.curUser.business.id)
+								.then(
+										function(warehouseList) {
+											$scope.warehouses = warehouseList;
+											if ($scope.warehouses.length > 0) {
+												$scope.stockShipmentObj.fromWH = $scope.warehouses[0];
+												$scope
+														.filterStockItemsByWarehouse($scope.stockShipmentObj.fromWH);
+											}
+											$scope.loading = false;
+										});
+					}
+
+					$scope.querySearch = function(query) {
+						var results = query ? $scope.customerList
+								.filter(createFilterFor(query)) : [];
+						var deferred = $q.defer();
+						$timeout(function() {
+							deferred.resolve(results);
+						}, Math.random() * 1000, false);
+						return deferred.promise;
+					}
+					/**
+					 * Build `states` list of key/value pairs
+					 */
+					function loadAllCustomers() {
+						$scope.loading = true;
+						var customerService = appEndpointSF
+								.getCustomerService();
+						customerService.getAllCustomersByBusiness(
 								$scope.curUser.business.id).then(
-								function(warehouseList) {
-									$scope.warehouses = warehouseList;
+								function(custList) {
+									$scope.customerList = custList.items;
+									$scope.loading = false;
 								});
+
+					}
+					/**
+					 * Create filter function for a query string
+					 */
+					function createFilterFor(query) {
+						var lowercaseQuery = angular.lowercase(query);
+						return function filterFn(cus) {
+							var a = cus.isCompany ? cus.companyName
+									: (cus.firstName + "" + cus.lastName);
+							return (angular.lowercase(a)
+									.indexOf(lowercaseQuery) >= 0);
+						};
 					}
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
-							$scope.getAllStock();
+							loadAllCustomers();
 							$scope.getTaxesByVisibility();
 							$scope.getAllWarehouseByBusiness();
-
 							if (!$scope.stockShipmentObj.id) {
 								$scope.addProductLineItem();
 							}

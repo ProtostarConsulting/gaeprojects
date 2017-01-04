@@ -4,7 +4,7 @@ app.controller("stockReceiptListCtr", function($scope, $window, $mdToast, $timeo
 		$filter, objectFactory, appEndpointSF) {
 
 	$scope.query = {
-		order : '-receiptNumber',
+		order : '-itemNumber',
 		limit : 50,
 		page : 1
 	};

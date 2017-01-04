@@ -1,26 +1,76 @@
-<md-content layout-padding>
+<div ng-if="loading">
+	<div layout="row" layout-sm="column" layout-align="space-around">
+		<md-progress-circular md-diameter="60" md-mode="indeterminate"></md-progress-circular>
+	</div>
+</div>
+<md-content ng-if="!loading" layout-padding>
 <section layout="row" layout-xs="column">
 	<md-subheader class="md-primary">
 	<h4 class="md-title"
-		ng-bind="stockShipmentObj.id?'Edit Stock Shipment/Transfer':'Create Stock Shipment/Transfer'"></h4>
+		ng-bind="stockShipmentObj.id?'Edit Stock Shipment/Transfer: ' + stockShipmentObj.itemNumber:'Create Stock Shipment/Transfer'"></h4>
 	</md-subheader>
 	<span flex></span>
 </section>
 <div>
 	<form ng-submit="$event.preventDefault()" name="stockShipmentAddForm">
 		<div flex layout="row" layout-xs="column">
-			<md-input-container flex> <label>PO
-				Number </label> <input type="number" ng-model="stockShipmentObj.poNumber"
-				ng-change="getItemsByPO(stockShipmentObj.poNumber)"> </md-input-container>
-			<md-input-container flex> <label>Shipment
-				Date</label> <md-datepicker flex ng-model="stockShipmentObj.shipmentDate"
-				md-placeholder="Select Date"></md-datepicker> </md-input-container>
+			<md-input-container flex> <label>From
+				Warehouse </label> <md-select flex ng-model="stockShipmentObj.fromWH"
+				placeholder="Select Warehouse"
+				ng-change="filterStockItemsByWarehouse(stockShipmentObj.fromWH)">
+			<md-option ng-value="warehouse" ng-required="true"
+				ng-selected="(stockShipmentObj.warehouse.id)?(stockShipmentObj.fromWH.id == warehouse.id):($index == 0)"
+				ng-repeat="warehouse in warehouses">{{warehouse.warehouseName
+			}}</md-option> </md-select> </md-input-container>
+			<div flex layout="row" layout-xs="column">
+				<md-input-container flex> <label>Shipment
+					Date</label> <md-datepicker flex ng-model="stockShipmentObj.shipmentDate"
+					md-placeholder="Select Date"></md-datepicker> </md-input-container>
+				<md-input-container flex> <label>Shipment
+					Status </label> <input type="text" ng-disabled="true"
+					ng-model="stockShipmentObj.status"> </md-input-container>
+			</div>
 		</div>
+		<div flex layout="row" layout-xs="column">
+			<md-input-container flex> <label>Select
+				Shipment Type </label> <md-select flex
+				ng-model="stockShipmentObj.shipmentType" placeholder="Shipment Type">
+			<md-option ng-value="shipmentType" ng-required="true"
+				ng-selected="(stockShipmentObj.shipmentType)?(stockShipmentObj.shipmentType == shipmentType):($index == 0)"
+				ng-repeat="shipmentType in shipmentTypes">{{shipmentType
+			}}</md-option> </md-select> </md-input-container>
+			<md-input-container flex
+				ng-if="stockShipmentObj.shipmentType == 'TO_OTHER_WAREHOUSE'">
+			<label> To Warehouse </label> <md-select flex
+				ng-model="stockShipmentObj.toWH" placeholder="Select Warehouse">
+			<md-option ng-value="warehouse" ng-required="true"
+				ng-selected="stockShipmentObj.toWH.id == warehouse.id"
+				ng-repeat="warehouse in warehouses">{{warehouse.warehouseName
+			}}</md-option> </md-select> </md-input-container>
 
+			<md-autocomplete flex
+				ng-if="stockShipmentObj.shipmentType !== 'TO_OTHER_WAREHOUSE'"
+				required ng-model="stockShipmentObj.customer"
+				md-input-name="autocompleteField" md-no-cache=true
+				md-selected-item="stockShipmentObj.customer"
+				ng-init="searchTextInput = stockShipmentObj.customer.isCompany?stockShipmentObj.customer.companyName:(stockShipmentObj.customer.firstName
+					+' '+ stockShipmentObj.customer.lastName)"
+				md-search-text="searchTextInput"
+				md-items="item in querySearch(searchTextInput)"
+				md-item-text="item.isCompany?item.companyName:(item.firstName +' '+ item.lastName)"
+				md-floating-label="Customer Name"> <md-item-template>
+			<span md-highlight-text="searchTextInput">{{item.isCompany?item.companyName:(item.firstName
+				+' '+ item.lastName) }}</span> </md-item-template>
+			<div ng-messages="stockShipmentAddForm.autocompleteField.$error"
+				ng-if="stockShipmentAddForm.autocompleteField.$touched">
+				<div ng-message="required">This is required field.</div>
+			</div>
+			</md-autocomplete>
+		</div>
 
 		<div layout="row" layout-xs="column">
 			<md-input-container flex> <label>Shipment
-				Notes</label> <textarea ng-model="stockShipmentObj.note" rows="3" cols="1"></textarea>
+				Notes</label> <textarea ng-model="stockShipmentObj.note" rows="2" cols="1"></textarea>
 			</md-input-container>
 		</div>
 
@@ -52,24 +102,25 @@
 							<div layout="row">
 								<md-input-container flex> <md-select
 									ng-model="item.stockItem" placeholder="Item Name"
-									ng-change="productLineItemChanged(item)"> <md-option
-									ng-value="stockItem"
+									ng-required="true" ng-change="productLineItemChanged(item)">
+								<md-option ng-value="stockItem"
 									ng-selected="item.stockItem.id == stockItem.id"
 									ng-repeat="stockItem in stockItemList">{{stockItem.stockItemType.itemName
 								}}</md-option> </md-select> </md-input-container>
 								<md-button class="md-icon-button"
 									ng-click="addStock($event, item)" aria-label="as">
 								<md-icon md-svg-src="img/icons/ic_queue_black_24px.svg"
-									class="name" style="color: Green; height: 25px; width: 25px"></md-icon></md-button>
+									class="name" style="color: Green; height: 18px; width: 18px"></md-icon></md-button>
 							</div>
 						</td>
 
 						<td><md-input-container flex> <label>Quantity
-							</label> <input type="number" ng-model="item.qty"
+							</label> <input type="number" ng-model="item.qty" ng-required="true"
 								ng-change="calProductSubTotal()"> </md-input-container></td>
-						<td><md-input-container flex> <input
-								type="number" ng-model="item.price"
-								ng-change="calProductSubTotal()" aria-label="iprice"></md-input-container></td>
+						<td><md-input-container flex> <label>Price
+							</label> <input type="number" ng-model="item.price"
+								ng-change="calProductSubTotal()" aria-label="iprice"
+								ng-required="true"></md-input-container></td>
 						<td><md-input-container flex> <b>{{item.qty
 								* item.price | currency:"":"2"}} </b></td>
 						<td><md-icon
@@ -150,14 +201,19 @@
 					</tr>
 				</tbody>
 			</table>
-
+		</div>
+		<div layout layout-xs="column"
+			ng-hide="stockShipmentObj.status == 'FINALIZED'">
+			<section layout="row" layout-sm="column">
+				<md-button class="md-raised md-primary"
+					ng-disabled="stockShipmentAddForm.$invalid"
+					ng-click="addStockShipment()">Save as Draft</md-button>
+				<md-button class="md-raised md-primary"
+					ng-disabled="stockShipmentAddForm.$invalid"
+					ng-click="finalizeStockShipment($event)">Finalize
+				Shipment</md-button>
+			</section>
 		</div>
 	</form>
 </div>
-<div layout layout-sm="column">
-	<section layout="row" layout-sm="column">
-		<md-button class="md-raised md-primary"
-			ng-disabled="stockShipmentAddForm.$invalid"
-			ng-click="addStockShipment()">Save Stock Shipment</md-button>
-	</section>
-</div>
+</md-content>

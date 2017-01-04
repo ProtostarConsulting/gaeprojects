@@ -1,4 +1,9 @@
-<md-content layout-padding>
+<div ng-if="loading">
+	<div layout="row" layout-sm="column" layout-align="space-around">
+		<md-progress-circular md-diameter="60" md-mode="indeterminate"></md-progress-circular>
+	</div>
+</div>
+<md-content ng-if="!loading" layout-padding>
 <section id="pagetoolbar" layout="row" layout-xs="column">
 	<md-subheader class="md-primary">
 	<h4 class="md-title">Current Stock Items</h4>
@@ -6,8 +11,8 @@
 	<span flex> </span>
 	<md-input-container flex> <md-select
 		ng-model="selectedWarehouse" placeholder="Select Warehouse"
-		ng-change="warehouseDDLChange($index, selectedWarehouse)">
-	<md-option ng-value="warehouse" ng-repeat="warehouse in warehouses">{{warehouse.warehouseName
+		ng-change="filterStockItemsByWarehouse(selectedWarehouse)">
+	<md-option ng-value="warehouse" ng-repeat="warehouse in warehouses" ng-selected="selectedWarehouse.id == warehouse.id">{{warehouse.warehouseName
 	}}</md-option> </md-select> </md-input-container>
 	<md-input-container flex-gt-xs="25"> <label>Search</label>
 	<input ng-model="searchText"> </md-input-container>

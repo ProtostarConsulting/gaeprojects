@@ -18,9 +18,12 @@
 	<table md-data-table class="md-primary" md-progress="deferred">
 		<thead md-order="query.order" md-trigger="onorderchange">
 			<tr>
-				<th name="Stock Shipment No." order-by="shipmentNumber"></th>
+				<th name="Shipment No." order-by="itemNumber"></th>
 				<th name="Shipment Date" order-by="createdDate"></th>
-				<th name="Customer Name" order-by="customer.companyName"></th>
+				<th name="Status" order-by="status"></th>
+				<th name="fromWH" order-by="fromWH"></th>
+				<th name="toWH" order-by="toWH"></th>
+				<th name="Customer Name" order-by="customer.companyName"></th>				
 				<th name="Actions"></th>
 			</tr>
 		</thead>
@@ -29,8 +32,11 @@
 			<tr md-auto-select
 				ng-repeat="stockShipment in stockShipmentList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
 
-				<td>{{stockShipment.shipmentNumber}}</td>
+				<td>{{stockShipment.itemNumber}}</td>
 				<td>{{stockShipment.createdDate | formatDate}}</td>
+				<td>{{stockShipment.status}}</td>
+				<td>{{stockShipment.fromWH.warehouseName}}</td>
+				<td>{{stockShipment.toWH.warehouseName}}</td>
 				<td>{{stockShipment.customer.isCompany?stockShipment.customer.companyName:(stockShipment.customer.firstName
 					+' '+ stockShipment.customer.lastName)}}</td>
 				<td>

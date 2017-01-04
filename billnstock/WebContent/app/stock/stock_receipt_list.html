@@ -18,8 +18,9 @@
 	<table md-data-table class="md-primary" md-progress="deferred">
 		<thead md-order="query.order" md-trigger="onorderchange">
 			<tr>
-				<th name="Stock Receipt No." order-by="receiptNumber"></th>
-				<th name="Receipt Date" order-by="createdDate"></th>
+				<th name="Receipt No." order-by="itemNumber"></th>
+				<th name="Receipt Date" order-by="receiptDate"></th>
+				<th name="Status" order-by="status"></th>
 				<th name="Supplier Name" order-by="supplier.supplierName"></th>
 				<th name="Actions"></th>
 			</tr>
@@ -29,8 +30,9 @@
 			<tr md-auto-select
 				ng-repeat="stockReceipt in stockReceiptList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
 
-				<td>{{stockReceipt.receiptNumber}}</td>
-				<td>{{stockReceipt.createdDate | formatDate}}</td>
+				<td>{{stockReceipt.itemNumber}}</td>				
+				<td>{{stockReceipt.receiptDate | formatDate}}</td>
+				<td>{{stockReceipt.status}}</td>
 				<td>{{stockReceipt.supplier.supplierName}}</td>
 				<td>
 					<section layout="row">

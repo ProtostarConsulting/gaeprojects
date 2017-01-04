@@ -4,7 +4,7 @@ app.controller("stockShipmentListCtr", function($scope, $window, $mdToast,
 		$routeParams, $filter, objectFactory, appEndpointSF) {
 
 	$scope.query = {
-		order : '-shipmentNumber',
+		order : '-itemNumber',
 		limit : 50,
 		page : 1
 	};
@@ -45,37 +45,10 @@ app.controller("stockShipmentListCtr", function($scope, $window, $mdToast,
 	$scope.selected = [];
 	$scope.waitForServiceLoad();
 
-	/* Setup menu */
-	$scope.toggleRight = buildToggler('right');
-	/**
-	 * Build handler to open/close a SideNav; when animation finishes report
-	 * completion in console
-	 */
-	function buildToggler(navID) {
-		var debounceFn = $mdUtil.debounce(function() {
-			$mdSidenav(navID).toggle().then(function() {
-				$log.debug("toggle " + navID + " is done");
-			});
-		}, 200);
-		return debounceFn;
-	}
-
-	$scope.close = function() {
-		$mdSidenav('right').close().then(function() {
-			$log.debug("close RIGHT is done");
-		});
-	};
-
 	$scope.printstockShipment = function(stockShipmentId) {
 		var stockShipmentEntity = "stockShipmentEntity";
 		window.open("PrintPdfstockShipment?stockShipmentNo=" + stockShipmentId
 				+ "&entityname=stockShipmentEntity");
 
 	}
-
-	$scope.showSimpleToast = function() {
-		$mdToast.show($mdToast.simple().content('StockShipment Satus Changed!')
-				.position("top").hideDelay(3000));
-	};
-
 });

@@ -12,6 +12,7 @@ app
 
 					$scope.getEmptyStockReceiptObj = function() {
 						return {
+							warehouse : null,
 							supplier : null,
 							discAmount : 0,
 							poNumber : null,
@@ -23,7 +24,8 @@ app
 							isPaid : false,
 							isDraft : false,
 							paidDate : null,
-							business : null
+							business : null,
+							status: 'DRAFT'
 						};
 					}
 
@@ -62,6 +64,23 @@ app
 
 					}
 
+					$scope.finalizeStockReceipt = function(ev) {
+						var confirm = $mdDialog
+								.confirm()
+								.title(
+										'Do you want to finalize this Receipt? Note, after this you will not be able to make any changes in this document.')
+								.textContent('').ariaLabel('finalize?')
+								.targetEvent(ev).ok('Yes').cancel('No');
+
+						$mdDialog.show(confirm).then(function() {
+							$log.debug("Inside Yes, function");
+							$scope.stockReceiptObj.status = 'FINALIZED';
+							$scope.addStockReceipt();
+						}, function() {
+							$log.debug("Cancelled...");
+						});
+					}
+
 					$scope.addServiceLineItem = function() {
 						var item = {
 							isProduct : false,
@@ -85,7 +104,9 @@ app
 							qty : 1,
 							price : "",
 							cost : "",
-							stockItem : null,
+							stockItem : {
+								stockItemType : null
+							},
 							selectedTaxItem : null
 						};
 						if (!$scope.stockReceiptObj.productLineItemList) {
@@ -243,48 +264,15 @@ app
 						// $scope.calfinalTotal();
 					};
 
-					/* Setup menu */
-					$scope.toggleRight = buildToggler('right');
-					/**
-					 * Build handler to open/close a SideNav; when animation
-					 * finishes report completion in console
-					 */
-					function buildToggler(navID) {
-						var debounceFn = $mdUtil.debounce(function() {
-							$mdSidenav(navID).toggle().then(function() {
-								$log.debug("toggle " + navID + " is done");
-							});
-						}, 200);
-						return debounceFn;
-					}
-
-					$scope.close = function() {
-						$mdSidenav('right').close().then(function() {
-							$log.debug("close RIGHT is done");
-						});
-					};
-
-					$scope.getAllStock = function() {
-						$log.debug("Inside Ctr $scope.getAllStock");
+					$scope.getStockItemTypes = function() {
+						$log.debug("Inside Ctr $scope.getStockItemTypes");
 						var stockService = appEndpointSF.getStockService();
 
-						stockService.getAllStockItems($scope.curUser.business.id)
-								.then(function(stockList) {
-									$scope.stockItemList = stockList;
+						stockService.getStockItemTypes(
+								$scope.curUser.business.id).then(
+								function(list) {
+									$scope.stockTypeList = list;
 								});
-					}
-
-					$scope.checkStock = function(item, $event) {
-						for (var i = 0; i <= $scope.stockItemList.length; i++) {
-							if ($scope.stockItemList[i].itemName == item.itemName) {
-								$scope.qtyErrorMsg = "";
-								if ($scope.stockItemList[i].qty < item.qty) {
-									$scope.qtyErrorMsg = "Quantity entered is not available in stock";
-									// $scope.showSimpleToastError();
-									$scope.dialogBox();
-								}
-							}
-						}
 					}
 
 					$scope.dialogBox = function(ev) {
@@ -390,7 +378,7 @@ app
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
 							loadAllSuppliers();
-							$scope.getAllStock();
+							$scope.getStockItemTypes();
 							$scope.getTaxesByVisibility();
 							$scope.getAllWarehouseByBusiness();
 
@@ -476,7 +464,7 @@ app
 												curUser : $scope.curUser,
 												stock : $scope.stock,
 												warehouses : $scope.warehouses,
-												stockItemList : $scope.stockItemList,
+												stockTypeList : $scope.stockTypeList,
 												lineItem : lineItem
 											}
 										})
@@ -491,7 +479,7 @@ app
 					};
 
 					function addStockItemDialogController($scope, $mdDialog,
-							curUser, stock, warehouses, stockItemList, lineItem) {
+							curUser, stock, warehouses, stockTypeList, lineItem) {
 
 						$scope.addStock = function() {
 							$scope.stock.business = curUser.business;
@@ -502,7 +490,7 @@ app
 									function(addedItem) {
 										if (addedItem.id) {
 											lineItem.stockItem = addedItem;
-											stockItemList.push(addedItem);
+											stockTypeList.push(addedItem);
 										}
 									});
 							$scope.hide();
