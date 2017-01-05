@@ -21,11 +21,8 @@ app
 
 					$scope.getAllPurchaseOrder = function() {
 						$scope.loading = true;
-						var purchaseService = appEndpointSF
-								.getPurchaseOrderService();
-
-						purchaseService
-								.getAllPurchaseOrder($scope.curUser.business.id)
+						var stockService = appEndpointSF.getStockService();
+						stockService.getAllPurchaseOrder($scope.curUser.business.id)
 								.then(
 										function(purchaseOrderList) {
 											$scope.purchaseOrderList = purchaseOrderList;
@@ -52,11 +49,8 @@ app
 									: null
 						};
 
-						var purchaseService = appEndpointSF
-								.getPurchaseOrderService();
-
-						purchaseService
-								.fetchEntityListByPaging(
+						var stockService = appEndpointSF.getStockService();
+						stockService.fetchEntityListByPaging(
 										$scope.curUser.business.id,
 										pagingInfoTemp)
 								.then(

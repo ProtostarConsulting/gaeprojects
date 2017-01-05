@@ -7,9 +7,14 @@ import java.util.List;
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
+import com.googlecode.objectify.annotation.OnSave;
 import com.protostar.billingnstock.cust.entities.Customer;
 import com.protostar.billingnstock.tax.entities.TaxEntity;
 import com.protostar.billnstock.entity.BaseEntity;
+import com.protostar.billnstock.until.data.Constants;
+import com.protostar.billnstock.until.data.EntityUtil;
+import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
+import com.protostar.billnstock.until.data.Constants.DocumentStatus;
 
 @Entity
 public class InvoiceEntity extends BaseEntity {
@@ -17,6 +22,11 @@ public class InvoiceEntity extends BaseEntity {
 	public static enum DiscountType {
 		Fixed, Percentage
 	};
+
+	@Index
+	private DocumentStatus status = DocumentStatus.DRAFT;
+	@Index
+	private boolean isStatusAlreadyFinalized = false;
 
 	@Index
 	private Date invoiceDueDate;
@@ -41,6 +51,22 @@ public class InvoiceEntity extends BaseEntity {
 	@Index
 	private Ref<Customer> customer;
 	private String pOrder;
+
+	@OnSave
+	public void beforeSave() {
+		super.beforeSave();
+
+		if (this.status == DocumentStatus.FINALIZED) {
+			this.isStatusAlreadyFinalized = true;
+		}
+
+		if (getId() == null) {
+			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
+					EntityUtil.getBusinessRawKey(getBusiness()),
+					Constants.INVOICE_NO_COUNTER);
+			setItemNumber(sequenceGenService.getNextSequenceNumber());
+		}
+	}
 
 	public Customer getCustomer() {
 		return customer == null ? null : customer.get();
@@ -163,6 +189,22 @@ public class InvoiceEntity extends BaseEntity {
 
 	public void setDiscountPercent(float discountPercent) {
 		this.discountPercent = discountPercent;
+	}
+
+	public DocumentStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(DocumentStatus status) {
+		this.status = status;
+	}
+
+	public boolean isStatusAlreadyFinalized() {
+		return isStatusAlreadyFinalized;
+	}
+
+	public void setStatusAlreadyFinalized(boolean isStatusAlreadyFinalized) {
+		this.isStatusAlreadyFinalized = isStatusAlreadyFinalized;
 	}
 
 }// end of InvoiceEntity

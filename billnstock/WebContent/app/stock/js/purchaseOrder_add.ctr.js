@@ -12,6 +12,7 @@ app
 
 					$scope.getEmptyPurchaseOrderObj = function() {
 						return {
+							warehouse : null,
 							supplier : '',
 							to : '',
 							shipTo : '',
@@ -36,7 +37,8 @@ app
 							isPaid : false,
 							isDraft : false,
 							paidDate : null,
-							business : null
+							business : null,
+							status : 'DRAFT'
 						};
 					}
 
@@ -94,10 +96,8 @@ app
 							$scope.purchaseOrderObj.business = $scope.curUser.business;
 							$scope.purchaseOrderObj.modifiedBy = $scope.curUser.email_id;
 							$scope.purchaseOrderObj.discAmount = $scope.discAmount;
-							var purchaseService = appEndpointSF
-									.getPurchaseOrderService();
-
-							purchaseService.addPurchaseOrder(
+							var stockService = appEndpointSF.getStockService();
+							stockService.addPurchaseOrder(
 									$scope.purchaseOrderObj).then(
 									function(msgBean) {
 										$scope.showAddToast();
@@ -112,6 +112,22 @@ app
 						}
 					}
 
+					$scope.finalizePurchaseOrder = function(ev) {
+						var confirm = $mdDialog
+								.confirm()
+								.title(
+										'Do you want to finalize this PurchaseOrder? Note, after this you will not be able to make any changes in this document.')
+								.textContent('').ariaLabel('finalize?')
+								.targetEvent(ev).ok('Yes').cancel('No');
+
+						$mdDialog.show(confirm).then(function() {
+							$log.debug("Inside Yes, function");
+							$scope.purchaseOrderObj.status = 'FINALIZED';
+							$scope.addPurchaseOrder();
+						}, function() {
+							$log.debug("Cancelled...");
+						});
+					}
 					$scope.addServiceLineItem = function() {
 						var item = {
 							isProduct : false,
@@ -133,7 +149,9 @@ app
 							itemName : "",
 							qty : 1,
 							price : "",
-							stockItem : null,
+							stockItem : {
+								stockItemType : null
+							},
 							selectedTaxItem : null
 						};
 						if (!$scope.purchaseOrderObj.productLineItemList) {
@@ -316,32 +334,6 @@ app
 						window.open("PrintPdfInvoice?bid=" + bid
 								+ "&invoiceId=" + invoiceId);
 					}
-					/* Setup menu */
-					$scope.toggleRight = buildToggler('right');
-					/**
-					 * Build handler to open/close a SideNav; when animation
-					 * finishes report completion in console
-					 */
-					function buildToggler(navID) {
-						var debounceFn = $mdUtil.debounce(function() {
-							$mdSidenav(navID).toggle().then(function() {
-								$log.debug("toggle " + navID + " is done");
-							});
-						}, 200);
-						return debounceFn;
-					}
-
-					$scope.close = function() {
-						$mdSidenav('right').close().then(function() {
-							$log.debug("close RIGHT is done");
-						});
-					};
-
-					$scope.showSimpleToast = function() {
-						$mdToast.show($mdToast.simple().content(
-								'Customer Data Saved!').position("top")
-								.hideDelay(3000));
-					};
 
 					$scope.showSimpleToastError = function() {
 						$mdToast.show($mdToast.simple().content(
@@ -349,13 +341,14 @@ app
 								.hideDelay(10000));
 					};
 
-					$scope.getAllStock = function() {
-						$scope.loading = true;
+					$scope.getStockItemTypes = function() {
+						$log.debug("Inside Ctr $scope.getStockItemTypes");
 						var stockService = appEndpointSF.getStockService();
-						stockService.getAllStockItems($scope.curUser.business.id)
-								.then(function(stockList) {
-									$scope.stockItemList = stockList;
-									$scope.loading = false;
+
+						stockService.getStockItemTypes(
+								$scope.curUser.business.id).then(
+								function(list) {
+									$scope.stockTypeList = list;
 								});
 					}
 
@@ -417,14 +410,29 @@ app
 										});
 					}
 
+					$scope.getAllWarehouseByBusiness = function() {
+						$log
+								.debug("Inside function $scope.getAllWarehouseByBusiness");
+						var warehouseService = appEndpointSF
+								.getWarehouseManagementService();
+
+						warehouseService.getAllWarehouseByBusiness(
+								$scope.curUser.business.id).then(
+								function(warehouseList) {
+									$scope.warehouses = warehouseList;
+								});
+					}
+
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
 							loadAllSuppliers();
-							$scope.getAllStock();
+							$scope.getAllWarehouseByBusiness();
+							$scope.getStockItemTypes();
 							$scope.getTaxesByVisibility();
-							$scope.getInvoiceSettingsByBiz();
-							$scope.calServiceSubTotal();
-							$scope.calProductSubTotal();
+
+							if (!$scope.purchaseOrderObj.id) {
+								$scope.addProductLineItem();
+							}
 
 						} else {
 							$log.debug("Services Not Loaded, watiting...");

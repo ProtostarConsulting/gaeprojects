@@ -274,12 +274,6 @@ public class UserService {
 		List<UserEntity> list = ofy().load().type(UserEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, id)).list();
 
-		/*
-		 * List<UserEntity> list = ofy().load().type(UserEntity.class).list();
-		 * for (UserEntity user : list) { if (user.getId().longValue() ==
-		 * id.longValue()) { list.add(user); } }
-		 */
-		// logger.info("list:" + list);
 		return list;
 	}
 

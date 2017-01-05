@@ -1730,6 +1730,7 @@ function googleEndpointSF($q) {
 				});
 		return deferred.promise;
 	}
+	
 	/* =============================================================================================================================== */
 	// Start of StockService
 	var StockService = {};
@@ -1850,6 +1851,56 @@ function googleEndpointSF($q) {
 		var deferred = $q.defer();
 		gapi.client.supplierService.getSupplierByID({
 			"busId" : Id
+		}).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}
+	
+	StockService.addPurchaseOrder = function(purchaseOrder) {
+		var deferred = $q.defer();
+		gapi.client.stockService.addPurchaseOrder(purchaseOrder)
+				.execute(function(resp) {
+					deferred.resolve(resp);
+				});
+		return deferred.promise;
+	}
+
+	StockService.getAllPurchaseOrder = function(id) {
+		var deferred = $q.defer();
+
+		gapi.client.stockService.getAllPurchaseOrder({
+			"id" : id
+		}).execute(function(resp) {
+			deferred.resolve(resp.items)
+		});
+		return deferred.promise;
+	}
+
+	StockService.getPOByItemNumber = function(itemNumber) {
+		var deferred = $q.defer();
+		gapi.client.stockService.getPOByItemNumber({
+			"itemNumber" : itemNumber
+		}).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}
+
+	StockService.fetchEntityListByPaging = function(busId, pagingInfo) {
+		var deferred = $q.defer();
+		gapi.client.stockService.fetchEntityListByPaging({
+			"id" : busId
+		}, pagingInfo).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}
+
+	StockService.getPOByID = function(id) {
+		var deferred = $q.defer();
+		gapi.client.stockService.getPOByID({
+			"id" : id
 		}).execute(function(resp) {
 			deferred.resolve(resp);
 		});
@@ -2081,65 +2132,7 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	/* =============================================================================================================================== */
-
-	// Start of PurchaseOrderService
-	var PurchaseOrderService = {};
-
-	serviceFactory.getPurchaseOrderService = function() {
-		return PurchaseOrderService;
-	}
-
-	PurchaseOrderService.addPurchaseOrder = function(purchaseOrder) {
-		var deferred = $q.defer();
-		gapi.client.purchaseOrderService.addPurchaseOrder(purchaseOrder)
-				.execute(function(resp) {
-					deferred.resolve(resp);
-				});
-		return deferred.promise;
-	}
-
-	PurchaseOrderService.getAllPurchaseOrder = function(id) {
-		var deferred = $q.defer();
-
-		gapi.client.purchaseOrderService.getAllPurchaseOrder({
-			"id" : id
-		}).execute(function(resp) {
-			deferred.resolve(resp.items)
-		});
-		return deferred.promise;
-	}
-
-	PurchaseOrderService.getEntityByItemNumber = function(itemNumber) {
-		var deferred = $q.defer();
-		gapi.client.purchaseOrderService.getEntityByItemNumber({
-			"itemNumber" : itemNumber
-		}).execute(function(resp) {
-			deferred.resolve(resp);
-		});
-		return deferred.promise;
-	}
-
-	PurchaseOrderService.fetchEntityListByPaging = function(busId, pagingInfo) {
-		var deferred = $q.defer();
-		gapi.client.purchaseOrderService.fetchEntityListByPaging({
-			"id" : busId
-		}, pagingInfo).execute(function(resp) {
-			deferred.resolve(resp);
-		});
-		return deferred.promise;
-	}
-
-	PurchaseOrderService.getPOByID = function(id) {
-		var deferred = $q.defer();
-		gapi.client.purchaseOrderService.getPOByID({
-			"id" : id
-		}).execute(function(resp) {
-			deferred.resolve(resp);
-		});
-		return deferred.promise;
-	}
-
+	
 	/* =============================================================================================================================== */
 
 	// Start of WarehouseManagement

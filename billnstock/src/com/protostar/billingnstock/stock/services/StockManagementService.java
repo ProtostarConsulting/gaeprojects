@@ -18,16 +18,19 @@ import com.protostar.billingnstock.invoice.entities.StockItemsReceiptEntity;
 import com.protostar.billingnstock.invoice.entities.StockItemsShipmentEntity;
 import com.protostar.billingnstock.invoice.entities.StockItemsShipmentEntity.ShipmentType;
 import com.protostar.billingnstock.invoice.entities.StockLineItem;
+import com.protostar.billingnstock.purchase.entities.PurchaseOrderEntity;
 import com.protostar.billingnstock.purchase.entities.SupplierEntity;
 import com.protostar.billingnstock.stock.entities.StockItemEntity;
 import com.protostar.billingnstock.stock.entities.StockItemTxnEntity;
 import com.protostar.billingnstock.stock.entities.StockItemTypeEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.warehouse.entities.WarehouseEntity;
+import com.protostar.billnstock.service.BaseService;
+import com.protostar.billnstock.until.data.EntityPagingInfo;
 import com.protostar.billnstock.until.data.Constants.DocumentStatus;
 
 @Api(name = "stockService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.stock.services", ownerName = "com.protostar.billingnstock.stock.services", packagePath = ""))
-public class StockManagementService {
+public class StockManagementService extends BaseService {
 
 	private final Logger logger = Logger.getLogger(StockManagementService.class
 			.getName());
@@ -330,6 +333,56 @@ public class StockManagementService {
 				.list();
 
 		return filteredSuppliers;
+	}
+
+	@ApiMethod(name = "addPurchaseOrder", path = "addPurchaseOrder")
+	public PurchaseOrderEntity addPurchaseOrder(
+			PurchaseOrderEntity purchaseOrderEntity) {
+
+		if (purchaseOrderEntity.getStatus() == DocumentStatus.FINALIZED
+				&& purchaseOrderEntity.isStatusAlreadyFinalized()) {
+			throw new RuntimeException(
+					"Save not allowed. StockItemsReceiptEntity is already FINALIZED: "
+							+ this.getClass().getSimpleName()
+							+ " Finalized entity can't be altered.");
+		}
+		List<StockLineItem> productLineItemList = purchaseOrderEntity
+				.getProductLineItemList();
+
+		for (StockLineItem stockLineItem : productLineItemList) {
+			StockItemEntity stockItem = getOrCreateWarehouseStockItem(
+					purchaseOrderEntity.getWarehouse(), stockLineItem);
+			stockLineItem.setStockItem(stockItem);
+		}
+
+		ofy().save().entity(purchaseOrderEntity).now();
+		return purchaseOrderEntity;
+	}
+
+	@ApiMethod(name = "getAllPurchaseOrder", path = "getAllPurchaseOrder")
+	public List<PurchaseOrderEntity> getAllPurchaseOrder(@Named("id") Long busId) {
+		List<PurchaseOrderEntity> filteredPO = ofy().load()
+				.type(PurchaseOrderEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).list();
+		return filteredPO;
+	}
+
+	@ApiMethod(name = "fetchEntityListByPaging", path = "fetchEntityListByPaging")
+	public EntityPagingInfo fetchEntityListByPaging(@Named("id") Long busId,
+			EntityPagingInfo pagingInfo) {
+		return super.fetchEntityListByPaging(busId, PurchaseOrderEntity.class,
+				pagingInfo);
+	}
+
+	@ApiMethod(name = "getPOByItemNumber", path = "getPOByItemNumber")
+	public PurchaseOrderEntity getPOByItemNumber(
+			@Named("itemNumber") int itemNumber) {
+		Object entityByItemNumber = super.getEntityByItemNumber(
+				PurchaseOrderEntity.class, itemNumber);
+		if (entityByItemNumber != null)
+			return (PurchaseOrderEntity) entityByItemNumber;
+		else
+			return null;
 	}
 
 }// end of StockServices

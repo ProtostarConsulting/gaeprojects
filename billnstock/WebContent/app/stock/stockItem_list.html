@@ -9,10 +9,11 @@
 	<h4 class="md-title">Current Stock Items</h4>
 	</md-subheader>
 	<span flex> </span>
-	<md-input-container flex> <md-select
-		ng-model="selectedWarehouse" placeholder="Select Warehouse"
+	<md-input-container flex> <label>Select
+		Warehouse</label> <md-select ng-model="selectedWarehouse"
 		ng-change="filterStockItemsByWarehouse(selectedWarehouse)">
-	<md-option ng-value="warehouse" ng-repeat="warehouse in warehouses" ng-selected="selectedWarehouse.id == warehouse.id">{{warehouse.warehouseName
+	<md-option ng-value="warehouse" ng-repeat="warehouse in warehouses"
+		ng-selected="selectedWarehouse.id == warehouse.id">{{warehouse.warehouseName
 	}}</md-option> </md-select> </md-input-container>
 	<md-input-container flex-gt-xs="25"> <label>Search</label>
 	<input ng-model="searchText"> </md-input-container>
@@ -46,7 +47,7 @@
 				<td>{{stockItem.qty}}</td>
 				<td>{{stockItem.cost}}</td>
 				<td>{{stockItem.movingAvgCost}}</td>
-				<td>{{stockItem.price}}</td>				
+				<td>{{stockItem.price}}</td>
 				<td><md-button class="md-icon-button"
 						ui-sref="stock.stockItemAdd({selectedStockItem: stockItem})">
 					<ng-md-icon icon="edit" style="fill: md-default" size="24">

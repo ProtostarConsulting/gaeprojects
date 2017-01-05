@@ -177,13 +177,7 @@ function appEndpointSFFn($log, localDBServiceFactory, googleEndpointSF) {
 		else
 			return googleEndpointSF.getSalesOrderService();
 	};
-	// ----------------------------------------------------
-	endpointFactory.getPurchaseOrderService = function() {
-		if (isTestMode)
-			return localDBServiceFactory.getPurchaseOrderService();
-		else
-			return googleEndpointSF.getPurchaseOrderService();
-	};
+	
 	// ----------------------------------------------------
 
 	endpointFactory.getAssetManagementService = function() {
@@ -304,10 +298,6 @@ function appEndpointSFFn($log, localDBServiceFactory, googleEndpointSF) {
 
 		gapi.client.load('salesOrderService', 'v0.1', function() {
 			$log.debug("salesOrderService Loaded....");
-		}, apiRoot);
-
-		gapi.client.load('purchaseOrderService', 'v0.1', function() {
-			$log.debug("purchaseOrderService Loaded....");
 		}, apiRoot);
 
 		gapi.client.load('userService', 'v0.1', function() {

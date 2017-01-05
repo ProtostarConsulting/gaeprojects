@@ -302,10 +302,8 @@ app
 
 					$scope.getPOByItemNumber = function(itemNumber) {
 						$log.debug("Inside function $scope.getPOByItemNumber");
-						var purchaseService = appEndpointSF
-								.getPurchaseOrderService();
-						purchaseService
-								.getEntityByItemNumber(itemNumber)
+						var stockService = appEndpointSF.getStockService();
+						stockService.getPOByItemNumber(itemNumber)
 								.then(
 										function(poObj) {
 											$log
