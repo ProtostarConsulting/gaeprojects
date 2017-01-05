@@ -8,14 +8,12 @@
 </section>
 <div>
 	<form ng-submit="$event.preventDefault()" name="stockReceiptAddForm">
+
 		<div flex layout="row" layout-xs="column">
-			<md-input-container flex> <label>Warehouse
-			</label> <md-select flex ng-model="stockReceiptObj.warehouse"
-				placeholder="Select Warehouse" ng-change="warehouseChanged">
-			<md-option ng-value="warehouse" ng-required="true"
-				ng-selected="(stockReceiptObj.warehouse.id)?(stockReceiptObj.warehouse.id == warehouse.id):($index == 0)"
-				ng-repeat="warehouse in warehouses">{{warehouse.warehouseName
-			}}</md-option> </md-select> </md-input-container>
+			<md-input-container flex> <label>PO
+				Number </label> <input type="number" ng-model="stockReceiptObj.poNumber"
+				ng-change="getPOByItemNumber(stockReceiptObj.poNumber)"
+				ng-model-options="{ debounce: 1000 }"> </md-input-container>
 			<div flex layout="row" layout-xs="column">
 				<md-input-container flex> <label>Receipt
 					Date</label> <md-datepicker flex ng-model="stockReceiptObj.receiptDate"
@@ -27,10 +25,13 @@
 		</div>
 
 		<div flex layout="row" layout-xs="column">
-			<md-input-container flex> <label>PO
-				Number </label> <input type="number" ng-model="stockReceiptObj.poNumber"
-				ng-change="getPOByItemNumber(stockReceiptObj.poNumber)"
-				ng-model-options="{ debounce: 1000 }"> </md-input-container>
+			<md-input-container flex> <label>Warehouse
+			</label> <md-select flex ng-model="stockReceiptObj.warehouse"
+				placeholder="Select Warehouse" ng-change="warehouseChanged">
+			<md-option ng-value="warehouse" ng-required="true"
+				ng-selected="(stockReceiptObj.warehouse.id)?(stockReceiptObj.warehouse.id == warehouse.id):($index == 0)"
+				ng-repeat="warehouse in warehouses">{{warehouse.warehouseName
+			}}</md-option> </md-select> </md-input-container>
 			<div layout="row" flex>
 				<md-autocomplete flex required md-input-name="autocompleteField"
 					md-no-cache=true md-selected-item="stockReceiptObj.supplier"
@@ -51,7 +52,6 @@
 					style="color: Green; height: 18px; width: 18px"></md-icon>
 			</div>
 		</div>
-
 
 		<div layout="row" layout-xs="column">
 			<md-input-container flex> <label>Receipt
@@ -102,8 +102,8 @@
 						<td><md-input-container flex> <label>Qty
 							</label> <input type="number" ng-model="item.qty"
 								ng-change="calProductSubTotal()" ng-required="true"> </md-input-container></td>
-						<td><md-input-container flex> <label>Purchase Price
-							</label> <input type="number" ng-model="item.cost"
+						<td><md-input-container flex> <label>Purchase
+								Price </label> <input type="number" ng-model="item.cost"
 								ng-change="calProductSubTotal()" aria-label="iprice"
 								ng-required="true"> </md-input-container></td>
 						<td><md-input-container flex> <b>{{item.qty

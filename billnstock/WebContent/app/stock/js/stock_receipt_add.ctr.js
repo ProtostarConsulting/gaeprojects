@@ -25,7 +25,7 @@ app
 							isDraft : false,
 							paidDate : null,
 							business : null,
-							status: 'DRAFT'
+							status : 'DRAFT'
 						};
 					}
 
@@ -303,7 +303,8 @@ app
 					$scope.getPOByItemNumber = function(itemNumber) {
 						$log.debug("Inside function $scope.getPOByItemNumber");
 						var stockService = appEndpointSF.getStockService();
-						stockService.getPOByItemNumber(itemNumber)
+						stockService
+								.getPOByItemNumber(itemNumber)
 								.then(
 										function(poObj) {
 											$log
@@ -315,6 +316,9 @@ app
 												$scope.stockReceiptObj.productLineItemList = poObj.productLineItemList;
 												$scope.stockReceiptObj.selectedServiceTax = poObj.selectedServiceTax;
 												$scope.stockReceiptObj.selectedProductTax = poObj.selectedProductTax;
+												$scope.stockReceiptObj.supplier = poObj.supplier;
+												if ($scope.stockReceiptObj.warehouse.id !== poObj.warehouse.id)
+													$scope.stockReceiptObj.warehouse = poObj.warehouse;
 											}
 										});
 					}
