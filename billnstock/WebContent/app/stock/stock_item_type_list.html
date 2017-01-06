@@ -1,4 +1,9 @@
-<md-content layout-padding>
+<div ng-if="loading">
+	<div layout="row" layout-sm="column" layout-align="space-around">
+		<md-progress-circular md-diameter="60" md-mode="indeterminate"></md-progress-circular>
+	</div>
+</div>
+<md-content ng-if="!loading" layout-padding>
 <section id="pagetoolbar" layout="row" layout-xs="column">
 	<md-subheader class="md-primary">
 	<h4 class="md-title">Stock Item Type List</h4>
@@ -25,7 +30,7 @@
 
 		<tbody>
 			<tr md-auto-select
-				ng-repeat="stockItem in stockItemList | orderBy: query.order| filter: searchText | limitTo: query.limit: (query.page - 1) * query.limit"">
+				ng-repeat="stockItem in stockItemList | orderBy: query.order| filter: searchText | limitTo: query.limit: (query.page - 1) * query.limit">
 				<td>{{stockItem.itemNumber}}</td>
 				<td>{{stockItem.itemName}}</td>
 				<td>{{stockItem.category}}</td>

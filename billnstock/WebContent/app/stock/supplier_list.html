@@ -50,14 +50,8 @@
 			</tr>
 		</tbody>
 	</table>
-
-	<!-- 			<md-data-table-toolbar class="alternate" ng-show="selected.length">
-			<div>{{selected.length}} {{selected.length > 1 ? 'billsItem' :
-				'items'}} selected</div>
-			<div>{{selected}}</div>
-			</md-data-table-toolbar> 
- --> <md-data-table-pagination md-limit="query.limit"
-		md-page="query.page" md-total={{invoiceData.length}}
-		md-trigger="onpagechange"></md-data-table-pagination> </md-data-table-container>
+	<md-data-table-pagination md-limit="query.limit" md-page="query.page"
+		md-total={{invoiceData.length}} md-trigger="onpagechange"></md-data-table-pagination>
+	</md-data-table-container>
 </div>
 </md-content>

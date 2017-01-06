@@ -15,8 +15,8 @@ app.controller("stockShipmentListCtr", function($scope, $window, $mdToast,
 
 	$scope.getStockShipmentList = function() {
 		$log.debug("Inside Ctr $scope.getStockShipmentList");
+		$scope.loading = true;
 		var stockService = appEndpointSF.getStockService();
-
 		stockService.getStockShipmentList($scope.curUser.business.id).then(
 				function(list) {
 					$scope.stockShipmentList = list;
@@ -29,6 +29,7 @@ app.controller("stockShipmentListCtr", function($scope, $window, $mdToast,
 						stockShipment.stockShipmentDueDate = new Date(
 								stockShipment.stockShipmentDueDate);
 					});
+					$scope.loading = false;
 				});
 	}
 

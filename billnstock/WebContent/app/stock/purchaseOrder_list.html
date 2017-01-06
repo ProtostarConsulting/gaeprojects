@@ -27,20 +27,16 @@
 				<th name="PO Date" order-by="createdDate"></th>
 				<th name="Status" order-by="status"></th>
 				<th name="Supplier Name" order-by="supplier.supplierName"></th>
-				<th name="Final Total" order-by="finalTotal"></th>
 				<th name="Actions"></th>
 			</tr>
 		</thead>
-
 		<tbody>
 			<tr
 				ng-repeat="pOItem in purchaseOrderList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
-
 				<td>{{pOItem.itemNumber}}</td>
 				<td>{{pOItem.createdDate | formatDate}}</td>
 				<td>{{pOItem.status}}</td>
 				<td>{{pOItem.supplier.supplierName}}</td>
-				<td>{{pOItem.finalTotal | currency:"":"2"}}</td>
 				<td>
 					<section layout="row">
 						<md-button class="md-icon-button"

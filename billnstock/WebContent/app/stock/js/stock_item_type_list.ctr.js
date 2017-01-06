@@ -13,11 +13,12 @@ angular.module("stockApp").controller(
 					.getLoggedinUser();
 
 			$scope.getStockItemTypes = function() {
+				$scope.loading = true;
 				var stockService = appEndpointSF.getStockService();
-
 				stockService.getStockItemTypes($scope.curUser.business.id)
 						.then(function(stockList) {
 							$scope.stockItemList = stockList;
+							$scope.loading = false;
 						});
 			}
 

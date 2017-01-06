@@ -15,8 +15,8 @@ app.controller("stockReceiptListCtr", function($scope, $window, $mdToast, $timeo
 
 	$scope.getStockReceiptList = function() {
 		$log.debug("Inside Ctr $scope.getStockReceiptList");
+		$scope.loading = true;
 		var stockService = appEndpointSF.getStockService();
-
 		stockService.getStockReceiptList($scope.curUser.business.id).then(
 				function(list) {
 					$scope.stockReceiptList = list;
@@ -27,6 +27,7 @@ app.controller("stockReceiptListCtr", function($scope, $window, $mdToast, $timeo
 						stockReceipt.stockReceiptDueDate = new Date(
 								stockReceipt.stockReceiptDueDate);
 					});
+					$scope.loading = false;
 				});
 	}
 
