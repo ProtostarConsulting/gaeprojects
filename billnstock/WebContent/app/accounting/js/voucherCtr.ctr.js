@@ -8,6 +8,7 @@ app.controller("voucherCtr", function($scope, $window, $mdToast, $timeout,
 	$scope.accountId = $stateParams.AccountId;
 	$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
 	var i,flag;// = 0;
+	$scope.loading = true;
 
 	var blankVouchers = function(){
 		return{
@@ -39,6 +40,7 @@ app.controller("voucherCtr", function($scope, $window, $mdToast, $timeout,
 	$scope.waitForServiceLoad = function() {
 		if (appEndpointSF.is_service_ready) {
 			$scope.getAccountList();
+			$scope.loading = false;
 		} else {
 			$log.debug("Services Not Loaded, watiting...");
 			$timeout($scope.waitForServiceLoad, 1000);

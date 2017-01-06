@@ -10,7 +10,7 @@ app
 					$scope.vouchersPuraview = $stateParams.Account;
 					$scope.accountId = $stateParams.AccountId;
 					var i, flag,PurchesVoucherEntity="PurchaseVoucherEntity";
-
+					$scope.loading = true;
 					var purchesVouchers = function(){
 						return{
 						accountType1 : "",
@@ -171,6 +171,7 @@ app
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
 							$scope.getAccountList();
+							$scope.loading = false;
 
 						} else {
 							 $log.debug("Services Not Loaded, watiting...");

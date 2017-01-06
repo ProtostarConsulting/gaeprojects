@@ -10,7 +10,7 @@ app
 					$scope.vouchersSaview1 = $stateParams.Account;
 					$scope.accountId = $stateParams.AccountId;
 					var i, flag,SalesVoucherEntity="SalesVoucherEntity",div;
-
+					$scope.loading = true;
 					var blankSalesvouchers = function(){
 						return{
 						accountType1 : "",
@@ -144,6 +144,7 @@ $scope.vouchers=blankSalesvouchers();
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
 							$scope.getAccountList();
+							$scope.loading = false;
 
 						} else {
 							 $log.debug("Services Not Loaded, watiting...");

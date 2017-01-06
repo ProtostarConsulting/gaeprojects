@@ -8,7 +8,7 @@ app.controller("voucherRecieptCtr", function($scope, $window, $mdToast, $timeout
 	$scope.vouchersReview1 = $stateParams.Account;
 	$scope.accountId = $stateParams.AccountId;
 	var i,flag,ReceiptVoucherEntity="ReceiptVoucherEntity";// = 0;
-
+	$scope.loading = true;
 	var vouchersRe = function(){
 		return{
 		accountType1 : "",
@@ -37,6 +37,7 @@ $scope.s=x;
 	$scope.waitForServiceLoad = function() {
 		if (appEndpointSF.is_service_ready) {
 			$scope.getAccountList();
+			$scope.loading = false;
 		} else {
 			$log.debug("Services Not Loaded, watiting...");
 			$timeout($scope.waitForServiceLoad, 1000);

@@ -19,6 +19,10 @@
 			<div layout="row" flex="33" flex-sm="50" flex-xs="100">
 			
 		</section>
+		<md-content ng-show="loading"> <md-progress-circular
+	class="md-accent md-accent" md-diameter="60"></md-progress-circular></md-content>
+<md-content layout-padding ng-show="!loading"> <md-content
+	layout-padding>
 <section layout="row"  ng-if="vouchersReview1">
 		<md-button class="md-fab md-primary md-hue-1 "
 			ng-click="printDiv('reciptid')" aria-label="Favorite"><md-tooltip>Print</md-tooltip> 
