@@ -2,7 +2,8 @@ angular.module("stockApp").controller(
 		"accountGroupCtr",
 		function($scope, $log, $mdToast, appEndpointSF, $state) {
 
-			$scope.tempAccountGroup = {
+			var blankTempAccountGroup =function() {
+				return{
 				groupName : "",
 				description : "",
 				displayOrderNo : "",
@@ -10,8 +11,9 @@ angular.module("stockApp").controller(
 				isPrimary: false,
 				primaryType:'',
 				business: $scope.curUser.business
+				}
 			};
-
+			$scope.tempAccountGroup=blankTempAccountGroup;
 			$scope.accountGroupTypeList = [ "ASSETS", "EQUITY", "LIABILITIES",
 					"INCOME", "EXPENSES", "OTHERINCOMES", "OTHEREXPENCES" ];
 
@@ -22,7 +24,7 @@ angular.module("stockApp").controller(
 				addAccountGroupService.addAccountGroup($scope.tempAccountGroup)
 						.then(function(msgbean) {
 							$scope.showSavedToast();
-							$scope.tempAccountGroup = {};
+							$scope.tempAccountGroup=blankTempAccountGroup;
 							$scope.addAccountGroup = "";
 							$scope.accGroupForm.$setPristine();
 							$scope.accGroupForm.$setValidity();

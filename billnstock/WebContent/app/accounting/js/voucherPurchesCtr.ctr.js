@@ -6,12 +6,13 @@ app
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
 						$mdUtil, $log, $stateParams, objectFactory,
 						appEndpointSF, $mdDialog, $mdMedia, $state) {
-
+					$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
 					$scope.vouchersPuraview = $stateParams.Account;
 					$scope.accountId = $stateParams.AccountId;
 					var i, flag,PurchesVoucherEntity="PurchaseVoucherEntity";
 
-					$scope.purchesVouchers = {
+					var purchesVouchers = function(){
+						return{
 						accountType1 : "",
 						accountType2 : "",
 						amount : "",
@@ -19,8 +20,9 @@ app
 						isCash:true,
 						accdetail:"",
 						item:"",
-						business: $scope.curUser.business
+						business: $scope.curUser.business}
 					};
+					$scope.purchesVouchers = purchesVouchers();
 
 					$scope.vaccounts1 = [];
 					$scope.vaccounts2 = [];
@@ -89,7 +91,7 @@ app
 									$scope.showAddToast();
 									$scope.debitCurrentBalance=" ";	
 									$scope.creditCurrentBalance=" ";
-									$scope.purchesVouchers = "";
+									$scope.purchesVouchers = purchesVouchers();
 									$scope.voucherPurchesForm.$setPristine();
 									$scope.voucherPurchesForm.$setValidity();
 									$scope.voucherPurchesForm.$setUntouched();

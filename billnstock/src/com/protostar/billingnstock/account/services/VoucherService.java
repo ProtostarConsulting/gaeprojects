@@ -33,6 +33,7 @@ public class VoucherService {
 		generalEntryEntity.setCreditAccount(salesVoucherEntity.getAccountType2());
 		generalEntryEntity.setCreatedDate(new Date());
 		generalEntryEntity.setDate(new Date());
+		generalEntryEntity.setBusiness(salesVoucherEntity.getBusiness());
 		GeneralEntryService generalEntryService = new GeneralEntryService();
 		generalEntryService.addGeneralEntry(generalEntryEntity);
 		
@@ -96,6 +97,8 @@ public class VoucherService {
 		generalEntryEntity.setAmount(ReceiptVoucherEntity.getAmount());
 		generalEntryEntity.setCreditAccount(ReceiptVoucherEntity.getAccountType1());
 		generalEntryEntity.setCreatedDate(new Date());
+		generalEntryEntity.setBusiness(ReceiptVoucherEntity.getBusiness());
+		
 		System.out.println("***********date:"+new Date());
 		generalEntryEntity.setDate(new Date());
 		GeneralEntryService generalEntryService = new GeneralEntryService();
@@ -125,6 +128,7 @@ public class VoucherService {
 		generalEntryEntity.setAmount(PurchaseVoucherEntity.getAmount());
 		generalEntryEntity.setCreditAccount(PurchaseVoucherEntity.getAccountType1());
 		generalEntryEntity.setCreatedDate(new Date());
+		generalEntryEntity.setBusiness(PurchaseVoucherEntity.getBusiness());
 		generalEntryEntity.setDate(new Date());
 		GeneralEntryService generalEntryService = new GeneralEntryService();
 		generalEntryService.addGeneralEntry(generalEntryEntity);

@@ -9,14 +9,15 @@ app.controller("voucherRecieptCtr", function($scope, $window, $mdToast, $timeout
 	$scope.accountId = $stateParams.AccountId;
 	var i,flag,ReceiptVoucherEntity="ReceiptVoucherEntity";// = 0;
 
-	$scope.vouchersRe = {
+	var vouchersRe = function(){
+		return{
 		accountType1 : "",
 		accountType2 : "",
 		amount : "",
 		narration : "",
-		business: $scope.curUser.business
+		business: $scope.curUser.business}
 	};
-
+	$scope.vouchersRe = vouchersRe();
 	$scope.vaccounts1 = [];
 	$scope.vaccounts2 = [];
 	$scope.getAccountList = function() {
@@ -51,7 +52,7 @@ $scope.s=x;
 
 			$scope.showAddToast();
 
-			$scope.vouchersRe = "";
+			$scope.vouchersRe = vouchersRe();
 			$scope.debitCurrentBalance="";	
 			$scope.creditCurrentBalance="";
 			$scope.voucherRecieptForm.$setPristine();

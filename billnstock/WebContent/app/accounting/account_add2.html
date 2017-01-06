@@ -10,6 +10,10 @@
 			ng-click="UplodeExcel($event)">Bulk Upload</md-button>
 	</div>
 </section>
+<md-content ng-show="loading"> <md-progress-circular
+	class="md-accent md-accent" md-diameter="60"></md-progress-circular></md-content>
+<md-content layout-padding ng-show="!loading"> <md-content
+	layout-padding>
 <form name="accountForm">
 	<div layout layout-xs="column">
 

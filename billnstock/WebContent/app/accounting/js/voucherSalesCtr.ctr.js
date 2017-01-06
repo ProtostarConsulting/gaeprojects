@@ -11,15 +11,17 @@ app
 					$scope.accountId = $stateParams.AccountId;
 					var i, flag,SalesVoucherEntity="SalesVoucherEntity",div;
 
-					$scope.vouchers = {
+					var blankSalesvouchers = function(){
+						return{
 						accountType1 : "",
 						accountType2 : "",
 						amount : "",
 						narration : "",
 						date: new Date(),
 						business: $scope.curUser.business
+						}
 					};
-
+$scope.vouchers=blankSalesvouchers();
 					$scope.vaccounts1 = [];
 					$scope.vaccounts2 = [];
 				
@@ -47,7 +49,7 @@ app
 									$scope.showAddToast();
 									$scope.debitCurrentBalance="";	
 									$scope.creditCurrentBalance="";
-									$scope.vouchers = "";
+									$scope.vouchers=blankSalesvouchers();
 									$scope.voucherSalesForm.$setPristine();
 									$scope.voucherSalesForm.$setValidity();
 									$scope.voucherSalesForm.$setUntouched();
@@ -107,10 +109,10 @@ app
 													$scope.vaccounts2.splice(i,1);
 
 													flag = selected;
-													if (selected == $scope.vouchers.accountType2) {
+													if (selected == $scope.blankSalesvouchers.accountType2) {
 														$scope.debitCurrentBalance=" ";	
 														$scope.creditCurrentBalance=" ";
-														$scope.vouchers.accountType2 =" ";
+														$scope.blankSalesvouchers.accountType2 =" ";
 														$scope.voucherSalesForm.Account2.$touched=true;	
 													}
 

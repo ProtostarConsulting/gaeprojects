@@ -91,7 +91,7 @@ public class UploadAccountsServlet extends HttpServlet {
 
 						AccountEntity accountEntity = new AccountEntity();
 						accountEntity.setAccountName(split[0].trim());
-						accountEntity.setAccountNo(Integer.parseInt(split[1]));
+						accountEntity.setAccountNo(split[1].trim());
 						accountEntity.setDescription(split[2].trim());
 						accountEntity.setDisplayOrderNo(Integer
 								.parseInt(split[3].trim()));

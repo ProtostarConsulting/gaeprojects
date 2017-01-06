@@ -6,14 +6,19 @@ app.controller("voucherCtr", function($scope, $window, $mdToast, $timeout,
 
 	$scope.vouchers1 = $stateParams.Account;
 	$scope.accountId = $stateParams.AccountId;
+	$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
 	var i,flag;// = 0;
 
-	$scope.vouchers = {
+	var blankVouchers = function(){
+		return{
 		accountType1 : "",
 		accountType2 : "",
 		amount : "",
-		narration : ""
+		narration : "",
+		business: $scope.curUser.business
+		}
 	};
+	$scope.vouchers = blankVouchers();
 
 	$scope.vaccounts1 = [];
 	$scope.vaccounts2 = [];
@@ -50,7 +55,7 @@ app.controller("voucherCtr", function($scope, $window, $mdToast, $timeout,
 
 			$scope.showAddToast();
 
-			$scope.vouchers = "";
+			$scope.vouchers = blankVouchers();
 			$scope.voucherForm.$setPristine();
 			$scope.voucherForm.$setValidity();
 			$scope.voucherForm.$setUntouched();

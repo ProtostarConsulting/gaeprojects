@@ -15,14 +15,17 @@ app.controller("addAccountEntryController", function($scope, $window, $mdToast, 
 	$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
 	$log.debug("$scope.curUser++++++++" + angular.toJson($scope.curUser));
 
-	$scope.account = {
+	$scope.blankAccount =function() {
+		return{
 		accountName : "",
 		description : "",
 		createdDate : new Date(),
 		modifiedDate : new Date(),		
-		business : ""
+		business: $scope.curUser.business
+		}
 	};
-
+	$scope.account=blankAccount();
+	
 			
 		$scope.waitForServiceLoad = function() {
 			if (appEndpointSF.is_service_ready) {

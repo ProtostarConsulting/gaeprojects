@@ -35,8 +35,10 @@ public class AccountService {
 		if (accountEntity.getId() == null) {
 			accountEntity.setCreatedDate(new Date());
 			accountEntity.setModifiedDate(new Date());
+			accountEntity.setBusiness(accountEntity.getBusiness());
 		} else {
 			accountEntity.setModifiedDate(new Date());
+			accountEntity.setBusiness(accountEntity.getBusiness());
 		}
 		ofy().save().entity(accountEntity).now();
 

@@ -6,6 +6,7 @@ app
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
 						$mdUtil, $log, $stateParams, objectFactory,
 						appEndpointSF, $mdDialog, $mdMedia, $state) {
+					$scope.loading = true;
 
 					$scope.query = {
 						order : 'name',
@@ -13,8 +14,9 @@ app
 						page : 1
 					};
 					$scope.accountId = $stateParams.AccountId;
-
-					$scope.account = {
+					$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
+					var blankAccount = function(){
+						return{
 						accountName : "",
 						accountNo : "",
 						displayOrderNo : "",
@@ -22,8 +24,10 @@ app
 						contra : false,
 						accountgroup : "",
 						business: $scope.curUser.business
+						}
 
 					};
+					$scope.account=blankAccount();
 					$scope.cancle = function(accountId) {
 
 						if (accountId != undefined) {
@@ -48,7 +52,7 @@ app
 						}
 					}
 
-					accountservice.addAccount1($scope.account)
+					accountservice.addAccount($scope.account)
 							.then(function() {
 								if ($stateParams.AccountId == "")
 									$scope.showAddToast();
@@ -57,12 +61,8 @@ app
 
 							});
 
-					/*
-					 * if ($scope.accountId == "") {
-					 * $scope.showAddToast(); } else {
-					 * $scope.showUpdateToast(); }
-					 */
-					$scope.account = "";
+					
+					$scope.account=blankAccount();
 					$scope.accountForm.$setPristine();
 					$scope.accountForm.$setValidity();
 					$scope.accountForm.$setUntouched();
@@ -89,7 +89,19 @@ app
 					}
 
 
-				$scope.getGrouplist();
+					$scope.waitForServiceLoad = function() {
+						if (appEndpointSF.is_service_ready) {
+							$scope.getGrouplist();
+							$scope.loading = false;
+							
+						} else {
+							$log.debug("Services Not Loaded, watiting...");
+							$timeout($scope.waitForServiceLoad, 1000);
+						}
+					}
+					$scope.waitForServiceLoad();
+					
+				
 				//	$scope.getAccByid();
 
 				});

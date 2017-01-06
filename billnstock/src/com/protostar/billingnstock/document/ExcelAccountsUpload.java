@@ -131,7 +131,7 @@ public class ExcelAccountsUpload extends HttpServlet {
 					AccountEntity acc = new AccountEntity();
 					acc.setBusiness(getbusinessById);
 					acc.setAccountName(split[0]);
-					acc.setAccountNo(Integer.parseInt(split[1]));
+					acc.setAccountNo(split[1].trim());
 					acc.setDescription(split[2]);
 					AccountService accser = new AccountService();
 					accser.addAccount(acc);

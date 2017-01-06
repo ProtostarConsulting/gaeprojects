@@ -19,7 +19,7 @@ public class AccountEntity extends BaseEntity {
 	private String accountName;
 	// private AccountType accountType;
 	// private Long accountNo;
-	private int accountNo;
+	private String accountNo;
 	private String description;
 	private Integer displayOrderNo;
 	private Boolean contra = false;
@@ -48,11 +48,11 @@ public class AccountEntity extends BaseEntity {
 	@Ignore
 	private List<AccountEntryEntity> accountLedgerEntries;
 
-	public int getAccountNo() {
+	public String getAccountNo() {
 		return accountNo;
 	}
 
-	public void setAccountNo(int accountNo) {
+	public void setAccountNo(String accountNo) {
 		this.accountNo = accountNo;
 	}
 

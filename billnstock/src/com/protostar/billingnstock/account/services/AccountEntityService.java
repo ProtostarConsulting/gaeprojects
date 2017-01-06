@@ -32,7 +32,9 @@ public class AccountEntityService {
 		int nextSequenceNumber = new SequenceGeneratorShardedService(
 				EntityUtil.getBusinessRawKey(accountEntity.getBusiness()),
 				Constants.ACC_ACCOUNT_NO_COUNTER).getNextSequenceNumber();
-		accountEntity.setAccountNo(nextSequenceNumber);
+		String no=Integer.toString(nextSequenceNumber);
+
+		accountEntity.setAccountNo(no);
 		ofy().save().entity(accountEntity).now();
 
 	}

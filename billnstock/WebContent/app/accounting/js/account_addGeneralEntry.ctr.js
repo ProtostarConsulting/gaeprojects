@@ -5,8 +5,9 @@ app.controller("addAccountGeneralEntryCtr", function($scope, $window, $mdToast,
 		appEndpointSF, $mdDialog, $mdMedia) {
 
 	$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
-
+$scope.loading=true;
 	$scope.tempAccountEntity = {
+		
 		accountName : "",
 		accountType : "",
 		accountNo : "",
@@ -15,17 +16,21 @@ app.controller("addAccountGeneralEntryCtr", function($scope, $window, $mdToast,
 		contra : "",
 		business: $scope.curUser.business
 			
-
+		
 	};
-	$scope.tempGeneralEntry = {
+	var blankTempGeneralEntry =function() {
+		return{
 		date : new Date(),
 		narration : "",
 		amount : "",
 		debitAccount : "",
 		creditAccount : "",
 			modifiedBy :$scope.curUser.email_id,
+			business: $scope.curUser.business
+		}
 
 	};
+	$scope.tempGeneralEntry = blankTempGeneralEntry();
 	var i, flag;
 	$scope.generalAccountDebit = [];
 	$scope.generalAccountCredit = [];
@@ -42,8 +47,6 @@ app.controller("addAccountGeneralEntryCtr", function($scope, $window, $mdToast,
 
 		});
 	}
-	// $scope.getAccountList();
-
 	$scope.callFunction = function(selected) {
 		var getlist = appEndpointSF.getAccountService();
 		getlist.getAccountList().then(function(list) {
@@ -74,7 +77,7 @@ app.controller("addAccountGeneralEntryCtr", function($scope, $window, $mdToast,
 		var GeneralEntryService = appEndpointSF.getGeneralEntryService();
 		GeneralEntryService.addGeneralEntry($scope.tempGeneralEntry).then(
 				function(msgBean) {
-					$scope.tempGeneralEntry = {};
+					$scope.tempGeneralEntry = blankTempGeneralEntry();
 					$scope.showSimpleToast();
 				});
 		$scope.debitAccount = "";
@@ -89,6 +92,7 @@ app.controller("addAccountGeneralEntryCtr", function($scope, $window, $mdToast,
 	$scope.waitForServiceLoad = function() {
 		if (appEndpointSF.is_service_ready) {
 			$scope.getAccountList();
+			$scope.loading=false;
 		} else {
 			$log.debug("Services Not Loaded, watiting...");
 			$timeout($scope.waitForServiceLoad, 1000);

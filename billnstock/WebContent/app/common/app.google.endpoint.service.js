@@ -499,9 +499,9 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
-	proadminService.creatAccountAndGroup = function(biz) {
+	proadminService.createAccountingGroups = function(biz) {
 		var deferred = $q.defer();
-		gapi.client.proadminService.creatAccountAndGroup({
+		gapi.client.proadminService.createAccountingGroups({
 			'id' : biz
 		}).execute(function(resp) {
 			deferred.resolve({

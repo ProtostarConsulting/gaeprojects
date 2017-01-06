@@ -72,7 +72,7 @@ angular
 											}
 										});
 					}
-
+					
 					$scope.creatAccountAndGroup = function() {
 
 						var proadminAddGroup = appEndpointSF
@@ -90,7 +90,7 @@ angular
 												var protostarAdminService = appEndpointSF
 														.getproadminService();
 												protostarAdminService
-														.creatAccountAndGroup(
+														.createAccountingGroups(
 																list[0].id)
 														.then(
 																function(resp) {
