@@ -11,7 +11,7 @@ angular
 							.getLoggedinUser();
 
 					$scope.query = {
-						order : '-stockItemNumber',
+						order : '-itemNumber',
 						limit : 50,
 						page : 1
 					};

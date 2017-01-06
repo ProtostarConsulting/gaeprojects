@@ -1,11 +1,12 @@
 <md-content layout-padding>
-<h3 class="md-title">Invoice Settings</h3>
-</md-content>
-<hr>
-<md-content>
-<form name="invoiceSettings" layout="column">
-	<h4 class="md-subhead">Setup Default Invoice Items</h4>
-	<hr>
+<section layout="row" layout-xs="column">
+	<md-subheader class="md-primary">
+	<h4 class="md-title">Invoice Settings</h4>
+	</md-subheader>
+	<span flex></span>
+</section>
+<form name="settingForm" layout="column">
+	<h4 class="md-subhead">Setup Default Invoice Items</h4>	
 	<md-content layout="row"> <md-checkbox
 		ng-model="settingsObj.showDefaultServiceItems" ng-true-value="true"
 		ng-false-value="false" aria-label="isGoogleUser"> Show
@@ -16,8 +17,22 @@
 	<!-- <h4 class="md-subhead">Note to Customer</h4> -->
 	<hr>
 	<md-input-container flex="80" layout="row"> <label>Note
-		to Customer</label> <textarea ng-model="settingsObj.noteToCustomer" rows="4"
+		to Customer</label> <textarea ng-model="settingsObj.noteToCustomer" rows="2"
 		cols="1"></textarea> </md-input-container>
+	<hr>
+	<md-input-container flex="80" layout="row"> <label>Invoice
+		Terms and Conditions</label> <textarea
+		ng-model="settingsObj.termsAndConditions" rows="3" cols="1"></textarea>
+	</md-input-container>
+
+	<hr>
+	<md-checkbox ng-model="settingsObj.emailNotification"
+		ng-true-value="true" ng-false-value="false" aria-label="isGoogleUser">
+	Invoice Email Notification</md-checkbox>
+	<md-input-container flex="80" layout="row"> <label>Email
+		Notification List(enter comma separated email ids)</label> <textarea
+		ng-model="settingsObj.emailNotificationDL" rows="2" cols="1"></textarea>
+	</md-input-container>
 </form>
 
 <section layout="row" layout-sm="column">

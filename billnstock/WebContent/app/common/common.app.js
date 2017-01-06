@@ -222,12 +222,15 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	}).state('home', {
 		url : "/home",
 		templateUrl : '/home.html',
-		controller : 'homeCtr'
-
+		controller : 'homeCtr'			
 	}).state('stock', {
 		url : "/stock",
 		templateUrl : '/app/stock/stock_module.html',
 		controller : 'stockModuleCtr'
+	}).state('stock.settings', {
+		url : "/stocksettings",
+		templateUrl : '/app/stock/stock_settings.html',
+		controller : 'stockSettingsCtr'
 	}).state('stock.stockItemTypeAdd', {
 		url : "/stockItemType",
 		templateUrl : '/app/stock/stock_item_type_add.html',

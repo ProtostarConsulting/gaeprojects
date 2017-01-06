@@ -51,10 +51,10 @@
 			</md-button>
 		</div>
 		<div hide-xs>
-			<img ng-show="curUser.business.logBlobKey" ng-click="show_info()"
-				ng-src="{{logBaseURL}}" class="md-card-image" height="60px"
+			<img ng-show="curUser.business.bizLogoGCSURL" ng-click="show_info()"
+				ng-src="{{bizLogoGCSURL}}" class="md-card-image" height="60px"
 				width="120px" />
-			<h3 ng-hide="curUser.business.logBlobKey" class="md-toolbar-tools"
+			<h3 ng-hide="curUser.business.bizLogoGCSURL" class="md-toolbar-tools"
 				ng-bind="curUser.business.businessName "></h3>
 		</div>
 		<span flex></span>
@@ -272,6 +272,7 @@
 
 	<!-- 	Stock js  -->
 	<script src="/app/stock/js/stock_module.ctr.js"></script>
+	<script src="/app/stock/js/stock_settings.ctr.js"></script>
 	<script src="/app/stock/js/stock_item_type_add.ctr.js"></script>
 	<script src="/app/stock/js/stock_item_type_list.ctr.js"></script>
 	<script src="/app/stock/js/stockItem_add.ctr.js"></script>

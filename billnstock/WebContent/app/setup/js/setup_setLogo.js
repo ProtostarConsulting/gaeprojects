@@ -64,14 +64,14 @@ angular.module("stockApp").controller(
 				var UserService = appEndpointSF.getUserService();
 				UserService.getbusinessById(bizId).then(function(businessObj) {
 					$scope.business = businessObj;
-					setExistingLogURL($scope.business.logBlobKey);
+					setExistingLogURL($scope.business.bizLogoGCSURL);
 					$scope.loading = false;
 				});
 			}
 
-			function setExistingLogURL(logBlobKey) {
-				if (logBlobKey) {
-					$scope.existingLogURL = logBlobKey;	
+			function setExistingLogURL(bizLogoGCSURL) {
+				if (bizLogoGCSURL) {
+					$scope.existingLogURL = bizLogoGCSURL;	
 					if(!$scope.businessNo){
 						//to change log on index page if it is not pro-admin
 						//$scope.initCommonSetting();
@@ -85,7 +85,7 @@ angular.module("stockApp").controller(
 						// it for setup of own business. not by pro-admin
 						$scope.selectedBizId = $scope.curUser.business.id;
 						$scope.business = $scope.curUser.business;
-						setExistingLogURL($scope.business.logBlobKey);
+						setExistingLogURL($scope.business.bizLogoGCSURL);
 					} else {
 						$scope.selectedBizId = $scope.businessNo;
 						$scope.getBusinessById($scope.selectedBizId);

@@ -24,7 +24,7 @@ public class BusinessEntity {
 	private String status = "active";
 	private String theme;
 	@Index
-	private String LogBlobKey;
+	private String bizLogoGCSURL;
 	@Index
 	private String footerBlobKey;
 	private String disclaimer;
@@ -86,12 +86,12 @@ public class BusinessEntity {
 		this.footerBlobKey = footerBlobKey;
 	}
 
-	public String getLogBlobKey() {
-		return LogBlobKey;
+	public String getBizLogoGCSURL() {
+		return bizLogoGCSURL;
 	}
 
-	public void setLogBlobKey(String logBlobKey) {
-		LogBlobKey = logBlobKey;
+	public void setBizLogoGCSURL(String url) {
+		bizLogoGCSURL = url;
 	}
 
 	public String getTheme() {

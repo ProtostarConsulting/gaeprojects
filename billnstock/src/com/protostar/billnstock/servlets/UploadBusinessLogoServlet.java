@@ -150,7 +150,7 @@ public class UploadBusinessLogoServlet extends HttpServlet {
 										.withGoogleStorageFileName(filename));
 
 						log.info("servingUrl: " + servingUrl);
-						businessEntity.setLogBlobKey(servingUrl);
+						businessEntity.setBizLogoGCSURL(servingUrl);
 						Key<BusinessEntity> now = ofy().save()
 								.entity(businessEntity).now();
 						// businessEntity.setModifiedDate(todaysDate);

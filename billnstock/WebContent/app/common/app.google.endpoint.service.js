@@ -1906,6 +1906,27 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
+	
+	StockService.addStockSettings = function(settings) {
+		var deferred = $q.defer();
+
+		gapi.client.stockService.addStockSettings(settings).execute(
+				function(resp) {
+					deferred.resolve(resp);
+				});
+
+		return deferred.promise;
+	}
+
+	StockService.getStockSettingsByBiz = function(id) {
+		var deferred = $q.defer();
+		gapi.client.stockService.getStockSettingsByBiz({
+			"id" : id
+		}).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}
 	// End of StockService
 
 	/* =============================================================================================================================== */

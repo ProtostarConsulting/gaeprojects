@@ -14,6 +14,7 @@ import com.google.api.server.spi.config.Named;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.cmd.Query;
+import com.protostar.billingnstock.invoice.entities.InvoiceSettingsEntity;
 import com.protostar.billingnstock.invoice.entities.StockItemsReceiptEntity;
 import com.protostar.billingnstock.invoice.entities.StockItemsShipmentEntity;
 import com.protostar.billingnstock.invoice.entities.StockItemsShipmentEntity.ShipmentType;
@@ -23,11 +24,12 @@ import com.protostar.billingnstock.purchase.entities.SupplierEntity;
 import com.protostar.billingnstock.stock.entities.StockItemEntity;
 import com.protostar.billingnstock.stock.entities.StockItemTxnEntity;
 import com.protostar.billingnstock.stock.entities.StockItemTypeEntity;
+import com.protostar.billingnstock.stock.entities.StockSettingsEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.warehouse.entities.WarehouseEntity;
 import com.protostar.billnstock.service.BaseService;
-import com.protostar.billnstock.until.data.EntityPagingInfo;
 import com.protostar.billnstock.until.data.Constants.DocumentStatus;
+import com.protostar.billnstock.until.data.EntityPagingInfo;
 
 @Api(name = "stockService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.stock.services", ownerName = "com.protostar.billingnstock.stock.services", packagePath = ""))
 public class StockManagementService extends BaseService {
@@ -383,6 +385,24 @@ public class StockManagementService extends BaseService {
 			return (PurchaseOrderEntity) entityByItemNumber;
 		else
 			return null;
+	}
+
+	@ApiMethod(name = "addStockSettings", path = "addStockSettings")
+	public StockSettingsEntity addStockSettings(
+			StockSettingsEntity settingsEntity) {
+		ofy().save().entity(settingsEntity).now();
+		return settingsEntity;
+	}
+
+	@ApiMethod(name = "getStockSettingsByBiz", path = "getStockSettingsByBiz")
+	public StockSettingsEntity getStockSettingsByBiz(@Named("id") Long busId) {
+		StockSettingsEntity filteredSettings = ofy().load()
+				.type(StockSettingsEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).first()
+				.now();
+
+		return filteredSettings;
+
 	}
 
 }// end of StockServices

@@ -12,28 +12,30 @@
 	<table md-data-table class="md-primary" md-progress="deferred">
 		<thead md-order="query.order" md-trigger="onorderchange">
 			<tr>
-				<th name="Stock Item No." order-by="stockItemNumber"></th>
-				<th name="Item Name" order-by="itemName"></th>
-				<th name="Quantity" order-by="qty"></th>
+				<th name="Warehouse" order-by="warehouse.warehouseName"></th>
+				<th name="Item No" order-by="stockItemType.itemNumber"></th>				
+				<th name="Item Name" order-by="stockItemType.itemName"></th>
+				<th name="Category" order-by="stockItemType.category"></th>
+				<th name="Qty" order-by="qty"></th>
 				<th name="Threshold Qty" order-by="thresholdValue"></th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr 
-				ng-repeat="stock in thresholdStock | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
-				<!-- <a ng-href="#/invoice.list/{{invoiceId.id}}">{{invoice.finalTotal}}</a> -->
-
-				<td>{{stock.stockItemNumber}}</td>
-				<td>{{stock.itemName}}</td>
-				<td>{{stock.qty}}</td>
-				<td style="color: red">{{stock.thresholdValue}}</td>
+				ng-repeat="stockItem in thresholdStock | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+				<td>{{stockItem.warehouse.warehouseName}}</td>
+				<td>{{stockItem.stockItemType.itemNumber}}</td>
+				<td>{{stockItem.stockItemType.itemName}}</td>
+				<td>{{stockItem.stockItemType.category}}</td>
+				<td>{{stockItem.qty}}</td>
+				<td style="color: red">{{stockItem.thresholdValue}}</td>
 				<td></td>
 			</tr>
 		</tbody>
 	</table>
 
 	<md-data-table-pagination md-limit="query.limit" md-page="query.page"
-		md-total={{invoiceData.length}} md-trigger="onpagechange"></md-data-table-pagination>
+		md-total={{thresholdStock.length}} md-trigger="onpagechange"></md-data-table-pagination>
 	</md-data-table-container>
 </div>
 </md-content>

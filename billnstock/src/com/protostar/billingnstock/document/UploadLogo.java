@@ -77,7 +77,7 @@ public class UploadLogo extends HttpServlet {
 			// Save blobKeys into current business entity field
 			 UserService us = new UserService();
 			 BusinessEntity getbusinessById = us.getBusinessById(bizID);
-			 getbusinessById.setLogBlobKey(blobKeys.get(0).getKeyString());
+			 getbusinessById.setBizLogoGCSURL(blobKeys.get(0).getKeyString());
 			 ofy().save().entity(getbusinessById).now();
 			
 			 response.sendRedirect("/#/setup/setLogo");  

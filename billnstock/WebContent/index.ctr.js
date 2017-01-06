@@ -42,7 +42,7 @@ angular
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
 					// http://localhost:8888/serve?blob-key=sC_5uJK83qYiubjEWAz5zA
-					$scope.logBaseURL;
+					$scope.bizLogoGCSURL = null;
 					$scope.logFooterURL;
 
 					$scope.user = {
@@ -106,7 +106,7 @@ angular
 					$scope.initCommonSetting = function() {
 						ajsCache.removeAll();
 						$scope.theme = $scope.curUser.business.theme;
-						$scope.logBaseURL = $scope.curUser.business.logBlobKey;
+						$scope.bizLogoGCSURL = $scope.curUser.business.bizLogoGCSURL;
 
 						getUserAuthTree();
 						// finally go to home...
