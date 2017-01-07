@@ -962,6 +962,17 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 	
+	hrService.approveLeaveApp = function(leaveApp){
+		var deferred = $q.defer();
+		
+		gapi.client.hrService.approveLeaveApp(leaveApp).execute(function(resp){
+			deferred.resolve({
+				"msg":"leave approved successfully."
+			});
+		})
+		
+	}
+	
 	hrService.updateLeaveApp = function(leaveApp) {
 
 		var deferred = $q.defer();
@@ -1006,6 +1017,51 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
+	hrService.addLeaveMaster = function(leaveMasterEntity){
+		var deferred = $q.defer();
+		gapi.client.hrService.addLeaveMaster(leaveMasterEntity).execute(function() {
+
+			deferred.resolve({
+				"msg" : "leaveMaster added Successfully."
+			});
+
+		});
+		return deferred.promise;
+	}
+	
+	hrService.getLeaveMasterList = function() {
+
+		var deferred = $q.defer();
+
+		gapi.client.hrService.getLeaveMasterList().execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+
+	}
+	
+	hrService.getLeaveMasterListByUser = function(busId,userId) {
+		var deferred = $q.defer();
+		gapi.client.hrService.getLeaveMasterListByUser({"busId":busId,"userId":userId}).execute(
+				function(resp) {
+					deferred.resolve(resp.items);
+				});
+		return deferred.promise;
+	}
+	
+	hrService.updateLeaveMaster = function(leaveMaster) {
+
+		var deferred = $q.defer();
+		gapi.client.hrService.updateLeaveMaster(leaveMaster).execute(function() {
+
+			deferred.resolve({
+				"msg" : "leaveMaster Updated Successfully."
+			});
+
+		});
+		return deferred.promise;
+	}
+	
 	// ------------------------- CRM ---------------------------------
 	var crmService = {};
 

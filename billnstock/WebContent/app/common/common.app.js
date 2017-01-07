@@ -961,24 +961,40 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	}).state('user_prof_detail.viewLeaves', {
 		url : "/MyMonthlyLeaves",
 		templateUrl : '/app/profile/my_monthlyleaves.html',
-		controller : 'view_monthlyleaveApps',
+		controller : 'viewMyLeaveAppsCtr',
+		params : {
+			selectedUser : null
+		}
+
 	}).state('user_prof_detail.addLeaves', {
 		url : "/AddMonthlyLeaves",
 		templateUrl : '/app/profile/add_leaveapp.html',
-		controller : 'add_andviewemployeeleaves',
+		controller : 'addViewEmployeeLeavesCtr',
 		params : {
-			selectedLeaveAppObj : null
+			selectedLeaveAppObj : null,
+			selectedUser : null
 		}
 	}).state('user_prof_detail.employeeLeaves', {
 		url : "/EmployeeLeaves",
 		templateUrl : '/app/profile/employee_leaveapps.html',
-		controller : 'add_andviewemployeeleaves',
+		controller : 'addViewEmployeeLeavesCtr',
 	}).state('user_prof_detail.editLeaves', {
 		url : "/EditLeaves",
 		templateUrl : '/app/profile/edit_employeeleaves.html',
-		controller : 'edit_employeeleaveapps',
+		controller : 'editEmployeeLeaveAppsCtr',
 		params : {
 			selectedLeaveAppObj : null
+		}
+	}).state('user_prof_detail.leaveMaster', {
+		url : "/LeaveMaster",
+		templateUrl : '/app/profile/leavemaster.html',
+		controller : 'leavemasterCtr',
+	}).state('user_prof_detail.addLeaveMaster', {
+		url : "/AddLeaveMaster",
+		templateUrl : '/app/profile/add_leavemaster.html',
+		controller : 'leavemasterCtr',
+		params : {
+			selectedLeaveMasterObj : null
 		}
 	}).state('user_prof_detail.print', {
 		url : "/print/:printempidsalslip",

@@ -219,7 +219,7 @@ angular
 								// $scope.filterTasksByFitlerData();
 							}
 						} else {
-							$log.debug("Services Not Loaded, watiting...");
+							$log.debug("Services Not Loaded, waiting...");
 							$timeout($scope.waitForServiceLoad, 1000);
 						}
 					}

@@ -403,7 +403,7 @@ angular
 					$scope.waitForServiceLoad = function(authResult) {
 						if (!appEndpointSF.is_service_ready) {
 							$log
-									.debug("Index: Services Not Loaded, watiting...");
+									.debug("Index: Services Not Loaded, waiting...");
 							$timeout($scope.waitForServiceLoad, 2000);
 							return;
 						}
