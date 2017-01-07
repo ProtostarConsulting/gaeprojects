@@ -1,0 +1,51 @@
+
+
+<div layout="column" ng-cloak>
+	<section layout="row" layout-xs="column">
+		<md-subheader class="md-primary">
+		<h4 class="md-title">Leave Master</h4>
+		</md-subheader>
+		<span flex></span>
+
+
+		<md-input-container flex-gt-sm="20" flex> <md-button
+			class="md-icon-button" ui-sref="user_prof_detail.addLeaveMaster">
+		<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
+		<md-tooltip> Add Leave Master </md-tooltip></ng-md-icon> </md-button> </md-input-container>
+
+	</section>
+</div>
+
+
+<div>
+	<md-data-table-container>
+	<table md-data-table md-progress="deferred">
+		<thead>
+			<tr>
+				<th name="Emp.No"
+					style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
+				<th name="Employee Name"
+					style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
+				<th name="Balance"
+					style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
+				<th name="Edit"
+					style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
+
+			</tr>
+
+			<tr ng-repeat="leaveMasterObj in leaveMasterList">
+				<td style="margin: 0; padding-left: 0; padding-right: 5px;">{{leaveMasterObj.user.employeeDetail.empId}}
+				</td>
+				<td style="margin: 0; padding-left: 0; padding-right: 5px;">{{(leaveMasterObj.user.firstName
+					+ ' ' + leaveMasterObj.user.lastName)}}</td>
+				<td style="margin: 0; padding-left: 0; padding-right: 5px;">{{leaveMasterObj.balance}}</td>
+				<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-button
+						class="md-icon-button"
+						ui-sref="user_prof_detail.addLeaveMaster({selectedLeaveMasterObj: leaveMasterObj})">
+					<ng-md-icon icon="edit" style="fill: md-default" size="24">
+					<md-tooltip> Edit LeaveMaster</md-tooltip></ng-md-icon></md-button></td>
+
+
+			</tr>
+	</table>
+</div>

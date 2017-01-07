@@ -1,5 +1,5 @@
 angular.module("stockApp").controller(
-		"view_monthlyleaveApps",
+		"viewMyLeaveAppsCtr",
 		function($scope, $window, $mdToast, $timeout, $mdSidenav, $mdUtil,
 				$stateParams, $log, objectFactory, $mdDialog, $mdMedia,
 				appEndpointSF, $state) {
@@ -7,8 +7,29 @@ angular.module("stockApp").controller(
 			$scope.curuser = appEndpointSF.getLocalUserService()
 					.getLoggedinUser();
 
-			$scope.myLeaveAppList = [];
+			$scope.selectedUser = $stateParams.selectedUser;
 
+			$scope.myLeaveAppList = [];
+			
+			$scope.query = {
+					order : 'leaveApp.startDate',
+					limit : 50,
+					page : 1
+				};
+
+			$scope.empLeaveBalance;
+			
+			$scope.getLeaveBalanceFn = function() {
+
+				var hrService = appEndpointSF.gethrService();
+				hrService.getLeaveMasterListByUser(
+						$scope.curuser.business.id, $scope.curuser.id)
+						.then(function(list) {
+							$scope.empLeaveBalance = list[0].balance;
+						});
+				
+			}
+			
 			$scope.leaveAppListFilterFunc = function() {
 				var hrService = appEndpointSF.gethrService();
 				hrService.getLeaveAppListByUser($scope.curuser.business.id,
@@ -38,6 +59,7 @@ angular.module("stockApp").controller(
 
 			$scope.waitForServiceLoad = function() {
 				if (appEndpointSF.is_service_ready) {
+					$scope.getLeaveBalanceFn();
 					$scope.leaveAppListFilterFunc();
 
 				} else {

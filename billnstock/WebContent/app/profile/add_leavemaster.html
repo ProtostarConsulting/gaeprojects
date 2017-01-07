@@ -1,0 +1,28 @@
+<md-subheader class="md-primary">
+<h4 class="md-title">
+	<span ng-bind="leaveMaster.id?'Edit LeaveMaster': 'Add LeaveMaster'"> </span>
+
+<p>&nbsp</p>
+<p>&nbsp</p>
+<form name="addLeaveMaster">
+	<div layout="row" layout-xs="column">
+		<md-input-container flex-gt-sm="30" flex> <label>Select
+			Employee</label> <md-select  placeholder="Employee"
+			ng-model="leaveMaster.user"> <md-option
+			ng-repeat="user in userList" ng-value="user" 
+			ng-selected="leaveMaster.user.id == user.id">{{(user.firstName
+		+ ' ' + user.lastName)}} </md-option> </md-select>
+	
+		</md-input-container>
+		<md-input-container flex-gt-sm="20" flex> <label>Leave Balance</label> <input
+			type="number" ng-model="leaveMaster.balance"> </md-input-container>
+
+	</div>
+
+
+	<section layout="row" layout-align="left left">
+		<md-button class="md-raised md-primary" aria-label="addLeaveMaster"
+			ng-disabled="addLeaves.$invalid" ng-click="addLeaveBalance()">
+		<span ng-bind="leaveMaster.id?'Save': 'Add'"></md-button>
+	</section>
+</form>

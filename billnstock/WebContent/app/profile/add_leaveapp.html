@@ -1,8 +1,25 @@
-<md-subheader class="md-primary">
-<h4 class="md-title">
-	<span ng-bind="leaveApp.id?'Edit Leave': 'Add Leave'"> </span>
-</h4>
-</md-subheader>
+<div layout="column" ng-cloak>
+	<section layout="row" layout-xs="column">
+
+		<md-subheader class="md-primary" flex-gt-sm="65" flex>
+		<h4 class="md-title">
+			<span ng-bind="leaveApp.id?'Edit Leave': 'Add Leave'"> </span>
+		</h4>
+		</md-subheader>
+		<md-input-container flex-gt-sm="35" flex>
+		<table class="table" style="border: 1px solid black;">
+			<tr>
+				<td
+					style="border: 1px solid black; width: 50%; height: 50%; overflow: hidden"">{{selectedUser.firstName}}
+					{{selectedUser.lastName}}</td>
+				<td
+					style="border: 1px solid black; width: 50%; height: 50%; overflow: hidden"">Balance:{{empLeaveBalance}}</td>
+			</tr>
+		</table>
+		</md-input-container>
+
+	</section>
+</div>
 <form name="addLeaves" novalidate>
 	<div layout="row" layout-xs="column">
 		<md-input-container flex-gt-sm="30" flex> <label>From
@@ -44,7 +61,7 @@
 
 
 	<section layout="row" layout-align="left left">
-		<md-button class="md-raised md-primary"
+		<md-button class="md-raised md-primary" aria-label="addLeaveApps"
 			ng-disabled="addLeaves.$invalid" ng-click="addMoreLeaves()">
 		<span ng-bind="leaveApp.id?'Save': 'Add'"></md-button>
 	</section>

@@ -9,28 +9,45 @@
 <div>
 	<md-data-table-container>
 	<table md-data-table md-progress="deferred">
-		<thead>
+		<thead md-order="query.order">
 			<tr>
-				<th name="From" order-by="startDate"></th>
-				<th name="To"></th>
-				<th name="No of Days"></th>
-				<th name="Employee"></th>
-				<th name="Status" order-by="approved"></th>
-				<th name="Note"></th>
-				<th name="Edit"></th>
+				<th name="Applied On"
+					style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
+				<th name="From"
+					style="margin: 0; padding-left: 0; padding-right: 5px;"
+					order-by="startDate"></th>
+				<th name="To"
+					style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
+				<th name="No of Days"
+					style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
+				<th name="Emp.No"
+					style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
+				<th name="Employee"
+					style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
+				<th name="Status"
+					style="margin: 0; padding-left: 0; padding-right: 5px;"
+					order-by="approved"></th>
+				<th name="Note"
+					style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
+				<th name="Edit"
+					style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
 
 			</tr>
 
-			<tr ng-repeat="empLeaveAppObj in employeeLeaveAppList | orderBy: query.order">
-				<td>{{empLeaveAppObj.startDate|formatDate}}</td>
-				<td>{{empLeaveAppObj.endDate |formatDate}}</td>
-				<td style="text-align: center">{{empLeaveAppObj.totalDays}}</td>
-				<td>{{(empLeaveAppObj.user.firstName + ' ' +
-					empLeaveAppObj.user.lastName) | uppercase}}</td>
-				<td>{{empLeaveAppObj.approved?'Approved':'Applied'}}</td>
-				<td>{{empLeaveAppObj.note}}</td>
-				<td><md-button class="md-icon-button"
-						ng-if="empLeaveAppObj.approved==false"
+			<tr
+				ng-repeat="empLeaveAppObj in employeeLeaveAppList | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+				<td style="margin: 0; padding-left: 0; padding-right: 5px;">{{empLeaveAppObj.createdDate|formatDate}}</td>
+				<td style="margin: 0; padding-left: 0; padding-right: 5px;">{{empLeaveAppObj.startDate|formatDate}}</td>
+				<td style="margin: 0; padding-left: 0; padding-right: 5px;">{{empLeaveAppObj.endDate
+					|formatDate}}</td>
+				<td style="margin: 0; padding-left: 0; padding-right: 5px;">{{empLeaveAppObj.totalDays}}</td>
+				<td style="margin: 0; padding-left: 0; padding-right: 5px;">{{empLeaveAppObj.user.employeeDetail.empId}}</td>
+				<td style="margin: 0; padding-left: 0; padding-right: 5px;">{{(empLeaveAppObj.user.firstName
+					+ ' ' + empLeaveAppObj.user.lastName) | uppercase}}</td>
+				<td style="margin: 0; padding-left: 0; padding-right: 5px;">{{empLeaveAppObj.approved?'Approved':'Applied'}}</td>
+				<td style="margin: 0; padding-left: 0; padding-right: 5px;">{{empLeaveAppObj.note}}</td>
+				<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-button
+						class="md-icon-button" ng-if="empLeaveAppObj.approved==false"
 						ui-sref="user_prof_detail.editLeaves({selectedLeaveAppObj: empLeaveAppObj})">
 
 					<ng-md-icon icon="edit" style="fill: md-default" size="24">

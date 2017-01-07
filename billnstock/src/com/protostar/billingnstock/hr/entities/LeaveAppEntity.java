@@ -8,6 +8,7 @@ import com.googlecode.objectify.annotation.Index;
 import com.protostar.billingnstock.user.entities.UserEntity;
 import com.protostar.billnstock.entity.BaseEntity;
 
+
 @Entity
 public class LeaveAppEntity extends BaseEntity {
 

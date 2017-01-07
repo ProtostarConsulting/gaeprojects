@@ -1,6 +1,6 @@
 angular.module("stockApp")
 		.controller(
-				"edit_employeeleaveapps",
+				"editEmployeeLeaveAppsCtr",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
 						$mdUtil, $stateParams, $log, objectFactory,
 						appEndpointSF, $mdDialog, $mdMedia, $state) {
@@ -52,17 +52,14 @@ angular.module("stockApp")
 					$scope.isDisabled = false;
 
 					$scope.approveLeaveAppFunc = function() {
-						$scope.leaveApp.approved = true;
 						$scope.leaveApp.modifiedBy = $scope.curuser.firstName
 								+ ' ' + $scope.curuser.lastName;
 						$scope.leaveApp.approvedDate = new Date();
 
 						var hrService = appEndpointSF.gethrService();
 
-						hrService.updateLeaveApp($scope.leaveApp).then(
-								function() {
-									$scope.showApprovalToast();
-								});
+						hrService.approveLeaveApp($scope.leaveApp);
+						$scope.showApprovalToast();
 						$scope.isDisabled = true;
 						$scope.loading = false;
 

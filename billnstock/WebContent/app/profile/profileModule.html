@@ -19,11 +19,14 @@
 				ui-sref="user_prof_detail.monthlyTax"
 				ng-click="close()" class="md-primary">View Salary Slip
 			</md-button>
-			<md-button ui-sref="user_prof_detail.viewLeaves" 
+			<md-button ui-sref="user_prof_detail.viewLeaves({selectedUser:curUser})" 
 			ng-click="close()" class="md-primary"> My Leaves
 			</md-button>
 			<md-button ui-sref="user_prof_detail.employeeLeaves" 
 			ng-click="close()" class="md-primary"> Employee Leaves
+			</md-button>
+			<md-button ui-sref="user_prof_detail.leaveMaster" 
+			ng-click="close()" class="md-primary"> Leave Master
 			</md-button>
 			</div>
 		</span>

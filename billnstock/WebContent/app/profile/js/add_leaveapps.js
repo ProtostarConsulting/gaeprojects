@@ -1,13 +1,22 @@
 angular
 		.module("stockApp")
 		.controller(
-				"add_andviewemployeeleaves",
+				"addViewEmployeeLeavesCtr",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
 						$mdUtil, $stateParams, $log, objectFactory,
 						appEndpointSF, $mdDialog, $mdMedia, $state) {
 
 					$scope.curuser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
+
+					$scope.selectedUser = $stateParams.selectedUser;
+					
+					$scope.query = {
+							order : 'leaveApp.startDate',
+							limit : 50,
+							page : 1
+						};
+
 
 					$scope.leaveAppTemp = {
 						startDate : new Date(),
@@ -50,6 +59,18 @@ angular
 								});
 					}
 
+					$scope.empLeaveBalance;
+
+					$scope.getLeaveBalanceFn = function() {
+
+						var hrService = appEndpointSF.gethrService();
+						hrService.getLeaveMasterListByUser(
+								$scope.curuser.business.id, $scope.curuser.id)
+								.then(function(list) {
+									$scope.empLeaveBalance = list[0].balance;
+								});
+						
+					};
 					$scope.showLeaveAddToast = function() {
 						$mdToast.show($mdToast.simple().content(
 								'Leave Application Saved Successfully.')
@@ -60,9 +81,13 @@ angular
 
 						var hrService = appEndpointSF.gethrService();
 
-						hrService.addLeaveApp($scope.leaveApp).then(function() {
-							$scope.showLeaveAddToast();
-						});
+						if ($scope.empLeaveBalance >= $scope.leaveApp.totalDays) {
+							hrService.addLeaveApp($scope.leaveApp).then(
+									function() {
+										$scope.showLeaveAddToast();
+
+									});
+						} 
 						$scope.loading = false;
 					}
 
@@ -124,6 +149,7 @@ angular
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
 							$scope.getUsersList();
+							$scope.getLeaveBalanceFn();
 							$scope.leaveAppListFilterFunc();
 							$scope.empLeaveAppListFn();
 

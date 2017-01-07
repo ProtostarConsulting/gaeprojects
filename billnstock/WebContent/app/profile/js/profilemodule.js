@@ -8,6 +8,7 @@ angular
 					
 					$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();					
 					
+									
 					$scope.toggleRight = buildToggler('right');
 
 					function buildToggler(navID) {

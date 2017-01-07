@@ -20,6 +20,7 @@ import com.protostar.billingnstock.cust.entities.Customer;
 import com.protostar.billingnstock.hr.entities.Employee;
 import com.protostar.billingnstock.hr.entities.LeaveAppEntity;
 import com.protostar.billingnstock.hr.entities.LeaveDetailEntity;
+import com.protostar.billingnstock.hr.entities.LeaveMasterEntity;
 import com.protostar.billingnstock.hr.entities.MonthlyPaymentDetailEntity;
 import com.protostar.billingnstock.hr.entities.SalSlip;
 import com.protostar.billingnstock.hr.entities.SalStruct;
@@ -405,14 +406,32 @@ public class HrService {
 		ofy().save().entity(leaveApp).now();
 
 	}
-	
-	@ApiMethod(name = "updateLeaveApp", path="updateLeaveApp")
+
+	@ApiMethod(name = "approveLeaveApp", path = "approveLeaveApp")
+	public void approveLeaveApp(LeaveAppEntity leaveApp) {
+		List<LeaveMasterEntity> leaveMastList = ofy().load()
+				.type(LeaveMasterEntity.class)
+				.filter("user", leaveApp.getUser()).list();
+
+		LeaveMasterEntity leaveMast = leaveMastList.size() > 0 ? leaveMastList
+				.get(0) : null;
+		if (leaveMast == null) {
+			throw new RuntimeException(
+					"Leave Master record not found. Please contact HR department.");
+		}
+
+		leaveMast.setBalance(leaveMast.getBalance() - leaveApp.getTotalDays());
+		updateLeaveMaster(leaveMast);
+		leaveApp.setApproved(true);
+		updateLeaveApp(leaveApp);
+	}
+
+	@ApiMethod(name = "updateLeaveApp", path = "updateLeaveApp")
 	public void updateLeaveApp(LeaveAppEntity leaveApp) {
 		leaveApp.setModifiedDate(new Date());
 		Key<LeaveAppEntity> now = ofy().save().entity(leaveApp).now();
-}
-	
-	
+	}
+
 	@ApiMethod(name = "getLeaveAppList")
 	public List<LeaveAppEntity> getLeaveAppList() {
 
@@ -427,12 +446,12 @@ public class HrService {
 	public List<LeaveAppEntity> getLeaveAppListByUser(
 			@Named("busId") Long busId, @Named("userId") Long userId) {
 		UserService userService = new UserService();
-		
+
 		UserEntity user = userService.getUserByID(busId, userId);
-		
+
 		List<LeaveAppEntity> leaveList = ofy().load()
 				.type(LeaveAppEntity.class).filter("user", user).list();
-	
+
 		return leaveList;
 	}
 
@@ -440,15 +459,51 @@ public class HrService {
 	public List<LeaveAppEntity> getLeaveAppListByManager(
 			@Named("busId") Long busId, @Named("userId") Long userId) {
 		UserService userService = new UserService();
-		
+
 		UserEntity user = userService.getUserByID(busId, userId);
-		
+
 		List<LeaveAppEntity> empLeaveAppList = ofy().load()
 				.type(LeaveAppEntity.class).filter("manager", user).list();
-		
+
 		return empLeaveAppList;
 	}
-	
+
+	// LeaveMaster methods
+
+	@ApiMethod(name = "addLeaveMaster", path = "addLeaveMaster")
+	public void addLeaveMaster(LeaveMasterEntity leaveMasterEntity) {
+		ofy().save().entity(leaveMasterEntity).now();
+
+	}
+
+	@ApiMethod(name = "getLeaveMasterList", path = "getLeaveMasterList")
+	public List<LeaveMasterEntity> getLeaveMasterList() {
+
+		List<LeaveMasterEntity> leaveMasterList = ofy().load()
+				.type(LeaveMasterEntity.class).list();
+
+		return leaveMasterList;
+
+	}
+
+	@ApiMethod(name = "getLeaveMasterListByUser", path = "getLeaveMasterListByUser")
+	public List<LeaveMasterEntity> getLeaveMasterListByUser(
+			@Named("busId") Long busId, @Named("userId") Long userId) {
+		UserService userService = new UserService();
+
+		UserEntity user = userService.getUserByID(busId, userId);
+
+		List<LeaveMasterEntity> leaveMasterListByUser = ofy().load()
+				.type(LeaveMasterEntity.class).filter("user", user).list();
+
+		return leaveMasterListByUser;
+	}
+
+	@ApiMethod(name = "updateLeaveMaster", path = "updateLeaveMaster")
+	public void updateLeaveMaster(LeaveMasterEntity leaveMaster) {
+		leaveMaster.setModifiedDate(new Date());
+		Key<LeaveMasterEntity> now2 = ofy().save().entity(leaveMaster).now();
+	}
 
 	@ApiMethod(name = "getMonthlyPaymentByID")
 	public MonthlyPaymentDetailEntity getMonthlyPaymentByID(
@@ -482,7 +537,6 @@ public class HrService {
 				.ancestor(
 						Key.create(BusinessEntity.class, user.getBusiness()
 								.getId())).filter("empAccount", user).list();
-
 
 		return monthlyPaymentDetailEntity;
 
