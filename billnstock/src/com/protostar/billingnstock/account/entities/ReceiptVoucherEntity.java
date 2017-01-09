@@ -2,6 +2,10 @@ package com.protostar.billingnstock.account.entities;
 
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.OnSave;
+import com.protostar.billnstock.until.data.Constants;
+import com.protostar.billnstock.until.data.EntityUtil;
+import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 
 @Entity
 public class ReceiptVoucherEntity extends VoucherEntity {
@@ -10,7 +14,17 @@ public class ReceiptVoucherEntity extends VoucherEntity {
 	public Double amount;
 	public String narration;
 
-	
+	@OnSave
+	public void beforeSave() {
+		super.beforeSave();
+		
+		if (getId() == null) {
+			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
+					EntityUtil.getBusinessRawKey(getBusiness()),
+					Constants.RV_NO_COUNTER);
+			setItemNumber(sequenceGenService.getNextSequenceNumber());
+		}
+	}
 		public AccountEntity getAccountType1() {
 		return accountType1.get();
 	}

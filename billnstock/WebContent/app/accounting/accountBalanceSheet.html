@@ -34,8 +34,10 @@ td, th { /* //border: 1px solid #dddddd; */
 	layout-padding>
 <form>
 	<div id="balanceSheetDiv">
-		<table
-			style="width: 100%; border: 1px solid #dddddd; border-color: black;">
+	
+	
+		<!-- <table
+			style="width: 50%; border: 1px solid #dddddd; border-color: black;float: left">
 			<tr>
 				<th colspan="2">Balance Sheet</th>
 
@@ -61,12 +63,64 @@ td, th { /* //border: 1px solid #dddddd; */
 							ng-if="grp.groupBalance < 0">)</span>
 					</div></div>	</td>			
 			</tr>
+</table > -->
+	
+	
+		<table
+			style="width: 50%; border: 1px solid #dddddd; border-color: black;float: left">
+			<tr>
+				<th colspan="2">Assets</th>
 
+				<th style="text-align: center;"><br> <span>
+						</span></th>
+			</tr>
+			<tr>
+				<td colspan="3"></td>
 
+			</tr>
+			
+			<tr ng-repeat="groupTypeObj in accountGroupTypeGroupList">
+				<td colspan="2"></td>
+				<td style="text-align: left;">
+					<div ng-repeat="grp in groupTypeObj.groupList" style="text-align: left;"ng-if="groupTypeObj.typeName=Assets">
+					<span style="padding-right: 65%;" >{{grp.groupName}}</span> 
+					    <span flex></span> 
+					 
+						<span style="text-align: right;"  ng-if="grp.groupBalance < 0" >(</span>{{grp.groupBalance|positive|number:2}}<span style="text-align: right;"
+							ng-if="grp.groupBalance < 0">)</span>
+					</div></div>	</td>			
+			</tr>
+</table >
+		<table style="width: 50%; border: 1px solid #dddddd; border-color: black;">
+		
+		<tr>
+				<th colspan="2">Liabilities</th>
+
+				<th style="text-align: center;"><br> <span>
+						</span></th>
+			</tr>
+			<tr>
+				<td colspan="3"></td>
+
+			</tr>
+			
+			<tr ng-repeat="groupTypeObj in accountGroupTypeGroupList">
+				<td colspan="2"></td>
+				<td style="text-align: left;">
+					<div ng-repeat="grp in groupTypeObj.groupList" style="text-align: left;"ng-if="groupTypeObj.typeName=Liabilities">
+					<span style="padding-right: 65%;" >{{grp.groupName}}</span> 
+					    <span flex></span> 
+					 
+						<span style="text-align: right;"  ng-if="grp.groupBalance < 0" >(</span>{{grp.groupBalance|positive|number:2}}<span style="text-align: right;"
+							ng-if="grp.groupBalance < 0">)</span>
+					</div></div>	</td>			
+			</tr>
+		
 		</table>
-		Total Asset:
+		
+	</div>
+	Total Asset:
 		<iframe name="print_frame" width="0" height="0" frameborder="0"
 			src="about:blank"></iframe>
-	</div>
 </form>
 </md-content>

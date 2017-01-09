@@ -24,6 +24,18 @@ public class Constants {
 	public static final String PURCHASE_ORDER_NO_COUNTER = "PURCHASE_ORDER_NO_COUNTER";
 	public static final String QUOTATION_NO_COUNTER = "QUOTATION_NO_COUNTER";
 	public static final String VOUCHER_NO_COUNTER = "VOUCHER_NO_COUNTER";
+	public static final String GE_NO_COUNTER = "GE_NO_COUNTER";
+	public static final String AE_NO_COUNTER = "AE_NO_COUNTER";
+	public static final String AEntry_NO_COUNTER = "AEntry_NO_COUNTER";
+	public static final String RE_NO_COUNTER = "RE_NO_COUNTER";
+	public static final String SV_NO_COUNTER = "SV_NO_COUNTER";
+	public static final String VE_NO_COUNTER = "VE_NO_COUNTER";
+	public static final String PE_NO_COUNTER = "PE_NO_COUNTER";
+	public static final String PV_NO_COUNTER = "PV_NO_COUNTER";
+	public static final String GJE_NO_COUNTER = "GJE_NO_COUNTER";
+	public static final String AFY_NO_COUNTER = "AFY_NO_COUNTER";
+	public static final String AGE_NO_COUNTER = "AGE_NO_COUNTER";
+	public static final String RV_NO_COUNTER = "RV_NO_COUNTER";
 
 	// Default Authorizations
 	public static final String PROTOSTAR_DEFAULT_AUTHS = "{\"authorizations\":[{\"authName\":\"More Actions\",\"authorizations\":[{\"authName\":\"proadmin\",\"authorizations\":[]},{\"authName\":\"setup\",\"authorizations\":[]},{\"authName\":\"updatemyprofile\",\"authorizations\":[]}]}]}";

@@ -8,9 +8,10 @@ import com.googlecode.objectify.annotation.Index;
 import com.protostar.billnstock.entity.BaseEntity;
 
 @Entity
-public class VoucherEntity extends BaseEntity {
+public abstract class VoucherEntity extends BaseEntity {
 
 	private Date date;
+
 	@Index
 	private Long voucherNumber;
 	private Ref<GeneralEntryEntity> journalEntry;
@@ -34,7 +35,7 @@ public class VoucherEntity extends BaseEntity {
 	public Long getVoucherNumber() {
 		return voucherNumber;
 	}
-  
+
 	public void setVoucherNumber(Long voucherNumber) {
 		this.voucherNumber = voucherNumber;
 	}

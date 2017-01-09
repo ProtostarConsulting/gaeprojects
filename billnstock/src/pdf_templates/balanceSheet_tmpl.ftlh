@@ -9,6 +9,7 @@ table {
 
 <div align="center">
  <b>${buisinessName}</b> <br></br> ${buisinessAddress}
+ 
 </div>
 
 <hr></hr>
@@ -18,6 +19,8 @@ table {
 
 <div align="center"  >
 	<b>BalanceSheet</b>
+	<br></br>
+	<p align="center">as at ${date1}</p>
 </div>
 <p>
 	<br></br>

@@ -51,7 +51,7 @@ table tr td a {
 			<tr  style="border: 1px solid black; background-color: #ADD8E6">
 			
 			
-			
+			<th style=" padding-left:30px;">Voucher No </th>
 				<th style=" padding-left:30px;">Debit Account </th>
 				<th style=" padding-left:30px;">Credit Account</th>
 				<th style=" padding-left:30px;">Amount</th>
@@ -62,7 +62,7 @@ table tr td a {
 
 		<tbody>
 			<tr	ng-repeat="vaccount in Voucheraccounts">
-
+				<td style=" padding-left:30px;">{{vaccount.itemNumber}}</td>
 				<td style=" padding-left:30px;">{{vaccount.accountType1.accountName}}</td>
 				<td style=" padding-left:30px;">{{vaccount.accountType2.accountName}}</td>
 				<td><div style=" padding-left:30px; float:left;">{{vaccount.amount|number:2}}</div> 

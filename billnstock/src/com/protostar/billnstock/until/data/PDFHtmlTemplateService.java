@@ -126,11 +126,15 @@ public void  generatePdfAccountChart(List<TypeInfo> accountChart,ServletOutputSt
 			Document document = new Document();
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 			document.open();
-			
+			Date today = new Date();
+			//String date1 = today.getDate() + "_" + today.getMonth() + "_"
+			//		+ today.getYear();
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 		Map<String, Object> root = new HashMap<String, Object>();
 		root.put("balanceSheetList", balanceSheetList);
 		root.put("buisinessName" ,""+ businessEntity.getBusinessName());
+		root.put("date" ,""+ today);
+		
 		StringBuffer addressBuf = new StringBuffer();
 		Address address =  businessEntity.getAddress();
 		if (address != null) {

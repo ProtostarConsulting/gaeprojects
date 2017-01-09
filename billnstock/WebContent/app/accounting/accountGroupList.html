@@ -34,7 +34,8 @@
 			<table md-data-table  md-progress="deferred">
 				<thead md-order="query.order" md-trigger="onorderchange">
 					<tr>
-					<th name="Group Name" order-by="groupName"></th>
+					<th name="Group No" order-by="Group No""></th>
+					<th name="Group Name" order-by="Group No""></th>
 					<th name="Primary" order-by="isPrimary"></th>
 					<th name="PrimaryType" order-by="PrimaryType"></th>
 					<th name="Parent Group Type" order-by="accountGroupType"></th>
@@ -45,6 +46,7 @@
 
 				<tbody>
 					<tr ng-repeat="acc in List | orderBy:query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+					<td>{{acc.itemNumber}}</td>
 					<td>{{acc.groupName}}</td>
 					<td>{{acc.isPrimary}}</td>
 					<td>{{acc.primaryType||acc.parent.primaryType}}</td>	

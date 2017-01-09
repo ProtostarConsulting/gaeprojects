@@ -4,8 +4,12 @@ import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
+import com.googlecode.objectify.annotation.OnSave;
 import com.protostar.billingnstock.cust.entities.Customer;
 import com.protostar.billnstock.entity.BaseEntity;
+import com.protostar.billnstock.until.data.Constants;
+import com.protostar.billnstock.until.data.EntityUtil;
+import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 
 @Entity
 public class PayableEntity extends BaseEntity{
@@ -19,7 +23,17 @@ public class PayableEntity extends BaseEntity{
 	private String invoiceDueDate;
 	private Long purchaseOrderId;
 	private String purchaseOrderDate;
-	
+	@OnSave
+	public void beforeSave() {
+		super.beforeSave();
+		
+		if (getId() == null) {
+			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
+					EntityUtil.getBusinessRawKey(getBusiness()),
+					Constants.PE_NO_COUNTER);
+			setItemNumber(sequenceGenService.getNextSequenceNumber());
+		}
+	}
 
 	public String getPayableDate() {
 		return payableDate;

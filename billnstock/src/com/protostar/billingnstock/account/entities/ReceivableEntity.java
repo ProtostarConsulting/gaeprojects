@@ -5,8 +5,12 @@ import java.util.Date;
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
+import com.googlecode.objectify.annotation.OnSave;
 import com.protostar.billingnstock.cust.entities.Customer;
 import com.protostar.billnstock.entity.BaseEntity;
+import com.protostar.billnstock.until.data.Constants;
+import com.protostar.billnstock.until.data.EntityUtil;
+import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 
 @Entity
 public class ReceivableEntity extends BaseEntity {
@@ -20,7 +24,17 @@ public class ReceivableEntity extends BaseEntity {
 	private Date quotationDueDate;
 	private String finalTotal;
 	private String status = "NotPaid";
-
+	@OnSave
+	public void beforeSave() {
+		super.beforeSave();
+		
+		if (getId() == null) {
+			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
+					EntityUtil.getBusinessRawKey(getBusiness()),
+					Constants.RE_NO_COUNTER);
+			setItemNumber(sequenceGenService.getNextSequenceNumber());
+		}
+	}
 	@Index
 	Ref<Customer> customer;
 

@@ -6,19 +6,17 @@ import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Ignore;
+import com.googlecode.objectify.annotation.OnSave;
 import com.protostar.billnstock.entity.BaseEntity;
+import com.protostar.billnstock.until.data.Constants;
+import com.protostar.billnstock.until.data.EntityUtil;
+import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 
 @Entity
 public class AccountEntity extends BaseEntity {
 
-	/*
-	 * public static enum AccountType { PERSONAL, REAL, NOMINAL };
-	 */
-
 	@Index
 	private String accountName;
-	// private AccountType accountType;
-	// private Long accountNo;
 	private String accountNo;
 	private String description;
 	private Integer displayOrderNo;
@@ -38,7 +36,17 @@ public class AccountEntity extends BaseEntity {
 	public AccountEntity() {
 
 	}
-
+	@OnSave
+	public void beforeSave() {
+		super.beforeSave();
+		
+		if (getId() == null) {
+			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
+					EntityUtil.getBusinessRawKey(getBusiness()),
+					Constants.AE_NO_COUNTER);
+			setItemNumber(sequenceGenService.getNextSequenceNumber());
+		}
+	}
 	/*
 	 * public AccountEntity(String accountName, AccountType accountType){
 	 * this.accountName = accountName; this.accountType = accountType;
