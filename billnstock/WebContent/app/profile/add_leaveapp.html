@@ -10,8 +10,8 @@
 		<table class="table" style="border: 1px solid black;">
 			<tr>
 				<td
-					style="border: 1px solid black; width: 50%; height: 50%; overflow: hidden"">{{selectedUser.firstName}}
-					{{selectedUser.lastName}}</td>
+					style="border: 1px solid black; width: 50%; height: 50%; overflow: hidden"">{{selectedUser.firstName
+					+' '+selectedUser.lastName|uppercase}}</td>
 				<td
 					style="border: 1px solid black; width: 50%; height: 50%; overflow: hidden"">Balance:{{empLeaveBalance}}</td>
 			</tr>
