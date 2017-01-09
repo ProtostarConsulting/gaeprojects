@@ -25,7 +25,7 @@ angular.module("stockApp").controller(
 				hrService.getLeaveMasterListByUser(
 						$scope.curuser.business.id, $scope.curuser.id)
 						.then(function(list) {
-							$scope.empLeaveBalance = list[0].balance;
+							$scope.empLeaveBalance = list.length > 0? list[0].balance:'0';
 						});
 				
 			}
