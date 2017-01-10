@@ -1,7 +1,8 @@
-package com.protostar.billingnstock.invoice.entities;
+package com.protostar.billingnstock.stock.entities;
+
+import java.util.List;
 
 import com.googlecode.objectify.Ref;
-import com.protostar.billingnstock.stock.entities.StockItemEntity;
 import com.protostar.billingnstock.tax.entities.TaxEntity;
 
 public class StockLineItem {
@@ -16,6 +17,8 @@ public class StockLineItem {
 
 	private int stockMaintainedQty;
 	private StockItemEntity stockItem;
+
+	private List<StockItemInstanceEntity> stockItemInstanceList;
 
 	public TaxEntity getSelectedTaxItem() {
 		return selectedTaxItem == null ? null : selectedTaxItem.get();
@@ -93,5 +96,13 @@ public class StockLineItem {
 			toCopy.setSelectedTaxItem(fromCopy.selectedTaxItem.get());
 		toCopy.setStockItem(fromCopy.stockItem);
 		return toCopy;
+	}
+
+	public List<StockItemInstanceEntity> getStockItemInstanceList() {
+		return this.stockItemInstanceList;
+	}
+
+	public void setStockItemInstanceList(List<StockItemInstanceEntity> list) {
+		this.stockItemInstanceList = list;
 	}
 }

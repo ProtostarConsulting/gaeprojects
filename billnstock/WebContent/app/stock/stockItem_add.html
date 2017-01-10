@@ -80,7 +80,7 @@
 			</label> <input name="quantity" type="number" ng-model="stock.qty"
 				ng-disabled="true"> </md-input-container>
 		</div>
-
+		
 		<h3 class="md-subhead">
 			<b>Location Details</b>
 		</h3>
@@ -113,7 +113,8 @@
 		</div>
 
 		<section layout="row" layout-xs="column" layout-align="left left">
-			<md-button class="md-raised md-primary"  ng-disabled="stockForm.$invalid" ng-click="addStock()">
+			<md-button class="md-raised md-primary"
+				ng-disabled="stockForm.$invalid" ng-click="addStock()">
 			</md-icon>Save</md-button>
 		</section>
 

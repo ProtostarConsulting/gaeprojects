@@ -1,7 +1,5 @@
 package com.protostar.billingnstock.stock.entities;
 
-import java.util.Date;
-
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
@@ -20,6 +18,7 @@ public class StockItemTypeEntity extends BaseEntity {
 	@Index
 	private String category;
 
+	private boolean maintainStockBySerialNumber = false;
 	private Ref<TaxEntity> selectedTaxItem;
 
 	@OnSave
@@ -58,4 +57,14 @@ public class StockItemTypeEntity extends BaseEntity {
 	public void setCategory(String category) {
 		this.category = category;
 	}
+
+	public boolean isMaintainStockBySerialNumber() {
+		return maintainStockBySerialNumber;
+	}
+
+	public void setMaintainStockBySerialNumber(
+			boolean maintainStockBySerialNumber) {
+		this.maintainStockBySerialNumber = maintainStockBySerialNumber;
+	}
+
 }

@@ -11,34 +11,29 @@
 	</div>
 </section>
 <form name="stockForm">
-	<div>
-		<div layout layout-xs="column">
-
+	<div layout="column">
+		<div layout="row" layout-xs="column">
 			<md-input-container flex> <label>Item
 				Name </label> <input name="itemName" ng-model="stock.itemName"
 				ng-required="true">
 			<div ng-messages="stockForm.itemName.$error"
 				ng-if="stockForm.itemName.$submitted || stockForm.itemName.$touched">
-				<div ng-message="required">Please Enter Item
-					Name(Example.:John)</div>
+				<div ng-message="required">This is required field.</div>
 			</div>
-			</md-input-container>
-
-			<md-input-container flex> <label>Categories
-
+			</md-input-container>			
+			<md-input-container flex> <label>Categories (comma separated values)
 			</label> <input name="categories" ng-model="stock.category"
-				ng-required="false">
-			<div ng-messages="stockForm.categories.$error"
-				ng-if="stockForm.categories.$submitted || stockForm.categories.$touched">
-				<div ng-message="required">Please Enter First
-					Name(Example.:John)</div>
-			</div>
+				ng-required="false">			
 			</md-input-container>
 		</div>
-
+		<div layout="row" layout-xs="column">
+			<md-input-container flex> <md-checkbox
+				ng-model="stock.maintainStockBySerialNumber" ng-true-value="true"
+				ng-false-value="false"></md-checkbox> Maintain By Serial Number </md-input-container>
+		</div>
 
 		<section layout="row" layout-xs="column" layout-align="left left">
-			<md-button class="md-raised md-primary" ng-click="addStockItemType()">
+			<md-button class="md-raised md-primary" ng-disabled="stockForm.$invalid" ng-click="addStockItemType()">
 			</md-icon>Save</md-button>
 		</section>
 

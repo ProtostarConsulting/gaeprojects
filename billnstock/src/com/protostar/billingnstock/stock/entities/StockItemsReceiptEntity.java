@@ -1,4 +1,4 @@
-package com.protostar.billingnstock.invoice.entities;
+package com.protostar.billingnstock.stock.entities;
 
 import java.util.ArrayList;
 import java.util.Date;

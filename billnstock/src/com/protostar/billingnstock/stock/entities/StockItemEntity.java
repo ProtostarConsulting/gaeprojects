@@ -13,7 +13,7 @@ public class StockItemEntity extends BaseEntity {
 	private double price;
 	private double cost;
 	private double movingAvgCost;
-	private String notes;
+
 	@Index
 	private int thresholdValue;
 	@Index
@@ -22,7 +22,6 @@ public class StockItemEntity extends BaseEntity {
 	private String rack;
 	private String slot;
 	private boolean maintainStock = true;
-	private boolean maintainStockBySerialNumber = false;
 
 	@Index
 	private Ref<WarehouseEntity> warehouse;
@@ -83,14 +82,6 @@ public class StockItemEntity extends BaseEntity {
 		this.thresholdValue = thresholdValue;
 	}
 
-	public String getNotes() {
-		return notes;
-	}
-
-	public void setNotes(String notes) {
-		this.notes = notes;
-	}
-
 	public String getSection() {
 		return section;
 	}
@@ -137,14 +128,5 @@ public class StockItemEntity extends BaseEntity {
 
 	public void setMovingAvgCost(double movingAvgCost) {
 		this.movingAvgCost = movingAvgCost;
-	}
-
-	public boolean isMaintainStockBySerialNumber() {
-		return maintainStockBySerialNumber;
-	}
-
-	public void setMaintainStockBySerialNumber(
-			boolean maintainStockBySerialNumber) {
-		this.maintainStockBySerialNumber = maintainStockBySerialNumber;
 	}
 }// end of StockServicesEntity

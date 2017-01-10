@@ -1846,6 +1846,14 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
+	StockService.getStockItemInstancesList = function(stockItem) {
+		var deferred = $q.defer();
+		gapi.client.stockService.getStockItemInstancesList(stockItem).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}
+	
 	StockService.filterStockItemsByWarehouse = function(warehouse) {
 		var deferred = $q.defer();
 		gapi.client.stockService.filterStockItemsByWarehouse(warehouse).execute(function(resp) {

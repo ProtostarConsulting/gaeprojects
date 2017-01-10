@@ -9,22 +9,24 @@ import java.util.logging.Logger;
 
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
+import com.google.api.server.spi.config.ApiMethod.HttpMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.cmd.Query;
 import com.protostar.billingnstock.invoice.entities.InvoiceSettingsEntity;
-import com.protostar.billingnstock.invoice.entities.StockItemsReceiptEntity;
-import com.protostar.billingnstock.invoice.entities.StockItemsShipmentEntity;
-import com.protostar.billingnstock.invoice.entities.StockItemsShipmentEntity.ShipmentType;
-import com.protostar.billingnstock.invoice.entities.StockLineItem;
 import com.protostar.billingnstock.purchase.entities.PurchaseOrderEntity;
 import com.protostar.billingnstock.purchase.entities.SupplierEntity;
 import com.protostar.billingnstock.stock.entities.StockItemEntity;
+import com.protostar.billingnstock.stock.entities.StockItemInstanceEntity;
 import com.protostar.billingnstock.stock.entities.StockItemTxnEntity;
 import com.protostar.billingnstock.stock.entities.StockItemTypeEntity;
+import com.protostar.billingnstock.stock.entities.StockItemsReceiptEntity;
+import com.protostar.billingnstock.stock.entities.StockItemsShipmentEntity;
+import com.protostar.billingnstock.stock.entities.StockLineItem;
 import com.protostar.billingnstock.stock.entities.StockSettingsEntity;
+import com.protostar.billingnstock.stock.entities.StockItemsShipmentEntity.ShipmentType;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.warehouse.entities.WarehouseEntity;
 import com.protostar.billnstock.service.BaseService;
@@ -68,6 +70,8 @@ public class StockManagementService extends BaseService {
 			stockLineItem.setStockItem(stockItem);
 		}
 
+		ofy().save().entity(stockItemsReceipt).now();
+
 		if (stockItemsReceipt.getStatus() == DocumentStatus.FINALIZED) {
 			// Perform stock adjustment only when this entity is finalized and
 			// not in DRAFT status.
@@ -97,14 +101,24 @@ public class StockManagementService extends BaseService {
 
 					stockLineItem.setStockMaintainedQty(stockLineItem.getQty());
 				}
+				if (stockLineItem.getStockItem().getStockItemType()
+						.isMaintainStockBySerialNumber()) {
+					List<StockItemInstanceEntity> stockItemInstanceList = stockLineItem
+							.getStockItemInstanceList();
+					for (StockItemInstanceEntity stockItemInstanceEntity : stockItemInstanceList) {
+						stockItemInstanceEntity
+								.setStockReceiptNumber(stockItemsReceipt
+										.getItemNumber());
+					}
+					ofy().save().entities(
+							stockLineItem.getStockItemInstanceList());
+				}
 
 			}
 			if (stockItemTxnList.size() > 0) {
 				addStockItemTxnList(stockItemTxnList);
 			}
 		}
-
-		ofy().save().entity(stockItemsReceipt).now();
 	}
 
 	private StockItemEntity getOrCreateWarehouseStockItem(
@@ -221,6 +235,24 @@ public class StockManagementService extends BaseService {
 				.ancestor(Key.create(BusinessEntity.class, busId)).list();
 
 		return stockItemsShipmentList;
+	}
+
+	@ApiMethod(name = "getStockItemInstancesList", path = "getStockItemInstancesList", httpMethod = HttpMethod.POST)
+	public List<StockItemInstanceEntity> getStockItemInstancesList(
+			StockItemEntity stockItem) {
+		// System.out.println("getAllStock#busId:" + busId);
+		List<StockItemInstanceEntity> list = ofy()
+				.load()
+				.type(StockItemInstanceEntity.class)
+				.ancestor(
+						Key.create(BusinessEntity.class, stockItem
+								.getBusiness().getId()))
+				/*.filter("stockItem",
+						Key.create(StockItemEntity.class, stockItem.getId()))*/
+				.list();
+		
+		System.out.println("list.size:" + list.size());
+		return list;
 	}
 
 	@ApiMethod(name = "getReportByThreshold", path = "getReportByThreshold")

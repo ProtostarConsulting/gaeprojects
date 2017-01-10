@@ -48,10 +48,19 @@
 				<td>{{stockItem.cost}}</td>
 				<td>{{stockItem.movingAvgCost}}</td>
 				<td>{{stockItem.price}}</td>
-				<td><md-button class="md-icon-button"
-						ui-sref="stock.stockItemAdd({selectedStockItem: stockItem})">
-					<ng-md-icon icon="edit" style="fill: md-default" size="24">
-					<md-tooltip> Edit Record</md-tooltip></ng-md-icon></md-button></td>
+				<td>
+					<div layout="row">
+						<md-button class="md-icon-button"
+							ui-sref="stock.stockItemAdd({selectedStockItem: stockItem})">
+						<ng-md-icon icon="edit" style="fill: md-default" size="24">
+						<md-tooltip> Edit Record</md-tooltip></ng-md-icon></md-button>
+						<md-button class="md-icon-button"
+							ng-show="stockItem.stockItemType.maintainStockBySerialNumber"
+							ng-click="viewSerialNumbers($event, stockItem)"> <ng-md-icon
+							icon="list" style="fill: md-default" size="18"> <md-tooltip>
+						View Item Serial Numbers</md-tooltip></ng-md-icon></md-button>
+					</div>
+				</td>
 			</tr>
 		</tbody>
 	</table>
