@@ -47,6 +47,10 @@ public class Constants {
 	public static final String DEFAULT_EMP_DEPT = "Default";
 
 	public enum DocumentStatus {
-		DRAFT, FINALIZED
+		DRAFT, SUBMITTED, FINALIZED, REJECTED
+	};
+
+	public static enum DiscountType {
+		NA, Fixed, Percentage
 	};
 }

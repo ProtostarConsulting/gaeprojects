@@ -1,6 +1,5 @@
 package com.protostar.billingnstock.stock.entities;
 
-import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.OnSave;
@@ -15,7 +14,7 @@ public class StockItemInstanceEntity extends BaseEntity {
 	@Index
 	private String serialNumber;
 	@Index
-	private Ref<StockItemEntity> stockItem;
+	private String stockItemId;
 
 	@Index
 	private StatusType status = StatusType.INSTOCK;
@@ -26,30 +25,23 @@ public class StockItemInstanceEntity extends BaseEntity {
 	@Index
 	private int stockReceiptNumber;
 
+	
+	@OnSave
+	public void beforeSave() {
+		if (getStockItemId() == null || getStockItemId().isEmpty()) {
+			throw new RuntimeException("StockItem id is not set on: "
+					+ this.getClass().getSimpleName()
+					+ " This is required field. Aborting save operation...");
+		}
+	}
+	
 	public String getSerialNumber() {
 		return serialNumber;
 	}
 
 	public void setSerialNumber(String serialNumber) {
 		this.serialNumber = serialNumber;
-	}
-
-	public StockItemEntity getStockItem() {
-		return stockItem == null ? null : stockItem.get();
-	}
-
-	public void setStockItem(StockItemEntity stockItem) {
-		this.stockItem = Ref.create(stockItem);
-	}
-
-	@OnSave
-	public void beforeSave() {
-		if (getStockItem() == null) {
-			throw new RuntimeException("StockItem entity is not set on: "
-					+ this.getClass().getSimpleName()
-					+ " This is required field. Aborting save operation...");
-		}
-	}
+	}	
 
 	public StatusType getStatus() {
 		return status;
@@ -82,4 +74,13 @@ public class StockItemInstanceEntity extends BaseEntity {
 	public void setStockReceiptNumber(int stockReceiptNumber) {
 		this.stockReceiptNumber = stockReceiptNumber;
 	}
+
+	public String getStockItemId() {
+		return stockItemId;
+	}
+
+	public void setStockItemId(String stockItemId) {
+		this.stockItemId = stockItemId;
+	}
+	
 }

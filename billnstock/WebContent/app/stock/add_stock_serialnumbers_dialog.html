@@ -38,7 +38,7 @@
 	</div>
 
 	</md-content> </md-content> </md-dialog-content> <md-dialog-actions layout="row"> <md-button
-		class="md-raised md-primary" ng-disabled="stockForm.$invalid"
+		class="md-raised md-primary" ng-disabled="stockForm.$invalid" ng-hide="stockLineItem.view" 
 		ng-click="updateSerialNumbers()"> </md-icon>Save</md-button> <md-button
 		class="md-raised" ng-hide="customer.id" ng-click="cancel()">Cancel</md-button>
 	</md-dialog-actions> </md-dialog>

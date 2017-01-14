@@ -62,7 +62,7 @@ angular
 			$scope.stockItemList = [];
 			$scope.waitForServiceLoad();
 
-			$scope.viewSerialNumbers = function(ev, stockLineItem) {
+			$scope.viewSerialNumbers = function(ev, stockItem) {
 				var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))
 				&& $scope.customFullscreen;
 				$mdDialog
@@ -78,7 +78,7 @@ angular
 							locals : {
 								curBusi : $scope.curUser.business,
 								curUser : $scope.curUser,
-								stockLineItem : stockLineItem
+								stockItem : stockItem
 							}
 						})
 					.then(
@@ -93,16 +93,18 @@ angular
 			};
 
 			function viewSerialNumbersDialogController($scope, $mdDialog,
-				curBusi, curUser, stockLineItem) {
-				$scope.stockLineItem = stockLineItem;
-				$scope.stockLineItem.view = true;
+				curBusi, curUser, stockItem) {
+				$scope.stockLineItem = {
+					stockItem : stockItem,
+					view : true
+				};
 
 				var stockService = appEndpointSF.getStockService();
-				stockService.getStockItemInstancesList(stockLineItem).then(
+				stockService.getStockItemInstancesList(stockItem).then(
 					function(stockItemInstanceList) {
 						$scope.stockLineItem.stockItemInstanceList = stockItemInstanceList;
 						$scope.loading = false;
-					});			
+					});
 
 				$scope.cancel = function() {
 					$mdDialog.hide();

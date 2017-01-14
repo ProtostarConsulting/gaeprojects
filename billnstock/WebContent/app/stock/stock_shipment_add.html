@@ -123,10 +123,14 @@
 								ng-required="true"></md-input-container></td>
 						<td><md-input-container flex> <b>{{item.qty
 								* item.price | currency:"":"2"}} </b></td>
-						<td><md-icon
-								md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
-								ng-click="removeProductItem($index)" class="name"
-								style="color: Green; height: 18px; width: 18px"></md-icon></td>
+						<td><md-button class="md-icon-button"
+								ng-show="item.stockItem.stockItemType.maintainStockBySerialNumber"
+								ng-click="addSerialNumbers($event, item)"> <ng-md-icon
+								icon="list" style="fill: md-default" size="18"> <md-tooltip>
+							Add Serial Numbers</md-tooltip></ng-md-icon></md-button> <md-button class="md-icon-button"
+								ng-click="removeProductItem($index)"> <ng-md-icon
+								icon="remove" style="fill: md-default" size="18"> <md-tooltip>
+							Remove Line Item</md-tooltip></ng-md-icon></md-button></td>
 
 					</tr>
 					<tr>
@@ -181,10 +185,10 @@
 								ng-change="calServiceSubTotal()"></md-input-container></td>
 						<td><md-input-container flex> <b>{{serviceItem.qty
 								* serviceItem.price | currency:"":"2"}} </b></td>
-						<td><md-icon
-								md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
-								ng-click="removeServiceItem($index)" class="name"
-								style="color: Green; height: 18px; width: 18px"></md-icon></td>
+						<td><md-button class="md-icon-button"
+								ng-click="removeServiceItem($index)"> <ng-md-icon
+								icon="remove" style="fill: md-default" size="18"> <md-tooltip>
+							Remove Line Item</md-tooltip></ng-md-icon></md-button></td>
 						<td></td>
 					</tr>
 

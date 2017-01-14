@@ -47,18 +47,8 @@ app
 					.addStockReceipt($scope.stockReceiptObj)
 					.then(
 						function(msgBean) {
-							if ($scope.stockReceiptObj.id) {
+							if (msgBean.id) {
 								$scope.showUpdateToast();
-							} else {
-								$scope.showAddToast();
-								$scope.stockReceiptObj = $scope
-									.getEmptyStockReceiptObj();
-								$scope.stockReceiptAddForm
-									.$setPristine();
-								$scope.stockReceiptAddForm
-									.$setValidity();
-								$scope.stockReceiptAddForm
-									.$setUntouched();
 							}
 						});
 
@@ -393,6 +383,8 @@ app
 				}
 			}
 
+			
+
 			$scope.waitForServiceLoad();
 
 			$scope.addSerialNumbers = function(ev, stockLineItem) {
@@ -411,8 +403,7 @@ app
 							locals : {
 								curBusi : $scope.curUser.business,
 								curUser : $scope.curUser,
-								stockLineItem : stockLineItem,
-								addStockReceiptFn : $scope.addStockReceipt
+								stockLineItem : stockLineItem
 							}
 						})
 					.then(
@@ -427,7 +418,7 @@ app
 			};
 
 			function addSerialNumbersDialogController($scope, $mdDialog,
-				curBusi, curUser, stockLineItem, addStockReceiptFn) {
+				curBusi, curUser, stockLineItem) {
 				$scope.stockLineItem = stockLineItem;
 				function getOrCreateStockItemInstance(index, list) {
 					if (index < list.length) {
@@ -436,7 +427,8 @@ app
 						return {
 							business : curBusi,
 							stockItem : stockLineItem.stockItem,
-							modifiedBy : curUser.email_id
+							modifiedBy : curUser.email_id,
+							serialNumber : ''
 						};
 					}
 				}
@@ -450,16 +442,15 @@ app
 				for (var i = 0; i < $scope.stockLineItem.qty; i++) {
 					tempList.push(getOrCreateStockItemInstance(i, existingList));
 				}
-				
+
 				$scope.stockLineItem.stockItemInstanceList = tempList;
 
 				$scope.updateSerialNumbers = function() {
-					addStockReceiptFn();
-					$scope.cancel();
+					$mdDialog.hide();
 				}
 
 				$scope.cancel = function() {
-					$mdDialog.hide();
+					$mdDialog.cancel();
 				};
 			}
 

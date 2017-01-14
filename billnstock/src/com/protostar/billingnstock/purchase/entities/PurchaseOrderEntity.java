@@ -9,9 +9,9 @@ import com.googlecode.objectify.annotation.OnSave;
 import com.protostar.billingnstock.invoice.entities.InvoiceEntity;
 import com.protostar.billingnstock.warehouse.entities.WarehouseEntity;
 import com.protostar.billnstock.until.data.Constants;
+import com.protostar.billnstock.until.data.Constants.DocumentStatus;
 import com.protostar.billnstock.until.data.EntityUtil;
 import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
-import com.protostar.billnstock.until.data.Constants.DocumentStatus;
 
 @Entity
 public class PurchaseOrderEntity extends InvoiceEntity {

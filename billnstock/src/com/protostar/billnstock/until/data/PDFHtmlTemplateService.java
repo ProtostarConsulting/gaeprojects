@@ -1,9 +1,11 @@
 package com.protostar.billnstock.until.data;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.Writer;
+import java.net.MalformedURLException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,7 +15,9 @@ import java.util.Map;
 
 import javax.servlet.ServletOutputStream;
 
+import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
@@ -33,6 +37,7 @@ import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.user.entities.EmpDepartment;
 import com.protostar.billingnstock.user.entities.UserEntity;
 import com.protostar.billnstock.entity.Address;
+import com.protostar.billnstock.entity.BaseEntity;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -446,11 +451,9 @@ public void  generatePdfAccountChart(List<TypeInfo> accountChart,ServletOutputSt
 			Document document = new Document();
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 			document.open();
-			Image logoURL = Image
-					.getInstance("img/images/protostar_logo_pix_313_132.jpg");
-			logoURL.setAbsolutePosition(50f, 800f);
-			logoURL.scaleToFit(90f, 90f);
-			String logo = String.valueOf(document.add(logoURL));
+			/*Image logoURL = Image
+					.getInstance("img/images/protostar_logo_pix_313_132.jpg");*/
+			addDocumentHeaderLogo(mtlyPayObj, document);
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 			Map<String, Object> root = new HashMap<String, Object>();
 			DecimalFormat df = new DecimalFormat("#0.00");
@@ -504,8 +507,8 @@ public void  generatePdfAccountChart(List<TypeInfo> accountChart,ServletOutputSt
 
 			String buisinessAddress = addressBuf.toString();
 			// Top Header
-			root.put("buisinessName", "" + business.getBusinessName());
-			root.put("buisinessAddress", "" + buisinessAddress);
+			root.put("businessName", "" + business.getBusinessName());
+			root.put("businessAddress", "" + buisinessAddress);
 
 			EmployeeDetail employeeDetail = user.getEmployeeDetail();
 			// Header Col1
@@ -596,6 +599,18 @@ public void  generatePdfAccountChart(List<TypeInfo> accountChart,ServletOutputSt
 
 	}
 
+
+
+	private void addDocumentHeaderLogo(BaseEntity enity,
+			Document document) throws BadElementException,
+			MalformedURLException, IOException, DocumentException {
+		Image logoURL = Image
+				.getInstance(enity.getBusiness().getBizLogoGCSURL());
+		logoURL.setAbsolutePosition(50f, 750f);
+		logoURL.scaleToFit(150f, 180f);
+		document.add(logoURL);
+	}
+
 	public void generateInvoiceViewPDF(InvoiceEntity invoiceEntity,
 			ServletOutputStream outputStream) {
 		if (invoiceEntity instanceof InvoiceEntity) {
@@ -613,7 +628,7 @@ public void  generatePdfAccountChart(List<TypeInfo> accountChart,ServletOutputSt
 			Document document = new Document();
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 			document.open();
-
+			addDocumentHeaderLogo(invoiceEntity, document);
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 
 			Map<String, Object> root = new HashMap<String, Object>();

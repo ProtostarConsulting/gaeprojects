@@ -26,20 +26,21 @@ import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 public class InvoiceService {
 
 	@ApiMethod(name = "addInvoice", path = "addInvoice")
-	public void saveInvoice(InvoiceEntity invoiceEntity) {
+	public InvoiceEntity saveInvoice(InvoiceEntity invoiceEntity) {
 
-		if (invoiceEntity.getId() == null) {
+		/*if (invoiceEntity.getId() == null) {
 			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
 					EntityUtil.getBusinessRawKey(invoiceEntity.getBusiness()),
 					Constants.INVOICE_NO_COUNTER);
 			invoiceEntity.setItemNumber(sequenceGenService
 					.getNextSequenceNumber());
-		}
+		}*/
 
 		StockManagementService.adjustStockItems(invoiceEntity.getBusiness(),
 				invoiceEntity.getProductLineItemList());
 
 		ofy().save().entity(invoiceEntity).now();
+		return invoiceEntity;
 
 	}
 
@@ -126,7 +127,7 @@ public class InvoiceService {
 	}
 
 	@ApiMethod(name = "addQuotation", path = "addQuotation")
-	public void addQuotation(QuotationEntity quotationEntity) {
+	public QuotationEntity addQuotation(QuotationEntity quotationEntity) {
 
 		if (quotationEntity.getId() == null) {
 			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
@@ -139,6 +140,7 @@ public class InvoiceService {
 		}
 
 		ofy().save().entity(quotationEntity).now();
+		return quotationEntity;
 
 	}
 

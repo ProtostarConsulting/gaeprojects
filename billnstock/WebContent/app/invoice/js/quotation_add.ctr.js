@@ -18,7 +18,7 @@ app
 							createdDate : new Date(),
 							modifiedDate : new Date(),
 							modifiedBy : '',
-							discountType : '',
+							discountType : 'NA',
 							discountPercent : 0,
 							discAmount : 0,
 							pOrder : null,
@@ -134,8 +134,14 @@ app
 						$scope.calProductSubTotal();
 					};
 
+					$scope.productLineItemChangedEventFn = function(){
+						$scope.productLineItemChangedEvent = true;
+					}
 					$scope.productLineItemChanged = function(selectedLineItem) {
-						selectedLineItem.price = selectedLineItem.stockItem.price;
+						if ($scope.productLineItemChangedEvent) {
+							selectedLineItem.price = selectedLineItem.stockItem.price;
+							$scope.productLineItemChangedEvent = null;
+						}
 						$scope.calProductSubTotal();
 					};
 

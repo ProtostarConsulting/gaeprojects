@@ -13,19 +13,18 @@ import com.protostar.billingnstock.stock.entities.StockLineItem;
 import com.protostar.billingnstock.tax.entities.TaxEntity;
 import com.protostar.billnstock.entity.BaseEntity;
 import com.protostar.billnstock.until.data.Constants;
+import com.protostar.billnstock.until.data.Constants.DiscountType;
+import com.protostar.billnstock.until.data.Constants.DocumentStatus;
 import com.protostar.billnstock.until.data.EntityUtil;
 import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
-import com.protostar.billnstock.until.data.Constants.DocumentStatus;
 
 @Entity
 public class InvoiceEntity extends BaseEntity {
 
-	public static enum DiscountType {
-		Fixed, Percentage
-	};
-
 	@Index
 	private DocumentStatus status = DocumentStatus.DRAFT;
+	private DiscountType discountType = DiscountType.NA;
+
 	@Index
 	private boolean isStatusAlreadyFinalized = false;
 
@@ -34,7 +33,6 @@ public class InvoiceEntity extends BaseEntity {
 	private double finalTotal;
 	private String noteToCustomer;
 
-	private String discountType;
 	private float discountPercent;
 	private double discAmount;
 	@Index
@@ -136,11 +134,11 @@ public class InvoiceEntity extends BaseEntity {
 		this.paidDate = paidDate;
 	}
 
-	public String getDiscountType() {
+	public DiscountType getDiscountType() {
 		return discountType;
 	}
 
-	public void setDiscountType(String discountType) {
+	public void setDiscountType(DiscountType discountType) {
 		this.discountType = discountType;
 	}
 

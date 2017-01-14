@@ -2,6 +2,8 @@ package com.protostar.billingnstock.stock.entities;
 
 import java.util.List;
 
+import javax.persistence.Embedded;
+
 import com.googlecode.objectify.Ref;
 import com.protostar.billingnstock.tax.entities.TaxEntity;
 
@@ -18,6 +20,7 @@ public class StockLineItem {
 	private int stockMaintainedQty;
 	private StockItemEntity stockItem;
 
+	@Embedded
 	private List<StockItemInstanceEntity> stockItemInstanceList;
 
 	public TaxEntity getSelectedTaxItem() {

@@ -10,9 +10,17 @@ tab2 {
 }
 </style>
 
-<div align="center">
- <b>${buisinessName}</b> <br></br> ${buisinessAddress}
+<div align="right">  	
+ <table style="width: 100%; hight: 100%;">
+	<tr>
+		<td style="width: 40%;"></td>
+		<td style="width: 60%;"><div align="right"> <b>${businessName}</b> <br></br> ${businessAddress}</div></td>		
+	</tr>
+  </table>	
 </div>
+<p>
+	<br></br>
+</p>
 <hr></hr>
 <p>
 	<br></br>
