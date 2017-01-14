@@ -14,9 +14,7 @@
 
 	[<span style="color: red;">Field Marked as asterik (*) are
 		mandetory</span>]
-
-
-	<div layout layout-sm="column">
+<div layout layout-sm="column">
 		<md-input-container flex> <label>Enter
 			Account Group Name 
 		</label> <input type="text" ng-model="tempAccountGroup.groupName" id="grpName"
@@ -55,11 +53,11 @@
 	<div layout layout-sm="column">
 		<label>isPrimary </label>
 		<md-checkbox ng-model="tempAccountGroup.isPrimary"
-			ng-true-value="true" ng-false-value="false"> </md-checkbox>
+			ng-true-value="true" ng-false-value="false" aria-label="Favorite"> </md-checkbox>
 
-		<md-input-container flex ng-show="tempAccountGroup.isPrimary">
-		<md-select ng-model="tempAccountGroup.accountGroupType"			
-			name="accountGroupType" ng-required="true"> <lable>Select Nature</lable> <md-option
+		<md-input-container flex ng-show="tempAccountGroup.isPrimary"> <lable>Select Nature</lable>
+		<md-select ng-model="tempAccountGroup.primaryType"			
+			name="accountGroupType" aria-label="Favorite">  <md-option
 			ng-value="item" ng-repeat="item in accountGroupTypeList">{{item}}
 
 		</md-option> </md-select>
@@ -69,10 +67,9 @@
 			<div ng-message="required">Please Select the Group Type</div>
 		</div>
 		</md-input-container>
-		<md-input-container flex ng-hide="tempAccountGroup.isPrimary">
-		<md-select ng-model="tempAccountGroup.primaryGroup"
-			name="primaryGroup"
-			ng-required="true"> <lable>Primary Group Type</lable> <md-option ng-value="item"
+		<md-input-container flex ng-hide="tempAccountGroup.isPrimary"><lable>Primary Group Type</lable>
+		<md-select ng-model="tempAccountGroup.accountGroupType"	
+			name="primaryGroup"  aria-label="Favorite">  <md-option ng-value="item"
 			ng-repeat="item in accountGroupList">{{item.groupName}} </md-option>
 		</md-select>
 
@@ -85,7 +82,7 @@
 	</div><section layout="row" layout-sm="column" layout-align="center center">
 		<md-button class="md-raised md-primary" name="addButton"
 			id="addButton"
-			ng-disabled="accGroupForm.$invalid || accGroupForm.$pristine || accGroupForm.$touched"
+			ng-disabled="accGroupForm.$invalid"
 			ng-click="addAccountGroup()">Add</md-button>
 
 		<md-button class="md-raised md-primary" ng-click="cancelBtn()">Cancel</md-button>

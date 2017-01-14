@@ -18,6 +18,7 @@ import com.protostar.billingnstock.account.entities.AccountGroupEntity;
 import com.protostar.billingnstock.account.entities.PayableEntity;
 import com.protostar.billingnstock.account.entities.ReceivableEntity;
 import com.protostar.billingnstock.cust.entities.Customer;
+import com.protostar.billingnstock.hr.entities.LeaveAppEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billnstock.until.data.ServerMsg;
 
@@ -84,12 +85,15 @@ public class AccountService {
 
 	}
 
-	@ApiMethod(name = "updateAccount")
-	public AccountEntity updateAccount(AccountEntity update) {
-		AccountEntity now = update;
-		ofy().save().entity(update).now();
-		System.out.println("inside update details now" + now);
-		return now;
+	@ApiMethod(name = "updateAccount", path="updateAccount")
+	public void updateAccount(AccountEntity update) {
+		
+		update.setModifiedDate(new Date());
+		System.out.println(" updateupdate" + update.getaccountgroup().getGroupName().toString());
+		Key<AccountEntity> now =	ofy().save().entity(update).now();
+	
+		
+		
 	}
 
 	@ApiMethod(name = "getAccountListByGroupId", path = "getAccountListByGroupId")

@@ -20,7 +20,7 @@ table {
 <div align="center"  >
 	<b>BalanceSheet</b>
 	<br></br>
-	<p align="center">as at ${date1}</p>
+	<p align="center">as at ${date}</p>
 </div>
 <p>
 	<br></br>
@@ -32,14 +32,14 @@ table {
 			<tr>
 			<th colspan="2"></th>
 			
-				<th style="text-align: center;">ProERP</th>
+				
 			</tr>
 			<tr>
 				<td colspan="3"></td>
 
 			</tr>
-			<tr>
-				<td colspan="3"><u><b>Sources of Funds:</b></u></td>
+			<tr>                                                                                                                                                                      
+				
 
 			</tr>
 			<#list balanceSheetList as groupTypeObj>	

@@ -1,6 +1,6 @@
 angular
 .module("stockApp")
-.controller('accountGrpListCtr',function($scope,$log,appEndpointSF,$mdToast,$timeout,$mdMedia,Upload,$mdDialog,ajsCache){
+.controller('accountGrpListCtr',function($scope,$log,appEndpointSF,$mdToast,$timeout,$mdMedia,Upload,$mdDialog,ajsCache,$q){
 	
 
 	$scope.accGrpList={"groupName":"","description":"","displayOrderNo":""};
@@ -21,7 +21,7 @@ angular
 		listAccountGroupService.getAccountGroupList($scope.curUser.business.id)
 		.then(
 				function(list) {			
-					$log.debug("list:"+angular.toJson(list));
+				
 					$scope.List=list;
 					
 					ajsCache.put(AccountGroupServiceCacheKey,list);

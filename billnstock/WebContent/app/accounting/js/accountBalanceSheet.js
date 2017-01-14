@@ -41,8 +41,35 @@ app
 					AccountGroupService.getBalanceSheet(
 									$scope.curUser.business.id).then(
 							function(list) {
-								
+								$scope.totalAsset=0
+								$scope.totalLiabilities2=0;
+								$scope.totalEQUITY=0;
+								$scope.totalLiabilities=0;
 								$scope.accountGroupTypeGroupList =list;
+								for (var int = 0; int < list.length; int++) {
+									if((list[int].typeName=="Assets")&&(list[int].groupList!=undefined) ){
+										for (var i = 0; i < list[int].groupList.length; i++) {
+											$scope.totalAsset=list[int].groupList[i].groupBalance+$scope.totalAsset;
+											}if($scope.totalAsset<0){$scope.totalAsset=$scope.totalAsset*(-1);}}
+									
+									if((list[int].typeName=="Liabilities")&&(list[int].groupList!=undefined)){
+										for (var i = 0; i < list[int].groupList.length; i++) {
+											$scope.totalLiabilities=list[int].groupList[i].groupBalance+$scope.totalLiabilities;
+											}
+										
+										if($scope.totalLiabilities<0){$scope.totalLiabilities=$scope.totalLiabilities*(-1);}
+										
+									}
+									if((list[int].typeName=="EQUITY")&&(list[int].groupList!=undefined)){
+										for (var i = 0; i < list[int].groupList.length; i++) {
+											$scope.totalEQUITY=list[int].groupList[i].groupBalance+$scope.totalEQUITY;
+											}
+										
+										
+										
+									}
+								}
+								$scope.totalLiabilities2=$scope.totalLiabilities+$scope.totalEQUITY;
 								$scope.loading = false;
 								
 								

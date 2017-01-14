@@ -28,7 +28,6 @@ app.controller("accountlistCtr", function($scope, $window, $mdToast, $timeout,
 		var AccountService = appEndpointSF.getAccountService();
 		AccountService.getAccountList($scope.curUser.business.id).then(
 				function(list) {
-					$log.debug("list:" + angular.toJson(list));
 					$scope.accounts = list;
 					$scope.loading = false;
 					ajsCache.put(AccountServiceCacheKey, list);

@@ -26,7 +26,7 @@
 
 		<md-input-container flex> <label>AccountType</label>
 		<md-select ng-model="tempAccount.accountType" id="accountType"
-			name="accountType" ng-required="true"> <md-option
+			name="accountType" ng-required="true"> <md-option ng-value="type"
 			ng-repeat="type in accountType "> {{type}} </md-option> </md-select>
 
 		<div ng-messages="accountForm.accountType.$error"
@@ -81,10 +81,10 @@
 		</div>
 		</md-input-container>
 		<md-input-container flex> <lable>Account
-		Group</lable> <md-select ng-model="tempAccount.accountgroup.groupName"
-			placeholder="AccountGroup" id="accountlist" name="accountlist"
+		Group</lable> <md-select ng-model="tempAccount.accountgroup"
+			 id="accountGrlist" name="accountGrlist"
 			ng-required="true"> <md-option
-			ng-value="accountlist.groupName"
+			ng-value="accountlist"
 			ng-repeat="accountlist in accountgroupList">{{accountlist.groupName}}
 
 		</md-option> </md-select>

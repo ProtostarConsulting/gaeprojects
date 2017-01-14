@@ -17,7 +17,7 @@
 
 	<div layout layout-sm="column">
 		<md-input-container flex> <label>Group Name 
-		</label> <input type="text" ng-model="tempAccountGrp.groupName" name="grpName"
+		</label> <input type="text" aria-label="Favorite" ng-model="tempAccountGrp.groupName" name="grpName"
 			ng-required="true">
 
 		<div ng-messages="accGroupEditForm.grpName.$error"
@@ -36,13 +36,13 @@
 	
 	<div layout layout-sm="column"  ng-if="!tempAccountGrp.isPrimary">
 
-		<md-input-container flex > <lable> Primary Type</lable> <md-select
+	<!-- 	<md-input-container flex > <lable> Primary Type</lable> <md-select
 			ng-model="tempAccountGrp.primaryType" 
-		
-			 id="primaryType""
+		name="primaryType"
+			 id="primaryType"
 			 ng-required="true">
 		 <md-option
-			ng-value="item.primaryType" ng-repeat="item in accountGroupList | unique:'parent.primaryType' | filter:{isPrimary:'false'}">{{item.parent.primaryType}}
+			ng-value="item.primaryType" ng-repeat="item in accountGroupList|filter: {unique:'parent.primaryType'}"> {{item.parent.primaryType}}
 
 		</md-option> </md-select>
 
@@ -52,15 +52,15 @@
 
 		</div>
 
-		</md-input-container>
+		</md-input-container> -->
 
-		<md-input-container flex ng-if="!tempAccountGrp.isPrimary">	<lable> Parent Type</lable> <md-select
-			ng-model="tempAccountGrp.parent.groupName" 
+		<md-input-container flex ng-if="!tempAccountGrp.isPrimary">	<lable> Parent Group Type</lable> <md-select
+			ng-model="tempAccountGrp.parent.groupName" aria-label="Favorite"
 			
 			 id="parent"
 			 ng-required="true">
 	 <md-option
-			ng-value="item.parent.groupName"  ng-repeat="item in accountGroupList | unique:'parent.groupName' |  filter:{isPrimary:'false'}">{{item.parent.groupName}}
+			ng-value="item.groupName"  ng-repeat="item in accountGroupList">{{item.groupName}}
 			
 		
 
@@ -75,20 +75,23 @@
 	
 	<div layout layout-sm="column">
 		<label>isPrimary </label>
-		<md-checkbox ng-model="tempAccountGrp.isPrimary"
+		<md-checkbox ng-model="tempAccountGrp.isPrimary"aria-label="Favorite"
 			ng-true-value="true" ng-false-value="false"> </md-checkbox>
 </div>
 	
 	<!-- {{accountGroupList}} -->
 	
 	<div layout layout-sm="column">
-		<md-input-container flex ng-if="tempAccountGrp.isPrimary"> <lable>Primary Group Type<span
+		<md-input-container flex ng-if="tempAccountGrp.isPrimary"> <lable>Primary Group Nature<span
 			style="color: red;">*</span></lable>
-		<md-select ng-model="tempAccountGrp.primaryGroup"
-			 id="primaryGroupT" name="primaryGroup"
+		<md-select ng-model="tempAccountGrp.primaryGroup" aria-label="Favorite"
+			 id="item" 
 			ng-required="true"> <md-option 
-			ng-value="item.groupName"
-			ng-repeat="item in accountGroupList">{{item.groupName}} </md-option>
+			ng-value="item"
+			ng-repeat="item in accountGroupList">
+			
+			
+			{{item.primaryType}} </md-option>
 		</md-select>
 	
 

@@ -29,14 +29,14 @@ table {
 			<tr>
 			<th colspan="2"></th>
 			
-				<th style="text-align: center;">ProERP</th>
+				
 			</tr>
 			<tr>
 				<td colspan="3"></td>
 
 			</tr>
 			<tr>
-				<td colspan="3"><u><b>Sources of Funds:</b></u></td>
+				
 
 			</tr>
 			<#list accountChart as groupTypeObj>	
