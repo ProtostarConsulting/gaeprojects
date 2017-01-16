@@ -17,7 +17,6 @@ public class StockItemTypeEntity extends BaseEntity {
 	private String itemName;
 	@Index
 	private String category;
-
 	private boolean maintainStockBySerialNumber = false;
 	private Ref<TaxEntity> selectedTaxItem;
 
