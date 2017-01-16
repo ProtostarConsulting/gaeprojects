@@ -82,6 +82,7 @@ public void  generatePdfAccountChart(List<TypeInfo> accountChart,ServletOutputSt
 		root.put("buisinessName" ,""+ businessEntity.getBusinessName());
 		StringBuffer addressBuf = new StringBuffer();
 		Address address =  businessEntity.getAddress();
+		
 		if (address != null) {
 			if (address.getLine1() != null && !address.getLine1().isEmpty())
 				addressBuf.append(address.getLine1());
