@@ -1,15 +1,15 @@
 var app = angular.module("stockApp", [ 'ngMaterial', 'ngMessages',
-		"ui.bootstrap", "ui.router", 'md.data.table', 'ngResource',
-		'ngStorage', 'ngRoute', 'ngFileUpload', 'ngAnimate',
-		'directive.g+signin', 'ui.bootstrap', 'textAngular', 'ngMdIcons' ]);
+	"ui.bootstrap", "ui.router", 'md.data.table', 'ngResource',
+	'ngStorage', 'ngRoute', 'ngFileUpload', 'ngAnimate',
+	'directive.g+signin', 'ui.bootstrap', 'textAngular', 'ngMdIcons' ]);
 
 app.factory('ajsCache', function($cacheFactory) {
 	return $cacheFactory('browserCache');
 });
 
 app.constant('monthList', [ "January", "February", "March", "April", "May",
-		"June", "July", "Augast", "September", "October", "November",
-		"December" ]);
+	"June", "July", "Augast", "September", "October", "November",
+	"December" ]);
 
 app.filter('formatDate', function($filter) {
 	return function(inputDate) {
@@ -66,6 +66,26 @@ app.directive('focusOn', function($timeout) {
 		}
 	}
 });
+app.filter('proOrderObjectByTextField', function() {
+	return function(input, attribute) {
+		if (!angular.isObject(input))
+			return input;
+		var reverseOrder = attribute.startsWith("-");
+		if (reverseOrder)
+			attribute = attribute.split("-")[1];
+		var array = [];
+		for (var objectKey in input) {
+			array.push(input[objectKey]);
+		}
+
+		array.sort(function(a, b) {
+			a = String(a[attribute]);
+			b = String(b[attribute]);
+			return a.localeCompare(b)
+		});
+		return array;
+	}
+});
 app.filter('proOrderObjectByNumberField', function() {
 	return function(input, attribute) {
 		if (!angular.isObject(input))
@@ -74,7 +94,7 @@ app.filter('proOrderObjectByNumberField', function() {
 		if (reverseOrder)
 			attribute = attribute.split("-")[1];
 		var array = [];
-		for ( var objectKey in input) {
+		for (var objectKey in input) {
 			array.push(input[objectKey]);
 		}
 
@@ -94,7 +114,7 @@ app.filter('proOrderObjectByDateField', function() {
 		if (reverseOrder)
 			attribute = attribute.split("-")[1];
 		var array = [];
-		for ( var objectKey in input) {
+		for (var objectKey in input) {
 			array.push(input[objectKey]);
 		}
 
@@ -107,28 +127,28 @@ app.filter('proOrderObjectByDateField', function() {
 	}
 });
 app.directive("proBeforeDateCheck",
-		function() {
-			return {
-				restrict : "A",
-				require : "ngModel",
-				link : function(scope, element, attributes, ngModel) {
-					ngModel.$validators.proBeforeDateCheck = function(
-							currentDateValue) {
-						var assignedDate = new Date(
-								Number(attributes.proBeforeDateCheck));
-						if (!currentDateValue) {
-							return true;
-						}
-						currentDateValue.setHours(0, 0, 0, 0);
-						assignedDate.setHours(0, 0, 0, 0);
-						if (currentDateValue >= assignedDate) {
-							return true;
-						}
-						return false
+	function() {
+		return {
+			restrict : "A",
+			require : "ngModel",
+			link : function(scope, element, attributes, ngModel) {
+				ngModel.$validators.proBeforeDateCheck = function(
+					currentDateValue) {
+					var assignedDate = new Date(
+						Number(attributes.proBeforeDateCheck));
+					if (!currentDateValue) {
+						return true;
 					}
+					currentDateValue.setHours(0, 0, 0, 0);
+					assignedDate.setHours(0, 0, 0, 0);
+					if (currentDateValue >= assignedDate) {
+						return true;
+					}
+					return false
 				}
-			};
-		});
+			}
+		};
+	});
 /*
  * app.filter('formatDate1', function($filter) { return function(inputDate) {
  * return $filter('date')(inputDate, 'dd-MM-yyyy'); }; });
@@ -149,45 +169,45 @@ app.config(function($mdThemingProvider) {
 	 * deep-orange, brown, grey, blue-grey
 	 */
 	$mdThemingProvider.theme('default').primaryPalette('light-blue')
-			.accentPalette('pink');
+		.accentPalette('pink');
 	$mdThemingProvider.theme('red').primaryPalette('red').accentPalette(
-			'orange').warnPalette('blue');
+		'orange').warnPalette('blue');
 	$mdThemingProvider.theme('pink').primaryPalette('pink').accentPalette(
-			'orange').warnPalette('blue');
+		'orange').warnPalette('blue');
 	$mdThemingProvider.theme('purple').primaryPalette('purple').accentPalette(
-			'grey').warnPalette('blue');
+		'grey').warnPalette('blue');
 	$mdThemingProvider.theme('deep-purple').primaryPalette('deep-purple')
-			.accentPalette('grey').warnPalette('blue');
+		.accentPalette('grey').warnPalette('blue');
 	$mdThemingProvider.theme('indigo').primaryPalette('indigo').accentPalette(
-			'grey').warnPalette('blue');
+		'grey').warnPalette('blue');
 	$mdThemingProvider.theme('blue').primaryPalette('blue').accentPalette(
-			'grey').warnPalette('blue');
+		'grey').warnPalette('blue');
 	$mdThemingProvider.theme('light-blue').primaryPalette('light-blue')
-			.accentPalette('grey').warnPalette('blue');
+		.accentPalette('grey').warnPalette('blue');
 	$mdThemingProvider.theme('cyan').primaryPalette('cyan').accentPalette(
-			'grey').warnPalette('blue');
+		'grey').warnPalette('blue');
 	$mdThemingProvider.theme('teal').primaryPalette('teal').accentPalette(
-			'grey').warnPalette('blue');
+		'grey').warnPalette('blue');
 	$mdThemingProvider.theme('green').primaryPalette('green').accentPalette(
-			'grey').warnPalette('blue');
+		'grey').warnPalette('blue');
 	$mdThemingProvider.theme('light-green').primaryPalette('light-green')
-			.accentPalette('grey').warnPalette('blue');
+		.accentPalette('grey').warnPalette('blue');
 	$mdThemingProvider.theme('lime').primaryPalette('lime').accentPalette(
-			'grey').warnPalette('blue');
+		'grey').warnPalette('blue');
 	$mdThemingProvider.theme('yellow').primaryPalette('yellow').accentPalette(
-			'grey').warnPalette('blue');
+		'grey').warnPalette('blue');
 	$mdThemingProvider.theme('amber').primaryPalette('amber').accentPalette(
-			'grey').warnPalette('blue');
+		'grey').warnPalette('blue');
 	$mdThemingProvider.theme('orange').primaryPalette('orange').accentPalette(
-			'grey').warnPalette('blue');
+		'grey').warnPalette('blue');
 	$mdThemingProvider.theme('deep-orange').primaryPalette('deep-orange')
-			.accentPalette('grey').warnPalette('blue');
+		.accentPalette('grey').warnPalette('blue');
 	$mdThemingProvider.theme('brown').primaryPalette('brown').accentPalette(
-			'grey').warnPalette('blue');
+		'grey').warnPalette('blue');
 	$mdThemingProvider.theme('grey').primaryPalette('grey').accentPalette(
-			'grey').warnPalette('blue');
+		'grey').warnPalette('blue');
 	$mdThemingProvider.theme('blue-grey').primaryPalette('blue-grey')
-			.accentPalette('grey').warnPalette('blue');
+		.accentPalette('grey').warnPalette('blue');
 
 	// This is the absolutely vital part, without this, changes will not cascade
 	// down through the DOM.
@@ -196,7 +216,7 @@ app.config(function($mdThemingProvider) {
 
 app.config(function($logProvider) {
 	// $logProvider.debugEnabled(false);
-	$logProvider.debugEnabled(true);// this is default
+	$logProvider.debugEnabled(true); // this is default
 });
 app.factory('ajsCache', function($cacheFactory) {
 	return $cacheFactory('browserCache');
@@ -222,7 +242,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	}).state('home', {
 		url : "/home",
 		templateUrl : '/home.html',
-		controller : 'homeCtr'			
+		controller : 'homeCtr'
 	}).state('stock', {
 		url : "/stock",
 		templateUrl : '/app/stock/stock_module.html',
@@ -286,7 +306,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/warehouseList",
 		templateUrl : '/app/stock/warehouse_list.html',
 		controller : 'warehouseListCtr'
-
 	}).state('stock.reportByThreshold', {
 		url : "/reportByThreshold",
 		templateUrl : '/app/report/stock_reportByThreshold.html',
@@ -295,7 +314,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/reportByWarehouse",
 		templateUrl : '/app/report/stock_reportByWarehouse.html',
 		controller : 'stockReportByWarehouseCtr'
-
 	}).state('stock.reportByTaxPaid', {
 		url : "/reportByTaxPaid",
 		templateUrl : '/app/report/tax_reportByTaxPaid.html',
@@ -304,7 +322,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/reportByTaxRecived",
 		templateUrl : '/app/report/tax_reportByTaxReceived.html',
 		controller : 'ReportByTaxReceivedCtr'
-
 	}).state('stock.taxadd', {
 		url : "/tax/taxadd",
 		templateUrl : '/app/tax/tax_add.html',
@@ -367,7 +384,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/add/:selectedCustomerId",
 		templateUrl : '/app/customer/customer_add.html',
 		controller : 'customerAddCtr'
-	})/*
+	}) /*
 		 * .state('customer.customerSOList', { url :
 		 * "/customerSOList/:selectedCustomerId", templateUrl :
 		 * '/app/customer/customer_SO.html', controller : 'customerSOListCtr'
@@ -376,18 +393,18 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		 * '/app/customer/customer_invoiceList.html', controller :
 		 * 'customerInvoiceListCtr' })
 		 */
-	.state('customer.list', {
-		url : "/list",
-		templateUrl : '/app/customer/customer_list.html',
-		controller : 'customerListCtr'
-	}).state('account', {
+		.state('customer.list', {
+			url : "/list",
+			templateUrl : '/app/customer/customer_list.html',
+			controller : 'customerListCtr'
+		}).state('account', {
 		url : "/account",
 		templateUrl : '/app/account/account_module.html',
 		controller : 'accountModuleCtr'
 	}).state('account.accountAdd', {
 		url : "/accountAdd/:selectedAccountId",
 		templateUrl : '/app/account/account_add.html',
-		controller : 'accountAddCtr'
+		controller : 'bizPlanAddCtr'
 	}).state('account.accountList', {
 		url : "/accountList",
 		templateUrl : '/app/account/account_list.html',
@@ -416,36 +433,22 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/fileUpload",
 		templateUrl : '/app/demo/fileUpload.html',
 		controller : 'AppController'
-	})
-
-	.state('accounting', {
+	}).state('accounting', {
 		url : "/accounting",
 		templateUrl : '/app/accounting/accounting_module.html',
 		controller : 'accountModuleCtr'
-	})
-
-	.state('accounting.account_add2', {
-		url : "/account_add/:AccountId",
-		templateUrl : '/app/accounting/account_add2.html',
-		controller : 'addacountCtr',
+	}).state('accounting.account_add', {
+		url : "/account_add",
+		templateUrl : '/app/accounting/account_add.html',
+		controller : 'accountAddCtr',
+		params : {
+			selectedAccount : null
+		}
 	}).state('accounting.accountlist', {
 		url : "/accountlist",
 		templateUrl : '/app/accounting/accountlist.html',
 		controller : 'accountlistCtr',
-
-	})
-
-	.state('accounting.account_Edit', {
-		url : "/account_Edit",
-		templateUrl : '/app/accounting/account_Edit.html',
-		controller : 'accountEditCtr',
-		params : {
-
-			selectedAccount : null
-		}
-	})
-
-	.state('accounting.accountGroupAdd', {
+	}).state('accounting.accountGroupAdd', {
 		url : "/accountGroupAdd",
 		templateUrl : '/app/accounting/accountGroupAdd.html',
 		controller : 'accountGroupCtr'
@@ -458,7 +461,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		templateUrl : '/app/accounting/accountGroupEdit.html',
 		controller : 'accountGrpEditCtr',
 		params : {
-
 			record : null
 		}
 	}).state('accounting.accountGroupDisplay', {
@@ -466,26 +468,20 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		templateUrl : '/app/accounting/accountGroupDisplay.html',
 		controller : 'accountGrpDisplayCtr',
 		params : {
-
 			record : null
 		}
-
 	}).state('accounting.balanceSheet', {
 		url : "/accountBalanceSheet",
 		templateUrl : '/app/accounting/accountBalanceSheet.html',
 		controller : 'accountBalanceSheetCtr',
 		params : {
-
 			record : null
 		}
-
 	}).state('accounting.trialBalance', {
 		url : "/trialBalance",
 		templateUrl : '/app/accounting/accountTrialBalance.html',
 		controller : 'trialBalanceCtr'
-	})
-
-	.state('accounting.accountGroupView', {
+	}).state('accounting.accountGroupView', {
 		url : "/accountGroupView",
 		templateUrl : '/app/accounting/accountGroupView.html',
 		controller : 'accountGroupViewCtr',
@@ -495,9 +491,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			fromDate : null,
 			toDate : null
 		}
-	})
-
-	.state('accounting.addGeneralEntry', {
+	}).state('accounting.addGeneralEntry', {
 		url : "/addGeneralEntry",
 		templateUrl : '/app/accounting/account_addGeneralEntry.html',
 		controller : 'addAccountGeneralEntryCtr'
@@ -514,20 +508,15 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			fromDate : null,
 			toDate : null
 		}
-
 	}).state('accounting.generalEntitylist', {
 		url : "/generalEntitylist",
 		templateUrl : '/app/accounting/generalEntitylist.html',
 		controller : 'generalListCtr'
-	})
-
-	.state('accounting.voucher', {
+	}).state('accounting.voucher', {
 		url : "/voucher",
 		templateUrl : '/app/accounting/voucher.html',
 		controller : 'voucherCtr',
-	})
-
-	.state('accounting.voucherSales', {
+	}).state('accounting.voucherSales', {
 		url : "/SalesVoucher",
 		templateUrl : '/app/accounting/voucherSales.html',
 		controller : 'voucherSalesCtr',
@@ -535,26 +524,18 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		params : {
 			Account : ""
 		}
-	})
-
-	.state('accounting.voucherList', {
+	}).state('accounting.voucherList', {
 		url : "/voucherList",
 		templateUrl : '/app/accounting/voucherList.html',
 		controller : 'voucherListCtr'
-	})
-
-	.state('accounting.voucherSalesList', {
+	}).state('accounting.voucherSalesList', {
 		url : "/SalesVoucherList",
 		templateUrl : '/app/accounting/voucherSalesList.html',
 		controller : 'voucherSalesListCtr'
-
-	})
-
-	.state('accounting.voucherRecieptList', {
+	}).state('accounting.voucherRecieptList', {
 		url : "/RecieptVoucherList",
 		templateUrl : '/app/accounting/voucherRecieptList.html',
 		controller : 'voucherRecieptListCtr'
-
 	}).state('accounting.voucherReceipt', {
 		url : "/ReceiptVoucher",
 		templateUrl : '/app/accounting/voucherReceipt.html',
@@ -562,32 +543,22 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		params : {
 			Account : ""
 		}
-
-	})
-
-	.state('accounting.voucherPurches', {
+	}).state('accounting.voucherPurches', {
 		url : "/PurchesVoucher",
 		templateUrl : '/app/accounting/voucherPurches.html',
 		controller : 'voucherPurchesCtr',
 		params : {
 			Account : ""
 		}
-
-	})
-
-	.state('accounting.voucherPurchesList', {
+	}).state('accounting.voucherPurchesList', {
 		url : "/PurchesVoucherList",
 		templateUrl : '/app/accounting/voucherPurchesList.html',
 		controller : 'voucherPurchesListCtr'
-	})
-
-	.state('accounting.accountChart', {
+	}).state('accounting.accountChart', {
 		url : "/accountChart",
 		templateUrl : '/app/accounting/accountChart.html',
 		controller : 'accountChartCtr'
-	})
-
-	.state('journal', {
+	}).state('journal', {
 		url : "/journal",
 		templateUrl : '/app/journal/journal_module.html',
 		controller : 'journalModuleCtr'
@@ -599,9 +570,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/journalList",
 		templateUrl : '/app/journal/journal_entryList.html',
 		controller : 'journalEntryListCtr'
-	})
-
-	.state('report', {
+	}).state('report', {
 		url : "/report",
 		templateUrl : '/app/report/report_module.html',
 		controller : 'reportCtr'
@@ -609,22 +578,18 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/allcustomer",
 		templateUrl : '/app/report/customer_list.html',
 		controller : 'reportCtr'
-
 	}).state('salesOrder', {
 		url : "/salesOrder",
 		templateUrl : '/app/sales/salesOrder_module.html',
 		controller : 'salesOrderCtr'
-
 	}).state('salesOrder.SalesOrderAdd', {
 		url : "/SalesOrderAdd",
 		templateUrl : '/app/sales/salesOrder_add.html',
 		controller : 'salesOrderAddCtr'
-
 	}).state('salesOrder.SalesOrderList', {
 		url : "/SalesOrderList",
 		templateUrl : '/app/sales/salesOrder_list.html',
 		controller : 'salesOrderListCtr'
-
 	}).state('salesOrder.view', {
 		url : "/SalesOrderview/:selectedSOId",
 		templateUrl : '/app/sales/salesOder_view.html',
@@ -766,42 +731,34 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/viewContact/:selectedcontactNo",
 		templateUrl : '/app/crm/crm_contacts_view.html',
 		controller : 'contactsList',
-
 	}).state('crm.opportunity', {
 		url : "/opportunity",
 		templateUrl : '/app/crm/opportunity_list.html',
 		controller : 'opportunityList',
-
 	}).state('crm.addopprtunity', {
 		url : "/addopportunity",
 		templateUrl : '/app/crm/crm_opportunity.html',
 		controller : 'opportunity',
-
 	}).state('crm.opportunityView', {
 		url : "/opportunityView/:selectedopportunityNo",
 		templateUrl : '/app/crm/crm_opportunity_view.html',
 		controller : 'opportunityList',
-
 	}).state('crm.customerList', {
 		url : "/customerList",
 		templateUrl : '/app/crm/customer_list.html',
 		controller : 'customerListCtr',
-
 	}).state('crm.addcustomer', {
 		url : "/customerAdd/:selectedCustomerId",
 		templateUrl : '/app/crm/customer_add.html',
 		controller : 'customerAddCtr',
-
 	}).state('crm.customerInvoiceList', {
 		url : "/crmCustomerInvoiceList/:selectedCustomerId",
 		templateUrl : '/app/crm/customer_invoiceList.html',
 		controller : 'customerInvoiceListCtr',
-
 	}).state('crm.customerSOList', {
 		url : "/crmCustomerSOList/:selectedCustomerId",
 		templateUrl : '/app/crm/customer_SO.html',
 		controller : 'customerSOListCtr',
-
 	}).state('setup', {
 		url : "/setup",
 		templateUrl : '/app/setup/setup_module.html',
@@ -815,7 +772,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/useradd",
 		templateUrl : '/app/setup/setup_adduser.html',
 		controller : 'setup.adduser',
-
 	}).state('setup.userview', {
 		url : "/userview",
 		templateUrl : '/app/setup/setup_viewuser.html',
@@ -823,39 +779,32 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		params : {
 			selectedUser : null
 		}
-
 	}).state('setup.footer', {
 		url : "/addfooter",
 		templateUrl : '/app/setup/setup_footer.html',
 		controller : 'setup_footer',
-
 	}).state('setup.businesssetup', {
 		url : "/businesssetup",
 		templateUrl : '/app/setup/EditBusiness.html',
 		controller : 'editBusiness',
-
 	}).state('setup.changeplan', {
 		url : "/changePaln",
 		templateUrl : '/app/setup/changeplan.html',
 		controller : 'setup.changeplan',
-
 	}).state('setup.changetheme', {
 		url : "/changetheme",
 		templateUrl : '/app/setup/setup_changetheme.html',
 		controller : 'setup.changetheme',
-
 	}).state('setup.setlogo', {
 		url : "/setLogo",
 		/* templateUrl : '/app/setup/uplode.jsp', */
 		templateUrl : '/app/setup/setup_setLogo.html',
 		/* templateUrl : '/app/setup/sendemail.html', */
 		controller : 'setup.setLogo',
-
 	}).state('setup.sendmail', {
 		url : "/sendmail",
 		templateUrl : '/app/setup/sendemail.html',
 		controller : 'sendmail',
-
 	}).state('setup.userlist', {
 		url : "/userlist",
 		templateUrl : '/app/setup/userlist.html',
@@ -867,41 +816,36 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/disclaimer",
 		templateUrl : '/app/setup/disclaimer.html',
 		controller : 'disclaimer',
-
 	})
 
-	.state('setup.departmentList', {
-		url : "/departmentList",
-		templateUrl : '/app/setup/setup_departmentList.html',
-		controller : 'setup.departmentList',
+		.state('setup.departmentList', {
+			url : "/departmentList",
+			templateUrl : '/app/setup/setup_departmentList.html',
+			controller : 'setup.departmentList',
+		})
 
-	})
-
-	.state('setup.userauth', {
-		url : "/userauth",
-		templateUrl : '/app/setup/manage_user_auth.html',
-		controller : 'manageUserAuthCtr',
-		params : {
-			selectedUser : null
-		}
-	}) /*
+		.state('setup.userauth', {
+			url : "/userauth",
+			templateUrl : '/app/setup/manage_user_auth.html',
+			controller : 'manageUserAuthCtr',
+			params : {
+				selectedUser : null
+			}
+		}) /*
 		 * .state('login', { url : "/login", templateUrl :
 		 * '/app/login/login.html', controller : 'login', })
-		 */.state('homecall', {
+		 */ .state('homecall', {
 		url : "/home/:userauthoritys",
 		templateUrl : '/home.html',
 		controller : 'AppCtrl'
-
 	}).state('internet', {
 		url : "/internet",
 		templateUrl : '/app/demo/internet.html',
 		controller : 'internet'
-
 	}).state('hr.timeSheet', {
 		url : "/timeSheet",
 		templateUrl : '/app/hr/timesheet.html',
 		controller : 'timesheet'
-
 	}).state('login', {
 		url : "/login",
 		templateUrl : '/app/login/login_module.html',
@@ -965,7 +909,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		params : {
 			selectedUser : null
 		}
-
 	}).state('user_prof_detail.addLeaves', {
 		url : "/AddMonthlyLeaves",
 		templateUrl : '/app/profile/add_leaveapp.html',
@@ -1113,7 +1056,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		params : {
 			selectedBusiness : null
 		}
-
 	}).state('proAdmin.editBusiness.businesssetup', {
 		url : "/businesssetup",
 		templateUrl : '/app/setup/EditBusiness.html',
@@ -1121,7 +1063,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		params : {
 			selectedBusiness : null
 		}
-
 	}).state('proAdmin.editBusiness.changeplan', {
 		url : "/changePaln",
 		templateUrl : '/app/setup/changeplan.html',
@@ -1129,7 +1070,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		params : {
 			selectedBusiness : null
 		}
-
 	}).state('proAdmin.editBusiness.userlist', {
 		url : "/userlist",
 		templateUrl : '/app/setup/userlist.html',
