@@ -1,4 +1,9 @@
-<md-content layout-padding>
+<div ng-if="loading">
+	<div layout="row" layout-sm="column" layout-align="space-around">
+		<md-progress-circular md-diameter="60" md-mode="indeterminate"></md-progress-circular>
+	</div>
+</div>
+<md-content ng-if="!loading" layout-padding layout="column">
 <section id="pagetoolbar" layout="row" layout-xs="column">
 	<md-subheader class="md-primary">
 	<h4 class="md-title"
@@ -24,10 +29,12 @@
 		</div>
 		</md-input-container>
 
-		<md-input-container flex> <label>AccountType</label>
-		<md-select ng-model="tempAccount.accountType" id="accountType"
-			name="accountType" ng-required="true"> <md-option ng-value="type"
-			ng-repeat="type in accountType "> {{type}} </md-option> </md-select>
+		<md-input-container flex> <label>Account
+			Type</label> <md-select ng-model="tempAccount.accountType" name="accountType"
+			ng-required="true"> <md-option ng-value="type"
+			ng-repeat="type in accountTypeList"
+			ng-selected="tempAccount.accountType == type"> {{type}} </md-option>
+		</md-select>
 
 		<div ng-messages="accountForm.accountType.$error"
 			ng-if="accountForm.accountType.$submitted || accountForm.accountType.$touched">
@@ -66,7 +73,6 @@
 	</div>
 
 	<div layout layout-xs="column">
-
 		<md-input-container flex> <label>Display
 			Order No </label> <input name="displayOrderNo" type="number"
 			id="displayOrderNo" ng-model="tempAccount.displayOrderNo"
@@ -80,34 +86,29 @@
 			<div ng-message="min">Please Enter Positive No!</div>
 		</div>
 		</md-input-container>
-		<md-input-container flex> <lable>Account
-		Group</lable> <md-select ng-model="tempAccount.accountgroup"
-			 id="accountGrlist" name="accountGrlist"
-			ng-required="true"> <md-option
-			ng-value="accountlist"
-			ng-repeat="accountlist in accountgroupList">{{accountlist.groupName}}
 
+		<md-input-container flex> <label>Account
+			Group</label> <md-select ng-model="tempAccount.accountGroup"
+			placeholder="Select Account Group" name="acGroup" ng-required="true">
+		<md-option ng-selected="acGroup.id == tempAccount.accountGroup.id"
+			ng-value="acGroup"
+			ng-repeat="acGroup in accountGroupList | orderBy: acGroup.groupName">{{acGroup.groupName}}
 		</md-option> </md-select>
-
-		<div ng-messages="accountForm.accountlist.$error"
-			ng-if="accountForm.accountlist.$submitted || accountForm.accountlist.$touched">
+		<div ng-messages="accountForm.acGroup.$error"
+			ng-if="accountForm.acGroup.$submitted || accountForm.acGroup.$touched">
 			<div ng-message="required">Please Select the Type</div>
-
 		</div>
-
 		</md-input-container>
 	</div>
-	<label>Contra</label>
-	<md-checkbox ng-model="tempAccount.contra" ng-true-value="true"
-		ng-false-value="false"> </md-checkbox>
+	<div layout layout-xs="column">
+		<div flex-xs flex="50">
+			<md-checkbox ng-model="tempAccount.contra" ng-true-value="true"
+				ng-false-value="false" aria-label="contra"> Contra </md-checkbox>
+		</div>
+	</div>
 	<section layout="row" layout-xs="column" layout-align="left left">
-
-		<!-- 	<md-button class="md-raised md-primary"  ng-click="updateAcc()" ng-disabled="accountForm.$invalid"> Update</md-button> -->
-		<md-button class="md-raised md-primary" ng-click="updateAcc()">Update</md-button>
-
-		<md-button class="md-raised md-primary" ng-click="cancelBtn()">Cancle</md-button>
-
+		<md-button class="md-raised md-primary" ng-click="addAccount()">Update</md-button>
+		<md-button class="md-raised md-primary" ng-click="cancel()">Cancle</md-button>
 	</section>
 </form>
-
 </md-content>

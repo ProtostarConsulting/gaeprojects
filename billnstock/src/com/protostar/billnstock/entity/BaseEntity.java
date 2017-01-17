@@ -29,6 +29,22 @@ public abstract class BaseEntity {
 		super();
 	}
 
+	@OnSave
+	public void beforeSave() {
+		if (getBusiness() == null) {
+			throw new RuntimeException("Business entity is not set on: "
+					+ this.getClass().getSimpleName()
+					+ " This is required field. Aborting save operation...");
+		}
+
+		if (getId() == null) {
+			setCreatedDate(new Date());
+		} else {
+			setModifiedDate(new Date());
+		}
+
+	}
+
 	public Date getCreatedDate() {
 		return createdDate;
 	}
@@ -76,22 +92,6 @@ public abstract class BaseEntity {
 
 	public void setNote(String note) {
 		this.note = note;
-	}
-
-	@OnSave
-	public void beforeSave() {
-		if (getBusiness() == null) {
-			throw new RuntimeException("Business entity is not set on: "
-					+ this.getClass().getSimpleName()
-					+ " This is required field. Aborting save operation...");
-		}
-
-		if (getId() == null) {
-			setCreatedDate(new Date());
-		} else {
-			setModifiedDate(new Date());
-		}
-
 	}
 
 	public int getItemNumber() {

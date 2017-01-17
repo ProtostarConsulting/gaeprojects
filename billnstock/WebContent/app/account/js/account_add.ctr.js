@@ -1,18 +1,17 @@
 var app = angular.module("stockApp");
 
-app.controller("accountAddCtr", function($scope, $window, $mdToast, $timeout,
-		$mdSidenav, $mdUtil, $log, $stateParams, objectFactory, appEndpointSF,$mdDialog,$mdMedia ) {
-
-	$scope.query = {
-		order : 'name',
-		limit : 5,
-		page : 1
-	};
+app.controller("bizPlanAddCtr", function($scope, $window, $mdToast, $timeout,
+	$mdSidenav, $mdUtil, $log, $stateParams, objectFactory, appEndpointSF, $mdDialog, $mdMedia) {
 
 	$log.debug("Inside accountAddCtr");
 
+	$scope.query = {
+		order : 'name',
+		limit : 50,
+		page : 1
+	};
+
 	$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
-	$log.debug("$scope.curUser++++++++" + angular.toJson($scope.curUser));
 
 	$scope.account = {
 		accountName : "",
@@ -23,31 +22,28 @@ app.controller("accountAddCtr", function($scope, $window, $mdToast, $timeout,
 		business : ""
 	};
 
-	$log.debug("$stateParams:", $stateParams);
 	$log.debug("$stateParams.selectedAccountId:",
-			$stateParams.selectedAccountId);
+		$stateParams.selectedAccountId);
 
 	$scope.selectedAccountId = $stateParams.selectedAccountId;
 
 	$scope.getAccountById = function() {
 		var accountService = appEndpointSF.getAccountService();
 		accountService.getAccountById($scope.selectedAccountId).then(
-				function(account) {
+			function(account) {
 
-					$scope.account = account;
-					$scope.tempAccount = account;
-					$log.debug("$scope.account" + $scope.account);
+				$scope.account = account;
+				$scope.tempAccount = account;
+				$log.debug("$scope.account" + $scope.account);
 
-				});
+			});
 	}
 
 	$scope.addAccount = function() {
-		$log.debug("No1");
 		$scope.account.business = $scope.curUser.business;
 		$scope.account.modifiedBy = $scope.curUser.email_id;
 		var accountService = appEndpointSF.getAccountService();
-		accountService.addAccount($scope.account).then(function(msgBean) {
-		});
+		accountService.addAccount($scope.account).then(function(msgBean) {});
 		if ($scope.selectedAccountId == "") {
 			$scope.showAddToast();
 		} else {
@@ -63,13 +59,13 @@ app.controller("accountAddCtr", function($scope, $window, $mdToast, $timeout,
 		var accountService = appEndpointSF.getAccountService();
 
 		accountService.getAllAccountsByBusiness($scope.curUser.business.id)
-				.then(
-						function(accountList) {
-							$log.debug("Inside Ctr getAllAccountsByBusiness");
-							$scope.accounts = accountList;
-							$log.debug("Inside Ctr $scope.accounts:"
-									+ angular.toJson($scope.accounts));
-						});
+			.then(
+				function(accountList) {
+					$log.debug("Inside Ctr getAllAccountsByBusiness");
+					$scope.accounts = accountList;
+					$log.debug("Inside Ctr $scope.accounts:"
+						+ angular.toJson($scope.accounts));
+				});
 	}
 
 	$scope.waitForServiceLoad = function() {
@@ -98,61 +94,60 @@ app.controller("accountAddCtr", function($scope, $window, $mdToast, $timeout,
 		return debounceFn;
 	}
 
-	
-	
+
+
 	// ----------------------UPLODE EXCEL FILE-------------------------------
 
 	$scope.UplodeExcel = function(ev) {
 		var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))
-				&& $scope.customFullscreen;
+		&& $scope.customFullscreen;
 		$mdDialog
-				.show(
-						{
-							controller : DialogController,
-							templateUrl : '/app/account/UploadExcelAddAccount.html',
-							parent : angular
-									.element(document.body),
-							targetEvent : ev,
-							clickOutsideToClose : true,
-							fullscreen : useFullScreen,
-							locals : {
-								curuser : $scope.curUser
-							
-							}
-						})
-				.then(
-						function(answer) {
-							$scope.status = 'You said the information was "'
-									+ answer + '".';
-						},
-						function() {
-							$scope.status = 'You cancelled the dialog.';
-						});
-		
+			.show(
+				{
+					controller : DialogController,
+					templateUrl : '/app/account/UploadExcelAddAccount.html',
+					parent : angular
+						.element(document.body),
+					targetEvent : ev,
+					clickOutsideToClose : true,
+					fullscreen : useFullScreen,
+					locals : {
+						curuser : $scope.curUser
+					}
+				})
+			.then(
+				function(answer) {
+					$scope.status = 'You said the information was "'
+						+ answer + '".';
+				},
+				function() {
+					$scope.status = 'You cancelled the dialog.';
+				});
+
 	};
 
 	function DialogController($scope, $mdDialog, curuser) {
 		$scope.bizID;
-		$scope.loding=false;
-		$scope.uplodeimage=function(){
-			$scope.loding=true;
-			 document.excelform.action = $scope.AccountsExcelUploadURL;
-		      document.excelform.submit();
+		$scope.loding = false;
+		$scope.uplodeimage = function() {
+			$scope.loding = true;
+			document.excelform.action = $scope.AccountsExcelUploadURL;
+			document.excelform.submit();
 		}
-		
-		
-		$scope.getExcelUploadURL=function(){
+
+
+		$scope.getExcelUploadURL = function() {
 			var uploadUrlService = appEndpointSF.getuploadURLService();
 			uploadUrlService.getAccountExcelUploadURL()
-					.then(function(url) {
-						$scope.AccountsExcelUploadURL=url.msg;
-						$scope.bizID = curuser.business.id;
-					});
-			
-			
+				.then(function(url) {
+					$scope.AccountsExcelUploadURL = url.msg;
+					$scope.bizID = curuser.business.id;
+				});
+
+
 		}
 		$scope.AccountsExcelUploadURL;
-		
+
 		$scope.waitForServiceLoad = function() {
 			if (appEndpointSF.is_service_ready) {
 				$scope.getExcelUploadURL();
@@ -162,13 +157,13 @@ app.controller("accountAddCtr", function($scope, $window, $mdToast, $timeout,
 			}
 		}
 		$scope.waitForServiceLoad();
-		}
+	}
 
 	// -------------------------------------------------------
-	
-	
-	
-	
+
+
+
+
 	$scope.close = function() {
 		$mdSidenav('right').close().then(function() {
 			$log.debug("close RIGHT is done");
@@ -177,7 +172,7 @@ app.controller("accountAddCtr", function($scope, $window, $mdToast, $timeout,
 
 	$scope.showSimpleToast = function() {
 		$mdToast.show($mdToast.simple().content('Account Data Saved!')
-				.position("top").hideDelay(3000));
+			.position("top").hideDelay(3000));
 	};
 
 });

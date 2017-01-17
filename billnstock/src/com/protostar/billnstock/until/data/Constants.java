@@ -53,4 +53,12 @@ public class Constants {
 	public static enum DiscountType {
 		NA, Fixed, Percentage
 	};
+
+	public enum AccountingAccountType {
+		PERSONAL, REAL, NOMINAL
+	};
+
+	public enum AccountGroupType {
+		ASSETS, EQUITY, LIABILITIES, INCOME, EXPENSES, OTHERINCOMES, OTHEREXPENCES, NA
+	};
 }

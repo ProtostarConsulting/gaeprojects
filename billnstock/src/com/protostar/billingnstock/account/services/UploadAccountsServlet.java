@@ -17,6 +17,7 @@ import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.protostar.billingnstock.account.entities.AccountEntity;
+import com.protostar.billnstock.until.data.Constants.AccountingAccountType;
 
 public class UploadAccountsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -95,7 +96,9 @@ public class UploadAccountsServlet extends HttpServlet {
 						accountEntity.setDescription(split[2].trim());
 						accountEntity.setDisplayOrderNo(Integer
 								.parseInt(split[3].trim()));
-						accountEntity.setAccountType(split[4].trim());
+						String accountType = split[4].trim();
+						accountEntity.setAccountType(AccountingAccountType
+								.valueOf(accountType));
 
 						/*
 						 * System.out.println("split[5].trim()"+
@@ -110,8 +113,8 @@ public class UploadAccountsServlet extends HttpServlet {
 							accountEntity.setContra(false);
 						}
 
-						AccountService accService = new AccountService();
-						accService.addAccount1(accountEntity);
+						AccountingService accService = new AccountingService();
+						accService.addAccount(accountEntity);
 
 					} catch (Exception e) {
 						log.warning(e.getMessage());

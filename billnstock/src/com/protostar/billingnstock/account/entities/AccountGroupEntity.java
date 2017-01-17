@@ -6,28 +6,37 @@ import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.OnSave;
 import com.protostar.billnstock.entity.BaseEntity;
 import com.protostar.billnstock.until.data.Constants;
+import com.protostar.billnstock.until.data.Constants.AccountGroupType;
 import com.protostar.billnstock.until.data.EntityUtil;
 import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 
 @Entity
 public class AccountGroupEntity extends BaseEntity {
-	
-	
-	/*public static enum AccountGroupType {
-		ASSETS, EQUITY, LIABILITIES,INCOME,EXPENSES,OTHERINCOMES,OTHEREXPENCES
-	};*/
 	@Index
 	private String groupName;
 	private String description;
 	@Index
-	private String accountGroupType;
-	private Boolean isPrimary ;
+	private AccountGroupType accountGroupType = AccountGroupType.NA;
+	private Boolean isPrimary;
 	@Index
 	private String primaryType;
+	@Index
+	private Ref<AccountGroupEntity> parent;
+	private Integer displayOrderNo;
+
+	public AccountGroupEntity() {
+
+	}
+
+	public AccountGroupEntity(String groupName, Ref<AccountGroupEntity> parent) {
+		this.groupName = groupName;
+		this.parent = parent;
+	}
+
 	@OnSave
 	public void beforeSave() {
 		super.beforeSave();
-		
+
 		if (getId() == null) {
 			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
 					EntityUtil.getBusinessRawKey(getBusiness()),
@@ -35,46 +44,30 @@ public class AccountGroupEntity extends BaseEntity {
 			setItemNumber(sequenceGenService.getNextSequenceNumber());
 		}
 	}
-	Ref<AccountGroupEntity> parent;
-	private Integer displayOrderNo;
-	
-	public AccountGroupEntity() {
 
-	}
-
-	
 	public Boolean getIsPrimary() {
 		return isPrimary;
 	}
 
 	public void setIsPrimary(Boolean isPrimary) {
-		this.isPrimary  = isPrimary;
+		this.isPrimary = isPrimary;
 	}
 
-	
-	
-
 	public AccountGroupEntity getParent() {
-		return parent == null?null:parent.get();
+		return parent == null ? null : parent.get();
 	}
 
 	public void setParent(AccountGroupEntity parent) {
-		this.parent =Ref.create(parent);
+		if (parent != null)
+			this.parent = Ref.create(parent);
 	}
 
-
-	public String getAccountGroupType() {
+	public AccountGroupType getAccountGroupType() {
 		return accountGroupType;
 	}
 
-	public void setAccountGroupType(String accountGroupType) {
+	public void setAccountGroupType(AccountGroupType accountGroupType) {
 		this.accountGroupType = accountGroupType;
-	}
-
-	
-	public AccountGroupEntity(String groupName, Ref<AccountGroupEntity> parent) {
-		this.groupName = groupName;
-		this.parent = parent;
 	}
 
 	public String getGroupName() {
@@ -93,21 +86,6 @@ public class AccountGroupEntity extends BaseEntity {
 		this.description = description;
 	}
 
-	/*public List<AccountEntity> getAccountList() {		
-		List<AccountEntity> accountListTemp = new ArrayList<AccountEntity>();
-		for (Ref<AccountEntity> accountEntityRef : this.accountList) {
-			accountListTemp.add(accountEntityRef.get());
-		}
-		return accountListTemp;
-	}
-
-	public void setAccountList(List<AccountEntity> accountList) {
-		this.accountList = new ArrayList<Ref<AccountEntity>>();
-		for (AccountEntity accountEntity : accountList) {
-			this.accountList.add(Ref.create(accountEntity));
-		}
-	}*/
-
 	public Integer getDisplayOrderNo() {
 		return displayOrderNo;
 	}
@@ -116,22 +94,11 @@ public class AccountGroupEntity extends BaseEntity {
 		this.displayOrderNo = displayOrderNo;
 	}
 
-
 	public String getPrimaryType() {
 		return primaryType;
 	}
 
-
 	public void setPrimaryType(String primaryType) {
 		this.primaryType = primaryType;
 	}
-
-	/*public AccountGroupEntity getParent() {
-		return (parent == null) ? null : parent.get();
-	}
-
-	public void setParent(AccountGroupEntity parent) {
-		this.parent = Ref.create(parent);
-	}*/
-
 }

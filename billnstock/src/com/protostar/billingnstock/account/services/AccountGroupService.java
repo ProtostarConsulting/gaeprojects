@@ -4,7 +4,6 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -17,7 +16,6 @@ import com.googlecode.objectify.Ref;
 import com.protostar.billingnstock.account.entities.AccountEntity;
 import com.protostar.billingnstock.account.entities.AccountGroupEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
-import com.protostar.billnstock.entity.BaseEntity;
 import com.protostar.billnstock.until.data.ServerMsg;
 
 @Api(name = "accountGroupService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.services", ownerName = "com.protostar.billingnstock.services", packagePath = ""))
@@ -184,7 +182,7 @@ public class AccountGroupService {
 			for (int j = 0; j < typeAccountList.size(); j++) {
 				GroupInfo groupInfo = new GroupInfo();
 				groupInfo.groupName = typeAccountList.get(j).getGroupName();
-				AccountService as = new AccountService();
+				AccountingService as = new AccountingService();
 				List<AccountEntity> accList = as
 						.getAccountListByGroupId(typeAccountList.get(j).getId());
 				double groupTotal = 0;
@@ -232,7 +230,7 @@ public class AccountGroupService {
 				GroupInfo groupInfo = new GroupInfo();
 				groupInfo.groupName = typeAccountList.get(j).getGroupName();
 				groupInfo.AccInfoList=new ArrayList<AccInfo>();
-				AccountService as = new AccountService();
+				AccountingService as = new AccountingService();
 				List<AccountEntity> accList = as
 						.getAccountListByGroupId(typeAccountList.get(j).getId());
 				double groupTotal = 0;

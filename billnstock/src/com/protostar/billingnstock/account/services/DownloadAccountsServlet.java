@@ -31,7 +31,7 @@ public class DownloadAccountsServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		log.info("hi i am download servlet");
 		System.out.println("i am servlet");
-		AccountService accountService=new AccountService();
+		AccountingService accountService=new AccountingService();
 		Date date = new Date();
 		String DATE_FORMAT = "dd/MMM/yyyy";
 		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
@@ -77,7 +77,7 @@ public class DownloadAccountsServlet extends HttpServlet {
 					writer.append(',');
 					writer.append(accEntity.get(i).getDisplayOrderNo().toString());
 					writer.append(',');
-					writer.append(accEntity.get(i).getAccountType());
+					writer.append(accEntity.get(i).getAccountType().toString());
 					writer.append(',');
 					writer.append(accEntity.get(i).getContra().toString());
 					writer.append(',');

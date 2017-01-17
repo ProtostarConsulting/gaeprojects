@@ -356,7 +356,7 @@ public class ProtostarAdminService {
 		capitalAccountGroupEntity.setModifiedDate(new Date());
 		capitalAccountGroupEntity.setGroupName("Capital Account");
 		capitalAccountGroupEntity.setIsPrimary(true);
-		capitalAccountGroupEntity.setPrimaryType("Liabilities");
+		capitalAccountGroupEntity.setPrimaryType("EQUITY");
 
 		ofy().save().entity(capitalAccountGroupEntity).now();
 
@@ -364,7 +364,7 @@ public class ProtostarAdminService {
 		branchDivisionsGroupEntity.setBusiness(business);
 		branchDivisionsGroupEntity.setCreatedDate(new Date());
 		branchDivisionsGroupEntity.setModifiedDate(new Date());
-		branchDivisionsGroupEntity.setGroupName("BranchDivisions");
+		branchDivisionsGroupEntity.setGroupName("Branch Divisions");
 		branchDivisionsGroupEntity.setIsPrimary(true);
 		branchDivisionsGroupEntity.setPrimaryType("Liabilities");
 
