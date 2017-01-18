@@ -1,4 +1,5 @@
 var app = angular.module("stockApp");
+
 app.controller("accountlistCtr", function($scope, $window, $mdToast, $timeout,
 		Upload, $mdSidenav, $mdUtil, $log, $stateParams, objectFactory,
 		appEndpointSF, $mdDialog, $mdMedia, $state, ajsCache) {
@@ -27,6 +28,7 @@ app.controller("accountlistCtr", function($scope, $window, $mdToast, $timeout,
 		var AccountService = appEndpointSF.getAccountService();
 		AccountService.getAccountList($scope.curUser.business.id).then(
 				function(list) {
+					//$log.debug("list:" + angular.toJson(list));
 					$scope.accounts = list;
 					$scope.loading = false;
 					ajsCache.put(AccountServiceCacheKey, list);
