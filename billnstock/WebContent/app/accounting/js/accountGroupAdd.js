@@ -1,3 +1,4 @@
+
 angular.module("stockApp").controller(
 		"accountGroupCtr",
 		function($scope, $log, $mdToast, appEndpointSF, $state) {

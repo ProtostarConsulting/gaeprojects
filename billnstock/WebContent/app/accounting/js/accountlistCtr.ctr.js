@@ -1,5 +1,4 @@
 var app = angular.module("stockApp");
-
 app.controller("accountlistCtr", function($scope, $window, $mdToast, $timeout,
 		Upload, $mdSidenav, $mdUtil, $log, $stateParams, objectFactory,
 		appEndpointSF, $mdDialog, $mdMedia, $state, ajsCache) {
