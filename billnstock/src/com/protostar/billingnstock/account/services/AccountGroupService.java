@@ -162,7 +162,7 @@ public class AccountGroupService {
 		return filteraccount;
 
 	}
-
+	List<TypeInfo> list = new ArrayList<TypeInfo>();//global value
 	@ApiMethod(name = "getBalanceSheet", path = "getBalanceSheet")
 	public List<TypeInfo> getBalanceSheet(@Named("bid") Long bid) {
 		
@@ -204,12 +204,89 @@ public class AccountGroupService {
 
 			typeInfo.typeBalance = typeTotal;
 			typeList.add(typeInfo);
+			list.add(typeInfo);
 		}
 
-		System.out.println("typeList:******" + typeList.size());
+		System.out.println("globalList:******" + list.size());
+		
 
 		return typeList;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@ApiMethod(name = "getBalanceSheetCalculation", path = "getBalanceSheetCalculation")
+	public getBalanceSheetCalculation getBalanceSheetCalculation() {
+		getBalanceSheetCalculation BalanceSheetCalculation=new getBalanceSheetCalculation();
+		
+		for (int int2 = 0; int2 < list.size(); int2++) {
+			if ((list.get(int2).getTypeName().toString() == "Assets")
+					&& (list.get(int2).getGroupList() != null)) {
+				for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
+					BalanceSheetCalculation.totalAsset = list.get(int2).getGroupList().get(i).getGroupBalance()
+							+ BalanceSheetCalculation.totalAsset;
+				}
+				if (BalanceSheetCalculation.totalAsset < 0) {
+					BalanceSheetCalculation.totalAsset = BalanceSheetCalculation.totalAsset
+							* (-1);
+				}
+			}
+
+			if ((list.get(int2).getTypeName().toString() == "Liabilities")
+					&& (list.get(int2).getGroupList() != null)) {
+				for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
+					BalanceSheetCalculation.totalLiabilities = list.get(int2).getGroupList().get(i).getGroupBalance()
+							+ BalanceSheetCalculation.totalLiabilities;
+				}
+
+				if (BalanceSheetCalculation.totalLiabilities < 0) {
+					BalanceSheetCalculation.totalLiabilities = BalanceSheetCalculation.totalLiabilities
+							* (-1);
+				}
+
+			}
+			if ((list.get(int2).getTypeName().toString() == "EQUITY")
+					&& (list.get(int2).getGroupList() != null)) {
+				for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
+					BalanceSheetCalculation.totalEQUITY = list.get(int2).getGroupList().get(i).getGroupBalance()
+							+ BalanceSheetCalculation.totalEQUITY;
+				}
+
+			}
+		}
+		BalanceSheetCalculation.totalLiabilities2 = BalanceSheetCalculation.totalLiabilities
+				+ BalanceSheetCalculation.totalEQUITY;
+		
+		
+		return BalanceSheetCalculation;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	@ApiMethod(name = "getChartSheet", path = "getChartSheet")
 	public List<TypeInfo> getChartSheet(@Named("bid") Long bid) {
@@ -331,7 +408,43 @@ public class AccInfo implements Serializable{
 	}
 	
 	
-	
-	
       }
+public class getBalanceSheetCalculation  implements Serializable{
+	
+	
+	
+    double totalAsset = 0;
+	double totalLiabilities2 = 0;
+	double totalEQUITY = 0;
+	double totalLiabilities = 0;
+	public double getTotalAsset() {
+		return totalAsset;
+	}
+	public void setTotalAsset(double totalAsset) {
+		this.totalAsset = totalAsset;
+	}
+	public double getTotalLiabilities2() {
+		return totalLiabilities2;
+	}
+	public void setTotalLiabilities2(double totalLiabilities2) {
+		this.totalLiabilities2 = totalLiabilities2;
+	}
+	public double getTotalEQUITY() {
+		return totalEQUITY;
+	}
+	public void setTotalEQUITY(double totalEQUITY) {
+		this.totalEQUITY = totalEQUITY;
+	}
+	public double getTotalLiabilities() {
+		return totalLiabilities;
+	}
+	public void setTotalLiabilities(double totalLiabilities) {
+		this.totalLiabilities = totalLiabilities;
+	}
+
+
+
+}
+
+
 }

@@ -79,6 +79,7 @@ public class ProtostarAdminService {
 		businessEntity.setBusinessPlan(businessPlan);
 		businessEntity.setRegisterDate(sdf.format(date));
 		String authorizations = Constants.PROTOSTAR_DEFAULT_AUTHS;
+		System.out.println("authorizations********************"+authorizations);
 		businessEntity.setAuthorizations(authorizations);
 
 		Address address = new Address();
@@ -356,7 +357,7 @@ public class ProtostarAdminService {
 		capitalAccountGroupEntity.setModifiedDate(new Date());
 		capitalAccountGroupEntity.setGroupName("Capital Account");
 		capitalAccountGroupEntity.setIsPrimary(true);
-		capitalAccountGroupEntity.setPrimaryType("EQUITY");
+		capitalAccountGroupEntity.setPrimaryType("Liabilities");
 
 		ofy().save().entity(capitalAccountGroupEntity).now();
 
