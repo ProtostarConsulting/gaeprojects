@@ -1,31 +1,33 @@
-
-<md-content layout-padding data-genuitec-lp-enabled="false" data-genuitec-file-id="wc1-33" data-genuitec-path="/billnstock/WebContent/app/accounting/accountGroupAdd.html">
-<section layout="row" layout-xs="column">
+<div ng-if="loading" data-genuitec-lp-enabled="false"
+	data-genuitec-file-id="wc1-211"
+	data-genuitec-path="/billnstock/WebContent/app/accounting/account_add.html">
+	<div layout="row" layout-sm="column" layout-align="space-around">
+		<md-progress-circular md-diameter="60" md-mode="indeterminate"></md-progress-circular>
+	</div>
+</div>
+<md-content ng-if="!loading" layout-padding layout="column">
+<section id="pagetoolbar" layout="row" layout-xs="column">
 	<md-subheader class="md-primary">
-	<h4 class="md-title">Add Account Group</h4>
+	<h4 class="md-title"
+		ng-bind="tempAccountGroup.id?'Edit Account Group':'Add Account Group'"></h4>
 	</md-subheader>
-	<span flex></span>
+	<span flex> </span>
 	<div hide-xs>
 		<md-button class="md-primary" id="Bulk Upload"
 			ng-click="UplodeExcel($event)">Bulk Upload</md-button>
 	</div>
 </section>
 <form name="accGroupForm">
-
-	[<span style="color: red;">Field Marked as asterik (*) are
-		mandetory</span>]
-
-
-	<div layout layout-sm="column">
+	<div layout layout-xs="column">
 		<md-input-container flex> <label>Enter
 			Account Group Name </label> <input type="text"
-			ng-model="tempAccountGroup.groupName" id="grpName" name="grpName"
-			ng-required="true" account-group-userexists>
+			ng-model="tempAccountGroup.groupName" name="grpName"
+			ng-required="true" account-group-exists>
 
 		<div ng-messages="accGroupForm.grpName.$error"
-			ng-if="accGroupForm.grpName.$submitted || accGroupForm.grpName.$touched">
-			<div ng-message="required">Please Enter Account Group Name</div>
-			<div ng-message="userexists">Group Already Exists</div>
+			ng-if="accGroupForm.grpName.$touched">
+			<div ng-message="required">This is required.</div>
+			<div ng-message="accountGroupExists">Group Already Exists</div>
 		</div>
 		</md-input-container>
 
@@ -36,57 +38,55 @@
 
 		<div ng-messages="accGroupForm.descrip.$error"
 			ng-if="accGroupForm.descrip.$submitted || accGroupForm.descrip.$touched">
-			<div ng-message="required">Please Enter Description</div>
+			<div ng-message="required">This is required.</div>
 		</div>
-
 		</md-input-container>
 	</div>
-	<div layout layout-sm="column">
+	<div layout layout-xs="column">
+		<div layout flex>
+			<md-input-container flex="30"> <md-checkbox
+				ng-model="tempAccountGroup.isPrimary" ng-true-value="true"
+				ng-false-value="false" aria-label="contra"> Is
+			Primary? </md-checkbox> </md-input-container>
+			<md-input-container flex ng-if="tempAccountGroup.isPrimary">
+			<label>Group Nature</label> <md-select
+				ng-model="tempAccountGroup.accountGroupType" name="accountGroupType"
+				placeholder="Select Nature" ng-required="true"> <md-option
+				ng-value="item" ng-repeat="item in accountGroupTypeList">{{item}}
+			</md-option> </md-select>
+			<div ng-messages="accGroupForm.accountGroupType.$error"
+				ng-if="accGroupForm.accountGroupType.$submitted || accGroupForm.accountGroupType.$touched">
+				<div ng-message="required">This is required.</div>
+			</div>
+			</md-input-container>
+			<md-input-container flex ng-if="!tempAccountGroup.isPrimary">
+			<label>Parent Group</label> <md-select
+				ng-model="tempAccountGroup.parent" placeholder="Select Group"
+				name="acGroup" ng-required="true"> <md-option
+				ng-selected="acGroup.id == tempAccountGroup.parent.id"
+				ng-value="acGroup" ng-repeat="acGroup in accountGroupList">{{acGroup.groupName}}
+			</md-option> </md-select>
+			<div ng-messages="accGroupForm.acGroup.$error"
+				ng-if="accGroupForm.acGroup.$submitted || accGroupForm.acGroup.$touched">
+				<div ng-message="required">This is required field.</div>
+			</div>
+			</md-input-container>
+		</div>
 		<md-input-container flex> <label>Enter
 			Order No </label> <input type="number"
 			ng-model="tempAccountGroup.displayOrderNo" id="orderNo"
 			name="orderNo" ng-required="true">
-
 		<div ng-messages="accGroupForm.orderNo.$error"
 			ng-if="accGroupForm.orderNo.$submitted || accGroupForm.orderNo.$touched">
-			<div ng-message="required">Please Enter Order Number</div>
+			<div ng-message="required">This is required.</div>
 		</div>
-		</md-input-container>
+		</md-input-container>		
 	</div>
-
-	<div layout layout-sm="column">
-		<div flex-xs flex="50">
-			<md-checkbox ng-model="tempAccountGroup.isPrimary"
-				ng-true-value="true" ng-false-value="false" aria-label="contra">
-			Is Primary? </md-checkbox>
-		</div>
-		<md-input-container flex ng-if="tempAccountGroup.isPrimary">
-		<lable>Group Nature</lable> <md-select
-			ng-model="tempAccountGroup.accountGroupType" name="accountGroupType"
-			placeholder="Select Nature" ng-required="true"> <md-option
-			ng-value="item" ng-repeat="item in accountGroupTypeList">{{item}}
-		</md-option> </md-select>
-		<div ng-messages="accGroupForm.accountGroupType.$error"
-			ng-if="accGroupForm.accountGroupType.$submitted || accGroupForm.accountGroupType.$touched">
-			<div ng-message="required">Please Select the Group Type</div>
-		</div>
-		</md-input-container>
-		<md-input-container flex ng-if="!tempAccountGroup.isPrimary"> <lable>Parent Group</lable>
-		<md-select ng-model="tempAccountGroup.parent" placeholder="Select Parent Group" name="primaryGroup"
-			ng-required="true">  <md-option
-			ng-value="item" ng-repeat="item in accountGroupList">{{item.groupName}}
-		</md-option> </md-select>
-		<div ng-messages="accGroupForm.primaryGroup.$error"
-			ng-if="accGroupForm.primaryGroup.$submitted || accGroupForm.primaryGroup.$touched">
-			<div ng-message="required">Please Select the Primary Type</div>
-		</div>
-		</md-input-container>
-	</div>
-	<section layout="row" layout-sm="column" layout-align="center center">
+	<section layout="row" layout-xs="column" layout-align="center center">
 		<md-button class="md-raised md-primary" name="addButton"
 			id="addButton"
 			ng-disabled="accGroupForm.$invalid || accGroupForm.$pristine || accGroupForm.$touched"
-			ng-click="addAccountGroup()">Add</md-button>
+			ng-click="addAccountGroup()">Save</md-button>
 
 		<md-button class="md-raised md-primary" ng-click="cancelBtn()">Cancel</md-button>
 	</section>

@@ -451,18 +451,14 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	}).state('accounting.accountGroupAdd', {
 		url : "/accountGroupAdd",
 		templateUrl : '/app/accounting/accountGroupAdd.html',
-		controller : 'accountGroupCtr'
+		controller : 'accountGroupCtr',
+		params : {
+			selectedAccountGroup : null
+		}
 	}).state('accounting.accountGroupList', {
 		url : "/accountGroupList",
 		templateUrl : '/app/accounting/accountGroupList.html',
 		controller : 'accountGrpListCtr'
-	}).state('accounting.accountGroupEdit', {
-		url : "/accountGroupEdit",
-		templateUrl : '/app/accounting/accountGroupEdit.html',
-		controller : 'accountGrpEditCtr',
-		params : {
-			record : null
-		}
 	}).state('accounting.accountGroupDisplay', {
 		url : "/accountGroupDisplay",
 		templateUrl : '/app/accounting/accountGroupDisplay.html',

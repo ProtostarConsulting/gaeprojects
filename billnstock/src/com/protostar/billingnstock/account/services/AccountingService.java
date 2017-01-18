@@ -73,12 +73,10 @@ public class AccountingService {
 		List<AccountEntity> accountList = ofy().load()
 				.type(AccountEntity.class).list();// ancestor(Key.create(AccountGroupEntity.class,
 													// groupId)).list();
-
 		for (AccountEntity ss : accountList) {
-
-			if (ss.getAccountGroup().getId().equals(groupId)) {
+			if (ss.getAccountGroup() != null
+					&& ss.getAccountGroup().getId().equals(groupId)) {
 				filteredAccounts.add(ss);
-
 			}
 		}
 

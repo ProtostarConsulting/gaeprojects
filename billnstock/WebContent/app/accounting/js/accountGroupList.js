@@ -1,6 +1,6 @@
 angular
 	.module("stockApp")
-	.controller('accountGrpListCtr', function($scope, $log, appEndpointSF, $mdToast, $timeout, $mdMedia, Upload, $mdDialog, ajsCache) {
+	.controller('accountGrpListCtr', function($scope, $log, appEndpointSF, $mdToast, $timeout, $mdMedia, Upload, $mdDialog, $filter, ajsCache) {
 
 		$scope.query = {
 			order : 'groupName',
@@ -18,19 +18,18 @@ angular
 				$scope.List = ajsCache.get(AccountGroupServiceCacheKey);
 				return;
 			}
-
+			$scope.loading = true;
 			var listAccountGroupService = appEndpointSF.getAccountGroupService();
 			listAccountGroupService.getAccountGroupList($scope.curUser.business.id)
 				.then(
 					function(list) {
 						//$log.debug("list:"+angular.toJson(list));
-						$scope.List = list;
+						$scope.accountGroupList = list;
+						$scope.loading = false;
 						ajsCache.put(AccountGroupServiceCacheKey, list);
 					})
 
-		};
-		//$scope.getList();
-
+		};		
 
 		$scope.waitForServiceLoad = function() {
 			if (appEndpointSF.is_service_ready) {
@@ -41,14 +40,6 @@ angular
 			}
 		}
 		$scope.waitForServiceLoad();
-
-		
-		$scope.showDeleteToast = function() {
-			$mdToast.show($mdToast.simple().content(
-				'Account Group Deleted ...!').position("down").hideDelay(
-				3000));
-		};
-
 
 		$scope.uploadExcel = function(ev) {
 			var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))
@@ -132,11 +123,7 @@ angular
 		}
 
 		$scope.downloadExcel = function() {
-
 			document.location.href = "DownloadGroupListServlet";
-
-
 		}
-
 
 	})

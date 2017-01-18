@@ -1,6 +1,6 @@
 angular.module("stockApp").controller(
 	"accountGroupCtr",
-	function($scope, $log, $mdToast, appEndpointSF, $state) {
+	function($scope, $log, $mdToast, $timeout, $state, $filter, $stateParams, appEndpointSF) {
 
 		var blankTempAccountGroup = function() {
 			return {
@@ -14,31 +14,38 @@ angular.module("stockApp").controller(
 			}
 		};
 
-		$scope.tempAccountGroup = blankTempAccountGroup();
+		$scope.tempAccountGroup = $stateParams.selectedAccountGroup ? $stateParams.selectedAccountGroup : blankTempAccountGroup();
 		$scope.accountGroupTypeList = [ "ASSETS", "EQUITY", "LIABILITIES",
 			"INCOME", "EXPENSES", "OTHERINCOMES", "OTHEREXPENCES" ];
 
 		$scope.addAccountGroup = function() {
-
+			$scope.loading = true;
 			var addAccountGroupService = appEndpointSF
 				.getAccountGroupService();
 			addAccountGroupService.addAccountGroup($scope.tempAccountGroup)
-				.then(function(msgbean) {
-					$scope.showSavedToast();
-					$scope.tempAccountGroup = blankTempAccountGroup;
-					$scope.accGroupForm.$setPristine();
-					$scope.accGroupForm.$setValidity();
-					$scope.accGroupForm.$setUntouched();
+				.then(function(msgbean) {					
+					if ($stateParams.selectedAccountGroup) {
+						$scope.showUpdateToast();
+					} else {
+						$scope.showAddToast();
+						$scope.tempAccountGroup = blankTempAccountGroup();
+						$scope.accGroupForm.$setPristine();
+						$scope.accGroupForm.$setValidity();
+						$scope.accGroupForm.$setUntouched();
+					}
+					$scope.loading = false;
 				}
 
 			)
 		};
 		$scope.accountGroupList = [];
 		$scope.getGroupList = function() {
+			$scope.loading = true;
 			var AccountGroupService = appEndpointSF
 				.getAccountGroupService();
 			AccountGroupService.getAccountGroupList($scope.curUser.business.id).then(function(list) {
-				$scope.accountGroupList = list;
+				$scope.accountGroupList = $filter('proOrderObjectByTextField')(list, "groupName");
+				$scope.loading = false;
 
 			});
 
@@ -54,12 +61,6 @@ angular.module("stockApp").controller(
 		}
 		$scope.waitForServiceLoad();
 
-		$scope.showSavedToast = function() {
-			$mdToast.show($mdToast.simple().content(
-				'Account Group Saved ...!').position("top").hideDelay(
-				3000));
-		};
-
 		$scope.cancelBtn = function() {
 			$state.go("accounting", {});
 
@@ -69,14 +70,14 @@ angular.module("stockApp").controller(
 angular
 	.module("stockApp")
 	.directive(
-		'accountGroupUserexists',
+		'accountGroupExists',
 		function($log, $q, appEndpointSF) {
 			return {
 				restrict : 'A',
 				require : 'ngModel',
 				link : function($scope, $element, $attrs, ngModel) {
 					$log.debug("Inside of accountGroupUserexists....");
-					ngModel.$asyncValidators.userexists = function(
+					ngModel.$asyncValidators.accountGroupExists = function(
 						accountGroupValue) {
 						var deferred = $q.defer();
 						var AccountGroupService = appEndpointSF
