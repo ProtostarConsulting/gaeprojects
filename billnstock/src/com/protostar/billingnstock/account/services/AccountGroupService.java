@@ -20,7 +20,7 @@ import com.protostar.billnstock.until.data.ServerMsg;
 
 @Api(name = "accountGroupService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.services", ownerName = "com.protostar.billingnstock.services", packagePath = ""))
 public class AccountGroupService {
-	
+
 	String accountGroupTypeList[] = { "Assets", "EQUITY", "Liabilities",
 			"Incomes", "Expenses", "OTHERINCOMES", "OTHEREXPENCES" };
 
@@ -134,7 +134,6 @@ public class AccountGroupService {
 	public List<AccountGroupEntity> getAccountGroupListByType(
 			@Named("type") String type, @Named("bid") Long bid) {
 
-	
 		List<AccountGroupEntity> filteraccount = new ArrayList<AccountGroupEntity>();
 
 		List<AccountGroupEntity> list = ofy().load()
@@ -143,16 +142,16 @@ public class AccountGroupService {
 
 		for (AccountGroupEntity ss : list) {
 
-			if (ss.getIsPrimary()) {
-				if (ss.getPrimaryType().trim().equalsIgnoreCase(type)) {
+			if (ss.getIsPrimary() && ss.getAccountGroupType() != null) {
+				if (ss.getAccountGroupType().toString().equalsIgnoreCase(type)) {
 					filteraccount.add(ss);
-
 				}
 			} else {
-				if (ss.getParent().getPrimaryType().trim()
-						.equalsIgnoreCase(type)) {
+				if (ss.getParent() != null
+						&& ss.getParent().getAccountGroupType() != null
+						&& ss.getParent().getAccountGroupType().toString()
+								.trim().equalsIgnoreCase(type)) {
 					filteraccount.add(ss);
-
 				}
 
 			}
@@ -165,8 +164,7 @@ public class AccountGroupService {
 	List<TypeInfo> list = new ArrayList<TypeInfo>();//global value
 	@ApiMethod(name = "getBalanceSheet", path = "getBalanceSheet")
 	public List<TypeInfo> getBalanceSheet(@Named("bid") Long bid) {
-		
-				
+
 		List<TypeInfo> typeList = new ArrayList<TypeInfo>();
 
 		for (int i = 0; i < accountGroupTypeList.length; i++) {// get type
@@ -190,8 +188,10 @@ public class AccountGroupService {
 					ServerMsg accountBalance = as.getAccountBalance(
 							accountEntity.getId(), bid);
 					groupTotal += accountBalance.getReturnBalance();
-					System.out.println("getAccountName:" + accountEntity.getAccountName());
-					System.out.println("accountBalance:" + accountBalance.getReturnBalance());
+					System.out.println("getAccountName:"
+							+ accountEntity.getAccountName());
+					System.out.println("accountBalance:"
+							+ accountBalance.getReturnBalance());
 				}
 
 				if (groupTotal != 0) {
@@ -212,7 +212,7 @@ public class AccountGroupService {
 
 		return typeList;
 	}
-	
+
 	
 	
 	
@@ -290,23 +290,21 @@ public class AccountGroupService {
 	
 	@ApiMethod(name = "getChartSheet", path = "getChartSheet")
 	public List<TypeInfo> getChartSheet(@Named("bid") Long bid) {
-		
+
 		List<TypeInfo> typeList = new ArrayList<TypeInfo>();
 		for (int i = 0; i < accountGroupTypeList.length; i++) {// get type
 			TypeInfo typeInfo = new TypeInfo();
-		
+
 			typeInfo.typeName = accountGroupTypeList[i];
 			typeInfo.groupList = new ArrayList<GroupInfo>();
-		
 
 			List<AccountGroupEntity> typeAccountList = getAccountGroupListByType(
 					typeInfo.typeName, bid);
 
-			
 			for (int j = 0; j < typeAccountList.size(); j++) {
 				GroupInfo groupInfo = new GroupInfo();
 				groupInfo.groupName = typeAccountList.get(j).getGroupName();
-				groupInfo.AccInfoList=new ArrayList<AccInfo>();
+				groupInfo.AccInfoList = new ArrayList<AccInfo>();
 				AccountingService as = new AccountingService();
 				List<AccountEntity> accList = as
 						.getAccountListByGroupId(typeAccountList.get(j).getId());
@@ -314,89 +312,111 @@ public class AccountGroupService {
 				for (AccountEntity accountEntity : accList) {
 					ServerMsg accountBalance = as.getAccountBalance(
 							accountEntity.getId(), bid);
-					AccInfo accinfo=new AccInfo();
-					accinfo.accName=accountEntity.getAccountName();
-					accinfo.accBalance=accountBalance.getReturnBalance();
+					AccInfo accinfo = new AccInfo();
+					accinfo.accName = accountEntity.getAccountName();
+					accinfo.accBalance = accountBalance.getReturnBalance();
 					groupInfo.AccInfoList.add(accinfo);
-				
+
 				}
 				typeInfo.groupList.add(groupInfo);
-				
-				
-/*
-				if (groupTotal != 0) {
-					groupInfo.groupBalance = groupTotal;
-					typeTotal += groupTotal;
-					typeInfo.groupList.add(groupInfo);
-				}
-*/
+
+				/*
+				 * if (groupTotal != 0) { groupInfo.groupBalance = groupTotal;
+				 * typeTotal += groupTotal; typeInfo.groupList.add(groupInfo); }
+				 */
 			}
 
-			
 			typeList.add(typeInfo);
 		}
 
-	//	System.out.println("typeList:******" + typeList.get(0).getGroupList().get(0).getAccInfoList().);
-		
+		// System.out.println("typeList:******" +
+		// typeList.get(0).getGroupList().get(0).getAccInfoList().);
+
 		return typeList;
 	}
-	
-	
-	
 
-	public  class TypeInfo   implements Serializable{
+	public class TypeInfo implements Serializable {
 		String typeName;
 		double typeBalance;
 		List<GroupInfo> groupList;
+
 		public String getTypeName() {
 			return typeName;
 		}
+
 		public void setTypeName(String typeName) {
 			this.typeName = typeName;
 		}
+
 		public double getTypeBalance() {
 			return typeBalance;
 		}
+
 		public void setTypeBalance(double typeBalance) {
 			this.typeBalance = typeBalance;
 		}
+
 		public List<GroupInfo> getGroupList() {
 			return groupList;
 		}
+
 		public void setGroupList(List<GroupInfo> groupList) {
 			this.groupList = groupList;
 		}
 	}
 
-	public  class GroupInfo  implements Serializable{
+	public class GroupInfo implements Serializable {
 		String groupName;
 		double groupBalance;
 		List<AccInfo> AccInfoList;
+
 		public String getGroupName() {
 			return groupName;
 		}
+
 		public void setGroupName(String groupName) {
 			this.groupName = groupName;
 		}
+
 		public double getGroupBalance() {
 			return groupBalance;
 		}
+
 		public void setGroupBalance(double groupBalance) {
 			this.groupBalance = groupBalance;
 		}
+
 		public List<AccInfo> getAccInfoList() {
 			return AccInfoList;
 		}
+
 		public void setAccInfoList(List<AccInfo> accInfoList) {
 			AccInfoList = accInfoList;
 		}
 	}
-public class AccInfo implements Serializable{
-	String accName;
-	double accBalance;
-	public String getAccName() {
-		return accName;
+
+	public class AccInfo implements Serializable {
+		String accName;
+		double accBalance;
+
+		public String getAccName() {
+			return accName;
+		}
+
+		public void setAccName(String accName) {
+			this.accName = accName;
+		}
+
+		public double getAccBalance() {
+			return accBalance;
+		}
+
+		public void setAccBalance(double accBalance) {
+			this.accBalance = accBalance;
+		}
+
 	}
+
 	public void setAccName(String accName) {
 		this.accName = accName;
 	}
@@ -441,8 +461,6 @@ public class getBalanceSheetCalculation  implements Serializable{
 	public void setTotalLiabilities(double totalLiabilities) {
 		this.totalLiabilities = totalLiabilities;
 	}
-
-
 
 }
 
