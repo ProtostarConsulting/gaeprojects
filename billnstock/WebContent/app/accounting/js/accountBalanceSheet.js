@@ -8,8 +8,7 @@ app.filter('positive', function() {
 		return Math.abs(input);
 	};
 });
-app
-		.controller(
+app.controller(
 				"accountBalanceSheetCtr",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
 						$mdUtil, $log, $stateParams, objectFactory, $state,
@@ -95,8 +94,7 @@ app
 					$scope.load_pdf = function() {
 						window.open("PdfBalanceSheet?bid="
 								+ $scope.curUser.business.id);
-						// document.location.href="PdfBalanceSheet";
-
+						
 					}
 
 					$scope.waitForServiceLoad();
