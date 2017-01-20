@@ -28,7 +28,6 @@ public class AccountingService {
 		ofy().save().entity(accountEntity).now();
 		return accountEntity;
 	}
-
 	@ApiMethod(name = "checkAccountAlreadyExist")
 	public ServerMsg checkAccountAlreadyExist(
 			@Named("accountName") String accountName) {
