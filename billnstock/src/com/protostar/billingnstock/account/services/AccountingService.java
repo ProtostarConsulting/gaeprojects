@@ -116,6 +116,7 @@ public class AccountingService {
 			 * (accountEntryEntity.getAccountEntity().getAccountType().trim()
 			 * .equals("NOMINAL")) { accBalance = totalDebit - totalCredit; }
 			 */
+			
 
 			AccountGroupEntity accountGroup = accountEntryEntity
 					.getAccountEntity().getAccountGroup();
