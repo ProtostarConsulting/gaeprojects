@@ -28,6 +28,7 @@ app.filter('htmlToPlainText', function() {
 		return text ? String(text).replace(/<[^>]+>/gm, '') : '';
 	};
 });
+
 app.directive('stringToNumber', function() {
 	return {
 		require : 'ngModel',
@@ -41,6 +42,7 @@ app.directive('stringToNumber', function() {
 		}
 	}
 });
+
 app.directive('stringToDate', function() {
 	return {
 		require : 'ngModel',
