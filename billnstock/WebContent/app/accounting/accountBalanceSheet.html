@@ -55,14 +55,14 @@ td, th { /* //border: 1px solid #dddddd; */
 
 			</tr>
 			<tr>
-				<th colspan="2">Liabilities</th>
+				<th colspan="2">LIABILITIES</th>
 				<td colspan="1"></td>
 			</tr>
 			<tr>
 				<td colspan="2"></td>
 				<td style="text-align: left;" id="content">
 					<div ng-repeat="groupTypeObj in accountGroupTypeGroupList">
-						<div ng-if="groupTypeObj.typeName=='Liabilities'">
+						<div ng-if="groupTypeObj.typeName=='LIABILITIES'">
 							<div ng-repeat="grp in groupTypeObj.groupList"
 								style="text-align: right;">
 								<span style="padding-right: 30%;">{{grp.groupName}}</span> <span
@@ -85,7 +85,7 @@ td, th { /* //border: 1px solid #dddddd; */
 			<table
 			style="width: 50%; border: 1px solid #dddddd; border-color: black; float: left">
 			<tr>
-				<th colspan="2">Assets</th>
+				<th colspan="2">ASSETS</th>
 
 				<th style="text-align: center;"><br> <span> </span></th>
 			</tr>
@@ -97,7 +97,7 @@ td, th { /* //border: 1px solid #dddddd; */
 
 				<td colspan="2"></td>
 				<td style="text-align: left;" id="content">
-					<div ng-if="groupTypeObj.typeName=='Assets'">
+					<div ng-if="groupTypeObj.typeName=='ASSETS'">
 						<div ng-repeat="grp in groupTypeObj.groupList"
 							style="text-align: right;">
 							<span style="padding-right: 30%;">{{grp.groupName}}</span> <span

@@ -114,12 +114,16 @@ public class AccountingService {
 
 			AccountEntity accountEntity = accountEntryEntity.getAccountEntity();
 			AccountGroupEntity accountGroup = accountEntity.getAccountGroup();
+			System.out.println("accountGroup.getAccountGroupType():" + accountGroup.getAccountGroupType());
 			boolean isDebitBalanceAcc = accountGroup.getAccountGroupType() == AccountGroupType.ASSETS
 					|| accountGroup.getAccountGroupType() == AccountGroupType.EXPENSES;
 
 			boolean isCreditBalanceAcc = accountGroup.getAccountGroupType() == AccountGroupType.LIABILITIES
 					|| accountGroup.getAccountGroupType() == AccountGroupType.INCOME
 					|| accountGroup.getAccountGroupType() == AccountGroupType.EQUITY;
+			
+			System.out.println("isDebitBalanceAcc:" + isDebitBalanceAcc);
+			System.out.println("isCreditBalanceAcc:" + isCreditBalanceAcc);
 
 			if (isDebitBalanceAcc) {
 				if (accountEntity.getContra()) {
@@ -135,8 +139,12 @@ public class AccountingService {
 				}
 			}
 		}
+		
 		ServerMsg serverMsg = new ServerMsg();
 		serverMsg.setReturnBalance(accBalance);
+		
+		System.out.println("accountBalance:"
+				+ serverMsg.getReturnBalance());
 		return serverMsg;
 	}
 

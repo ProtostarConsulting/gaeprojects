@@ -158,7 +158,6 @@ public class AccountGroupService {
 			}
 		}
 
-		System.out.println("filteraccount.length-1***" + filteraccount.size());
 		return filteraccount;
 
 	}
@@ -184,13 +183,11 @@ public class AccountGroupService {
 						.getAccountListByGroupId(typeAccountList.get(j).getId());
 				double groupTotal = 0;
 				for (AccountEntity accountEntity : accList) {
-					ServerMsg accountBalance = as.getAccountBalance(
-							accountEntity.getId(), bid);
-					groupTotal += accountBalance.getReturnBalance();
 					System.out.println("getAccountName:"
 							+ accountEntity.getAccountName());
-					System.out.println("accountBalance:"
-							+ accountBalance.getReturnBalance());
+					ServerMsg accountBalance = as.getAccountBalance(
+							accountEntity.getId(), bid);
+					groupTotal += accountBalance.getReturnBalance();					
 				}
 
 				if (groupTotal != 0) {
@@ -201,6 +198,7 @@ public class AccountGroupService {
 
 			}
 
+			
 			typeInfo.typeBalance = typeTotal;
 			typeList.add(typeInfo);
 

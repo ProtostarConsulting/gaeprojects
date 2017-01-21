@@ -20,6 +20,7 @@ import com.protostar.billingnstock.user.entities.UserEntity;
 import com.protostar.billingnstock.user.services.UserService;
 import com.protostar.billnstock.entity.Address;
 import com.protostar.billnstock.until.data.Constants;
+import com.protostar.billnstock.until.data.Constants.AccountGroupType;
 
 @Api(name = "proadminService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.proadmin.services", ownerName = "com.protostar.billingnstock.proadmin.services", packagePath = ""))
 public class ProtostarAdminService {
@@ -230,25 +231,25 @@ public class ProtostarAdminService {
 		fixedAsetAccountGroupEntity.setModifiedDate(new Date());
 		fixedAsetAccountGroupEntity.setGroupName("Fixed Assets");
 		fixedAsetAccountGroupEntity.setIsPrimary(true);
-		fixedAsetAccountGroupEntity.setPrimaryType("Assets");
+		fixedAsetAccountGroupEntity.setAccountGroupType(AccountGroupType.ASSETS);
 		ofy().save().entity(fixedAsetAccountGroupEntity).now();
 
 		AccountGroupEntity suspenseAcGroupEntity = new AccountGroupEntity();
 		suspenseAcGroupEntity.setBusiness(business);
 		suspenseAcGroupEntity.setCreatedDate(new Date());
 		suspenseAcGroupEntity.setModifiedDate(new Date());
-		suspenseAcGroupEntity.setGroupName("SuspenseA/c");
+		suspenseAcGroupEntity.setGroupName("Suspense A/c");
 		suspenseAcGroupEntity.setIsPrimary(true);
-		suspenseAcGroupEntity.setPrimaryType("Liabilities");
+		suspenseAcGroupEntity.setAccountGroupType(AccountGroupType.LIABILITIES);
 		ofy().save().entity(suspenseAcGroupEntity).now();
 
 		AccountGroupEntity salesAccountsGroupEntity = new AccountGroupEntity();
 		salesAccountsGroupEntity.setBusiness(business);
 		salesAccountsGroupEntity.setCreatedDate(new Date());
 		salesAccountsGroupEntity.setModifiedDate(new Date());
-		salesAccountsGroupEntity.setGroupName("SalesAccounts");
+		salesAccountsGroupEntity.setGroupName("Sales Accounts");
 		salesAccountsGroupEntity.setIsPrimary(true);
-		salesAccountsGroupEntity.setPrimaryType("Incomes");
+		salesAccountsGroupEntity.setAccountGroupType(AccountGroupType.INCOME);
 		ofy().save().entity(salesAccountsGroupEntity).now();
 
 		AccountGroupEntity purchaseAccountsGroupEntity = new AccountGroupEntity();
@@ -257,7 +258,7 @@ public class ProtostarAdminService {
 		purchaseAccountsGroupEntity.setModifiedDate(new Date());
 		purchaseAccountsGroupEntity.setGroupName("Purchase Accounts");
 		purchaseAccountsGroupEntity.setIsPrimary(true);
-		purchaseAccountsGroupEntity.setPrimaryType("Expenses");
+		purchaseAccountsGroupEntity.setAccountGroupType(AccountGroupType.EXPENSES);
 
 		ofy().save().entity(purchaseAccountsGroupEntity).now();
 
@@ -265,9 +266,9 @@ public class ProtostarAdminService {
 		miscExpensesASSETGroupEntity.setBusiness(business);
 		miscExpensesASSETGroupEntity.setCreatedDate(new Date());
 		miscExpensesASSETGroupEntity.setModifiedDate(new Date());
-		miscExpensesASSETGroupEntity.setGroupName("Misc.ExpensesASSET");
+		miscExpensesASSETGroupEntity.setGroupName("Misc Expenses ASSET");
 		miscExpensesASSETGroupEntity.setIsPrimary(true);
-		miscExpensesASSETGroupEntity.setPrimaryType("Assets");
+		miscExpensesASSETGroupEntity.setAccountGroupType(AccountGroupType.ASSETS);
 
 		ofy().save().entity(miscExpensesASSETGroupEntity).now();
 
@@ -275,9 +276,9 @@ public class ProtostarAdminService {
 		loansLiabilityGroupEntity.setBusiness(business);
 		loansLiabilityGroupEntity.setCreatedDate(new Date());
 		loansLiabilityGroupEntity.setModifiedDate(new Date());
-		loansLiabilityGroupEntity.setGroupName("Loans(Liability)");
+		loansLiabilityGroupEntity.setGroupName("Loans (Liability)");
 		loansLiabilityGroupEntity.setIsPrimary(true);
-		loansLiabilityGroupEntity.setPrimaryType("Liabilities");
+		loansLiabilityGroupEntity.setAccountGroupType(AccountGroupType.LIABILITIES);
 
 		ofy().save().entity(loansLiabilityGroupEntity).now();
 
@@ -287,7 +288,7 @@ public class ProtostarAdminService {
 		investmentsGroupEntity.setModifiedDate(new Date());
 		investmentsGroupEntity.setGroupName("Investments");
 		investmentsGroupEntity.setIsPrimary(true);
-		investmentsGroupEntity.setPrimaryType("Assets");
+		investmentsGroupEntity.setAccountGroupType(AccountGroupType.ASSETS);
 
 		ofy().save().entity(investmentsGroupEntity).now();
 
@@ -297,7 +298,7 @@ public class ProtostarAdminService {
 		indirectIncomesGroupEntity.setModifiedDate(new Date());
 		indirectIncomesGroupEntity.setGroupName("Indirect  Incomes");
 		indirectIncomesGroupEntity.setIsPrimary(true);
-		indirectIncomesGroupEntity.setPrimaryType("Incomes");
+		indirectIncomesGroupEntity.setAccountGroupType(AccountGroupType.INCOME);
 
 		ofy().save().entity(indirectIncomesGroupEntity).now();
 
@@ -307,7 +308,7 @@ public class ProtostarAdminService {
 		indirectExpensesGroupEntity.setModifiedDate(new Date());
 		indirectExpensesGroupEntity.setGroupName("Indirect Expenses");
 		indirectExpensesGroupEntity.setIsPrimary(true);
-		indirectExpensesGroupEntity.setPrimaryType("Expenses");
+		indirectExpensesGroupEntity.setAccountGroupType(AccountGroupType.EXPENSES);
 
 		ofy().save().entity(indirectExpensesGroupEntity).now();
 
@@ -317,7 +318,7 @@ public class ProtostarAdminService {
 		directIncomesGroupEntity.setModifiedDate(new Date());
 		directIncomesGroupEntity.setGroupName("Direct Incomes");
 		directIncomesGroupEntity.setIsPrimary(true);
-		directIncomesGroupEntity.setPrimaryType("Incomes");
+		directIncomesGroupEntity.setAccountGroupType(AccountGroupType.INCOME);
 
 		ofy().save().entity(directIncomesGroupEntity).now();
 
@@ -327,7 +328,7 @@ public class ProtostarAdminService {
 		directExpensesGroupEntity.setModifiedDate(new Date());
 		directExpensesGroupEntity.setGroupName("Direct Expenses");
 		directExpensesGroupEntity.setIsPrimary(true);
-		directExpensesGroupEntity.setPrimaryType("Expenses");
+		directExpensesGroupEntity.setAccountGroupType(AccountGroupType.EXPENSES);
 
 		ofy().save().entity(directExpensesGroupEntity).now();
 
@@ -337,7 +338,7 @@ public class ProtostarAdminService {
 		currentLiabilitiesGroupEntity.setModifiedDate(new Date());
 		currentLiabilitiesGroupEntity.setGroupName("Current Liabilities");
 		currentLiabilitiesGroupEntity.setIsPrimary(true);
-		currentLiabilitiesGroupEntity.setPrimaryType("Liabilities");
+		currentLiabilitiesGroupEntity.setAccountGroupType(AccountGroupType.LIABILITIES);
 
 		ofy().save().entity(currentLiabilitiesGroupEntity).now();
 
@@ -347,7 +348,7 @@ public class ProtostarAdminService {
 		currentAssetsGroupEntity.setModifiedDate(new Date());
 		currentAssetsGroupEntity.setGroupName("Current Assets");
 		currentAssetsGroupEntity.setIsPrimary(true);
-		currentAssetsGroupEntity.setPrimaryType("Assets");
+		currentAssetsGroupEntity.setAccountGroupType(AccountGroupType.ASSETS);
 
 		ofy().save().entity(currentAssetsGroupEntity).now();
 
@@ -357,7 +358,7 @@ public class ProtostarAdminService {
 		capitalAccountGroupEntity.setModifiedDate(new Date());
 		capitalAccountGroupEntity.setGroupName("Capital Account");
 		capitalAccountGroupEntity.setIsPrimary(true);
-		capitalAccountGroupEntity.setPrimaryType("Liabilities");
+		capitalAccountGroupEntity.setAccountGroupType(AccountGroupType.EQUITY);
 
 		ofy().save().entity(capitalAccountGroupEntity).now();
 
@@ -367,7 +368,7 @@ public class ProtostarAdminService {
 		branchDivisionsGroupEntity.setModifiedDate(new Date());
 		branchDivisionsGroupEntity.setGroupName("Branch Divisions");
 		branchDivisionsGroupEntity.setIsPrimary(true);
-		branchDivisionsGroupEntity.setPrimaryType("Liabilities");
+		branchDivisionsGroupEntity.setAccountGroupType(AccountGroupType.LIABILITIES);
 
 		ofy().save().entity(branchDivisionsGroupEntity).now();
 

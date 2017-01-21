@@ -8,7 +8,8 @@ app.filter('positive', function() {
 		return Math.abs(input);
 	};
 });
-app.controller(
+app
+		.controller(
 				"accountBalanceSheetCtr",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
 						$mdUtil, $log, $stateParams, objectFactory, $state,
@@ -45,7 +46,8 @@ app.controller(
 												$scope.totalLiabilities = 0;
 												$scope.accountGroupTypeGroupList = list;
 												for (var int = 0; int < list.length; int++) {
-													if ((list[int].typeName == "Assets")
+													var typeName = list[int].typeName;
+													if ((typeName == "ASSETS")
 															&& (list[int].groupList != undefined)) {
 														for (var i = 0; i < list[int].groupList.length; i++) {
 															$scope.totalAsset = list[int].groupList[i].groupBalance
@@ -57,7 +59,7 @@ app.controller(
 														}
 													}
 
-													if ((list[int].typeName == "Liabilities")
+													if ((typeName == "LIABILITIES")
 															&& (list[int].groupList != undefined)) {
 														for (var i = 0; i < list[int].groupList.length; i++) {
 															$scope.totalLiabilities = list[int].groupList[i].groupBalance
@@ -70,7 +72,7 @@ app.controller(
 														}
 
 													}
-													if ((list[int].typeName == "EQUITY")
+													if ((typeName == "EQUITY")
 															&& (list[int].groupList != undefined)) {
 														for (var i = 0; i < list[int].groupList.length; i++) {
 															$scope.totalEQUITY = list[int].groupList[i].groupBalance
@@ -79,6 +81,7 @@ app.controller(
 
 													}
 												}
+												
 												$scope.totalLiabilities2 = $scope.totalLiabilities
 														+ $scope.totalEQUITY;
 												$scope.loading = false;
@@ -94,7 +97,7 @@ app.controller(
 					$scope.load_pdf = function() {
 						window.open("PdfBalanceSheet?bid="
 								+ $scope.curUser.business.id);
-						
+
 					}
 
 					$scope.waitForServiceLoad();

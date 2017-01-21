@@ -19,8 +19,6 @@ public class AccountGroupEntity extends BaseEntity {
 	private AccountGroupType accountGroupType = AccountGroupType.NA;
 	private Boolean isPrimary;
 	@Index
-	private String primaryType;
-	@Index
 	private Ref<AccountGroupEntity> parent;
 	private Integer displayOrderNo;
 
@@ -39,8 +37,7 @@ public class AccountGroupEntity extends BaseEntity {
 
 		if (getId() == null) {
 			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
-					EntityUtil.getBusinessRawKey(getBusiness()),
-					Constants.AGE_NO_COUNTER);
+					EntityUtil.getBusinessRawKey(getBusiness()), Constants.AGE_NO_COUNTER);
 			setItemNumber(sequenceGenService.getNextSequenceNumber());
 		}
 	}
@@ -63,7 +60,10 @@ public class AccountGroupEntity extends BaseEntity {
 	}
 
 	public AccountGroupType getAccountGroupType() {
-		return accountGroupType;
+		if (this.parent != null)
+			return parent.get().getAccountGroupType();
+		else
+			return accountGroupType;
 	}
 
 	public void setAccountGroupType(AccountGroupType accountGroupType) {
@@ -92,13 +92,5 @@ public class AccountGroupEntity extends BaseEntity {
 
 	public void setDisplayOrderNo(Integer displayOrderNo) {
 		this.displayOrderNo = displayOrderNo;
-	}
-
-	public String getPrimaryType() {
-		return primaryType;
-	}
-
-	public void setPrimaryType(String primaryType) {
-		this.primaryType = primaryType;
 	}
 }

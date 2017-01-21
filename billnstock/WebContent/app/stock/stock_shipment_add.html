@@ -19,7 +19,7 @@
 				placeholder="Select Warehouse"
 				ng-change="filterStockItemsByWarehouse(stockShipmentObj.fromWH)">
 			<md-option ng-value="warehouse" ng-required="true"
-				ng-selected="(stockShipmentObj.warehouse.id)?(stockShipmentObj.fromWH.id == warehouse.id):($index == 0)"
+				ng-selected="(stockShipmentObj.fromWH.id)?(stockShipmentObj.fromWH.id == warehouse.id):($index == 0)"
 				ng-repeat="warehouse in warehouses">{{warehouse.warehouseName
 			}}</md-option> </md-select> </md-input-container>
 			<div flex layout="row" layout-xs="column">

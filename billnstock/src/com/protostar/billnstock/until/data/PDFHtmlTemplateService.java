@@ -404,9 +404,9 @@ public class PDFHtmlTemplateService {
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 
 			Map<String, Object> root = new HashMap<String, Object>();
-			root.put("groupName", accountGroupEntity.getPrimaryType());
+			root.put("groupName", accountGroupEntity.getGroupName());
 			// root.put("accountName",accountGroupEntity.get;
-			root.put("groupType", accountGroupEntity.getPrimaryType());
+			root.put("groupType", accountGroupEntity.getAccountGroupType().toString());
 			// root.put("balance",purchesEntity.getItem().toString());
 
 			Template temp = getConfiguration().getTemplate(
