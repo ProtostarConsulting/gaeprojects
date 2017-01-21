@@ -16,6 +16,7 @@ import com.googlecode.objectify.Ref;
 import com.protostar.billingnstock.account.entities.AccountEntity;
 import com.protostar.billingnstock.account.entities.AccountGroupEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
+import com.protostar.billnstock.until.data.Constants.AccountGroupType;
 import com.protostar.billnstock.until.data.ServerMsg;
 
 @Api(name = "accountGroupService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.services", ownerName = "com.protostar.billingnstock.services", packagePath = ""))
@@ -162,17 +163,13 @@ public class AccountGroupService {
 
 	}
 
-	List<TypeInfo> list = new ArrayList<TypeInfo>();// global value
-
 	@ApiMethod(name = "getBalanceSheet", path = "getBalanceSheet")
 	public List<TypeInfo> getBalanceSheet(@Named("bid") Long bid) {
-
 		List<TypeInfo> typeList = new ArrayList<TypeInfo>();
-
-		for (int i = 0; i < accountGroupTypeList.length; i++) {// get type
+		AccountGroupType[] groupTypes = AccountGroupType.values();
+		for (int i = 0; i < groupTypes.length; i++) {// get type
 			TypeInfo typeInfo = new TypeInfo();
-			double typeBalance = 0;
-			typeInfo.typeName = accountGroupTypeList[i];
+			typeInfo.typeName = groupTypes[i].toString();
 			typeInfo.groupList = new ArrayList<GroupInfo>();
 
 			List<AccountGroupEntity> typeAccountList = getAccountGroupListByType(
@@ -206,17 +203,16 @@ public class AccountGroupService {
 
 			typeInfo.typeBalance = typeTotal;
 			typeList.add(typeInfo);
-			list.add(typeInfo);
-		}
 
-		System.out.println("globalList:******" + list.size());
+		}
 
 		return typeList;
 	}
 
 	@ApiMethod(name = "getBalanceSheetCalculation", path = "getBalanceSheetCalculation")
-	public getBalanceSheetCalculation getBalanceSheetCalculation() {
-		getBalanceSheetCalculation BalanceSheetCalculation = new getBalanceSheetCalculation();
+	public BalanceSheetData getBalanceSheetCalculation() {
+		BalanceSheetData BalanceSheetCalculation = new BalanceSheetData();
+		List<TypeInfo> list = new ArrayList<TypeInfo>();// global value
 
 		for (int int2 = 0; int2 < list.size(); int2++) {
 			if ((list.get(int2).getTypeName().toString() == "Assets")
@@ -391,7 +387,7 @@ public class AccountGroupService {
 
 	}
 
-	public class getBalanceSheetCalculation implements Serializable {
+	public class BalanceSheetData implements Serializable {
 
 		double totalAsset = 0;
 		double totalLiabilities2 = 0;

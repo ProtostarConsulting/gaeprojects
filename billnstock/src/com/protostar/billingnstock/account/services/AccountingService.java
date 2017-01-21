@@ -18,6 +18,8 @@ import com.protostar.billingnstock.account.entities.PayableEntity;
 import com.protostar.billingnstock.account.entities.ReceivableEntity;
 import com.protostar.billingnstock.cust.entities.Customer;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
+import com.protostar.billnstock.until.data.Constants.AccountGroupType;
+import com.protostar.billnstock.until.data.Constants.AccountingAccountType;
 import com.protostar.billnstock.until.data.ServerMsg;
 
 @Api(name = "accountService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.stock.cust.services", ownerName = "com.protostar.billingnstock.stock.cust.services", packagePath = ""))
@@ -28,6 +30,7 @@ public class AccountingService {
 		ofy().save().entity(accountEntity).now();
 		return accountEntity;
 	}
+
 	@ApiMethod(name = "checkAccountAlreadyExist")
 	public ServerMsg checkAccountAlreadyExist(
 			@Named("accountName") String accountName) {
@@ -108,20 +111,28 @@ public class AccountingService {
 
 		if (!(filteredEntries.isEmpty())) {
 			AccountEntryEntity accountEntryEntity = filteredEntries.get(0);
-			/*
-			 * if (accountEntryEntity.getAccountEntity().getAccountType().trim()
-			 * .equals("PERSONAL")) { accBalance = totalDebit - totalCredit; }
-			 * if (accountEntryEntity.getAccountEntity().getAccountType().trim()
-			 * .equals("REAL")) { accBalance = totalDebit - totalCredit; } if
-			 * (accountEntryEntity.getAccountEntity().getAccountType().trim()
-			 * .equals("NOMINAL")) { accBalance = totalDebit - totalCredit; }
-			 */
-			
 
-			AccountGroupEntity accountGroup = accountEntryEntity
-					.getAccountEntity().getAccountGroup();
-			if (accountGroup.getPrimaryType().equals("PERSONAL")) {
-				accBalance = totalDebit - totalCredit;
+			AccountEntity accountEntity = accountEntryEntity.getAccountEntity();
+			AccountGroupEntity accountGroup = accountEntity.getAccountGroup();
+			boolean isDebitBalanceAcc = accountGroup.getAccountGroupType() == AccountGroupType.ASSETS
+					|| accountGroup.getAccountGroupType() == AccountGroupType.EXPENSES;
+
+			boolean isCreditBalanceAcc = accountGroup.getAccountGroupType() == AccountGroupType.LIABILITIES
+					|| accountGroup.getAccountGroupType() == AccountGroupType.INCOME
+					|| accountGroup.getAccountGroupType() == AccountGroupType.EQUITY;
+
+			if (isDebitBalanceAcc) {
+				if (accountEntity.getContra()) {
+					accBalance = totalCredit - totalDebit;
+				} else {
+					accBalance = totalDebit - totalCredit;
+				}
+			} else if (isCreditBalanceAcc) {
+				if (accountEntity.getContra()) {
+					accBalance = totalDebit - totalCredit;
+				} else {
+					accBalance = totalCredit - totalDebit;
+				}
 			}
 		}
 		ServerMsg serverMsg = new ServerMsg();
