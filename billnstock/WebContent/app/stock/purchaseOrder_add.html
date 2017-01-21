@@ -119,11 +119,11 @@
 							</label> <input type="number" ng-model="item.qty"
 								ng-change="calProductSubTotal()" ng-required="true"> </md-input-container></td>
 						<td><md-input-container flex> <label>Purchase
-								Price </label> <input type="number" ng-model="item.cost"
+								Price </label> <input type="number" ng-model="item.price"
 								ng-change="calProductSubTotal()" aria-label="iprice"
 								ng-required="true"> </md-input-container></td>
 						<td><md-input-container flex> <b>{{item.qty
-								* item.cost | currency:"":"2"}} </b></td>
+								* item.price | currency:"":"2"}} </b></td>
 						<td><md-icon
 								md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
 								ng-click="removeProductItem($index)" class="name"
@@ -140,7 +140,36 @@
 						<td></td>
 						<td></td>
 						<td></td>
+
 					</tr>
+					<tr>
+						<td></td>
+						<td><label>Product Tax</label></td>
+						<td><md-input-container flex
+								ng-hide="purchaseOrderObj.productLineItemList.length==0">
+							<md-select ng-model="purchaseOrderObj.selectedProductTax"
+								placeholder="Select Tax" ng-change="productTaxChanged()">
+							<md-option ng-value="taxValue"
+								ng-selected="purchaseOrderObj.selectedProductTax.id == taxValue.id"
+								ng-repeat="taxValue in taxforinvoice">{{taxValue.taxCodeName}}</md-option>
+							</md-select> </md-input-container></td>
+						<td>{{purchaseOrderObj.selectedProductTax.taxPercenatge}}</td>
+						<td><b>{{purchaseOrderObj.productTaxTotal |
+								currency:"":"2"}}</b></td>
+						<td></td>
+					</tr>
+
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td><label>Product Total </label></td>
+						<td><b>{{purchaseOrderObj.productTotal |
+								currency:"":"2"}}</b></td>
+						<td></td>
+					</tr>
+
+
 				</tbody>
 			</table>
 		</div>
@@ -187,7 +216,7 @@
 								md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
 								ng-click="removeServiceItem($index)" class="name"
 								style="color: Green; height: 18px; width: 18px"></md-icon></td>
-						<td></td>
+
 					</tr>
 
 					<tr>
@@ -201,6 +230,60 @@
 						<td></td>
 						<td></td>
 					</tr>
+					<tr>
+						<td></td>
+						<td><label>Services Tax</label></td>
+						<td><md-input-container flex
+								ng-hide="purchaseOrderObj.serviceLineItemList.length==0">
+							<md-select ng-model="purchaseOrderObj.selectedServiceTax"
+								placeholder="Select Tax" ng-change="serviceTaxChanged()">
+							<md-option ng-value="taxValue"
+								ng-repeat="taxValue in taxforinvoice"
+								ng-selected="purchaseOrderObj.selectedServiceTax.id == taxValue.id">{{taxValue.taxCodeName}}</md-option>
+							</md-select> </md-input-container></td>
+						<td>{{purchaseOrderObj.selectedServiceTax.taxPercenatge}}</td>
+						<td><b>{{purchaseOrderObj.serviceTaxTotal |
+								currency:"":"2"}}</b></td>
+						<td></td>
+					</tr>
+
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td><label>Service Total</label></td>
+						<td><b>{{purchaseOrderObj.serviceTotal |
+								currency:"":"2"}}</b></td>
+						<td></td>
+					</tr>
+
+					<tr ng-show="tempDiscAmount">
+						<td></td>
+						<td></td>
+						<td></td>
+						<td><label>Discount</label></td>
+						<td><b> {{tempDiscAmount | currency:"":"2"}}</b></td>
+						<td></td>
+					</tr>
+
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td><label>Final Total</label></td>
+						<td><b> {{purchaseOrderObj.finalTotal | currency:"":"2"}}</b></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+
+
 				</tbody>
 			</table>
 

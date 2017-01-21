@@ -22,7 +22,8 @@ app
 					$scope.getAllPurchaseOrder = function() {
 						$scope.loading = true;
 						var stockService = appEndpointSF.getStockService();
-						stockService.getAllPurchaseOrder($scope.curUser.business.id)
+						stockService
+								.getAllPurchaseOrder($scope.curUser.business.id)
 								.then(
 										function(purchaseOrderList) {
 											$scope.purchaseOrderList = purchaseOrderList;
@@ -50,7 +51,8 @@ app
 						};
 
 						var stockService = appEndpointSF.getStockService();
-						stockService.fetchEntityListByPaging(
+						stockService
+								.fetchEntityListByPaging(
 										$scope.curUser.business.id,
 										pagingInfoTemp)
 								.then(
@@ -76,7 +78,12 @@ app
 
 					$scope.waitForServiceLoad();
 
-					/* Setup menu */
+					$scope.printPO = function(poId) {
+						var bid = $scope.curUser.business.id;
+						window.open("PrintPdfPurchaseOrder?bid=" + bid
+								+ "&poId=" + poId);
+					}
+
 					$scope.toggleRight = buildToggler('right');
 					/**
 					 * Build handler to open/close a SideNav; when animation
