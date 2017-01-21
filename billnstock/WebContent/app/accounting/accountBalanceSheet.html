@@ -9,66 +9,7 @@ td, th { /* //border: 1px solid #dddddd; */
 	text-align: left;
 	padding: 8px;
 }
-
-@media print {
-	{
-	font-style
-	
-	
-	
-	
-	:italic
-	
-	
-	
-	
-	;
-	vertical-align
-	
-	
-	
-	
-	:
-	
-	
-	 
-	
-	
-	bottom
-	
-	
-	
-	
-	;
-	margin-top
-	
-	
-	
-	
-	:
-	
-	
-	 
-	
-	
-	90%;
-	margin-bottom
-	
-	
-	
-	
-	:
-	
-	
-	 
-	
-	
-	0%;
-}
-}
 </style>
-
-
 <section layout="row" layout-xs="column">
 	<md-subheader class="md-primary">
 	<h4 class="md-title">Balance Sheet</h4>
@@ -87,38 +28,7 @@ td, th { /* //border: 1px solid #dddddd; */
 	layout-padding>
 <form>
 	<div id="balanceSheetDiv" style="width: 100%;">
-		<table
-			style="width: 50%; border: 1px solid #dddddd; border-color: black; float: left">
-			<tr>
-				<th colspan="2">Assets</th>
-
-				<th style="text-align: center;"><br> <span> </span></th>
-			</tr>
-			<tr>
-				<td colspan="3"></td>
-
-			</tr>
-			<tr ng-repeat="groupTypeObj in accountGroupTypeGroupList">
-
-				<td colspan="2"></td>
-				<td style="text-align: left;" id="content">
-					<div ng-if="groupTypeObj.typeName=='Assets'">
-						<div ng-repeat="grp in groupTypeObj.groupList"
-							style="text-align: right;">
-							<span style="padding-right: 30%;">{{grp.groupName}}</span> <span
-								flex></span> <span ng-if="grp.groupBalance < 0">(</span><span
-								style="text-align: right;">{{grp.groupBalance|positive|number:2}}</span><span
-								ng-if="grp.groupBalance < 0">)</span> <br> <br>
-						</div>
-						<div class="bottom" style="text-align: right; align: bottom">
-							<span style="padding-right: 30%;"><b>Total Asset</b></span><span
-								style="align: right;"><b>{{totalAsset}} </b></span>
-						</div>
-					</div>
-				</td>
-			</tr>
-
-		</table>
+	
 		<table
 			style="width: 50%; border: 1px solid #dddddd; border-color: black; float: left">
 
@@ -170,6 +80,41 @@ td, th { /* //border: 1px solid #dddddd; */
 			</tr>
 
 		</table>
+		
+		
+			<table
+			style="width: 50%; border: 1px solid #dddddd; border-color: black; float: left">
+			<tr>
+				<th colspan="2">Assets</th>
+
+				<th style="text-align: center;"><br> <span> </span></th>
+			</tr>
+			<tr>
+				<td colspan="3"></td>
+
+			</tr>
+			<tr ng-repeat="groupTypeObj in accountGroupTypeGroupList">
+
+				<td colspan="2"></td>
+				<td style="text-align: left;" id="content">
+					<div ng-if="groupTypeObj.typeName=='Assets'">
+						<div ng-repeat="grp in groupTypeObj.groupList"
+							style="text-align: right;">
+							<span style="padding-right: 30%;">{{grp.groupName}}</span> <span
+								flex></span> <span ng-if="grp.groupBalance < 0">(</span><span
+								style="text-align: right;">{{grp.groupBalance|positive|number:2}}</span><span
+								ng-if="grp.groupBalance < 0">)</span> <br> <br>
+						</div>
+						<div class="bottom" style="text-align: right; align: bottom">
+							<span style="padding-right: 30%;"><b>Total Asset</b></span><span
+								style="align: right;"><b>{{totalAsset}} </b></span>
+						</div>
+					</div>
+				</td>
+			</tr>
+
+		</table>
+		
 
 	</div>
 	<!-- Total Asset:

@@ -107,7 +107,8 @@
 		</div>
 	</div>
 	<section layout="row" layout-xs="column" layout-align="left left">
-		<md-button class="md-raised md-primary" ng-click="addAccount()">Update</md-button>
+	
+		<md-button class="md-raised md-primary" ng-bind="tempAccount.id?'Update':'Save'" ng-click="addAccount()"></md-button>
 		<md-button class="md-raised md-primary" ng-click="cancel()">Cancle</md-button>
 	</section>
 </form>
