@@ -140,13 +140,6 @@
     <servlet-name>PdfVouchers</servlet-name>
     <url-pattern>/PdfVouchers</url-pattern>
   </servlet-mapping>
-  
-  
-  
-  
-  
-  
-  
   <servlet>
     <description/>
     <display-name>PdfBalanceSheet</display-name>
@@ -157,14 +150,6 @@
     <servlet-name>PdfBalanceSheet</servlet-name>
     <url-pattern>/PdfBalanceSheet</url-pattern>
   </servlet-mapping>
-  
-  
-  
-  
-  
-  
-  
-  
   <servlet>
     <description/>
     <display-name>DownloadAccountChartServlet</display-name>
@@ -253,5 +238,25 @@
   <servlet-mapping>
     <servlet-name>PrintPdfInvoice</servlet-name>
     <url-pattern>/PrintPdfInvoice</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description/>
+    <display-name>PrintPdfQuotation</display-name>
+    <servlet-name>PrintPdfQuotation</servlet-name>
+    <servlet-class>com.protostar.billingnstock.invoice.services.PrintPdfQuotation</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PrintPdfQuotation</servlet-name>
+    <url-pattern>/PrintPdfQuotation</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description/>
+    <display-name>PrintPdfPurchaseOrder</display-name>
+    <servlet-name>PrintPdfPurchaseOrder</servlet-name>
+    <servlet-class>com.protostar.billingnstock.stock.services.PrintPdfPurchaseOrder</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PrintPdfPurchaseOrder</servlet-name>
+    <url-pattern>/PrintPdfPurchaseOrder</url-pattern>
   </servlet-mapping>
 </web-app>
