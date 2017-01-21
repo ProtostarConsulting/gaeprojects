@@ -23,10 +23,17 @@ td {
 
 </style>
 
-<div align="center">
- <h3 align="center">${BusinessName}</h3>
- ${BusinessAddress}
+<div align="right">  	
+ <table style="width: 100%; height: 100%; border: 0px">
+	<tr>
+		<td style="width: 40%; border: 0px"></td>
+		<td style="width: 60%; border: 0px"><div align="right"> <b>${BusinessName}</b> <br></br> ${BusinessAddress}</div></td>		
+	</tr>
+  </table>	
 </div>
+<p>
+	<br></br>
+</p>
 <hr></hr>
 <p>
 	<br></br>

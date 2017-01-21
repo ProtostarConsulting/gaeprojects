@@ -134,7 +134,7 @@ td {
   				<#assign taxCodeName = "">
 			</#if>	
 			<tr>
-			<td align="left">${lineItem.stockItemType.itemName}</td>
+			<td align="left">${lineItem.itemName}</td>
 			<td align="center">${lineItem.qty}</td>
 			<td align="right">${lineItem.price}</td>			
 			<td align="right">${subTotal}</td>
