@@ -1951,6 +1951,18 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
+	StockService.getPOByID = function(busId,id){
+		var deferred = $q.defer();
+		gapi.client.stockService.getPOByID({
+			'busId' : busId,
+			"id" : id
+		}).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+		
+	}
+	
 	StockService.fetchEntityListByPaging = function(busId, pagingInfo) {
 		var deferred = $q.defer();
 		gapi.client.stockService.fetchEntityListByPaging({
@@ -2170,6 +2182,16 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
+	InvoiceService.getQuotationByID = function(busId,id) {
+		var deferred = $q.defer();
+		gapi.client.invoiceService.getQuotationByID({
+			'busId' : busId,
+			"id" : id
+		}).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}
 	/* =============================================================================================================================== */
 
 	// Start of SalesOrderService
