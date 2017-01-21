@@ -31,6 +31,8 @@ import com.protostar.billingnstock.cust.entities.Customer;
 import com.protostar.billingnstock.hr.entities.MonthlyPaymentDetailEntity;
 import com.protostar.billingnstock.hr.entities.SalStruct;
 import com.protostar.billingnstock.invoice.entities.InvoiceEntity;
+import com.protostar.billingnstock.invoice.entities.QuotationEntity;
+import com.protostar.billingnstock.purchase.entities.PurchaseOrderEntity;
 import com.protostar.billingnstock.stock.entities.StockLineItem;
 import com.protostar.billingnstock.tax.entities.TaxEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
@@ -63,118 +65,111 @@ public class PDFHtmlTemplateService {
 		cfg.setLogTemplateExceptions(false);
 		return cfg;
 	}
-	
-	
-	
-public void  generatePdfAccountChart(List<TypeInfo> accountChart,ServletOutputStream outputStream,Long bid){
-		
+
+	public void generatePdfAccountChart(List<TypeInfo> accountChart,
+			ServletOutputStream outputStream, Long bid) {
+
 		try {
-			BusinessEntity businessEntity=new BusinessEntity();
+			BusinessEntity businessEntity = new BusinessEntity();
 			com.protostar.billingnstock.user.services.UserService user = new com.protostar.billingnstock.user.services.UserService();
-			businessEntity=user.getBusinessById(bid);
+			businessEntity = user.getBusinessById(bid);
 			Document document = new Document();
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 			document.open();
-			
+
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
-		Map<String, Object> root = new HashMap<String, Object>();
-		root.put("accountChart", accountChart);
-		root.put("buisinessName" ,""+ businessEntity.getBusinessName());
-		StringBuffer addressBuf = new StringBuffer();
-		Address address =  businessEntity.getAddress();
-		
-		if (address != null) {
-			if (address.getLine1() != null && !address.getLine1().isEmpty())
-				addressBuf.append(address.getLine1());
-			if (address.getLine2() != null && !address.getLine2().isEmpty())
-				addressBuf.append(", " + address.getLine2());
-			if (address.getCity() != null && !address.getCity().isEmpty())
-				addressBuf.append(", " + address.getCity());
-			if (address.getState() != null && !address.getState().isEmpty())
-				addressBuf.append(", " + address.getState());
-		}
+			Map<String, Object> root = new HashMap<String, Object>();
+			root.put("accountChart", accountChart);
+			root.put("buisinessName", "" + businessEntity.getBusinessName());
+			StringBuffer addressBuf = new StringBuffer();
+			Address address = businessEntity.getAddress();
 
-		String buisinessAddress = addressBuf.toString();
-		
-		root.put("buisinessAddress", "" + buisinessAddress);
-		Template temp = getConfiguration().getTemplate(
-				"pdf_templates/accountChart_tmpl.ftlh");
+			if (address != null) {
+				if (address.getLine1() != null && !address.getLine1().isEmpty())
+					addressBuf.append(address.getLine1());
+				if (address.getLine2() != null && !address.getLine2().isEmpty())
+					addressBuf.append(", " + address.getLine2());
+				if (address.getCity() != null && !address.getCity().isEmpty())
+					addressBuf.append(", " + address.getCity());
+				if (address.getState() != null && !address.getState().isEmpty())
+					addressBuf.append(", " + address.getState());
+			}
 
-		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
-				5000);
-		Writer out = new PrintWriter(byteArrayOutputStream);
-		temp.process(root, out);
-	
-		String pdfXMLContent = byteArrayOutputStream.toString();
+			String buisinessAddress = addressBuf.toString();
 
-		worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
-		document.close();
-			
-			
-			
-		}catch (Exception e) {
+			root.put("buisinessAddress", "" + buisinessAddress);
+			Template temp = getConfiguration().getTemplate(
+					"pdf_templates/accountChart_tmpl.ftlh");
+
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
+					5000);
+			Writer out = new PrintWriter(byteArrayOutputStream);
+			temp.process(root, out);
+
+			String pdfXMLContent = byteArrayOutputStream.toString();
+
+			worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
+			document.close();
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 
-}
-	
-	
-	
-	
-	public void  generatePdfBalanceSheet(List<TypeInfo> balanceSheetList,ServletOutputStream outputStream,Long bid){
-		
+	}
+
+	public void generatePdfBalanceSheet(List<TypeInfo> balanceSheetList,
+			ServletOutputStream outputStream, Long bid) {
+
 		try {
-			
-			BusinessEntity businessEntity=new BusinessEntity();
+
+			BusinessEntity businessEntity = new BusinessEntity();
 			com.protostar.billingnstock.user.services.UserService user = new com.protostar.billingnstock.user.services.UserService();
-			businessEntity=user.getBusinessById(bid);
+			businessEntity = user.getBusinessById(bid);
 			Document document = new Document();
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 			document.open();
 			Date today = new Date();
-			//String date1 = today.getDate() + "_" + today.getMonth() + "_"
-			//		+ today.getYear();
+			// String date1 = today.getDate() + "_" + today.getMonth() + "_"
+			// + today.getYear();
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
-		Map<String, Object> root = new HashMap<String, Object>();
-		root.put("balanceSheetList", balanceSheetList);
-		root.put("buisinessName" ,""+ businessEntity.getBusinessName());
-		root.put("date" ,""+ today);
-		
-		StringBuffer addressBuf = new StringBuffer();
-		Address address =  businessEntity.getAddress();
-		if (address != null) {
-			if (address.getLine1() != null && !address.getLine1().isEmpty())
-				addressBuf.append(address.getLine1());
-			if (address.getLine2() != null && !address.getLine2().isEmpty())
-				addressBuf.append(", " + address.getLine2());
-			if (address.getCity() != null && !address.getCity().isEmpty())
-				addressBuf.append(", " + address.getCity());
-			if (address.getState() != null && !address.getState().isEmpty())
-				addressBuf.append(", " + address.getState());
-		}
+			Map<String, Object> root = new HashMap<String, Object>();
+			root.put("balanceSheetList", balanceSheetList);
+			root.put("buisinessName", "" + businessEntity.getBusinessName());
+			root.put("date", "" + today);
 
-		String buisinessAddress = addressBuf.toString();
-		
-		root.put("buisinessAddress", "" + buisinessAddress);
-		Template temp = getConfiguration().getTemplate(
-				"pdf_templates/balanceSheet_tmpl.ftlh");
+			StringBuffer addressBuf = new StringBuffer();
+			Address address = businessEntity.getAddress();
+			if (address != null) {
+				if (address.getLine1() != null && !address.getLine1().isEmpty())
+					addressBuf.append(address.getLine1());
+				if (address.getLine2() != null && !address.getLine2().isEmpty())
+					addressBuf.append(", " + address.getLine2());
+				if (address.getCity() != null && !address.getCity().isEmpty())
+					addressBuf.append(", " + address.getCity());
+				if (address.getState() != null && !address.getState().isEmpty())
+					addressBuf.append(", " + address.getState());
+			}
 
-		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
-				5000);
-		Writer out = new PrintWriter(byteArrayOutputStream);
-		temp.process(root, out);
-	
-		String pdfXMLContent = byteArrayOutputStream.toString();
+			String buisinessAddress = addressBuf.toString();
 
-		worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
-		document.close();
-		
-			
-		}catch (Exception e) {
+			root.put("buisinessAddress", "" + buisinessAddress);
+			Template temp = getConfiguration().getTemplate(
+					"pdf_templates/balanceSheet_tmpl.ftlh");
+
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
+					5000);
+			Writer out = new PrintWriter(byteArrayOutputStream);
+			temp.process(root, out);
+
+			String pdfXMLContent = byteArrayOutputStream.toString();
+
+			worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
+			document.close();
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	public void generateVoucherPDF(VoucherEntity voucherEntity,
@@ -206,10 +201,11 @@ public void  generatePdfAccountChart(List<TypeInfo> accountChart,ServletOutputSt
 			Document document = new Document();
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 			document.open();
-			Image logoURL = Image.getInstance("img/images/protostar_logo_pix_313_132.jpg");
-			   logoURL.setAbsolutePosition(50f,788f);
-			   logoURL.scaleToFit(90f, 90f);
-			   String logo = String.valueOf(document.add(logoURL));
+			Image logoURL = Image
+					.getInstance("img/images/protostar_logo_pix_313_132.jpg");
+			logoURL.setAbsolutePosition(50f, 788f);
+			logoURL.scaleToFit(90f, 90f);
+			String logo = String.valueOf(document.add(logoURL));
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 
 			Map<String, Object> root = new HashMap<String, Object>();
@@ -244,7 +240,7 @@ public void  generatePdfAccountChart(List<TypeInfo> accountChart,ServletOutputSt
 					5000);
 			Writer out = new PrintWriter(byteArrayOutputStream);
 			temp.process(root, out);
-			
+
 			String pdfXMLContent = byteArrayOutputStream.toString();
 
 			worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
@@ -261,10 +257,12 @@ public void  generatePdfAccountChart(List<TypeInfo> accountChart,ServletOutputSt
 			Document document = new Document();
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 
-			document.open();Image logoURL = Image.getInstance("img/images/protostar_logo_pix_313_132.jpg");
-			   logoURL.setAbsolutePosition(50f, 788f);
-			   logoURL.scaleToFit(90f, 90f);
-			   String logo = String.valueOf(document.add(logoURL));
+			document.open();
+			Image logoURL = Image
+					.getInstance("img/images/protostar_logo_pix_313_132.jpg");
+			logoURL.setAbsolutePosition(50f, 788f);
+			logoURL.scaleToFit(90f, 90f);
+			String logo = String.valueOf(document.add(logoURL));
 
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 
@@ -309,7 +307,7 @@ public void  generatePdfAccountChart(List<TypeInfo> accountChart,ServletOutputSt
 					5000);
 			Writer out = new PrintWriter(byteArrayOutputStream);
 			temp.process(root, out);
-		
+
 			String pdfXMLContent = byteArrayOutputStream.toString();
 
 			worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
@@ -452,8 +450,10 @@ public void  generatePdfAccountChart(List<TypeInfo> accountChart,ServletOutputSt
 			Document document = new Document();
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 			document.open();
-			/*Image logoURL = Image
-					.getInstance("img/images/protostar_logo_pix_313_132.jpg");*/
+			/*
+			 * Image logoURL = Image
+			 * .getInstance("img/images/protostar_logo_pix_313_132.jpg");
+			 */
 			addDocumentHeaderLogo(mtlyPayObj, document);
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 			Map<String, Object> root = new HashMap<String, Object>();
@@ -600,13 +600,11 @@ public void  generatePdfAccountChart(List<TypeInfo> accountChart,ServletOutputSt
 
 	}
 
-
-
-	private void addDocumentHeaderLogo(BaseEntity enity,
-			Document document) throws BadElementException,
-			MalformedURLException, IOException, DocumentException {
-		Image logoURL = Image
-				.getInstance(enity.getBusiness().getBizLogoGCSURL());
+	private void addDocumentHeaderLogo(BaseEntity enity, Document document)
+			throws BadElementException, MalformedURLException, IOException,
+			DocumentException {
+		Image logoURL = Image.getInstance(enity.getBusiness()
+				.getBizLogoGCSURL());
 		logoURL.setAbsolutePosition(50f, 750f);
 		logoURL.scaleToFit(150f, 180f);
 		document.add(logoURL);
@@ -666,10 +664,12 @@ public void  generatePdfAccountChart(List<TypeInfo> accountChart,ServletOutputSt
 					custaddressBuf.append(customerAddress.getLine1());
 				if (customerAddress.getLine2() != null
 						&& !customerAddress.getLine2().isEmpty())
-					custaddressBuf.append(", <br></br>" + customerAddress.getLine2());
+					custaddressBuf.append(", <br></br>"
+							+ customerAddress.getLine2());
 				if (customerAddress.getCity() != null
 						&& !customerAddress.getCity().isEmpty())
-					custaddressBuf.append(",<br></br>" + customerAddress.getCity());
+					custaddressBuf.append(",<br></br>"
+							+ customerAddress.getCity());
 				if (customerAddress.getState() != null
 						&& !customerAddress.getState().isEmpty())
 					custaddressBuf.append(", " + customerAddress.getState());
@@ -758,16 +758,258 @@ public void  generatePdfAccountChart(List<TypeInfo> accountChart,ServletOutputSt
 			e.printStackTrace();
 		}
 	}
-	
-	
-	private void generatePdfBalanceSheet(ServletOutputStream outputStream){
-		
-		
-		
-		
-		
-		
-		
+
+	public void generateQuotationViewPDF(QuotationEntity quotationEntity,
+			ServletOutputStream outputStream) {
+		if (quotationEntity instanceof QuotationEntity) {
+			generateQuotationPDF((QuotationEntity) quotationEntity,
+					outputStream);
+		} else {
+			throw new RuntimeException(
+					"Did not find this entity PDF handling method"
+							+ quotationEntity.getClass());
+		}
 	}
-	
+
+	private void generateQuotationPDF(QuotationEntity quotationEntity,
+			ServletOutputStream outputStream) {
+
+		try {
+			Document document = new Document();
+			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
+			document.open();
+			addDocumentHeaderLogo(quotationEntity, document);
+			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
+
+			Map<String, Object> root = new HashMap<String, Object>();
+
+			DecimalFormat df = new DecimalFormat("#0.00");
+
+			double discAmt = quotationEntity.getInvoiceObj().getDiscAmount();
+			if (discAmt > 0) {
+				root.put("Discount", df.format(discAmt));
+			}
+
+			TaxEntity servTax = quotationEntity.getInvoiceObj()
+					.getSelectedServiceTax();
+			TaxEntity prodTax = quotationEntity.getInvoiceObj()
+					.getSelectedProductTax();
+
+			List<StockLineItem> serviceLineItemListForQuot = quotationEntity
+					.getInvoiceObj().getServiceLineItemList();
+			List<StockLineItem> productLineItemListForQuot = quotationEntity
+					.getInvoiceObj().getProductLineItemList();
+
+			if (serviceLineItemListForQuot != null
+					&& serviceLineItemListForQuot.size() > 0) {
+				root.put("serviceItemList", serviceLineItemListForQuot);
+				root.put("serviceTax", servTax);
+			}
+			if (productLineItemListForQuot != null
+					&& productLineItemListForQuot.size() > 0) {
+				root.put("productItemList", productLineItemListForQuot);
+				root.put("productTax", prodTax);
+			}
+
+			Customer customer = quotationEntity.getInvoiceObj().getCustomer();
+			String customerName = customer.getCompanyName();
+
+			StringBuffer custaddressBuffer = new StringBuffer();
+			Address customerAddress = customer.getAddress();
+			if (customerAddress != null) {
+				if (customerAddress.getLine1() != null
+						&& !customerAddress.getLine1().isEmpty())
+					custaddressBuffer.append(customerAddress.getLine1());
+				if (customerAddress.getLine2() != null
+						&& !customerAddress.getLine2().isEmpty())
+					custaddressBuffer.append(", <br></br>"
+							+ customerAddress.getLine2());
+				if (customerAddress.getCity() != null
+						&& !customerAddress.getCity().isEmpty())
+					custaddressBuffer.append(",<br></br>"
+							+ customerAddress.getCity());
+				if (customerAddress.getState() != null
+						&& !customerAddress.getState().isEmpty())
+					custaddressBuffer.append(", " + customerAddress.getState());
+			}
+
+			String custAddressForQuot = custaddressBuffer.toString();
+
+			BusinessEntity business = quotationEntity.getBusiness();
+
+			StringBuffer addressBuf = new StringBuffer();
+			Address address = business.getAddress();
+			if (address != null) {
+				if (address.getLine1() != null && !address.getLine1().isEmpty())
+					addressBuf.append(address.getLine1());
+				if (address.getLine2() != null && !address.getLine2().isEmpty())
+					addressBuf.append(", " + address.getLine2());
+				if (address.getCity() != null && !address.getCity().isEmpty())
+					addressBuf.append(", " + address.getCity());
+				if (address.getState() != null && !address.getState().isEmpty())
+					addressBuf.append(", " + address.getState());
+			}
+
+			String businessAddress = addressBuf.toString();
+
+			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
+			Date today = quotationEntity.getCreatedDate();
+			String quotationDate = sdfDate.format(today);
+
+			String noteToCust = quotationEntity.getInvoiceObj()
+					.getNoteToCustomer();
+			double finalTotal = quotationEntity.getInvoiceObj().getFinalTotal();
+
+			// Customer Details
+			root.put("CustomerName", customerName);
+			root.put("CustomerAddress", custAddressForQuot);
+			root.put("NoteToCust", "" + noteToCust);
+
+			// Business Details
+			root.put("BusinessName", "" + business.getBusinessName());
+			root.put("BusinessAddress", "" + businessAddress);
+
+			// Quotation Date and No
+			root.put("Date", quotationDate);
+			root.put("QuotationNumber", quotationEntity.getItemNumber());
+
+			root.put("finalTotal", finalTotal);
+			NumberToRupees numberToRupees = new NumberToRupees(
+					Math.round(finalTotal));
+			String netInWords = numberToRupees.getAmountInWords();
+			root.put("finalTotalInWords", netInWords);
+
+			Template temp = getConfiguration().getTemplate(
+					"pdf_templates/quotationPDF_tmpl.ftlh");
+
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
+					5000);
+			Writer out = new PrintWriter(byteArrayOutputStream);
+			temp.process(root, out);
+			// return escapeHtml(byteArrayOutputStream.toString());
+
+			String pdfXMLContent = byteArrayOutputStream.toString();
+
+			worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
+			document.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void generatePurchaseOrderViewPdf(
+			PurchaseOrderEntity purchaseOrderEntity,
+			ServletOutputStream outputStream) {
+		if (purchaseOrderEntity instanceof PurchaseOrderEntity) {
+			generatePurchaseOrderPDF((PurchaseOrderEntity) purchaseOrderEntity,
+					outputStream);
+		} else {
+			throw new RuntimeException(
+					"Did not find this entity handling method"
+							+ purchaseOrderEntity.getClass());
+		}
+	}
+
+	private void generatePurchaseOrderPDF(
+			PurchaseOrderEntity purchaseOrderEntity,
+			ServletOutputStream outputStream) {
+
+		try {
+			Document document = new Document();
+			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
+			document.open();
+			addDocumentHeaderLogo(purchaseOrderEntity, document);
+			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
+
+			Map<String, Object> root = new HashMap<String, Object>();
+
+			DecimalFormat df = new DecimalFormat("#0.00");
+
+			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
+			Date poDate = purchaseOrderEntity.getPoDate();
+			Date poDueDate = purchaseOrderEntity.getPoDueDate();
+			String purchaseOrderDate = sdfDate.format(poDate);
+			String purchaseOrderDueDate = sdfDate.format(poDueDate);
+
+			BusinessEntity business = purchaseOrderEntity.getBusiness();
+
+			StringBuffer addressBuf = new StringBuffer();
+			Address address = business.getAddress();
+			if (address != null) {
+				if (address.getLine1() != null && !address.getLine1().isEmpty())
+					addressBuf.append(address.getLine1());
+				if (address.getLine2() != null && !address.getLine2().isEmpty())
+					addressBuf.append(", " + address.getLine2());
+				if (address.getCity() != null && !address.getCity().isEmpty())
+					addressBuf.append(", " + address.getCity());
+				if (address.getState() != null && !address.getState().isEmpty())
+					addressBuf.append(", " + address.getState());
+			}
+
+			String businessAddress = addressBuf.toString();
+			root.put("BusinessName", "" + business.getBusinessName());
+			root.put("BusinessAddress", "" + businessAddress);
+			root.put("To", purchaseOrderEntity.getTo());
+			root.put("ShippedTo", purchaseOrderEntity.getShipTo());
+			root.put("PONum", purchaseOrderEntity.getItemNumber());
+			root.put("PODate", purchaseOrderDate);
+			root.put("PODueDate", purchaseOrderDueDate);
+			root.put("ShippedVia", "" + purchaseOrderEntity.getShippedVia());
+			root.put("Requisitioner",
+					"" + purchaseOrderEntity.getRequisitioner());
+			root.put("Supplier", ""
+					+ purchaseOrderEntity.getSupplier().getSupplierName());
+			root.put("FOBPoint", "" + purchaseOrderEntity.getfOBPoint());
+			root.put("Terms", "" + purchaseOrderEntity.getTerms());
+
+			TaxEntity servTax = purchaseOrderEntity.getSelectedServiceTax();
+			TaxEntity prodTax = purchaseOrderEntity.getSelectedProductTax();
+
+			List<StockLineItem> serviceLineItemListForPO = purchaseOrderEntity
+					.getServiceLineItemList();
+			List<StockLineItem> productLineItemListForPO = purchaseOrderEntity
+					.getProductLineItemList();
+
+			if (productLineItemListForPO != null
+					&& productLineItemListForPO.size() > 0) {
+				root.put("productItemList", productLineItemListForPO);
+				root.put("serviceTax", servTax);
+
+			}
+
+			if (serviceLineItemListForPO != null
+					&& serviceLineItemListForPO.size() > 0) {
+				root.put("serviceItemList", serviceLineItemListForPO);
+				root.put("productTax", prodTax);
+			}
+
+			double finalTotal = purchaseOrderEntity.getFinalTotal();
+			root.put("finalTotal", finalTotal);
+
+			NumberToRupees numberToRupees = new NumberToRupees(
+					Math.round(finalTotal));
+			String netInWords = numberToRupees.getAmountInWords();
+			root.put("finalTotalInWords", netInWords);
+
+			Template temp = getConfiguration().getTemplate(
+					"pdf_templates/purchaseOrderPDF_tmpl.ftlh");
+
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
+					5000);
+			Writer out = new PrintWriter(byteArrayOutputStream);
+			temp.process(root, out);
+			// return escapeHtml(byteArrayOutputStream.toString());
+
+			String pdfXMLContent = byteArrayOutputStream.toString();
+
+			worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
+			document.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
 }
