@@ -72,6 +72,10 @@ app
 						window.frames["print_frame"].window.print();
 					}
 
+					$scope.printQuotation = function(quotnId) {
+						var bid = $scope.curUser.business.id;
+						window.open("PrintPdfQuotation?bid=" + bid + "&quotnId=" + quotnId);
+					}
 					/*
 					 * $scope.showSimpleToast = function() {
 					 * $mdToast.show($mdToast.simple().content( 'Invoice Satus
