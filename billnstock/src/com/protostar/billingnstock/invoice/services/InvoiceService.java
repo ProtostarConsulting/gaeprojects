@@ -143,6 +143,22 @@ public class InvoiceService {
 		return quotationEntity;
 
 	}
+	
+	@ApiMethod(name = "getQuotationByID", path = "getQuotationByID")
+	public QuotationEntity getQuotationByID(@Named("busId") Long busId,
+			@Named("id") Long quotnId) {
+
+		List<QuotationEntity> list = ofy()
+				.load()
+				.type(QuotationEntity.class)
+				.filterKey(
+						Key.create(Key.create(BusinessEntity.class, busId),
+								QuotationEntity.class, quotnId)).list();
+		QuotationEntity foundQuotation = list.size() > 0 ? list.get(0) : null;
+		System.out.println("getQuotationByID Record is:" + foundQuotation);
+
+		return foundQuotation;
+	}
 
 	@ApiMethod(name = "getAllQuotation")
 	public List<QuotationEntity> getAllQuotation(@Named("id") Long busId) {
