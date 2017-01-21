@@ -520,6 +520,21 @@ public class StockManagementService extends BaseService {
 			return null;
 	}
 
+	@ApiMethod(name = "getPOByID", path = "getPOByID")
+	public PurchaseOrderEntity getPOByID(@Named("busId") Long busId,
+			@Named("id") Long poId) {
+
+		List<PurchaseOrderEntity> list = ofy()
+				.load()
+				.type(PurchaseOrderEntity.class)
+				.filterKey(
+						Key.create(Key.create(BusinessEntity.class, busId),
+								PurchaseOrderEntity.class, poId)).list();
+		PurchaseOrderEntity foundPO = list.size() > 0 ? list.get(0) : null;
+		System.out.println("getPOID Record is:" + foundPO);
+		return foundPO;
+	}
+
 	@ApiMethod(name = "addStockSettings", path = "addStockSettings")
 	public StockSettingsEntity addStockSettings(
 			StockSettingsEntity settingsEntity) {
