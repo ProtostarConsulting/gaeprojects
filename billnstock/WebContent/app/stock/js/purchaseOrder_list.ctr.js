@@ -7,13 +7,19 @@ app
 						$routeParams, $filter, $location, $anchorScroll,
 						objectFactory, appEndpointSF) {
 
-					$scope.query = {
-						order : '-itemNumber',
-						limit : 50,
-						page : 1,
-						totalSize : 0,
-						pagesLoaded : 0
-					};
+					$scope.documentStatusList = [ 'DRAFT', 'SUBMITTED',
+							'FINALIZED', 'REJECTED' ];
+					$scope.selectedStatus = "";
+					function reSetQuery() {
+						return {
+							order : '-itemNumber',
+							limit : 50,
+							page : 1,
+							totalSize : 0,
+							pagesLoaded : 0
+						};
+					}
+					$scope.query = reSetQuery();
 					$scope.purchaseOrderList = [];
 
 					$scope.curUser = appEndpointSF.getLocalUserService()
@@ -54,7 +60,7 @@ app
 						stockService
 								.fetchEntityListByPaging(
 										$scope.curUser.business.id,
-										pagingInfoTemp)
+										$scope.selectedStatus, pagingInfoTemp)
 								.then(
 										function(pagingInfoReturned) {
 											$scope.pagingInfoReturned = pagingInfoReturned;
@@ -64,6 +70,14 @@ app
 											$scope.query.pagesLoaded++;
 											$scope.loading = false;
 										});
+					}
+
+					$scope.fitlerListByStatus = function(status) {
+						$scope.selectedStatus = status;
+						$scope.purchaseOrderList = [];
+						$scope.query = reSetQuery();
+						$scope.pagingInfoReturned = null;
+						$scope.fetchEntityListByPaging();
 					}
 
 					$scope.waitForServiceLoad = function() {

@@ -10,7 +10,7 @@
 	"authName": "Accounting",
 	"authDisplayName": "Accounting",
 	"uiStateName": "accounting",
-	"orderNumber": "3",
+	"orderNumber":4,
 	"authorizations":[	    
 	     {
 		 "authName":"accounting",
@@ -18,6 +18,18 @@
 		 "uiStateName":"accounting",
 		 "orderNumber":"1",
 		 "authorizations":[]
+		 },
+		 {
+		 "authName":"Accounting.ModuleAdmin",
+		 "authDisplayName":"Module Admin",
+		 "uiStateName":"",		 
+		 "orderNumber":"1"
+		 },
+		 {
+		 "authName":"Accounting.ModuleApprover",
+		 "authDisplayName":"Module Approver",
+		 "uiStateName":"",		 
+		 "orderNumber":"1"
 		 }
 		 ]
 	},
@@ -25,7 +37,7 @@
 	"authName": "Stock",
 	"authDisplayName": "Stock",
 	"uiStateName": "stock",
-	"orderNumber": "4",
+	"orderNumber":4,
 	"authorizations":[	    
 	     {
 		 "authName":"stock",
@@ -33,6 +45,18 @@
 		 "uiStateName":"stock",
 		 "orderNumber":"1",
 		 "authorizations":[]
+		 },
+		 {
+		 "authName":"Stock.ModuleAdmin",
+		 "authDisplayName":"Module Admin",
+		 "uiStateName":"",		 
+		 "orderNumber":"1"
+		 },
+		 {
+		 "authName":"Stock.ModuleApprover",
+		 "authDisplayName":"Module Approver",
+		 "uiStateName":"",		 
+		 "orderNumber":"1"
 		 }
 		 ]
 	},
@@ -40,7 +64,7 @@
 	"authName": "CRM",
 	"authDisplayName": "CRM",
 	"uiStateName": "crm",
-	"orderNumber": "5",
+	"orderNumber":4,
 	"authorizations":[	    
 	     {
 		 "authName":"crm",
@@ -48,6 +72,18 @@
 		 "uiStateName":"crm",
 		 "orderNumber":"1",
 		 "authorizations":[]
+		 },
+		 {
+		 "authName":"CRM.ModuleAdmin",
+		 "authDisplayName":"Module Admin",
+		 "uiStateName":"",		 
+		 "orderNumber":"1"
+		 },
+		 {
+		 "authName":"CRM.ModuleApprover",
+		 "authDisplayName":"Module Approver",
+		 "uiStateName":"",		 
+		 "orderNumber":"1"
 		 }
 		 ]
 	},
@@ -55,7 +91,7 @@
 	"authName": "Invoice",
 	"authDisplayName": "Invoice",
 	"uiStateName": "invoice",
-	"orderNumber": "6",
+	"orderNumber":4,
 	"authorizations":[	    
 	     {
 		 "authName":"invoice",
@@ -70,13 +106,13 @@
 	"authName": "report",
 	"authDisplayName": "Reports",
 	"uiStateName": "report",
-	"orderNumber": "7"
+	"orderNumber":4
 	},
 	{
 	"authName":"taskmanagement",
 	"authDisplayName":"Task Management",
 	"uiStateName":"taskmanagement",
-	"orderNumber":"8",
+	"orderNumber":4,
 	"authorizations":[	    
 	     {
 		 "authName":"taskmanagement.add",
@@ -88,14 +124,14 @@
 	     {"authName":"taskmanagement.mytasklist",		  
 	      "authDisplayName":"My Task List",		  
 	      "uiStateName":"taskmanagement.mytasklist",
-		  "orderNumber":"2",
+		 "orderNumber":4,
 		  "authorizations":[]
 		 },
 		 {
 		 "authName":"taskmanagement.list",
 		 "authDisplayName":"All Task List",
 		 "uiStateName":"taskmanagement.list",
-		 "orderNumber":"3",
+		 "orderNumber":4,
 		 "authorizations":[]
 		 },		 
 		 {"authName":"taskmanagement.tasklistreport",
@@ -135,32 +171,44 @@
 	 					"authDisplayName":"Payroll Reports",
 	 					"uiStateName":"hr.payRollRepo",
 	 					"orderNumber":"3"
-	 					}
+	 					},
+						 {
+						 "authName":"HRMS.ModuleAdmin",
+						 "authDisplayName":"Module Admin",
+						 "uiStateName":"",		 
+						 "orderNumber":"1"
+						 },
+						 {
+						 "authName":"HRMS.ModuleApprover",
+						 "authDisplayName":"Module Approver",
+						 "uiStateName":"",		 
+						 "orderNumber":"1"
+						 }
 					]
 	},
 	{
 	"authName": "More Actions",
 	"authDisplayName": "More Actions...",
-	"uiStateName": "NA",
-	"orderNumber": "21",
+	"uiStateName": "",
+	"orderNumber":101,
 	"authorizations": [
 						{
 						"authName": "proadmin",
 						"authDisplayName": "Pro Admin",
 						"uiStateName": "proAdmin",
-						"orderNumber": "1"
+						"orderNumber":1
 						},
 						{
 						"authName": "setup",
 						"authDisplayName": "Setup",
 						"uiStateName": "setup",
-						"orderNumber": "2"
+						"orderNumber":2
 						},
 						{
 						"authName": "updatemyprofile",
 						"authDisplayName": "My Profile",
 						"uiStateName": "user_prof_detail",
-						"orderNumber": "10"
+						"orderNumber":3
 						}						
 				]
 	}

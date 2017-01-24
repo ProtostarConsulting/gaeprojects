@@ -1963,10 +1963,11 @@ function googleEndpointSF($q) {
 		
 	}
 	
-	StockService.fetchEntityListByPaging = function(busId, pagingInfo) {
+	StockService.fetchEntityListByPaging = function(busId, status, pagingInfo) {
 		var deferred = $q.defer();
 		gapi.client.stockService.fetchEntityListByPaging({
-			"id" : busId
+			"id" : busId,
+			"status": status
 		}, pagingInfo).execute(function(resp) {
 			deferred.resolve(resp);
 		});

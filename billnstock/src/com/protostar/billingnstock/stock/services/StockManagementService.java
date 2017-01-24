@@ -5,6 +5,7 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Logger;
 
 import com.google.api.server.spi.config.Api;
@@ -36,12 +37,10 @@ import com.protostar.billnstock.until.data.EntityPagingInfo;
 @Api(name = "stockService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.stock.services", ownerName = "com.protostar.billingnstock.stock.services", packagePath = ""))
 public class StockManagementService extends BaseService {
 
-	private final Logger logger = Logger.getLogger(StockManagementService.class
-			.getName());
+	private final Logger logger = Logger.getLogger(StockManagementService.class.getName());
 
 	@ApiMethod(name = "addStockItemType", path = "addStockItemType")
-	public StockItemTypeEntity addStockItemType(
-			StockItemTypeEntity stockItemTypeEntity) {
+	public StockItemTypeEntity addStockItemType(StockItemTypeEntity stockItemTypeEntity) {
 		ofy().save().entity(stockItemTypeEntity).now();
 		return stockItemTypeEntity;
 	}
@@ -53,36 +52,24 @@ public class StockManagementService extends BaseService {
 	}
 
 	@ApiMethod(name = "addStockReceipt", path = "addStockReceipt")
-	public StockItemsReceiptEntity addStockReceipt(
-			StockItemsReceiptEntity stockItemsReceipt) {
+	public StockItemsReceiptEntity addStockReceipt(StockItemsReceiptEntity stockItemsReceipt) {
 		logger.info("Inside addStockReceipt...");
-		if (stockItemsReceipt.getStatus() == DocumentStatus.FINALIZED
-				&& stockItemsReceipt.isStatusAlreadyFinalized()) {
-			throw new RuntimeException(
-					"Save not allowed. StockItemsReceiptEntity is already FINALIZED: "
-							+ this.getClass().getSimpleName()
-							+ " Finalized entity can't be altered.");
+		if (stockItemsReceipt.getStatus() == DocumentStatus.FINALIZED && stockItemsReceipt.isStatusAlreadyFinalized()) {
+			throw new RuntimeException("Save not allowed. StockItemsReceiptEntity is already FINALIZED: "
+					+ this.getClass().getSimpleName() + " Finalized entity can't be altered.");
 		}
 
-		List<StockLineItem> productLineItemList = stockItemsReceipt
-				.getProductLineItemList();
+		List<StockLineItem> productLineItemList = stockItemsReceipt.getProductLineItemList();
 
 		for (StockLineItem stockLineItem : productLineItemList) {
-			StockItemEntity stockItem = getOrCreateWarehouseStockItem(
-					stockItemsReceipt.getWarehouse(), stockLineItem);
+			StockItemEntity stockItem = getOrCreateWarehouseStockItem(stockItemsReceipt.getWarehouse(), stockLineItem);
 			stockLineItem.setStockItem(stockItem);
-			if (stockLineItem.getStockItem().getStockItemType()
-					.isMaintainStockBySerialNumber()) {
-				List<StockItemInstanceEntity> stockItemInstanceList = stockLineItem
-						.getStockItemInstanceList();
+			if (stockLineItem.getStockItem().getStockItemType().isMaintainStockBySerialNumber()) {
+				List<StockItemInstanceEntity> stockItemInstanceList = stockLineItem.getStockItemInstanceList();
 				for (StockItemInstanceEntity stockItemInstanceEntity : stockItemInstanceList) {
-					stockItemInstanceEntity
-							.setBusiness(stockItem.getBusiness());
-					stockItemInstanceEntity.setStockItemId(stockItem.getId()
-							.toString());
-					stockItemInstanceEntity
-							.setStockReceiptNumber(stockItemsReceipt
-									.getItemNumber());
+					stockItemInstanceEntity.setBusiness(stockItem.getBusiness());
+					stockItemInstanceEntity.setStockItemId(stockItem.getId().toString());
+					stockItemInstanceEntity.setStockReceiptNumber(stockItemsReceipt.getItemNumber());
 				}
 			}
 
@@ -98,8 +85,7 @@ public class StockManagementService extends BaseService {
 				// This needed so that StockItemService.adjustStockItems adds
 				// the
 				// stock items
-				int qtyDiff = stockLineItem.getQty()
-						- stockLineItem.getStockMaintainedQty();
+				int qtyDiff = stockLineItem.getQty() - stockLineItem.getStockMaintainedQty();
 				if (qtyDiff != 0) {
 					StockItemTxnEntity txnEntity = new StockItemTxnEntity();
 					stockItemTxnList.add(txnEntity);
@@ -110,25 +96,20 @@ public class StockManagementService extends BaseService {
 					txnEntity.setPrice(stockLineItem.getCost());
 
 					if (qtyDiff > 0) {
-						txnEntity
-								.setTxnType(StockItemTxnEntity.StockTxnType.CR);
+						txnEntity.setTxnType(StockItemTxnEntity.StockTxnType.CR);
 					} else {
-						txnEntity
-								.setTxnType(StockItemTxnEntity.StockTxnType.DR);
+						txnEntity.setTxnType(StockItemTxnEntity.StockTxnType.DR);
 					}
 
 					stockLineItem.setStockMaintainedQty(stockLineItem.getQty());
 				}
-				if (stockLineItem.getStockItem().getStockItemType()
-						.isMaintainStockBySerialNumber()) {
-					stockItemInstanceToUpdateList.addAll(stockLineItem
-							.getStockItemInstanceList());
+				if (stockLineItem.getStockItem().getStockItemType().isMaintainStockBySerialNumber()) {
+					stockItemInstanceToUpdateList.addAll(stockLineItem.getStockItemInstanceList());
 				}
 
 			}
 			if (stockItemTxnList.size() > 0) {
-				addStockItemTxnList(stockItemTxnList,
-						stockItemInstanceToUpdateList);
+				addStockItemTxnList(stockItemTxnList, stockItemInstanceToUpdateList);
 			}
 		}
 
@@ -142,35 +123,27 @@ public class StockManagementService extends BaseService {
 		return stockItemsReceipt;
 	}
 
-	private void updateRefEntityIdsIfMissing(Object toUpdateEntity,
-			List<StockLineItem> productLineItemList) {
+	private void updateRefEntityIdsIfMissing(Object toUpdateEntity, List<StockLineItem> productLineItemList) {
 
 		List<StockItemInstanceEntity> stockItemInstanceToUpdateList = new ArrayList<StockItemInstanceEntity>();
 
 		for (StockLineItem stockLineItem : productLineItemList) {
-			if (stockLineItem.getStockItem().getStockItemType()
-					.isMaintainStockBySerialNumber()) {
-				List<StockItemInstanceEntity> stockItemInstanceList = stockLineItem
-						.getStockItemInstanceList();
+			if (stockLineItem.getStockItem().getStockItemType().isMaintainStockBySerialNumber()) {
+				List<StockItemInstanceEntity> stockItemInstanceList = stockLineItem.getStockItemInstanceList();
 				for (StockItemInstanceEntity stockItemInstanceEntity : stockItemInstanceList) {
 					if (stockItemInstanceEntity.getStockReceiptNumber() == 0
 							&& stockItemInstanceEntity.getStockShipmentNumber() == 0
 							&& stockItemInstanceEntity.getInvoiceNumber() == 0) {
-						stockItemInstanceToUpdateList
-								.add(stockItemInstanceEntity);
+						stockItemInstanceToUpdateList.add(stockItemInstanceEntity);
 
 						if (toUpdateEntity instanceof StockItemsReceiptEntity) {
 							stockItemInstanceEntity
-									.setStockReceiptNumber(((StockItemsReceiptEntity) toUpdateEntity)
-											.getItemNumber());
+									.setStockReceiptNumber(((StockItemsReceiptEntity) toUpdateEntity).getItemNumber());
 						} else if (toUpdateEntity instanceof StockItemsShipmentEntity) {
-							stockItemInstanceEntity
-									.setStockShipmentNumber(((StockItemsShipmentEntity) toUpdateEntity)
-											.getItemNumber());
+							stockItemInstanceEntity.setStockShipmentNumber(
+									((StockItemsShipmentEntity) toUpdateEntity).getItemNumber());
 						} else if (toUpdateEntity instanceof InvoiceEntity) {
-							stockItemInstanceEntity
-									.setInvoiceNumber(((InvoiceEntity) toUpdateEntity)
-											.getItemNumber());
+							stockItemInstanceEntity.setInvoiceNumber(((InvoiceEntity) toUpdateEntity).getItemNumber());
 						}
 					}
 				}
@@ -179,15 +152,10 @@ public class StockManagementService extends BaseService {
 		}
 	}
 
-	private StockItemEntity getOrCreateWarehouseStockItem(
-			WarehouseEntity warehouse, StockLineItem stockLineItem) {
-		List<StockItemEntity> filteredStocks = ofy()
-				.load()
-				.type(StockItemEntity.class)
-				.ancestor(warehouse.getBusiness())
-				.filter("warehouse", warehouse)
-				.filter("stockItemType",
-						stockLineItem.getStockItem().getStockItemType()).list();
+	private StockItemEntity getOrCreateWarehouseStockItem(WarehouseEntity warehouse, StockLineItem stockLineItem) {
+		List<StockItemEntity> filteredStocks = ofy().load().type(StockItemEntity.class)
+				.ancestor(warehouse.getBusiness()).filter("warehouse", warehouse)
+				.filter("stockItemType", stockLineItem.getStockItem().getStockItemType()).list();
 		if (filteredStocks == null || filteredStocks.size() > 0) {
 			return filteredStocks.get(0);
 		}
@@ -195,29 +163,23 @@ public class StockManagementService extends BaseService {
 		StockItemEntity stockItemEntity = new StockItemEntity();
 		stockItemEntity.setBusiness(warehouse.getBusiness());
 		stockItemEntity.setWarehouse(warehouse);
-		stockItemEntity.setStockItemType(stockLineItem.getStockItem()
-				.getStockItemType());
+		stockItemEntity.setStockItemType(stockLineItem.getStockItem().getStockItemType());
 		stockItemEntity.setCost(stockLineItem.getStockItem().getCost());
-		stockItemEntity.setMovingAvgCost(stockLineItem.getStockItem()
-				.getMovingAvgCost());
+		stockItemEntity.setMovingAvgCost(stockLineItem.getStockItem().getMovingAvgCost());
 
 		return addStockItem(stockItemEntity);
 
 	}
 
 	@ApiMethod(name = "addStockShipment", path = "addStockShipment")
-	public StockItemsShipmentEntity addStockShipment(
-			StockItemsShipmentEntity stockItemsShipment) {
+	public StockItemsShipmentEntity addStockShipment(StockItemsShipmentEntity stockItemsShipment) {
 		if (stockItemsShipment.getStatus() == DocumentStatus.FINALIZED
 				&& stockItemsShipment.isStatusAlreadyFinalized()) {
-			throw new RuntimeException(
-					"Save not allowed. StockItemsShipmentEntity is already FINALIZED: "
-							+ this.getClass().getSimpleName()
-							+ " Finalized entity can't be altered.");
+			throw new RuntimeException("Save not allowed. StockItemsShipmentEntity is already FINALIZED: "
+					+ this.getClass().getSimpleName() + " Finalized entity can't be altered.");
 		}
 
-		List<StockLineItem> productLineItemList = stockItemsShipment
-				.getProductLineItemList();
+		List<StockLineItem> productLineItemList = stockItemsShipment.getProductLineItemList();
 
 		if (stockItemsShipment.getStatus() == DocumentStatus.FINALIZED) {
 			List<StockLineItem> stockLineItemsToProcess = new ArrayList<StockLineItem>();
@@ -228,25 +190,18 @@ public class StockManagementService extends BaseService {
 				for (StockLineItem stockLineItem : productLineItemList) {
 					stockLineItemsToProcess.add(stockLineItem);
 					StockLineItem copy = StockLineItem.getCopy(stockLineItem);
-					StockItemEntity stockItem = getOrCreateWarehouseStockItem(
-							stockItemsShipment.getToWH(), copy);
+					StockItemEntity stockItem = getOrCreateWarehouseStockItem(stockItemsShipment.getToWH(), copy);
 					copy.setStockItem(stockItem);
 					// So that credits in adjustStockItems fn
 					copy.setStockMaintainedQty(copy.getQty() * 2);
 					stockLineItemsToProcess.add(copy);
 
-					if (stockLineItem.getStockItem().getStockItemType()
-							.isMaintainStockBySerialNumber()) {
-						List<StockItemInstanceEntity> stockItemInstanceList = stockLineItem
-								.getStockItemInstanceList();
+					if (stockLineItem.getStockItem().getStockItemType().isMaintainStockBySerialNumber()) {
+						List<StockItemInstanceEntity> stockItemInstanceList = stockLineItem.getStockItemInstanceList();
 						for (StockItemInstanceEntity stockItemInstanceEntity : stockItemInstanceList) {
-							stockItemInstanceEntity.setBusiness(stockItem
-									.getBusiness());
-							stockItemInstanceEntity.setStockItemId(stockItem
-									.getId().toString());
-							stockItemInstanceEntity
-									.setStockShipmentNumber(stockItemsShipment
-											.getItemNumber());
+							stockItemInstanceEntity.setBusiness(stockItem.getBusiness());
+							stockItemInstanceEntity.setStockItemId(stockItem.getId().toString());
+							stockItemInstanceEntity.setStockShipmentNumber(stockItemsShipment.getItemNumber());
 						}
 					}
 					// So that credits in adjustStockItems fn
@@ -254,14 +209,12 @@ public class StockManagementService extends BaseService {
 					stockLineItemsToProcess.add(copy);
 				}
 			} else {
-				stockLineItemsToProcess = stockItemsShipment
-						.getProductLineItemList();
+				stockLineItemsToProcess = stockItemsShipment.getProductLineItemList();
 			}
 
 			// Process stock items
-			StockManagementService.adjustStockItems(
-					stockItemsShipment.getBusiness(), stockLineItemsToProcess);
-		}// enf of FINALIZED if
+			StockManagementService.adjustStockItems(stockItemsShipment.getBusiness(), stockLineItemsToProcess);
+		} // enf of FINALIZED if
 
 		ofy().save().entity(stockItemsShipment).now();
 		// if entity is saved directly as finalized, need to update item id
@@ -272,21 +225,17 @@ public class StockManagementService extends BaseService {
 	}
 
 	@ApiMethod(name = "getStockItemTypes", path = "getStockItemTypes")
-	public List<StockItemTypeEntity> getStockItemTypes(
-			@Named("busId") Long busId) {
-		List<StockItemTypeEntity> typeList = ofy().load()
-				.type(StockItemTypeEntity.class)
+	public List<StockItemTypeEntity> getStockItemTypes(@Named("busId") Long busId) {
+		List<StockItemTypeEntity> typeList = ofy().load().type(StockItemTypeEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, busId)).list();
 		return typeList;
 	}
 
 	@ApiMethod(name = "filterStockItemsByWarehouse", path = "filterStockItemsByWarehouse")
-	public List<StockItemEntity> filterStockItemsByWarehouse(
-			WarehouseEntity warehouse) {
+	public List<StockItemEntity> filterStockItemsByWarehouse(WarehouseEntity warehouse) {
 		// System.out.println("getAllStock#busId:" + busId);
-		List<StockItemEntity> filteredStocks = ofy().load()
-				.type(StockItemEntity.class).ancestor(warehouse.getBusiness())
-				.filter("warehouse", warehouse).list();
+		List<StockItemEntity> filteredStocks = ofy().load().type(StockItemEntity.class)
+				.ancestor(warehouse.getBusiness()).filter("warehouse", warehouse).list();
 
 		return filteredStocks;
 	}
@@ -294,45 +243,35 @@ public class StockManagementService extends BaseService {
 	@ApiMethod(name = "getAllStockItems", path = "getAllStockItems")
 	public List<StockItemEntity> getAllStockItems(@Named("busId") Long busId) {
 		// System.out.println("getAllStock#busId:" + busId);
-		List<StockItemEntity> filteredStocks = ofy().load()
-				.type(StockItemEntity.class)
+		List<StockItemEntity> filteredStocks = ofy().load().type(StockItemEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, busId)).list();
 
 		return filteredStocks;
 	}
 
 	@ApiMethod(name = "getStockReceiptList", path = "getStockReceiptList")
-	public List<StockItemsReceiptEntity> getStockReceiptList(
-			@Named("busId") Long busId) {
+	public List<StockItemsReceiptEntity> getStockReceiptList(@Named("busId") Long busId) {
 		// System.out.println("getAllStock#busId:" + busId);
-		List<StockItemsReceiptEntity> stockItemsShipmentList = ofy().load()
-				.type(StockItemsReceiptEntity.class)
+		List<StockItemsReceiptEntity> stockItemsShipmentList = ofy().load().type(StockItemsReceiptEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, busId)).list();
 
 		return stockItemsShipmentList;
 	}
 
 	@ApiMethod(name = "getStockShipmentList", path = "getStockShipmentList")
-	public List<StockItemsShipmentEntity> getStockShipmentList(
-			@Named("busId") Long busId) {
+	public List<StockItemsShipmentEntity> getStockShipmentList(@Named("busId") Long busId) {
 		// System.out.println("getAllStock#busId:" + busId);
-		List<StockItemsShipmentEntity> stockItemsShipmentList = ofy().load()
-				.type(StockItemsShipmentEntity.class)
+		List<StockItemsShipmentEntity> stockItemsShipmentList = ofy().load().type(StockItemsShipmentEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, busId)).list();
 
 		return stockItemsShipmentList;
 	}
 
 	@ApiMethod(name = "getStockItemInstancesList", path = "getStockItemInstancesList", httpMethod = HttpMethod.POST)
-	public List<StockItemInstanceEntity> getStockItemInstancesList(
-			StockItemEntity stockItem) {
+	public List<StockItemInstanceEntity> getStockItemInstancesList(StockItemEntity stockItem) {
 		// System.out.println("getAllStock#busId:" + busId);
-		List<StockItemInstanceEntity> list = ofy()
-				.load()
-				.type(StockItemInstanceEntity.class)
-				.ancestor(
-						Key.create(BusinessEntity.class, stockItem
-								.getBusiness().getId()))
+		List<StockItemInstanceEntity> list = ofy().load().type(StockItemInstanceEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, stockItem.getBusiness().getId()))
 				.filter("stockItemId", stockItem.getId().toString()).list();
 		return list;
 	}
@@ -346,8 +285,7 @@ public class StockManagementService extends BaseService {
 	 */
 
 	@ApiMethod(name = "getReportByThreshold", path = "getReportByThreshold")
-	public List<StockItemEntity> getReportByThreshold(
-			@Named("busId") Long bussinessId) {
+	public List<StockItemEntity> getReportByThreshold(@Named("busId") Long bussinessId) {
 		List<StockItemEntity> stocks = ofy().load().type(StockItemEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, bussinessId)).list();
 		List<StockItemEntity> filteredThresholdStocks = new ArrayList<StockItemEntity>();
@@ -357,22 +295,18 @@ public class StockManagementService extends BaseService {
 				filteredThresholdStocks.add(stocks.get(i));
 			}
 		}
-		logger.info("filteredThresholdStocks#size:"
-				+ filteredThresholdStocks.size());
+		logger.info("filteredThresholdStocks#size:" + filteredThresholdStocks.size());
 		return filteredThresholdStocks;
 	}
 
-	public static void adjustStockItems(BusinessEntity business,
-			List<StockLineItem> productLineItemList) {
+	public static void adjustStockItems(BusinessEntity business, List<StockLineItem> productLineItemList) {
 		/* For Reduce the Stock Quantity */
 		List<StockItemTxnEntity> stockItemTxnList = new ArrayList<StockItemTxnEntity>();
 		List<StockItemInstanceEntity> stockItemInstanceToUpdateList = new ArrayList<StockItemInstanceEntity>();
 
 		for (StockLineItem invoiceLineItem : productLineItemList) {
-			int qtyDiff = invoiceLineItem.getQty()
-					- invoiceLineItem.getStockMaintainedQty();
-			if (invoiceLineItem.getStockItem().isMaintainStock()
-					&& qtyDiff != 0) {
+			int qtyDiff = invoiceLineItem.getQty() - invoiceLineItem.getStockMaintainedQty();
+			if (invoiceLineItem.getStockItem().isMaintainStock() && qtyDiff != 0) {
 
 				StockItemTxnEntity txnEntity = new StockItemTxnEntity();
 				txnEntity.setBusiness(business);
@@ -385,14 +319,11 @@ public class StockManagementService extends BaseService {
 					txnEntity.setTxnType(StockItemTxnEntity.StockTxnType.CR);
 					txnEntity.setPrice(invoiceLineItem.getCost());
 				}
-				invoiceLineItem.setStockMaintainedQty(Math.abs(invoiceLineItem
-						.getQty()));
+				invoiceLineItem.setStockMaintainedQty(Math.abs(invoiceLineItem.getQty()));
 				stockItemTxnList.add(txnEntity);
-				if (invoiceLineItem.getStockItem().getStockItemType()
-						.isMaintainStockBySerialNumber()
+				if (invoiceLineItem.getStockItem().getStockItemType().isMaintainStockBySerialNumber()
 						&& invoiceLineItem.getStockItemInstanceList() != null) {
-					stockItemInstanceToUpdateList.addAll(invoiceLineItem
-							.getStockItemInstanceList());
+					stockItemInstanceToUpdateList.addAll(invoiceLineItem.getStockItemInstanceList());
 				}
 			}
 
@@ -402,27 +333,22 @@ public class StockManagementService extends BaseService {
 		}
 	}
 
-	private static void addStockItemTxnList(
-			List<StockItemTxnEntity> stockItemTxnList,
+	private static void addStockItemTxnList(List<StockItemTxnEntity> stockItemTxnList,
 			List<StockItemInstanceEntity> stockItemInstanceToUpdateList) {
 		List<StockItemEntity> stockItemToUpdateList = new ArrayList<StockItemEntity>();
 		for (StockItemTxnEntity stockItemTxnEntity : stockItemTxnList) {
 			StockItemEntity stockItemEntity = stockItemTxnEntity.getStockItem();
 			if (stockItemTxnEntity.getTxnType() == StockItemTxnEntity.StockTxnType.DR) {
-				stockItemEntity.setQty(stockItemEntity.getQty()
-						- stockItemTxnEntity.getQty());
+				stockItemEntity.setQty(stockItemEntity.getQty() - stockItemTxnEntity.getQty());
 			} else {
 				// This means stock addition/receipt
 				// calculate moving avb. cost
-				double movingAvgCost = (stockItemEntity.getQty()
-						* stockItemEntity.getMovingAvgCost() + stockItemTxnEntity
-						.getQty() * stockItemTxnEntity.getPrice())
-						/ (stockItemEntity.getQty() + stockItemTxnEntity
-								.getQty());
+				double movingAvgCost = (stockItemEntity.getQty() * stockItemEntity.getMovingAvgCost()
+						+ stockItemTxnEntity.getQty() * stockItemTxnEntity.getPrice())
+						/ (stockItemEntity.getQty() + stockItemTxnEntity.getQty());
 				movingAvgCost = (double) Math.round(movingAvgCost * 100) / 100;
 				stockItemEntity.setMovingAvgCost(movingAvgCost);
-				stockItemEntity.setQty(stockItemEntity.getQty()
-						+ stockItemTxnEntity.getQty());
+				stockItemEntity.setQty(stockItemEntity.getQty() + stockItemTxnEntity.getQty());
 			}
 
 			stockItemToUpdateList.add(stockItemEntity);
@@ -435,14 +361,11 @@ public class StockManagementService extends BaseService {
 	}
 
 	@ApiMethod(name = "getStockItemTxnList", path = "getStockItemTxnList")
-	public List<StockItemTxnEntity> getStockItemTxnList(
-			@Named("busId") Long busId, @Named("fromDate") Date fromDate,
+	public List<StockItemTxnEntity> getStockItemTxnList(@Named("busId") Long busId, @Named("fromDate") Date fromDate,
 			@Named("txnType") String txnType) {
 
-		Query<StockItemTxnEntity> filterQuery = ofy().load()
-				.type(StockItemTxnEntity.class)
-				.ancestor(Key.create(BusinessEntity.class, busId))
-				.filter("createdDate >=", fromDate);
+		Query<StockItemTxnEntity> filterQuery = ofy().load().type(StockItemTxnEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).filter("createdDate >=", fromDate);
 
 		if (txnType != null && !txnType.trim().isEmpty())
 			filterQuery = filterQuery.filter("txnType", txnType);
@@ -457,36 +380,27 @@ public class StockManagementService extends BaseService {
 	}
 
 	@ApiMethod(name = "getAllSuppliersByBusiness", path = "getAllSuppliersByBusiness")
-	public List<SupplierEntity> getAllSuppliersByBusiness(
-			@Named("busId") Long busId) {
+	public List<SupplierEntity> getAllSuppliersByBusiness(@Named("busId") Long busId) {
 
-		List<SupplierEntity> filteredSuppliers = ofy()
-				.load()
-				.type(SupplierEntity.class)
-				.filter("business",
-						Ref.create(Key.create(BusinessEntity.class, busId)))
-				.list();
+		List<SupplierEntity> filteredSuppliers = ofy().load().type(SupplierEntity.class)
+				.filter("business", Ref.create(Key.create(BusinessEntity.class, busId))).list();
 
 		return filteredSuppliers;
 	}
 
 	@ApiMethod(name = "addPurchaseOrder", path = "addPurchaseOrder")
-	public PurchaseOrderEntity addPurchaseOrder(
-			PurchaseOrderEntity purchaseOrderEntity) {
+	public PurchaseOrderEntity addPurchaseOrder(PurchaseOrderEntity purchaseOrderEntity) {
 
 		if (purchaseOrderEntity.getStatus() == DocumentStatus.FINALIZED
 				&& purchaseOrderEntity.isStatusAlreadyFinalized()) {
-			throw new RuntimeException(
-					"Save not allowed. StockItemsReceiptEntity is already FINALIZED: "
-							+ this.getClass().getSimpleName()
-							+ " Finalized entity can't be altered.");
+			throw new RuntimeException("Save not allowed. StockItemsReceiptEntity is already FINALIZED: "
+					+ this.getClass().getSimpleName() + " Finalized entity can't be altered.");
 		}
-		List<StockLineItem> productLineItemList = purchaseOrderEntity
-				.getProductLineItemList();
+		List<StockLineItem> productLineItemList = purchaseOrderEntity.getProductLineItemList();
 
 		for (StockLineItem stockLineItem : productLineItemList) {
-			StockItemEntity stockItem = getOrCreateWarehouseStockItem(
-					purchaseOrderEntity.getWarehouse(), stockLineItem);
+			StockItemEntity stockItem = getOrCreateWarehouseStockItem(purchaseOrderEntity.getWarehouse(),
+					stockLineItem);
 			stockLineItem.setStockItem(stockItem);
 		}
 
@@ -496,24 +410,25 @@ public class StockManagementService extends BaseService {
 
 	@ApiMethod(name = "getAllPurchaseOrder", path = "getAllPurchaseOrder")
 	public List<PurchaseOrderEntity> getAllPurchaseOrder(@Named("id") Long busId) {
-		List<PurchaseOrderEntity> filteredPO = ofy().load()
-				.type(PurchaseOrderEntity.class)
+		List<PurchaseOrderEntity> filteredPO = ofy().load().type(PurchaseOrderEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, busId)).list();
 		return filteredPO;
 	}
 
 	@ApiMethod(name = "fetchEntityListByPaging", path = "fetchEntityListByPaging")
-	public EntityPagingInfo fetchEntityListByPaging(@Named("id") Long busId,
+	public EntityPagingInfo fetchEntityListByPaging(@Named("id") Long busId, @Named("status") String status,
 			EntityPagingInfo pagingInfo) {
-		return super.fetchEntityListByPaging(busId, PurchaseOrderEntity.class,
-				pagingInfo);
+		if (status != null && !status.isEmpty()) {
+			DocumentStatus statusType = DocumentStatus.valueOf(status.toUpperCase(Locale.ENGLISH));
+			return super.fetchEntityListByPaging(busId, PurchaseOrderEntity.class, pagingInfo, statusType);
+		} else {
+			return super.fetchEntityListByPaging(busId, PurchaseOrderEntity.class, pagingInfo);
+		}
 	}
 
 	@ApiMethod(name = "getPOByItemNumber", path = "getPOByItemNumber")
-	public PurchaseOrderEntity getPOByItemNumber(
-			@Named("itemNumber") int itemNumber) {
-		Object entityByItemNumber = super.getEntityByItemNumber(
-				PurchaseOrderEntity.class, itemNumber);
+	public PurchaseOrderEntity getPOByItemNumber(@Named("itemNumber") int itemNumber) {
+		Object entityByItemNumber = super.getEntityByItemNumber(PurchaseOrderEntity.class, itemNumber);
 		if (entityByItemNumber != null)
 			return (PurchaseOrderEntity) entityByItemNumber;
 		else
@@ -521,33 +436,25 @@ public class StockManagementService extends BaseService {
 	}
 
 	@ApiMethod(name = "getPOByID", path = "getPOByID")
-	public PurchaseOrderEntity getPOByID(@Named("busId") Long busId,
-			@Named("id") Long poId) {
+	public PurchaseOrderEntity getPOByID(@Named("busId") Long busId, @Named("id") Long poId) {
 
-		List<PurchaseOrderEntity> list = ofy()
-				.load()
-				.type(PurchaseOrderEntity.class)
-				.filterKey(
-						Key.create(Key.create(BusinessEntity.class, busId),
-								PurchaseOrderEntity.class, poId)).list();
+		List<PurchaseOrderEntity> list = ofy().load().type(PurchaseOrderEntity.class)
+				.filterKey(Key.create(Key.create(BusinessEntity.class, busId), PurchaseOrderEntity.class, poId)).list();
 		PurchaseOrderEntity foundPO = list.size() > 0 ? list.get(0) : null;
 		System.out.println("getPOID Record is:" + foundPO);
 		return foundPO;
 	}
 
 	@ApiMethod(name = "addStockSettings", path = "addStockSettings")
-	public StockSettingsEntity addStockSettings(
-			StockSettingsEntity settingsEntity) {
+	public StockSettingsEntity addStockSettings(StockSettingsEntity settingsEntity) {
 		ofy().save().entity(settingsEntity).now();
 		return settingsEntity;
 	}
 
 	@ApiMethod(name = "getStockSettingsByBiz", path = "getStockSettingsByBiz")
 	public StockSettingsEntity getStockSettingsByBiz(@Named("id") Long busId) {
-		StockSettingsEntity filteredSettings = ofy().load()
-				.type(StockSettingsEntity.class)
-				.ancestor(Key.create(BusinessEntity.class, busId)).first()
-				.now();
+		StockSettingsEntity filteredSettings = ofy().load().type(StockSettingsEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).first().now();
 
 		return filteredSettings;
 

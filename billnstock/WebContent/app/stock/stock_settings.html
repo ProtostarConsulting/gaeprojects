@@ -1,30 +1,40 @@
 <md-content layout-padding>
 <h3 class="md-title">Stock Management Settings</h3>
 <form name="invoiceSettings" layout="column">
-	<h4 class="md-subhead">Setup Default Invoice Items</h4>
-	<hr>
-
-	<md-input-container flex="80" layout="row"> <label>Note
-		to Customer</label> <textarea ng-model="settingsObj.noteToCustomer" rows="2"
-		cols="1"></textarea> </md-input-container>
-	<hr>
-	<md-input-container flex="80" layout="row"> <label>Invoice
+	<div layout="row" layout-xs="column">
+		<md-checkbox ng-model="settingsObj.needPOApproval"
+			ng-true-value="true" ng-false-value="false" aria-label="isGoogleUser">
+		Need PO Approval</md-checkbox>
+		<md-checkbox ng-model="settingsObj.needStockShipmentApproval"
+			ng-true-value="true" ng-false-value="false" aria-label="isGoogleUser">
+		Need Stock Shipment Approval</md-checkbox>
+	</div>
+	<md-input-container flex="80" layout="row"> <label>PO
 		Terms and Conditions</label> <textarea
-		ng-model="settingsObj.termsAndConditions" rows="3" cols="1"></textarea>
+		ng-model="settingsObj.poTermsAndConditions" rows="3" cols="1"></textarea>
 	</md-input-container>
 
-	<hr>
-	<md-checkbox ng-model="settingsObj.emailNotification"
-		ng-true-value="true" ng-false-value="false" aria-label="isGoogleUser">
-	Invoice Email Notification</md-checkbox>
-	<md-input-container flex="80" layout="row"> <label>Email
-		Notification List(enter comma separated email ids)</label> <textarea
-		ng-model="settingsObj.emailNotificationDL" rows="2" cols="1"></textarea> </md-input-container>
-</form>
+	<md-input-container flex="80" layout="row"> <label>Stock
+		Shipment Terms and Conditions</label> <textarea
+		ng-model="settingsObj.stockShipTermsAndConditions" rows="3" cols="1"></textarea>
+	</md-input-container>
 
+	<div layout="row" layout-xs="column">
+		<div flex-xs flex="20">
+			<md-checkbox ng-model="settingsObj.emailNotification"
+				ng-true-value="true" ng-false-value="false"
+				aria-label="isGoogleUser"> Stock/PO Email Notification</md-checkbox>
+		</div>
+
+		<md-input-container flex="80" layout="row"> <label>Email
+			Notification List(enter comma separated email ids)</label> <textarea
+			ng-model="settingsObj.emailNotificationDL" rows="2" cols="1"></textarea>
+		</md-input-container>
+	</div>
+</form>
 <section layout="row" layout-sm="column">
-	<md-button class="md-raised md-primary"
-		ng-click="addSettings()">Save Changes </md-button>
+	<md-button class="md-raised md-primary" ng-click="addSettings()">Save
+	Changes </md-button>
 </section>
 </md-content>
 

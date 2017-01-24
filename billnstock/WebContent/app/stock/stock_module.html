@@ -29,7 +29,7 @@
 					class="name" style="color: Green; height: 15px; width: 15px"></md-icon>
 				Tax Collection </md-button> --> </md-content>
 			<span flex></span>
-			<md-button layout-align="center end"
+			<md-button ng-show="hasUserAuthority(curUser, 'Stock.ModuleAdmin')" layout-align="center end" 
 					class="md-icon-button md-accent" ui-sref="stock.settings"
 					aria-label="Favorite"> <md-icon
 					md-svg-icon="img/icons/ic_settings_black_24px.svg"></md-icon> </md-button>

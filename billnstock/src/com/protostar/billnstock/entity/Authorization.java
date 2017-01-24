@@ -3,20 +3,17 @@ package com.protostar.billnstock.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Authorization {	
-	
-	
+public class Authorization {
 	public static final String ORDER_NUMBER = "orderNumber";
 	public static final String UI_STATE_NAME = "uiStateName";
 	public static final String AUTH_DISPLAY_NAME = "authDisplayName";
 	public static final String AUTH_NAME = "authName";
-	
-	private String authName; //authName must be unique at each level 
+
+	private String authName; // authName must be unique at each level
 	private String authDisplayName;
 	private String uiStateName;
 	private Long orderNumber;
 	private List<Authorization> authorizations = new ArrayList<Authorization>();
-	
 
 	public String getUiStateName() {
 		return uiStateName;
@@ -57,7 +54,5 @@ public class Authorization {
 	public void setAuthorizations(List<Authorization> authorizations) {
 		this.authorizations = authorizations;
 	}
-
-	
 
 }

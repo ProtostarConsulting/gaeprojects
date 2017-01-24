@@ -4,11 +4,12 @@ import com.googlecode.objectify.annotation.Entity;
 import com.protostar.billnstock.entity.BaseEntity;
 
 @Entity
-public class StockSettingsEntity extends BaseEntity {
-	private String noteToCustomer;
-	private String termsAndConditions;
-	
-	private boolean emailNotification = false;
+public class StockSettingsEntity extends BaseEntity {	
+	private String poTermsAndConditions;
+	private String stockShipTermsAndConditions;
+	private boolean needPOApproval = false;
+	private boolean needStockShipmentApproval = false;
+	private boolean emailNotification = false;	
 	private String emailNotificationDL = "";
 
 	public boolean isEmailNotification() {
@@ -27,20 +28,36 @@ public class StockSettingsEntity extends BaseEntity {
 		this.emailNotificationDL = emailNotificationDL;
 	}
 
-	public String getNoteToCustomer() {
-		return noteToCustomer;
+	public String getPoTermsAndConditions() {
+		return poTermsAndConditions;
 	}
 
-	public void setNoteToCustomer(String noteToCustomer) {
-		this.noteToCustomer = noteToCustomer;
+	public void setPoTermsAndConditions(String poTermsAndConditions) {
+		this.poTermsAndConditions = poTermsAndConditions;
 	}
 
-	public String getTermsAndConditions() {
-		return termsAndConditions;
+	public String getStockShipTermsAndConditions() {
+		return stockShipTermsAndConditions;
 	}
 
-	public void setTermsAndConditions(String termsAndConditions) {
-		this.termsAndConditions = termsAndConditions;
+	public void setStockShipTermsAndConditions(String stockShipTermsAndConditions) {
+		this.stockShipTermsAndConditions = stockShipTermsAndConditions;
+	}
+
+	public boolean isNeedPOApproval() {
+		return needPOApproval;
+	}
+
+	public void setNeedPOApproval(boolean needPOApproval) {
+		this.needPOApproval = needPOApproval;
+	}
+
+	public boolean isNeedStockShipmentApproval() {
+		return needStockShipmentApproval;
+	}
+
+	public void setNeedStockShipmentApproval(boolean needStockShipmentApproval) {
+		this.needStockShipmentApproval = needStockShipmentApproval;
 	}
 
 }

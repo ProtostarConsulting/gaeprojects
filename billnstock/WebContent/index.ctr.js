@@ -178,7 +178,6 @@ angular
 															return (parseFloat(a.orderNumber) > parseFloat(b.orderNumber)) ? 1
 																	: -1
 														});
-											
 
 												var curUser = appEndpointSF
 														.getLocalUserService()
@@ -437,10 +436,9 @@ angular
 					};
 
 					$scope.hasUserAuthority = function(user, authorityToCheck) {
-						return user.authority
-								&& user.authority.length
-								&& user.authority.indexOf(authorityToCheck
-										.trim()) > -1
+						return appEndpointSF.getAuthorizationService()
+								.containsInAuthTree(authorityToCheck,
+										angular.fromJson(user.authorizations));
 					};
 
 				})

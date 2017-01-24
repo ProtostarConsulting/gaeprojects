@@ -6,6 +6,8 @@ app
 						$mdUtil, $log, $state, $http, $stateParams,
 						$routeParams, $filter, $q, $mdMedia, $mdDialog,
 						objectFactory, appEndpointSF) {
+					
+					$scope.documentStatusList = ['DRAFT', 'SUBMITTED', 'FINALIZED', 'REJECTED'];
 
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
@@ -110,7 +112,11 @@ app
 
 						}
 					}
-
+					
+					$scope.submitPurchaseOrder = function(ev) {
+						$scope.purchaseOrderObj.status = 'SUBMITTED';
+						$scope.addPurchaseOrder();
+					}
 					$scope.finalizePurchaseOrder = function(ev) {
 						var confirm = $mdDialog
 								.confirm()

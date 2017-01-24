@@ -55,12 +55,11 @@
 				ng-src="{{bizLogoGCSURL}}" class="md-card-image" height="60px"
 				width="120px" />
 			<h3 ng-hide="curUser.business.bizLogoGCSURL" class="md-toolbar-tools"
-				ng-bind="curUser.business.businessName "></h3>
+				ng-bind="curUser.business.businessName"></h3>
 		</div>
 		<span flex></span>
 		<div layout="row" layout-align="end center">
 			<!-- fill up the space between left and right area -->
-
 			<div id="login" ng-show="!curUser">
 				<md-button class="md-icon-button" ng-click="loginClick()">
 				<ng-md-icon icon="login" style="fill: md-default" size="24">
@@ -105,7 +104,7 @@
 	<div layout="column" style="margin-left: 15px;"
 		ng-class="{dataContent:true, activeContent:data.expanded[$index]}">
 		<md-content layout="column" flex="100" layout-align="center start">
-		<md-button
+		<md-button ng-if="subAuth.uiStateName"
 			ng-repeat="subAuth in auth.authorizations | orderBy: orderByAuthOrderValue"
 			ui-sref="{{subAuth.uiStateName}}" ng-click="close()"
 			class="menu-heading md-primary" aria-label="subAuth.authDisplayName"
@@ -200,7 +199,7 @@
 
 	<script src="/app/accounting/js/accounting_module.ctr.js"></script>
 	<script src="/app/accounting/js/accountlistCtr.ctr.js"></script>
-	<script src="/app/accounting/js/account_add.js"></script>	
+	<script src="/app/accounting/js/account_add.js"></script>
 	<script src="/app/accounting/js/account_addGeneralEntry.ctr.js"></script>
 	<script src="/app/accounting/js/account_addEntry.ctr.js"></script>
 	<script src="/app/accounting/js/account_entryList.ctr.js"></script>
@@ -209,7 +208,7 @@
 	<script src="/app/accounting/js/accountGroupView.ctr.js"></script>
 	<script src="/app/accounting/js/accountChart.ctr.js"></script>
 	<script src="/app/accounting/js/accountGroupView.ctr.js"></script>
-	
+
 	<script src="/app/accounting/js/voucherSalesCtr.ctr.js"></script>
 	<script src="/app/accounting/js/voucherSalesListCtr.ctr.js"></script>
 	<script src="/app/accounting/js/voucherRecieptCtr.ctr.js"></script>
@@ -262,7 +261,7 @@
 	<!--   Quotation JS below -->
 	<script src="/app/invoice/js/quotation_add.ctr.js"></script>
 	<script src="/app/invoice/js/quotation_list.ctr.js"></script>
-	
+
 	<!--    Complete Quotation JS   -->
 
 	<!-- 	Stock js  -->
