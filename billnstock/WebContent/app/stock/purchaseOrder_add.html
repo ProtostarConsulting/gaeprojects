@@ -296,7 +296,7 @@
 				as Draft</md-button>
 				<md-button class="md-raised md-primary"
 					ng-disabled="pOForm.$invalid" ng-click="submitPurchaseOrder()">Submit</md-button>
-				<md-button class="md-raised md-primary"
+				<md-button ng-show="hasUserAuthority(curUser, 'Stock.ModuleApprover')"  class="md-raised md-primary"
 					ng-disabled="pOForm.$invalid"
 					ng-click="finalizePurchaseOrder($event)">Finalize PO</md-button>
 			</section>
