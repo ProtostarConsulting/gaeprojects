@@ -6,8 +6,9 @@ app
 						$mdUtil, $log, $state, $http, $stateParams,
 						$routeParams, $filter, $q, $mdMedia, $mdDialog,
 						objectFactory, appEndpointSF) {
-					
-					$scope.documentStatusList = ['DRAFT', 'SUBMITTED', 'FINALIZED', 'REJECTED'];
+
+					$scope.documentStatusList = [ 'DRAFT', 'SUBMITTED',
+							'FINALIZED', 'REJECTED' ];
 
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
@@ -101,18 +102,11 @@ app
 							stockService.addPurchaseOrder(
 									$scope.purchaseOrderObj).then(
 									function(msgBean) {
-										$scope.showAddToast();
-										$scope.pOForm.$setPristine();
-										$scope.pOForm.$setValidity();
-										$scope.pOForm.$setUntouched();
-
-										$scope.purchaseOrderObj = $scope
-												.getEmptyPurchaseOrderObj();
+										$scope.showUpdateToast();
 									});
-
 						}
 					}
-					
+
 					$scope.submitPurchaseOrder = function(ev) {
 						$scope.purchaseOrderObj.status = 'SUBMITTED';
 						$scope.addPurchaseOrder();
