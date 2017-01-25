@@ -5,6 +5,7 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
@@ -18,12 +19,15 @@ import com.protostar.billingnstock.invoice.entities.InvoiceSettingsEntity;
 import com.protostar.billingnstock.invoice.entities.QuotationEntity;
 import com.protostar.billingnstock.stock.services.StockManagementService;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
+import com.protostar.billnstock.service.BaseService;
 import com.protostar.billnstock.until.data.Constants;
+import com.protostar.billnstock.until.data.Constants.DocumentStatus;
+import com.protostar.billnstock.until.data.EntityPagingInfo;
 import com.protostar.billnstock.until.data.EntityUtil;
 import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 
 @Api(name = "invoiceService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.stock.services", ownerName = "com.protostar.billingnstock.stock.services", packagePath = ""))
-public class InvoiceService {
+public class InvoiceService extends BaseService {
 
 	@ApiMethod(name = "addInvoice", path = "addInvoice")
 	public InvoiceEntity saveInvoice(InvoiceEntity invoiceEntity) {
@@ -54,6 +58,16 @@ public class InvoiceService {
 		System.out.println("filteredinvoice:" + filteredinvoice.size());
 		return filteredinvoice;
 
+	}
+	@ApiMethod(name = "fetchInvoiceListByPaging", path = "fetchInvoiceListByPaging")
+	public EntityPagingInfo fetchInvoiceListByPaging(@Named("id") Long busId, @Named("status") String status,
+			EntityPagingInfo pagingInfo) {
+		if (status != null && !status.isEmpty()) {
+			DocumentStatus statusType = DocumentStatus.valueOf(status.toUpperCase(Locale.ENGLISH));
+			return super.fetchEntityListByPaging(busId, InvoiceEntity.class, pagingInfo, statusType);
+		} else {
+			return super.fetchEntityListByPaging(busId, InvoiceEntity.class, pagingInfo);
+		}
 	}
 
 	@ApiMethod(name = "getInvoiceByID", path = "getInvoiceByID")

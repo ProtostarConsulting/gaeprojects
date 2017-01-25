@@ -415,14 +415,36 @@ public class StockManagementService extends BaseService {
 		return filteredPO;
 	}
 
-	@ApiMethod(name = "fetchEntityListByPaging", path = "fetchEntityListByPaging")
-	public EntityPagingInfo fetchEntityListByPaging(@Named("id") Long busId, @Named("status") String status,
+	@ApiMethod(name = "fetchPOListByPaging", path = "fetchPOListByPaging")
+	public EntityPagingInfo fetchPOListByPaging(@Named("id") Long busId, @Named("status") String status,
 			EntityPagingInfo pagingInfo) {
 		if (status != null && !status.isEmpty()) {
 			DocumentStatus statusType = DocumentStatus.valueOf(status.toUpperCase(Locale.ENGLISH));
 			return super.fetchEntityListByPaging(busId, PurchaseOrderEntity.class, pagingInfo, statusType);
 		} else {
 			return super.fetchEntityListByPaging(busId, PurchaseOrderEntity.class, pagingInfo);
+		}
+	}
+	
+	@ApiMethod(name = "fetchReceiptListByPaging", path = "fetchReceiptListByPaging")
+	public EntityPagingInfo fetchReceiptListByPaging(@Named("id") Long busId, @Named("status") String status,
+			EntityPagingInfo pagingInfo) {
+		if (status != null && !status.isEmpty()) {
+			DocumentStatus statusType = DocumentStatus.valueOf(status.toUpperCase(Locale.ENGLISH));
+			return super.fetchEntityListByPaging(busId, StockItemsReceiptEntity.class, pagingInfo, statusType);
+		} else {
+			return super.fetchEntityListByPaging(busId, StockItemsReceiptEntity.class, pagingInfo);
+		}
+	}
+	
+	@ApiMethod(name = "fetchShipmentListByPaging", path = "fetchShipmentListByPaging")
+	public EntityPagingInfo fetchShipmentListByPaging(@Named("id") Long busId, @Named("status") String status,
+			EntityPagingInfo pagingInfo) {
+		if (status != null && !status.isEmpty()) {
+			DocumentStatus statusType = DocumentStatus.valueOf(status.toUpperCase(Locale.ENGLISH));
+			return super.fetchEntityListByPaging(busId, StockItemsShipmentEntity.class, pagingInfo, statusType);
+		} else {
+			return super.fetchEntityListByPaging(busId, StockItemsShipmentEntity.class, pagingInfo);
 		}
 	}
 
