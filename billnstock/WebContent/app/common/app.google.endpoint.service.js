@@ -1963,9 +1963,29 @@ function googleEndpointSF($q) {
 		
 	}
 	
-	StockService.fetchEntityListByPaging = function(busId, status, pagingInfo) {
+	StockService.fetchPOListByPaging = function(busId, status, pagingInfo) {
 		var deferred = $q.defer();
-		gapi.client.stockService.fetchEntityListByPaging({
+		gapi.client.stockService.fetchPOListByPaging({
+			"id" : busId,
+			"status": status
+		}, pagingInfo).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}
+	StockService.fetchReceiptListByPaging = function(busId, status, pagingInfo) {
+		var deferred = $q.defer();
+		gapi.client.stockService.fetchReceiptListByPaging({
+			"id" : busId,
+			"status": status
+		}, pagingInfo).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}
+	StockService.fetchShipmentListByPaging = function(busId, status, pagingInfo) {
+		var deferred = $q.defer();
+		gapi.client.stockService.fetchShipmentListByPaging({
 			"id" : busId,
 			"status": status
 		}, pagingInfo).execute(function(resp) {
@@ -2087,6 +2107,17 @@ function googleEndpointSF($q) {
 			deferred.resolve(resp);
 		});
 
+		return deferred.promise;
+	}
+	
+	InvoiceService.fetchInvoiceListByPaging = function(busId, status, pagingInfo) {
+		var deferred = $q.defer();
+		gapi.client.invoiceService.fetchInvoiceListByPaging({
+			"id" : busId,
+			"status": status
+		}, pagingInfo).execute(function(resp) {
+			deferred.resolve(resp);
+		});
 		return deferred.promise;
 	}
 

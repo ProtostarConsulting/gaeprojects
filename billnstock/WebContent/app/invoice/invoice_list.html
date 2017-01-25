@@ -19,6 +19,12 @@
 </section>
 
 <div>
+	<div>
+		<span style="padding-right: 8px;">Filter By Status: </span><span
+			md-colors="{color:'primary'}"
+			ng-repeat="status in documentStatusList"
+			ng-click="fitlerListByStatus(status)">{{status + " "}}</span>
+	</div>
 	<md-data-table-container>
 	<table md-data-table class="md-primary" md-progress="deferred">
 		<thead md-order="query.order" md-trigger="onorderchange">

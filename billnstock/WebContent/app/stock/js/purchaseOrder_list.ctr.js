@@ -7,9 +7,6 @@ app
 						$routeParams, $filter, $location, $anchorScroll,
 						objectFactory, appEndpointSF) {
 
-					$scope.documentStatusList = [ 'DRAFT', 'SUBMITTED',
-							'FINALIZED', 'REJECTED' ];
-					$scope.selectedStatus = "";
 					function reSetQuery() {
 						return {
 							order : '-itemNumber',
@@ -58,7 +55,7 @@ app
 
 						var stockService = appEndpointSF.getStockService();
 						stockService
-								.fetchEntityListByPaging(
+								.fetchPOListByPaging(
 										$scope.curUser.business.id,
 										$scope.selectedStatus, pagingInfoTemp)
 								.then(
@@ -71,6 +68,9 @@ app
 											$scope.loading = false;
 										});
 					}
+					$scope.documentStatusList = [ 'DRAFT', 'SUBMITTED',
+							'FINALIZED', 'REJECTED' ];
+					$scope.selectedStatus = "";
 
 					$scope.fitlerListByStatus = function(status) {
 						$scope.selectedStatus = status;
