@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Ignore;
-import com.googlecode.objectify.annotation.OnSave;
 import com.protostar.billnstock.entity.BaseEntity;
 import com.protostar.billnstock.until.data.Constants;
 import com.protostar.billnstock.until.data.EntityUtil;
@@ -15,7 +14,7 @@ public class GeneralJournalEntity extends BaseEntity {
 
 	private String accountName;
 	private String description;
-	@OnSave
+	@Override
 	public void beforeSave() {
 		super.beforeSave();
 		

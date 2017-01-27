@@ -18,7 +18,7 @@ public class SalesVoucherEntity extends VoucherEntity {
 	public Double amount;
 	public String narration;
 	public boolean isCash;
-	@OnSave
+	@Override
 	public void beforeSave() {
 		super.beforeSave();
 		

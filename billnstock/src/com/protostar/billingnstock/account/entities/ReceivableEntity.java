@@ -24,7 +24,7 @@ public class ReceivableEntity extends BaseEntity {
 	private Date quotationDueDate;
 	private String finalTotal;
 	private String status = "NotPaid";
-	@OnSave
+	@Override
 	public void beforeSave() {
 		super.beforeSave();
 		

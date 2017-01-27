@@ -23,7 +23,7 @@ public class PayableEntity extends BaseEntity{
 	private String invoiceDueDate;
 	private Long purchaseOrderId;
 	private String purchaseOrderDate;
-	@OnSave
+	@Override
 	public void beforeSave() {
 		super.beforeSave();
 		

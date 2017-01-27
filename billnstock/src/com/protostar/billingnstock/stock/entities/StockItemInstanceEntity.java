@@ -2,7 +2,6 @@ package com.protostar.billingnstock.stock.entities;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
-import com.googlecode.objectify.annotation.OnSave;
 import com.protostar.billnstock.entity.BaseEntity;
 
 @Entity
@@ -26,7 +25,7 @@ public class StockItemInstanceEntity extends BaseEntity {
 	private int stockReceiptNumber;
 
 	
-	@OnSave
+	@Override
 	public void beforeSave() {
 		if (getStockItemId() == null || getStockItemId().isEmpty()) {
 			throw new RuntimeException("StockItem id is not set on: "

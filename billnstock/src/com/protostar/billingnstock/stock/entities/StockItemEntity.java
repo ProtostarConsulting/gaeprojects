@@ -3,7 +3,6 @@ package com.protostar.billingnstock.stock.entities;
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
-import com.googlecode.objectify.annotation.OnSave;
 import com.protostar.billingnstock.warehouse.entities.WarehouseEntity;
 import com.protostar.billnstock.entity.BaseEntity;
 
@@ -28,7 +27,7 @@ public class StockItemEntity extends BaseEntity {
 	@Index
 	private Ref<StockItemTypeEntity> stockItemType;
 
-	@OnSave
+	@Override
 	public void beforeSave() {
 		if (getWarehouse() == null) {
 			throw new RuntimeException("Warehouse entity is not set on: "

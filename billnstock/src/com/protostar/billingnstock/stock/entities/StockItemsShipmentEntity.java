@@ -45,7 +45,7 @@ public class StockItemsShipmentEntity extends BaseEntity {
 	@Index
 	private long poNumber;
 
-	@OnSave
+	@Override
 	public void beforeSave() {
 		super.beforeSave();
 

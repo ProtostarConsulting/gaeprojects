@@ -28,7 +28,6 @@ public class PurchaseOrderEntity extends InvoiceEntity {
 	@Index
 	private Ref<WarehouseEntity> warehouse;
 
-	@OnSave
 	@Override
 	public void beforeSave() {
 		// super.beforeSave(); No call to supper Before save as it will increase
@@ -36,14 +35,12 @@ public class PurchaseOrderEntity extends InvoiceEntity {
 		// here....
 
 		if (getBusiness() == null) {
-			throw new RuntimeException("Business entity is not set on: "
-					+ this.getClass().getSimpleName()
+			throw new RuntimeException("Business entity is not set on: " + this.getClass().getSimpleName()
 					+ " This is required field. Aborting save operation...");
 		}
 
 		if (getWarehouse() == null) {
-			throw new RuntimeException("Warehouse entity is not set on: "
-					+ this.getClass().getSimpleName()
+			throw new RuntimeException("Warehouse entity is not set on: " + this.getClass().getSimpleName()
 					+ " This is required field. Aborting save operation...");
 		}
 
@@ -59,8 +56,7 @@ public class PurchaseOrderEntity extends InvoiceEntity {
 
 		if (getId() == null) {
 			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
-					EntityUtil.getBusinessRawKey(getBusiness()),
-					Constants.PURCHASE_ORDER_NO_COUNTER);
+					EntityUtil.getBusinessRawKey(getBusiness()), Constants.PURCHASE_ORDER_NO_COUNTER);
 			setItemNumber(sequenceGenService.getNextSequenceNumber());
 		}
 	}

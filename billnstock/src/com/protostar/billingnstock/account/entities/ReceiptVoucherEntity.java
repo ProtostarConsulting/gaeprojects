@@ -14,7 +14,7 @@ public class ReceiptVoucherEntity extends VoucherEntity {
 	public Double amount;
 	public String narration;
 
-	@OnSave
+	@Override
 	public void beforeSave() {
 		super.beforeSave();
 		

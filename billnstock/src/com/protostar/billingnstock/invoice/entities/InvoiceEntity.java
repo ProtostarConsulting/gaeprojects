@@ -7,7 +7,6 @@ import java.util.List;
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
-import com.googlecode.objectify.annotation.OnSave;
 import com.protostar.billingnstock.cust.entities.Customer;
 import com.protostar.billingnstock.stock.entities.StockLineItem;
 import com.protostar.billingnstock.tax.entities.TaxEntity;
@@ -51,7 +50,7 @@ public class InvoiceEntity extends BaseEntity {
 	private Ref<Customer> customer;
 	private String pOrder;
 
-	@OnSave
+	@Override
 	public void beforeSave() {
 		super.beforeSave();
 

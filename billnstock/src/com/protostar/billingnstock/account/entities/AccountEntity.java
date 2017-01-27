@@ -32,7 +32,7 @@ public class AccountEntity extends BaseEntity {
 
 	}
 
-	@OnSave
+	@Override
 	public void beforeSave() {
 		super.beforeSave();
 

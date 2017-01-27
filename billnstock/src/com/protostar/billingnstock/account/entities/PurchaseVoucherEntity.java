@@ -21,7 +21,7 @@ public class PurchaseVoucherEntity extends VoucherEntity {
 	public String item;
 	public String accdetail;
 	
-	@OnSave
+	@Override
 	public void beforeSave() {
 		super.beforeSave();
 		

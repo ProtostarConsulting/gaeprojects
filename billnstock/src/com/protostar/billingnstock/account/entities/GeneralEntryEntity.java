@@ -5,13 +5,10 @@ import java.util.Date;
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
-import com.googlecode.objectify.annotation.OnSave;
-import com.googlecode.objectify.annotation.Parent;
 import com.protostar.billnstock.entity.BaseEntity;
 import com.protostar.billnstock.until.data.Constants;
 import com.protostar.billnstock.until.data.EntityUtil;
 import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
-import com.protostar.billnstock.until.data.Constants.DocumentStatus;
 
 @Entity
 public class GeneralEntryEntity extends BaseEntity {
@@ -24,7 +21,7 @@ public class GeneralEntryEntity extends BaseEntity {
 	private String narration;
 	private Double amount;
 	
-	@OnSave
+	@Override
 	public void beforeSave() {
 		super.beforeSave();
 		

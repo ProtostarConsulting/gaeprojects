@@ -31,7 +31,7 @@ public class AccountGroupEntity extends BaseEntity {
 		this.parent = parent;
 	}
 
-	@OnSave
+	@Override
 	public void beforeSave() {
 		super.beforeSave();
 

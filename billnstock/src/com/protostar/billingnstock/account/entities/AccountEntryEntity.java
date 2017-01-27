@@ -19,7 +19,7 @@ public class AccountEntryEntity extends BaseEntity {
 	private String narration;
 	private Double debit;
 	private Double credit;
-	@OnSave
+	@Override
 	public void beforeSave() {
 		super.beforeSave();
 		

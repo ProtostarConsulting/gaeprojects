@@ -15,7 +15,7 @@ public class AccountingFYEntity extends BaseEntity {
 	private Date startsFrom;
 	private Date till;
 	private Boolean currentFY;
-	@OnSave
+	@Override
 	public void beforeSave() {
 		super.beforeSave();
 		
