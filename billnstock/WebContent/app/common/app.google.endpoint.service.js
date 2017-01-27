@@ -124,10 +124,10 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	UserService.getUserByID = function(busId,id) {
+	UserService.getUserByID = function(busId, id) {
 		var deferred = $q.defer();
 		gapi.client.userService.getUserByID({
-			'busId':busId,
+			'busId' : busId,
 			'id' : id
 		}).execute(function(resp) {
 			deferred.resolve(resp);
@@ -940,10 +940,11 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
-	hrService.getpayRollReport = function(id) {
+	hrService.getpayRollReport = function(id, year) {
 		var deferred = $q.defer();
 		gapi.client.hrService.getpayRollReport({
-			'id' : id
+			'id' : id,
+			'year' : year
 		}).execute(function(resp) {
 			deferred.resolve(resp.items);
 		});
@@ -953,26 +954,25 @@ function googleEndpointSF($q) {
 
 		var deferred = $q.defer();
 
-		gapi.client.hrService.addLeaveApp(leaveApp).execute(
-				function(resp) {
-					deferred.resolve({
-						"msg" : "EmpLeaveApp added succsefully."
-					});
-				});
+		gapi.client.hrService.addLeaveApp(leaveApp).execute(function(resp) {
+			deferred.resolve({
+				"msg" : "EmpLeaveApp added succsefully."
+			});
+		});
 		return deferred.promise;
 	}
-	
-	hrService.approveLeaveApp = function(leaveApp){
+
+	hrService.approveLeaveApp = function(leaveApp) {
 		var deferred = $q.defer();
-		
-		gapi.client.hrService.approveLeaveApp(leaveApp).execute(function(resp){
+
+		gapi.client.hrService.approveLeaveApp(leaveApp).execute(function(resp) {
 			deferred.resolve({
-				"msg":"leave approved successfully."
+				"msg" : "leave approved successfully."
 			});
 		})
-		
+
 	}
-	
+
 	hrService.updateLeaveApp = function(leaveApp) {
 
 		var deferred = $q.defer();
@@ -985,8 +985,6 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	
-	
 
 	hrService.getLeaveAppList = function() {
 
@@ -998,37 +996,42 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 
 	}
-	
-	hrService.getLeaveAppListByUser = function(busId,userId) {
-		var deferred = $q.defer();
-		gapi.client.hrService.getLeaveAppListByUser({"busId":busId,"userId":userId}).execute(
-				function(resp) {
-					deferred.resolve(resp.items);
-				});
-		return deferred.promise;
-	}
-	
-	hrService.getLeaveAppListByManager = function(busId,userId) {
-		var deferred = $q.defer();
-		gapi.client.hrService.getLeaveAppListByManager({"busId":busId,"userId":userId}).execute(
-				function(resp) {
-					deferred.resolve(resp.items);
-				});
-		return deferred.promise;
-	}
 
-	hrService.addLeaveMaster = function(leaveMasterEntity){
+	hrService.getLeaveAppListByUser = function(busId, userId) {
 		var deferred = $q.defer();
-		gapi.client.hrService.addLeaveMaster(leaveMasterEntity).execute(function() {
-
-			deferred.resolve({
-				"msg" : "leaveMaster added Successfully."
-			});
-
+		gapi.client.hrService.getLeaveAppListByUser({
+			"busId" : busId,
+			"userId" : userId
+		}).execute(function(resp) {
+			deferred.resolve(resp.items);
 		});
 		return deferred.promise;
 	}
-	
+
+	hrService.getLeaveAppListByManager = function(busId, userId) {
+		var deferred = $q.defer();
+		gapi.client.hrService.getLeaveAppListByManager({
+			"busId" : busId,
+			"userId" : userId
+		}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}
+
+	hrService.addLeaveMaster = function(leaveMasterEntity) {
+		var deferred = $q.defer();
+		gapi.client.hrService.addLeaveMaster(leaveMasterEntity).execute(
+				function() {
+
+					deferred.resolve({
+						"msg" : "leaveMaster added Successfully."
+					});
+
+				});
+		return deferred.promise;
+	}
+
 	hrService.getLeaveMasterList = function() {
 
 		var deferred = $q.defer();
@@ -1039,29 +1042,32 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 
 	}
-	
-	hrService.getLeaveMasterListByUser = function(busId,userId) {
+
+	hrService.getLeaveMasterListByUser = function(busId, userId) {
 		var deferred = $q.defer();
-		gapi.client.hrService.getLeaveMasterListByUser({"busId":busId,"userId":userId}).execute(
-				function(resp) {
-					deferred.resolve(resp.items);
-				});
-		return deferred.promise;
-	}
-	
-	hrService.updateLeaveMaster = function(leaveMaster) {
-
-		var deferred = $q.defer();
-		gapi.client.hrService.updateLeaveMaster(leaveMaster).execute(function() {
-
-			deferred.resolve({
-				"msg" : "leaveMaster Updated Successfully."
-			});
-
+		gapi.client.hrService.getLeaveMasterListByUser({
+			"busId" : busId,
+			"userId" : userId
+		}).execute(function(resp) {
+			deferred.resolve(resp.items);
 		});
 		return deferred.promise;
 	}
-	
+
+	hrService.updateLeaveMaster = function(leaveMaster) {
+
+		var deferred = $q.defer();
+		gapi.client.hrService.updateLeaveMaster(leaveMaster).execute(
+				function() {
+
+					deferred.resolve({
+						"msg" : "leaveMaster Updated Successfully."
+					});
+
+				});
+		return deferred.promise;
+	}
+
 	// ------------------------- CRM ---------------------------------
 	var crmService = {};
 
@@ -1786,7 +1792,7 @@ function googleEndpointSF($q) {
 				});
 		return deferred.promise;
 	}
-	
+
 	/* =============================================================================================================================== */
 	// Start of StockService
 	var StockService = {};
@@ -1848,17 +1854,19 @@ function googleEndpointSF($q) {
 	}
 	StockService.getStockItemInstancesList = function(stockItem) {
 		var deferred = $q.defer();
-		gapi.client.stockService.getStockItemInstancesList(stockItem).execute(function(resp) {
-			deferred.resolve(resp.items);
-		});
+		gapi.client.stockService.getStockItemInstancesList(stockItem).execute(
+				function(resp) {
+					deferred.resolve(resp.items);
+				});
 		return deferred.promise;
 	}
-	
+
 	StockService.filterStockItemsByWarehouse = function(warehouse) {
 		var deferred = $q.defer();
-		gapi.client.stockService.filterStockItemsByWarehouse(warehouse).execute(function(resp) {
-			deferred.resolve(resp.items);
-		});
+		gapi.client.stockService.filterStockItemsByWarehouse(warehouse)
+				.execute(function(resp) {
+					deferred.resolve(resp.items);
+				});
 		return deferred.promise;
 	}
 
@@ -1920,11 +1928,11 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	
+
 	StockService.addPurchaseOrder = function(purchaseOrder) {
 		var deferred = $q.defer();
-		gapi.client.stockService.addPurchaseOrder(purchaseOrder)
-				.execute(function(resp) {
+		gapi.client.stockService.addPurchaseOrder(purchaseOrder).execute(
+				function(resp) {
 					deferred.resolve(resp);
 				});
 		return deferred.promise;
@@ -1951,7 +1959,7 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
-	StockService.getPOByID = function(busId,id){
+	StockService.getPOByID = function(busId, id) {
 		var deferred = $q.defer();
 		gapi.client.stockService.getPOByID({
 			'busId' : busId,
@@ -1960,14 +1968,14 @@ function googleEndpointSF($q) {
 			deferred.resolve(resp);
 		});
 		return deferred.promise;
-		
+
 	}
-	
+
 	StockService.fetchPOListByPaging = function(busId, status, pagingInfo) {
 		var deferred = $q.defer();
 		gapi.client.stockService.fetchPOListByPaging({
 			"id" : busId,
-			"status": status
+			"status" : status
 		}, pagingInfo).execute(function(resp) {
 			deferred.resolve(resp);
 		});
@@ -1977,7 +1985,7 @@ function googleEndpointSF($q) {
 		var deferred = $q.defer();
 		gapi.client.stockService.fetchReceiptListByPaging({
 			"id" : busId,
-			"status": status
+			"status" : status
 		}, pagingInfo).execute(function(resp) {
 			deferred.resolve(resp);
 		});
@@ -1987,7 +1995,7 @@ function googleEndpointSF($q) {
 		var deferred = $q.defer();
 		gapi.client.stockService.fetchShipmentListByPaging({
 			"id" : busId,
-			"status": status
+			"status" : status
 		}, pagingInfo).execute(function(resp) {
 			deferred.resolve(resp);
 		});
@@ -2003,7 +2011,7 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	
+
 	StockService.addStockSettings = function(settings) {
 		var deferred = $q.defer();
 
@@ -2109,12 +2117,13 @@ function googleEndpointSF($q) {
 
 		return deferred.promise;
 	}
-	
-	InvoiceService.fetchInvoiceListByPaging = function(busId, status, pagingInfo) {
+
+	InvoiceService.fetchInvoiceListByPaging = function(busId, status,
+			pagingInfo) {
 		var deferred = $q.defer();
 		gapi.client.invoiceService.fetchInvoiceListByPaging({
 			"id" : busId,
-			"status": status
+			"status" : status
 		}, pagingInfo).execute(function(resp) {
 			deferred.resolve(resp);
 		});
@@ -2214,7 +2223,7 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
-	InvoiceService.getQuotationByID = function(busId,id) {
+	InvoiceService.getQuotationByID = function(busId, id) {
 		var deferred = $q.defer();
 		gapi.client.invoiceService.getQuotationByID({
 			'busId' : busId,
@@ -2271,7 +2280,7 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	
+
 	/* =============================================================================================================================== */
 
 	// Start of WarehouseManagement

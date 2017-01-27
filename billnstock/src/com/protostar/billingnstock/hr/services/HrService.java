@@ -543,7 +543,7 @@ public class HrService {
 	}
 
 	@ApiMethod(name = "getpayRollReport", path = "getpayRollReport")
-	public List<PayRollMonthlyData> getpayRollReport(@Named("id") Long busId) {
+	public List<PayRollMonthlyData> getpayRollReport(@Named("id") Long busId, @Named("year") String year) {
 
 		List<PayRollMonthlyData> payrolldatalist = new ArrayList<PayRollMonthlyData>();
 
@@ -551,7 +551,7 @@ public class HrService {
 				"June", "July", "August", "September", "October", "November",
 				"December" };
 
-		int year = Calendar.getInstance().get(Calendar.YEAR);
+		//int year = Calendar.getInstance().get(Calendar.YEAR);
 
 		HrService hrService = new HrService();
 		for (int i = 0; i < 12; i++) {

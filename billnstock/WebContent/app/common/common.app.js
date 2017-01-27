@@ -1,15 +1,15 @@
 var app = angular.module("stockApp", [ 'ngMaterial', 'ngMessages',
-	"ui.bootstrap", "ui.router", 'md.data.table', 'ngResource',
-	'ngStorage', 'ngRoute', 'ngFileUpload', 'ngAnimate',
-	'directive.g+signin', 'ui.bootstrap', 'textAngular', 'ngMdIcons' ]);
+		"ui.bootstrap", "ui.router", 'md.data.table', 'ngResource',
+		'ngStorage', 'ngRoute', 'ngFileUpload', 'ngAnimate',
+		'directive.g+signin', 'ui.bootstrap', 'textAngular', 'ngMdIcons' ]);
 
 app.factory('ajsCache', function($cacheFactory) {
 	return $cacheFactory('browserCache');
 });
 
 app.constant('monthList', [ "January", "February", "March", "April", "May",
-	"June", "July", "Augast", "September", "October", "November",
-	"December" ]);
+		"June", "July", "Augast", "September", "October", "November",
+		"December" ]);
 
 app.filter('formatDate', function($filter) {
 	return function(inputDate) {
@@ -74,7 +74,7 @@ app.filter('proOrderObjectByTextField', function() {
 		if (reverseOrder)
 			attribute = attribute.split("-")[1];
 		var array = [];
-		for (var objectKey in input) {
+		for ( var objectKey in input) {
 			array.push(input[objectKey]);
 		}
 
@@ -94,7 +94,7 @@ app.filter('proOrderObjectByNumberField', function() {
 		if (reverseOrder)
 			attribute = attribute.split("-")[1];
 		var array = [];
-		for (var objectKey in input) {
+		for ( var objectKey in input) {
 			array.push(input[objectKey]);
 		}
 
@@ -114,7 +114,7 @@ app.filter('proOrderObjectByDateField', function() {
 		if (reverseOrder)
 			attribute = attribute.split("-")[1];
 		var array = [];
-		for (var objectKey in input) {
+		for ( var objectKey in input) {
 			array.push(input[objectKey]);
 		}
 
@@ -127,28 +127,28 @@ app.filter('proOrderObjectByDateField', function() {
 	}
 });
 app.directive("proBeforeDateCheck",
-	function() {
-		return {
-			restrict : "A",
-			require : "ngModel",
-			link : function(scope, element, attributes, ngModel) {
-				ngModel.$validators.proBeforeDateCheck = function(
-					currentDateValue) {
-					var assignedDate = new Date(
-						Number(attributes.proBeforeDateCheck));
-					if (!currentDateValue) {
-						return true;
+		function() {
+			return {
+				restrict : "A",
+				require : "ngModel",
+				link : function(scope, element, attributes, ngModel) {
+					ngModel.$validators.proBeforeDateCheck = function(
+							currentDateValue) {
+						var assignedDate = new Date(
+								Number(attributes.proBeforeDateCheck));
+						if (!currentDateValue) {
+							return true;
+						}
+						currentDateValue.setHours(0, 0, 0, 0);
+						assignedDate.setHours(0, 0, 0, 0);
+						if (currentDateValue >= assignedDate) {
+							return true;
+						}
+						return false
 					}
-					currentDateValue.setHours(0, 0, 0, 0);
-					assignedDate.setHours(0, 0, 0, 0);
-					if (currentDateValue >= assignedDate) {
-						return true;
-					}
-					return false
 				}
-			}
-		};
-	});
+			};
+		});
 /*
  * app.filter('formatDate1', function($filter) { return function(inputDate) {
  * return $filter('date')(inputDate, 'dd-MM-yyyy'); }; });
@@ -169,45 +169,45 @@ app.config(function($mdThemingProvider) {
 	 * deep-orange, brown, grey, blue-grey
 	 */
 	$mdThemingProvider.theme('default').primaryPalette('light-blue')
-		.accentPalette('pink');
+			.accentPalette('pink');
 	$mdThemingProvider.theme('red').primaryPalette('red').accentPalette(
-		'orange').warnPalette('blue');
+			'orange').warnPalette('blue');
 	$mdThemingProvider.theme('pink').primaryPalette('pink').accentPalette(
-		'orange').warnPalette('blue');
+			'orange').warnPalette('blue');
 	$mdThemingProvider.theme('purple').primaryPalette('purple').accentPalette(
-		'grey').warnPalette('blue');
+			'grey').warnPalette('blue');
 	$mdThemingProvider.theme('deep-purple').primaryPalette('deep-purple')
-		.accentPalette('grey').warnPalette('blue');
+			.accentPalette('grey').warnPalette('blue');
 	$mdThemingProvider.theme('indigo').primaryPalette('indigo').accentPalette(
-		'grey').warnPalette('blue');
+			'grey').warnPalette('blue');
 	$mdThemingProvider.theme('blue').primaryPalette('blue').accentPalette(
-		'grey').warnPalette('blue');
+			'grey').warnPalette('blue');
 	$mdThemingProvider.theme('light-blue').primaryPalette('light-blue')
-		.accentPalette('grey').warnPalette('blue');
+			.accentPalette('grey').warnPalette('blue');
 	$mdThemingProvider.theme('cyan').primaryPalette('cyan').accentPalette(
-		'grey').warnPalette('blue');
+			'grey').warnPalette('blue');
 	$mdThemingProvider.theme('teal').primaryPalette('teal').accentPalette(
-		'grey').warnPalette('blue');
+			'grey').warnPalette('blue');
 	$mdThemingProvider.theme('green').primaryPalette('green').accentPalette(
-		'grey').warnPalette('blue');
+			'grey').warnPalette('blue');
 	$mdThemingProvider.theme('light-green').primaryPalette('light-green')
-		.accentPalette('grey').warnPalette('blue');
+			.accentPalette('grey').warnPalette('blue');
 	$mdThemingProvider.theme('lime').primaryPalette('lime').accentPalette(
-		'grey').warnPalette('blue');
+			'grey').warnPalette('blue');
 	$mdThemingProvider.theme('yellow').primaryPalette('yellow').accentPalette(
-		'grey').warnPalette('blue');
+			'grey').warnPalette('blue');
 	$mdThemingProvider.theme('amber').primaryPalette('amber').accentPalette(
-		'grey').warnPalette('blue');
+			'grey').warnPalette('blue');
 	$mdThemingProvider.theme('orange').primaryPalette('orange').accentPalette(
-		'grey').warnPalette('blue');
+			'grey').warnPalette('blue');
 	$mdThemingProvider.theme('deep-orange').primaryPalette('deep-orange')
-		.accentPalette('grey').warnPalette('blue');
+			.accentPalette('grey').warnPalette('blue');
 	$mdThemingProvider.theme('brown').primaryPalette('brown').accentPalette(
-		'grey').warnPalette('blue');
+			'grey').warnPalette('blue');
 	$mdThemingProvider.theme('grey').primaryPalette('grey').accentPalette(
-		'grey').warnPalette('blue');
+			'grey').warnPalette('blue');
 	$mdThemingProvider.theme('blue-grey').primaryPalette('blue-grey')
-		.accentPalette('grey').warnPalette('blue');
+			.accentPalette('grey').warnPalette('blue');
 
 	// This is the absolutely vital part, without this, changes will not cascade
 	// down through the DOM.
@@ -393,11 +393,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		 * '/app/customer/customer_invoiceList.html', controller :
 		 * 'customerInvoiceListCtr' })
 		 */
-		.state('customer.list', {
-			url : "/list",
-			templateUrl : '/app/customer/customer_list.html',
-			controller : 'customerListCtr'
-		}).state('account', {
+	.state('customer.list', {
+		url : "/list",
+		templateUrl : '/app/customer/customer_list.html',
+		controller : 'customerListCtr'
+	}).state('account', {
 		url : "/account",
 		templateUrl : '/app/account/account_module.html',
 		controller : 'accountModuleCtr'
@@ -671,13 +671,17 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/payRollReport",
 		templateUrl : '/app/hr/payRollReports.html',
 		controller : 'payRollReports',
+		params : {
+			payRollReportList : null
+		}
 	}).state('hr.payrollReportDetails', {
 		url : "/payrollReportDetails",
 		templateUrl : '/app/hr/payrollReportDetails.html',
 		controller : 'payrollReportDetailsCtr',
 		params : {
 			selectedMonth : null,
-			toShow : ''
+			toShow : '',
+			payRollReportList : null
 		}
 	}).state('hr.monthlyTax', {
 		url : "/monthlyTax",
@@ -814,23 +818,23 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		controller : 'disclaimer',
 	})
 
-		.state('setup.departmentList', {
-			url : "/departmentList",
-			templateUrl : '/app/setup/setup_departmentList.html',
-			controller : 'setup.departmentList',
-		})
+	.state('setup.departmentList', {
+		url : "/departmentList",
+		templateUrl : '/app/setup/setup_departmentList.html',
+		controller : 'setup.departmentList',
+	})
 
-		.state('setup.userauth', {
-			url : "/userauth",
-			templateUrl : '/app/setup/manage_user_auth.html',
-			controller : 'manageUserAuthCtr',
-			params : {
-				selectedUser : null
-			}
-		}) /*
+	.state('setup.userauth', {
+		url : "/userauth",
+		templateUrl : '/app/setup/manage_user_auth.html',
+		controller : 'manageUserAuthCtr',
+		params : {
+			selectedUser : null
+		}
+	}) /*
 		 * .state('login', { url : "/login", templateUrl :
 		 * '/app/login/login.html', controller : 'login', })
-		 */ .state('homecall', {
+		 */.state('homecall', {
 		url : "/home/:userauthoritys",
 		templateUrl : '/home.html',
 		controller : 'AppCtrl'

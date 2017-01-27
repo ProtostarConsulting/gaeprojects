@@ -4,20 +4,34 @@
 	</div>
 </div>
 <md-content ng-if="!loading" ng-cloak layout-padding>
+
+<div>
+	<md-button class="md-primary"
+		ui-sref="hr.payRollRepo({payRollReportList: payRollReportList})">Back
+	to Main Report</md-button>
+</div>
 <h3>{{selectedMonth}} Income Tax Details</h3>
 <table
 	style="font-family: arial, sans-serif; border-collapse: collapse; width: 60%;">
 	<thead>
 		<tr>
-			<th style="border: 1px solid black; padding: 5px;">Emp.No</th>
-			<th style="border: 1px solid black; padding: 5px;">Employee Name</th>
-			<th ng-show="toShow == 'calculatedGrossSalary'" style="border: 1px solid black; padding: 5px;">Gross Salary</th>
-			<th ng-show="toShow == 'pfDeductionAmt'" style="border: 1px solid black; padding: 5px;">PF Deduction</th>
-			<th ng-show="toShow == 'ptDeductionAmt'" style="border: 1px solid black; padding: 5px;">PT Deduction</th>
-			<th ng-show="toShow == 'canteenDeductionAmt'" style="border: 1px solid black; padding: 5px;">Canteen Deduction</th>
-			<th ng-show="toShow == 'itDeductionAmt'" style="border: 1px solid black; padding: 5px;">IT Deduction</th>
-			<th ng-show="toShow == 'otherDeductionAmt'" style="border: 1px solid black; padding: 5px;">Other Deduction</th>
-			<th ng-show="toShow == 'esiDeductionAmt'" style="border: 1px solid black; padding: 5px;">ESI Deduction</th>
+			<th style="border: 1px solid black; padding: 5px; text-align:center">Emp.No</th>
+			<th style="border: 1px solid black; padding: 5px; text-align:center">Employee Name</th>
+			<th ng-show="toShow == 'calculatedGrossSalary'"
+				style="border: 1px solid black; padding: 5px; text-align:center">Gross Salary</th>
+			<th ng-show="toShow == 'pfDeductionAmt'"
+				style="border: 1px solid black; padding: 5px; text-align:center">PF Deduction</th>
+			<th ng-show="toShow == 'ptDeductionAmt'"
+				style="border: 1px solid black; padding: 5px; text-align:center">PT Deduction</th>
+			<th ng-show="toShow == 'canteenDeductionAmt'"
+				style="border: 1px solid black; padding: 5px; text-align:center">Canteen
+				Deduction</th>
+			<th ng-show="toShow == 'itDeductionAmt'"
+				style="border: 1px solid black; padding: 5px; text-align:center">IT Deduction</th>
+			<th ng-show="toShow == 'otherDeductionAmt'"
+				style="border: 1px solid black; padding: 5px; text-align:center">Other Deduction</th>
+			<th ng-show="toShow == 'esiDeductionAmt'"
+				style="border: 1px solid black; padding: 5px; text-align:center">ESI Deduction</th>
 		</tr>
 	</thead>
 	<tr
@@ -29,48 +43,48 @@
 			{{monthlyPayObj.leaveDetailEntity.user.firstName + ' ' +
 			monthlyPayObj.leaveDetailEntity.user.lastName}}</td>
 		<td ng-show="toShow == 'calculatedGrossSalary'"
-			style="border: 1px solid black; padding: 5px;">
-			{{monthlyPayObj.calculatedGrossSalary}}</td>
+			style="border: 1px solid black; padding: 5px; text-text-align:right;">
+			{{monthlyPayObj.calculatedGrossSalary | number : 2}}</td>
 		<td ng-show="toShow == 'pfDeductionAmt'"
-			style="border: 1px solid black; padding: 5px;">
-			{{monthlyPayObj.pfDeductionAmt}}</td>
+			style="border: 1px solid black; padding: 5px; text-align:right;">
+			{{monthlyPayObj.pfDeductionAmt | number : 2}}</td>
 		<td ng-show="toShow == 'ptDeductionAmt'"
-			style="border: 1px solid black; padding: 5px;">
-			{{monthlyPayObj.ptDeductionAmt}}</td>
+			style="border: 1px solid black; padding: 5px; text-align:right;">
+			{{monthlyPayObj.ptDeductionAmt | number : 2}}</td>
 		<td ng-show="toShow == 'canteenDeductionAmt'"
-			style="border: 1px solid black; padding: 5px;">
-			{{monthlyPayObj.canteenDeductionAmt}}</td>
+			style="border: 1px solid black; padding: 5px; text-align:right;">
+			{{monthlyPayObj.canteenDeductionAmt | number : 2}}</td>
 		<td ng-show="toShow == 'itDeductionAmt'"
-			style="border: 1px solid black; padding: 5px;">
-			{{monthlyPayObj.itDeductionAmt}}</td>
+			style="border: 1px solid black; padding: 5px; text-align:right;">
+			{{monthlyPayObj.itDeductionAmt | number : 2}}</td>
 		<td ng-show="toShow == 'otherDeductionAmt'"
-			style="border: 1px solid black; padding: 5px;">
-			{{monthlyPayObj.otherDeductionAmt}}</td>
+			style="border: 1px solid black; padding: 5px; text-align:right;">
+			{{monthlyPayObj.otherDeductionAmt | number : 2}}</td>
 		<td ng-show="toShow == 'esiDeductionAmt'"
-			style="border: 1px solid black; padding: 5px;">
-			{{monthlyPayObj.esiDeductionAmt}}</td>
+			style="border: 1px solid black; padding: 5px; text-align:right;">
+			{{monthlyPayObj.esiDeductionAmt | number : 2}}</td>
 	</tr>
 	<tfoot>
 		<tr>
-			<td style="border: 1px solid black; padding: 5px;"><b>Total
+			<td style="border: 1px solid black; padding: 5px; text-align:center;"><b>Total
 			</b></td>
-			<td style="border: 1px solid black; padding: 5px;"></td>
+			<td style="border: 1px solid black; padding: 5px; text-align:right;"></td>
 			<td ng-show="toShow == 'calculatedGrossSalary'"
-				style="border: 1px solid black; padding: 5px;"><b>{{totalSal}}</b></td>
+				style="border: 1px solid black; padding: 5px; text-align:right;"><b>{{totalSal | number : 2}}</b></td>
 			<td ng-show="toShow == 'pfDeductionAmt'"
-				style="border: 1px solid black; padding: 5px;"><b>{{totalPF}}</b></td>
+				style="border: 1px solid black; padding: 5px; text-align:right;"><b>{{totalPF | number : 2}}</b></td>
 			<td ng-show="toShow == 'ptDeductionAmt'"
-				style="border: 1px solid black; padding: 5px;"><b>{{totalPT}}</b></td>
+				style="border: 1px solid black; padding: 5px; text-align:right;"><b>{{totalPT | number : 2}}</b></td>
 			<td ng-show="toShow == 'canteenDeductionAmt'"
-				style="border: 1px solid black; padding: 5px;"><b>{{totalCanteen}}</b></td>
+				style="border: 1px solid black; padding: 5px; text-align:right;"><b>{{totalCanteen | number : 2}}</b></td>
 			<td ng-show="toShow == 'itDeductionAmt'"
-				style="border: 1px solid black; padding: 5px;"><b>{{totalIT}}</b></td>
+				style="border: 1px solid black; padding: 5px; text-align:right;"><b>{{totalIT | number : 2}}</b></td>
 			<td ng-show="toShow == 'otherDeductionAmt'"
-				style="border: 1px solid black; padding: 5px;"><b>{{totalOther}}</b></td>
+				style="border: 1px solid black; padding: 5px; text-align:right;"><b>{{totalOther | number : 2}}</b></td>
 			</b>
 			</td>
 			<td ng-show="toShow == 'esiDeductionAmt'"
-				style="border: 1px solid black; padding: 5px;"><b>{{totalESI}}
+				style="border: 1px solid black; padding: 5px; text-align:right;"><b>{{totalESI | number : 2}}
 			</b></td>
 		</tr>
 	</tfoot>

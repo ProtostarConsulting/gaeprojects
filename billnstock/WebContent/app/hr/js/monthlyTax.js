@@ -6,6 +6,9 @@ angular
 						$mdUtil, $stateParams, $log, objectFactory,
 						appEndpointSF, $mdDialog, $mdMedia, $state) {
 
+					$scope.yearFilterList = [ String(new Date().getFullYear()),
+							String(new Date().getFullYear() - 1) ];
+
 					$scope.monthlyPayDetailsList = [];
 
 					$scope.empIdChange = function(empId) {
@@ -21,24 +24,42 @@ angular
 												$scope.userEntity)
 										.then(
 												function(list) {
-													$scope.monthlyPayDetailsList = list;
-													$scope.total = 0;
-													$scope.totalPF = 0;
-													$scope.totalPT = 0;
-													$scope.totalCanteen = 0;
-													$scope.totalIT = 0;
-													$scope.totalOther = 0;
+													$scope.monthlyPayDetailsListBackup = list;
 
-													for (var i = 0; i < $scope.monthlyPayDetailsList.length; i++) {
-														$scope.totalPF += list[i].pfDeductionAmt;
-														$scope.totalPT += list[i].ptDeductionAmt;
-														$scope.totalCanteen += list[i].canteenDeductionAmt;
-														$scope.totalIT += list[i].itDeductionAmt;
-														$scope.totalOther += list[i].otherDeductionAmt;
-
-													}
+													$scope
+															.fitlerListByYear($scope.yearFilterList[0]);
 												});
+								break;
 							}
+						}
+					}
+
+					$scope.fitlerListByYear = function(year) {
+						$scope.monthlyPayDetailsList = [];
+						angular
+								.forEach(
+										$scope.monthlyPayDetailsListBackup,
+										function(item) {
+											if (item.leaveDetailEntity.currentMonth
+													.indexOf(year) > -1) {
+												$scope.monthlyPayDetailsList
+														.push(item);
+											}
+										});
+						$scope.total = 0;
+						$scope.totalPF = 0;
+						$scope.totalPT = 0;
+						$scope.totalCanteen = 0;
+						$scope.totalIT = 0;
+						$scope.totalOther = 0;
+
+						var list = $scope.monthlyPayDetailsList;
+						for (var i = 0; i < list.length; i++) {
+							$scope.totalPF += list[i].pfDeductionAmt;
+							$scope.totalPT += list[i].ptDeductionAmt;
+							$scope.totalCanteen += list[i].canteenDeductionAmt;
+							$scope.totalIT += list[i].itDeductionAmt;
+							$scope.totalOther += list[i].otherDeductionAmt;
 						}
 					}
 

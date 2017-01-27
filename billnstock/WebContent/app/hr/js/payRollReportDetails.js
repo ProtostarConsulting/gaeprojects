@@ -15,6 +15,8 @@ angular
 					$scope.monthlyPayDetailsList = [];
 					$scope.selectedMonth = $stateParams.selectedMonth;
 					$scope.toShow = $stateParams.toShow;
+					// This is just used to pass back the list on back button
+					$scope.payRollReportList = $stateParams.payRollReportList;
 
 					$scope.getMonthlyPaymentList = function() {
 						$scope.loading = true;

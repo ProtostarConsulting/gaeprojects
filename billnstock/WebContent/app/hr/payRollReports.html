@@ -6,6 +6,11 @@
 <md-content ng-if="!loading" ng-cloak layout-padding>
 <form name="payRollRepo">
 	<div>
+		<div flex flex-gt-xs="60" layout="row"><span>Filter By Year: </span><span
+			style="padding-right: 8px;"
+			md-colors="{color:'primary'}"
+			ng-repeat="year in yearFilterList"
+			ng-click="getPayRollReport(year)">{{year}}</span> </div>
 		<table
 			style="font-family: arial, sans-serif; border-collapse: collapse; width: 60%;">
 			<caption
@@ -14,23 +19,23 @@
 			</caption>
 			<tr>
 
-				<th>Month Name</th>
-				<th>Total INR</th>
-				<th style="text-align: center; padding: 5px">Details</th>
+				<th style="border: 1px solid black; padding: 5px; text-align:center">Month Name</th>
+				<th style="border: 1px solid black; padding: 5px; text-align:center">Total INR</th>
+				<th style="border: 1px solid black; padding: 5px; text-align:center">Details</th>
 			</tr>
 			<tbody>
 				<tr
 					ng-repeat="emp in list | orderBy: query.order">
 					<td style="border: 1px solid black; padding: 5px;">{{emp.month}}</td>
-					<td style="border: 1px solid black; padding: 5px;">{{emp.totalSal}}</td>
+					<td style="border: 1px solid black; padding: 5px; text-align:right">{{emp.totalSal | number : 2}}</td>
 					<td align="left" style="border: 1px solid black; padding: 5px;"><md-button
 							class="md-primary md-hue-1"
-							ui-sref="hr.payrollReportDetails({selectedMonth: emp.month, toShow : 'calculatedGrossSalary'})">
+							ui-sref="hr.payrollReportDetails({selectedMonth: emp.month, toShow : 'calculatedGrossSalary', payRollReportList: payRollReportList })">
 						Details </md-button></td>
 				</tr>
 				<tr>
 					<td style="border: 1px solid black; padding: 5px;"><b>TOTAL</b></td>
-					<td style="border: 1px solid black; padding: 5px;"><b>{{total}}</b></td>
+					<td style="border: 1px solid black; padding: 5px; text-align:right;"><b>{{total | number : 2}}</b></td>
 					<td style="border: 1px solid black; padding: 5px;"></td>
 
 				</tr>
@@ -46,23 +51,23 @@
 				<span flex>PF Deduction</span>
 			</caption>
 			<tr>
-				<th>Month Name</th>
-				<th>Total INR</th>
-				<th>Details</th>
+				<th style="border: 1px solid black; padding: 5px; text-align:center">Month Name</th>
+				<th style="border: 1px solid black; padding: 5px; text-align:center">Total INR</th>
+				<th style="border: 1px solid black; padding: 5px; text-align:center">Details</th>
 			</tr>
 			<tbody>
 				<tr
 					ng-repeat="emp in list | orderBy: query.order">
 					<td style="border: 1px solid black; padding: 5px;">{{emp.month}}</td>
-					<td style="border: 1px solid black; padding: 5px;">{{emp.totalPF}}</td>
+					<td style="border: 1px solid black; padding: 5px; text-align:right;">{{emp.totalPF | number : 2}}</td>
 					<td align="left" style="border: 1px solid black; padding: 5px;"><md-button
 							class="md-primary md-hue-1"
-							ui-sref="hr.payrollReportDetails({selectedMonth: emp.month, toShow : 'pfDeductionAmt'})">
+							ui-sref="hr.payrollReportDetails({selectedMonth: emp.month, toShow : 'pfDeductionAmt', payRollReportList: payRollReportList })">
 						Details </md-button></td>
 				</tr>
 				<tr>
 					<td style="border: 1px solid black; padding: 5px;"><b>TOTAL</b></td>
-					<td style="border: 1px solid black; padding: 5px;"><b>{{totalPF}}</b></td>
+					<td style="border: 1px solid black; padding: 5px; text-align:right;"><b>{{totalPF | number : 2}}</b></td>
 					<td style="border: 1px solid black; padding: 5px;"></td>
 				</tr>
 			</tbody>
@@ -81,25 +86,25 @@
 				<span flex>PT Deduction</span>
 			</caption>
 			<tr>
-				<th>Month Name</th>
-				<th>Total INR</th>
-				<th>Details</th>
+				<th style="border: 1px solid black; padding: 5px; text-align:center">Month Name</th>
+				<th style="border: 1px solid black; padding: 5px; text-align:center">Total INR</th>
+				<th style="border: 1px solid black; padding: 5px; text-align:center">Details</th>
 			</tr>
 
 			<tbody>
 				<tr
 					ng-repeat="emp in list | orderBy: query.order">
 					<td style="border: 1px solid black; padding: 5px;">{{emp.month}}</td>
-					<td style="border: 1px solid black; padding: 5px;">{{emp.totalPT}}</td>
+					<td style="border: 1px solid black; padding: 5px; text-align:right;">{{emp.totalPT | number : 2}}</td>
 					<td align="left" style="border: 1px solid black; padding: 5px;"><md-button
 							class="md-primary md-hue-1"
-							ui-sref="hr.payrollReportDetails({selectedMonth: emp.month, toShow : 'ptDeductionAmt'})">
+							ui-sref="hr.payrollReportDetails({selectedMonth: emp.month, toShow : 'ptDeductionAmt', payRollReportList: payRollReportList })">
 						Details </md-button></td>
 
 				</tr>
 				<tr>
 					<td style="border: 1px solid black; padding: 5px;"><b>TOTAL</b></td>
-					<td style="border: 1px solid black; padding: 5px;"><b>{{totalPT}}</b></td>
+					<td style="border: 1px solid black; padding: 5px; text-align:right;"><b>{{totalPT | number : 2}}</b></td>
 					<td style="border: 1px solid black; padding: 5px;"></td>
 
 				</tr>
@@ -118,9 +123,9 @@
 				<span flex>Canteen Deduction</span>
 			</caption>
 			<tr>
-				<th>Month Name</th>
-				<th>Total INR</th>
-				<th>Details</th>
+				<th style="border: 1px solid black; padding: 5px; text-align:center">Month Name</th>
+				<th style="border: 1px solid black; padding: 5px; text-align:center">Total INR</th>
+				<th style="border: 1px solid black; padding: 5px; text-align:center">Details</th>
 			</tr>
 
 
@@ -128,15 +133,15 @@
 				<tr
 					ng-repeat="emp in list | orderBy: query.order">
 					<td style="border: 1px solid black; padding: 5px;">{{emp.month}}</td>
-					<td style="border: 1px solid black; padding: 5px;">{{emp.totalCanteen}}</td>
+					<td style="border: 1px solid black; padding: 5px; text-align:right;">{{emp.totalCanteen | number : 2}}</td>
 					<td align="left" style="border: 1px solid black; padding: 5px;"><md-button
 							class="md-primary md-hue-1"
-							ui-sref="hr.payrollReportDetails({selectedMonth: emp.month, toShow : 'canteenDeductionAmt'})">
+							ui-sref="hr.payrollReportDetails({selectedMonth: emp.month, toShow : 'canteenDeductionAmt', payRollReportList: payRollReportList })">
 						Details </md-button></td>
 				</tr>
 				<tr>
 					<td style="border: 1px solid black; padding: 5px;"><b>TOTAL</b></td>
-					<td style="border: 1px solid black; padding: 5px;"><b>{{totalCanteen}}</b></td>
+					<td style="border: 1px solid black; padding: 5px; text-align:right;"><b>{{totalCanteen | number : 2}}</b></td>
 					<td style="border: 1px solid black; padding: 5px;"></td>
 				</tr>
 			</tbody>
@@ -154,28 +159,28 @@
 				<span flex>IT Deduction</span>
 			</caption>
 			<tr>
-				<th>Month Name</th>
-				<th>Total INR</th>
-				<th>Details</th>
+				<th style="border: 1px solid black; padding: 5px; text-align:center">Month Name</th>
+				<th style="border: 1px solid black; padding: 5px; text-align:center">Total INR</th>
+				<th style="border: 1px solid black; padding: 5px; text-align:center">Details</th>
 			</tr>
 			<tbody>
 				<tr
 					ng-repeat="emp in list | orderBy: query.order">
-					<td style="border: 1px solid black; padding: 5px;">{{emp.month}}</td>
-					<td style="border: 1px solid black; padding: 5px;">{{emp.totalIT}}</td>
+					<td style="border: 1px solid black; padding: 5px;">{{emp.month}}</td>					
+					<td style="border: 1px solid black; padding: 5px; text-align:right;">{{emp.totalIT | number : 2}}</td>
 					<td align="left" style="border: 1px solid black; padding: 5px;"><md-button
 							class="md-primary md-hue-1"
-							ui-sref="hr.payrollReportDetails({selectedMonth: emp.month, toShow : 'itDeductionAmt'})">
+							ui-sref="hr.payrollReportDetails({selectedMonth: emp.month, toShow : 'itDeductionAmt', payRollReportList: payRollReportList })">
 						Details </md-button></td>
 				</tr>
 
 				<tr>
 					<td style="border: 1px solid black; padding: 5px;"><b>TOTAL</b></td>
-					<td style="border: 1px solid black; padding: 5px;"><b>{{totalIT}}</b></td>
+					<td style="border: 1px solid black; padding: 5px; text-align:right;"><b>{{totalIT | number : 2}}</b></td>
 					<td style="border: 1px solid black; padding: 5px;"></td>
 				</tr>
 				<tr ng-repeat="item in list2 |orderBy: query.order">
-					<td style="border: 1px solid black;">{{item.totalIT}}</td>
+					<td style="border: 1px solid black;">{{item.totalIT | number : 2}}</td>
 				</tr>
 			</tbody>
 		</table>
@@ -192,23 +197,23 @@
 				<span flex>Other Deduction</span>
 			</caption>
 			<tr>
-				<th>Month Name</th>
-				<th>Total INR</th>
-				<th>Details</th>
+				<th style="border: 1px solid black; padding: 5px; text-align:center">Month Name</th>
+				<th style="border: 1px solid black; padding: 5px; text-align:center">Total INR</th>
+				<th style="border: 1px solid black; padding: 5px; text-align:center">Details</th>
 			</tr>
 			<tbody>
 				<tr
 					ng-repeat="emp in list | orderBy: query.order">
 					<td style="border: 1px solid black; padding: 5px;">{{emp.month}}</td>
-					<td style="border: 1px solid black; padding: 5px;">{{emp.totalOther}}</td>
+					<td style="border: 1px solid black; padding: 5px; text-align:right;">{{emp.totalOther | number : 2}}</td>
 					<td align="left" style="border: 1px solid black; padding: 5px;"><md-button
 							class="md-primary md-hue-1"
-							ui-sref="hr.payrollReportDetails({selectedMonth: emp.month, toShow : 'otherDeductionAmt'})">
+							ui-sref="hr.payrollReportDetails({selectedMonth: emp.month, toShow : 'otherDeductionAmt', payRollReportList: payRollReportList })">
 						Details </md-button></td>
 				</tr>
 				<tr>
 					<td style="border: 1px solid black; padding: 5px;"><b>TOTAL</b></td>
-					<td style="border: 1px solid black; padding: 5px;"><b>{{totalOther}}</b></td>
+					<td style="border: 1px solid black; padding: 5px; text-align:right;"><b>{{totalOther | number : 2}}</b></td>
 					<td style="border: 1px solid black; padding: 5px;"></td>
 				</tr>
 			</tbody>
@@ -226,23 +231,23 @@
 				<span flex>ESI Deduction</span>
 			</caption>
 			<tr>
-				<th>Month Name</th>
-				<th>Total INR</th>
-				<th>Details</th>
+				<th style="border: 1px solid black; padding: 5px; text-align:center">Month Name</th>
+				<th style="border: 1px solid black; padding: 5px; text-align:center">Total INR</th>
+				<th style="border: 1px solid black; padding: 5px; text-align:center">Details</th>
 			</tr>
 			<tbody>
 				<tr
 					ng-repeat="emp in list | orderBy: query.order">
 					<td style="border: 1px solid black; padding: 5px;">{{emp.month}}</td>
-					<td style="border: 1px solid black; padding: 5px;">{{emp.totalESI}}</td>
+					<td style="border: 1px solid black; padding: 5px; text-align:right;">{{emp.totalESI | number : 2}}</td>
 					<td align="left" style="border: 1px solid black; padding: 5px;"><md-button
 							class="md-primary md-hue-1"
-							ui-sref="hr.payrollReportDetails({selectedMonth: emp.month, toShow : 'esiDeductionAmt'})">
+							ui-sref="hr.payrollReportDetails({selectedMonth: emp.month, toShow : 'esiDeductionAmt', payRollReportList: payRollReportList })">
 						Details </md-button></td>
 				</tr>
 				<tr>
 					<td style="border: 1px solid black; padding: 5px;"><b>TOTAL</b></td>
-					<td style="border: 1px solid black; padding: 5px;"><b>{{totalESI}}</b></td>
+					<td style="border: 1px solid black; padding: 5px; text-align:right;"><b>{{totalESI | number : 2}}</b></td>
 					<td style="border: 1px solid black; padding: 5px;"></td>
 				</tr>
 			</tbody>

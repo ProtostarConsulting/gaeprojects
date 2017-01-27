@@ -4,7 +4,10 @@ angular.module("stockApp").controller(
 				$stateParams, $log, objectFactory, appEndpointSF, $mdDialog,
 				$mdMedia, $state) {
 
-			$scope.getPayRollReport = function() {
+			$scope.yearFilterList = [ String(new Date().getFullYear()),
+					String(new Date().getFullYear() - 1) ];
+
+			$scope.getPayRollReport = function(year) {
 				$scope.loading = true;
 				var hrService = appEndpointSF.gethrService();
 
@@ -15,10 +18,11 @@ angular.module("stockApp").controller(
 				$scope.totalIT = 0;
 				$scope.totalOther = 0;
 				$scope.totalESI = 0;
-				
-				hrService.getpayRollReport($scope.curUser.business.id).then(
-						function(list) {
+
+				hrService.getpayRollReport($scope.curUser.business.id, year)
+						.then(function(list) {
 							$scope.list = list;
+							$scope.payRollReportList = list;
 							for (var i = 0; i < list.length; i++) {
 								$scope.totalSal += list[i].total;
 								$scope.totalPF += list[i].totalPF;
@@ -29,14 +33,15 @@ angular.module("stockApp").controller(
 								$scope.totalESI += list[i].totalESI;
 							}
 							$scope.loading = false;
-
 						});
 
 			}
 
 			$scope.waitForServiceLoad = function() {
-				if (appEndpointSF.is_service_ready) {
-					$scope.getPayRollReport();
+				if ($stateParams.payRollReportList) {
+					$scope.list = $stateParams.payRollReportList
+				} else if (appEndpointSF.is_service_ready) {
+					$scope.getPayRollReport($scope.yearFilterList[0]);
 				} else {
 					$log.debug("Services Not Loaded, watiting...");
 					$timeout($scope.waitForServiceLoad, 1000);

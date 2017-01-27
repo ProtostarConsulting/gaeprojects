@@ -175,7 +175,7 @@ angular
 										function(users) {
 											var activeUserList = [];
 											angular.forEach(users.items, function(user){												
-												if(user.status == "active")
+												if(user.isActive)
 													activeUserList.push(user);
 											});
 											activeUserList = $filter('orderBy')(activeUserList, 'firstName');

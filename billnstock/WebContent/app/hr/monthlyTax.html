@@ -19,9 +19,13 @@
 		<span flex>User with this Emp id is not Found!</span>
 	</div>
 	<div ng-show="userEntity">
-
-		<table
-			style="font-family: arial, sans-serif; border-collapse: collapse; width: 60%; align: center;">
+		<div flex flex-gt-xs="60" layout="row"><span flex>Employee Name: {{userEntity.firstName + ' ' + userEntity.lastName}}</span> <span>Filter By Year: </span><span
+			style="padding-right: 8px;"
+			md-colors="{color:'primary'}"
+			ng-repeat="year in yearFilterList"
+			ng-click="fitlerListByYear(year)">{{year}}</span> </div>
+		<table flex flex-gt-xs="60"
+			style="font-family: arial, sans-serif; border-collapse: collapse; align: center;">
 			<thead md-order="query.order" md-trigger="onOrderChange">
 				<tr>
 					<th

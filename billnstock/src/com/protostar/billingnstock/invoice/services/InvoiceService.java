@@ -31,15 +31,6 @@ public class InvoiceService extends BaseService {
 
 	@ApiMethod(name = "addInvoice", path = "addInvoice")
 	public InvoiceEntity saveInvoice(InvoiceEntity invoiceEntity) {
-
-		/*if (invoiceEntity.getId() == null) {
-			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
-					EntityUtil.getBusinessRawKey(invoiceEntity.getBusiness()),
-					Constants.INVOICE_NO_COUNTER);
-			invoiceEntity.setItemNumber(sequenceGenService
-					.getNextSequenceNumber());
-		}*/
-
 		StockManagementService.adjustStockItems(invoiceEntity.getBusiness(),
 				invoiceEntity.getProductLineItemList());
 
