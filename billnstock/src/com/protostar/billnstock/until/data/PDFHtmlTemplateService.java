@@ -19,6 +19,8 @@ import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
 import com.protostar.billingnstock.account.entities.AccountGroupEntity;
@@ -33,6 +35,7 @@ import com.protostar.billingnstock.hr.entities.SalStruct;
 import com.protostar.billingnstock.invoice.entities.InvoiceEntity;
 import com.protostar.billingnstock.invoice.entities.QuotationEntity;
 import com.protostar.billingnstock.purchase.entities.PurchaseOrderEntity;
+import com.protostar.billingnstock.stock.entities.StockItemsReceiptEntity;
 import com.protostar.billingnstock.stock.entities.StockLineItem;
 import com.protostar.billingnstock.tax.entities.TaxEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
@@ -406,7 +409,8 @@ public class PDFHtmlTemplateService {
 			Map<String, Object> root = new HashMap<String, Object>();
 			root.put("groupName", accountGroupEntity.getGroupName());
 			// root.put("accountName",accountGroupEntity.get;
-			root.put("groupType", accountGroupEntity.getAccountGroupType().toString());
+			root.put("groupType", accountGroupEntity.getAccountGroupType()
+					.toString());
 			// root.put("balance",purchesEntity.getItem().toString());
 
 			Template temp = getConfiguration().getTemplate(
@@ -592,6 +596,7 @@ public class PDFHtmlTemplateService {
 			String pdfXMLContent = byteArrayOutputStream.toString();
 
 			worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
+			addDocumentFooter(mtlyPayObj, writer);
 			document.close();
 
 		} catch (Exception e) {
@@ -603,11 +608,29 @@ public class PDFHtmlTemplateService {
 	private void addDocumentHeaderLogo(BaseEntity enity, Document document)
 			throws BadElementException, MalformedURLException, IOException,
 			DocumentException {
-		Image logoURL = Image.getInstance(enity.getBusiness()
-				.getBizLogoGCSURL());
-		logoURL.setAbsolutePosition(50f, 750f);
-		logoURL.scaleToFit(150f, 180f);
-		document.add(logoURL);
+		String bizLogoGCSURL = enity.getBusiness().getBizLogoGCSURL();
+		if (bizLogoGCSURL != null && !bizLogoGCSURL.isEmpty()) {
+			Image logoURL = Image.getInstance(bizLogoGCSURL);
+			logoURL.setAbsolutePosition(50f, 750f);
+			logoURL.scaleToFit(150f, 180f);
+			document.add(logoURL);
+		}
+	}
+
+	private void addDocumentFooter(BaseEntity enity, PdfWriter writer)
+			throws BadElementException, MalformedURLException, IOException,
+			DocumentException {
+		PdfContentByte cb = writer.getDirectContent();
+		BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252,
+				BaseFont.NOT_EMBEDDED);
+		cb.saveState();
+		cb.beginText();
+		cb.moveText(20f, 20f);
+		cb.setFontAndSize(bf, 12);
+		cb.showText("This is electronically generated document. Needs no stamp or signature.");
+		cb.endText();
+		cb.restoreState();
+
 	}
 
 	public void generateInvoiceViewPDF(InvoiceEntity invoiceEntity,
@@ -752,6 +775,7 @@ public class PDFHtmlTemplateService {
 			String pdfXMLContent = byteArrayOutputStream.toString();
 
 			worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
+			addDocumentFooter(invoiceEntity, writer);
 			document.close();
 
 		} catch (Exception e) {
@@ -891,6 +915,7 @@ public class PDFHtmlTemplateService {
 			String pdfXMLContent = byteArrayOutputStream.toString();
 
 			worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
+			addDocumentFooter(quotationEntity, writer);
 			document.close();
 
 		} catch (Exception e) {
@@ -1004,6 +1029,7 @@ public class PDFHtmlTemplateService {
 			String pdfXMLContent = byteArrayOutputStream.toString();
 
 			worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
+			addDocumentFooter(purchaseOrderEntity, writer);
 			document.close();
 
 		} catch (Exception e) {
@@ -1012,4 +1038,78 @@ public class PDFHtmlTemplateService {
 
 	}
 
+	public void generateStockReceiptPdf(
+			StockItemsReceiptEntity stockReceiptEntity,
+			ServletOutputStream outputStream) {
+		if (stockReceiptEntity instanceof StockItemsReceiptEntity) {
+			generateReceiptById((StockItemsReceiptEntity) stockReceiptEntity,
+					outputStream);
+		} else {
+			throw new RuntimeException(
+					"Did not find this entity handling method"
+							+ stockReceiptEntity.getClass());
+
+		}
+	}
+
+	private void generateReceiptById(
+			StockItemsReceiptEntity stockReceiptEntity,
+			ServletOutputStream outputStream) {
+		try {
+
+			Document document = new Document();
+			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
+			document.open();
+			addDocumentHeaderLogo(stockReceiptEntity, document);
+			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
+
+			Map<String, Object> root = new HashMap<String, Object>();
+
+			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
+			String receiptDate = sdfDate.format(stockReceiptEntity
+					.getReceiptDate());
+			root.put("ReceiptDate", receiptDate);
+			root.put("PONum", stockReceiptEntity.getPoNumber());
+			root.put("Supplier", stockReceiptEntity.getSupplier()
+					.getSupplierName());
+			root.put("Warehouse", stockReceiptEntity.getWarehouse()
+					.getWarehouseName());
+
+			BusinessEntity business = stockReceiptEntity.getBusiness();
+			StringBuffer addressBuf = new StringBuffer();
+			Address address = business.getAddress();
+			if (address != null) {
+				if (address.getLine1() != null && !address.getLine1().isEmpty())
+					addressBuf.append(address.getLine1());
+				if (address.getLine2() != null && !address.getLine2().isEmpty())
+					addressBuf.append(", " + address.getLine2());
+				if (address.getCity() != null && !address.getCity().isEmpty())
+					addressBuf.append(", " + address.getCity());
+				if (address.getState() != null && !address.getState().isEmpty())
+					addressBuf.append(", " + address.getState());
+			}
+
+			String businessAddress = addressBuf.toString();
+			root.put("BusinessName", "" + business.getBusinessName());
+			root.put("BusinessAddress", "" + businessAddress);
+
+			Template temp = getConfiguration().getTemplate(
+					"pdf_templates/stockReceiptPDF_tmpl.ftlh");
+
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
+					5000);
+			Writer out = new PrintWriter(byteArrayOutputStream);
+			temp.process(root, out);
+			// return escapeHtml(byteArrayOutputStream.toString());
+
+			String pdfXMLContent = byteArrayOutputStream.toString();
+
+			worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
+			addDocumentFooter(stockReceiptEntity, writer);
+			document.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
