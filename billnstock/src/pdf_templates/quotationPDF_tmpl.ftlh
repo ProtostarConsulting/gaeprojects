@@ -137,11 +137,11 @@ td {
 			<tr>
 			<td align="left">${lineItem.itemName}</td>
 			<td align="center">${lineItem.qty}</td>
-			<td align="right">${lineItem.price}</td>			
-			<td align="right">${subTotal}</td>
+			<td align="right">${lineItem.price?string["0.00"]}</td>			
+			<td align="right">${subTotal?string["0.00"]}</td>
 			<td align="center">${taxCodeName}</td>
-			<td align="right">${taxAmt}</td>
-			<td align="right">${subTotal + taxAmt}</td>
+			<td align="right">${taxAmt?string["0.00"]}</td>
+			<td align="right">${(subTotal + taxAmt)?string["0.00"]}</td>
 		</tr>
 		</#list>	
 		</tbody>
@@ -187,12 +187,12 @@ td {
 			<tr>
 			<td align="left">${lineItem.stockItem.stockItemType.itemName}</td>
 			<td align="center">${lineItem.qty}</td>
-			<td align="right">${lineItem.price}
+			<td align="right">${lineItem.price?string["0.00"]}
 			</td>			
-			<td align="right">${subTotal}</td>
+			<td align="right">${subTotal?string["0.00"]}</td>
 			<td align="center">${taxCodeName}</td>
-			<td align="right">${taxAmt}</td>
-			<td align="right">${subTotal + taxAmt}</td>
+			<td align="right">${taxAmt?string["0.00"]}</td>
+			<td align="right">${(subTotal + taxAmt)?string["0.00"]}</td>
 		</tr>
 		</#list>	
 		</tbody>
@@ -209,7 +209,7 @@ td {
 		<tr>			
 			<th
 				style="width:100%;"
-				align="right">Final Total:&nbsp;${finalTotal}</th>			
+				align="right">Final Total:&nbsp;${finalTotal?string["0.00"]}</th>			
 		</tr>
 		<tr>
 			<th
@@ -218,32 +218,4 @@ td {
 		</tr>
 	</tbody>
 </table>	
-		<p>
-	<br></br>
-	<br></br>
-	<br></br>
-	<br></br>
-	<br></br>
-	<br></br>
-	<br></br>
-	<br></br>
-	<br></br>
-	<br></br>
-	<br></br>
-	<br></br>
-	<br></br>
-	<br></br>
-	<br></br>
-	<br></br>
-	<br></br>
-	<br></br>
-	<br></br>
-	<br></br>
-	</p>
-	
-		<div style="position: fixed; bottom: 0;" ng-show="myValue"
-		class="ng-hide">
-		<b><u>Note</u>:</b>This is electronically generated quotation. Needs no
-		stamp or signature. 
-	</div>
 </html>

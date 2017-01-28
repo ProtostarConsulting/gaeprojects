@@ -147,11 +147,11 @@ td {
 			<tr>
 			<td align="center">${lineItem.itemName}</td>
 			<td align="center">${lineItem.qty}</td>
-			<td align="center">${lineItem.cost}</td>			
-			<td align="center">${subTotal}</td>
+			<td align="right">${lineItem.cost?string["0.00"]}</td>			
+			<td align="right">${subTotal?string["0.00"]}</td>
 			<td align="center">${taxCodeName}</td>
-			<td align="center">${taxAmt}</td>
-			<td align="center">${subTotal + taxAmt}</td>
+			<td align="right">${taxAmt?string["0.00"]}</td>
+			<td align="right">${(subTotal + taxAmt)?string["0.00"]}</td>
 		</tr>
 		</#list>	
 		</tbody>
@@ -181,7 +181,7 @@ td {
 				style="width:6%;"
 				align="center">Qty.</th>
 			<th
-				style="width:15%;" 
+				style="width:10%;" 
 				align="center">Price
 			</th>
 			<th
@@ -207,11 +207,11 @@ td {
 			<tr>
 			<td align="center">${lineItem.stockItem.stockItemType.itemName}</td>
 			<td align="center">${lineItem.qty}</td>
-			<td align="center">${lineItem.price}</td>			
-			<td align="center">${subTotal}</td>
+			<td align="right">${lineItem.price?string["0.00"]}</td>			
+			<td align="right">${subTotal?string["0.00"]}</td>
 			<td align="center">${taxCodeName}</td>
-			<td align="center">${taxAmt}</td>
-			<td align="center">${subTotal + taxAmt}</td>
+			<td align="right">${taxAmt?string["0.00"]}</td>
+			<td align="right">${(subTotal + taxAmt)?string["0.00"]}</td>
 		</tr>
 		</#list>	
 		</tbody>
@@ -228,7 +228,7 @@ td {
 		<tr>			
 			<th
 				style="width:100%;"
-				align="right">Final Total:&nbsp;${finalTotal}</th>			
+				align="right">Final Total:&nbsp;${finalTotal?string["0.00"]}</th>			
 		</tr>
 		<tr>
 			<th
@@ -237,19 +237,4 @@ td {
 		</tr>
 	</tbody>
 </table>	
-		<p>
-	<br></br>
-	<br></br>
-	<br></br>
-	<br></br>
-	<br></br>
-	<br></br>
-	<br></br>
-	</p>
-	<div style="position: fixed; bottom: 0;" ng-show="myValue"
-		class="ng-hide">
-		<b><u>Note</u>:</b>This is electronically generated purchase order. Needs no
-		stamp or signature. 
-	</div>
-		
 </html>

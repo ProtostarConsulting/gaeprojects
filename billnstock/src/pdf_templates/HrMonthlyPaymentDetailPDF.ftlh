@@ -305,39 +305,4 @@ tab2 {
 
 	</tbody>
 </table>
-<p>
-	<br></br>
-</p>
-<p>
-	<br></br>
-</p>
-<p>
-	<br></br>
-</p>
-<p>
-	<br></br>
-</p>
-<p>
-	<br></br>
-</p>
-<p>
-	<br></br>
-</p>
-<p>
-	<br></br>
-</p>
-<p>
-	<br></br>
-</p>
-<p>
-	<br></br>
-</p>
-<p>
-	<br></br>
-</p>
-<p>
-	*<small>This is computer generated statement and does not
-		require any signature or stamp.</small>
-</p>
-
 </html>
