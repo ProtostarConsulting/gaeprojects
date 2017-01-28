@@ -6,8 +6,37 @@
 		<property name="assignedTo" direction="asc" />
 		<property name="taskStatus" direction="asc" />
 	</datastore-index>
-	<datastore-index kind="UserEntity" ancestor="true" source="manual">
+	<datastore-index kind="UserEntity" ancestor="true"
+		source="manual">
 		<property name="email_id" direction="asc" />
 		<property name="createdDate" direction="asc" />
-	</datastore-index>	
+	</datastore-index>
+	
+	<!-- Used 16 times in query history -->
+	<datastore-index kind="StockItemsReceiptEntity"
+		ancestor="true" source="auto">
+		<property name="status" direction="asc" />
+		<property name="itemNumber" direction="desc" />
+	</datastore-index>
+	<!-- Used 16 times in query history -->
+	<datastore-index kind="StockItemsShipmentEntity"
+		ancestor="true" source="auto">
+		<property name="status" direction="asc" />
+		<property name="itemNumber" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 4 times in query history -->
+	<datastore-index kind="PurchaseOrderEntity" ancestor="true"
+		source="auto">
+		<property name="status" direction="asc" />
+		<property name="itemNumber" direction="desc" />
+	</datastore-index>
+
+	<!-- Used 14 times in query history -->
+	<datastore-index kind="InvoiceEntity" ancestor="true"
+		source="auto">
+		<property name="status" direction="asc" />
+		<property name="itemNumber" direction="desc" />
+	</datastore-index>
+
 </datastore-indexes>

@@ -12,7 +12,7 @@ public class Constants {
 
 	// GCS bucket names
 	// public static final String PROERP_IMAGES_BUCKET = "proerp_image_files";
-	public static final String PROERP_IMAGES_BUCKET = "proerp12_image_files";
+	public static final String BUCKET_POSTFIX = ".appspot.com";
 
 	// Counter/Sequence Names
 	public static final String EMP_NO_COUNTER = "EMP_NO_COUNTER";
