@@ -2,8 +2,9 @@
 <form name="ChangePlan">
 	<div layout layout-xs="column">
 		<md-input-container flex> <b>Your Current
-			Business Plan :-</b>{{selectedBusiness.businessPlan.accountName +" (plan
-		: "+selectedBusiness.businessPlan.paymentDesc+")"}} </md-input-container>
+			Business Plan :-</b>{{selectedBusiness.businessPlan.planName + " (Fees : "
+		+ selectedBusiness.businessPlan.paymentDesc + ") - " +
+		selectedBusiness.businessPlan.description}} </md-input-container>
 	</div>
 	<div layout layout-xs="column">
 		<md-input-container flex> <b>Note:-</b>Change
@@ -19,8 +20,8 @@
 		<md-select name="selectedaccount" placeholder="Select Account Type"
 			ng-model="newSelectedPlan" ng-required="true"> <md-option
 			ng-value="plan" ng-repeat="plan in planList | orderBy: 'maxuser'">
-		{{plan.accountName}} ( {{plan.description}} ) {{" (plan :
-		"+selectedBusiness.businessPlan.paymentDesc+")"}} </md-option> </md-select>
+		{{plan.planName}} ( {{plan.description}} ) {{"(Fees: " +
+		plan.paymentDesc+ ")" }} </md-option> </md-select>
 		<div ng-messages="ChangePlan.selectedaccount.$error"
 			ng-if="ChangePlan.selectedaccount.$submitted || ChangePlan.selectedaccount.$touched">
 			<div ng-message="required" style="color: red;">select Account

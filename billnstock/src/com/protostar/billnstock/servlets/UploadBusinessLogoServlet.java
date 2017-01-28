@@ -114,7 +114,7 @@ public class UploadBusinessLogoServlet extends HttpServlet {
 					String defaultBucket = projectId.concat(Constants.BUCKET_POSTFIX);
 					log.info("uploadFileInfo.getContentType().toLowerCase(): " + next.getContentType().toLowerCase());
 					log.info("defaultBucket: " + defaultBucket);
-					fileName = new GcsFilename(defaultBucket, fileNameStr);
+					fileName = new GcsFilename(defaultBucket, "business_logo\\" + fileNameStr);
 					instance = new GcsFileOptions.Builder().mimeType(next.getContentType().toLowerCase())
 							.acl("public-read").build();
 					outputChannel = gcsService.createOrReplace(fileName, instance);

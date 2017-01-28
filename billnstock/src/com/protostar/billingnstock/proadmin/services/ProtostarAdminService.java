@@ -14,6 +14,7 @@ import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
 import com.protostar.billingnstock.account.entities.AccountGroupEntity;
 import com.protostar.billingnstock.proadmin.entities.BusinessPlanType;
+import com.protostar.billingnstock.proadmin.entities.BusinessPlanType.PlanType;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.user.entities.EmpDepartment;
 import com.protostar.billingnstock.user.entities.UserEntity;
@@ -25,8 +26,7 @@ import com.protostar.billnstock.until.data.Constants.AccountGroupType;
 @Api(name = "proadminService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.proadmin.services", ownerName = "com.protostar.billingnstock.proadmin.services", packagePath = ""))
 public class ProtostarAdminService {
 
-	private static final Logger log = Logger
-			.getLogger(ProtostarAdminService.class.getName());
+	private static final Logger log = Logger.getLogger(ProtostarAdminService.class.getName());
 
 	@ApiMethod(name = "addBusinessPlan", path = "addBusinessPlan")
 	public void addBusinessPlan(BusinessPlanType account) {
@@ -39,11 +39,11 @@ public class ProtostarAdminService {
 		log.info("Inside getBusinessPlans.");
 		return ofy().load().type(BusinessPlanType.class).list();
 	}
-	
+
 	@ApiMethod(name = "getBusinessList", path = "getBusinessList")
 	public List<BusinessEntity> getBusinessList() {
 		log.info("Inside getBusinessList.");
-		List<BusinessEntity> list = ofy().load().type(BusinessEntity.class).list();		
+		List<BusinessEntity> list = ofy().load().type(BusinessEntity.class).list();
 		return list;
 	}
 
@@ -51,8 +51,7 @@ public class ProtostarAdminService {
 	public void createDefaultBusiness() {
 
 		createDefaultBusinessPlans();
-		List<BusinessEntity> bizList = ofy().load().type(BusinessEntity.class)
-				.list();
+		List<BusinessEntity> bizList = ofy().load().type(BusinessEntity.class).list();
 		if (bizList.size() > 0) {
 			return;
 		}
@@ -61,8 +60,7 @@ public class ProtostarAdminService {
 		String DATE_FORMAT = "dd/MM/yyyy";
 		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 
-		List<BusinessPlanType> accountt = ofy().load()
-				.type(BusinessPlanType.class).list();
+		List<BusinessPlanType> accountt = ofy().load().type(BusinessPlanType.class).list();
 		BusinessPlanType businessPlan = new BusinessPlanType();
 		for (int i = 0; i < accountt.size(); i++) {
 			if (accountt.get(i).getPlanName().equals("Platinum")) {
@@ -80,7 +78,7 @@ public class ProtostarAdminService {
 		businessEntity.setBusinessPlan(businessPlan);
 		businessEntity.setRegisterDate(sdf.format(date));
 		String authorizations = Constants.PROTOSTAR_DEFAULT_AUTHS;
-		System.out.println("authorizations********************"+authorizations);
+		System.out.println("authorizations********************" + authorizations);
 		businessEntity.setAuthorizations(authorizations);
 
 		Address address = new Address();
@@ -171,8 +169,7 @@ public class ProtostarAdminService {
 	public void createDefaultBusinessPlans() {
 		// try{
 
-		List<BusinessPlanType> accountList = ofy().load()
-				.type(BusinessPlanType.class).list();
+		List<BusinessPlanType> accountList = ofy().load().type(BusinessPlanType.class).list();
 		if (accountList.size() > 0) {
 			return;
 		}
@@ -211,11 +208,20 @@ public class ProtostarAdminService {
 
 	}
 
+	public BusinessPlanType getFreeBusinessPlan() {
+		List<BusinessPlanType> accountList = ofy().load().type(BusinessPlanType.class).filter("planType", PlanType.FREE)
+				.list();
+		if (accountList.size() > 0) {
+			return accountList.get(0);
+		}
+
+		return null;
+	}
+
 	@ApiMethod(name = "createAccountingGroups", path = "createAccountingGroups")
 	public void createAccountingGroups(@Named("id") Long bizId) {
 
-		List<AccountGroupEntity> acList = ofy().load()
-				.type(AccountGroupEntity.class).list();
+		List<AccountGroupEntity> acList = ofy().load().type(AccountGroupEntity.class).list();
 		/*
 		 * if (acList.size() > 0) { return; }
 		 */
@@ -417,19 +423,16 @@ public class ProtostarAdminService {
 		DutiesandTaxesAccountGroupEntity1.setModifiedDate(new Date());
 		DutiesandTaxesAccountGroupEntity1.setGroupName("Duties & Taxes");
 		DutiesandTaxesAccountGroupEntity1.setIsPrimary(false);
-		DutiesandTaxesAccountGroupEntity1
-				.setParent(currentLiabilitiesGroupEntity);
+		DutiesandTaxesAccountGroupEntity1.setParent(currentLiabilitiesGroupEntity);
 		ofy().save().entity(DutiesandTaxesAccountGroupEntity1).now();
 
 		AccountGroupEntity loansandAdvancesAssetAccountGroupEntity = new AccountGroupEntity();
 		loansandAdvancesAssetAccountGroupEntity.setBusiness(business);
 		loansandAdvancesAssetAccountGroupEntity.setCreatedDate(new Date());
 		loansandAdvancesAssetAccountGroupEntity.setModifiedDate(new Date());
-		loansandAdvancesAssetAccountGroupEntity
-				.setGroupName("Loans & Advances (Asset)");
+		loansandAdvancesAssetAccountGroupEntity.setGroupName("Loans & Advances (Asset)");
 		loansandAdvancesAssetAccountGroupEntity.setIsPrimary(false);
-		loansandAdvancesAssetAccountGroupEntity
-				.setParent(currentAssetsGroupEntity);
+		loansandAdvancesAssetAccountGroupEntity.setParent(currentAssetsGroupEntity);
 		ofy().save().entity(loansandAdvancesAssetAccountGroupEntity).now();
 
 		AccountGroupEntity provisionsAccountGroupEntity1 = new AccountGroupEntity();
@@ -494,8 +497,8 @@ public class ProtostarAdminService {
 		unsecuredLoans.setIsPrimary(false);
 		unsecuredLoans.setParent(loansLiabilityGroupEntity);
 		ofy().save().entity(unsecuredLoans).now();
-		////////Profit and Loss
-		
+		//////// Profit and Loss
+
 		AccountGroupEntity pAndL = new AccountGroupEntity();
 		pAndL.setBusiness(business);
 		pAndL.setCreatedDate(new Date());
@@ -506,12 +509,6 @@ public class ProtostarAdminService {
 
 		ofy().save().entity(pAndL).now();
 
-		
-		
-
 	}
 
-	
-	
-	
 }// end of InternetService

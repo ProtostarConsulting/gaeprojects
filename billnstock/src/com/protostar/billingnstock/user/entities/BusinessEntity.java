@@ -6,6 +6,7 @@ import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
+import com.googlecode.objectify.annotation.Load;
 import com.protostar.billingnstock.proadmin.entities.BusinessPlanType;
 import com.protostar.billnstock.entity.Address;
 
@@ -35,7 +36,8 @@ public class BusinessEntity {
 	private Date modifiedDate;
 	private String modifiedBy;
 	private String note;
-
+	
+	@Index
 	private Ref<BusinessPlanType> businessPlan;
 
 	public Date getCreatedDate() {

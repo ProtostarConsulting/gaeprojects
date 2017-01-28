@@ -2,29 +2,39 @@ package com.protostar.billingnstock.proadmin.entities;
 
 import java.util.Date;
 
+import javax.annotation.Nullable;
+
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 
 @Entity
 public class BusinessPlanType {
+	public enum PlanType {
+		FREE, STANDARD, CUSTOM
+	};
+
 	@Id
 	private Long id;
-	
+
 	@Index
 	private String planName;
 
+	@Nullable
+	@Index
+	private PlanType planType = PlanType.FREE;
+
 	private String description;
 	private int maxuser;
-	private float baseCost; 
+	private float baseCost;
 	private String paymentDesc;
-	
+
 	@Index
-	private int itemNumber;	
+	private int itemNumber;
 	@Index
 	private Date createdDate;
 	private Date modifiedDate;
-	private String modifiedBy;	
+	private String modifiedBy;
 
 	public Date getCreatedDate() {
 		return createdDate;
@@ -50,8 +60,6 @@ public class BusinessPlanType {
 		this.modifiedBy = modifiedBy;
 	}
 
-	
-
 	public Long getId() {
 		return id;
 	}
@@ -59,7 +67,6 @@ public class BusinessPlanType {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
 
 	public int getItemNumber() {
 		return itemNumber;
@@ -85,7 +92,6 @@ public class BusinessPlanType {
 		this.description = description;
 	}
 
-
 	public String getPaymentDesc() {
 		return paymentDesc;
 	}
@@ -108,6 +114,14 @@ public class BusinessPlanType {
 
 	public void setBaseCost(float baseCost) {
 		this.baseCost = baseCost;
+	}
+
+	public PlanType getPlanType() {
+		return planType;
+	}
+
+	public void setPlanType(PlanType planType) {
+		this.planType = planType;
 	}
 
 }

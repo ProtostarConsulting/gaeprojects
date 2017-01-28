@@ -67,8 +67,7 @@ public class SequenceGeneratorShardedService {
 	/**
 	 * DatastoreService object for Datastore access.
 	 */
-	private static final DatastoreService DS = DatastoreServiceFactory
-			.getDatastoreService();
+	private static final DatastoreService DS = DatastoreServiceFactory.getDatastoreService();
 
 	/**
 	 * Default number of shards.
@@ -100,14 +99,12 @@ public class SequenceGeneratorShardedService {
 	/**
 	 * Memcache service object for Memcache access.
 	 */
-	private final MemcacheService mc = MemcacheServiceFactory
-			.getMemcacheService();
+	private final MemcacheService mc = MemcacheServiceFactory.getMemcacheService();
 
 	/**
 	 * A logger object.
 	 */
-	private static final Logger LOG = Logger
-			.getLogger(SequenceGeneratorShardedService.class.getName());
+	private static final Logger LOG = Logger.getLogger(SequenceGeneratorShardedService.class.getName());
 
 	/**
 	 * Constructor which creates a sharded counter using the provided counter
@@ -119,7 +116,7 @@ public class SequenceGeneratorShardedService {
 	public SequenceGeneratorShardedService(Key parent, final String name) {
 		this.parent = parent;
 		counterName = name;
-		kind = this.parent.getId() + CounterShard.KIND_PREFIX + counterName;
+		kind = "_" + this.parent.getId() + CounterShard.KIND_PREFIX + counterName;
 	}
 
 	/**
@@ -131,8 +128,7 @@ public class SequenceGeneratorShardedService {
 	 */
 	public final void addShards(final int count) {
 		Key counterKey = KeyFactory.createKey(Counter.KIND, counterName);
-		incrementPropertyTx(counterKey, Counter.SHARD_COUNT, count,
-				INITIAL_SHARDS + count);
+		incrementPropertyTx(counterKey, Counter.SHARD_COUNT, count, INITIAL_SHARDS + count);
 	}
 
 	/**
@@ -149,8 +145,7 @@ public class SequenceGeneratorShardedService {
 				Long shardCount = (Long) shard.getProperty(CounterShard.COUNT);
 				sum += shardCount.intValue();
 			}
-			mc.put(kind, sum, Expiration.byDeltaSeconds(CACHE_PERIOD),
-					SetPolicy.ADD_ONLY_IF_NOT_PRESENT);
+			mc.put(kind, sum, Expiration.byDeltaSeconds(CACHE_PERIOD), SetPolicy.ADD_ONLY_IF_NOT_PRESENT);
 			value = sum;
 		}
 		increment();
@@ -202,8 +197,7 @@ public class SequenceGeneratorShardedService {
 	 * @param initialValue
 	 *            the value to use if the entity does not exist
 	 */
-	private void incrementPropertyTx(final Key key, final String prop,
-			final long increment, final long initialValue) {
+	private void incrementPropertyTx(final Key key, final String prop, final long increment, final long initialValue) {
 		Transaction tx = DS.beginTransaction();
 		Entity thing;
 		long value;
@@ -219,8 +213,7 @@ public class SequenceGeneratorShardedService {
 			DS.put(tx, thing);
 			tx.commit();
 		} catch (ConcurrentModificationException e) {
-			LOG.log(Level.WARNING,
-					"You may need more shards. Consider adding more shards.");
+			LOG.log(Level.WARNING, "You may need more shards. Consider adding more shards.");
 			LOG.log(Level.WARNING, e.toString(), e);
 		} catch (Exception e) {
 			LOG.log(Level.WARNING, e.toString(), e);

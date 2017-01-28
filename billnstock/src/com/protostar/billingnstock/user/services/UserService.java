@@ -24,6 +24,8 @@ import com.google.api.server.spi.config.Named;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.googlecode.objectify.Key;
+import com.protostar.billingnstock.proadmin.entities.BusinessPlanType;
+import com.protostar.billingnstock.proadmin.services.ProtostarAdminService;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.user.entities.EmpDepartment;
 import com.protostar.billingnstock.user.entities.UserEntity;
@@ -251,6 +253,9 @@ public class UserService {
 			business.setAuthorizations(Constants.NEW_BIZ_DEFAULT_AUTHS);
 			business.setCreatedDate(new Date());
 			business.setRegisterDate(sdf.format(date));
+			ProtostarAdminService protostarAdminService = new ProtostarAdminService();
+			BusinessPlanType freeBusinessPlan = protostarAdminService.getFreeBusinessPlan();
+			business.setBusinessPlan(freeBusinessPlan);
 		} else {
 			business.setModifiedDate(new Date());
 		}
