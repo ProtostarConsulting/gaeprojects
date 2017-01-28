@@ -28,7 +28,7 @@ td, th { /* //border: 1px solid #dddddd; */
 	layout-padding>
 <form>
 	<div id="balanceSheetDiv" style="width: 100%;">
-	
+
 		<table
 			style="width: 50%; border: 1px solid #dddddd; border-color: black; float: left">
 
@@ -72,53 +72,116 @@ td, th { /* //border: 1px solid #dddddd; */
 							</div>
 						</div>
 					</div>
-					<div style="text-align: right;">
-						<span style="padding-right: 30%;"><b>Total Liabilities</b></span><span
-							style="align: right;"><b>{{totalLiabilities2}} </b></span>
-					</div>
-				</td>
+		</td>
 			</tr>
 
+
+			<tr ng-show="!nettProffitOrLoss">
+				<td><b>Profit & Loss A/c </b></td>
+				<td><b>{{nettProffitOrLoss}}</b></td>
+			</tr>
+									
+			<tr ng-show="!nettProffitOrLoss">
+			<td>Opening Balance </td>
+			<td>&nbsp;&nbsp;</td>
+			
+			</tr>
+			<tr>
+			<td>Current Period </td>
+			<td style="border-bottom: medium; ">{{nettProffitOrLoss}}</td>
+			</tr>
+			
+			
+			
+			<tr>
+				<td class="bottom" style="text-align: right; align: bottom"
+					style="padding-right: 30%;"><b>Total Liabilities</b></td>
+				<td style="align: right;">
+			<b>{{totalLiabilities2}} </b>
+				</td>
+
+	</tr>
+
+
 		</table>
-		
-		
-			<table
+
+
+		<table
 			style="width: 50%; border: 1px solid #dddddd; border-color: black; float: left">
+
 			<tr>
 				<th colspan="2">ASSETS</th>
-
 				<th style="text-align: center;"><br> <span> </span></th>
 			</tr>
 			<tr>
-				<td colspan="3"></td>
-
-			</tr>
-			<tr ng-repeat="groupTypeObj in accountGroupTypeGroupList">
-
 				<td colspan="2"></td>
 				<td style="text-align: left;" id="content">
-					<div ng-if="groupTypeObj.typeName=='ASSETS'">
-						<div ng-repeat="grp in groupTypeObj.groupList"
-							style="text-align: right;">
-							<span style="padding-right: 30%;">{{grp.groupName}}</span> <span
-								flex></span> <span ng-if="grp.groupBalance < 0">(</span><span
-								style="text-align: right;">{{grp.groupBalance|positive|number:2}}</span><span
-								ng-if="grp.groupBalance < 0">)</span> <br> <br>
-						</div>
-						<div class="bottom" style="text-align: right; align: bottom">
-							<span style="padding-right: 30%;"><b>Total Asset</b></span><span
-								style="align: right;"><b>{{totalAsset}} </b></span>
+					<div ng-repeat="groupTypeObj in accountGroupTypeGroupList">
+						<div ng-if="groupTypeObj.typeName=='ASSETS'">
+							<div ng-repeat="grp in groupTypeObj.groupList"
+								style="text-align: right;">
+								<span style="padding-right: 30%;">{{grp.groupName}}</span> <span
+									flex></span> <span ng-if="grp.groupBalance < 0">(</span><span
+									style="text-align: right;">{{grp.groupBalance|positive|number:2}}</span><span
+									ng-if="grp.groupBalance < 0">)</span>
+							</div>
 						</div>
 					</div>
 				</td>
+
+
 			</tr>
+			<tr>
+				<th colspan="2"></th>
+				<td colspan="1"></td>
+			</tr>
+			<tr>
+				<td colspan="2"></td>
+				<td style="text-align: left;" id="content">
+					<div ng-repeat="groupTypeObj in accountGroupTypeGroupList">
+						<div ng-if="groupTypeObj.typeName=='LIABILITIES'">
+							<div ng-repeat="grp in groupTypeObj.groupList"
+								style="text-align: right;">
+								<span style="padding-right: 30%;"></span> <span flex></span> <span
+									ng-if="grp.groupBalance < 0">(</span><span
+									style="text-align: right;"></span><span
+									ng-if="grp.groupBalance < 0">)</span> <br> <br>
+							</div>
+
+						</div>
+					</div>
+					<div style="text-align: right;">
+						<span style="padding-right: 30%;"><b></b></span><span
+							style="align: right;"><b> </b></span>
+					</div>
+				</td>
+			</tr>
+			<tr ng-show="nettProffitOrLoss">
+				<td><b>Profit & Loss A/c </b></td>
+				<td><b>{{nettProffitOrLoss}}</b></td>
+			</tr>
+			<tr ng-show="nettProffitOrLoss">
+			<td>Opening Balance </td>
+			<td>&nbsp;&nbsp;</td>
+			</tr>
+			<tr>
+			<td>Current Period </td>
+			<td style="border-bottom: medium; ">{{nettProffitOrLoss}}</td>
+			</tr>
+			
+			<tr>
+				<td class="bottom" style="text-align: right; align: bottom"
+					style="padding-right: 30%;"><b>Total Asset</b></td>
+				<td style="align: right;">
+			<b>{{totalAsset}} </b>
+				</td>
+
+				</tr>
 
 		</table>
-		
+
 
 	</div>
-	<!-- Total Asset:
-		<iframe name="print_frame" width="0" height="0" frameborder="0"
-			src="about:blank"></iframe> -->
+
 </form>
 </md-content>

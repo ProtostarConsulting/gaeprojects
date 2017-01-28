@@ -298,7 +298,7 @@ public class ProtostarAdminService {
 		indirectIncomesGroupEntity.setModifiedDate(new Date());
 		indirectIncomesGroupEntity.setGroupName("Indirect  Incomes");
 		indirectIncomesGroupEntity.setIsPrimary(true);
-		indirectIncomesGroupEntity.setAccountGroupType(AccountGroupType.INCOME);
+		indirectIncomesGroupEntity.setAccountGroupType(AccountGroupType.OTHERINCOMES);
 
 		ofy().save().entity(indirectIncomesGroupEntity).now();
 
@@ -308,7 +308,7 @@ public class ProtostarAdminService {
 		indirectExpensesGroupEntity.setModifiedDate(new Date());
 		indirectExpensesGroupEntity.setGroupName("Indirect Expenses");
 		indirectExpensesGroupEntity.setIsPrimary(true);
-		indirectExpensesGroupEntity.setAccountGroupType(AccountGroupType.EXPENSES);
+		indirectExpensesGroupEntity.setAccountGroupType(AccountGroupType.OTHEREXPENCES);
 
 		ofy().save().entity(indirectExpensesGroupEntity).now();
 
@@ -358,7 +358,7 @@ public class ProtostarAdminService {
 		capitalAccountGroupEntity.setModifiedDate(new Date());
 		capitalAccountGroupEntity.setGroupName("Capital Account");
 		capitalAccountGroupEntity.setIsPrimary(true);
-		capitalAccountGroupEntity.setAccountGroupType(AccountGroupType.EQUITY);
+		capitalAccountGroupEntity.setAccountGroupType(AccountGroupType.LIABILITIES);
 
 		ofy().save().entity(capitalAccountGroupEntity).now();
 
@@ -474,7 +474,7 @@ public class ProtostarAdminService {
 		sundryCreditors.setModifiedDate(new Date());
 		sundryCreditors.setGroupName("Sundry Creditors");
 		sundryCreditors.setIsPrimary(false);
-		sundryCreditors.setParent(currentLiabilitiesGroupEntity);
+		sundryCreditors.setParent(currentAssetsGroupEntity);
 		ofy().save().entity(sundryCreditors).now();
 
 		AccountGroupEntity sundryDebtors = new AccountGroupEntity();
@@ -483,7 +483,7 @@ public class ProtostarAdminService {
 		sundryDebtors.setModifiedDate(new Date());
 		sundryDebtors.setGroupName("Sundry Debtors");
 		sundryDebtors.setIsPrimary(false);
-		sundryDebtors.setParent(currentLiabilitiesGroupEntity);
+		sundryDebtors.setParent(currentAssetsGroupEntity);
 		ofy().save().entity(sundryDebtors).now();
 
 		AccountGroupEntity unsecuredLoans = new AccountGroupEntity();
@@ -494,7 +494,24 @@ public class ProtostarAdminService {
 		unsecuredLoans.setIsPrimary(false);
 		unsecuredLoans.setParent(loansLiabilityGroupEntity);
 		ofy().save().entity(unsecuredLoans).now();
+		////////Profit and Loss
+		
+		AccountGroupEntity pAndL = new AccountGroupEntity();
+		pAndL.setBusiness(business);
+		pAndL.setCreatedDate(new Date());
+		pAndL.setModifiedDate(new Date());
+		pAndL.setGroupName("Profit & Loss Acc");
+		pAndL.setIsPrimary(true);
+		pAndL.setAccountGroupType(AccountGroupType.PANDL);
+
+		ofy().save().entity(pAndL).now();
+
+		
+		
 
 	}
 
+	
+	
+	
 }// end of InternetService

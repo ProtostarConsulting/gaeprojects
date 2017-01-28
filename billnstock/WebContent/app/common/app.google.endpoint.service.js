@@ -308,6 +308,30 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
+	
+	
+	
+	AccountGroupService.getProfitAndLossAcc = function(bid) {
+		var deferred = $q.defer();
+		gapi.client.accountGroupService.getProfitAndLossAcc({
+			"bid" : bid
+		}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}
+	AccountGroupService.getProfitAndLossAccBalance = function(bid) {
+		var deferred = $q.defer();
+		gapi.client.accountGroupService.getProfitAndLossAccBalance({
+			"bid" : bid
+		}).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}
+	
+	
+	
 
 	// ----------------------------------
 

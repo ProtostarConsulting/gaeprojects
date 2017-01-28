@@ -187,7 +187,7 @@ public class AccountGroupService {
 							+ accountEntity.getAccountName());
 					ServerMsg accountBalance = as.getAccountBalance(
 							accountEntity.getId(), bid);
-					groupTotal += accountBalance.getReturnBalance();					
+					groupTotal += accountBalance.getReturnBalance();
 				}
 
 				if (groupTotal != 0) {
@@ -198,7 +198,6 @@ public class AccountGroupService {
 
 			}
 
-			
 			typeInfo.typeBalance = typeTotal;
 			typeList.add(typeInfo);
 
@@ -207,6 +206,135 @@ public class AccountGroupService {
 		return typeList;
 	}
 
+	@ApiMethod(name = "getProfitAndLossAcc", path = "getProfitAndLossAcc")
+	public List<TypeInfo> getProfitAndLossAcc(@Named("bid") Long bid) {
+		List<TypeInfo> typeList = new ArrayList<TypeInfo>();
+
+		AccountGroupType[] groupTypes = { AccountGroupType.INCOME,
+				AccountGroupType.OTHERINCOMES, AccountGroupType.EXPENSES,
+				AccountGroupType.OTHEREXPENCES };
+		for (int i = 0; i < groupTypes.length; i++) {
+			TypeInfo typeInfo = new TypeInfo();
+			typeInfo.typeName = groupTypes[i].toString();
+			typeInfo.groupList = new ArrayList<GroupInfo>();
+
+			List<AccountGroupEntity> typeAccountList = getAccountGroupListByType(
+					typeInfo.typeName, bid);
+
+			double typeTotal = 0;
+			for (int j = 0; j < typeAccountList.size(); j++) {
+				GroupInfo groupInfo = new GroupInfo();
+				groupInfo.groupName = typeAccountList.get(j).getGroupName();
+				AccountingService as = new AccountingService();
+				List<AccountEntity> accList = as
+						.getAccountListByGroupId(typeAccountList.get(j).getId());
+				double groupTotal = 0;
+				for (AccountEntity accountEntity : accList) {
+					
+					ServerMsg accountBalance = as.getAccountBalance(
+							accountEntity.getId(), bid);
+					groupTotal += accountBalance.getReturnBalance();
+				}
+
+				if (groupTotal != 0) {
+					groupInfo.groupBalance = groupTotal;
+					typeTotal += groupTotal;
+					typeInfo.groupList.add(groupInfo);
+				}
+
+			}
+
+			typeInfo.typeBalance = typeTotal;
+			typeList.add(typeInfo);
+
+		}
+
+		return typeList;
+	}
+
+	@ApiMethod(name = "getProfitAndLossAccBalance", path = "getProfitAndLossAccBalance")
+	public ServerMsg getProfitAndLossAccBalance(@Named("bid") Long bid) {
+		List<TypeInfo> list = getProfitAndLossAcc(bid);
+		ServerMsg serverMsg = new ServerMsg();
+		double netPandL = 0;
+
+		double totalSales = 0;
+		double totalIndirectExpences2 = 0;
+		double totalPurches = 0;
+		double totalIndirectExpences = 0;
+		double totalGrossProfit = 0;
+		double totalGrossLoss = 0;
+		double totalLeft = 0;
+		double totalRight = 0;
+		String typeName;
+		double totalOtherExp = 0;
+		double nettProfit = 0;
+
+		for (int int2 = 0; int2 < list.size(); int2++) {
+			typeName = list.get(int2).getTypeName().toString();
+			if ((typeName == "INCOME")
+					&& (list.get(int2).getGroupList() != null)) {
+				for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
+					totalSales = list.get(int2).getGroupList().get(i).groupBalance
+							+ totalSales;
+				}
+				if (totalSales < 0) {
+					totalSales = totalSales * (-1);
+				}
+			}
+
+			if ((typeName == "OTHEREXPENCES")
+					&& (list.get(int2).getGroupList() != null)) {
+				for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
+					totalIndirectExpences = list.get(int2).getGroupList()
+							.get(i).getGroupBalance()
+							+ totalIndirectExpences;
+
+				}
+
+				if (totalIndirectExpences < 0) {
+					totalIndirectExpences = totalIndirectExpences * (-1);
+				}
+
+			}
+			if ((typeName == "EXPENSES")
+					&& (list.get(int2).getGroupList() != null)) {
+				for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
+					totalPurches = list.get(int2).getGroupList().get(i)
+							.getGroupBalance()
+							+ totalPurches;
+				}
+				if (totalPurches < 0) {
+					totalPurches = totalPurches * -1;
+				}
+
+			}
+
+		}
+
+		totalIndirectExpences2 = totalIndirectExpences + totalPurches;
+		if (totalIndirectExpences2 < 0) {
+			totalIndirectExpences2 = totalIndirectExpences2 * (-1);
+		}
+
+		totalGrossProfit = totalSales - totalPurches;
+
+		if (totalGrossProfit < 0) {
+			totalGrossLoss = totalGrossProfit;
+		}
+		totalLeft = totalPurches + totalGrossProfit;
+		if (totalLeft < 0) {
+			totalLeft = totalLeft * (-1);
+		}
+		totalRight = totalSales;
+		nettProfit = totalGrossProfit - totalIndirectExpences;
+
+		System.out.println("nettProfit********************" + nettProfit);
+		serverMsg.setReturnBalance(nettProfit);
+		return serverMsg;
+	}
+
+	// //
 	@ApiMethod(name = "getBalanceSheetCalculation", path = "getBalanceSheetCalculation")
 	public BalanceSheetData getBalanceSheetCalculation() {
 		BalanceSheetData BalanceSheetCalculation = new BalanceSheetData();

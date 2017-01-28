@@ -37,6 +37,14 @@ app
 							var AccountGroupService = appEndpointSF
 									.getAccountGroupService();
 							AccountGroupService
+									.getProfitAndLossAccBalance(
+											$scope.curUser.business.id)
+									.then(
+											function(list2) {
+												$scope.nettProffitOrLoss = list2.returnBalance;
+
+											});
+							AccountGroupService
 									.getBalanceSheet($scope.curUser.business.id)
 									.then(
 											function(list) {
@@ -81,9 +89,23 @@ app
 
 													}
 												}
-												
+
 												$scope.totalLiabilities2 = $scope.totalLiabilities
 														+ $scope.totalEQUITY;
+												if ($scope.nettProffitOrLoss < 0) {
+													
+											$scope.nettProffitOrLoss = $scope.nettProffitOrLoss
+													* (-1);
+											$scope.totalAsset = $scope.totalAsset
+											+ $scope.nettProffitOrLoss;
+											
+													
+												} else {
+													$scope.totalLiabilities2 = $scope.totalLiabilities2
+													+ $scope.nettProffitOrLoss;
+													
+
+												}
 												$scope.loading = false;
 
 											});

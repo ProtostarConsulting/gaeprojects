@@ -473,7 +473,20 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		params : {
 			record : null
 		}
-	}).state('accounting.trialBalance', {
+	}).state('accounting.accountPAndL', {
+		url : "/ProfitAndLoss",
+		templateUrl : '/app/accounting/accountPAndL.html',
+		controller : 'accountPAndL',
+		params : {
+			record : null
+		}
+	})
+	
+	
+	
+	
+	
+	.state('accounting.trialBalance', {
 		url : "/trialBalance",
 		templateUrl : '/app/accounting/accountTrialBalance.html',
 		controller : 'trialBalanceCtr'
