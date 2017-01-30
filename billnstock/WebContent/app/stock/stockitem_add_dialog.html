@@ -17,101 +17,25 @@
 	<span flex> </span>
 </section>
 <form name="stockForm">
-	<div>
-		<div layout layout-xs="column">
+	<div layout="column">
+		<div layout="row" layout-xs="column">
 			<md-input-container flex> <label>Item
 				Name </label> <input name="itemName" ng-model="stock.itemName"
 				ng-required="true">
 			<div ng-messages="stockForm.itemName.$error"
 				ng-if="stockForm.itemName.$submitted || stockForm.itemName.$touched">
-				<div ng-message="required">Please Enter Item
-					Name(Example.:John)</div>
+				<div ng-message="required">This is required field.</div>
 			</div>
 			</md-input-container>
-
 			<md-input-container flex> <label>Categories
-
-			</label> <input name="categories" ng-model="stock.category"
-				ng-required="false">
-			<div ng-messages="stockForm.categories.$error"
-				ng-if="stockForm.categories.$submitted || stockForm.categories.$touched">
-				<div ng-message="required">Please Enter First
-					Name(Example.:John)</div>
-			</div>
-			</md-input-container>
-		</div>
-
-		<div layout="row" layout-xs="column">
-			<md-input-container flex> <label> Cost </label>
-			<input name="cost" type="number" ng-model="stock.cost"
-				ng-required="true">
-			<div ng-messages="stockForm.cost.$error"
-				ng-if="stockForm.cost.$submitted || stockForm.cost.$touched || stockForm.cost.$dirty">
-				<div ng-message="required">Please Enter Cost (Example.:1234)</div>
-			</div>
-			</md-input-container>
-			<md-input-container flex> <label>Moving
-				Avg. Cost </span>
-			</label> <textarea name="note" ng-model="stock.movingAvgCost"
-				ng-disabled="true"></textarea> </md-input-container>
-		</div>
-
-		<div layout="row" layout-xs="column">
-			<md-input-container flex> <label> Price
-			</label> <input name="price" type="number" ng-model="stock.price"
-				ng-required="true">
-			<div ng-messages="stockForm.price.$error"
-				ng-if="stockForm.price.$submitted || stockForm.price.$touched || stockForm.price.$dirty">
-				<div ng-message="required">Please Enter Price (Example.:1234)</div>
-			</div>
-			</md-input-container>
-			<md-input-container flex> <label>Notes </span>
-			</label> <textarea name="note" ng-model="stock.notes" ng-required="false"></textarea>
-			</md-input-container>
+				(comma separated values) </label> <input name="categories"
+				ng-model="stock.category" ng-required="false"> </md-input-container>
 		</div>
 		<div layout="row" layout-xs="column">
-			<md-input-container flex> <label>Threshold
-				Value </label> <input name="threshold" type="number"
-				ng-model="stock.thresholdValue" ng-required="false">
-			<div ng-messages="stockForm.threshold.$error"
-				ng-if="stockForm.threshold.$submitted || stockForm.threshold.$touched || stockForm.threshold.$dirty">
-				<div ng-message="required">Please Enter Threshold
-					Value.(Example.:120)</div>
-			</div>
-			</md-input-container>
-
-			<md-input-container flex> <label>Quantity
-			</label> <input name="quantity" type="number" ng-model="stock.qty"
-				ng-disabled="true"> </md-input-container>
+			<md-input-container flex> <md-checkbox
+				ng-model="stock.maintainStockBySerialNumber" ng-true-value="true"
+				ng-false-value="false"></md-checkbox> Maintain By Serial Number </md-input-container>
 		</div>
-
-		<h3 class="md-subhead">
-			<b>Location Details</b>
-		</h3>
-		<div layout="row" layout-xs="column">
-
-			<div flex layout="row">
-				<md-select flex ng-model="stock.warehouse"
-					placeholder="Select Warehouse"> <md-option
-					ng-value="warehouse"
-					ng-selected="stock.warehouse.id == warehouse.id"
-					ng-repeat="warehouse in warehouses">{{warehouse.warehouseName
-				}}</md-option> </md-select>
-			</div>
-			<md-input-container flex> <label>Section
-
-			</label> <input name="section" ng-model="stock.section"> </md-input-container>
-		</div>
-
-		<div layout="row" layout-xs="column">
-
-			<md-input-container flex> <label>Rack </label> <input
-				name="rack" ng-model="stock.rack"> </md-input-container>
-
-			<md-input-container flex> <label>Slot </label> <input
-				name="slot" ng-model="stock.slot"> </md-input-container>
-		</div>
-
 	</div>
 </form>
 </md-content> </md-content> </md-dialog-content> <md-dialog-actions layout="row"> <md-button
