@@ -2,23 +2,25 @@
 <section layout="row" layout-xs="column">
 	<md-subheader class="md-primary">
 	<h4 class="md-title"
-		ng-bind="purchaseOrderObj.id?'Edit Purchase Order:' + purchaseOrderObj.itemNumber:'Add Purchase Order'"></h4>
+		ng-bind="purchaseOrderObj.id?'Edit Purchase Order':'Add Purchase Order'"></h4>
 	</md-subheader>
 	<span flex></span>
 </section>
 <div>
 	<form ng-submit="$event.preventDefault()" name="pOForm">
 
-		<md-input-container flex> <label>Warehouse
-		</label> <md-select flex ng-model="purchaseOrderObj.warehouse"
-			placeholder="Select Warehouse" ng-change="warehouseChanged">
-		<md-option ng-value="warehouse" ng-required="true"
-			ng-selected="(purchaseOrderObj.warehouse.id)?(purchaseOrderObj.warehouse.id == warehouse.id):($index == 0)"
-			ng-repeat="warehouse in warehouses">{{warehouse.warehouseName
-		}}</md-option> </md-select> </md-input-container>
+		<div layout="row" flex=30>
+			<md-input-container flex> <label>Warehouse
+			</label> <md-select flex ng-model="purchaseOrderObj.warehouse"
+				placeholder="Select Warehouse" ng-change="warehouseChanged">
+			<md-option ng-value="warehouse" ng-required="true"
+				ng-selected="(purchaseOrderObj.warehouse.id)?(purchaseOrderObj.warehouse.id == warehouse.id):($index == 0)"
+				ng-repeat="warehouse in warehouses">{{warehouse.warehouseName
+			}}</md-option> </md-select> </md-input-container>
+		</div>
 		<div layout="row" layout-xs="column">
 			<div layout="row" flex>
-				<md-autocomplete flex required md-input-name="autocompleteField"
+				<md-autocomplete flex=30 required md-input-name="autocompleteField"
 					md-no-cache=true md-selected-item="purchaseOrderObj.supplier"
 					md-search-text="searchTextInput"
 					md-items="item in querySearch(searchTextInput)"
