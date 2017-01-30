@@ -45,7 +45,7 @@
 				ng-model="stockShipmentObj.toWH" placeholder="Select Warehouse">
 			<md-option ng-value="warehouse" ng-required="true"
 				ng-selected="stockShipmentObj.toWH.id == warehouse.id"
-				ng-repeat="warehouse in warehouses">{{warehouse.warehouseName
+				ng-repeat="warehouse in warehouses |filter: {warehouseName: '!' + stockShipmentObj.fromWH.warehouseName}">{{warehouse.warehouseName
 			}}</md-option> </md-select> </md-input-container>
 
 			<md-autocomplete flex
