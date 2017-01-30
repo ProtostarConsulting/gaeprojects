@@ -2,7 +2,7 @@
 <section layout="row" layout-xs="column">
 	<md-subheader class="md-primary">
 	<h4 class="md-title"
-		ng-bind="stockReceiptObj.id?'Edit Stock Receipt: ' + stockReceiptObj.itemNumber :'Create Stock Receipt'"></h4>
+		ng-bind="stockReceiptObj.id?'Edit Stock Receipt':'Create Stock Receipt'"></h4>
 	</md-subheader>
 	<span flex></span>
 </section>
@@ -10,7 +10,7 @@
 	<form ng-submit="$event.preventDefault()" name="stockReceiptAddForm">
 
 		<div flex layout="row" layout-xs="column">
-			<md-input-container flex> <label>PO
+			<md-input-container flex=40> <label>PO
 				Number </label> <input type="number" ng-model="stockReceiptObj.poNumber"
 				ng-change="getPOByItemNumber(stockReceiptObj.poNumber)"
 				ng-model-options="{ debounce: 1000 }"> </md-input-container>
@@ -21,6 +21,9 @@
 				<md-input-container flex> <label>Receipt
 					Status </label> <input type="text" ng-disabled="true"
 					ng-model="stockReceiptObj.status"> </md-input-container>
+				<md-input-container flex> <label>Stock
+					Receipt No.</label> <input ng-model="stockReceiptObj.itemNumber"
+					placeholder="Auto generated number" ng-disabled="true"></input> </md-input-container>
 			</div>
 		</div>
 
@@ -92,7 +95,7 @@
 									ng-repeat="stockItemType in stockTypeList">{{stockItemType.itemName
 								}}</md-option> </md-select> </md-input-container>
 								<md-button class="md-icon-button"
-									ng-click="addStock($event, item)" aria-label="as">
+									ng-click="addStockItem($event,item)" aria-label="as">
 								<md-icon md-svg-src="img/icons/ic_queue_black_24px.svg"
 									class="name" style="color: Green; height: 18px; width: 18px"></md-icon></md-button>
 							</div>
@@ -102,19 +105,19 @@
 							</label> <input type="number" ng-model="item.qty"
 								ng-change="calProductSubTotal()" ng-required="true"> </md-input-container></td>
 						<td><md-input-container flex> <label>Purchase
-								Price </label> <input type="number" ng-model="item.cost"
+								Price </label> <input type="number" ng-model="item.price"
 								ng-change="calProductSubTotal()" aria-label="iprice"
 								ng-required="true"> </md-input-container></td>
 						<td><md-input-container flex> <b>{{item.qty
-								* item.cost | currency:"":"2"}} </b></td>
+								* item.price | currency:"":"2"}} </b></td>
 						<td><md-button class="md-icon-button"
 								ng-show="item.stockItem.stockItemType.maintainStockBySerialNumber"
 								ng-click="addSerialNumbers($event, item)"> <ng-md-icon
 								icon="list" style="fill: md-default" size="18"> <md-tooltip>
 							Add Serial Numbers</md-tooltip></ng-md-icon></md-button> <md-button class="md-icon-button"
 								ng-click="removeProductItem($index)"> <ng-md-icon
-								icon="remove" style="fill: md-default" size="18">
-							<md-tooltip> Remove Line Item</md-tooltip></ng-md-icon></md-button></td>
+								icon="remove" style="fill: md-default" size="18"> <md-tooltip>
+							Remove Line Item</md-tooltip></ng-md-icon></md-button></td>
 					</tr>
 					<tr>
 						<td><md-button class="md-icon-button"
@@ -171,8 +174,8 @@
 								* serviceItem.cost | currency:"":"2"}} </b></td>
 						<td><md-button class="md-icon-button"
 								ng-click="removeServiceItem($index)"> <ng-md-icon
-								icon="remove" style="fill: md-default" size="18">
-							<md-tooltip> Remove Line Item</md-tooltip></ng-md-icon></md-button></td>
+								icon="remove" style="fill: md-default" size="18"> <md-tooltip>
+							Remove Line Item</md-tooltip></ng-md-icon></md-button></td>
 					</tr>
 
 					<tr>
