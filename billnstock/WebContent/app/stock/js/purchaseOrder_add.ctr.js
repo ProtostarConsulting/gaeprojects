@@ -351,7 +351,7 @@ app
 								});
 					}
 
-					$scope.checkStock = function(item, $event) {
+					/*$scope.checkStock = function(item, $event) {
 						for (var i = 0; i <= $scope.stockItemList.length; i++) {
 							if ($scope.stockItemList[i].itemName == item.itemName) {
 								$scope.qtyErrorMsg = "";
@@ -362,7 +362,7 @@ app
 								}
 							}
 						}
-					}
+					}*/
 
 					$scope.dialogBox = function(ev) {
 						$mdDialog
@@ -442,7 +442,7 @@ app
 					$scope.waitForServiceLoad();
 
 					// For Add Stock from Invoice Page through popup
-					$scope.addStock = function(ev, lineItem) {
+					$scope.addStockItem = function(ev, lineItem) {
 						var getAllWarehouseByBusiness = function() {
 							var warehouseService = appEndpointSF
 									.getWarehouseManagementService();
@@ -471,7 +471,7 @@ app
 												curUser : $scope.curUser,
 												stock : $scope.stock,
 												warehouses : $scope.warehouses,
-												stockItemList : $scope.stockItemList,
+												stockItemList : $scope.stockTypeList,
 												lineItem : lineItem,
 												calProductSubTotalFn : $scope.calProductSubTotal
 											}
@@ -495,10 +495,10 @@ app
 							$scope.stock.createdDate = new Date();
 							$scope.stock.modifiedBy = curUser.email_id;
 							var stockService = appEndpointSF.getStockService();
-							stockService.addStock($scope.stock).then(
+							stockService.addStockItemType($scope.stock).then(
 									function(addedItem) {
 										if (addedItem.id) {
-											lineItem.stockItem = addedItem;
+											lineItem.stockItem.stockItemType = addedItem;
 											lineItem.price = addedItem.price;
 											stockItemList.push(addedItem);
 											calProductSubTotalFn();
