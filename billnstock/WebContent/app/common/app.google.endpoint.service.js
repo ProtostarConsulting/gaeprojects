@@ -1912,6 +1912,17 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
+	
+	StockService.getStockShipmentByID = function(busId,id){
+		var deferred = $q.defer();
+		gapi.client.stockService.getPOByID({
+			'busId' : busId,
+			"id" : id
+		}).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}
 
 	StockService.getReportByThreshold = function(id) {
 		var deferred = $q.defer();
@@ -2026,9 +2037,10 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
-	StockService.getPOByID = function(id) {
+	StockService.getStockReceiptByID = function(busId,id){
 		var deferred = $q.defer();
 		gapi.client.stockService.getPOByID({
+			'busId' : busId,
 			"id" : id
 		}).execute(function(resp) {
 			deferred.resolve(resp);
