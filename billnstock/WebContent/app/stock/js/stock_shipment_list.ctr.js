@@ -75,7 +75,6 @@ app
 							webSafeCursorString : $scope.pagingInfoReturned ? $scope.pagingInfoReturned.webSafeCursorString
 									: null
 						};
-
 						var stockService = appEndpointSF.getStockService();
 						stockService
 								.fetchReceiptListByPaging(
@@ -92,9 +91,16 @@ app
 										});
 					}
 
+					$scope.printstockShipment = function(stShipId) {
+						var bid = $scope.curUser.business.id;
+						window.open("PrintPdfstockShipment?bid=" + bid
+								+ "&stShipId=" + stShipId);
+
+					}
+
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
-							//$scope.getStockShipmentList();
+							// $scope.getStockShipmentList();
 							$scope.fetchEntityListByPaging();
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
@@ -106,11 +112,4 @@ app
 					$scope.selected = [];
 					$scope.waitForServiceLoad();
 
-					$scope.printstockShipment = function(stockShipmentId) {
-						var stockShipmentEntity = "stockShipmentEntity";
-						window.open("PrintPdfstockShipment?stockShipmentNo="
-								+ stockShipmentId
-								+ "&entityname=stockShipmentEntity");
-
-					}
 				});
