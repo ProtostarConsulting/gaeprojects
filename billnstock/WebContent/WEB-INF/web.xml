@@ -151,6 +151,19 @@
     <servlet-name>PdfBalanceSheet</servlet-name>
     <url-pattern>/PdfBalanceSheet</url-pattern>
   </servlet-mapping>
+  
+   <servlet>
+    <description/>
+    <display-name>PandL</display-name>
+    <servlet-name>PandL</servlet-name>
+    <servlet-class>com.protostar.billingnstock.account.services.PandL</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PandL</servlet-name>
+    <url-pattern>/PandL</url-pattern>
+  </servlet-mapping>
+  
+  
   <servlet>
     <description></description>
     <display-name>DownloadAccountChartServlet</display-name>

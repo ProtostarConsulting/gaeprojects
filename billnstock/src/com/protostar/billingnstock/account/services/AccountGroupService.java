@@ -416,17 +416,14 @@ public class AccountGroupService {
 				}
 				typeInfo.groupList.add(groupInfo);
 
-				/*
-				 * if (groupTotal != 0) { groupInfo.groupBalance = groupTotal;
-				 * typeTotal += groupTotal; typeInfo.groupList.add(groupInfo); }
-				 */
+				 
+				
 			}
 
 			typeList.add(typeInfo);
 		}
 
-		// System.out.println("typeList:******" +
-		// typeList.get(0).getGroupList().get(0).getAccInfoList().);
+		
 
 		return typeList;
 	}

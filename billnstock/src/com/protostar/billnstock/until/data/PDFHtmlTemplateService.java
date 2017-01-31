@@ -27,6 +27,7 @@ import com.protostar.billingnstock.account.entities.PurchaseVoucherEntity;
 import com.protostar.billingnstock.account.entities.ReceiptVoucherEntity;
 import com.protostar.billingnstock.account.entities.SalesVoucherEntity;
 import com.protostar.billingnstock.account.entities.VoucherEntity;
+import com.protostar.billingnstock.account.services.AccountGroupService;
 import com.protostar.billingnstock.account.services.AccountGroupService.TypeInfo;
 import com.protostar.billingnstock.cust.entities.Customer;
 import com.protostar.billingnstock.hr.entities.MonthlyPaymentDetailEntity;
@@ -120,7 +121,149 @@ public class PDFHtmlTemplateService {
 
 	}
 
-	public void generatePdfBalanceSheet(List<TypeInfo> balanceSheetList,
+	// --------------------------------------------------//
+	public void getProfitAndLossAcc(List<TypeInfo> list,
+			ServletOutputStream outputStream, Long bid) {
+
+		try {
+
+			BusinessEntity businessEntity = new BusinessEntity();
+			com.protostar.billingnstock.user.services.UserService user = new com.protostar.billingnstock.user.services.UserService();
+			businessEntity = user.getBusinessById(bid);
+			Document document = new Document();
+			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
+			document.open();
+			
+			//addDocumentHeaderLogo(list, document);
+			Date today = new Date();
+
+			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
+			Map<String, Object> root = new HashMap<String, Object>();
+			root.put("ProfitAndLossAcList", list);
+			root.put("buisinessName", "" + businessEntity.getBusinessName());
+			root.put("date", "" + today);
+
+			StringBuffer addressBuf = new StringBuffer();
+			Address address = businessEntity.getAddress();
+			if (address != null) {
+				if (address.getLine1() != null && !address.getLine1().isEmpty())
+					addressBuf.append(address.getLine1());
+				if (address.getLine2() != null && !address.getLine2().isEmpty())
+					addressBuf.append(", " + address.getLine2());
+				if (address.getCity() != null && !address.getCity().isEmpty())
+					addressBuf.append(", " + address.getCity());
+				if (address.getState() != null && !address.getState().isEmpty())
+					addressBuf.append(", " + address.getState());
+			}
+			String buisinessAddress = addressBuf.toString();
+			root.put("buisinessAddress", "" + buisinessAddress);
+			Template temp = getConfiguration().getTemplate(
+					"pdf_templates/getProfitAndLossAcc_tmpl.ftlh");
+
+			double netPandL = 0;
+			double totalSales = 0;
+			double totalIndirectExpences2 = 0;
+			double totalPurches = 0;
+			double totalIndirectExpences = 0;
+			double totalGrossProfit = 0;
+			double totalGrossLoss = 0;
+			double totalLeft = 0;
+			double totalRight = 0;
+			String typeName;
+			double totalOtherExp = 0;
+			double nettProfit = 0;
+
+			for (int int2 = 0; int2 < list.size(); int2++) {
+				typeName = list.get(int2).getTypeName().toString();
+				if ((typeName == "INCOME")
+						&& (list.get(int2).getGroupList() != null)) {
+					for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
+						totalSales = list.get(int2).getGroupList().get(i)
+								.getGroupBalance()
+								+ totalSales;
+					}
+					if (totalSales < 0) {
+						totalSales = totalSales * (-1);
+					}
+				}
+
+				if ((typeName == "OTHEREXPENCES")
+						&& (list.get(int2).getGroupList() != null)) {
+					for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
+						totalIndirectExpences = list.get(int2).getGroupList()
+								.get(i).getGroupBalance()
+								+ totalIndirectExpences;
+
+					}
+
+					if (totalIndirectExpences < 0) {
+						totalIndirectExpences = totalIndirectExpences * (-1);
+					}
+
+				}
+				if ((typeName == "EXPENSES")
+						&& (list.get(int2).getGroupList() != null)) {
+					for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
+						totalPurches = list.get(int2).getGroupList().get(i)
+								.getGroupBalance()
+								+ totalPurches;
+					}
+					if (totalPurches < 0) {
+						totalPurches = totalPurches * -1;
+					}
+
+				}
+
+			}
+
+			totalIndirectExpences2 = totalIndirectExpences + totalPurches;
+			if (totalIndirectExpences2 < 0) {
+				totalIndirectExpences2 = totalIndirectExpences2 * (-1);
+			}
+
+			totalGrossProfit = totalSales - totalPurches;
+
+			if (totalGrossProfit < 0) {
+				totalGrossLoss = totalGrossProfit;
+			}
+			totalLeft = totalPurches + totalGrossProfit;
+			if (totalLeft < 0) {
+				totalLeft = totalLeft * (-1);
+			}
+			totalRight = totalSales;
+			nettProfit = totalGrossProfit - totalIndirectExpences;
+			root.put("totalPurches", totalPurches);
+			root.put("totalGrossProfit", totalGrossProfit);
+			root.put("totalIndirectExpences", totalIndirectExpences);
+			root.put("nettProfit", nettProfit);
+			root.put("totalSales", totalSales);
+			root.put("totalGrossProfit", totalGrossProfit);
+			root.put("totalLeft", totalLeft);
+			root.put("totalGrossProfit", totalGrossProfit);
+			//root.put("totalSales", totalSales);
+			
+			
+			
+			
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
+					5000);
+			Writer out = new PrintWriter(byteArrayOutputStream);
+			temp.process(root, out);
+
+			String pdfXMLContent = byteArrayOutputStream.toString();
+
+			worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
+			document.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	// --------------------------------------------------
+
+	public void generatePdfBalanceSheet(List<TypeInfo> list,
 			ServletOutputStream outputStream, Long bid) {
 
 		try {
@@ -136,7 +279,7 @@ public class PDFHtmlTemplateService {
 			// + today.getYear();
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 			Map<String, Object> root = new HashMap<String, Object>();
-			root.put("balanceSheetList", balanceSheetList);
+			root.put("balanceSheetList", list);
 			root.put("buisinessName", "" + businessEntity.getBusinessName());
 			root.put("date", "" + today);
 
@@ -159,6 +302,89 @@ public class PDFHtmlTemplateService {
 			Template temp = getConfiguration().getTemplate(
 					"pdf_templates/balanceSheet_tmpl.ftlh");
 
+			
+
+			double  totalAsset = 0;
+			double  totalLiabilities2 = 0;
+			double  totalEQUITY = 0;
+			double  totalLiabilities = 0;
+AccountGroupService ag=new AccountGroupService();
+
+
+			ServerMsg nettProffitOrLoss1 =ag.getProfitAndLossAccBalance(bid);
+			double nettProffitOrLoss=nettProffitOrLoss1.getReturnBalance();
+			
+			//double  accountGroupTypeGroupList = list;
+			for (int int2 = 0; int2 < list.size(); int2++) {
+				String typeName = list.get(int2).getTypeName();
+				if ((typeName == "ASSETS")
+						&& (list.get(int2).getGroupList() != null)) {
+					for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
+						  totalAsset = list.get(int2).getGroupList().get(i).getGroupBalance()
+								+   totalAsset;
+					}
+					if (  totalAsset < 0) {
+						  totalAsset =   totalAsset
+								* (-1);
+					}
+				}
+
+				if ((typeName == "LIABILITIES")
+						&& (list.get(int2).getGroupList() != null)) {
+					for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
+						  totalLiabilities = list.get(int2).getGroupList().get(i).getGroupBalance()
+								+   totalLiabilities;
+					}
+
+					if (  totalLiabilities < 0) {
+						  totalLiabilities =   totalLiabilities
+								* (-1);
+					}
+
+				}
+				if ((typeName == "EQUITY")
+						&& (list.get(int2).getGroupList() != null)) {
+					for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
+						  totalEQUITY = list.get(int2).getGroupList().get(i).getGroupBalance()
+								+   totalEQUITY;
+					}
+
+				}
+			}
+
+			  totalLiabilities2 =   totalLiabilities
+					+   totalEQUITY;
+			 // nettProfit = totalGrossProfit - totalIndirectExpences;
+
+			if (  nettProffitOrLoss < 0) {
+				
+		  nettProffitOrLoss =   nettProffitOrLoss
+				* (-1);
+		  totalAsset =   totalAsset
+		+   nettProffitOrLoss;
+		
+				
+			} else {
+				  totalLiabilities2 =   totalLiabilities2
+				+   nettProffitOrLoss;
+				
+
+			}
+			
+
+		
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
 					5000);
 			Writer out = new PrintWriter(byteArrayOutputStream);

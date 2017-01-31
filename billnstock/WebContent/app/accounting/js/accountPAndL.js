@@ -117,7 +117,7 @@ app
 					}
 
 					$scope.load_pdf = function() {
-						window.open("PdfBalanceSheet?bid="
+						window.open("PandL?bid="
 								+ $scope.curUser.business.id);
 
 					}
