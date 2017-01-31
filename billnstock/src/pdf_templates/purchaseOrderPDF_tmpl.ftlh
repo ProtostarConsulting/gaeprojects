@@ -57,7 +57,7 @@ td {
 
 			<tbody>
 				<tr>
-					<td style="width: 20%; border: 0px;"><b>To:</b>
+					<td style="width: 20%; border: 0px;"><b>Bill To:</b>
 						</td>
 				<td style="width: 40%; border: 0px;"></td>		
 				<td style="border: 0px;"><b>Shipped To:</b></td>
@@ -181,7 +181,7 @@ td {
 				style="width:6%;"
 				align="center">Qty.</th>
 			<th
-				style="width:10%;" 
+				style="width:20%;" 
 				align="center">Price
 			</th>
 			<th

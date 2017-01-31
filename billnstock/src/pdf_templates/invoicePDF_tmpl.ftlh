@@ -131,7 +131,7 @@ td {
 				<#assign taxCodeName = serviceTax.taxCodeName + "(" + serviceTax.taxPercenatge + "%)">
 		    <#else>
   				<#assign taxAmt = 0>
-  				<#assign taxCodeName = "">
+  				<#assign taxCodeName = "NA">
 			</#if>	
 			<tr>
 			<td align="left">${lineItem.itemName}</td>
@@ -181,7 +181,7 @@ td {
 				<#assign taxCodeName = productTax.taxCodeName + "(" +productTax.taxPercenatge + "%)">
 		    <#else>
   				<#assign taxAmt = 0>
-  				<#assign taxCodeName = "">
+  				<#assign taxCodeName = "NA">
 			</#if>	
 			<tr>
 			<td align="left">${lineItem.stockItem.stockItemType.itemName}</td>

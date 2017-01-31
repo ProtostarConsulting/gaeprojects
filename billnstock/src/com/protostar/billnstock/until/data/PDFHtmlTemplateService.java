@@ -12,9 +12,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.ServletOutputStream;
-
+import org.apache.commons.io.output.TaggedOutputStream;
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -36,6 +35,8 @@ import com.protostar.billingnstock.invoice.entities.InvoiceEntity;
 import com.protostar.billingnstock.invoice.entities.QuotationEntity;
 import com.protostar.billingnstock.purchase.entities.PurchaseOrderEntity;
 import com.protostar.billingnstock.stock.entities.StockItemsReceiptEntity;
+import com.protostar.billingnstock.stock.entities.StockItemsShipmentEntity;
+import com.protostar.billingnstock.stock.entities.StockItemsShipmentEntity.ShipmentType;
 import com.protostar.billingnstock.stock.entities.StockLineItem;
 import com.protostar.billingnstock.tax.entities.TaxEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
@@ -43,7 +44,6 @@ import com.protostar.billingnstock.user.entities.EmpDepartment;
 import com.protostar.billingnstock.user.entities.UserEntity;
 import com.protostar.billnstock.entity.Address;
 import com.protostar.billnstock.entity.BaseEntity;
-
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
@@ -1069,7 +1069,7 @@ public class PDFHtmlTemplateService {
 			String receiptDate = sdfDate.format(stockReceiptEntity
 					.getReceiptDate());
 			root.put("ReceiptDate", receiptDate);
-			root.put("PONum", stockReceiptEntity.getPoNumber());
+			root.put("ReceiptNo", stockReceiptEntity.getItemNumber());
 			root.put("Supplier", stockReceiptEntity.getSupplier()
 					.getSupplierName());
 			root.put("Warehouse", stockReceiptEntity.getWarehouse()
@@ -1093,6 +1093,19 @@ public class PDFHtmlTemplateService {
 			root.put("BusinessName", "" + business.getBusinessName());
 			root.put("BusinessAddress", "" + businessAddress);
 
+			List<StockLineItem> serviceLineItemList = stockReceiptEntity
+					.getServiceLineItemList();
+			List<StockLineItem> productLineItemList = stockReceiptEntity
+					.getProductLineItemList();
+
+			if (serviceLineItemList != null && serviceLineItemList.size() > 0) {
+				root.put("serviceItemList", serviceLineItemList);
+			}
+			if (productLineItemList != null && productLineItemList.size() > 0) {
+				root.put("productItemList", productLineItemList);
+
+			}
+
 			Template temp = getConfiguration().getTemplate(
 					"pdf_templates/stockReceiptPDF_tmpl.ftlh");
 
@@ -1111,5 +1124,109 @@ public class PDFHtmlTemplateService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void generateStockShipmentPdf(
+			StockItemsShipmentEntity stockItemsShipment,
+			ServletOutputStream outputStream) {
+		if (stockItemsShipment instanceof StockItemsShipmentEntity) {
+			generateStockItemsShipmentPdf(
+					(StockItemsShipmentEntity) stockItemsShipment, outputStream);
+		} else {
+			throw new RuntimeException(
+					"Did not find this entity handling method"
+							+ stockItemsShipment.getClass());
+		}
+	}
+
+	private void generateStockItemsShipmentPdf(
+			StockItemsShipmentEntity stockItemsShipment,
+			ServletOutputStream outputStream) {
+
+		try {
+
+			Document document = new Document();
+			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
+			document.open();
+			addDocumentHeaderLogo(stockItemsShipment, document);
+			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
+
+			Map<String, Object> root = new HashMap<String, Object>();
+
+			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
+
+			ShipmentType shipmentType = stockItemsShipment.getShipmentType();
+			root.put("ShipmentDate",
+					sdfDate.format(stockItemsShipment.getShipmentDate()));
+
+			root.put("FromWarehouse", stockItemsShipment.getFromWH()
+					.getWarehouseName());
+			root.put("ShipmentNo", stockItemsShipment.getItemNumber());
+
+			if (shipmentType.equals(ShipmentType.TO_OTHER_WAREHOUSE)) {
+				root.put("ToWarehouse", stockItemsShipment.getToWH()
+						.getWarehouseName());
+			}
+
+			if (shipmentType.equals(ShipmentType.TO_CUSTOMER)) {
+				root.put("Customer", stockItemsShipment.getCustomer()
+						.getCompanyName());
+
+			}
+			if (shipmentType.equals(ShipmentType.TO_PARTNER)) {
+				root.put("Partner", stockItemsShipment.getCustomer()
+						.getCompanyName());
+			}
+
+			List<StockLineItem> serviceLineItemList = stockItemsShipment
+					.getServiceLineItemList();
+			List<StockLineItem> productLineItemList = stockItemsShipment
+					.getProductLineItemList();
+
+			if (serviceLineItemList != null && serviceLineItemList.size() > 0) {
+				root.put("serviceItemList", serviceLineItemList);
+			}
+			if (productLineItemList != null && productLineItemList.size() > 0) {
+				root.put("productItemList", productLineItemList);
+
+			}
+
+			BusinessEntity business = stockItemsShipment.getBusiness();
+			StringBuffer addressBuf = new StringBuffer();
+			Address address = business.getAddress();
+			if (address != null) {
+				if (address.getLine1() != null && !address.getLine1().isEmpty())
+					addressBuf.append(address.getLine1());
+				if (address.getLine2() != null && !address.getLine2().isEmpty())
+					addressBuf.append(", " + address.getLine2());
+				if (address.getCity() != null && !address.getCity().isEmpty())
+					addressBuf.append(", " + address.getCity());
+				if (address.getState() != null && !address.getState().isEmpty())
+					addressBuf.append(", " + address.getState());
+			}
+
+			String businessAddress = addressBuf.toString();
+			root.put("BusinessName", "" + business.getBusinessName());
+			root.put("BusinessAddress", "" + businessAddress);
+
+			Template temp = getConfiguration().getTemplate(
+					"pdf_templates/stockShipmentPDF_tmpl.ftlh");
+
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
+					5000);
+			Writer out = new PrintWriter(byteArrayOutputStream);
+			temp.process(root, out);
+			// return escapeHtml(byteArrayOutputStream.toString());
+
+			String pdfXMLContent = byteArrayOutputStream.toString();
+
+			worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
+			addDocumentFooter(stockItemsShipment, writer);
+			document.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 }

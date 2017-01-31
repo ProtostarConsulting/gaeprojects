@@ -257,6 +257,17 @@ public class StockManagementService extends BaseService {
 
 		return stockItemsShipmentList;
 	}
+	
+	@ApiMethod(name="getStockReceiptByID",path="getStockReceiptByID")
+	public StockItemsReceiptEntity getStockReceiptByID(@Named("busId")Long busId,@Named("id")Long stRecptID){
+		
+		List<StockItemsReceiptEntity> list = ofy().load().type(StockItemsReceiptEntity.class)
+				.filterKey(Key.create(Key.create(BusinessEntity.class, busId), StockItemsReceiptEntity.class, stRecptID)).list();
+		
+		StockItemsReceiptEntity foundStockReceipt = list.size() > 0 ? list.get(0) : null;
+		return foundStockReceipt;
+		
+	}
 
 	@ApiMethod(name = "getStockShipmentList", path = "getStockShipmentList")
 	public List<StockItemsShipmentEntity> getStockShipmentList(@Named("busId") Long busId) {
@@ -267,6 +278,17 @@ public class StockManagementService extends BaseService {
 		return stockItemsShipmentList;
 	}
 
+	@ApiMethod(name="getStockShipmentByID",path="getStockShipmentByID")
+	public StockItemsShipmentEntity getStockShipmentByID(@Named("busId")Long busId,@Named("id")Long stShipId){
+		
+		List<StockItemsShipmentEntity> list = ofy().load().type(StockItemsShipmentEntity.class)
+				.filterKey(Key.create(Key.create(BusinessEntity.class, busId), StockItemsShipmentEntity.class, stShipId)).list();
+		
+		StockItemsShipmentEntity foundStockReceipt = list.size() > 0 ? list.get(0) : null;
+		return foundStockReceipt;
+		
+	}
+	
 	@ApiMethod(name = "getStockItemInstancesList", path = "getStockItemInstancesList", httpMethod = HttpMethod.POST)
 	public List<StockItemInstanceEntity> getStockItemInstancesList(StockItemEntity stockItem) {
 		// System.out.println("getAllStock#busId:" + busId);
