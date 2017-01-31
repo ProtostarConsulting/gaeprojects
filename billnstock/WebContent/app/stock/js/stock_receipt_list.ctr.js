@@ -110,6 +110,7 @@ app
 		var bid = $scope.curUser.business.id;
 		window.open("PrintPdfstockReceipt?bid=" + bid
 				+ "&stRcptId=" + stRcptId);
+	}
 					/* Setup menu */
 					$scope.toggleRight = buildToggler('right');
 					/**
