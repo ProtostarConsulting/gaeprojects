@@ -93,7 +93,7 @@ app
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
-							//$scope.getStockReceiptList();
+							// $scope.getStockReceiptList();
 							$scope.fetchEntityListByPaging();
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
@@ -105,6 +105,11 @@ app
 					$scope.selected = [];
 					$scope.waitForServiceLoad();
 
+
+	$scope.printstockReceipt = function(stRcptId) {
+		var bid = $scope.curUser.business.id;
+		window.open("PrintPdfstockReceipt?bid=" + bid
+				+ "&stRcptId=" + stRcptId);
 					/* Setup menu */
 					$scope.toggleRight = buildToggler('right');
 					/**
