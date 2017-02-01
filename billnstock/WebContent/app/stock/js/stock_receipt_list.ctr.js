@@ -132,14 +132,6 @@ app
 						});
 					};
 
-					$scope.printstockReceipt = function(stockReceiptId) {
-						var stockReceiptEntity = "stockReceiptEntity";
-						window.open("PrintPdfstockReceipt?stockReceiptNo="
-								+ stockReceiptId
-								+ "&entityname=stockReceiptEntity");
-
-					}
-
 					$scope.showSimpleToast = function() {
 						$mdToast.show($mdToast.simple().content(
 								'StockReceipt Satus Changed!').position("top")
