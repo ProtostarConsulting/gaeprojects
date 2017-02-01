@@ -38,13 +38,13 @@ td {
 <p>
 	<br></br>
 </p>
-<div align="right"><b>PO No:</b>${PONum}
+<div align="center"><b>Purchase Order </b>
 	</div>
 	<p>
 	<br></br>
 </p>
-<div align="center">
-	<b>Purchase Order</b>
+<div align="right">
+	<b>PO No:</b>${PONum}
 	
 </div>
 
@@ -60,7 +60,7 @@ td {
 					<td style="width: 20%; border: 0px;"><b>Bill To:</b>
 						</td>
 				<td style="width: 40%; border: 0px;"></td>		
-				<td style="border: 0px;"><b>Shipped To:</b></td>
+				<td style="border: 0px;"><b>Ship To:</b></td>
 				</tr>
                  <tr> <td style="width: 20%; border: 0px;">${To} </td>
                  <td style="width: 40%; border: 0px;"></td>		
@@ -107,69 +107,8 @@ td {
 		<p>
 		<br></br>
 	<br></br>
-	<br></br>
 	</p>
-		<#if serviceItemList??>
-		<table
-	style="width: 100%; height: 100%; ">
-	<caption align="left" style="border-spacing: 5px; height: 30px; padding: 10px;"><b>Services: </b></caption>
-	<tbody>
-
-		<tr>
-			<th
-				style=""
-				align="center">Service Name</th>
-			<th
-				style="width:6%;"
-				align="center">Qty.</th>
-			<th
-				style="width:10%";align="center">Cost
-			</th>
-			<th
-				style=""
-				align="center">Sub Total</th>
-			<th
-				align="center">Tax Type</th>
-			<th
-				align="center">Tax Total</th>
-			<th
-				align="center">Total</th>
-		</tr>
-		<#list serviceItemList as lineItem>
-		    <#assign subTotal = lineItem.qty * lineItem.cost>
-			<#if serviceTax??>
-				<#assign taxAmt = serviceTax.taxPercenatge/100 * subTotal>
-				<#assign taxCodeName = serviceTax.taxCodeName + "(" + serviceTax.taxPercenatge + "%)">
-		    <#else>
-  				<#assign taxAmt = 0>
-  				<#assign taxCodeName = "NA">
-			</#if>	
-			<tr>
-			<td align="center">${lineItem.itemName}</td>
-			<td align="center">${lineItem.qty}</td>
-			<td align="right">${lineItem.cost?string["0.00"]}</td>			
-			<td align="right">${subTotal?string["0.00"]}</td>
-			<td align="center">${taxCodeName}</td>
-			<td align="right">${taxAmt?string["0.00"]}</td>
-			<td align="right">${(subTotal + taxAmt)?string["0.00"]}</td>
-		</tr>
-		</#list>	
-		</tbody>
-		</table>
-	<#else>
-  No service items
-</#if>
-<p>
-	<br></br>
-	<br></br>
-	<br></br>
-</p>
-<#if productItemList??>
-  	<p>
-	<br></br>
-	<br></br>
-	<br></br>
-	</p>
+	<#if productItemList??>
 	<table 
 	style="width: 100%; height: 100%; ">
 	<caption align="left" style="border-spacing: 5px; height: 30px; padding: 10px;"><b>Products: </b></caption>
@@ -181,17 +120,17 @@ td {
 				style="width:6%;"
 				align="center">Qty.</th>
 			<th
-				style="width:20%;" 
+				style="width:15%;" 
 				align="center">Price
 			</th>
 			<th
-				style=""
+				style="width:15%;"
 				align="center">Sub Total</th>
 			<th
 				align="center">Tax Type</th>
 			<th
 				align="center">Tax Total</th>
-			<th
+			<th style="width:15%;"
 				align="center">Total</th>
 		</tr>
 		
@@ -218,7 +157,63 @@ td {
 		</table>		
 <#else>
   NO products items
-</#if>	
+</#if>		
+<p>
+	<br></br>
+	<br></br>
+	<br></br>
+</p>
+<#if serviceItemList??>
+		<table
+	style="width: 100%; height: 100%; ">
+	<caption align="left" style="border-spacing: 5px; height: 30px; padding: 10px;"><b>Other Costs: </b></caption>
+	<tbody>
+
+		<tr>
+			<th
+				style=""
+				align="center">Service Name</th>
+			<th
+				style="width:6%;"
+				align="center">Qty.</th>
+			<th
+				style="width:10%";align="center">Cost
+			</th>
+			<th
+				style=""
+				align="center">Sub Total</th>
+			<th
+				align="center">Tax Type</th>
+			<th
+				align="center">Tax Total</th>
+			<th
+			    style="width:10%;"
+				align="center">Total</th>
+		</tr>
+		<#list serviceItemList as lineItem>
+		    <#assign subTotal = lineItem.qty * lineItem.cost>
+			<#if serviceTax??>
+				<#assign taxAmt = serviceTax.taxPercenatge/100 * subTotal>
+				<#assign taxCodeName = serviceTax.taxCodeName + "(" + serviceTax.taxPercenatge + "%)">
+		    <#else>
+  				<#assign taxAmt = 0>
+  				<#assign taxCodeName = "NA">
+			</#if>	
+			<tr>
+			<td align="center">${lineItem.itemName}</td>
+			<td align="center">${lineItem.qty}</td>
+			<td align="right">${lineItem.cost?string["0.00"]}</td>			
+			<td align="right">${subTotal?string["0.00"]}</td>
+			<td align="center">${taxCodeName}</td>
+			<td align="right">${taxAmt?string["0.00"]}</td>
+			<td align="right">${(subTotal + taxAmt)?string["0.00"]}</td>
+		</tr>
+		</#list>	
+		</tbody>
+		</table>
+	<#else>
+  No service items
+</#if>
 
 <table
 	style="width: 100%; height: 100%; border-spacing: 5px; height: 30px; padding: 5px;">
