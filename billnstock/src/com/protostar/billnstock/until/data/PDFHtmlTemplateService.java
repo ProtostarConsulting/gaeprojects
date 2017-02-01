@@ -1301,6 +1301,48 @@ AccountGroupService ag=new AccountGroupService();
 			root.put("Warehouse", stockReceiptEntity.getWarehouse()
 					.getWarehouseName());
 
+			StringBuffer buffer = new StringBuffer();
+			Address warehouseAdd = stockReceiptEntity.getWarehouse()
+					.getAddress();
+			if (warehouseAdd != null) {
+				if (warehouseAdd.getLine1() != null
+						&& !warehouseAdd.getLine1().isEmpty())
+					buffer.append(warehouseAdd.getLine1());
+				if (warehouseAdd.getLine2() != null
+						&& !warehouseAdd.getLine2().isEmpty())
+					buffer.append(", " + warehouseAdd.getLine2());
+				if (warehouseAdd.getCity() != null
+						&& !warehouseAdd.getCity().isEmpty())
+					buffer.append(", " + warehouseAdd.getCity());
+				if (warehouseAdd.getState() != null
+						&& !warehouseAdd.getState().isEmpty())
+					buffer.append(", " + warehouseAdd.getState());
+			}
+
+			String warehouseAddress = buffer.toString();
+			root.put("WarehouseAddress", warehouseAddress);
+
+			StringBuffer addressBuffer = new StringBuffer();
+			Address supplierAddress = stockReceiptEntity.getSupplier()
+					.getAddress();
+			if (supplierAddress != null) {
+				if (supplierAddress.getLine1() != null
+						&& !supplierAddress.getLine1().isEmpty())
+					addressBuffer.append(supplierAddress.getLine1());
+				if (supplierAddress.getLine2() != null
+						&& !supplierAddress.getLine2().isEmpty())
+					addressBuffer.append(", " + supplierAddress.getLine2());
+				if (supplierAddress.getCity() != null
+						&& !supplierAddress.getCity().isEmpty())
+					addressBuffer.append(", " + supplierAddress.getCity());
+				if (supplierAddress.getState() != null
+						&& !supplierAddress.getState().isEmpty())
+					addressBuffer.append(", " + supplierAddress.getState());
+			}
+
+			String suplAdrs = addressBuffer.toString();
+			root.put("SupplierAddress", suplAdrs);
+
 			BusinessEntity business = stockReceiptEntity.getBusiness();
 			StringBuffer addressBuf = new StringBuffer();
 			Address address = business.getAddress();
