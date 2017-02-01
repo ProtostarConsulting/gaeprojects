@@ -3,7 +3,7 @@ app
 		.controller(
 				"stockReceiptListCtr",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
-						$mdUtil, $log, $state, $http, $stateParams,
+						$mdUtil, $log, $state, $http, $stateParams,$mdColors,
 						$routeParams, $filter, objectFactory, appEndpointSF) {
 					
 					function reSetQuery() {
@@ -134,7 +134,7 @@ app
 
 					$scope.showSimpleToast = function() {
 						$mdToast.show($mdToast.simple().content(
-								'StockReceipt Satus Changed!').position("top")
+								'StockReceipt Status Changed!').position("top")
 								.hideDelay(3000));
 					};
 

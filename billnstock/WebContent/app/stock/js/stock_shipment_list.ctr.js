@@ -3,7 +3,7 @@ app
 		.controller(
 				"stockShipmentListCtr",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
-						$mdUtil, $log, $state, $http, $stateParams,
+						$mdUtil, $log, $state, $http, $stateParams,$mdColors,
 						$routeParams, $filter, objectFactory, appEndpointSF) {
 
 					function reSetQuery() {
@@ -24,6 +24,7 @@ app
 					$scope.documentStatusList = [ 'DRAFT', 'SUBMITTED',
 							'FINALIZED', 'REJECTED' ];
 					$scope.selectedStatus = "";
+					
 
 					$scope.fitlerListByStatus = function(status) {
 						$scope.selectedStatus = status;
@@ -38,7 +39,7 @@ app
 						$scope.loading = true;
 						var stockService = appEndpointSF.getStockService();
 						stockService
-								.fetchShipmentListByPaging(
+								.getStockShipmentList(
 										$scope.curUser.business.id)
 								.then(
 										function(list) {
