@@ -36,7 +36,7 @@ p {
   </table>	
 </div>
 <p>
-	<br></br><br></br>
+	<br></br>
 </p>
 <hr></hr>
 <p>
