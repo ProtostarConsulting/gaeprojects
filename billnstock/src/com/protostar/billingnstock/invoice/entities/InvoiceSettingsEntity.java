@@ -13,6 +13,7 @@ public class InvoiceSettingsEntity extends BaseEntity {
 	private String emailNotificationDL = "";
 
 	private String noteToCustomer;
+	private String paymentNotes;
 	private String termsAndConditions;
 
 	public String getNoteToCustomer() {
@@ -61,5 +62,13 @@ public class InvoiceSettingsEntity extends BaseEntity {
 
 	public void setTermsAndConditions(String termsAndConditions) {
 		this.termsAndConditions = termsAndConditions;
+	}
+
+	public String getPaymentNotes() {
+		return paymentNotes;
+	}
+
+	public void setPaymentNotes(String paymentNotes) {
+		this.paymentNotes = paymentNotes;
 	}
 }

@@ -20,11 +20,15 @@
 		to Customer</label> <textarea ng-model="settingsObj.noteToCustomer" rows="2"
 		cols="1"></textarea> </md-input-container>
 	<hr>
+	<md-input-container flex="80" layout="row"> <label>Payment Notes</label> <textarea
+		ng-model="settingsObj.paymentNotes" rows="3" cols="1"></textarea>
+	</md-input-container>
+	<hr>
 	<md-input-container flex="80" layout="row"> <label>Invoice
 		Terms and Conditions</label> <textarea
 		ng-model="settingsObj.termsAndConditions" rows="3" cols="1"></textarea>
 	</md-input-container>
-
+	
 	<hr>
 	<md-checkbox ng-model="settingsObj.emailNotification"
 		ng-true-value="true" ng-false-value="false" aria-label="isGoogleUser">

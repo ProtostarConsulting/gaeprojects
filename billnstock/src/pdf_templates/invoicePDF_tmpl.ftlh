@@ -22,6 +22,9 @@ td {
 	padding: 5px;
 }
 
+p {
+	font-size:11px;
+}
 </style>
 
 <div align="right">  	
@@ -33,7 +36,7 @@ td {
   </table>	
 </div>
 <p>
-	<br></br>
+	<br></br><br></br>
 </p>
 <hr></hr>
 <p>
@@ -45,58 +48,71 @@ td {
 <p>
 	<br></br>	
 </p>
-<div class="container">
+<div class="container" style="width: 100%;">						 
 <table style="width: 100%; height: 100%;">
-
-
-			<tbody>
+		<tbody>
+				<!-- Contains top two tables -->
 				<tr>
-					<td style="width: 20%; border: 0px;"><b>Customer Name:</b>
-						</td>
-					<td style="width: 40%; border: 0px;">${CustomerName}</td>
-					<td style="border: 0px;"></td>
-					<td align="right" style="width: 20%; border: 0px;"><b>Invoice No:</b></td>
-					<td align="right" style="width: 15%; border: 0px;">${invoiceNumber}</td>
+				    <!-- Left side top table --> 
+					<td style="width: 60%; border: 0px;">
+						<table style="width: 100%; height: 100%;">
+							<tbody>
+								<tr>
+									<td align="left" style="border: 0px;"><b>Customer Name and Address:</b><br></br>
+										${CustomerName} <br></br>
+										${CustomerAddress}
+									</td>
+								</tr>
+							 </tbody>
+						 </table>					
+					</td>
+					<!-- Right side top table --> 
+					<td style="width: 40%; border: 0px; vertical-align:top; padding-top: 0px;">										
+						<table style="width: 100%; height: 100%;">
+							<tbody>
+								<tr>
+									<td align="right" style="border: 0px;">
+										<b>Invoice No:</b>
+									</td>
+									<td align="left" style="border: 0px;">
+										${invoiceNumber}
+									</td>
+								</tr>
+								<tr>
+									<td align="right" style="border: 0px;">
+										<b>Invoice Date:</b>
+									</td>
+									<td align="left" style="border: 0px;">
+										${Date}
+									</td>
+								</tr>
+								<#if Discount??>
+								<tr>
+									<td align="right" style="border: 0px;">
+										<b>Discount:</b>
+									</td>
+									<td align="left" style="border: 0px;">
+										${Discount}
+									</td>
+								</tr>
+								<#else>									
+								</#if>								
+							 </tbody>
+						</table>					
+					</td>					
 				</tr>
-
-				<tr>
-				    <td style="border: 0px;"><b>Customer Address:</b></td>
-					<td style="border: 0px;">${CustomerAddress}</td>
-					<td style="border: 0px;"></td>
-					<td align="right" style="border: 0px;"><b>Invoice Date:</b></td>
-					<td align="right" style="border: 0px;">${Date}</td>				
-				</tr>
-				
-				<tr>
-				<td style="width: 20%" style="border: 0px;">
-						</td>
-				<td style="width :20%; border: 0px;"></td>		
-				<td style="border: 0px;"></td>
-				<#if Discount??>
-					<td align="left" style="border: 0px;"><b>Discount:</b></td>
-					<td align="left" style="border: 0px;">${Discount}</td>	
-				<#else>
-					<td style="border: 0px;"></td>		
-					<td style="border: 0px;"></td>
-				</#if>	
-				</tr>
-				
-				<tr>
-				<td style="border: 0px;"><b>Note To Customer:</b></td>
-				<td style="border: 0px;"></td>		
-				<td style="border: 0px;"></td>
-				<td style="border: 0px;"></td>
-				<td style="border: 0px;"></td>	
-				</tr>
-				<tr style="border: 0px;">
-				<td colspan="5" style="width: 80%; border: 0px;">${NoteToCustomer}</td>	
-				<td style="border: 0px;"></td>
-				<td style="border: 0px;"></td>
-				<td style="border: 0px;"></td>
-				<td style="border: 0px;"></td>	
-				</tr>
+				<!-- Contains a row across two tables -->
+				<#if noteToCustomer??>
+					<tr align="left" style="border: 0px;">
+						<td colspan="2" style="border: 0px; padding: 7px;">
+							<b>Note To Customer:</b><br></br>
+							${noteToCustomer}
+					    </td>
+					</tr>
+				<#else>	
+				</#if>								
 		</tbody>
-			</table>
+</table>
 </div>
 
 	<p>
@@ -105,29 +121,17 @@ td {
 	<#if serviceItemList??>
 		<table
 	style="width: 100%; height: 100%;">
-	<caption align="left" style="border-spacing: 5px;"><b>Services: </b></caption>
+	<caption align="left" style="border-spacing: 5px; padding: 3px;"><b>Services: </b></caption>
 	<tbody>
 
 		<tr>
-			<th
-				style=""
-				align="center">Service Desc</th>
-			<th
-				
-				align="center">Qty</th>
-			<th
-				
-				align="center">Price
-			</th>
-			<th
-				style=""
-				align="center">Sub Total</th>
-			<th
-				align="center">Tax Type</th>
-			<th
-				align="center">Tax Total</th>
-			<th
-				align="center">Total</th>
+			<th align="center">Service Desc.</th>
+			<th align="center">Qty</th>
+			<th align="center">Price</th>
+			<th align="center">Sub Total</th>
+			<th align="center">Tax Type</th>
+			<th align="center">Tax </th>
+			<th align="center">Total</th>
 		</tr>
 		<#list serviceItemList as lineItem>
 		    <#assign subTotal = lineItem.qty * lineItem.price>
@@ -140,7 +144,7 @@ td {
 			</#if>	
 			<tr>
 			<td style="font-size:10px;" align="left">${lineItem.itemName}</td>
-			<td style="font-size:14px"; align="center">${lineItem.qty}</td>
+			<td style="font-size:10px;"; align="center">${lineItem.qty}</td>
 			<td style="font-size:10px;" align="right">${lineItem.price?string["0.00"]}</td>			
 			<td style="font-size:10px;" align="right">${subTotal?string["0.00"]}</td>
 			<td style="font-size:10px;" align="center">${taxCodeName}</td>
@@ -153,32 +157,24 @@ td {
 	<#else>
   No service items
 </#if>
+	
+	<#if productItemList??>
 	<p>
 	<br></br>
 	<br></br>
-	<br></br>
-	
-	</p>
-	<#if productItemList??>
-  	
-	<table 
+	</p>	
+  	<table 
 	style="width: 100%; height: 100%; font-size:11px;">
-	<caption align="left" style="border-spacing: 5px;"><b>Products: </b></caption>
+	<caption align="left" style="border-spacing: 5px; padding: 3px;"><b>Products: </b></caption>
 	<tbody>
-
 		<tr>
 			<th align="center">Product Name </th>
-			<th
-				
-				align="center">Qty</th>
-			<th
-				
-				align="center">Price
-			</th>
+			<th align="center">Qty </th>
+			<th align="center">Price </th>
 			<th align="center">Sub Total</th>
-			<th align="center">Tax Type</th>
-			<th align="center">Tax Total</th>
-			<th align="center">Total</th>
+			<th align="center">Tax Type </th>
+			<th align="center">Tax </th>
+			<th align="center">Total </th>
 		</tr>
 		<#list productItemList as lineItem>
 		    <#assign subTotal = lineItem.qty * lineItem.price>
@@ -207,10 +203,8 @@ td {
 </#if>		
 
 <table
-	style="width: 100%; height: 100%; border-spacing: 5px; height: 30px; padding: 5px;">
-	
+	style="width: 100%; height: 100%; border-spacing: 5px; height: 30px; padding: 5px;">	
 	<tbody>
-
 		<tr>			
 			<th
 				style="width:100%;"
@@ -222,5 +216,30 @@ td {
 				align="right">${finalTotalInWord}</th>					
 		</tr>
 	</tbody>
-</table>			
+</table>
+
+<p>
+	<br></br>
+	<br></br>
+	<br></br>
+	<br></br>
+	<br></br>
+</p>
+<#if paymentNotes??>
+	<p> <b> Payment Notes: </b>
+	<br></br>	
+	${paymentNotes}
+</p>
+<#else>	
+</#if>
+<p>
+	<br></br>	
+</p>
+<#if termsAndConditions??>
+	<p> <b> Terms and Conditions: </b>
+	<br></br>	
+	${termsAndConditions}
+</p>
+<#else>	
+</#if>					
 </html>

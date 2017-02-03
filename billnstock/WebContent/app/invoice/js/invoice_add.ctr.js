@@ -330,14 +330,17 @@ app
 								.then(
 										function(settingsList) {
 											$scope.settingsObj = settingsList;
-											$scope.invoiceObj.noteToCustomer = $scope.settingsObj.noteToCustomer;
-											if ($scope.settingsObj.showDefaultServiceItems
-													&& !$scope.invoiceObj.id) {
-												$scope.addServiceLineItem();
-											}
-											if ($scope.settingsObj.showDefaultProductItems
-													&& !$scope.invoiceObj.id) {
-												$scope.addProductLineItem();
+											if (!$scope.invoiceObj.id) {
+												$scope.invoiceObj.noteToCustomer = $scope.settingsObj.noteToCustomer;
+												$scope.invoiceObj.paymentNotes = $scope.settingsObj.paymentNotes;
+												$scope.invoiceObj.termsAndConditions = $scope.settingsObj.termsAndConditions;
+
+												if ($scope.settingsObj.showDefaultServiceItems) {
+													$scope.addServiceLineItem();
+												}
+												if ($scope.settingsObj.showDefaultProductItems) {
+													$scope.addProductLineItem();
+												}
 											}
 										});
 					}

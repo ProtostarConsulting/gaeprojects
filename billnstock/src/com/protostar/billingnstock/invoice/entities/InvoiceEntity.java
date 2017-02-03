@@ -31,6 +31,8 @@ public class InvoiceEntity extends BaseEntity {
 	private Date invoiceDueDate;
 	private double finalTotal;
 	private String noteToCustomer;
+	private String paymentNotes;
+	private String termsAndConditions;
 
 	private float discountPercent;
 	private double discAmount;
@@ -203,6 +205,22 @@ public class InvoiceEntity extends BaseEntity {
 
 	public void setStatusAlreadyFinalized(boolean isStatusAlreadyFinalized) {
 		this.isStatusAlreadyFinalized = isStatusAlreadyFinalized;
+	}
+
+	public String getPaymentNotes() {
+		return paymentNotes;
+	}
+
+	public void setPaymentNotes(String paymentNotes) {
+		this.paymentNotes = paymentNotes;
+	}
+
+	public String getTermsAndConditions() {
+		return termsAndConditions;
+	}
+
+	public void setTermsAndConditions(String termsAndConditions) {
+		this.termsAndConditions = termsAndConditions;
 	}
 
 }// end of InvoiceEntity
