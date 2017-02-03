@@ -133,8 +133,8 @@ public class PDFHtmlTemplateService {
 			Document document = new Document();
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 			document.open();
-			
-			//addDocumentHeaderLogo(list, document);
+
+			// addDocumentHeaderLogo(list, document);
 			Date today = new Date();
 
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
@@ -240,11 +240,8 @@ public class PDFHtmlTemplateService {
 			root.put("totalGrossProfit", totalGrossProfit);
 			root.put("totalLeft", totalLeft);
 			root.put("totalGrossProfit", totalGrossProfit);
-			//root.put("totalSales", totalSales);
-			
-			
-			
-			
+			// root.put("totalSales", totalSales);
+
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
 					5000);
 			Writer out = new PrintWriter(byteArrayOutputStream);
@@ -302,89 +299,67 @@ public class PDFHtmlTemplateService {
 			Template temp = getConfiguration().getTemplate(
 					"pdf_templates/balanceSheet_tmpl.ftlh");
 
-			
+			double totalAsset = 0;
+			double totalLiabilities2 = 0;
+			double totalEQUITY = 0;
+			double totalLiabilities = 0;
+			AccountGroupService ag = new AccountGroupService();
 
-			double  totalAsset = 0;
-			double  totalLiabilities2 = 0;
-			double  totalEQUITY = 0;
-			double  totalLiabilities = 0;
-AccountGroupService ag=new AccountGroupService();
+			ServerMsg nettProffitOrLoss1 = ag.getProfitAndLossAccBalance(bid);
+			double nettProffitOrLoss = nettProffitOrLoss1.getReturnBalance();
 
-
-			ServerMsg nettProffitOrLoss1 =ag.getProfitAndLossAccBalance(bid);
-			double nettProffitOrLoss=nettProffitOrLoss1.getReturnBalance();
-			
-			//double  accountGroupTypeGroupList = list;
+			// double accountGroupTypeGroupList = list;
 			for (int int2 = 0; int2 < list.size(); int2++) {
 				String typeName = list.get(int2).getTypeName();
 				if ((typeName == "ASSETS")
 						&& (list.get(int2).getGroupList() != null)) {
 					for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
-						  totalAsset = list.get(int2).getGroupList().get(i).getGroupBalance()
-								+   totalAsset;
+						totalAsset = list.get(int2).getGroupList().get(i)
+								.getGroupBalance()
+								+ totalAsset;
 					}
-					if (  totalAsset < 0) {
-						  totalAsset =   totalAsset
-								* (-1);
+					if (totalAsset < 0) {
+						totalAsset = totalAsset * (-1);
 					}
 				}
 
 				if ((typeName == "LIABILITIES")
 						&& (list.get(int2).getGroupList() != null)) {
 					for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
-						  totalLiabilities = list.get(int2).getGroupList().get(i).getGroupBalance()
-								+   totalLiabilities;
+						totalLiabilities = list.get(int2).getGroupList().get(i)
+								.getGroupBalance()
+								+ totalLiabilities;
 					}
 
-					if (  totalLiabilities < 0) {
-						  totalLiabilities =   totalLiabilities
-								* (-1);
+					if (totalLiabilities < 0) {
+						totalLiabilities = totalLiabilities * (-1);
 					}
 
 				}
 				if ((typeName == "EQUITY")
 						&& (list.get(int2).getGroupList() != null)) {
 					for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
-						  totalEQUITY = list.get(int2).getGroupList().get(i).getGroupBalance()
-								+   totalEQUITY;
+						totalEQUITY = list.get(int2).getGroupList().get(i)
+								.getGroupBalance()
+								+ totalEQUITY;
 					}
 
 				}
 			}
 
-			  totalLiabilities2 =   totalLiabilities
-					+   totalEQUITY;
-			 // nettProfit = totalGrossProfit - totalIndirectExpences;
+			totalLiabilities2 = totalLiabilities + totalEQUITY;
+			// nettProfit = totalGrossProfit - totalIndirectExpences;
 
-			if (  nettProffitOrLoss < 0) {
-				
-		  nettProffitOrLoss =   nettProffitOrLoss
-				* (-1);
-		  totalAsset =   totalAsset
-		+   nettProffitOrLoss;
-		
-				
+			if (nettProffitOrLoss < 0) {
+
+				nettProffitOrLoss = nettProffitOrLoss * (-1);
+				totalAsset = totalAsset + nettProffitOrLoss;
+
 			} else {
-				  totalLiabilities2 =   totalLiabilities2
-				+   nettProffitOrLoss;
-				
+				totalLiabilities2 = totalLiabilities2 + nettProffitOrLoss;
 
 			}
-			
 
-		
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
 					5000);
 			Writer out = new PrintWriter(byteArrayOutputStream);
@@ -684,9 +659,11 @@ AccountGroupService ag=new AccountGroupService();
 			 * Image logoURL = Image
 			 * .getInstance("img/images/protostar_logo_pix_313_132.jpg");
 			 */
-			addDocumentHeaderLogo(mtlyPayObj, document);
+			
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 			Map<String, Object> root = new HashMap<String, Object>();
+			addDocumentHeaderLogo(mtlyPayObj, document, root);
+			
 			DecimalFormat df = new DecimalFormat("#0.00");
 
 			SalStruct salStruct = mtlyPayObj.getSalStruct();
@@ -720,26 +697,7 @@ AccountGroupService ag=new AccountGroupService();
 					+ canteenDeductionAmt + itDeductionAmt + esiDeductionAmt
 					+ otherDeductionAmt;
 
-			UserEntity user = mtlyPayObj.getleaveDetailEntity().getUser();
-			BusinessEntity business = user.getBusiness();
-
-			StringBuffer addressBuf = new StringBuffer();
-			Address address = business.getAddress();
-			if (address != null) {
-				if (address.getLine1() != null && !address.getLine1().isEmpty())
-					addressBuf.append(address.getLine1());
-				if (address.getLine2() != null && !address.getLine2().isEmpty())
-					addressBuf.append(", " + address.getLine2());
-				if (address.getCity() != null && !address.getCity().isEmpty())
-					addressBuf.append(", " + address.getCity());
-				if (address.getState() != null && !address.getState().isEmpty())
-					addressBuf.append(", " + address.getState());
-			}
-
-			String buisinessAddress = addressBuf.toString();
-			// Top Header
-			root.put("businessName", "" + business.getBusinessName());
-			root.put("businessAddress", "" + buisinessAddress);
+			UserEntity user = mtlyPayObj.getleaveDetailEntity().getUser();			
 
 			EmployeeDetail employeeDetail = user.getEmployeeDetail();
 			// Header Col1
@@ -831,9 +789,9 @@ AccountGroupService ag=new AccountGroupService();
 
 	}
 
-	private void addDocumentHeaderLogo(BaseEntity enity, Document document)
-			throws BadElementException, MalformedURLException, IOException,
-			DocumentException {
+	private void addDocumentHeaderLogo(BaseEntity enity, Document document,
+			Map<String, Object> root) throws BadElementException,
+			MalformedURLException, IOException, DocumentException {
 		String bizLogoGCSURL = enity.getBusiness().getBizLogoGCSURL();
 		if (bizLogoGCSURL != null && !bizLogoGCSURL.isEmpty()) {
 			Image logoURL = Image.getInstance(bizLogoGCSURL);
@@ -841,6 +799,30 @@ AccountGroupService ag=new AccountGroupService();
 			logoURL.scaleToFit(150f, 180f);
 			document.add(logoURL);
 		}
+
+		BusinessEntity business = enity.getBusiness();
+
+		StringBuffer addressBuf = new StringBuffer();
+		Address address = business.getAddress();
+		if (address != null) {
+			if (address.getLine1() != null && !address.getLine1().isEmpty())
+				addressBuf.append(address.getLine1());
+			if (address.getLine2() != null && !address.getLine2().isEmpty())
+				addressBuf.append(", " + address.getLine2());
+			if (address.getCity() != null && !address.getCity().isEmpty())
+				addressBuf.append(", <br></br>" + address.getCity());
+			if (address.getState() != null && !address.getState().isEmpty())
+				addressBuf.append(", " + address.getState());
+			if (address.getPin() != null && !address.getPin().isEmpty())
+				addressBuf.append(", " + address.getPin());
+			if (address.getCountry() != null && !address.getCountry().isEmpty())
+				addressBuf.append(", " + address.getCountry());
+		}
+
+		String businessAddress = addressBuf.toString();
+		// Top Header
+		root.put("businessName", "" + business.getBusinessName());
+		root.put("businessAddress", "" + businessAddress);
 	}
 
 	private void addDocumentFooter(BaseEntity enity, PdfWriter writer)
@@ -852,7 +834,7 @@ AccountGroupService ag=new AccountGroupService();
 		cb.saveState();
 		cb.beginText();
 		cb.moveText(20f, 20f);
-		cb.setFontAndSize(bf, 12);
+		cb.setFontAndSize(bf, 10);
 		cb.showText("This is electronically generated document. Needs no stamp or signature.");
 		cb.endText();
 		cb.restoreState();
@@ -876,10 +858,11 @@ AccountGroupService ag=new AccountGroupService();
 			Document document = new Document();
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 			document.open();
-			addDocumentHeaderLogo(invoiceEntity, document);
+			
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 
 			Map<String, Object> root = new HashMap<String, Object>();
+			addDocumentHeaderLogo(invoiceEntity, document, root);
 
 			DecimalFormat df = new DecimalFormat("#0.00");
 
@@ -969,26 +952,6 @@ AccountGroupService ag=new AccountGroupService();
 				root.put("Discount", df.format(discountAmt));
 			}
 
-			BusinessEntity business = invoiceEntity.getBusiness();
-
-			StringBuffer addressBuf = new StringBuffer();
-			Address address = business.getAddress();
-			if (address != null) {
-				if (address.getLine1() != null && !address.getLine1().isEmpty())
-					addressBuf.append(address.getLine1());
-				if (address.getLine2() != null && !address.getLine2().isEmpty())
-					addressBuf.append(", " + address.getLine2());
-				if (address.getCity() != null && !address.getCity().isEmpty())
-					addressBuf.append(", " + address.getCity());
-				if (address.getState() != null && !address.getState().isEmpty())
-					addressBuf.append(", " + address.getState());
-			}
-
-			String businessAddress = addressBuf.toString();
-			// Top Header
-			root.put("businessName", "" + business.getBusinessName());
-			root.put("businessAddress", "" + businessAddress);
-
 			Template temp = getConfiguration().getTemplate(
 					"pdf_templates/invoicePDF_tmpl.ftlh");
 
@@ -1028,10 +991,11 @@ AccountGroupService ag=new AccountGroupService();
 			Document document = new Document();
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 			document.open();
-			addDocumentHeaderLogo(quotationEntity, document);
+			
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 
 			Map<String, Object> root = new HashMap<String, Object>();
+			addDocumentHeaderLogo(quotationEntity, document, root);
 
 			DecimalFormat df = new DecimalFormat("#0.00");
 
@@ -1085,22 +1049,7 @@ AccountGroupService ag=new AccountGroupService();
 
 			String custAddressForQuot = custaddressBuffer.toString();
 
-			BusinessEntity business = quotationEntity.getBusiness();
-
-			StringBuffer addressBuf = new StringBuffer();
-			Address address = business.getAddress();
-			if (address != null) {
-				if (address.getLine1() != null && !address.getLine1().isEmpty())
-					addressBuf.append(address.getLine1());
-				if (address.getLine2() != null && !address.getLine2().isEmpty())
-					addressBuf.append(", " + address.getLine2());
-				if (address.getCity() != null && !address.getCity().isEmpty())
-					addressBuf.append(", " + address.getCity());
-				if (address.getState() != null && !address.getState().isEmpty())
-					addressBuf.append(", " + address.getState());
-			}
-
-			String businessAddress = addressBuf.toString();
+			
 
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
 			Date today = quotationEntity.getCreatedDate();
@@ -1113,11 +1062,7 @@ AccountGroupService ag=new AccountGroupService();
 			// Customer Details
 			root.put("CustomerName", customerName);
 			root.put("CustomerAddress", custAddressForQuot);
-			root.put("NoteToCust", "" + noteToCust);
-
-			// Business Details
-			root.put("BusinessName", "" + business.getBusinessName());
-			root.put("BusinessAddress", "" + businessAddress);
+			root.put("NoteToCust", "" + noteToCust);			
 
 			// Quotation Date and No
 			root.put("Date", quotationDate);
@@ -1170,10 +1115,11 @@ AccountGroupService ag=new AccountGroupService();
 			Document document = new Document();
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 			document.open();
-			addDocumentHeaderLogo(purchaseOrderEntity, document);
+			
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 
 			Map<String, Object> root = new HashMap<String, Object>();
+			addDocumentHeaderLogo(purchaseOrderEntity, document, root);
 
 			DecimalFormat df = new DecimalFormat("#0.00");
 
@@ -1182,25 +1128,7 @@ AccountGroupService ag=new AccountGroupService();
 			Date poDueDate = purchaseOrderEntity.getPoDueDate();
 			String purchaseOrderDate = sdfDate.format(poDate);
 			String purchaseOrderDueDate = sdfDate.format(poDueDate);
-
-			BusinessEntity business = purchaseOrderEntity.getBusiness();
-
-			StringBuffer addressBuf = new StringBuffer();
-			Address address = business.getAddress();
-			if (address != null) {
-				if (address.getLine1() != null && !address.getLine1().isEmpty())
-					addressBuf.append(address.getLine1());
-				if (address.getLine2() != null && !address.getLine2().isEmpty())
-					addressBuf.append(", " + address.getLine2());
-				if (address.getCity() != null && !address.getCity().isEmpty())
-					addressBuf.append(", " + address.getCity());
-				if (address.getState() != null && !address.getState().isEmpty())
-					addressBuf.append(", " + address.getState());
-			}
-
-			String businessAddress = addressBuf.toString();
-			root.put("BusinessName", "" + business.getBusinessName());
-			root.put("BusinessAddress", "" + businessAddress);
+			
 			root.put("To", purchaseOrderEntity.getTo());
 			root.put("ShippedTo", purchaseOrderEntity.getShipTo());
 			root.put("PONum", purchaseOrderEntity.getItemNumber());
@@ -1213,6 +1141,7 @@ AccountGroupService ag=new AccountGroupService();
 					+ purchaseOrderEntity.getSupplier().getSupplierName());
 			root.put("FOBPoint", "" + purchaseOrderEntity.getfOBPoint());
 			root.put("Terms", "" + purchaseOrderEntity.getTerms());
+			root.put("Note", "" + purchaseOrderEntity.getNoteToCustomer());
 
 			TaxEntity servTax = purchaseOrderEntity.getSelectedServiceTax();
 			TaxEntity prodTax = purchaseOrderEntity.getSelectedProductTax();
@@ -1286,10 +1215,11 @@ AccountGroupService ag=new AccountGroupService();
 			Document document = new Document();
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 			document.open();
-			addDocumentHeaderLogo(stockReceiptEntity, document);
+			
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 
 			Map<String, Object> root = new HashMap<String, Object>();
+			addDocumentHeaderLogo(stockReceiptEntity, document, root);
 
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
 			String receiptDate = sdfDate.format(stockReceiptEntity
@@ -1343,24 +1273,6 @@ AccountGroupService ag=new AccountGroupService();
 			String suplAdrs = addressBuffer.toString();
 			root.put("SupplierAddress", suplAdrs);
 
-			BusinessEntity business = stockReceiptEntity.getBusiness();
-			StringBuffer addressBuf = new StringBuffer();
-			Address address = business.getAddress();
-			if (address != null) {
-				if (address.getLine1() != null && !address.getLine1().isEmpty())
-					addressBuf.append(address.getLine1());
-				if (address.getLine2() != null && !address.getLine2().isEmpty())
-					addressBuf.append(", " + address.getLine2());
-				if (address.getCity() != null && !address.getCity().isEmpty())
-					addressBuf.append(", " + address.getCity());
-				if (address.getState() != null && !address.getState().isEmpty())
-					addressBuf.append(", " + address.getState());
-			}
-
-			String businessAddress = addressBuf.toString();
-			root.put("BusinessName", "" + business.getBusinessName());
-			root.put("BusinessAddress", "" + businessAddress);
-
 			List<StockLineItem> serviceLineItemList = stockReceiptEntity
 					.getServiceLineItemList();
 			List<StockLineItem> productLineItemList = stockReceiptEntity
@@ -1371,6 +1283,12 @@ AccountGroupService ag=new AccountGroupService();
 			}
 			if (productLineItemList != null && productLineItemList.size() > 0) {
 				root.put("productItemList", productLineItemList);
+				for (int i = 0; i < productLineItemList.size(); i++) {
+					double productTotal = (productLineItemList.get(i).getQty())
+							* (productLineItemList.get(i).getPrice());
+					productTotal += productTotal;
+					root.put("ProductTotal", productTotal);
+				}
 
 			}
 
@@ -1416,10 +1334,11 @@ AccountGroupService ag=new AccountGroupService();
 			Document document = new Document();
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 			document.open();
-			addDocumentHeaderLogo(stockItemsShipment, document);
+			
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 
 			Map<String, Object> root = new HashMap<String, Object>();
+			addDocumentHeaderLogo(stockItemsShipment, document, root);
 
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
 
@@ -1458,24 +1377,6 @@ AccountGroupService ag=new AccountGroupService();
 				root.put("productItemList", productLineItemList);
 
 			}
-
-			BusinessEntity business = stockItemsShipment.getBusiness();
-			StringBuffer addressBuf = new StringBuffer();
-			Address address = business.getAddress();
-			if (address != null) {
-				if (address.getLine1() != null && !address.getLine1().isEmpty())
-					addressBuf.append(address.getLine1());
-				if (address.getLine2() != null && !address.getLine2().isEmpty())
-					addressBuf.append(", " + address.getLine2());
-				if (address.getCity() != null && !address.getCity().isEmpty())
-					addressBuf.append(", " + address.getCity());
-				if (address.getState() != null && !address.getState().isEmpty())
-					addressBuf.append(", " + address.getState());
-			}
-
-			String businessAddress = addressBuf.toString();
-			root.put("BusinessName", "" + business.getBusinessName());
-			root.put("BusinessAddress", "" + businessAddress);
 
 			Template temp = getConfiguration().getTemplate(
 					"pdf_templates/stockShipmentPDF_tmpl.ftlh");
