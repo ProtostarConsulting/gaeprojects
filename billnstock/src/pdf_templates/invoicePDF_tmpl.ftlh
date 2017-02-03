@@ -3,13 +3,14 @@
 <style type="text/css">
 table {
 	border-collapse: collapse;
+	font-size:11px;
 }
 
 th {
 	border: 1px solid black; 
 	border-color: #cccccc; 
 	border-spacing: 5px; 
-	height: 30px; 
+	height: 20px; 
 	padding: 7px;
 }
 
@@ -17,17 +18,17 @@ td {
 	border: 1px solid black; 
 	border-color: #cccccc; 
 	border-spacing: 5px; 
-	height: 30px; 
+	height: 15px; 
 	padding: 5px;
 }
 
 </style>
 
 <div align="right">  	
- <table style="width: 100%; hight: 100%; border: 0px">
+ <table style="width: 100%; height: 100%; border: 0px">
 	<tr>
 		<td style="width: 40%; border: 0px"></td>
-		<td style="width: 60%; border: 0px"><div align="right"> <b>${businessName}</b> <br></br> ${businessAddress}</div></td>		
+		<td style="width: 60%; border: 0px"><div align="right"><span style="font-size:16px;"> <b>${businessName}</b></span> <br></br> ${businessAddress}</div></td>		
 	</tr>
   </table>	
 </div>
@@ -39,12 +40,13 @@ td {
 	<br></br>
 </p>
 <div align="center">
-	<b>Invoice</b>
+	<span style="font-size:20px;"><b>Invoice</b></span>
 </div>
 <p>
 	<br></br>	
 </p>
-<table style="style="width: 100%; height: 100%;"">
+<div class="container">
+<table style="width: 100%; height: 100%;">
 
 
 			<tbody>
@@ -95,13 +97,15 @@ td {
 				</tr>
 		</tbody>
 			</table>
+</div>
+
 	<p>
 	<br> </br>
 	</p>
 	<#if serviceItemList??>
 		<table
-	style="width: 100%; height: 100%; ">
-	<caption align="left" style="border-spacing: 5px; height: 30px; padding: 10px;"><b>Services: </b></caption>
+	style="width: 100%; height: 100%;">
+	<caption align="left" style="border-spacing: 5px;"><b>Services: </b></caption>
 	<tbody>
 
 		<tr>
@@ -109,10 +113,11 @@ td {
 				style=""
 				align="center">Service Desc</th>
 			<th
-				style="width:6%;"
+				
 				align="center">Qty</th>
 			<th
-				style="width:10%;">Price
+				
+				align="center">Price
 			</th>
 			<th
 				style=""
@@ -134,13 +139,13 @@ td {
   				<#assign taxCodeName = "NA">
 			</#if>	
 			<tr>
-			<td align="left">${lineItem.itemName}</td>
-			<td align="center">${lineItem.qty}</td>
-			<td align="right">${lineItem.price?string["0.00"]}</td>			
-			<td align="right">${subTotal?string["0.00"]}</td>
-			<td align="center">${taxCodeName}</td>
-			<td align="right">${taxAmt?string["0.00"]}</td>
-			<td align="right">${(subTotal + taxAmt)?string["0.00"]}</td>
+			<td style="font-size:10px;" align="left">${lineItem.itemName}</td>
+			<td style="font-size:14px"; align="center">${lineItem.qty}</td>
+			<td style="font-size:10px;" align="right">${lineItem.price?string["0.00"]}</td>			
+			<td style="font-size:10px;" align="right">${subTotal?string["0.00"]}</td>
+			<td style="font-size:10px;" align="center">${taxCodeName}</td>
+			<td style="font-size:10px;" align="right">${taxAmt?string["0.00"]}</td>
+			<td style="font-size:10px;" align="right">${(subTotal + taxAmt)?string["0.00"]}</td>
 		</tr>
 		</#list>	
 		</tbody>
@@ -157,17 +162,18 @@ td {
 	<#if productItemList??>
   	
 	<table 
-	style="width: 100%; height: 100%; ">
-	<caption align="left" style="border-spacing: 5px; height: 30px; padding: 10px;"><b>Products: </b></caption>
+	style="width: 100%; height: 100%; font-size:11px;">
+	<caption align="left" style="border-spacing: 5px;"><b>Products: </b></caption>
 	<tbody>
 
 		<tr>
 			<th align="center">Product Name </th>
 			<th
-				style="width:6%;"
+				
 				align="center">Qty</th>
 			<th
-				style="width:10%;">Price
+				
+				align="center">Price
 			</th>
 			<th align="center">Sub Total</th>
 			<th align="center">Tax Type</th>
@@ -184,14 +190,14 @@ td {
   				<#assign taxCodeName = "NA">
 			</#if>	
 			<tr>
-			<td align="left">${lineItem.stockItem.stockItemType.itemName}</td>
-			<td align="center">${lineItem.qty}</td>
-			<td align="right">${lineItem.price?string["0.00"]}
+			<td style="font-size:10px;" align="left">${lineItem.stockItem.stockItemType.itemName}</td>
+			<td style="font-size:10px;" align="center">${lineItem.qty}</td>
+			<td style="font-size:10px;" align="right">${lineItem.price?string["0.00"]}
 			</td>			
-			<td align="right">${subTotal?string["0.00"]}</td>
-			<td align="center">${taxCodeName}</td>
-			<td align="right">${taxAmt?string["0.00"]}</td>
-			<td align="right">${(subTotal + taxAmt)?string["0.00"]}</td>
+			<td style="font-size:10px;" align="right">${subTotal?string["0.00"]}</td>
+			<td style="font-size:10px;" align="center">${taxCodeName}</td>
+			<td style="font-size:10px;" align="right">${taxAmt?string["0.00"]}</td>
+			<td style="font-size:10px;" align="right">${(subTotal + taxAmt)?string["0.00"]}</td>
 		</tr>
 		</#list>	
 		</tbody>
