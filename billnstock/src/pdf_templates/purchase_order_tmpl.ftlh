@@ -28,7 +28,7 @@ td {
  <table style="width: 100%; height: 100%; border: 0px">
 	<tr>
 		<td style="width: 40%; border: 0px"></td>
-		<td style="width: 60%; border: 0px"><div align="right"> <b>${businessName}</b> <br></br> ${businessAddress}</div></td>		
+		<td style="width: 60%; border: 0px"><div align="right"><span style="font-size:16px;"><b>${businessName}</b></span> <br></br> ${businessAddress}</div></td>		
 	</tr>
   </table>	
 </div>
@@ -41,81 +41,83 @@ td {
 </p>
 <div align="center"><span style="font-size:20px;"><b>Purchase Order </b></span>
 	</div>
-<table style="width: 100%; height: 100%;">
-<tr>
-	 <td 
-        style="width: 70%; border: 0px;">
-			</td>
-	 <td 
-	 style="border: 0px;">
-	 <b>Date:</b> ${PODate}</td>
-</tr>
-<tr>
-	<td 
-        style="width: 70%; border: 0px;">
-			</td>
-	<td  
-	style="border: 0px;">
-	<b>PO No:</b>${PONum}</td>
-</tr>	
-</table>
-
 <p>
 	<br></br>
-	
 </p>
-<table style="style="width: 100%; height: 100%;"">
-
-
-			<tbody>
+<div class="container" style="width: 100%;">						 
+<table style="width: 100%; height: 100%;">
+		<tbody>
+				<!-- Contains top two tables -->
 				<tr>
-					<td style="width: 20%; border: 0px;"><b>Bill To:</b>
-						</td>
-				<td style="width: 40%; border: 0px;"></td>		
-				<td style="border: 0px;"><b>Ship To:</b></td>
+				    <!-- Left side top table --> 
+					<td style="width: 60%; border: 0px;">
+						<table style="width: 100%; height: 100%;">
+							<tbody>
+								<tr>
+									<td align="left" style="border: 0px;"><b>Supplier Name and Address:</b><br></br>
+										${supplierName} <br></br>
+										${supplierAddress}
+									</td>
+								</tr>
+							 </tbody>
+						 </table>					
+					</td>
+					<!-- Right side top table --> 
+					<td style="width: 40%; border: 0px; vertical-align:top; padding-top: 0px;">										
+						<table style="width: 100%; height: 100%;">
+							<tbody>
+								<tr>
+									<td align="right" style="border: 0px;">
+										<b>PO No:</b>
+									</td>
+									<td align="left" style="border: 0px;">
+										${pONum}
+									</td>
+								</tr>
+								<tr>
+									<td align="right" style="border: 0px;">
+										<b>PO Date:</b>
+									</td>
+									<td align="left" style="border: 0px;">
+										${pODate}
+									</td>
+								</tr>
+								<#if Discount??>
+								<tr>
+									<td align="right" style="border: 0px;">
+										<b>Discount:</b>
+									</td>
+									<td align="left" style="border: 0px;">
+										${Discount}
+									</td>
+								</tr>
+								<#else>									
+								</#if>								
+							 </tbody>
+						</table>					
+					</td>					
 				</tr>
-                 <tr> <td style="width: 20%; border: 0px;">${To} </td>
-                 <td style="width: 40%; border: 0px;"></td>		
-                  <td style="width: 20%; border: 0px;">${ShippedTo}</td>
-                 </tr>	
-                <tr>
-                <td 
-                style="width: 20%; border: 0px;"><b>Requisitioner :</b> ${Requisitioner}
-						</td>
-				<td 
-                style="width: 40%; border: 0px;">
-						</td>
-				<td 
-                style="width: 20%; border: 0px;"><b>Shipped Via :</b> ${ShippedVia}
-						</td>
-                </tr>
-                <tr>
-                <td 
-                style="width: 20%; border: 0px;"><b>F.O.B :</b> ${FOBPoint}
-						</td>
-				<td 
-                style="width: 40%; border: 0px;">
-						</td>
-				<td 
-                style="width: 20%; border: 0px;"><b>Terms :</b>${Terms}
-						</td>
-				 </tr>
-			<tr>
-				<td style="border: 0px;"><b>Note To Customer:</b></td>
-				<td style="border: 0px;"></td>		
-				<td style="border: 0px;"></td>
-				<td style="border: 0px;"></td>
-				<td style="border: 0px;"></td>	
+				<tr align="left" style="border: 0px;">
+					<td style="width: 60%;" colspan="1" style="border: 0px; padding: 7px;"><b>Bill To:</b><br></br>
+										${billTo} </td>
+				
+					<td style="width: 40%;" colspan="1" style="border: 0px; padding: 7px;"><b>Ship To:</b><br></br>
+										${shipTo} </td>
 				</tr>
-				<tr style="border: 0px;">
-				<td colspan="5" style="width: 80%; border: 0px;">${Note}</td>	
-				<td style="border: 0px;"></td>
-				<td style="border: 0px;"></td>
-				<td style="border: 0px;"></td>
-				<td style="border: 0px;"></td>	
-				</tr>
+				<!-- Contains a row across two tables -->
+				<#if noteToCustomer??>
+					<tr align="left" style="border: 0px;">
+						<td colspan="2" style="border: 0px; padding: 7px;">
+							<b>Note To Customer:</b><br></br>
+							${noteToCustomer}
+					    </td>
+					</tr>
+				<#else>	
+				</#if>								
 		</tbody>
-			</table>
+</table>
+</div>
+
 		<p>
 		<br></br>
 	    <br></br>
