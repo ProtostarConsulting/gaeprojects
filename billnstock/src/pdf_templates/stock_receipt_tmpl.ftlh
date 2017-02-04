@@ -27,7 +27,7 @@ td {
  <table style="width: 100%; height: 100%; border: 0px">
 	<tr>
 		<td style="width: 40%; border: 0px"></td>
-		<td style="width: 60%; border: 0px"><div align="right"> <b>${BusinessName}</b> <br></br> ${BusinessAddress}</div></td>		
+		<td style="width: 60%; border: 0px"><div align="right"> <b>${businessName}</b> <br></br> ${businessAddress}</div></td>		
 	</tr>
   </table>	
 </div>
@@ -118,7 +118,20 @@ td {
 		</table>		
 <#else>
   <#assign productSubTotal=0>
-</#if>		
+</#if>
+<table
+	style="width: 100%; height: 100%; border-spacing: 5px; height: 30px; padding: 5px;">
+	
+	<tbody>
+
+		<tr>			
+			<th
+				style="width:100%;"
+				align="right">Product Total(INR):&nbsp;${ProductTotal?string["0.00"]}</th>			
+		</tr>
+		
+	</tbody>
+</table>			
 <p>
 	<br></br>
 	<br></br>

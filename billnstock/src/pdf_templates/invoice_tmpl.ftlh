@@ -28,7 +28,7 @@ p {
 </style>
 
 <div align="right">  	
- <table style="width: 100%; height: 100%; border: 0px">
+ <table style="width: 100%; height: 100%; border: 0px;">
 	<tr>
 		<td style="width: 40%; border: 0px"></td>
 		<td style="width: 60%; border: 0px"><div align="right"><span style="font-size:16px;"> <b>${businessName}</b></span> <br></br> ${businessAddress}</div></td>		
@@ -143,8 +143,8 @@ p {
   				<#assign taxCodeName = "NA">
 			</#if>	
 			<tr>
-			<td style="font-size:10px;" align="left">${lineItem.itemName}</td>
-			<td style="font-size:10px;"; align="center">${lineItem.qty}</td>
+			<td style="font-size:10px;" align="center">${lineItem.itemName}</td>
+			<td style="font-size:10px;" align="center">${lineItem.qty}</td>
 			<td style="font-size:10px;" align="right">${lineItem.price?string["0.00"]}</td>			
 			<td style="font-size:10px;" align="right">${subTotal?string["0.00"]}</td>
 			<td style="font-size:10px;" align="center">${taxCodeName}</td>
@@ -164,7 +164,7 @@ p {
 	<br></br>
 	</p>	
   	<table 
-	style="width: 100%; height: 100%; font-size:11px;">
+	style="width: 100%; height: 100%;">
 	<caption align="left" style="border-spacing: 5px; padding: 3px;"><b>Products: </b></caption>
 	<tbody>
 		<tr>

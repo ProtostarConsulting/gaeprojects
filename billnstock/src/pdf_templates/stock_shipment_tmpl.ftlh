@@ -38,20 +38,17 @@ td {
 <p>
 	<br></br>
 </p>
-<div align="right"><b>Shipment No:</b>${ShipmentNo}
+<div align="center"><b>Stock Shipment Receipt</b>
 	</div>
 	<p>
 	<br></br>
 </p>
-<div align="center">
-	<b>Stock Shipment Receipt </b>
+<div align="right">
+	<b>Shipment No:</b>${ShipmentNo}
 	
 </div>
 <p>
 	<br></br>
-</p>
-<hr></hr>
-<p>
 	<br></br>
 </p>
 <table
@@ -83,55 +80,10 @@ td {
 		</tbody>
 		</table>
 	<p>
-		<br></br>
 	<br></br>
 	<br></br>
 	</p>
-		<#if serviceItemList??>
-		<table
-	style="width: 100%; height: 100%; ">
-	<caption align="left" style="border-spacing: 5px; height: 30px; padding: 10px;"><b>Services: </b></caption>
-	<tbody>
-
-		<tr>
-			<th
-				style=""
-				align="center">Service Name</th>
-			<th
-				style=""
-				align="center">Qty.</th>
-			<th
-				style="" align="center">Price
-			</th>
-			<th
-				style=""
-				align="center">Sub Total</th>
-		</tr>
-		<#list serviceItemList as lineItem>
-		    <#assign serviceSubTotal = lineItem.qty * lineItem.price>	
-			<tr>
-			<td align="center">${lineItem.itemName}</td>
-			<td align="center">${lineItem.qty}</td>
-			<td align="right">${lineItem.price?string["0.00"]}</td>			
-			<td align="right">${serviceSubTotal?string["0.00"]}</td>
-		</tr>
-		</#list>	
-		</tbody>
-		</table>
-	<#else>
-  <#assign serviceSubTotal=0>
-</#if>	
-<p>
-	<br></br>
-	<br></br>
-	<br></br>
-</p>
 <#if productItemList??>
-  	<p>
-	<br></br>
-	<br></br>
-	<br></br>
-	</p>
 	<table 
 	style="width: 100%; height: 100%; ">
 	<caption align="left" style="border-spacing: 5px; height: 30px; padding: 10px;"><b>Products: </b></caption>
@@ -163,7 +115,45 @@ td {
 		</tbody>
 		</table>		
 <#else>
-  NO products items
+  NO product items
+</#if>		
+<p>
+	<br></br>
+	<br></br>
+</p>
+<#if serviceItemList??>
+		<table
+	style="width: 100%; height: 100%; ">
+	<caption align="left" style="border-spacing: 5px; height: 30px; padding: 10px;"><b>Other Costs: </b></caption>
+	<tbody>
+
+		<tr>
+			<th
+				style=""
+				align="center">Service Name</th>
+			<th
+				style=""
+				align="center">Qty.</th>
+			<th
+				style="" align="center">Price
+			</th>
+			<th
+				style=""
+				align="center">Sub Total</th>
+		</tr>
+		<#list serviceItemList as lineItem>
+		    <#assign serviceSubTotal = lineItem.qty * lineItem.price>	
+			<tr>
+			<td align="center">${lineItem.itemName}</td>
+			<td align="center">${lineItem.qty}</td>
+			<td align="right">${lineItem.price?string["0.00"]}</td>			
+			<td align="right">${serviceSubTotal?string["0.00"]}</td>
+		</tr>
+		</#list>	
+		</tbody>
+		</table>
+	<#else>
+  <#assign serviceSubTotal=0>
 </#if>	
 <table
 	style="width: 100%; height: 100%; border-spacing: 5px; height: 30px; padding: 5px;">
