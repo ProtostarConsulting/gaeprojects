@@ -3,7 +3,7 @@ app
 		.controller(
 				"stockShipmentListCtr",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
-						$mdUtil, $log, $state, $http, $stateParams,$mdColors,
+						$mdUtil, $log, $state, $http, $stateParams, $mdColors,
 						$routeParams, $filter, objectFactory, appEndpointSF) {
 
 					function reSetQuery() {
@@ -24,7 +24,6 @@ app
 					$scope.documentStatusList = [ 'DRAFT', 'SUBMITTED',
 							'FINALIZED', 'REJECTED' ];
 					$scope.selectedStatus = "";
-					
 
 					$scope.fitlerListByStatus = function(status) {
 						$scope.selectedStatus = status;
@@ -34,30 +33,6 @@ app
 						$scope.fetchEntityListByPaging();
 					}
 
-					$scope.getStockShipmentList = function() {
-						$log.debug("Inside Ctr $scope.getStockShipmentList");
-						$scope.loading = true;
-						var stockService = appEndpointSF.getStockService();
-						stockService
-								.getStockShipmentList(
-										$scope.curUser.business.id)
-								.then(
-										function(list) {
-											$scope.stockShipmentList = list;
-											angular
-													.forEach(
-															$scope.stockShipmentList,
-															function(
-																	stockShipment) {
-																stockShipment.shipmentNumber = parseInt(stockShipment.shipmentNumber);
-																stockShipment.createdDate = new Date(
-																		stockShipment.createdDate);
-																stockShipment.stockShipmentDueDate = new Date(
-																		stockShipment.stockShipmentDueDate);
-															});
-											$scope.loading = false;
-										});
-					}
 					$scope.onpagechange = function() {
 						$location.hash('tp1');
 						$anchorScroll();
@@ -78,7 +53,7 @@ app
 						};
 						var stockService = appEndpointSF.getStockService();
 						stockService
-								.fetchReceiptListByPaging(
+								.fetchShipmentListByPaging(
 										$scope.curUser.business.id,
 										$scope.selectedStatus, pagingInfoTemp)
 								.then(
@@ -101,7 +76,6 @@ app
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
-							// $scope.getStockShipmentList();
 							$scope.fetchEntityListByPaging();
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
