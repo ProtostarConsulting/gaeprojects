@@ -27,7 +27,7 @@ td {
  <table style="width: 100%; height: 100%; border: 0px">
 	<tr>
 		<td style="width: 40%; border: 0px"></td>
-		<td style="width: 60%; border: 0px"><div align="right"> <b>${BusinessName}</b> <br></br> ${BusinessAddress}</div></td>		
+		<td style="width: 60%; border: 0px"><div align="right"> <b>${businessName}</b> <br></br> ${businessAddress}</div></td>		
 	</tr>
   </table>	
 </div>
