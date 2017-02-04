@@ -1140,19 +1140,23 @@ public class PDFHtmlTemplateService {
 			String purchaseOrderDate = sdfDate.format(poDate);
 			String purchaseOrderDueDate = sdfDate.format(poDueDate);
 
-			root.put("To", purchaseOrderEntity.getTo());
-			root.put("ShippedTo", purchaseOrderEntity.getShipTo());
-			root.put("PONum", purchaseOrderEntity.getItemNumber());
-			root.put("PODate", purchaseOrderDate);
+			double discAmt = purchaseOrderEntity.getDiscAmount();
+			if (discAmt > 0) {
+				root.put("Discount", df.format(discAmt));
+			}
+			root.put("billTo", purchaseOrderEntity.getTo());
+			root.put("shipTo", purchaseOrderEntity.getShipTo());
+			root.put("pONum", purchaseOrderEntity.getItemNumber());
+			root.put("pODate", purchaseOrderDate);
 			root.put("PODueDate", purchaseOrderDueDate);
 			root.put("ShippedVia", "" + purchaseOrderEntity.getShippedVia());
 			root.put("Requisitioner",
 					"" + purchaseOrderEntity.getRequisitioner());
-			root.put("Supplier", ""
+			root.put("supplierName", ""
 					+ purchaseOrderEntity.getSupplier().getSupplierName());
 			root.put("FOBPoint", "" + purchaseOrderEntity.getfOBPoint());
 			root.put("Terms", "" + purchaseOrderEntity.getTerms());
-			root.put("Note", "" + purchaseOrderEntity.getNoteToCustomer());
+			root.put("noteToCustomer", "" + purchaseOrderEntity.getNoteToCustomer());
 
 			StringBuffer buffer = new StringBuffer();
 
@@ -1378,16 +1382,56 @@ public class PDFHtmlTemplateService {
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
 
 			ShipmentType shipmentType = stockItemsShipment.getShipmentType();
-			root.put("ShipmentDate",
+			root.put("shipmentDate",
 					sdfDate.format(stockItemsShipment.getShipmentDate()));
 
-			root.put("FromWarehouse", stockItemsShipment.getFromWH()
+			root.put("fromWarehouse", stockItemsShipment.getFromWH()
 					.getWarehouseName());
-			root.put("ShipmentNo", stockItemsShipment.getItemNumber());
+			root.put("shipmentNo", stockItemsShipment.getItemNumber());
+			
+			StringBuffer buffer = new StringBuffer();
+			Address warehouseAdd = stockItemsShipment.getFromWH().getAddress();
+			if (warehouseAdd != null) {
+				if (warehouseAdd.getLine1() != null
+						&& !warehouseAdd.getLine1().isEmpty())
+					buffer.append(warehouseAdd.getLine1());
+				if (warehouseAdd.getLine2() != null
+						&& !warehouseAdd.getLine2().isEmpty())
+					buffer.append(", " + warehouseAdd.getLine2());
+				if (warehouseAdd.getCity() != null
+						&& !warehouseAdd.getCity().isEmpty())
+					buffer.append(", " + warehouseAdd.getCity());
+				if (warehouseAdd.getState() != null
+						&& !warehouseAdd.getState().isEmpty())
+					buffer.append(", " + warehouseAdd.getState());
+			}
+
+			String warehouseAddress = buffer.toString();
+			root.put("fromWHAddress", warehouseAddress);
 
 			if (shipmentType.equals(ShipmentType.TO_OTHER_WAREHOUSE)) {
 				root.put("ToWarehouse", stockItemsShipment.getToWH()
 						.getWarehouseName());
+				StringBuffer newBuffer = new StringBuffer();
+				Address toWHAdd = stockItemsShipment.getToWH().getAddress();
+				if (toWHAdd != null) {
+					if (toWHAdd.getLine1() != null
+							&& !toWHAdd.getLine1().isEmpty())
+						newBuffer.append(toWHAdd.getLine1());
+					if (toWHAdd.getLine2() != null
+							&& !toWHAdd.getLine2().isEmpty())
+						newBuffer.append(", " + toWHAdd.getLine2());
+					if (toWHAdd.getCity() != null
+							&& !toWHAdd.getCity().isEmpty())
+						newBuffer.append(", " + toWHAdd.getCity());
+					if (toWHAdd.getState() != null
+							&& !toWHAdd.getState().isEmpty())
+						newBuffer.append(", " + toWHAdd.getState());
+				}
+
+				String toWarehouseAddress= newBuffer.toString();
+				root.put("toWHAddress", toWarehouseAddress);
+				
 			}
 
 			if (shipmentType.equals(ShipmentType.TO_CUSTOMER)) {
