@@ -236,4 +236,27 @@ p {
 		</tr>
 	</tbody>
 </table>	
+<p>
+	<br></br>
+	<br></br>
+	<br></br>
+	<br></br>
+</p>
+<#if paymentNotes??>
+	<p> <b> Payment Notes: </b>
+	<br></br>	
+	${paymentNotes}
+</p>
+<#else>	
+</#if>
+<p>
+	<br></br>	
+</p>
+<#if termsAndConditions??>
+	<p> <b> Terms and Conditions: </b>
+	<br></br>	
+	${termsAndConditions}
+</p>
+<#else>	
+</#if>			
 </html>

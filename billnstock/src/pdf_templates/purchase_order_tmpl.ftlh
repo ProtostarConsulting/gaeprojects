@@ -98,10 +98,10 @@ td {
 					</td>					
 				</tr>
 				<tr align="left" style="border: 0px;">
-					<td style="width: 60%;" colspan="1" style="border: 0px; padding: 7px;"><b>Bill To:</b><br></br>
+					<td style="width: 60%;" colspan="1" style="border: 0px; padding: 7px;"><b>Bill To :</b><br></br>
 										${billTo} </td>
 				
-					<td style="width: 40%;" colspan="1" style="border: 0px; padding: 7px;"><b>Ship To:</b><br></br>
+					<td style="width: 40%;" colspan="1" style="border: 0px; padding: 7px;"><b>Ship To :</b><br></br>
 										${shipTo} </td>
 				</tr>
 				<!-- Contains a row across two tables -->
@@ -245,5 +245,29 @@ td {
 				align="right">${finalTotalInWords}</th>					
 		</tr>
 	</tbody>
-</table>	
+</table>
+<p>
+	<br></br>
+	<br></br>
+	<br></br>
+	<br></br>
+	<br></br>
+</p>
+<#if paymentNotes??>
+	<p> <b> Payment Notes: </b>
+	<br></br>	
+	${paymentNotes}
+</p>
+<#else>	
+</#if>
+<p>
+	<br></br>	
+</p>
+<#if termsAndConditions??>
+	<p> <b> Terms and Conditions: </b>
+	<br></br>	
+	${termsAndConditions}
+</p>
+<#else>	
+</#if>			
 </html>
