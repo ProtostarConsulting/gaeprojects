@@ -1156,7 +1156,8 @@ public class PDFHtmlTemplateService {
 					+ purchaseOrderEntity.getSupplier().getSupplierName());
 			root.put("FOBPoint", "" + purchaseOrderEntity.getfOBPoint());
 			root.put("Terms", "" + purchaseOrderEntity.getTerms());
-			root.put("noteToCustomer", "" + purchaseOrderEntity.getNoteToCustomer());
+			root.put("noteToCustomer",
+					"" + purchaseOrderEntity.getNoteToCustomer());
 
 			StringBuffer buffer = new StringBuffer();
 
@@ -1261,11 +1262,12 @@ public class PDFHtmlTemplateService {
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
 			String receiptDate = sdfDate.format(stockReceiptEntity
 					.getReceiptDate());
-			root.put("ReceiptDate", receiptDate);
-			root.put("ReceiptNo", stockReceiptEntity.getItemNumber());
-			root.put("Supplier", stockReceiptEntity.getSupplier()
+			root.put("poNum", stockReceiptEntity.getPoNumber());
+			root.put("receiptDate", receiptDate);
+			root.put("receiptNo", stockReceiptEntity.getItemNumber());
+			root.put("supplier", stockReceiptEntity.getSupplier()
 					.getSupplierName());
-			root.put("Warehouse", stockReceiptEntity.getWarehouse()
+			root.put("warehouse", stockReceiptEntity.getWarehouse()
 					.getWarehouseName());
 
 			StringBuffer buffer = new StringBuffer();
@@ -1287,7 +1289,7 @@ public class PDFHtmlTemplateService {
 			}
 
 			String warehouseAddress = buffer.toString();
-			root.put("WarehouseAddress", warehouseAddress);
+			root.put("warehouseAddress", warehouseAddress);
 
 			StringBuffer addressBuffer = new StringBuffer();
 			Address supplierAddress = stockReceiptEntity.getSupplier()
@@ -1308,7 +1310,7 @@ public class PDFHtmlTemplateService {
 			}
 
 			String suplAdrs = addressBuffer.toString();
-			root.put("SupplierAddress", suplAdrs);
+			root.put("supplierAddress", suplAdrs);
 
 			List<StockLineItem> serviceLineItemList = stockReceiptEntity
 					.getServiceLineItemList();
@@ -1321,10 +1323,8 @@ public class PDFHtmlTemplateService {
 			if (productLineItemList != null && productLineItemList.size() > 0) {
 				root.put("productItemList", productLineItemList);
 				for (int i = 0; i < productLineItemList.size(); i++) {
-					double productTotal = (productLineItemList.get(i)
-							.getStockItem().getQty())
-							* (productLineItemList.get(i).getStockItem()
-									.getPrice());
+					double productTotal = (productLineItemList.get(i).getQty())
+							* (productLineItemList.get(i).getPrice());
 					productTotal += productTotal;
 					root.put("ProductTotal", productTotal);
 				}
@@ -1388,7 +1388,7 @@ public class PDFHtmlTemplateService {
 			root.put("fromWarehouse", stockItemsShipment.getFromWH()
 					.getWarehouseName());
 			root.put("shipmentNo", stockItemsShipment.getItemNumber());
-			
+			root.put("shipmentNotes", stockItemsShipment.getNote());
 			StringBuffer buffer = new StringBuffer();
 			Address warehouseAdd = stockItemsShipment.getFromWH().getAddress();
 			if (warehouseAdd != null) {
@@ -1410,7 +1410,7 @@ public class PDFHtmlTemplateService {
 			root.put("fromWHAddress", warehouseAddress);
 
 			if (shipmentType.equals(ShipmentType.TO_OTHER_WAREHOUSE)) {
-				root.put("ToWarehouse", stockItemsShipment.getToWH()
+				root.put("toWarehouse", stockItemsShipment.getToWH()
 						.getWarehouseName());
 				StringBuffer newBuffer = new StringBuffer();
 				Address toWHAdd = stockItemsShipment.getToWH().getAddress();
@@ -1424,24 +1424,76 @@ public class PDFHtmlTemplateService {
 					if (toWHAdd.getCity() != null
 							&& !toWHAdd.getCity().isEmpty())
 						newBuffer.append(", " + toWHAdd.getCity());
+					if (toWHAdd.getPin() != null && !toWHAdd.getPin().isEmpty())
+						newBuffer.append(", " + toWHAdd.getPin());
 					if (toWHAdd.getState() != null
 							&& !toWHAdd.getState().isEmpty())
 						newBuffer.append(", " + toWHAdd.getState());
 				}
 
-				String toWarehouseAddress= newBuffer.toString();
+				String toWarehouseAddress = newBuffer.toString();
 				root.put("toWHAddress", toWarehouseAddress);
-				
+
 			}
 
 			if (shipmentType.equals(ShipmentType.TO_CUSTOMER)) {
-				root.put("Customer", stockItemsShipment.getCustomer()
+				root.put("customer", stockItemsShipment.getCustomer()
 						.getCompanyName());
+
+				StringBuffer custBuffer = new StringBuffer();
+				Address toCustAdd = stockItemsShipment.getCustomer()
+						.getAddress();
+
+				if (toCustAdd != null) {
+					if (toCustAdd.getLine1() != null
+							&& !toCustAdd.getLine1().isEmpty())
+						custBuffer.append(toCustAdd.getLine1());
+					if (toCustAdd.getLine2() != null
+							&& !toCustAdd.getLine2().isEmpty())
+						custBuffer.append(", " + toCustAdd.getLine2());
+					if (toCustAdd.getCity() != null
+							&& !toCustAdd.getCity().isEmpty())
+						custBuffer.append(", " + toCustAdd.getCity());
+					if (toCustAdd.getPin() != null
+							&& !toCustAdd.getPin().isEmpty())
+						custBuffer.append(", " + toCustAdd.getPin());
+					if (toCustAdd.getState() != null
+							&& !toCustAdd.getState().isEmpty())
+						custBuffer.append(", " + toCustAdd.getState());
+				}
+
+				String customerAddress = custBuffer.toString();
+				root.put("customerAddress", customerAddress);
 
 			}
 			if (shipmentType.equals(ShipmentType.TO_PARTNER)) {
 				root.put("Partner", stockItemsShipment.getCustomer()
 						.getCompanyName());
+
+				StringBuffer partnerBuffer = new StringBuffer();
+				Address toPartnerAdd = stockItemsShipment.getCustomer()
+						.getAddress();
+
+				if (toPartnerAdd != null) {
+					if (toPartnerAdd.getLine1() != null
+							&& !toPartnerAdd.getLine1().isEmpty())
+						partnerBuffer.append(toPartnerAdd.getLine1());
+					if (toPartnerAdd.getLine2() != null
+							&& !toPartnerAdd.getLine2().isEmpty())
+						partnerBuffer.append(", " + toPartnerAdd.getLine2());
+					if (toPartnerAdd.getCity() != null
+							&& !toPartnerAdd.getCity().isEmpty())
+						partnerBuffer.append(", " + toPartnerAdd.getCity());
+					if (toPartnerAdd.getPin() != null
+							&& !toPartnerAdd.getPin().isEmpty())
+						partnerBuffer.append(", " + toPartnerAdd.getPin());
+					if (toPartnerAdd.getState() != null
+							&& !toPartnerAdd.getState().isEmpty())
+						partnerBuffer.append(", " + toPartnerAdd.getState());
+				}
+
+				String partnerAddress = partnerBuffer.toString();
+				root.put("partnerCoAddress", partnerAddress);
 			}
 
 			List<StockLineItem> serviceLineItemList = stockItemsShipment
