@@ -428,6 +428,8 @@ app
 							$scope.getAllWarehouseByBusiness();
 							$scope.getStockItemTypes();
 							$scope.getTaxesByVisibility();
+							$scope.calProductSubTotal();
+							$scope.calServiceSubTotal();
 
 							if (!$scope.purchaseOrderObj.id) {
 								$scope.addProductLineItem();
