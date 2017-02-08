@@ -892,14 +892,14 @@ public class PDFHtmlTemplateService {
 			// Imported Customer entity to get name and address
 			Customer cust1 = invoiceEntity.getCustomer();
 
+			String custName = "";
+
 			if (cust1.getIsCompany()) {
-				String custName = cust1.getCompanyName();
-				root.put("CustomerName", custName);
+				custName = cust1.getCompanyName();
 			} else if (!cust1.getIsCompany()) {
-				String custIndvName = cust1.getFirstName() + " "
-						+ cust1.getLastName();
-				root.put("CustomerName", custIndvName);
+				custName = cust1.getFirstName() + " " + cust1.getLastName();
 			}
+			root.put("CustomerName", custName);
 
 			StringBuffer custaddressBuf = new StringBuffer();
 			Address customerAddress = cust1.getAddress();
