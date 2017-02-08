@@ -208,16 +208,18 @@ td {
   <#assign serviceSubTotal=0>
 </#if>	
 <table
-	style="width: 100%; height: 100%; border-spacing: 5px; height: 30px; padding: 5px;">
-	
+	style="width: 100%; height: 100%; border-spacing: 5px; height: 30px; padding: 5px;">	
 	<tbody>
-
 		<tr>			
 			<th
 				style="width:100%;"
-				align="right">Final Total(INR):&nbsp;${(productSubTotal+serviceSubTotal)?string["0.00"]}</th>			
+				align="right">Final Total:&nbsp;${finalTotal?string["0.00"]}</th>			
 		</tr>
-		
+		<tr>
+			<th
+				style="width:100%;"
+				align="right">${finalTotalInWords}</th>					
+		</tr>
 	</tbody>
-</table>		
+</table>
 </html>
