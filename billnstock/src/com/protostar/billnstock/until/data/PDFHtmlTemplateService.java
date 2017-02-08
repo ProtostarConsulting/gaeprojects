@@ -12,7 +12,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.ServletOutputStream;
+
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -20,6 +22,7 @@ import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.zugferd.checkers.basic.TaxTypeCode;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
 import com.protostar.billingnstock.account.entities.AccountGroupEntity;
 import com.protostar.billingnstock.account.entities.PurchaseVoucherEntity;
@@ -44,12 +47,14 @@ import com.protostar.billingnstock.user.entities.EmpDepartment;
 import com.protostar.billingnstock.user.entities.UserEntity;
 import com.protostar.billnstock.entity.Address;
 import com.protostar.billnstock.entity.BaseEntity;
+
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
 
 public class PDFHtmlTemplateService {
 
+	private static final String FONT1 = null;
 	static Configuration cfg = null;
 
 	public Configuration getConfiguration() {
@@ -946,6 +951,7 @@ public class PDFHtmlTemplateService {
 			String netInWords = numberToRupees.getAmountInWords();
 			root.put("finalTotalInWord", netInWords);
 			// root.put("FinalInWords", invoiceEntity.getFinalTotal());
+
 			root.put("PurchaseOrderNo", purchaseOrderNo);
 
 			if (invoiceEntity.getNoteToCustomer() != null
@@ -1322,14 +1328,15 @@ public class PDFHtmlTemplateService {
 			}
 			if (productLineItemList != null && productLineItemList.size() > 0) {
 				root.put("productItemList", productLineItemList);
-				for (int i = 0; i < productLineItemList.size(); i++) {
-					double productTotal = (productLineItemList.get(i).getQty())
-							* (productLineItemList.get(i).getPrice());
-					productTotal += productTotal;
-					root.put("ProductTotal", productTotal);
-				}
-
 			}
+
+			double finalTotal = stockReceiptEntity.getFinalTotal();
+			root.put("finalTotal", finalTotal);
+
+			NumberToRupees numberToRupees = new NumberToRupees(
+					Math.round(finalTotal));
+			String netInWords = numberToRupees.getAmountInWords();
+			root.put("finalTotalInWords", netInWords);
 
 			Template temp = getConfiguration().getTemplate(
 					"pdf_templates/stock_receipt_tmpl.ftlh");
@@ -1508,6 +1515,13 @@ public class PDFHtmlTemplateService {
 				root.put("productItemList", productLineItemList);
 
 			}
+
+			root.put("finalTotal", stockItemsShipment.getFinalTotal());
+
+			NumberToRupees numberToRupees = new NumberToRupees(
+					Math.round(stockItemsShipment.getFinalTotal()));
+			String netInWords = numberToRupees.getAmountInWords();
+			root.put("finalTotalInWords", netInWords);
 
 			Template temp = getConfiguration().getTemplate(
 					"pdf_templates/stock_shipment_tmpl.ftlh");
