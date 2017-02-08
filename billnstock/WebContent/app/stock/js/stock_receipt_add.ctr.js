@@ -305,6 +305,7 @@ app
 												$scope.stockReceiptObj.selectedServiceTax = poObj.selectedServiceTax;
 												$scope.stockReceiptObj.selectedProductTax = poObj.selectedProductTax;
 												$scope.stockReceiptObj.productTaxTotal = poObj.productTaxTotal;
+												$scope.stockReceiptObj.finalTotal = poObj.finalTotal;
 												$scope.stockReceiptObj.supplier = poObj.supplier;
 												if ($scope.stockReceiptObj.warehouse.id !== poObj.warehouse.id)
 													$scope.stockReceiptObj.warehouse = poObj.warehouse;
@@ -371,6 +372,8 @@ app
 							$scope.getStockItemTypes();
 							$scope.getTaxesByVisibility();
 							$scope.getAllWarehouseByBusiness();
+							$scope.calProductSubTotal();
+							$scope.calServiceSubTotal();
 
 							if (!$scope.stockReceiptObj.id) {
 								$scope.addProductLineItem();

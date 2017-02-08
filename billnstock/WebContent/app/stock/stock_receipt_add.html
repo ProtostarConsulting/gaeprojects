@@ -126,8 +126,8 @@
 							<md-tooltip> New Entry </md-tooltip></ng-md-icon> </md-button></td>
 						<td></td>
 						<td></td>
-						<td></td>
-						<td></td>
+						<td><label>Product Total</label></td>
+						<td><b> {{stockReceiptObj.productTotal | currency:"":"2"}}</b></td>
 						<td></td>
 					</tr>
 				</tbody>
@@ -185,8 +185,16 @@
 							<md-tooltip> Add New </md-tooltip></ng-md-icon> </md-button></td>
 						<td></td>
 						<td></td>
+						<td><label>Service Total</label></td>
+						<td><b> {{stockReceiptObj.serviceTotal | currency:"":"2"}}</b></td>
+						<td></td>
+					</tr>
+					<tr>
 						<td></td>
 						<td></td>
+						<td></td>
+						<td><label>Final Total</label></td>
+						<td><b> {{stockReceiptObj.finalTotal | currency:"":"2"}}</b></td>
 						<td></td>
 					</tr>
 				</tbody>
