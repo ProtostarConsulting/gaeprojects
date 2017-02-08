@@ -3,7 +3,7 @@ app
 		.controller(
 				"invoiceListCtr",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
-						$mdUtil, $log, $state, $http, $stateParams,
+						$mdUtil, $log, $state, $http, $stateParams,$mdColors,
 						$routeParams, $filter, objectFactory, appEndpointSF) {
 
 					function reSetQuery() {
