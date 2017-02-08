@@ -892,7 +892,14 @@ public class PDFHtmlTemplateService {
 			// Imported Customer entity to get name and address
 			Customer cust1 = invoiceEntity.getCustomer();
 
-			String custName = cust1.getCompanyName();
+			if (cust1.getIsCompany()) {
+				String custName = cust1.getCompanyName();
+				root.put("CustomerName", custName);
+			} else if (!cust1.getIsCompany()) {
+				String custIndvName = cust1.getFirstName() + " "
+						+ cust1.getLastName();
+				root.put("CustomerName", custIndvName);
+			}
 
 			StringBuffer custaddressBuf = new StringBuffer();
 			Address customerAddress = cust1.getAddress();
@@ -920,7 +927,7 @@ public class PDFHtmlTemplateService {
 			String strDate = sdfDate.format(now);
 
 			// Customer Details
-			root.put("CustomerName", custName);
+
 			root.put("CustomerAddress", custAddress);
 			// Invoice Details
 			root.put("InvoiceDate", invoiceEntity.getCreatedDate());
