@@ -173,6 +173,17 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
+	
+	UserService.getUsersByLoginAllowed = function(busId, loginAllowed) {
+		var deferred = $q.defer();
+		gapi.client.userService.getUsersByLoginAllowed({
+			'busId' : busId,
+			'loginAllowed' : loginAllowed
+		}).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}	
 
 	UserService.getbusinessById = function(id) {
 		var deferred = $q.defer();

@@ -155,7 +155,7 @@ angular
 
 					$scope.getUserList = function() {
 						var refresh = false;
-						var getAllUserOfOrgCacheKey = "getAllUserOfOrg";
+						var getAllUserOfOrgCacheKey = "all-task-users";
 						// Note this key has to be unique across application
 						// else it will return unexpected result.
 						if (!angular.isUndefined(ajsCache
@@ -170,7 +170,7 @@ angular
 									.debug("Not Found List in Cache, need to fetch from Server.")
 						}
 						UserService
-								.getUsersByBusinessId($scope.curUser.business.id)
+								.getUsersByLoginAllowed($scope.curUser.business.id, true)
 								.then(
 										function(users) {
 											var activeUserList = [];

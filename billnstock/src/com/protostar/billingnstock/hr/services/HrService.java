@@ -560,7 +560,7 @@ public class HrService {
 					.getMonthlyPayment(busId, month.trim());
 
 			if (monthlyPaymentDetailEntity.size() > 0) {
-				float totalSal = 0, totalPF = 0, totalPT = 0, totalCanteen = 0, totalIT = 0, totalOther = 0;
+				float totalSal = 0, totalPF = 0, totalPT = 0, totalCanteen = 0, totalIT = 0, totalESI = 0, totalOther = 0;
 				for (int j = 0; j < monthlyPaymentDetailEntity.size(); j++) {
 					totalSal += monthlyPaymentDetailEntity.get(j)
 							.getCalculatedGrossSalary();
@@ -572,6 +572,8 @@ public class HrService {
 							.getCanteenDeductionAmt();
 					totalIT += monthlyPaymentDetailEntity.get(j)
 							.getItDeductionAmt();
+					totalESI += monthlyPaymentDetailEntity.get(j)
+							.getEsiDeductionAmt();
 					totalOther += monthlyPaymentDetailEntity.get(j)
 							.getOtherDeductionAmt();
 				}
@@ -583,6 +585,7 @@ public class HrService {
 				payData.totalPT = totalPT;
 				payData.totalCanteen = totalCanteen;
 				payData.totalIT = totalIT;
+				payData.totalESI = totalESI;				
 				payData.totalOther = totalOther;
 				payrolldatalist.add(payData);
 			}

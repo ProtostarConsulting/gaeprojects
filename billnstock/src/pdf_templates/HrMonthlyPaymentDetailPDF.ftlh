@@ -119,7 +119,7 @@ tab2 {
 				Fund(PF)</td>
 			<td
 				style="border: 1px solid black; border-color: #cccccc; border-spacing: 5px; height: 30px; padding: 5px;"
-				align="right">${PTDeductionAmt}</td>
+				align="right">${PFDeductionAmt}</td>
 		</tr>
 		<tr>
 

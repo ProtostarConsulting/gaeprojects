@@ -148,10 +148,11 @@ public class UserService {
 		return ofy().load().type(BusinessEntity.class).id(id.longValue()).now();
 	}
 
-	@ApiMethod(name = "getUserList")
+	/*Such Should not be used. Don't uncommnet
+	 * @ApiMethod(name = "getUserList")
 	public List<UserEntity> getUserList() {
 		return ofy().load().type(UserEntity.class).list();
-	}
+	}*/
 
 	@ApiMethod(name = "getUserByEmailID", path = "getUserByEmailID")
 	public List<UserEntity> getUserByEmailID(@Named("email_id") String email,
@@ -274,6 +275,15 @@ public class UserService {
 		return business;
 	}
 
+	@ApiMethod(name = "getUsersByLoginAllowed", path = "getUsersByLoginAllowed")
+	public List<UserEntity> getUsersByLoginAllowed(@Named("busId") Long id, @Named("loginAllowed") Boolean isLoginAllowed) {
+		List<UserEntity> list = ofy().load().type(UserEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, id))
+				.filter("isLoginAllowed", isLoginAllowed).list();
+
+		return list;
+	}
+	
 	@ApiMethod(name = "getUsersByBusinessId", path = "getUsersByBusinessId")
 	public List<UserEntity> getUsersByBusinessId(@Named("id") Long id) {
 		List<UserEntity> list = ofy().load().type(UserEntity.class)
