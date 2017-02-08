@@ -98,11 +98,29 @@ td {
 					</td>					
 				</tr>
 				<tr align="left" style="border: 0px;">
-					<td style="width: 60%;" colspan="1" style="border: 0px; padding: 7px;"><b>Bill To :</b><br></br>
+					<td style="width: 60%;"  style="border: 0px; padding: 7px;"><b>Bill To :</b><br></br>
 										${billTo} </td>
 				
-					<td style="width: 40%;" colspan="1" style="border: 0px; padding: 7px;"><b>Ship To :</b><br></br>
-										${shipTo} </td>
+					<td style="width: 40%;"  style="border: 0px; padding: 7px;">
+								<table style="width: 100%; height: 100%;">
+					 			<tr>
+					 				<td  style="width:10%;border: 0px;">
+										
+									</td>
+									<td  style="width:40%;border: 0px;">
+										<b>Ship To :</b>
+									</td> 
+								</tr>	
+								<tr>
+								<td  style="width:10%;border: 0px;">
+										
+									</td>
+								<td style="width:40%;border: 0px;">
+										${shipTo}
+									</td>
+								</tr>	
+								</table>
+					</td>
 				</tr>
 				<!-- Contains a row across two tables -->
 				<#if noteToCustomer??>
