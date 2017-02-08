@@ -24,6 +24,7 @@ public class StockItemsReceiptEntity extends BaseEntity {
 	private boolean isStatusAlreadyFinalized = false;
 	@Index
 	private long poNumber;
+	private double finalTotal;
 	private Date receiptDate;
 	private List<StockLineItem> productLineItemList = new ArrayList<StockLineItem>();
 	private List<StockLineItem> serviceLineItemList = new ArrayList<StockLineItem>();
@@ -118,6 +119,14 @@ public class StockItemsReceiptEntity extends BaseEntity {
 
 	public void setStatusAlreadyFinalized(boolean isStatusAlreadyFinalized) {
 		this.isStatusAlreadyFinalized = isStatusAlreadyFinalized;
+	}
+
+	public double getFinalTotal() {
+		return finalTotal;
+	}
+
+	public void setFinalTotal(double finalTotal) {
+		this.finalTotal = finalTotal;
 	}
 
 }// end of InvoiceEntity

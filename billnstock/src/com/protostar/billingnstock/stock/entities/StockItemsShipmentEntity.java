@@ -29,7 +29,7 @@ public class StockItemsShipmentEntity extends BaseEntity {
 	private DocumentStatus status = DocumentStatus.DRAFT;
 	@Index
 	private boolean isStatusAlreadyFinalized = false;
-
+	private double finalTotal;
 	private Date shipmentDate;
 	private Date deliveredDate;
 	private List<StockLineItem> productLineItemList = new ArrayList<StockLineItem>();
@@ -158,6 +158,14 @@ public class StockItemsShipmentEntity extends BaseEntity {
 
 	public void setStatusAlreadyFinalized(boolean isStatusAlreadyFinalized) {
 		this.isStatusAlreadyFinalized = isStatusAlreadyFinalized;
+	}
+
+	public double getFinalTotal() {
+		return finalTotal;
+	}
+
+	public void setFinalTotal(double finalTotal) {
+		this.finalTotal = finalTotal;
 	}
 
 }// end of InvoiceEntity
