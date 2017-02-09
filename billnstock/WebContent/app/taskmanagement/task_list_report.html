@@ -47,68 +47,60 @@
 		</md-toolbar>
 		<div id="reportContentDiv">
 			<div>
-				<table
+				<md-data-table-container>
+				<table md-data-table class="md-primary" md-progress="deferred"
 					style="font-family: arial, sans-serif; border-collapse: collapse; width: 100%;">
-					<caption style="text-align: center; padding: 2px;">
-						<!-- <span ng-hide="true" flex>Task Filtered List,
-							Jalgaon</span> <br> <span ng-hide="true" flex>Display
-							Report: {{ schoolListsDate | date:"dd-MM-yyyy" }}</span> -->
-					</caption>
+					<thead md-order="reportQuery.order" md-trigger="onorderchange">
+						<tr>
+							<th name="Sr.No."
+								style="border: 1px solid black; text-align: left; padding: 2px;"></th>
+							<th name="Assigned To" order-by="assignedTo.firstName"
+								style="border: 1px solid black; text-align: left; padding: 2px;"></th>
+							<th name="Assigned By"
+								style="border: 1px solid black; text-align: left; padding: 2px;"></th>
+							<th name="Task Status"
+								style="border: 1px solid black; text-align: left; padding: 2px;"></th>
+							<th name="Assigned Date"
+								style="border: 1px solid black; text-align: left; padding: 2px;"></th>
+							<th name="Delayed(in Days)"
+								style="border: 1px solid black; text-align: left; padding: 2px;"></th>
+							<th name="Task Title"
+								style="border: 1px solid black; text-align: left; padding: 2px;"></th>
+							<th name="Description"
+								style="border: 1px solid black; text-align: left; padding: 2px;"></th>
 
-					<tr>
-						<th
-							style="border: 1px solid black; text-align: left; padding: 2px;">Sr.
-							No.</th>
-						<th
-							style="border: 1px solid black; text-align: left; padding: 2px;">Assigned
-							By</th>
-						<th
-							style="border: 1px solid black; text-align: left; padding: 2px;">Assigned
-							To</th>
-						<th
-							style="border: 1px solid black; text-align: left; padding: 2px;">Task
-							Status</th>
-						<th
-							style="border: 1px solid black; text-align: left; padding: 2px;">Assigned
-							Date</th>
-						<th
-							style="border: 1px solid black; text-align: left; padding: 2px;">Delayed
-							(in Days)</th>
-						<th
-							style="border: 1px solid black; text-align: left; padding: 2px;">Task
-							Title</th>
-						<th
-							style="border: 1px solid black; text-align: left; padding: 2px;">Task
-							Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- <tr
+						ng-repeat="task in taskEntityList | proOrderObjectByDateField: 'assignedDate'"> -->
+						<tr ng-repeat="task in taskEntityList | orderBy: reportQuery.order">
+							<td
+								style="border: 1px solid black; text-align: left; padding: 2px;">{{$index
+								+ 1}}</td>
+							<td
+								style="border: 1px solid black; text-align: left; padding: 2px;">{{(task.assignedTo.firstName
+								+ ' ' + task.assignedTo.lastName) | uppercase}}</td>
+							<td
+								style="border: 1px solid black; text-align: left; padding: 2px;">{{(task.assignedBy.firstName
+								+ ' ' + task.assignedBy.lastName) | uppercase}}</td>
+							<td
+								style="border: 1px solid black; text-align: left; padding: 2px;">{{task.taskStatus}}</td>
+							<td
+								style="border: 1px solid black; text-align: left; padding: 2px;">{{task.assignedDate
+								| date:"dd-MM-yyyy"}}</td>
+							<td
+								style="border: 1px solid black; text-align: left; padding: 2px;">{{getDelayInDays(task.assignedDate)}}</td>
+							<td
+								style="border: 1px solid black; text-align: left; padding: 2px;">{{task.taskTitle}}</td>
+							<td
+								style="border: 1px solid black; text-align: left; padding: 2px;">{{task.taskDesc
+								| htmlToPlainText}}</td>
 
-					</tr>
-
-					<tr
-						ng-repeat="task in taskEntityList | proOrderObjectByDateField: 'assignedDate'">
-						<td
-							style="border: 1px solid black; text-align: left; padding: 2px;">{{$index
-							+ 1}}</td>
-						<td
-							style="border: 1px solid black; text-align: left; padding: 2px;">{{(task.assignedBy.firstName
-							+ ' ' + task.assignedBy.lastName) | uppercase}}</td>
-						<td
-							style="border: 1px solid black; text-align: left; padding: 2px;">{{(task.assignedTo.firstName
-							+ ' ' + task.assignedTo.lastName) | uppercase}}</td>
-						<td
-							style="border: 1px solid black; text-align: left; padding: 2px;">{{task.taskStatus}}</td>
-						<td
-							style="border: 1px solid black; text-align: left; padding: 2px;">{{task.assignedDate
-							| date:"dd-MM-yyyy"}}</td>
-						<td
-							style="border: 1px solid black; text-align: left; padding: 2px;">{{getDelayInDays(task.assignedDate)}}</td>
-						<td
-							style="border: 1px solid black; text-align: left; padding: 2px;">{{task.taskTitle}}</td>
-						<td
-							style="border: 1px solid black; text-align: left; padding: 2px;">{{task.taskDesc
-							| htmlToPlainText}}</td>
-
-					</tr>
+						</tr>
+					</tbody>
 				</table>
+				</md-data-table-container>
 			</div>
 		</div>
 	</div>

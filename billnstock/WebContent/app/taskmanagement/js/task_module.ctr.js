@@ -4,7 +4,8 @@ angular
 				"taskModuleCtr",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
 						$mdUtil, $log, $q, $location, $anchorScroll, $state,
-						$stateParams, $filter, objectFactory, appEndpointSF, ajsCache) {
+						$stateParams, $filter, objectFactory, appEndpointSF,
+						ajsCache) {
 
 					$log.debug("Inside taskModuleCtr");
 					$scope.loading = true;
@@ -13,7 +14,7 @@ angular
 					var UserService = appEndpointSF.getUserService();
 
 					$scope.taskStatusList = [ 'OPEN', 'INPROGRESS', 'COMPLETED' ];
-					//$scope.taskStatusList = [ 'OPEN', 'COMPLETED' ];
+					// $scope.taskStatusList = [ 'OPEN', 'COMPLETED' ];
 
 					$scope.taskObj = $stateParams.taskObj;
 					$scope.action = $stateParams.action;
@@ -24,9 +25,9 @@ angular
 					// $log.debug("30 Days Before local Date:"
 					// + sinceDate.toLocaleString())
 					var allUserDummy = {
-							firstName : 'ALL',
-							id : -1
-						}
+						firstName : 'ALL',
+						id : -1
+					}
 					$scope.selectFilterData = {
 						assignedDate : sinceDate,
 						taskStatus : 'ALL',
@@ -146,11 +147,11 @@ angular
 					}
 
 					$scope.getMyAllTask = function() {
-						taskService.getMyAllTask($scope.curUser.business.id, $scope.curUser.id).then(
-								function(resp) {
-									$scope.taskEntityList = resp.items;
-									$scope.loading = false;
-								});
+						taskService.getMyAllTask($scope.curUser.business.id,
+								$scope.curUser.id).then(function(resp) {
+							$scope.taskEntityList = resp.items;
+							$scope.loading = false;
+						});
 					}
 
 					$scope.getUserList = function() {
@@ -169,28 +170,28 @@ angular
 							$log
 									.debug("Not Found List in Cache, need to fetch from Server.")
 						}
-						UserService
-								.getUsersByLoginAllowed($scope.curUser.business.id, true)
-								.then(
-										function(users) {
-											var activeUserList = [];
-											angular.forEach(users.items, function(user){												
-												if(user.isActive)
+						UserService.getUsersByLoginAllowed(
+								$scope.curUser.business.id, true).then(
+								function(users) {
+									var activeUserList = [];
+									angular.forEach(users.items,
+											function(user) {
+												if (user.isActive)
 													activeUserList.push(user);
 											});
-											activeUserList = $filter('orderBy')(activeUserList, 'firstName');
-											ajsCache.put(
-													getAllUserOfOrgCacheKey,
-													activeUserList);
-											postProcessGetUserList(activeUserList);
-										});
+									activeUserList = $filter('orderBy')(
+											activeUserList, 'firstName');
+									ajsCache.put(getAllUserOfOrgCacheKey,
+											activeUserList);
+									postProcessGetUserList(activeUserList);
+								});
 					}
 
 					function postProcessGetUserList(userList) {
 						$scope.userList = userList;
 						$scope.selectFilterData.userList = angular
 								.copy($scope.userList);
-						
+
 						$scope.selectFilterData.userList.unshift(allUserDummy);
 						$scope.selectFilterData.assignedBy = allUserDummy;
 						$scope.selectFilterData.assignedTo = allUserDummy;
@@ -229,6 +230,11 @@ angular
 					$scope.query = {
 						order : '-taskStatus',
 						limit : 10,
+						page : 1
+					};
+					$scope.reportQuery = {
+						order : 'assignedTo.firstName',
+						limit : 100,
 						page : 1
 					};
 					$scope.onpagechange = function(page, limit) {
