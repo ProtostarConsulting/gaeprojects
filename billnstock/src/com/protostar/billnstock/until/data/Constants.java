@@ -62,4 +62,8 @@ public class Constants {
 	public enum AccountGroupType {
 		ASSETS, EQUITY, LIABILITIES, INCOME, EXPENSES, OTHERINCOMES, OTHEREXPENCES, NA,PANDL
 	};
+	
+	public static enum BudgetType {
+		OPEX, CAPEX, NA
+	};
 }
