@@ -1051,7 +1051,16 @@ public class PDFHtmlTemplateService {
 			}
 
 			Customer customer = quotationEntity.getInvoiceObj().getCustomer();
-			String customerName = customer.getCompanyName();
+			String custName = "";
+
+			if (customer.getIsCompany()) {
+				custName = customer.getCompanyName();
+			} else {
+				custName = customer.getFirstName() + " "
+						+ customer.getLastName();
+			}
+
+			root.put("CustomerName", custName);
 
 			StringBuffer custaddressBuffer = new StringBuffer();
 			Address customerAddress = customer.getAddress();
@@ -1083,7 +1092,7 @@ public class PDFHtmlTemplateService {
 			double finalTotal = quotationEntity.getInvoiceObj().getFinalTotal();
 
 			// Customer Details
-			root.put("CustomerName", customerName);
+
 			root.put("CustomerAddress", custAddressForQuot);
 
 			root.put("noteToCustomer", "" + noteToCust);
@@ -1205,14 +1214,14 @@ public class PDFHtmlTemplateService {
 			if (productLineItemListForPO != null
 					&& productLineItemListForPO.size() > 0) {
 				root.put("productItemList", productLineItemListForPO);
-				root.put("serviceTax", servTax);
+				root.put("productTax", prodTax);
 
 			}
 
 			if (serviceLineItemListForPO != null
 					&& serviceLineItemListForPO.size() > 0) {
 				root.put("serviceItemList", serviceLineItemListForPO);
-				root.put("productTax", prodTax);
+				root.put("serviceTax", prodTax);
 			}
 
 			double finalTotal = purchaseOrderEntity.getFinalTotal();
@@ -1324,6 +1333,8 @@ public class PDFHtmlTemplateService {
 
 			String suplAdrs = addressBuffer.toString();
 			root.put("supplierAddress", suplAdrs);
+
+			root.put("receiptNote", stockReceiptEntity.getNote());
 
 			List<StockLineItem> serviceLineItemList = stockReceiptEntity
 					.getServiceLineItemList();
@@ -1451,8 +1462,19 @@ public class PDFHtmlTemplateService {
 			}
 
 			if (shipmentType.equals(ShipmentType.TO_CUSTOMER)) {
-				root.put("customer", stockItemsShipment.getCustomer()
-						.getCompanyName());
+
+				Customer customer = stockItemsShipment.getCustomer();
+
+				String custName = "";
+
+				if (customer.getIsCompany()) {
+					custName = customer.getCompanyName();
+				} else {
+					custName = customer.getFirstName() + " "
+							+ customer.getLastName();
+				}
+
+				root.put("customerName", custName);
 
 				StringBuffer custBuffer = new StringBuffer();
 				Address toCustAdd = stockItemsShipment.getCustomer()
@@ -1481,8 +1503,18 @@ public class PDFHtmlTemplateService {
 
 			}
 			if (shipmentType.equals(ShipmentType.TO_PARTNER)) {
-				root.put("Partner", stockItemsShipment.getCustomer()
-						.getCompanyName());
+
+				Customer partner = stockItemsShipment.getCustomer();
+				String partnerName = "";
+
+				if (partner.getIsCompany()) {
+					partnerName = partner.getCompanyName();
+				} else {
+					partnerName = partner.getFirstName() + " "
+							+ partner.getLastName();
+				}
+
+				root.put("partnerName", partnerName);
 
 				StringBuffer partnerBuffer = new StringBuffer();
 				Address toPartnerAdd = stockItemsShipment.getCustomer()
@@ -1523,6 +1555,7 @@ public class PDFHtmlTemplateService {
 
 			}
 
+			root.put("shipmentNote", stockItemsShipment.getNote());
 			root.put("finalTotal", stockItemsShipment.getFinalTotal());
 
 			NumberToRupees numberToRupees = new NumberToRupees(
