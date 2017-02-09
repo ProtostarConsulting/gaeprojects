@@ -66,14 +66,14 @@ td {
 										${toWarehouse} <br></br>
 										${toWHAddress}
 									</td>
-									<#elseif customer??>
+									<#elseif customerName??>
 									<td align="left" style="border: 0px;"><b>To :</b><br></br>
-										${customer} <br></br>
+										${customerName} <br></br>
 										${customerAddress}
 									</td>
-								   <#elseif Partner??>
+								   <#elseif partnerName??>
 									<td align="left" style="border: 0px;"><b>To :</b><br></br>
-										${Partner} <br></br>
+										${partnerName} <br></br>
 										${partnerCoAddress}
 									</td>
 									</#if>
@@ -118,11 +118,11 @@ td {
 					</td>					
 				</tr>
 				<!-- Contains a row across two tables -->
-				<#if noteToCustomer??>
+				<#if shipmentNote??>
 					<tr align="left" style="border: 0px;">
 						<td colspan="2" style="border: 0px; padding: 7px;">
-							<b>Note To Customer:</b><br></br>
-							${shipmentNotes}
+							<b>Note :</b><br></br>
+							${shipmentNote}
 					    </td>
 					</tr>
 				<#else>	
@@ -169,11 +169,11 @@ td {
 <#else>
   NO product items
 </#if>		
+<#if serviceItemList??>
 <p>
 	<br></br>
 	<br></br>
 </p>
-<#if serviceItemList??>
 		<table
 	style="width: 100%; height: 100%; ">
 	<caption align="left" style="border-spacing: 5px;padding: 3px;"><b>Other Costs: </b></caption>
@@ -204,9 +204,9 @@ td {
 		</#list>	
 		</tbody>
 		</table>
-	<#else>
-  <#assign serviceSubTotal=0>
-</#if>	
+		<#else>
+  No service items
+</#if>
 <table
 	style="width: 100%; height: 100%; border-spacing: 5px; height: 30px; padding: 5px;">	
 	<tbody>
@@ -221,5 +221,5 @@ td {
 				align="right">${finalTotalInWords}</th>					
 		</tr>
 	</tbody>
-</table>
+</table>	
 </html>

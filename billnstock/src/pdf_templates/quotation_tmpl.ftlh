@@ -167,14 +167,11 @@ p {
 	<#else>
   No service items
 </#if>
-	<p>
+<#if productItemList??>
+<p>
 	<br></br>
 	<br></br>
-	<br></br>
-	
-	</p>
-	<#if productItemList??>
-  	
+</p>  	
 	<table 
 	style="width: 100%; height: 100%; ">
 	<caption align="left" style="border-spacing: 5px;padding: 3px;"><b>Products: </b></caption>

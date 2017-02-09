@@ -116,11 +116,11 @@ td {
 					</td>					
 				</tr>
 				<!-- Contains a row across two tables -->
-				<#if noteToCustomer??>
+				<#if receiptNote??>
 					<tr align="left" style="border: 0px;">
 						<td colspan="2" style="border: 0px; padding: 7px;">
-							<b>Note To Customer:</b><br></br>
-							${noteToCustomer}
+							<b>Note :</b><br></br>
+							${receiptNote}
 					    </td>
 					</tr>
 				<#else>	
@@ -129,15 +129,10 @@ td {
 </table>
 </div>
 <p>
-		<br></br>
+	<br></br>
 	<br></br>
 	</p>
 		<#if productItemList??>
-  	<p>
-	<br></br>
-	<br></br>
-	<br></br>
-	</p>
 	<table 
 	style="width: 100%; height: 100%; ">
 	<caption align="left" style="border-spacing: 5px;padding: 3px;"><b>Products: </b></caption>
@@ -171,12 +166,11 @@ td {
 <#else>
   <#assign productSubTotal=0>
 </#if>		
+<#if serviceItemList??>
 <p>
 	<br></br>
 	<br></br>
-	<br></br>
 </p>
-<#if serviceItemList??>
 		<table
 	style="width: 100%; height: 100%; ">
 	<caption align="left" style="border-spacing: 5px;padding: 3px;"><b>Other Costs: </b></caption>

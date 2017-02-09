@@ -190,12 +190,11 @@ td {
 <#else>
   NO products items
 </#if>		
+<#if serviceItemList??>
 <p>
 	<br></br>
 	<br></br>
-	<br></br>
 </p>
-<#if serviceItemList??>
 		<table
 	style="width: 100%; height: 100%; ">
 	<caption align="left" style="border-spacing: 5px;padding: 3px;"><b>Other Costs: </b></caption>
