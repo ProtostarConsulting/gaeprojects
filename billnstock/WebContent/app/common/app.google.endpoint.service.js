@@ -173,7 +173,7 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	
+
 	UserService.getUsersByLoginAllowed = function(busId, loginAllowed) {
 		var deferred = $q.defer();
 		gapi.client.userService.getUsersByLoginAllowed({
@@ -183,7 +183,7 @@ function googleEndpointSF($q) {
 			deferred.resolve(resp);
 		});
 		return deferred.promise;
-	}	
+	}
 
 	UserService.getbusinessById = function(id) {
 		var deferred = $q.defer();
@@ -319,9 +319,7 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	
-	
-	
+
 	AccountGroupService.getProfitAndLossAcc = function(bid) {
 		var deferred = $q.defer();
 		gapi.client.accountGroupService.getProfitAndLossAcc({
@@ -340,9 +338,6 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	
-	
-	
 
 	// ----------------------------------
 
@@ -1923,8 +1918,8 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	
-	StockService.getStockShipmentByID = function(busId,id){
+
+	StockService.getStockShipmentByID = function(busId, id) {
 		var deferred = $q.defer();
 		gapi.client.stockService.getPOByID({
 			'busId' : busId,
@@ -1981,6 +1976,28 @@ function googleEndpointSF($q) {
 				function(resp) {
 					deferred.resolve(resp);
 				});
+		return deferred.promise;
+	}
+
+	StockService.addRequisition = function(requisitionEntity) {
+
+		var deferred = $q.defer();
+		gapi.client.stockService.addRequisition(requisitionEntity).execute(
+				function(resp) {
+					deferred.resolve(resp);
+				});
+		return deferred.promise;
+	}
+
+	StockService.fetchRequisitionListByPaging = function(busId, status,
+			pagingInfo) {
+		var deferred = $q.defer();
+		gapi.client.stockService.fetchRequisitionListByPaging({
+			"id" : busId,
+			"status" : status
+		}, pagingInfo).execute(function(resp) {
+			deferred.resolve(resp);
+		});
 		return deferred.promise;
 	}
 
@@ -2048,7 +2065,7 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
-	StockService.getStockReceiptByID = function(busId,id){
+	StockService.getStockReceiptByID = function(busId, id) {
 		var deferred = $q.defer();
 		gapi.client.stockService.getPOByID({
 			'busId' : busId,

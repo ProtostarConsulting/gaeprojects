@@ -11,8 +11,10 @@
 				ui-sref="stock.stockShipmentList" ng-click="close()"
 				class="md-primary"> Stock Shipments</md-button> <md-button
 				ui-sref="stock.stockItemList" ng-click="close()" class="md-primary">
-			Current Stock</md-button> <md-button ui-sref="stock.purchaseOrderList"
-				ng-click="close()" class="md-primary"> Purchase Orders</md-button> <md-button
+			Current Stock</md-button> <md-button ui-sref="stock.requisitionList"
+				ng-click="close()" class="md-primary"> Requisition</md-button> <md-button
+				ui-sref="stock.purchaseOrderList" ng-click="close()"
+				class="md-primary"> Purchase Orders</md-button> <md-button
 				ui-sref="stock.stockItemTypeList" ng-click="close()"
 				class="md-primary"> Stock Items</md-button> <md-button
 				ui-sref="stock.supplierList" ng-click="close()" class="md-primary">
@@ -29,10 +31,10 @@
 					class="name" style="color: Green; height: 15px; width: 15px"></md-icon>
 				Tax Collection </md-button> --> </md-content>
 			<span flex></span>
-			<md-button ng-show="hasUserAuthority(curUser, 'Stock.ModuleAdmin')" layout-align="center end" 
-					class="md-icon-button md-accent" ui-sref="stock.settings"
-					aria-label="Favorite"> <md-icon
-					md-svg-icon="img/icons/ic_settings_black_24px.svg"></md-icon> </md-button>
+			<md-button ng-show="hasUserAuthority(curUser, 'Stock.ModuleAdmin')"
+				layout-align="center end" class="md-icon-button md-accent"
+				ui-sref="stock.settings" aria-label="Favorite"> <md-icon
+				md-svg-icon="img/icons/ic_settings_black_24px.svg"></md-icon> </md-button>
 			<md-button class="md-icon-button" aria-label="More"
 				ng-click="toggleRight()"> <md-icon
 				md-svg-icon="img/icons/more_vert.svg"></md-icon> </md-button>

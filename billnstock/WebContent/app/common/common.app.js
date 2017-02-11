@@ -610,6 +610,17 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/edit/:selectedSOId",
 		templateUrl : '/app/sales/salesOrder_edit.html',
 		controller : 'salesOrderEditCtr'
+	}).state('stock.requisitionAdd', {
+		url : "/RequisitionAdd",
+		templateUrl : '/app/stock/requisition_add.html',
+		controller : 'requisitionAddCtr',
+		params : {
+			selectedRequisition : null
+		}
+	}).state('stock.requisitionList', {
+		url : "/RequisitionList",
+		templateUrl : '/app/stock/requisition_list.html',
+		controller : 'requisitionListCtr',
 	}).state('stock.purchaseOrderAdd', {
 		url : "/PurchaseOrderAdd",
 		templateUrl : '/app/stock/purchaseOrder_add.html',

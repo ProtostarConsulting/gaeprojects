@@ -17,6 +17,7 @@ public class RequisitionEntity extends InvoiceEntity {
 	@Index
 	private Ref<UserEntity> requester;	
 	private String onBehalfOf;
+	private Date expectedDate;
 
 	@Override
 	public void beforeSave() {
@@ -62,5 +63,15 @@ public class RequisitionEntity extends InvoiceEntity {
 
 	public void setOnBehalfOf(String onBehalfOf) {
 		this.onBehalfOf = onBehalfOf;
+	}
+
+
+	public Date getExpectedDate() {
+		return expectedDate;
+	}
+
+
+	public void setExpectedDate(Date expectedDate) {
+		this.expectedDate = expectedDate;
 	}
 }
