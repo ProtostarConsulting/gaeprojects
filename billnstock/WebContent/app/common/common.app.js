@@ -566,6 +566,19 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/PurchesVoucherList",
 		templateUrl : '/app/accounting/voucherPurchesList.html',
 		controller : 'voucherPurchesListCtr'
+	})
+	
+	.state('accounting.voucherPayment', {
+		url : "/PaymentVoucher",
+		templateUrl : '/app/accounting/voucherPayment.html',
+		controller : 'voucherPaymentCtr',
+		params : {
+			Account : ""
+		}
+	}).state('accounting.voucherPaymentList', {
+		url : "/PaymentVoucherList",
+		templateUrl : '/app/accounting/voucherPaymentList.html',
+		controller : 'voucherPaymentListCtr'
 	}).state('accounting.accountChart', {
 		url : "/accountChart",
 		templateUrl : '/app/accounting/accountChart.html',

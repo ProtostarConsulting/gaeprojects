@@ -13,7 +13,7 @@
 
 <section layout="row" layout-xs="column">
 			<md-subheader class="md-primary">
-			<h4 class="md-title">Reciept Vaucher</h4>
+			<h4 class="md-title">Reciept Voucher</h4>
 			</md-subheader>
 			<span flex></span>
 			<div layout="row" flex="33" flex-sm="50" flex-xs="100">
@@ -39,9 +39,9 @@
 
 <div layout layout-xs="column"  ng-if="!vouchersReview1">
 			
-			 <md-input-container flex>  <label>Credit Account </label>
+			 <md-input-container flex>  <label>Debit Account </label>
 	 <md-select ng-model="vouchersRe.accountType1" id="accountName"
-		name="Account1" ng-required="true"  ng-change="remSelected(vouchersRe.accountType1,1)">
+		name="Account1" ng-required="true"  ng-change="getAccountEntryByAccountId(vouchersRe.accountType1,1)">
 			<md-option ng-value="type" ng-repeat="type in vaccounts1">
 			{{type.accountName}}</md-option> </md-select> 
 			
@@ -54,7 +54,7 @@
 		</div>
 			
 			</md-input-container>
-			<md-input-container flex>  <label>Debit Account</label>
+			<md-input-container flex>  <label>Credit Account</label>
 	 <md-select ng-model="vouchersRe.accountType2" id="accountName"
 		name="Account" ng-required="true" ng-change="getAccountEntryByAccountId(vouchersRe.accountType2,2)" >
 			<md-option ng-value="type" ng-repeat="type in vaccounts2">

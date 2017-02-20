@@ -11,8 +11,10 @@ import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
 import com.googlecode.objectify.Key;
 import com.protostar.billingnstock.account.entities.AccountEntity;
+import com.protostar.billingnstock.account.entities.AccountEntryEntity;
 import com.protostar.billingnstock.account.entities.AccountGroupEntity;
 import com.protostar.billingnstock.account.entities.GeneralEntryEntity;
+import com.protostar.billingnstock.account.entities.PaymentVoucherEntity;
 import com.protostar.billingnstock.account.entities.PurchaseVoucherEntity;
 import com.protostar.billingnstock.account.entities.ReceiptVoucherEntity;
 import com.protostar.billingnstock.account.entities.SalesVoucherEntity;
@@ -93,9 +95,9 @@ public class VoucherService {
 		
 		GeneralEntryEntity generalEntryEntity = new GeneralEntryEntity(); 
 		//Debit ac amt crd ac
-		generalEntryEntity.setDebitAccount(ReceiptVoucherEntity.getAccountType2());
+		generalEntryEntity.setDebitAccount(ReceiptVoucherEntity.getAccountType1());
 		generalEntryEntity.setAmount(ReceiptVoucherEntity.getAmount());
-		generalEntryEntity.setCreditAccount(ReceiptVoucherEntity.getAccountType1());
+		generalEntryEntity.setCreditAccount(ReceiptVoucherEntity.getAccountType2());
 		generalEntryEntity.setCreatedDate(new Date());
 		generalEntryEntity.setBusiness(ReceiptVoucherEntity.getBusiness());
 		
@@ -117,21 +119,50 @@ public class VoucherService {
 			
 			
 	@ApiMethod(name = "addvoucherPurches", path="addvoucherPurches")
-	public void addvoucherPurches(PurchaseVoucherEntity PurchaseVoucherEntity  )
+	public void addvoucherPurches(PurchaseVoucherEntity purchaseVoucher  )
 	{
-		ofy().save().entity(PurchaseVoucherEntity).now();
+		ofy().save().entity(purchaseVoucher).now();
 		
-		
+		System.out.println("(((((((((((((((((((purchaseVoucher"+purchaseVoucher.getPurchaseAccount(). getAccountName().toString());
 		GeneralEntryEntity generalEntryEntity = new GeneralEntryEntity(); 
 		//Debit ac amt crd ac
-		generalEntryEntity.setDebitAccount(PurchaseVoucherEntity.getAccountType2());
-		generalEntryEntity.setAmount(PurchaseVoucherEntity.getAmount());
-		generalEntryEntity.setCreditAccount(PurchaseVoucherEntity.getAccountType1());
+		generalEntryEntity.setDebitAccount(purchaseVoucher.getCreditAccount());
+		generalEntryEntity.setAmount(purchaseVoucher.getAmount());
+		generalEntryEntity.setCreditAccount(purchaseVoucher.getCreditAccount());
 		generalEntryEntity.setCreatedDate(new Date());
-		generalEntryEntity.setBusiness(PurchaseVoucherEntity.getBusiness());
+		generalEntryEntity.setBusiness(purchaseVoucher.getBusiness());
 		generalEntryEntity.setDate(new Date());
 		GeneralEntryService generalEntryService = new GeneralEntryService();
 		generalEntryService.addGeneralEntry(generalEntryEntity);
+		
+		//addentry into stock acc 		
+		
+		
+		
+		
+		
+		AccountEntryService aes=new AccountEntryService();
+	
+		
+		AccountEntryEntity debitAcc= new AccountEntryEntity();
+		
+//		creditAcc.setDate(entryEntity.getDate());--minus b   
+		debitAcc.setDate(new Date());
+		debitAcc.setNarration(purchaseVoucher.getNarration());
+		debitAcc.setDebit(purchaseVoucher.getAmount());
+		debitAcc.setAccountEntity(purchaseVoucher.getStockAccount());//getPurchaseAccount
+		debitAcc.setCreatedDate(new Date());
+		debitAcc.setModifiedBy(purchaseVoucher.getModifiedBy());
+		debitAcc.setBusiness(purchaseVoucher.getBusiness());
+		aes.addAccountEntry(debitAcc);	
+		purchaseVoucher.setCreatedDate(new Date());
+		purchaseVoucher.setModifiedDate(new Date());
+		
+		ofy().save().entity(purchaseVoucher).now();
+		
+	
+		//AccountEntryService aes=new AccountEntryService();
+			
 		
 	}
 		
@@ -143,6 +174,44 @@ public class VoucherService {
 		List<PurchaseVoucherEntity> listPurches= ofy().load().type(PurchaseVoucherEntity.class).list();
 		return listPurches;
 	}
+	///////////////////-------Payment--------------------------------
+	
+	
+@ApiMethod(name = "addvoucherPayment", path="addvoucherPayment")
+public void addvoucherPayment(PaymentVoucherEntity paymentVoucher  )
+{
+	ofy().save().entity(paymentVoucher).now();
+	
+	
+	GeneralEntryEntity generalEntryEntity = new GeneralEntryEntity(); 
+	//Debit ac amt crd ac
+	generalEntryEntity.setDebitAccount(paymentVoucher.getPaymentAccount());
+	generalEntryEntity.setAmount(paymentVoucher.getAmount());
+	generalEntryEntity.setCreditAccount(paymentVoucher.getCreditAccount());
+	generalEntryEntity.setCreatedDate(new Date());
+	generalEntryEntity.setBusiness(paymentVoucher.getBusiness());
+	generalEntryEntity.setDate(new Date());
+	GeneralEntryService generalEntryService = new GeneralEntryService();
+	generalEntryService.addGeneralEntry(generalEntryEntity);
+	
+	//addentry into stock acc 		
+		
+	ofy().save().entity(paymentVoucher).now();
+	
+	
+}
+	
+
+
+@ApiMethod(name = "listVoucherPayment", path="listVoucherPayment")
+public List<PaymentVoucherEntity>listVoucherPayment(@Named("id") Long busId) 
+{
+	List<PaymentVoucherEntity> listPurches= ofy().load().type(PaymentVoucherEntity.class).list();
+	return listPurches;
+}
+	
+	
+	/////////////////////----------Payment--------------------------------
 		
 	
 	@ApiMethod(name = "getPurchesListById")

@@ -2,7 +2,6 @@ package com.protostar.billingnstock.account.entities;
 
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.OnSave;
 import com.protostar.billingnstock.invoice.entities.InvoiceEntity;
 import com.protostar.billnstock.until.data.Constants;
 import com.protostar.billnstock.until.data.EntityUtil;
@@ -12,8 +11,10 @@ import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 public class PurchaseVoucherEntity extends VoucherEntity {
 
 	private Ref<InvoiceEntity> invoiceEntity;
-	private Ref<AccountEntity> accountType1;
-	private Ref<AccountEntity> accountType2;
+	
+	private Ref<AccountEntity> purchaseAccount;
+	private Ref<AccountEntity> creditAccount;
+	private Ref<AccountEntity> stockAccount;
 	
 	public Double amount;
 	public String narration;
@@ -47,23 +48,7 @@ public class PurchaseVoucherEntity extends VoucherEntity {
 	public void setItem(String item) {
 		this.item = item;
 	}
-
-	public AccountEntity getAccountType1() {
-		return accountType1.get();
-	}
-
-	public void setAccountType1(AccountEntity accountType1) {
-		this.accountType1 = Ref.create(accountType1);
-	}
-
-	public AccountEntity getAccountType2() {
-		return accountType2.get();
-	}
-
-	public void setAccountType2(AccountEntity accountType2) {
-		this.accountType2 = Ref.create(accountType2);
-	}
-
+	
 	public Double getAmount() {
 		return amount;
 	}
@@ -86,6 +71,27 @@ public class PurchaseVoucherEntity extends VoucherEntity {
 
 	public void setInvoiceEntity(InvoiceEntity invoiceEntity) {
 		this.invoiceEntity = Ref.create(invoiceEntity);
+	}
+	public AccountEntity getPurchaseAccount() {
+		return purchaseAccount == null ? null : purchaseAccount.get();
+	}
+	public void setPurchaseAccount(AccountEntity purchaseAccount) {
+		if (purchaseAccount != null)
+			this.purchaseAccount = Ref.create(purchaseAccount);
+	}
+	public AccountEntity getCreditAccount() {
+		return creditAccount == null ? null : creditAccount.get();
+	}
+	public void setCreditAccount(AccountEntity creditAccount) {
+		if (purchaseAccount != null)
+			this.creditAccount = Ref.create(creditAccount);
+	}
+	public AccountEntity getStockAccount() {
+		return stockAccount == null ? null : stockAccount.get();
+	}
+	public void setStockAccount(AccountEntity stockAccount) {
+		if (stockAccount != null)
+			this.stockAccount = Ref.create(stockAccount);
 	}
 
 

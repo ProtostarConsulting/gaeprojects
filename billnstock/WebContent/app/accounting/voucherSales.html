@@ -50,7 +50,7 @@
 			Account 
 		</label> <md-select ng-model="vouchers.accountType1" id="accountName"
 			name="Account1" ng-required="true"
-			ng-change="remSelected(vouchers.accountType1,1)"> <md-option
+			ng-change="getAccountEntryByAccountId(vouchers.accountType1,1)"> <md-option
 			ng-value="type" ng-repeat="type in vaccounts1">
 		{{type.accountName}} </md-option> </md-select>
 

@@ -30,7 +30,7 @@ td, th { /* //border: 1px solid #dddddd; */
 	<div id="balanceSheetDiv" style="width: 100%;">
 
 		<table
-			style="width: 50%; border: 1px solid #dddddd; border-color: black; float: left">
+			style="width: 50%; border-right: 0px;border: 1px solid #dddddd; border-color: black; float: left">
 
 			<tr>
 				<th colspan="2">Purchase Accounts</th>
@@ -96,9 +96,13 @@ td, th { /* //border: 1px solid #dddddd; */
 		</table>
 		<table
 			style="width: 50%; border: 1px solid #dddddd; border-color: black; float: left">
-			<tr>
+			<tr ng-show="totalSales">
 				<th colspan="2">Sales Accounts</th>
 				<td colspan="1"><b>{{totalSales}}</b></td>
+			</tr>
+			<tr ng-show="totalClosingStockBalance">
+				<td colspan="2">Closing Balance</th>
+				<td colspan="1"><b>{{totalClosingStockBalance}}</b></td>
 			</tr>
 			<tr>
 
@@ -124,7 +128,7 @@ td, th { /* //border: 1px solid #dddddd; */
 			<tr>
 				<th colspan="2">&nbsp;&nbsp;</th>
 
-				<td style="border-bottom: double; border-top: double;">{{totalLeft}}</td>
+				<td style="border-bottom: double; border-top: double;">{{totalRight}}</td>
 			</tr>
 
 			<tr>

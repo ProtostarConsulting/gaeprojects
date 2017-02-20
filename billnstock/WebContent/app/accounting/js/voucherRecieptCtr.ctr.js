@@ -25,10 +25,16 @@ app.controller("voucherRecieptCtr", function($scope, $window, $mdToast, $timeout
 		var accountService = appEndpointSF.getAccountService();
 		accountService.getAccountList($scope.curUser.business.id).then(function(list) {
 			for (var x = 0; x < list.length; x++) {
-				$scope.vaccounts1.push(list[x]);
+				
+				if(list[x].accountGroup.groupName.trim()!="Sundry Creditors"&&list[x].accountGroup.groupName.trim()!="Cash-in-hand"&&list[x].accountGroup.groupName.trim()!="Bank Accounts")
+				{
 				$scope.vaccounts2.push(list[x]);
-$scope.s=x;
-			}
+				}
+					if(list[x].accountGroup.groupName.trim()=="Sundry Creditors"||list[x].accountGroup.groupName.trim()=="Cash-in-hand"||list[x].accountGroup.groupName.trim()=="Bank Accounts")
+						{
+				$scope.vaccounts1.push(list[x]);
+				}
+		}
 
 		});
 	}
@@ -72,38 +78,7 @@ $scope.s=x;
 
 	}
 	
-	$scope.remSelected = function(selected,fl) {
-		$scope.loading = true;
-		$scope.getAccountEntryByAccountId(selected, fl);
-		
-			var accountService = appEndpointSF.getAccountService();
-			accountService.getAccountList($scope.curUser.business.id).then(function(list) {
-				
-				if(flag!=undefined)
-				$scope.vaccounts2.push(flag);
-				
-				
-				
-				for (i = 0; i < $scope.vaccounts2.length; i++) {
-					if (selected.accountName == $scope.vaccounts2[i].accountName) {
-						// vaccounts2.splice(i,1);
-
-						$scope.vaccounts2.splice(i, 1);
-						flag=selected;
-						if (selected == $scope.vouchersRe.accountType2) {
-							$scope.debitCurrentBalance="";	
-							$scope.creditCurrentBalance="";
-								$scope.vouchersRe.accountType2 = "";
-							$scope.voucherRecieptForm.Account.$touched = true;
-						}$scope.loading = false;
-						break;
-						// $log.debug(value);
-
-					}
-				}
-			});
-	}
-
+	
 	
 	
 	

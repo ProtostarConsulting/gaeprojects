@@ -36,79 +36,104 @@ app
 
 							var AccountGroupService = appEndpointSF
 									.getAccountGroupService();
+							
+							
 							AccountGroupService
-									.getProfitAndLossAcc(
-											$scope.curUser.business.id)
-									.then(
-											function(list) {
-												$scope.totalSales = 0
-												$scope.totalIndirectExpences2 = 0;
-												$scope.totalPurches = 0;
-												$scope.totalIndirectExpences = 0;
-												$scope.totalGrossProfit = 0;
-												$scope.totalGrossLoss = 0;
-												$scope.totalLeft = 0;
-												$scope.totalRight = 0;
-												$scope.accountGroupTypeGroupList = list;
-												$scope.totalOtherExp = 0;
-												$scope.nettProfit = 0;
-												for (var int = 0; int < list.length; int++) {
-													var typeName = list[int].typeName;
-													if ((typeName == "INCOME")
-															&& (list[int].groupList != undefined)) {
-														for (var i = 0; i < list[int].groupList.length; i++) {
-															$scope.totalSales = list[int].groupList[i].groupBalance
-																	+ $scope.totalSales;
-														}
-														if ($scope.totalSales < 0) {
-															$scope.totalSales = $scope.totalSales
-																	* (-1);
-														}
-													}
-
-													if ((typeName == "OTHEREXPENCES")
-															&& (list[int].groupList != undefined)) {
-														for (var i = 0; i < list[int].groupList.length; i++) {
-															$scope.totalIndirectExpences = list[int].groupList[i].groupBalance
-																	+ $scope.totalIndirectExpences;
-
-														}
-
-														if ($scope.totalIndirectExpences < 0) {
-															$scope.totalIndirectExpences = $scope.totalIndirectExpences
-																	* (-1);
-														}
-
-													}
-													if ((typeName == "EXPENSES")
-															&& (list[int].groupList != undefined)) {
-														for (var i = 0; i < list[int].groupList.length; i++) {
-															$scope.totalPurches = list[int].groupList[i].groupBalance
-																	+ $scope.totalPurches;
-														}
-														if($scope.totalPurches<0){$scope.totalPurches=$scope.totalPurches*-1;}
-
-													}
-
-												}
-
-												$scope.totalIndirectExpences2 = $scope.totalIndirectExpences
-														+ $scope.totalPurches;
-												if($scope.totalIndirectExpences2<0){$scope.totalIndirectExpences2=$scope.totalIndirectExpences2*(-1);}
+							.getClosingStockBalance(
+									$scope.curUser.business.id)
+							.then(
+									function(list2) {
+										$scope.totalClosingStockBalance = list2.returnBalance;
+										
+										
+										
+										AccountGroupService
+										.getProfitAndLossAcc(
+												$scope.curUser.business.id)
+										.then(
+												function(list) {
+													$scope.totalSales = 0;
+													$scope.totalIndirectExpences2 = 0;
+													$scope.totalPurches = 0;
+													$scope.totalIndirectExpences = 0;
+													$scope.totalGrossProfitCo = 0;
+													$scope.totalGrossProfitBf = 0;
+													$scope.totalGrossLoss = 0;
+													$scope.totalLeft = 0;
+													$scope.totalRight = 0;
+													$scope.accountGroupTypeGroupList = list;
+													$scope.totalOtherExp = 0;
+													$scope.nettProfit = 0;
+													$scope.totalOpeningStockBalance=0;
 												
-												$scope.totalGrossProfit = $scope.totalSales
-														- $scope.totalPurches;
-												
-												if($scope.totalGrossProfit<0){$scope.totalGrossLoss=$scope.totalGrossProfit;}
-												$scope.totalLeft = $scope.totalPurches
-														+ $scope.totalGrossProfit;
-												if($scope.totalLeft<0){$scope.totalLeft=$scope.totalLeft*(-1);}
-												$scope.totalRight = $scope.totalSales;
-												$scope.nettProfit=$scope.totalGrossProfit-$scope.totalIndirectExpences;
-											//	if($scope.nettProfit<0){$scope.nettProfit=$scope.nettProfit*(-1);}
-												$scope.loading = false;
+													for (var int = 0; int < list.length; int++) {
+														var typeName = list[int].typeName;
+														
+															if ((typeName == "INCOME")
+																&& (list[int].groupList != undefined)) {
+															for (var i = 0; i < list[int].groupList.length; i++) {
+																$scope.totalSales = list[int].groupList[i].groupBalance
+																		+ $scope.totalSales;
+															}
+															if ($scope.totalSales < 0) {
+																$scope.totalSales = $scope.totalSales
+																		* (-1);
+															}
+														}
 
-											});
+														if ((typeName == "OTHEREXPENCES")
+																&& (list[int].groupList != undefined)) {
+															for (var i = 0; i < list[int].groupList.length; i++) {
+																$scope.totalIndirectExpences = list[int].groupList[i].groupBalance
+																		+ $scope.totalIndirectExpences;
+
+															}
+
+															if ($scope.totalIndirectExpences < 0) {
+																$scope.totalIndirectExpences = $scope.totalIndirectExpences
+																		* (-1);
+															}
+
+														}
+														if ((typeName == "EXPENSES")
+																&& (list[int].groupList != undefined)) {
+															for (var i = 0; i < list[int].groupList.length; i++) {
+																$scope.totalPurches = list[int].groupList[i].groupBalance
+																		+ $scope.totalPurches;
+															}
+															if($scope.totalPurches<0){$scope.totalPurches=$scope.totalPurches*-1;}
+
+														}
+
+													}
+
+													$scope.totalIndirectExpences2 = $scope.totalIndirectExpences
+															+ $scope.totalPurches;
+													if($scope.totalIndirectExpences2<0){$scope.totalIndirectExpences2=$scope.totalIndirectExpences2*(-1);}
+													
+													
+													
+													$scope.totalLeft=$scope.totalPurches+$scope.totalOpeningStockBalance;
+													
+													
+													
+													$scope.totalRight = $scope.totalSales+$scope.totalClosingStockBalance;
+															
+													
+													if($scope.totalGrossProfit<0){$scope.totalGrossLoss=$scope.totalGrossProfit;}
+													
+													$scope.nettProfit=$scope.totalGrossProfitCo -$scope.totalIndirectExpences;
+												//	if($scope.nettProfit<0){$scope.nettProfit=$scope.nettProfit*(-1);}
+													$scope.loading = false;
+
+												});
+										
+
+									});
+							
+							
+							
+							
 
 						} else {
 							$log.debug("Services Not Loaded, watiting...");

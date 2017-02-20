@@ -33,6 +33,7 @@ public class Constants {
 	public static final String VE_NO_COUNTER = "VE_NO_COUNTER";
 	public static final String PE_NO_COUNTER = "PE_NO_COUNTER";
 	public static final String PV_NO_COUNTER = "PV_NO_COUNTER";
+	public static final String PayV_NO_COUNTER = "PayV_NO_COUNTER";
 	public static final String GJE_NO_COUNTER = "GJE_NO_COUNTER";
 	public static final String AFY_NO_COUNTER = "AFY_NO_COUNTER";
 	public static final String AGE_NO_COUNTER = "AGE_NO_COUNTER";

@@ -13,34 +13,47 @@ app
 					$scope.loading = true;
 					var purchesVouchers = function(){
 						return{
-						accountType1 : "",
-						accountType2 : "",
+						purchaseAccount : "",
+						creditAccount : "",
 						amount : "",
 						narration : "",
 						isCash:true,
 						accdetail:"",
-						item:"",
+						stockAccount:"",
 						business: $scope.curUser.business}
 					};
 					$scope.purchesVouchers = purchesVouchers();
 
-					$scope.vaccounts1 = [];
-					$scope.vaccounts2 = [];
+					$scope.purcheseAccList = [];
+					$scope.purchesCreditAcc = [];
+					$scope.stockItems = [];
 					$scope.getAccountList = function() {
 						$scope.loading = true;
 						var accountService = appEndpointSF.getAccountService();
+						
+					/*	accountService.getPurchesAcc($scope.curUser.business.id).then(function(purchesAcclist) {});
+						accountService.getPurchesCreditAcc($scope.curUser.business.id).then(function(purchesCreditAcclist) {});
+						accountService.getStockItems($scope.curUser.business.id).then(function(stockItemslist) {});*/
+						
+						
+						
+						
 						accountService.getAccountList($scope.curUser.business.id).then(function(list) {
 							for (var x = 0; x < list.length; x++) {
 								
-								if(list[x].accountgroup.groupName.trim()!="PurchaseAccounts")
+								if(list[x].accountGroup.groupName.trim()=="Purchase Accounts")
 								{
-								$scope.vaccounts1.push(list[x]);
+								$scope.purcheseAccList.push(list[x]);
 								}
-									if(list[x].accountgroup.groupName.trim()=="PurchaseAccounts")
+									if(list[x].accountGroup.groupName.trim()=="Sundry Creditors"||list[x].accountGroup.groupName.trim()=="Cash-in-hand"||list[x].accountGroup.groupName.trim()=="Bank Accounts")
 										{
-								$scope.vaccounts2.push(list[x]);}
-									
-									$scope.loading = false;
+								$scope.purchesCreditAcc.push(list[x]);
+								}
+									if(list[x].accountGroup.groupName.trim()=="Stock-in-Hand"){
+										
+									$scope.stockItems.push(list[x]);	
+							}
+		$scope.loading = false;
 							}
 
 						});
@@ -113,50 +126,14 @@ app
 
 					}
 
-					$scope.remSelected = function(selected, fl) {
-
-						$scope.getAccountEntryByAccountId(selected, fl);
-
-						
-						var accountService = appEndpointSF.getAccountService();
-						accountService
-								.getAccountList($scope.curUser.business.id)
-								.then(
-										function(list) {
-
-											if (flag != undefined) {
-												$scope.vaccounts2.push(flag);
-
-											}
-
-											for (i = 0; i < $scope.vaccounts2.length; i++) {
-
-												if (selected.accountName == $scope.vaccounts2[i].accountName) {
-
-													$scope.vaccounts2.splice(i,	1);
-
-													flag = selected;
-													if (selected == $scope.purchesVouchers.accountType2) {
-														$scope.debitCurrentBalance=" ";	
-														$scope.creditCurrentBalance=" ";
-														$scope.purchesVouchers.accountType2 =" ";
-														$scope.voucherPurchesForm.Account2.$touched=true;														
-													}
-
-													break;
-
-												}
-											}
-										});
-
-					}
+				
 
 				
-					$scope.getAccountEntryByAccountId = function(accId, fl) {
+					$scope.getAccountEntryByAccountId = function(acc, fl) {
 						
 						var accountservice=appEndpointSF.getAccountService();
 						
-						accountservice.getAccountBalance(accId.id).then(function(balance){
+						accountservice.getAccountBalance(acc.id).then(function(balance){
 							
 							
 							if(fl==1)

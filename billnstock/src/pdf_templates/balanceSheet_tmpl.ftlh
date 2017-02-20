@@ -2,203 +2,196 @@
 
 <style type="text/css">
 table {
+	border-collapse: collapse;
+}
+
+th {
+	border: 1px ; 
+	border-color: #cccccc; 
+	border-spacing: 5px; 
+	height: 30px; 
+	padding: 7px;
+	 border-collapse: collapse;
+}
+
+td {
+	border-right: 1px; 
+	border-color: #cccccc; 
+	border-spacing: 5px; 
+	height: 30px; 
+	padding: 5px;
+	 border-collapse: collapse;
+	  width:50%;
 	
-	 border-color:black;
-	  border: 1px solid;
+}
+tr{
+border-right: 1px solid black; 
+	border-color: #cccccc; 
+	 width:50%;
+
 }</style>
 
-<div align="center">
- <b>${buisinessName}</b> <br></br> ${buisinessAddress}
- 
+<div align="right">  	
+ <table style="width: 100%; height: 100%; border: 0px">
+	<tr>
+		<td style="width: 40%; border: 0px"></td>
+		<td style="width: 60%; border: 0px"><div align="right"> <b>${businessName}</b> <br></br> ${businessAddress}</div></td>		
+	</tr>
+  </table>	
 </div>
 
+
+<p>
+	<br></br>
+</p>
 <hr></hr>
 <p>
 	<br></br>
 </p>
-
-<div align="center"  >
-	<b>BalanceSheet</b>
+<div align="center">
+	<b>Balance Sheet</b>
 	<br></br>
-	<p align="center">as at ${date}</p>
+	<p align="center">${date}</p>
+	
 </div>
 <p>
+	<br></br>
 	<br></br>
 	<br></br>
 </p>
 
 	<table
-			style="width: 50%; border: 1px solid #dddddd; border-color: black; float: left">
+			style="width: 100%; border: 1px solid #dddddd; border-color: black; float: left">
 			
 			
 			<tr>
-				<th colspan="2">Equity</th>
+				<th colspan="2"style="border: 0px;">Equity</th>
 				<td colspan="1"></td>
+				<th colspan="2"style="border: 0px;">ASSETS</th>
+				<td colspan="1"style="border: 0px;"></td>
 			</tr>
-			<tr>
-			<td colspan="2"></td>
-			<td style="text-align: left;" id="content">
+			
+			<tr style="border: 0px;">
+			<td colspan="2" style="border: 0px;"></td>
+			<td style="text-align: left;" >
 			<#list  balanceSheetList as groupTypeObj>
 					<#list  groupTypeObj.groupList as grp>
 					<#if groupTypeObj.typeName=="EQUITY">
 						
-							<div style="text-align: right;">
+							<div style="text-align: right;border: 0px;">
 							
-								<span style="padding-right: 30%;">${grp.groupName}</span>
-								 <#if grp.groupBalance < 0>(</#if><span
-									style="text-align: right;">${grp.groupBalance}</span>
-									<#if grp.groupBalance < 0>)</#if>
-									
+							
+							<span style="padding-right: 30%;border: 0px;">${grp.groupName}</span>
+							&nbsp;&nbsp;
+								<span style="text-align: right;border: 0px;">${grp.groupBalance}</span>
 							</div>
 						
 						</#if>
 						</#list>
 						</#list> 
 						</td>
-			</tr>
-			<tr>
-				<th colspan="2">LIABILITIES</th>
-				<td colspan="1"></td>
-			</tr>
+						<td colspan="2"style="border: 0px;"></td>
+			<td style="text-align: left;"style="border: 0px;">
 			
 			
-			<tr>
-			<td colspan="2"></td>
-			<td style="text-align: left;" id="content">
-			<#list  balanceSheetList as groupTypeObj>
-					<#list  groupTypeObj.groupList as grp>
-					<#if groupTypeObj.typeName=="LIABILITIES">
-						
-							
-								<span style="padding-right: 30%;">${grp.groupName}</span>
-								 <#if grp.groupBalance < 0>(</#if><span
-									style="text-align: right;">${grp.groupBalance}</span>
-									<#if grp.groupBalance < 0>)</#if>
-									
-						
-						</#if>
-						</#list>
-						</#list> 
-						</td>
-						</tr>			
-			<tr>
-			<#if nettProffitOrLoss??>
-				<td><b>Profit & Loss A/c </b></td>
-				<td><b>${nettProffitOrLoss}</b></td>
-				</#if>
-			</tr>
-							
-			<tr>
-			<td>Opening Balance </td>
-			<td>&nbsp;&nbsp;</td>
-			
-			</tr>
-			<tr>
-			<#if nettProffitOrLoss??>
-			<td>Current Period </td>
-			<td style="border-bottom: medium; ">${nettProffitOrLoss}</td>
-			</#if>
-			</tr><tr>
-				<td class="bottom" style="text-align: right; align: bottom"
-					style="padding-right: 30%;"><b>Total Liabilities</b></td>
-				<td style="align: right;">
-				<#if totalLiabilities2??>
-			<b>${totalLiabilities2} </b>
-			</#if>
-				</td>
-
-	</tr>
-	</table>
-	<table
-			style="width: 50%; border: 1px solid #dddddd; border-color: black; float: left">
-			
-			
-			<tr>
-				<th colspan="2">ASSETS</th>
-				<th style="text-align: center;"><br></br> <span> </span></th>
-			</tr>
-	
-	
-	
-	<tr>
-			<td colspan="2"></td>
-			<td style="text-align: left;">
 			<#list  balanceSheetList as groupTypeObj>
 					<#list  groupTypeObj.groupList as grp>
 					<#if groupTypeObj.typeName=="ASSETS">
 						
 							
-								<span style="padding-right: 30%;">${grp.groupName}</span>
-								<span style="text-align: right;">${grp.groupBalance}</span>
+								<span style="padding-right: 30%;border: 0px;">${grp.groupName}</span>
+								
+								<span style="text-align: right;border: 0px;">${grp.groupBalance}</span>
 									
 									
 						
 						</#if>
 						</#list>
 						</#list>
-		</td>
-</tr>	
-<tr>
-				<th colspan="2"></th>
-				<td colspan="1"></td>
-			</tr>	
+		</td></tr>
+			
 			<tr>
-			<td colspan="2"></td>
+				<th colspan="2" style="border: 0px;">LIABILITIES</th>
+				<td colspan="1" ></td>
+			</tr>
+			
+			
+			<tr style="border: 0px;">
+			<td colspan="2" style="border: 0px;"></td>
 			<td style="text-align: left;" id="content">
 			<#list  balanceSheetList as groupTypeObj>
 					<#list  groupTypeObj.groupList as grp>
 					<#if groupTypeObj.typeName=="LIABILITIES">
 						
 							
-								<span style="padding-right: 30%;">${grp.groupName}</span>
-								 <#if grp.groupBalance < 0>(</#if><span
-									style="text-align: right;">${grp.groupBalance}</span>
-									<#if grp.groupBalance < 0>)</#if>
-									
+								<span style="padding-right: 30%;border: 0px;">${grp.groupName}</span>
+								
+								<span style="text-align: right;border: 0px;">${grp.groupBalance}</span>
 						
 						</#if>
 						</#list>
-						</#list>
+						</#list> 
 						</td>
-</tr>		
-	<tr>
-	<#if nettProffitOrLoss??>
-	
-				<td><b>Profit & Loss A/c </b></td>
-				<td><b>${nettProffitOrLoss}</b></td>
-	</#if>
-	</tr>
-	<tr>
-		<#if  nettProffitOrLoss??>
-			<td>Opening Balance </td>
-			<td>&nbsp;&nbsp;</td>
-		</#if>
-	</tr>
-	<tr>
-			<td>Current Period </td>
-			<td style="border-bottom: medium; ">
-			<#if nettProffitOrLoss??>
-			${nettProffitOrLoss}
+						</tr>	
+						
+						
+						
+						
+						
+						<tr>
+						<td colspan="2"style="border: 0px;">Current Period</td>
+						<td colspan="1"style="border-bottom: medium; ">${nettProffitOrLoss}</td>
+						<th colspan="2" style="border: 0px;">Profit & Loss A/c</th>
+						<td colspan="1" ><b>${nettProffitOrLoss}</b></td>	
+						
+						</tr>
+						<tr>
+						<td colspan="2"style="border: 0px;"></td>
+						<td colspan="1"style="border-bottom: medium; "></td>
+						<td colspan="2" style="border: 0px;">Opening Balance</td>
+						<td colspan="1" ><b></b></td>	
+						
+						
+						
+						</tr>
+						
+						
+					
+						<tr>
+						<td colspan="2"style="border: 0px;"></td>
+						<td colspan="1"style="border-bottom: medium; "></td>
+						<td colspan="2" style="border: 0px;">Current Period</td>
+						<td colspan="1" ><b>${nettProffitOrLoss}</b></td>	
+						
+						
+						
+						</tr>
+					
+						
+								
+	<tr style="border: 0px;">
+				<td colspan="2"class="bottom" style="text-align: right; border: 0px;align: bottom"
+					style="padding-right: 30%;border: 0px;"><b>Total Liabilities</b></td>
+				<td style="align: right;">
+				<#if totalLiabilities2??>
+			<b>${totalLiabilities2} </b>
 			</#if>
-			</td>
-	</tr>
-			
-	<tr>
-			<td class="bottom" style="text-align: right; align: bottom"
-				style="padding-right: 30%;"><b>Total Asset</b>
+				</td>
 				
-			</td>
-			<td style="align: right;">
-			<#if totalAsset??>
+				
+				<td colspan="2"class="bottom" style="text-align: right; border: 0px;align: bottom"
+					style="padding-right: 30%;border: 0px;"><b>Total Assets</b></td>
+				<td style="align: right;">
+				<#if totalAsset??>
 			<b>${totalAsset} </b>
 			</#if>
-			</td>
+				</td>
+				
+				
 
 	</tr>
-	
-	
 	</table>
-		
+	
 		
 		
 </html>
