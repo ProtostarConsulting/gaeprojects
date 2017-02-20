@@ -5,6 +5,9 @@ import java.util.List;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
 import com.protostar.billnstock.entity.BaseEntity;
+import com.protostar.billnstock.until.data.Constants;
+import com.protostar.billnstock.until.data.EntityUtil;
+import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 import com.protostar.billnstock.until.data.Constants.BudgetType;
 import com.protostar.billnstock.until.data.Constants.DocumentStatus;
 
@@ -17,6 +20,17 @@ public class BudgetEntity extends BaseEntity {
 	@Index
 	private String period; 
 	private List<LineItemCategory> categoryList;
+	
+	@Override
+	public void beforeSave() {
+		super.beforeSave();
+		if (getId() == null) {
+			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
+					EntityUtil.getBusinessRawKey(getBusiness()),
+					Constants.BUDGET_NO_COUNTER);
+			setItemNumber(sequenceGenService.getNextSequenceNumber());
+		}
+	}
 	
 	public BudgetType getType() {
 		return type;
@@ -43,6 +57,6 @@ public class BudgetEntity extends BaseEntity {
 		this.status = status;
 	}	
 
-}// end of QuotationEntity
+}
 
 

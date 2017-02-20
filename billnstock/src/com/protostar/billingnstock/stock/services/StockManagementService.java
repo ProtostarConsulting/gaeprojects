@@ -17,6 +17,7 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.cmd.Query;
 import com.protostar.billingnstock.invoice.entities.InvoiceEntity;
+import com.protostar.billingnstock.purchase.entities.BudgetEntity;
 import com.protostar.billingnstock.purchase.entities.LineItemEntity;
 import com.protostar.billingnstock.purchase.entities.PurchaseOrderEntity;
 import com.protostar.billingnstock.purchase.entities.RequisitionEntity;
@@ -560,6 +561,33 @@ public class StockManagementService extends BaseService {
 		} else {
 			return super.fetchEntityListByPaging(busId,
 					RequisitionEntity.class, pagingInfo);
+		}
+	}
+
+	@ApiMethod(name = "addBudget", path = "addBudget")
+	public BudgetEntity addBudget(BudgetEntity budgetEntity) {
+		if (budgetEntity.getStatus() == DocumentStatus.FINALIZED) {
+			throw new RuntimeException(
+					"Save not allowed. Budget entity has already been finalized."
+							+ this.getClass().getSimpleName()
+							+ "Finalized entity can't be altered.");
+		}
+
+		ofy().save().entity(budgetEntity).now();
+		return budgetEntity;
+	}
+
+	@ApiMethod(name = "fetchBudgetListByPaging", path = "fetchBudgetListByPaging")
+	public EntityPagingInfo fetchBudgetListByPaging(@Named("id") Long busId,
+			@Named("status") String status, EntityPagingInfo pagingInfo) {
+		if (status != null && !status.isEmpty()) {
+			DocumentStatus statusType = DocumentStatus.valueOf(status
+					.toUpperCase(Locale.ENGLISH));
+			return super.fetchEntityListByPaging(busId, BudgetEntity.class,
+					pagingInfo, statusType);
+		} else {
+			return super.fetchEntityListByPaging(busId, BudgetEntity.class,
+					pagingInfo);
 		}
 	}
 
