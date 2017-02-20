@@ -634,6 +634,17 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/RequisitionList",
 		templateUrl : '/app/stock/requisition_list.html',
 		controller : 'requisitionListCtr',
+	}).state('stock.addBudget', {
+		url : "/BudgetAdd",
+		templateUrl : '/app/stock/budget_add.html',
+		controller : 'budgetAddCtr',
+		params : {
+			selectedBudgetObj : null
+		}
+	}).state('stock.budgetList', {
+		url : "/BudgetList",
+		templateUrl : '/app/stock/budget_list.html',
+		controller : 'budgetListCtr',
 	}).state('stock.purchaseOrderAdd', {
 		url : "/PurchaseOrderAdd",
 		templateUrl : '/app/stock/purchaseOrder_add.html',

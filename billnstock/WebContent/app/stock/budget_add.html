@@ -1,0 +1,133 @@
+<md-content layout-padding>
+<section layout="row" layout-xs="column">
+	<md-subheader class="md-primary">
+	<h4 class="md-title" ng-bind="budgetObj.id?'Edit Budget':'Add Budget'"></h4>
+	</md-subheader>
+	<span flex></span>
+</section>
+<div>
+	<form novalidate ng-submit="$event.preventDefault()"
+		name="addBudgetForm">
+
+		<div layout="row" layout-xs="column">
+			<div layout="row" flex=70>
+
+				<md-input-container flex> <input
+					aria-label="title" ng-model="sectionTitle" ng-readonly="true">
+				</md-input-container>
+				<md-input-container flex> <input type="text"
+					ng-required="true" aria-label="period" placeholder="Enter period"
+					ng-model="budgetObj.period"> </md-input-container>
+
+			</div>
+		</div>
+	</form>
+</div>
+<div flex layout="row" layout-xs="column">
+	<div layout="row" flex=70>
+		<md-input-container flex> <label> Budget
+			Type </label> <md-select flex ng-model="budgetObj.type"
+			placeholder="Select Budget Type" ng-required="true"> <md-option
+			ng-value="budgetType"
+			ng-selected="(budgetObj.type)?(budgetObj.type == budgetType):($index == 0)"
+			ng-repeat="budgetType in budgetTypes"
+			ng-selected="budgetObj.type.id == budgetType.id">{{budgetType
+		}}</md-option> </md-select> </md-input-container>
+		<md-input-container flex> <label>Notes</label> <input
+			type="text" ng-model="budgetObj.note"></md-input-container>
+	</div>
+</div>
+<div
+	ng-show="!budgetObj.categoryList || budgetObj.categoryList.length == 0">
+	Add Category:
+	<md-button class="md-icon-button" ng-click="addCategory()">
+	<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
+	<md-tooltip> Add Categories</md-tooltip></ng-md-icon> </md-button>
+
+</div>
+<div
+	ng-show="budgetObj.categoryList && budgetObj.categoryList.length > 0">
+	<h3>Category Items</h3>
+	<table md-data-table md-progress="deferred">
+		<thead md-order="query.order" md-trigger="onOrderChange">
+			<tr>
+				<th name="Category" order-by="srNo"></th>
+				<th name="Category Name" order-by="categoryName"></th>
+				<th></th>
+				<th name="Actions"></th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<tr
+				ng-repeat-start="category in budgetObj.categoryList track by $index">
+
+				<td>Category {{ $index +1 }}</td>
+				<td><md-input-container flex> <input
+						type="text" placeholder="Enter category name"
+						ng-model="category.categoryName" ng-required="true">
+					<div>
+						<md-button class="md-icon-button" ng-click="addLineItem(category)">
+						<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
+						<md-tooltip> Add New Item</md-tooltip></ng-md-icon> </md-button>
+					</div>
+					</md-input-container></td>
+
+				<td></td>
+
+				<td><md-icon
+						md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
+						ng-click="removeCategoryItem($index)" class="name"
+						style="color: Green; height: 18px; width: 18px"></md-icon></td>
+
+			</tr>
+			<tr ng-repeat="itemObj in category.items">
+				<td></td>
+				<td><md-input-container> <input
+						type="text" placeholder="Item name" ng-model="itemObj.itemName"
+						ng-required="true"></md-input-container></td>
+				<td><md-input-container> <input
+						type="number" placeholder="Expenses"
+						ng-change="calItemSubTotal(category)" ng-model="itemObj.price"
+						ng-required="true"></md-input-container> <md-icon
+						md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
+						ng-click="removeLineItem(category,$index)" class="name"
+						style="color: Green; height: 18px; width: 18px"></md-icon></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>Total</td>
+				<td>{{category.itemSubTotal| currency:"":"2"}}</td>
+				<td></td>
+			</tr>
+			<tr ng-repeat-end></tr>
+			<tr>
+				<td><md-button class="md-icon-button" ng-click="addCategory()">
+					<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
+					<md-tooltip> Add New Category </md-tooltip></ng-md-icon> </md-button></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>Final Total</td>
+				<td>{{budgetObj.finalTotal| currency:"":"2"}}</td>
+				<td></td>
+			</tr>
+		</tbody>
+	</table>
+
+</div>
+<div layout layout-xs="column" ng-hide="budgetObj.status == 'FINALIZED'">
+	<section layout="row" layout-xs="column">
+		<md-button class="md-raised md-primary"
+			ng-disabled="addBudgetForm.$invalid" ng-click="saveBudgetRecord()">Save
+		as Draft</md-button>
+		<md-button class="md-raised md-primary"
+			ng-disabled="requisitionForm.$invalid"
+			ng-click="submitBudgetRecord()">Submit</md-button>
+	</section>
+</div>
+</md-content>

@@ -51,6 +51,7 @@ app
 							stockService.addRequisition($scope.requisition)
 									.then(function() {
 										$scope.showUpdateToast();
+										$scope.requisition = {};
 									});
 							$scope.loading = false;
 						}

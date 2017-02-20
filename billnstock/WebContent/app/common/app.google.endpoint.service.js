@@ -2001,6 +2001,28 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
+	StockService.addBudget = function(budgetEntity) {
+
+		var deferred = $q.defer();
+		gapi.client.stockService.addBudget(budgetEntity).execute(
+				function(resp) {
+					deferred.resolve(resp);
+				});
+		return deferred.promise;
+	}
+	
+	StockService.fetchBudgetListByPaging = function(busId, status,
+			pagingInfo) {
+		var deferred = $q.defer();
+		gapi.client.stockService.fetchBudgetListByPaging({
+			"id" : busId,
+			"status" : status
+		}, pagingInfo).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}
+	
 	StockService.getAllPurchaseOrder = function(id) {
 		var deferred = $q.defer();
 
