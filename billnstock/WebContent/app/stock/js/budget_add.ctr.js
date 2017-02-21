@@ -78,7 +78,8 @@ app
 
 						var itemObj = {
 							itemName : "",
-							price : 0
+							price : 0,
+							currentBudgetBalance : 0
 						};
 
 						if (!category.items) {
@@ -92,7 +93,9 @@ app
 						$scope.calItemSubTotal();
 					};
 
-					$scope.calItemSubTotal = function(category) {
+					$scope.calItemSubTotal = function(category, item) {
+
+						item.currentBudgetBalance = item.price;
 						category.itemSubTotal = 0;
 
 						if (category.items) {
