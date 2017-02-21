@@ -59,46 +59,54 @@
 		</thead>
 
 		<tbody>
-			<tr
+			<tr ng-init="itemToggle=false"
 				ng-repeat-start="category in budgetObj.categoryList track by $index">
 
-				<td>Category {{ $index +1 }}</td>
+				<td>Category {{ $index +1 }}<md-button class="md-icon-button"
+						ng-show="!itemToggle" ng-click="itemToggle=true"> <ng-md-icon
+						icon="keyboard_arrow_down" style="fill: md-default" size="24">
+					<md-tooltip> Expand</md-tooltip></ng-md-icon></md-button> <md-button class="md-icon-button"
+						ng-show="itemToggle" ng-click="itemToggle=false"> <ng-md-icon
+						icon="keyboard_arrow_up" style="fill: md-default" size="24">
+					<md-tooltip> Compress</md-tooltip></ng-md-icon></md-button></td>
 				<td><md-input-container flex> <input
 						type="text" placeholder="Enter category name"
-						ng-model="category.categoryName" ng-required="true">
-					<div>
-						<md-button class="md-icon-button" ng-click="addLineItem(category)">
-						<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
-						<md-tooltip> Add New Item</md-tooltip></ng-md-icon> </md-button>
-					</div>
-					</md-input-container></td>
+						ng-model="category.categoryName" ng-required="true"> </md-input-container></td>
 
-				<td></td>
+				<td>Total:{{category.itemSubTotal| currency:"":"2"}}</td>
 
 				<td><md-icon
 						md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
 						ng-click="removeCategoryItem($index)" class="name"
-						style="color: Green; height: 18px; width: 18px"></md-icon></td>
+						style="color: Green; height: 18px; width: 18px"> <md-tooltip>Remove
+					Category</md-tooltip></md-icon></td>
 
 			</tr>
-			<tr ng-repeat="itemObj in category.items">
+			<tr ng-repeat="itemObj in category.items" ng-show="itemToggle">
 				<td></td>
 				<td><md-input-container> <input
 						type="text" placeholder="Item name" ng-model="itemObj.itemName"
 						ng-required="true"></md-input-container></td>
 				<td><md-input-container> <input
-						type="number" placeholder="Expenses"
-						ng-change="calItemSubTotal(category)" ng-model="itemObj.price"
-						ng-required="true"></md-input-container> <md-icon
+						type="number" placeholder="Budget Amt."
+						ng-change="calItemSubTotal(category,itemObj)"
+						ng-model="itemObj.price" ng-required="true"></md-input-container> <md-input-container>
+					<input type="number" placeholder="Current Balance."
+						ng-change="calItemSubTotal(category,itemObj)"
+						ng-model="itemObj.currentBudgetBalance" ng-readonly="true"></md-input-container></td>
+				<td><md-icon
 						md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
 						ng-click="removeLineItem(category,$index)" class="name"
-						style="color: Green; height: 18px; width: 18px"></md-icon></td>
-				<td></td>
+						style="color: Green; height: 18px; width: 18px"> <md-tooltip>Remove
+					Item</md-tooltip></md-icon></td>
 			</tr>
-			<tr>
+			<tr ng-show="itemToggle">
 				<td></td>
-				<td>Total</td>
-				<td>{{category.itemSubTotal| currency:"":"2"}}</td>
+				<td><md-button class="md-icon-button"
+						ng-click="addLineItem(category)"> <ng-md-icon
+						icon="add_circle" style="fill: md-default" size="24">
+					<md-tooltip> Add New Item</md-tooltip></ng-md-icon> </md-button></td>
+				<td></td>
 				<td></td>
 			</tr>
 			<tr ng-repeat-end></tr>
@@ -127,7 +135,9 @@
 		as Draft</md-button>
 		<md-button class="md-raised md-primary"
 			ng-disabled="requisitionForm.$invalid"
-			ng-click="submitBudgetRecord()">Submit</md-button>
+			ng-click="submitBudgetRecord($event)">Submit</md-button>
+		<md-button class="md-raised md-primary"
+			ng-disabled="addBudgetForm.$invalid">Finalize</md-button>
 	</section>
 </div>
 </md-content>
