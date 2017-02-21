@@ -174,6 +174,17 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
+	UserService.getUsersByLoginAllowed = function(busId, loginAllowed) {
+		var deferred = $q.defer();
+		gapi.client.userService.getUsersByLoginAllowed({
+			'busId' : busId,
+			'loginAllowed' : loginAllowed
+		}).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}
+
 	UserService.getbusinessById = function(id) {
 		var deferred = $q.defer();
 		gapi.client.userService.getBusinessById({
@@ -2050,6 +2061,27 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
+	StockService.addRequisition = function(requisitionEntity) {
+
+		var deferred = $q.defer();
+		gapi.client.stockService.addRequisition(requisitionEntity).execute(
+				function(resp) {
+					deferred.resolve(resp);
+				});
+		return deferred.promise;
+	}
+
+	StockService.fetchRequisitionListByPaging = function(busId, status,
+			pagingInfo) {
+		var deferred = $q.defer();
+		gapi.client.stockService.fetchRequisitionListByPaging({
+			"id" : busId,
+			"status" : status
+		}, pagingInfo).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}
 	StockService.addBudget = function(budgetEntity) {
 
 		var deferred = $q.defer();

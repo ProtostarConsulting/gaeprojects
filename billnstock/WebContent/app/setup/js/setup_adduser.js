@@ -189,7 +189,7 @@ angular
 									.then(
 											function(users) {
 												$scope.userslist = users.items.length;
-												if ($scope.userslist < $scope.selectedBusiness.accounttype.maxuser) {
+												if ($scope.userslist < $scope.selectedBusiness.businessPlan.maxuser) {
 
 													var UserService = appEndpointSF
 															.getUserService();
