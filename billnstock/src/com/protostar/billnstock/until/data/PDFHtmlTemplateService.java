@@ -22,7 +22,6 @@ import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.text.zugferd.checkers.basic.TaxTypeCode;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
 import com.protostar.billingnstock.account.entities.AccountGroupEntity;
 import com.protostar.billingnstock.account.entities.PurchaseVoucherEntity;
@@ -31,6 +30,7 @@ import com.protostar.billingnstock.account.entities.SalesVoucherEntity;
 import com.protostar.billingnstock.account.entities.VoucherEntity;
 import com.protostar.billingnstock.account.services.AccountGroupService;
 import com.protostar.billingnstock.account.services.AccountGroupService.TypeInfo;
+import com.protostar.billingnstock.account.services.VoucherService;
 import com.protostar.billingnstock.cust.entities.Customer;
 import com.protostar.billingnstock.hr.entities.MonthlyPaymentDetailEntity;
 import com.protostar.billingnstock.hr.entities.SalStruct;
@@ -278,7 +278,7 @@ public class PDFHtmlTemplateService {
 
 	// --------------------------------------------------
 
-		public void generatePdfBalanceSheet(List<TypeInfo> list,
+		public void generatePdfBalanceSheet(List<TypeInfo> natureList,
 				ServletOutputStream outputStream, Long bid) {
 
 			try {
@@ -295,7 +295,7 @@ public class PDFHtmlTemplateService {
 				XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 				Map<String, Object> root = new HashMap<String, Object>();
 				addDocumentHeaderLogo(accG, document, root);
-				root.put("balanceSheetList", list);
+				root.put("balanceSheetList", natureList);
 
 				root.put("date", "" + today);
 
@@ -311,18 +311,18 @@ public class PDFHtmlTemplateService {
 				ServerMsg nettProffitOrLoss1 = ag.getProfitAndLossAccBalance(bid);
 				double nettProffitOrLoss = nettProffitOrLoss1.getReturnBalance();
 
-				for (int int2 = 0; int2 < list.size(); int2++) {
-					String typeName = list.get(int2).getTypeName();
+				for (int int2 = 0; int2 < natureList.size(); int2++) {
+					String typeName = natureList.get(int2).getTypeName();
 					if ((typeName == "ASSETS")
-							&& (list.get(int2).getGroupList() != null)
-							&& !(list.get(int2).getGroupList().get(int2)
+							&& (natureList.get(int2).getGroupList() != null)
+							/*&& !(natureList.get(int2).getGroupList().get(int2)
 									.getGroupName()
-									.equalsIgnoreCase("Sundry Debtors"))) {
-						for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
+									.equalsIgnoreCase("Sundry Debtors"))*/) {
+						for (int i = 0; i < natureList.get(int2).getGroupList().size(); i++) {
 							System.out.println("get GRPLIST-----"
-									+ list.get(int2).getGroupList().get(int2)
+									+ natureList.get(int2).getGroupList().get(int2)
 											.getGroupName());
-							totalAsset = list.get(int2).getGroupList().get(i)
+							totalAsset = natureList.get(int2).getGroupList().get(i)
 									.getGroupBalance()
 									+ totalAsset;
 						}
@@ -332,9 +332,9 @@ public class PDFHtmlTemplateService {
 					}
 
 					if ((typeName == "LIABILITIES")
-							&& (list.get(int2).getGroupList() != null)) {
-						for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
-							totalLiabilities = list.get(int2).getGroupList().get(i)
+							&& (natureList.get(int2).getGroupList() != null)) {
+						for (int i = 0; i < natureList.get(int2).getGroupList().size(); i++) {
+							totalLiabilities = natureList.get(int2).getGroupList().get(i)
 									.getGroupBalance()
 									+ totalLiabilities;
 						}
@@ -345,9 +345,9 @@ public class PDFHtmlTemplateService {
 
 					}
 					if ((typeName == "EQUITY")
-							&& (list.get(int2).getGroupList() != null)) {
-						for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
-							totalEQUITY = list.get(int2).getGroupList().get(i)
+							&& (natureList.get(int2).getGroupList() != null)) {
+						for (int i = 0; i < natureList.get(int2).getGroupList().size(); i++) {
+							totalEQUITY = natureList.get(int2).getGroupList().get(i)
 									.getGroupBalance()
 									+ totalEQUITY;
 						}
@@ -419,38 +419,19 @@ public class PDFHtmlTemplateService {
 			Document document = new Document();
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 			document.open();
-			Image logoURL = Image
-					.getInstance("img/images/protostar_logo_pix_313_132.jpg");
-			logoURL.setAbsolutePosition(50f, 788f);
-			logoURL.scaleToFit(90f, 90f);
-			String logo = String.valueOf(document.add(logoURL));
+			
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 
 			Map<String, Object> root = new HashMap<String, Object>();
-			root.put("logo", logo);
+			addDocumentHeaderLogo(salesEntity, document, root);
+			
 			root.put("DebitAccount", salesEntity.getAccountType1()
 					.getAccountName().toString());
 			root.put("CreditAccount", salesEntity.getAccountType2()
 					.getAccountName().toString());
 			root.put("Amount", salesEntity.getAmount().toString());
 			root.put("Narration", salesEntity.getNarration().toString());
-			root.put("buisinessName", ""
-					+ salesEntity.getBusiness().getBusinessName());
-			StringBuffer addressBuf = new StringBuffer();
-			Address address = salesEntity.getBusiness().getAddress();
-			if (address != null) {
-				if (address.getLine1() != null && !address.getLine1().isEmpty())
-					addressBuf.append(address.getLine1());
-				if (address.getLine2() != null && !address.getLine2().isEmpty())
-					addressBuf.append(", " + address.getLine2());
-				if (address.getCity() != null && !address.getCity().isEmpty())
-					addressBuf.append(", " + address.getCity());
-				if (address.getState() != null && !address.getState().isEmpty())
-					addressBuf.append(", " + address.getState());
-			}
-
-			String buisinessAddress = addressBuf.toString();
-			root.put("buisinessAddress", "" + buisinessAddress);
+			
 			Template temp = getConfiguration().getTemplate(
 					"pdf_templates/sales_voucher_tmpl.ftlh");
 
@@ -460,8 +441,9 @@ public class PDFHtmlTemplateService {
 			temp.process(root, out);
 
 			String pdfXMLContent = byteArrayOutputStream.toString();
-
+			
 			worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
+			addDocumentFooter(salesEntity, writer);
 			document.close();
 
 		} catch (Exception e) {
@@ -476,16 +458,12 @@ public class PDFHtmlTemplateService {
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 
 			document.open();
-			Image logoURL = Image
-					.getInstance("img/images/protostar_logo_pix_313_132.jpg");
-			logoURL.setAbsolutePosition(50f, 788f);
-			logoURL.scaleToFit(90f, 90f);
-			String logo = String.valueOf(document.add(logoURL));
+			
 
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 
 			Map<String, Object> root = new HashMap<String, Object>();
-
+			addDocumentHeaderLogo(receiptEntity, document, root);
 			root.put("CreditAccount", receiptEntity.getAccountType1()
 					.getAccountName().toString());
 			root.put("DebitAccount", receiptEntity.getAccountType2()
@@ -514,8 +492,7 @@ public class PDFHtmlTemplateService {
 			}
 
 			String buisinessAddress = addressBuf.toString();
-			// Top Header
-			// root.put("buisinessName", "" + business.getBusinessName());
+
 			root.put("buisinessAddress", "" + buisinessAddress);
 
 			Template temp = getConfiguration().getTemplate(
@@ -529,6 +506,7 @@ public class PDFHtmlTemplateService {
 			String pdfXMLContent = byteArrayOutputStream.toString();
 
 			worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
+			addDocumentFooter(receiptEntity, writer);
 			document.close();
 
 		} catch (Exception e) {
@@ -544,19 +522,15 @@ public class PDFHtmlTemplateService {
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 
 			document.open();
-			Image logoURL = Image
-					.getInstance("img/images/protostar_logo_pix_313_132.jpg");
-			logoURL.setAbsolutePosition(50f, 800f);
-			logoURL.scaleToFit(90f, 90f);
-			String logo = String.valueOf(document.add(logoURL));
+		
 
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 
 			Map<String, Object> root = new HashMap<String, Object>();
-
-			root.put("CreditAccount", purchesEntity.getAccountType2()
+			addDocumentHeaderLogo(purchesEntity, document, root);
+			root.put("CreditAccount", purchesEntity.getCreditAccount()
 					.getAccountName().toString());
-			root.put("DebitAccount", purchesEntity.getAccountType1()
+			root.put("DebitAccount", purchesEntity.getPurchaseAccount()
 					.getAccountName().toString());
 			root.put("Amount", purchesEntity.getAmount().toString());
 			root.put("Items", purchesEntity.getItem().toString());
@@ -582,8 +556,7 @@ public class PDFHtmlTemplateService {
 			}
 
 			String buisinessAddress = addressBuf.toString();
-			// Top Header
-			// root.put("buisinessName", "" + business.getBusinessName());
+
 			root.put("buisinessAddress", "" + buisinessAddress);
 
 			Template temp = getConfiguration().getTemplate(
@@ -593,11 +566,11 @@ public class PDFHtmlTemplateService {
 					5000);
 			Writer out = new PrintWriter(byteArrayOutputStream);
 			temp.process(root, out);
-			// return escapeHtml(byteArrayOutputStream.toString());
 
 			String pdfXMLContent = byteArrayOutputStream.toString();
 
 			worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
+			addDocumentFooter(purchesEntity, writer);
 			document.close();
 
 		} catch (Exception e) {
@@ -613,15 +586,12 @@ public class PDFHtmlTemplateService {
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 
 			document.open();
-			Image logoURL = Image
-					.getInstance("img/images/protostar_logo_pix_313_132.jpg");
-			logoURL.setAbsolutePosition(50f, 750f);
-			logoURL.scaleToFit(90f, 90f);
-			String logo = String.valueOf(document.add(logoURL));
+			
 
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 
 			Map<String, Object> root = new HashMap<String, Object>();
+			addDocumentHeaderLogo(accountGroupEntity, document, root);
 			root.put("groupName", accountGroupEntity.getGroupName());
 			// root.put("accountName",accountGroupEntity.get;
 			root.put("groupType", accountGroupEntity.getAccountGroupType()
@@ -638,6 +608,7 @@ public class PDFHtmlTemplateService {
 			String pdfXMLContent = byteArrayOutputStream.toString();
 
 			worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
+			addDocumentFooter(accountGroupEntity, writer);
 			document.close();
 
 		} catch (Exception e) {
