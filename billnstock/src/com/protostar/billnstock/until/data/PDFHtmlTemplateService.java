@@ -15,8 +15,6 @@ import java.util.Map;
 
 import javax.servlet.ServletOutputStream;
 
-import org.apache.commons.io.output.TaggedOutputStream;
-
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -24,6 +22,7 @@ import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.zugferd.checkers.basic.TaxTypeCode;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
 import com.protostar.billingnstock.account.entities.AccountGroupEntity;
 import com.protostar.billingnstock.account.entities.PurchaseVoucherEntity;
@@ -31,9 +30,7 @@ import com.protostar.billingnstock.account.entities.ReceiptVoucherEntity;
 import com.protostar.billingnstock.account.entities.SalesVoucherEntity;
 import com.protostar.billingnstock.account.entities.VoucherEntity;
 import com.protostar.billingnstock.account.services.AccountGroupService;
-import com.protostar.billingnstock.account.services.VoucherService;
 import com.protostar.billingnstock.account.services.AccountGroupService.TypeInfo;
-import com.protostar.billingnstock.account.services.AccountingService;
 import com.protostar.billingnstock.cust.entities.Customer;
 import com.protostar.billingnstock.hr.entities.MonthlyPaymentDetailEntity;
 import com.protostar.billingnstock.hr.entities.SalStruct;
@@ -57,6 +54,7 @@ import freemarker.template.TemplateExceptionHandler;
 
 public class PDFHtmlTemplateService {
 
+	private static final String FONT1 = null;
 	static Configuration cfg = null;
 
 	public Configuration getConfiguration() {
@@ -128,269 +126,269 @@ public class PDFHtmlTemplateService {
 	}
 
 	// --------------------------------------------------//
-	public void getProfitAndLossAcc(List<TypeInfo> list,
-			ServletOutputStream outputStream, Long bid) {
+		public void getProfitAndLossAcc(List<TypeInfo> list,
+				ServletOutputStream outputStream, Long bid) {
 
-		try {
-			AccountGroupEntity accG = new AccountGroupEntity();
-			com.protostar.billingnstock.user.services.UserService user = new com.protostar.billingnstock.user.services.UserService();
-			BusinessEntity businessEntity = user.getBusinessById(bid);
-			accG.setBusiness(businessEntity);
-			Document document = new Document();
-			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
-			document.open();
-			Date today = new Date();
-			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
-			Map<String, Object> root = new HashMap<String, Object>();
-			addDocumentHeaderLogo(accG, document, root);
-			root.put("ProfitAndLossAcList", list);
-			root.put("date", "" + today);
+			try {
+				AccountGroupEntity accG = new AccountGroupEntity();
+				com.protostar.billingnstock.user.services.UserService user = new com.protostar.billingnstock.user.services.UserService();
+				BusinessEntity businessEntity = user.getBusinessById(bid);
+				accG.setBusiness(businessEntity);
+				Document document = new Document();
+				PdfWriter writer = PdfWriter.getInstance(document, outputStream);
+				document.open();
+				Date today = new Date();
+				XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
+				Map<String, Object> root = new HashMap<String, Object>();
+				addDocumentHeaderLogo(accG, document, root);
+				root.put("ProfitAndLossAcList", list);
+				root.put("date", "" + today);
 
-			Template temp = getConfiguration().getTemplate(
-					"pdf_templates/profitAndLossAcc_tmpl.ftlh");
+				Template temp = getConfiguration().getTemplate(
+						"pdf_templates/profitAndLossAcc_tmpl.ftlh");
 
-			double netPandL = 0;
-			double totalSales = 0;
-			double totalIndirectExpences2 = 0;
-			double totalPurches = 0;
-			double totalIndirectExpences = 0;
-			double totalGrossProfit = 0;
-			double totalGrossLoss = 0;
-			double totalLeft = 0;
-			double totalRight = 0;
-			String typeName;
-			double totalOtherExp = 0;
-			double nettProfit = 0;
-			double totalGrossProfitCo = 0;
-			double totalGrossProfitBf = 0;
-			double totalOpeningStockBalance = 0;
-			double totalClosingStockBalance = 0;
-			// //
-			double goodsSold = 0;
-			double salesReturn = 0;
-			double cashSales = 0;
-			double creditSales = 0;
+				double netPandL = 0;
+				double totalSales = 0;
+				double totalIndirectExpences2 = 0;
+				double totalPurches = 0;
+				double totalIndirectExpences = 0;
+				double totalGrossProfit = 0;
+				double totalGrossLoss = 0;
+				double totalLeft = 0;
+				double totalRight = 0;
+				String typeName;
+				double totalOtherExp = 0;
+				double nettProfit = 0;
+				double totalGrossProfitCo = 0;
+				double totalGrossProfitBf = 0;
+				double totalOpeningStockBalance = 0;
+				double totalClosingStockBalance = 0;
+				// //
+				double goodsSold = 0;
+				double salesReturn = 0;
+				double cashSales = 0;
+				double creditSales = 0;
 
-			AccountGroupService accGS = new AccountGroupService();
+				AccountGroupService accGS = new AccountGroupService();
 
-			totalClosingStockBalance = accGS.getClosingStockBalance(bid)
-					.getReturnBalance();
-			System.out.println("totalClosingStockBalance-----"
-					+ totalClosingStockBalance);
+				totalClosingStockBalance = accGS.getClosingStockBalance(bid)
+						.getReturnBalance();
+				System.out.println("totalClosingStockBalance-----"
+						+ totalClosingStockBalance);
 
-			for (int int2 = 0; int2 < list.size(); int2++) {
-				typeName = list.get(int2).getTypeName().toString();
-				if ((typeName == "INCOME")
-						&& (list.get(int2).getGroupList() != null)) {
-					for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
-						totalSales = list.get(int2).getGroupList().get(i)
-								.getGroupBalance()
-								+ totalSales;
+				for (int int2 = 0; int2 < list.size(); int2++) {
+					typeName = list.get(int2).getTypeName().toString();
+					if ((typeName == "INCOME")
+							&& (list.get(int2).getGroupList() != null)) {
+						for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
+							totalSales = list.get(int2).getGroupList().get(i)
+									.getGroupBalance()
+									+ totalSales;
+						}
+						if (totalSales < 0) {
+							totalSales = totalSales * (-1);
+						}
 					}
-					if (totalSales < 0) {
-						totalSales = totalSales * (-1);
+
+					if ((typeName == "OTHEREXPENCES")
+							&& (list.get(int2).getGroupList() != null)) {
+						for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
+							totalIndirectExpences = list.get(int2).getGroupList()
+									.get(i).getGroupBalance()
+									+ totalIndirectExpences;
+
+						}
+
+						if (totalIndirectExpences < 0) {
+							totalIndirectExpences = totalIndirectExpences * (-1);
+						}
+
 					}
+					if ((typeName == "EXPENSES")
+							&& (list.get(int2).getGroupList() != null)) {
+						for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
+							totalPurches = list.get(int2).getGroupList().get(i)
+									.getGroupBalance()
+									+ totalPurches;
+						}
+						if (totalPurches < 0) {
+							totalPurches = totalPurches * -1;
+						}
+
+					}
+
 				}
 
-				if ((typeName == "OTHEREXPENCES")
-						&& (list.get(int2).getGroupList() != null)) {
-					for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
-						totalIndirectExpences = list.get(int2).getGroupList()
-								.get(i).getGroupBalance()
-								+ totalIndirectExpences;
-
-					}
-
-					if (totalIndirectExpences < 0) {
-						totalIndirectExpences = totalIndirectExpences * (-1);
-					}
-
-				}
-				if ((typeName == "EXPENSES")
-						&& (list.get(int2).getGroupList() != null)) {
-					for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
-						totalPurches = list.get(int2).getGroupList().get(i)
-								.getGroupBalance()
-								+ totalPurches;
-					}
-					if (totalPurches < 0) {
-						totalPurches = totalPurches * -1;
-					}
-
+				totalIndirectExpences2 = totalIndirectExpences + totalPurches;
+				if (totalIndirectExpences2 < 0) {
+					totalIndirectExpences2 = totalIndirectExpences2 * (-1);
 				}
 
+				totalLeft = totalOpeningStockBalance + totalPurches;
+				totalRight = totalClosingStockBalance + totalSales;
+
+				VoucherService vs = new VoucherService();
+				// SalesVoucherEntity SalesVoucherEntity=new SalesVoucherEntity();
+				List<SalesVoucherEntity> SalesVoucherList = vs
+						.getlistSalesVoucher(bid);
+				for (int k = 0; k < SalesVoucherList.size(); k++) {
+
+					goodsSold = goodsSold + SalesVoucherList.get(k).getAmount();
+
+				}
+				// ///////////
+				totalGrossProfit = totalSales - goodsSold;
+				totalGrossProfitCo = totalGrossProfit;
+				totalGrossProfitBf = totalGrossProfit;
+
+				// ///////////
+
+				if (totalGrossProfit < 0) {
+					totalGrossLoss = totalGrossProfit;
+				}
+				String date = "1-Apr-2016 to 15-Apr-2016";
+				nettProfit = totalGrossProfit - totalIndirectExpences;
+				root.put("totalPurches", totalPurches);
+				root.put("totalGrossProfit", totalGrossProfit);
+				root.put("totalIndirectExpences", totalIndirectExpences);
+				root.put("nettProfit", nettProfit);
+				root.put("totalSales", totalSales);
+				root.put("totalGrossProfit", totalGrossProfit);
+				root.put("totalLeft", totalLeft);
+				root.put("totalRight", totalRight);
+				root.put("totalGrossProfit", totalGrossProfit);
+				root.put("totalClosingStockBalance", totalClosingStockBalance);
+				root.put("date", date);
+				ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
+						5000);
+				Writer out = new PrintWriter(byteArrayOutputStream);
+				temp.process(root, out);
+
+				String pdfXMLContent = byteArrayOutputStream.toString();
+
+				worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
+				addDocumentFooter(accG, writer);
+				document.close();
+
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 
-			totalIndirectExpences2 = totalIndirectExpences + totalPurches;
-			if (totalIndirectExpences2 < 0) {
-				totalIndirectExpences2 = totalIndirectExpences2 * (-1);
-			}
-
-			totalLeft = totalOpeningStockBalance + totalPurches;
-			totalRight = totalClosingStockBalance + totalSales;
-
-			VoucherService vs = new VoucherService();
-			// SalesVoucherEntity SalesVoucherEntity=new SalesVoucherEntity();
-			List<SalesVoucherEntity> SalesVoucherList = vs
-					.getlistSalesVoucher(bid);
-			for (int k = 0; k < SalesVoucherList.size(); k++) {
-
-				goodsSold = goodsSold + SalesVoucherList.get(k).getAmount();
-
-			}
-			// ///////////
-			totalGrossProfit = totalSales - goodsSold;
-			totalGrossProfitCo = totalGrossProfit;
-			totalGrossProfitBf = totalGrossProfit;
-
-			// ///////////
-
-			if (totalGrossProfit < 0) {
-				totalGrossLoss = totalGrossProfit;
-			}
-			String date = "1-Apr-2016 to 15-Apr-2016";
-			nettProfit = totalGrossProfit - totalIndirectExpences;
-			root.put("totalPurches", totalPurches);
-			root.put("totalGrossProfit", totalGrossProfit);
-			root.put("totalIndirectExpences", totalIndirectExpences);
-			root.put("nettProfit", nettProfit);
-			root.put("totalSales", totalSales);
-			root.put("totalGrossProfit", totalGrossProfit);
-			root.put("totalLeft", totalLeft);
-			root.put("totalRight", totalRight);
-			root.put("totalGrossProfit", totalGrossProfit);
-			root.put("totalClosingStockBalance", totalClosingStockBalance);
-			root.put("date", date);
-			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
-					5000);
-			Writer out = new PrintWriter(byteArrayOutputStream);
-			temp.process(root, out);
-
-			String pdfXMLContent = byteArrayOutputStream.toString();
-
-			worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
-			addDocumentFooter(accG, writer);
-			document.close();
-
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
-
-	}
 
 	// --------------------------------------------------
 
-	public void generatePdfBalanceSheet(List<TypeInfo> list,
-			ServletOutputStream outputStream, Long bid) {
+		public void generatePdfBalanceSheet(List<TypeInfo> list,
+				ServletOutputStream outputStream, Long bid) {
 
-		try {
-			AccountGroupEntity accG = new AccountGroupEntity();
+			try {
+				AccountGroupEntity accG = new AccountGroupEntity();
 
-			com.protostar.billingnstock.user.services.UserService user = new com.protostar.billingnstock.user.services.UserService();
-			BusinessEntity businessEntity = user.getBusinessById(bid);
-			accG.setBusiness(businessEntity);
-			Document document = new Document();
-			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
-			document.open();
-			String date = "1-Apr-2016 to 15-Apr-2016";
-			Date today = new Date();
-			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
-			Map<String, Object> root = new HashMap<String, Object>();
-			addDocumentHeaderLogo(accG, document, root);
-			root.put("balanceSheetList", list);
+				com.protostar.billingnstock.user.services.UserService user = new com.protostar.billingnstock.user.services.UserService();
+				BusinessEntity businessEntity = user.getBusinessById(bid);
+				accG.setBusiness(businessEntity);
+				Document document = new Document();
+				PdfWriter writer = PdfWriter.getInstance(document, outputStream);
+				document.open();
+				String date = "1-Apr-2016 to 15-Apr-2016";
+				Date today = new Date();
+				XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
+				Map<String, Object> root = new HashMap<String, Object>();
+				addDocumentHeaderLogo(accG, document, root);
+				root.put("balanceSheetList", list);
 
-			root.put("date", "" + today);
+				root.put("date", "" + today);
 
-			Template temp = getConfiguration().getTemplate(
-					"pdf_templates/balanceSheet_tmpl.ftlh");
+				Template temp = getConfiguration().getTemplate(
+						"pdf_templates/balanceSheet_tmpl.ftlh");
 
-			double totalAsset = 0;
-			double totalLiabilities2 = 0;
-			double totalEQUITY = 0;
-			double totalLiabilities = 0;
-			AccountGroupService ag = new AccountGroupService();
+				double totalAsset = 0;
+				double totalLiabilities2 = 0;
+				double totalEQUITY = 0;
+				double totalLiabilities = 0;
+				AccountGroupService ag = new AccountGroupService();
 
-			ServerMsg nettProffitOrLoss1 = ag.getProfitAndLossAccBalance(bid);
-			double nettProffitOrLoss = nettProffitOrLoss1.getReturnBalance();
+				ServerMsg nettProffitOrLoss1 = ag.getProfitAndLossAccBalance(bid);
+				double nettProffitOrLoss = nettProffitOrLoss1.getReturnBalance();
 
-			for (int int2 = 0; int2 < list.size(); int2++) {
-				String typeName = list.get(int2).getTypeName();
-				if ((typeName == "ASSETS")
-						&& (list.get(int2).getGroupList() != null)
-						&& !(list.get(int2).getGroupList().get(int2)
-								.getGroupName()
-								.equalsIgnoreCase("Sundry Debtors"))) {
-					for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
-						System.out.println("get GRPLIST-----"
-								+ list.get(int2).getGroupList().get(int2)
-										.getGroupName());
-						totalAsset = list.get(int2).getGroupList().get(i)
-								.getGroupBalance()
-								+ totalAsset;
+				for (int int2 = 0; int2 < list.size(); int2++) {
+					String typeName = list.get(int2).getTypeName();
+					if ((typeName == "ASSETS")
+							&& (list.get(int2).getGroupList() != null)
+							&& !(list.get(int2).getGroupList().get(int2)
+									.getGroupName()
+									.equalsIgnoreCase("Sundry Debtors"))) {
+						for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
+							System.out.println("get GRPLIST-----"
+									+ list.get(int2).getGroupList().get(int2)
+											.getGroupName());
+							totalAsset = list.get(int2).getGroupList().get(i)
+									.getGroupBalance()
+									+ totalAsset;
+						}
+						if (totalAsset < 0) {
+							totalAsset = totalAsset * (-1);
+						}
 					}
-					if (totalAsset < 0) {
-						totalAsset = totalAsset * (-1);
+
+					if ((typeName == "LIABILITIES")
+							&& (list.get(int2).getGroupList() != null)) {
+						for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
+							totalLiabilities = list.get(int2).getGroupList().get(i)
+									.getGroupBalance()
+									+ totalLiabilities;
+						}
+
+						if (totalLiabilities < 0) {
+							totalLiabilities = totalLiabilities * (-1);
+						}
+
+					}
+					if ((typeName == "EQUITY")
+							&& (list.get(int2).getGroupList() != null)) {
+						for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
+							totalEQUITY = list.get(int2).getGroupList().get(i)
+									.getGroupBalance()
+									+ totalEQUITY;
+						}
+
 					}
 				}
 
-				if ((typeName == "LIABILITIES")
-						&& (list.get(int2).getGroupList() != null)) {
-					for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
-						totalLiabilities = list.get(int2).getGroupList().get(i)
-								.getGroupBalance()
-								+ totalLiabilities;
-					}
+				totalLiabilities2 = totalLiabilities + totalEQUITY;
+				if (nettProffitOrLoss < 0) {
 
-					if (totalLiabilities < 0) {
-						totalLiabilities = totalLiabilities * (-1);
-					}
+					nettProffitOrLoss = nettProffitOrLoss * (-1);
+					totalAsset = totalAsset + nettProffitOrLoss;
+
+				} else {
+					totalLiabilities2 = totalLiabilities2 + nettProffitOrLoss;
 
 				}
-				if ((typeName == "EQUITY")
-						&& (list.get(int2).getGroupList() != null)) {
-					for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
-						totalEQUITY = list.get(int2).getGroupList().get(i)
-								.getGroupBalance()
-								+ totalEQUITY;
-					}
 
-				}
+				root.put("nettProffitOrLoss", nettProffitOrLoss);
+				root.put("totalLiabilities2", totalLiabilities2);
+				root.put("totalEQUITY", totalEQUITY);
+				root.put("totalLiabilities", totalLiabilities);
+				root.put("totalAsset", totalAsset);
+				root.put("date", date);
+
+				ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
+						5000);
+				Writer out = new PrintWriter(byteArrayOutputStream);
+				temp.process(root, out);
+
+				String pdfXMLContent = byteArrayOutputStream.toString();
+
+				worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
+				addDocumentFooter(accG, writer);
+				document.close();
+
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 
-			totalLiabilities2 = totalLiabilities + totalEQUITY;
-			if (nettProffitOrLoss < 0) {
-
-				nettProffitOrLoss = nettProffitOrLoss * (-1);
-				totalAsset = totalAsset + nettProffitOrLoss;
-
-			} else {
-				totalLiabilities2 = totalLiabilities2 + nettProffitOrLoss;
-
-			}
-
-			root.put("nettProffitOrLoss", nettProffitOrLoss);
-			root.put("totalLiabilities2", totalLiabilities2);
-			root.put("totalEQUITY", totalEQUITY);
-			root.put("totalLiabilities", totalLiabilities);
-			root.put("totalAsset", totalAsset);
-			root.put("date", date);
-
-			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
-					5000);
-			Writer out = new PrintWriter(byteArrayOutputStream);
-			temp.process(root, out);
-
-			String pdfXMLContent = byteArrayOutputStream.toString();
-
-			worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
-			addDocumentFooter(accG, writer);
-			document.close();
-
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
-
-	}
 
 	public void generateVoucherPDF(VoucherEntity voucherEntity,
 			ServletOutputStream outputStream) {
@@ -516,7 +514,8 @@ public class PDFHtmlTemplateService {
 			}
 
 			String buisinessAddress = addressBuf.toString();
-
+			// Top Header
+			// root.put("buisinessName", "" + business.getBusinessName());
 			root.put("buisinessAddress", "" + buisinessAddress);
 
 			Template temp = getConfiguration().getTemplate(
@@ -555,9 +554,9 @@ public class PDFHtmlTemplateService {
 
 			Map<String, Object> root = new HashMap<String, Object>();
 
-			root.put("CreditAccount", purchesEntity.getCreditAccount()
+			root.put("CreditAccount", purchesEntity.getAccountType2()
 					.getAccountName().toString());
-			root.put("DebitAccount", purchesEntity.getPurchaseAccount()
+			root.put("DebitAccount", purchesEntity.getAccountType1()
 					.getAccountName().toString());
 			root.put("Amount", purchesEntity.getAmount().toString());
 			root.put("Items", purchesEntity.getItem().toString());
@@ -583,7 +582,8 @@ public class PDFHtmlTemplateService {
 			}
 
 			String buisinessAddress = addressBuf.toString();
-
+			// Top Header
+			// root.put("buisinessName", "" + business.getBusinessName());
 			root.put("buisinessAddress", "" + buisinessAddress);
 
 			Template temp = getConfiguration().getTemplate(
@@ -593,6 +593,7 @@ public class PDFHtmlTemplateService {
 					5000);
 			Writer out = new PrintWriter(byteArrayOutputStream);
 			temp.process(root, out);
+			// return escapeHtml(byteArrayOutputStream.toString());
 
 			String pdfXMLContent = byteArrayOutputStream.toString();
 
@@ -622,9 +623,10 @@ public class PDFHtmlTemplateService {
 
 			Map<String, Object> root = new HashMap<String, Object>();
 			root.put("groupName", accountGroupEntity.getGroupName());
-
+			// root.put("accountName",accountGroupEntity.get;
 			root.put("groupType", accountGroupEntity.getAccountGroupType()
 					.toString());
+			// root.put("balance",purchesEntity.getItem().toString());
 
 			Template temp = getConfiguration().getTemplate(
 					"pdf_templates/Download_Account_chart_tmpl.ftlh");
@@ -667,6 +669,10 @@ public class PDFHtmlTemplateService {
 			Document document = new Document();
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 			document.open();
+			/*
+			 * Image logoURL = Image
+			 * .getInstance("img/images/protostar_logo_pix_313_132.jpg");
+			 */
 
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 			Map<String, Object> root = new HashMap<String, Object>();
@@ -728,7 +734,10 @@ public class PDFHtmlTemplateService {
 			// Header Col2
 			root.put("ManthlyGross",
 					"Rs. " + df.format(mtlyPayObj.getMonthlyGrossSalary()));
-
+			/*
+			 * root.put("MonthlySalary",
+			 * df.format(mtlyPayObj.getMonthlyGrossSalary()));
+			 */
 			root.put("totalDays", mtlyPayObj.getTotalDays());
 			root.put("payableDays", mtlyPayObj.getPayableDays());
 			root.put("overtimeAmt", overtimeAmt > 0 ? df.format(overtimeAmt)
@@ -813,13 +822,13 @@ public class PDFHtmlTemplateService {
 			if (address.getLine1() != null && !address.getLine1().isEmpty())
 				addressBuf.append(address.getLine1());
 			if (address.getLine2() != null && !address.getLine2().isEmpty())
-				addressBuf.append(", " + address.getLine2());
+				addressBuf.append(", <br></br>" + address.getLine2());
 			if (address.getCity() != null && !address.getCity().isEmpty())
 				addressBuf.append(", <br></br>" + address.getCity());
-			if (address.getState() != null && !address.getState().isEmpty())
-				addressBuf.append(", " + address.getState());
 			if (address.getPin() != null && !address.getPin().isEmpty())
 				addressBuf.append(", " + address.getPin());
+			if (address.getState() != null && !address.getState().isEmpty())
+				addressBuf.append(", " + address.getState());
 			if (address.getCountry() != null && !address.getCountry().isEmpty())
 				addressBuf.append(", " + address.getCountry());
 		}
@@ -834,8 +843,10 @@ public class PDFHtmlTemplateService {
 			throws BadElementException, MalformedURLException, IOException,
 			DocumentException {
 		PdfContentByte cb = writer.getDirectContent();
-		BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252,
-				BaseFont.NOT_EMBEDDED);
+
+		BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA_BOLD,
+				BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+
 		cb.saveState();
 		cb.beginText();
 		cb.moveText(20f, 20f);
@@ -891,7 +902,14 @@ public class PDFHtmlTemplateService {
 			// Imported Customer entity to get name and address
 			Customer cust1 = invoiceEntity.getCustomer();
 
-			String custName = cust1.getCompanyName();
+			String custName = "";
+
+			if (cust1.getIsCompany()) {
+				custName = cust1.getCompanyName();
+			} else if (!cust1.getIsCompany()) {
+				custName = cust1.getFirstName() + " " + cust1.getLastName();
+			}
+			root.put("CustomerName", custName);
 
 			StringBuffer custaddressBuf = new StringBuffer();
 			Address customerAddress = cust1.getAddress();
@@ -919,7 +937,7 @@ public class PDFHtmlTemplateService {
 			String strDate = sdfDate.format(now);
 
 			// Customer Details
-			root.put("CustomerName", custName);
+
 			root.put("CustomerAddress", custAddress);
 			// Invoice Details
 			root.put("InvoiceDate", invoiceEntity.getCreatedDate());
@@ -950,15 +968,27 @@ public class PDFHtmlTemplateService {
 			String netInWords = numberToRupees.getAmountInWords();
 			root.put("finalTotalInWord", netInWords);
 			// root.put("FinalInWords", invoiceEntity.getFinalTotal());
+
 			root.put("PurchaseOrderNo", purchaseOrderNo);
-			root.put("NoteToCustomer", "" + invoiceEntity.getNoteToCustomer());
+
+			if (invoiceEntity.getNoteToCustomer() != null
+					&& !invoiceEntity.getNoteToCustomer().trim().isEmpty())
+				root.put("noteToCustomer",
+						"" + invoiceEntity.getNoteToCustomer());
+			if (invoiceEntity.getPaymentNotes() != null
+					&& !invoiceEntity.getPaymentNotes().trim().isEmpty())
+				root.put("paymentNotes", "" + invoiceEntity.getPaymentNotes());
+			if (invoiceEntity.getTermsAndConditions() != null
+					&& !invoiceEntity.getTermsAndConditions().trim().isEmpty())
+				root.put("termsAndConditions",
+						"" + invoiceEntity.getTermsAndConditions());
 
 			if (discountAmt > 0) {
 				root.put("Discount", df.format(discountAmt));
 			}
 
 			Template temp = getConfiguration().getTemplate(
-					"pdf_templates/invoicePDF_tmpl.ftlh");
+					"pdf_templates/invoice_tmpl.ftlh");
 
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
 					5000);
@@ -1031,7 +1061,16 @@ public class PDFHtmlTemplateService {
 			}
 
 			Customer customer = quotationEntity.getInvoiceObj().getCustomer();
-			String customerName = customer.getCompanyName();
+			String custName = "";
+
+			if (customer.getIsCompany()) {
+				custName = customer.getCompanyName();
+			} else {
+				custName = customer.getFirstName() + " "
+						+ customer.getLastName();
+			}
+
+			root.put("CustomerName", custName);
 
 			StringBuffer custaddressBuffer = new StringBuffer();
 			Address customerAddress = customer.getAddress();
@@ -1063,13 +1102,14 @@ public class PDFHtmlTemplateService {
 			double finalTotal = quotationEntity.getInvoiceObj().getFinalTotal();
 
 			// Customer Details
-			root.put("CustomerName", customerName);
+
 			root.put("CustomerAddress", custAddressForQuot);
-			root.put("NoteToCust", "" + noteToCust);
+
+			root.put("noteToCustomer", "" + noteToCust);
 
 			// Quotation Date and No
 			root.put("Date", quotationDate);
-			root.put("QuotationNumber", quotationEntity.getItemNumber());
+			root.put("quotationNumber", quotationEntity.getItemNumber());
 
 			root.put("finalTotal", finalTotal);
 			NumberToRupees numberToRupees = new NumberToRupees(
@@ -1078,7 +1118,7 @@ public class PDFHtmlTemplateService {
 			root.put("finalTotalInWords", netInWords);
 
 			Template temp = getConfiguration().getTemplate(
-					"pdf_templates/quotationPDF_tmpl.ftlh");
+					"pdf_templates/quotation_tmpl.ftlh");
 
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
 					5000);
@@ -1132,19 +1172,46 @@ public class PDFHtmlTemplateService {
 			String purchaseOrderDate = sdfDate.format(poDate);
 			String purchaseOrderDueDate = sdfDate.format(poDueDate);
 
-			root.put("To", purchaseOrderEntity.getTo());
-			root.put("ShippedTo", purchaseOrderEntity.getShipTo());
-			root.put("PONum", purchaseOrderEntity.getItemNumber());
-			root.put("PODate", purchaseOrderDate);
+			double discAmt = purchaseOrderEntity.getDiscAmount();
+			if (discAmt > 0) {
+				root.put("Discount", df.format(discAmt));
+			}
+			root.put("billTo", purchaseOrderEntity.getTo());
+			root.put("shipTo", purchaseOrderEntity.getShipTo());
+			root.put("pONum", purchaseOrderEntity.getItemNumber());
+			root.put("pODate", purchaseOrderDate);
 			root.put("PODueDate", purchaseOrderDueDate);
 			root.put("ShippedVia", "" + purchaseOrderEntity.getShippedVia());
 			root.put("Requisitioner",
 					"" + purchaseOrderEntity.getRequisitioner());
-			root.put("Supplier", ""
+			root.put("supplierName", ""
 					+ purchaseOrderEntity.getSupplier().getSupplierName());
 			root.put("FOBPoint", "" + purchaseOrderEntity.getfOBPoint());
 			root.put("Terms", "" + purchaseOrderEntity.getTerms());
-			root.put("Note", "" + purchaseOrderEntity.getNoteToCustomer());
+			root.put("noteToCustomer",
+					"" + purchaseOrderEntity.getNoteToCustomer());
+
+			StringBuffer buffer = new StringBuffer();
+
+			Address suplAdress = purchaseOrderEntity.getSupplier().getAddress();
+
+			if (suplAdress != null) {
+				if (suplAdress.getLine1() != null
+						&& !suplAdress.getLine1().isEmpty())
+					buffer.append(suplAdress.getLine1());
+				if (suplAdress.getLine2() != null
+						&& !suplAdress.getLine2().isEmpty())
+					buffer.append(", <br></br>" + suplAdress.getLine2());
+				if (suplAdress.getCity() != null
+						&& !suplAdress.getCity().isEmpty())
+					buffer.append(",<br></br>" + suplAdress.getCity());
+				if (suplAdress.getState() != null
+						&& !suplAdress.getState().isEmpty())
+					buffer.append(", " + suplAdress.getState());
+			}
+
+			String supplierAddress = buffer.toString();
+			root.put("supplierAddress", supplierAddress);
 
 			TaxEntity servTax = purchaseOrderEntity.getSelectedServiceTax();
 			TaxEntity prodTax = purchaseOrderEntity.getSelectedProductTax();
@@ -1157,14 +1224,14 @@ public class PDFHtmlTemplateService {
 			if (productLineItemListForPO != null
 					&& productLineItemListForPO.size() > 0) {
 				root.put("productItemList", productLineItemListForPO);
-				root.put("serviceTax", servTax);
+				root.put("productTax", prodTax);
 
 			}
 
 			if (serviceLineItemListForPO != null
 					&& serviceLineItemListForPO.size() > 0) {
 				root.put("serviceItemList", serviceLineItemListForPO);
-				root.put("productTax", prodTax);
+				root.put("serviceTax", prodTax);
 			}
 
 			double finalTotal = purchaseOrderEntity.getFinalTotal();
@@ -1176,7 +1243,7 @@ public class PDFHtmlTemplateService {
 			root.put("finalTotalInWords", netInWords);
 
 			Template temp = getConfiguration().getTemplate(
-					"pdf_templates/purchaseOrderPDF_tmpl.ftlh");
+					"pdf_templates/purchase_order_tmpl.ftlh");
 
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
 					5000);
@@ -1227,11 +1294,12 @@ public class PDFHtmlTemplateService {
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
 			String receiptDate = sdfDate.format(stockReceiptEntity
 					.getReceiptDate());
-			root.put("ReceiptDate", receiptDate);
-			root.put("ReceiptNo", stockReceiptEntity.getItemNumber());
-			root.put("Supplier", stockReceiptEntity.getSupplier()
+			root.put("poNum", stockReceiptEntity.getPoNumber());
+			root.put("receiptDate", receiptDate);
+			root.put("receiptNo", stockReceiptEntity.getItemNumber());
+			root.put("supplier", stockReceiptEntity.getSupplier()
 					.getSupplierName());
-			root.put("Warehouse", stockReceiptEntity.getWarehouse()
+			root.put("warehouse", stockReceiptEntity.getWarehouse()
 					.getWarehouseName());
 
 			StringBuffer buffer = new StringBuffer();
@@ -1253,7 +1321,7 @@ public class PDFHtmlTemplateService {
 			}
 
 			String warehouseAddress = buffer.toString();
-			root.put("WarehouseAddress", warehouseAddress);
+			root.put("warehouseAddress", warehouseAddress);
 
 			StringBuffer addressBuffer = new StringBuffer();
 			Address supplierAddress = stockReceiptEntity.getSupplier()
@@ -1274,7 +1342,9 @@ public class PDFHtmlTemplateService {
 			}
 
 			String suplAdrs = addressBuffer.toString();
-			root.put("SupplierAddress", suplAdrs);
+			root.put("supplierAddress", suplAdrs);
+
+			root.put("receiptNote", stockReceiptEntity.getNote());
 
 			List<StockLineItem> serviceLineItemList = stockReceiptEntity
 					.getServiceLineItemList();
@@ -1286,17 +1356,18 @@ public class PDFHtmlTemplateService {
 			}
 			if (productLineItemList != null && productLineItemList.size() > 0) {
 				root.put("productItemList", productLineItemList);
-				for (int i = 0; i < productLineItemList.size(); i++) {
-					double productTotal = (productLineItemList.get(i).getQty())
-							* (productLineItemList.get(i).getPrice());
-					productTotal += productTotal;
-					root.put("ProductTotal", productTotal);
-				}
-
 			}
 
+			double finalTotal = stockReceiptEntity.getFinalTotal();
+			root.put("finalTotal", finalTotal);
+
+			NumberToRupees numberToRupees = new NumberToRupees(
+					Math.round(finalTotal));
+			String netInWords = numberToRupees.getAmountInWords();
+			root.put("finalTotalInWords", netInWords);
+
 			Template temp = getConfiguration().getTemplate(
-					"pdf_templates/stockReceiptPDF_tmpl.ftlh");
+					"pdf_templates/stock_receipt_tmpl.ftlh");
 
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
 					5000);
@@ -1346,26 +1417,139 @@ public class PDFHtmlTemplateService {
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
 
 			ShipmentType shipmentType = stockItemsShipment.getShipmentType();
-			root.put("ShipmentDate",
+			root.put("shipmentDate",
 					sdfDate.format(stockItemsShipment.getShipmentDate()));
 
-			root.put("FromWarehouse", stockItemsShipment.getFromWH()
+			root.put("fromWarehouse", stockItemsShipment.getFromWH()
 					.getWarehouseName());
-			root.put("ShipmentNo", stockItemsShipment.getItemNumber());
+			root.put("shipmentNo", stockItemsShipment.getItemNumber());
+			root.put("shipmentNotes", stockItemsShipment.getNote());
+			StringBuffer buffer = new StringBuffer();
+			Address warehouseAdd = stockItemsShipment.getFromWH().getAddress();
+			if (warehouseAdd != null) {
+				if (warehouseAdd.getLine1() != null
+						&& !warehouseAdd.getLine1().isEmpty())
+					buffer.append(warehouseAdd.getLine1());
+				if (warehouseAdd.getLine2() != null
+						&& !warehouseAdd.getLine2().isEmpty())
+					buffer.append(", " + warehouseAdd.getLine2());
+				if (warehouseAdd.getCity() != null
+						&& !warehouseAdd.getCity().isEmpty())
+					buffer.append(", " + warehouseAdd.getCity());
+				if (warehouseAdd.getState() != null
+						&& !warehouseAdd.getState().isEmpty())
+					buffer.append(", " + warehouseAdd.getState());
+			}
+
+			String warehouseAddress = buffer.toString();
+			root.put("fromWHAddress", warehouseAddress);
 
 			if (shipmentType.equals(ShipmentType.TO_OTHER_WAREHOUSE)) {
-				root.put("ToWarehouse", stockItemsShipment.getToWH()
+				root.put("toWarehouse", stockItemsShipment.getToWH()
 						.getWarehouseName());
+				StringBuffer newBuffer = new StringBuffer();
+				Address toWHAdd = stockItemsShipment.getToWH().getAddress();
+				if (toWHAdd != null) {
+					if (toWHAdd.getLine1() != null
+							&& !toWHAdd.getLine1().isEmpty())
+						newBuffer.append(toWHAdd.getLine1());
+					if (toWHAdd.getLine2() != null
+							&& !toWHAdd.getLine2().isEmpty())
+						newBuffer.append(", " + toWHAdd.getLine2());
+					if (toWHAdd.getCity() != null
+							&& !toWHAdd.getCity().isEmpty())
+						newBuffer.append(", " + toWHAdd.getCity());
+					if (toWHAdd.getPin() != null && !toWHAdd.getPin().isEmpty())
+						newBuffer.append(", " + toWHAdd.getPin());
+					if (toWHAdd.getState() != null
+							&& !toWHAdd.getState().isEmpty())
+						newBuffer.append(", " + toWHAdd.getState());
+				}
+
+				String toWarehouseAddress = newBuffer.toString();
+				root.put("toWHAddress", toWarehouseAddress);
+
 			}
 
 			if (shipmentType.equals(ShipmentType.TO_CUSTOMER)) {
-				root.put("Customer", stockItemsShipment.getCustomer()
-						.getCompanyName());
+
+				Customer customer = stockItemsShipment.getCustomer();
+
+				String custName = "";
+
+				if (customer.getIsCompany()) {
+					custName = customer.getCompanyName();
+				} else {
+					custName = customer.getFirstName() + " "
+							+ customer.getLastName();
+				}
+
+				root.put("customerName", custName);
+
+				StringBuffer custBuffer = new StringBuffer();
+				Address toCustAdd = stockItemsShipment.getCustomer()
+						.getAddress();
+
+				if (toCustAdd != null) {
+					if (toCustAdd.getLine1() != null
+							&& !toCustAdd.getLine1().isEmpty())
+						custBuffer.append(toCustAdd.getLine1());
+					if (toCustAdd.getLine2() != null
+							&& !toCustAdd.getLine2().isEmpty())
+						custBuffer.append(", " + toCustAdd.getLine2());
+					if (toCustAdd.getCity() != null
+							&& !toCustAdd.getCity().isEmpty())
+						custBuffer.append(", " + toCustAdd.getCity());
+					if (toCustAdd.getPin() != null
+							&& !toCustAdd.getPin().isEmpty())
+						custBuffer.append(", " + toCustAdd.getPin());
+					if (toCustAdd.getState() != null
+							&& !toCustAdd.getState().isEmpty())
+						custBuffer.append(", " + toCustAdd.getState());
+				}
+
+				String customerAddress = custBuffer.toString();
+				root.put("customerAddress", customerAddress);
 
 			}
 			if (shipmentType.equals(ShipmentType.TO_PARTNER)) {
-				root.put("Partner", stockItemsShipment.getCustomer()
-						.getCompanyName());
+
+				Customer partner = stockItemsShipment.getCustomer();
+				String partnerName = "";
+
+				if (partner.getIsCompany()) {
+					partnerName = partner.getCompanyName();
+				} else {
+					partnerName = partner.getFirstName() + " "
+							+ partner.getLastName();
+				}
+
+				root.put("partnerName", partnerName);
+
+				StringBuffer partnerBuffer = new StringBuffer();
+				Address toPartnerAdd = stockItemsShipment.getCustomer()
+						.getAddress();
+
+				if (toPartnerAdd != null) {
+					if (toPartnerAdd.getLine1() != null
+							&& !toPartnerAdd.getLine1().isEmpty())
+						partnerBuffer.append(toPartnerAdd.getLine1());
+					if (toPartnerAdd.getLine2() != null
+							&& !toPartnerAdd.getLine2().isEmpty())
+						partnerBuffer.append(", " + toPartnerAdd.getLine2());
+					if (toPartnerAdd.getCity() != null
+							&& !toPartnerAdd.getCity().isEmpty())
+						partnerBuffer.append(", " + toPartnerAdd.getCity());
+					if (toPartnerAdd.getPin() != null
+							&& !toPartnerAdd.getPin().isEmpty())
+						partnerBuffer.append(", " + toPartnerAdd.getPin());
+					if (toPartnerAdd.getState() != null
+							&& !toPartnerAdd.getState().isEmpty())
+						partnerBuffer.append(", " + toPartnerAdd.getState());
+				}
+
+				String partnerAddress = partnerBuffer.toString();
+				root.put("partnerCoAddress", partnerAddress);
 			}
 
 			List<StockLineItem> serviceLineItemList = stockItemsShipment
@@ -1381,8 +1565,16 @@ public class PDFHtmlTemplateService {
 
 			}
 
+			root.put("shipmentNote", stockItemsShipment.getNote());
+			root.put("finalTotal", stockItemsShipment.getFinalTotal());
+
+			NumberToRupees numberToRupees = new NumberToRupees(
+					Math.round(stockItemsShipment.getFinalTotal()));
+			String netInWords = numberToRupees.getAmountInWords();
+			root.put("finalTotalInWords", netInWords);
+
 			Template temp = getConfiguration().getTemplate(
-					"pdf_templates/stockShipmentPDF_tmpl.ftlh");
+					"pdf_templates/stock_shipment_tmpl.ftlh");
 
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
 					5000);
