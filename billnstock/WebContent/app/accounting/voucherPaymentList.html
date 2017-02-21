@@ -1,0 +1,71 @@
+<style>
+table {
+	border: 1px solid black;
+	border-collapse: collapse; border : 1px solid black;
+	width: 90%;
+	border: 1px solid black;
+}
+
+td {
+	border: 1px solid black;
+}
+table tr td a {
+ 
+    margin-right: 100px;
+} 
+</style>
+<md-content layout-padding>
+
+<section layout="row" layout-xs="column">
+			<md-subheader class="md-primary">
+			<h4 class="md-title">Payment Voucher List</h4>
+			</md-subheader>
+			<span flex></span>
+			<div layout="row" flex="33" flex-sm="50" flex-xs="100">
+				<md-input-container flex> <label>Search</label>
+				<input ng-model="searchText"> </md-input-container>
+								<md-button class="md-icon-button" id="refreshIcon"
+					ng-click=""> <ng-md-icon
+					icon="refresh" style="fill: md-default" size="24"> <md-tooltip>Refresh
+				List</md-tooltip></ng-md-icon></md-button>
+			</div>
+		</section>
+
+<div flex>
+<div ng-if="loading">
+			<div layout="row" layout-sm="column" layout-align="space-around">
+				<md-progress-circular md-diameter="60" md-mode="indeterminate"></md-progress-circular>
+			</div>
+		</div>
+<div ng-if="!loading">
+	<table style="width: 100%; height: 100%;"">
+	<thead>
+		<tr  style="border: 1px solid black; background-color: #33BEFF">
+		<th style=" padding-left:30px;">Purchase Voucher No </th>
+			<th style=" padding-left:30px;">Purchase Account  </th>
+			<th style=" padding-left:30px;">Credit Account</th>
+			<th style=" padding-left:30px;">Name of items</th>
+			<th style=" padding-left:30px;">Amount</th>
+			<th style=" padding-left:30px;">Is Cash?</th>
+			<th style=" padding-left:30px;">Account Details</th>
+			<th style=" padding-left:30px;">Narration</th>
+		</tr>
+	</thead>
+		<tbody>
+			<tr	ng-repeat="item in purcheslist">
+				<td style=" padding-left:30px;">{{item.itemNumber}}</td>
+				<td style=" padding-left:30px;">{{item.purchaseAccount.accountName}}</td>
+				<td style=" padding-left:30px;">{{item.creditAccount.accountName}}</td>
+				<td style=" padding-left:30px;">{{item.stockAccount.accountName}}</td>
+				<td><div style=" padding-left:30px; float:left;">{{item.amount|number:2}}</div> 
+  				</td>
+			   <td style=" padding-left:30px;">{{item.isCash}}</td>
+			   <td style=" padding-left:30px;">{{item.accdetail}}</td>
+			   <td><div style=" padding-left:30px; float:left;"> {{item.narration}}</div> 
+				<div style="padding-right:0px;text-align:right;float:right;"><a ui-sref="accounting.voucherPurches({Account:item})" >View </a></div>
+				</td>		
+			</tr>
+		</tbody>
+	</table>
+</div>
+</md-content>
