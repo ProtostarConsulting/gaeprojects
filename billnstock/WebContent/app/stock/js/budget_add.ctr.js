@@ -125,7 +125,14 @@ app
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
-							// $scope.calItemSubTotal();
+
+							if ($scope.budgetObj.id) {
+								angular.forEach($scope.budgetObj.categoryList,
+										function(cat) {
+											$scope.calItemSubTotal(cat,
+													cat.items[0]);
+										});
+							}
 							$scope.calFinalTotal();
 
 						} else {
