@@ -5,7 +5,6 @@ import java.util.Date;
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
-import com.googlecode.objectify.annotation.OnSave;
 import com.protostar.billingnstock.invoice.entities.InvoiceEntity;
 import com.protostar.billingnstock.warehouse.entities.WarehouseEntity;
 import com.protostar.billnstock.until.data.Constants;
@@ -23,6 +22,8 @@ public class PurchaseOrderEntity extends InvoiceEntity {
 	private String shippedVia;
 	private String fOBPoint;
 	private String terms;
+	
+	
 
 	private Ref<SupplierEntity> supplier;
 	@Index

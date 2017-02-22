@@ -82,6 +82,22 @@ td {
 										${pODate}
 									</td>
 								</tr>
+								<tr>
+									<td align="right" style="border: 0px;">
+										<b>Create By:</b>
+									</td>
+									<td align="left" style="border: 0px;">
+										${createdBy}
+									</td>
+								</tr>
+								<tr>
+									<td align="right" style="border: 0px;">
+										<b>Approved By:</b>
+									</td>
+									<td align="left" style="border: 0px;">
+										${approvedBy}
+									</td>
+								</tr>
 								<#if Discount??>
 								<tr>
 									<td align="right" style="border: 0px;">

@@ -4,11 +4,7 @@ angular
 				"lead",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
 						$mdUtil, $stateParams, $log, objectFactory,
-						appEndpointSF) {
-					$scope.showSimpleToast = function(msgBean) {
-						$mdToast.show($mdToast.simple().content(msgBean)
-								.position("top").hideDelay(3000));
-					};
+						appEndpointSF) {					
 					$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
 					
 					$scope.query = {
@@ -54,8 +50,6 @@ angular
 						var leadService = appEndpointSF.getleadService();
 						
 						leadService.addlead($scope.lead).then(function(msgBean) {
-							$log.debug("Inside Ctr addlead");
-							$log.debug("msgBean.msg:" + msgBean.msg);
 							$scope.showAddToast();
 							$scope.getAllleads();
 						});
@@ -71,10 +65,9 @@ angular
 						var leadService = appEndpointSF.getleadService();
 
 						leadService.getAllleads($scope.curUser.business.id).then(function(leadList) {
-							$log.debug("Inside Ctr getAllleads");
 							$scope.leads = leadList.items;
 							$scope.Address=$scope.leads.address;
-							$log.debug("Inside Ctr getAllleads===="+angular.toJson($scope.leads ));
+						
 							$scope.cleadid = $scope.leads.length + 1;
 							$scope.lead.lid = $scope.cleadid;
 							
@@ -92,23 +85,7 @@ angular
 							$timeout($scope.waitForServiceLoad, 1000);
 						}
 					}
-					$scope.waitForServiceLoad();
+					$scope.waitForServiceLoad();			
 					
-					$scope.toggleRight = buildToggler('right');
-
-					function buildToggler(navID) {
-						var debounceFn = $mdUtil.debounce(function() {
-							$mdSidenav(navID).toggle().then(function() {
-								$log.debug("toggle " + navID + " is done");
-							});
-						}, 200);
-						return debounceFn;
-					}
-
-					$scope.close = function() {
-						$mdSidenav('right').close().then(function() {
-							$log.debug("close RIGHT is done");
-						});
-					};
 
 				});

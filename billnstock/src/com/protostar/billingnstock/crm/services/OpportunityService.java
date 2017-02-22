@@ -20,22 +20,23 @@ public class OpportunityService {
 	@ApiMethod(name = "addopportunity")
 	public void addopportunity(Opportunity opportunity) {
 		opportunity.setCreatedDate(new Date());
-	 ofy().save().entity(opportunity).now();
+		ofy().save().entity(opportunity).now();
 
 	}
+
 	@ApiMethod(name = "updateopportunity")
 	public void updateopportunity(Opportunity opportunity) {
 		opportunity.setModifiedDate(new Date());
-		 ofy().save().entity(opportunity).now();
+		ofy().save().entity(opportunity).now();
 
 	}
+
 	@ApiMethod(name = "getAllopportunity")
 	public List<Opportunity> getAllopportunity(@Named("id") Long id) {
 		List<Opportunity> filteredopportunity = ofy().load().type(Opportunity.class)
-				.filter("business",Ref.create(Key.create(BusinessEntity.class, id)))
-				.list();
+				.ancestor(Ref.create(Key.create(BusinessEntity.class, id))).list();
 		return filteredopportunity;
-		
+
 	}
 
 	@ApiMethod(name = "getopportunityById")
@@ -43,6 +44,5 @@ public class OpportunityService {
 		Opportunity opportunity = ofy().load().type(Opportunity.class).id(selectedid).now();
 		return opportunity;
 	}
-	
 
 }// end of InternetService

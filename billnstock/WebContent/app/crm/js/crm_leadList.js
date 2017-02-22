@@ -5,10 +5,7 @@ angular
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
 						$mdUtil, $stateParams, $log, objectFactory,
 						appEndpointSF) {
-					$scope.showSimpleToast = function(msgBean) {
-						$mdToast.show($mdToast.simple().content(msgBean)
-								.position("top").hideDelay(3000));
-					};
+					
 					$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
 					
 					$scope.query = {
@@ -42,7 +39,6 @@ angular
 					
 					
 					$scope.getAllleads = function() {
-						$log.debug("Inside Ctr $scope.getAlllead");
 						$scope.loading = true;
 						var leadService = appEndpointSF.getleadService();
 
@@ -50,7 +46,7 @@ angular
 							$log.debug("Inside Ctr getAllleads");
 							$scope.leads = leadList.items;
 							$scope.loading = false;
-							$log.debug("Inside Ctr getAllleads===="+angular.toJson($scope.leads ));
+							
 							$scope.cleadid = $scope.leads.length + 1;
 							$scope.lead.lid = $scope.cleadid;
 							

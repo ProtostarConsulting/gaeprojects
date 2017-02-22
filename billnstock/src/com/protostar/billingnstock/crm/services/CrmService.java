@@ -23,17 +23,14 @@ public class CrmService {
 	@SuppressWarnings("unused")
 	@ApiMethod(name = "addlead")
 	public void addlead(Lead lead) {
-		lead.setCreatedDate(new Date());		
+		lead.setCreatedDate(new Date());
 		Key<Lead> now = ofy().save().entity(lead).now();
 
 	}
 
 	@ApiMethod(name = "getAllleads")
 	public List<Lead> getAllleads(@Named("id") Long busId) {
-		List<Lead> filteredlead = ofy()
-				.load()
-				.type(Lead.class)
-				.ancestor(Key.create(BusinessEntity.class, busId))
+		List<Lead> filteredlead = ofy().load().type(Lead.class).ancestor(Key.create(BusinessEntity.class, busId))
 				.list();
 		return filteredlead;
 
@@ -49,7 +46,7 @@ public class CrmService {
 
 	@ApiMethod(name = "addupdatetask")
 	public void addupdatetask(Lead lead) {
-		//lead.setModifiedBy(lead.getLoggedInUser().getEmail_id());
+		// lead.setModifiedBy(lead.getLoggedInUser().getEmail_id());
 		lead.setModifiedDate(new Date());
 		ofy().save().entity(lead).now();
 
@@ -61,22 +58,19 @@ public class CrmService {
 		ofy().save().entity(contact).now();
 
 	}
+
 	@ApiMethod(name = "updatecontact")
 	public void updatecontact(Contact contact) {
 		contact.setModifiedDate(new Date());
 		ofy().save().entity(contact).now();
 
 	}
-	
 
 	@ApiMethod(name = "getAllcontact")
 	public List<Contact> getAllcontact(@Named("id") Long busId) {
 
-		List<Contact> filteredContact = ofy()
-				.load()
-				.type(Contact.class)
-				.ancestor(Key.create(BusinessEntity.class, busId))
-				.list();
+		List<Contact> filteredContact = ofy().load().type(Contact.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).list();
 		return filteredContact;
 
 	}
@@ -89,37 +83,37 @@ public class CrmService {
 
 	@ApiMethod(name = "getContactByCustomerId", path = "getContactByCustomerId")
 	public List<Contact> getContactByCustomerId(@Named("id") Long CustId) {
-		List<Contact> contact = ofy()
-				.load()
-				.type(Contact.class)
-				.filter("customer",
-						Ref.create(Key.create(Customer.class, CustId)))
-				.list();
+		List<Contact> contact = ofy().load().type(Contact.class)
+				.filter("customer", Ref.create(Key.create(Customer.class, CustId))).list();
 
 		return contact;
 	}
 
-	@ApiMethod(name = "getContactByEmailID",path="getContactByEmailID")
+	@ApiMethod(name = "getContactByEmailID", path = "getContactByEmailID")
 	public Contact getContactByEmailID(@Named("email") String email) {
-		List<Contact> contact = ofy().load().type(Contact.class).filter("email",email).list();
-		
+		List<Contact> contact = ofy().load().type(Contact.class).filter("email", email).list();
+
 		return (contact == null || contact.size() == 0) ? null : contact.get(0);
 	}
 
-	
-	
+	public Contact getCustomerPrimaryContact(Customer cust) {
+		List<Contact> contact = ofy().load().type(Contact.class).ancestor(cust.getBusiness())
+				.filter("customer", Ref.create(cust)).filter("email", cust.getEmail()).list();
+		return (contact == null || contact.size() == 0) ? null : contact.get(0);
+	}
+
 	@ApiMethod(name = "isContactExists")
 	public ServerMsg isContactExists(@Named("email") String email) {
 		ServerMsg serverMsg = new ServerMsg();
-		List<Contact> customer = ofy().load().type(Contact.class).filter("email",email).list();
-		
-		if(customer.size()== 0){
+		List<Contact> customer = ofy().load().type(Contact.class).filter("email", email).list();
+
+		if (customer.size() == 0) {
 			serverMsg.setReturnBool(false);
-		}else{
-		serverMsg.setReturnBool(true);
+		} else {
+			serverMsg.setReturnBool(true);
 		}
-	
+
 		return serverMsg;
 	}
-	
+
 }// end of InternetService

@@ -35,8 +35,7 @@ public class CustomerService {
 			CrmService crmserv = new CrmService(); // use get contact by email
 													// id validate email exist
 													// in customer and contact
-			Contact addcontact = (Contact) crmserv.getContactByEmailID(customer
-					.getEmail());
+			Contact addcontact = (Contact) crmserv.getCustomerPrimaryContact(customer);
 			if (addcontact == null) {
 				addcontact = new Contact();
 			}
@@ -46,7 +45,8 @@ public class CustomerService {
 			addcontact.setPhone(customer.getMobile());
 			addcontact.setBusiness(customer.getBusiness());
 			addcontact.setEmail(customer.getEmail());
-			ofy().save().entity(addcontact).now();
+			// save async
+			ofy().save().entity(addcontact);
 		}
 		return customer;
 
@@ -80,8 +80,7 @@ public class CustomerService {
 	@ApiMethod(name = "isCustomerExists")
 	public ServerMsg isCustomerExists(@Named("email") String email) {
 		ServerMsg serverMsg = new ServerMsg();
-		List<Customer> customer = ofy().load().type(Customer.class)
-				.filter("email", email).list();
+		List<Customer> customer = ofy().load().type(Customer.class).filter("email", email).list();
 
 		if (customer.size() == 0) {
 			serverMsg.setReturnBool(false);
@@ -94,9 +93,7 @@ public class CustomerService {
 
 	@ApiMethod(name = "updateCustomer")
 	public void updateCustomer(Customer customer) {
-
 		Key<Customer> cust = ofy().save().entity(customer).now();
-
 	}
 
 }// end of CustomerService

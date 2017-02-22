@@ -27,6 +27,8 @@ app
 							noteToCustomer : '',
 							createdDate : new Date(),
 							modifiedDate : new Date(),
+							createdBy: $scope.curUser,
+							approvedBy: null,
 							modifiedBy : '',
 							discountType : 'NA',
 							discountPercent : 0,
@@ -122,6 +124,7 @@ app
 						$mdDialog.show(confirm).then(function() {
 							$log.debug("Inside Yes, function");
 							$scope.purchaseOrderObj.status = 'FINALIZED';
+							$scope.purchaseOrderObj.approvedBy = $scope.curUser;
 							$scope.addPurchaseOrder();
 						}, function() {
 							$log.debug("Cancelled...");

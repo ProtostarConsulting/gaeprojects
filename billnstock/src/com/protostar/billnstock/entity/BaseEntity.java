@@ -8,6 +8,7 @@ import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.OnSave;
 import com.googlecode.objectify.annotation.Parent;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
+import com.protostar.billingnstock.user.entities.UserEntity;
 
 public abstract class BaseEntity {
 	@Id
@@ -22,6 +23,11 @@ public abstract class BaseEntity {
 	private Date modifiedDate;
 	private String modifiedBy;
 	private String note;
+	
+	@Index
+	private Ref<UserEntity> createdBy;
+	@Index
+	private Ref<UserEntity> approvedBy;
 
 	public BaseEntity() {
 		super();
@@ -73,6 +79,20 @@ public abstract class BaseEntity {
 	public void setBusiness(BusinessEntity business) {
 		if (business != null)
 			this.business = Ref.create(business);
+	}
+	public UserEntity getCreatedBy() {
+		return createdBy == null ? null : createdBy.get();
+	}
+
+	public void setCreatedBy(UserEntity createdBy) {
+		this.createdBy = Ref.create(createdBy);
+	}
+	public UserEntity getApprovedBy() {
+		return approvedBy == null ? null : approvedBy.get();
+	}
+
+	public void setApprovedBy(UserEntity approvedBy) {
+		this.approvedBy = Ref.create(approvedBy);
 	}
 
 	public Long getId() {

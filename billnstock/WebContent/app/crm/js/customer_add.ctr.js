@@ -4,17 +4,12 @@ app
 		.controller(
 				"customerAddCtr",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
-						$mdUtil, $log, $stateParams, objectFactory,$mdMedia,$mdDialog,
-						appEndpointSF) {
-
-					$log.debug("Inside customerAddCtr");
+						$mdUtil, $log, $stateParams, objectFactory, $mdMedia,
+						$mdDialog, appEndpointSF) {
 
 					$scope.customerId = $stateParams.selectedCustomerId;
-
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
-					$log.debug("$scope.curUser++++++++"
-							+ angular.toJson($scope.curUser));
 
 					$scope.customer = {
 						isCompany : false,
@@ -22,6 +17,7 @@ app
 						modifiedDate : new Date(),
 						modifiedBy : ''
 					}
+
 					$scope.Address = {
 						line1 : "",
 						line2 : "",
@@ -52,21 +48,15 @@ app
 									if ($scope.customerId != "") {
 										$scope.showUpdateToast();
 									} else {
-
 										$scope.showAddToast();
+										$scope.custForm.$setPristine();
+										$scope.custForm.$setValidity();
+										$scope.custForm.$setUntouched();
+										$scope.customer = {};
+										$scope.Address = {}
 									}
 								});
-
-						$scope.custForm.$setPristine();
-						$scope.custForm.$setValidity();
-						$scope.custForm.$setUntouched();
-						$scope.customer = {};
-						$scope.Address = {}
 					}
-
-					$log.debug("$stateParams:", $stateParams);
-					$log.debug("$stateParams.customerId:",
-							$stateParams.customerId);
 
 					$scope.getCustomerByID = function() {
 
@@ -102,28 +92,38 @@ app
 
 					$scope.Checkemail = function(emailid) {
 
-						var customerService = appEndpointSF.getCustomerService();
-						customerService.isCustomerExists(emailid).then(function(responce) {
+						var customerService = appEndpointSF
+								.getCustomerService();
+						customerService
+								.isCustomerExists(emailid)
+								.then(
+										function(responce) {
 											if (responce.result.returnBool == true) {
-													$scope.userexists = "customer already exists";
-													$scope.user.firstName = "";
-													$scope.user.lastName = "";
-													angular
-															.element(document
-																	.getElementById('line1'))[0].disabled = true;
-													angular
-															.element(document
-																	.getElementById('state'))[0].disabled = true;
-													angular
-															.element(document
-																	.getElementById('city'))[0].disabled = true;
-												
+												$scope.userexists = "customer already exists";
+												$scope.user.firstName = "";
+												$scope.user.lastName = "";
+												angular
+														.element(document
+																.getElementById('line1'))[0].disabled = true;
+												angular
+														.element(document
+																.getElementById('state'))[0].disabled = true;
+												angular
+														.element(document
+																.getElementById('city'))[0].disabled = true;
+
 											} else {
 												if ($scope.customer.isCompany) {
-													//alert("check contact also");
-													var leadService = appEndpointSF.getleadService();
-													leadService.isContactExists(emailid)
-															.then(function(responce) {
+													// alert("check contact
+													// also");
+													var leadService = appEndpointSF
+															.getleadService();
+													leadService
+															.isContactExists(
+																	emailid)
+															.then(
+																	function(
+																			responce) {
 																		if (responce.result.returnBool == true) {
 
 																			$scope.userexists = "customer already exists";
@@ -152,17 +152,17 @@ app
 
 																		}
 																	});
-												}else{
-												$scope.userexists = "";
-												angular
-														.element(document
-																.getElementById('line1'))[0].disabled = false;
-												angular
-														.element(document
-																.getElementById('state'))[0].disabled = false;
-												angular
-														.element(document
-																.getElementById('city'))[0].disabled = false;
+												} else {
+													$scope.userexists = "";
+													angular
+															.element(document
+																	.getElementById('line1'))[0].disabled = false;
+													angular
+															.element(document
+																	.getElementById('state'))[0].disabled = false;
+													angular
+															.element(document
+																	.getElementById('city'))[0].disabled = false;
 												}
 											}
 
@@ -171,13 +171,9 @@ app
 					}
 					$scope.user11 = [];
 					$scope.userexist = "";
-					
-					
-					
-					
-					
-					
-					// ----------------------UPLODE EXCEL FILE-------------------------------
+
+					// ----------------------UPLODE EXCEL
+					// FILE-------------------------------
 
 					$scope.UplodeExcel = function(ev) {
 						var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))
@@ -194,7 +190,7 @@ app
 											fullscreen : useFullScreen,
 											locals : {
 												curuser : $scope.curUser
-											
+
 											}
 										})
 								.then(
@@ -205,31 +201,32 @@ app
 										function() {
 											$scope.status = 'You cancelled the dialog.';
 										});
-						
+
 					};
 
 					function DialogController($scope, $mdDialog, curuser) {
 						$scope.bizID;
-						$scope.loding=false;
-						$scope.uplodecustomer=function(){
-							$scope.loding=true;
-							 document.excelform.action = $scope.CustomerExcelUploadURL;
-						      document.excelform.submit();
+						$scope.loding = false;
+						$scope.uplodecustomer = function() {
+							$scope.loding = true;
+							document.excelform.action = $scope.CustomerExcelUploadURL;
+							document.excelform.submit();
 						}
-						
-						
-						$scope.getExcelUploadURL=function(){
-							var uploadUrlService = appEndpointSF.getuploadURLService();
-							uploadUrlService.getCustomerExcelUploadURL()
-									.then(function(url) {
-										$scope.CustomerExcelUploadURL=url.msg;
-										$scope.bizID = curuser.business.id;
-									});
-							
-							
+
+						$scope.getExcelUploadURL = function() {
+							var uploadUrlService = appEndpointSF
+									.getuploadURLService();
+							uploadUrlService
+									.getCustomerExcelUploadURL()
+									.then(
+											function(url) {
+												$scope.CustomerExcelUploadURL = url.msg;
+												$scope.bizID = curuser.business.id;
+											});
+
 						}
 						$scope.CustomerExcelUploadURL;
-						
+
 						$scope.waitForServiceLoad = function() {
 							if (appEndpointSF.is_service_ready) {
 								$scope.getExcelUploadURL();
@@ -239,33 +236,6 @@ app
 							}
 						}
 						$scope.waitForServiceLoad();
-						}
-
-					// -------------------------------------------------------
-					
-					
-
-					$scope.toggleRight = buildToggler('right');
-
-					function buildToggler(navID) {
-						var debounceFn = $mdUtil.debounce(function() {
-							$mdSidenav(navID).toggle().then(function() {
-								$log.debug("toggle " + navID + " is done");
-							});
-						}, 200);
-						return debounceFn;
-					}
-
-					$scope.close = function() {
-						$mdSidenav('right').close().then(function() {
-							$log.debug("close RIGHT is done");
-						});
-					};
-
-					$scope.showSimpleToast = function() {
-						$mdToast.show($mdToast.simple().content(
-								'Customer Data Saved!').position("top")
-								.hideDelay(3000));
 					}
 
 				});

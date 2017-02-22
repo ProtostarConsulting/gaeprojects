@@ -21,7 +21,7 @@
 </div>
 <div>
 	<md-data-table-container>
-	<table md-data-table md-row-select="selected" md-progress="deferred">
+	<table md-data-table md-progress="deferred">
 		<thead md-order="query.order" md-trigger="onOrderChange">
 			<tr>
 				<th name="Customer Name" order-by="firstName"></th>
@@ -33,40 +33,20 @@
 		</thead>
 
 		<tbody>
-			<tr md-auto-select
+			<tr
 				ng-repeat="customer in customers | orderBy: query.order | filter: searchText | limitTo: query.limit: (query.page - 1) * query.limit">
 				<td>{{customer.isCompany? customer.companyName:
 					(customer.firstName + " " + customer.lastName)}}</td>
 				<td>{{customer.isCompany?"Firm":"Person"}}</td>
 				<td>{{customer.mobile}}</td>
 				<td>{{customer.email}}</td>
-				<td><section layout="row" layout-sm="column">
-						<md-button class="md-raised md-primary"
-							ui-sref="crm.addcustomer({selectedCustomerId: customer.id})">
-						Edit</md-button>
-					</section></td>
-				<td>
+				<td><md-button class="md-icon-button"
+						ui-sref="crm.addcustomer({selectedCustomerId: customer.id})">
+					<ng-md-icon icon="edit" style="fill: md-default" size="20">
+					<md-tooltip> Edit</md-tooltip></ng-md-icon></md-button></td>
 			</tr>
 		</tbody>
 	</table>
-	<div flex>
-		<md-button id="invoiceBtn" class="md-raised md-primary"
-			ng-show="selected.length == 1 && selected[0].isCompany == true "
-			ui-sref="crm.listOfContact({selectedCustomerId: selected[0].id})">View
-		Contact</md-button>
-
-		<!-- use to show so and po -->
-		<md-button id="invoiceBtn" class="md-raised md-primary"
-			ng-show="selected.length == 1"
-			ui-sref="crm.customerInvoiceList({selectedCustomerId:  selected[0].id})">Invoice</md-button>
-
-		<md-button id="sOBtn" class="md-raised md-primary"
-			ng-show="selected.length == 1"
-			ui-sref="crm.customerSOList({selectedCustomerId:  selected[0].id})">SO
-		</md-button>
-
-	</div>
-
 	<md-data-table-pagination md-limit="query.limit" md-page="query.page"
 		md-total={{customers.length}} md-trigger="onpagechange"></md-data-table-pagination>
 	</md-data-table-container>

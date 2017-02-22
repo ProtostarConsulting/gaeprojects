@@ -9,18 +9,27 @@
 <div>
 	<form ng-submit="$event.preventDefault()" name="pOForm">
 
-		<div layout="row" flex=30>
-			<md-input-container flex> <label>Warehouse
-			</label> <md-select flex ng-model="purchaseOrderObj.warehouse"
-				placeholder="Select Warehouse" ng-change="warehouseChanged">
-			<md-option ng-value="warehouse" ng-required="true"
-				ng-selected="(purchaseOrderObj.warehouse.id)?(purchaseOrderObj.warehouse.id == warehouse.id):($index == 0)"
-				ng-repeat="warehouse in warehouses">{{warehouse.warehouseName
-			}}</md-option> </md-select> </md-input-container>
+		<div layout="row" layout-xs="column">
+			<div layout="row" flex>
+				<md-input-container flex=40> <label>Purchase
+					Order No.</label> <input ng-model="purchaseOrderObj.itemNumber"
+					placeholder="Auto generated number" ng-disabled="true"></input> </md-input-container>
+				<md-input-container flex> <label>Warehouse
+				</label> <md-select flex ng-model="purchaseOrderObj.warehouse"
+					placeholder="Select Warehouse" ng-change="warehouseChanged">
+				<md-option ng-value="warehouse" ng-required="true"
+					ng-selected="(purchaseOrderObj.warehouse.id)?(purchaseOrderObj.warehouse.id == warehouse.id):($index == 0)"
+					ng-repeat="warehouse in warehouses">{{warehouse.warehouseName
+				}}</md-option> </md-select> </md-input-container>
+				<md-input-container flex=15> <label>Created
+					By </label> <input ng-disabled="true" ng-model="createdyBy"
+					ng-init="createdyBy = purchaseOrderObj.createdBy? purchaseOrderObj.createdBy.firstName + ' ' + purchaseOrderObj.createdBy.lastName: ''"></input>
+				</md-input-container>
+			</div>
 		</div>
 		<div layout="row" layout-xs="column">
 			<div layout="row" flex>
-				<md-autocomplete flex=30 required md-input-name="autocompleteField"
+				<md-autocomplete flex=40 required md-input-name="autocompleteField"
 					md-no-cache=true md-selected-item="purchaseOrderObj.supplier"
 					md-search-text="searchTextInput"
 					md-items="item in querySearch(searchTextInput)"
@@ -35,24 +44,24 @@
 				<md-icon md-svg-src="img/icons/ic_queue_black_24px.svg"
 					ng-click="addSupplier()" class="name"
 					style="color: Green; height: 18px; width: 18px"></md-icon>
-
-
 				<md-input-container flex> <label>Select
 					Due Date</label> <md-datepicker flex ng-model="purchaseOrderObj.poDueDate"
 					md-placeholder="Select Date"></md-datepicker> </md-input-container>
 				<md-input-container flex> <label>Receipt
 					Status </label> <input type="text" ng-disabled="true"
 					ng-model="purchaseOrderObj.status"> </md-input-container>
-				<md-input-container flex> <label>Purchase
-					Order No.</label> <input ng-model="purchaseOrderObj.itemNumber"
-					placeholder="Auto generated number" ng-disabled="true"></input> </md-input-container>
+				<md-input-container flex=15> <label>Approved
+					By </label> <input ng-disabled="true" ng-model="approvedBy"
+					ng-init="approvedBy = purchaseOrderObj.approvedBy? purchaseOrderObj.createdBy.firstName + ' ' + purchaseOrderObj.createdBy.lastName : 'NA'"></input>
+				</md-input-container>
+
 
 			</div>
 		</div>
 
 
 		<div layout="row" layout-xs="column">
-			<md-input-container flex> <label>Bill To
+			<md-input-container flex=40> <label>Bill To
 			</label> <textarea ng-model="purchaseOrderObj.to" rows="4" cols="1"></textarea>
 			</md-input-container>
 
@@ -63,14 +72,14 @@
 
 		<div layout="row" layout-xs="column">
 
-			<md-input-container flex> <label>Requisitioner
+			<md-input-container flex=40> <label>Requisitioner
 			</label> <input ng-model="purchaseOrderObj.requisitioner"> </md-input-container>
 
 			<md-input-container flex> <label>Shipped
 				Via </label> <input ng-model="purchaseOrderObj.shippedVia"> </md-input-container>
 		</div>
 		<div layout="row" layout-xs="column">
-			<md-input-container flex> <label>F.O.B.Point
+			<md-input-container flex=40> <label>F.O.B.Point
 			</label> <input ng-model="purchaseOrderObj.fOBPoint"> </md-input-container>
 
 			<md-input-container flex> <label>Terms </label>
@@ -147,7 +156,8 @@
 						<td></td>
 						<td></td>
 						<td><label>Product Sub Total</label></td>
-						<td><b>{{purchaseOrderObj.productSubTotal | currency:"":"2"}}</b></td>
+						<td><b>{{purchaseOrderObj.productSubTotal |
+								currency:"":"2"}}</b></td>
 						<td></td>
 
 					</tr>
@@ -236,7 +246,8 @@
 						<td></td>
 						<td></td>
 						<td><label>Service Sub Total</label></td>
-						<td><b>{{purchaseOrderObj.serviceTotal | currency:"":"2"}}</b></td>
+						<td><b>{{purchaseOrderObj.serviceTotal |
+								currency:"":"2"}}</b></td>
 						<td></td>
 					</tr>
 					<tr>
@@ -308,7 +319,8 @@
 				<md-button
 					ng-show="hasUserAuthority(curUser, 'Stock.ModuleApprover')"
 					class="md-raised md-primary" ng-disabled="pOForm.$invalid"
-					ng-click="finalizePurchaseOrder($event)">Finalize\Aprrove PO</md-button>
+					ng-click="finalizePurchaseOrder($event)">Finalize\Aprrove
+				PO</md-button>
 			</section>
 		</div>
 	</form>
