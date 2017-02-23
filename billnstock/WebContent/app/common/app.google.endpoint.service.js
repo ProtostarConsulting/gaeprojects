@@ -319,9 +319,7 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	
-	
-	
+
 	AccountGroupService.getProfitAndLossAcc = function(bid) {
 		var deferred = $q.defer();
 		gapi.client.accountGroupService.getProfitAndLossAcc({
@@ -340,8 +338,7 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	
-	
+
 	AccountGroupService.getClosingStockBalance = function(bid) {
 		var deferred = $q.defer();
 		gapi.client.accountGroupService.getClosingStockBalance({
@@ -351,9 +348,6 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	
-	
-	
 
 	// ----------------------------------
 
@@ -1143,10 +1137,11 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
-	crmService.getLeadById = function(lead) {
+	crmService.getLeadById = function(busId, id) {
 		var deferred = $q.defer();
 		gapi.client.crmService.getLeadById({
-			'id' : lead
+			'busId' : busId,
+			'id' : id
 		}).execute(function(resp) {
 			deferred.resolve(resp);
 		});
@@ -1186,10 +1181,11 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
-	crmService.getContactById = function(contactNo) {
+	crmService.getContactById = function(busId, id) {
 		var deferred = $q.defer();
 		gapi.client.crmService.getContactById({
-			'id' : contactNo
+			'busId' : busId,
+			'id' : id
 		}).execute(function(resp) {
 			deferred.resolve(resp);
 		});
@@ -1539,13 +1535,6 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
-	
-	
-	
-	
-	
-	
-	
 	VoucherService.addvoucherPayment = function(vaccount) {
 		var deferred = $q.defer();
 		gapi.client.voucherService.addvoucherPayment(vaccount).execute(
@@ -1555,7 +1544,7 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
-	VoucherService.listvoucherPayment= function(id) {
+	VoucherService.listvoucherPayment = function(id) {
 		var deferred = $q.defer();
 		gapi.client.voucherService.listvoucherPayment({
 			"id" : id
@@ -1565,13 +1554,6 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
-	
-	
-	
-	
-	
-	
-	
 	VoucherService.addvoucherReciept = function(vaccount) {
 		var deferred = $q.defer();
 		gapi.client.voucherService.addvoucherReciept(vaccount).execute(
@@ -1655,9 +1637,9 @@ function googleEndpointSF($q) {
 			deferred.resolve(resp.items);
 		});
 		return deferred.promise;
-	}////
-	
-	///////////////////////
+	}// //
+
+	// /////////////////////
 	AccountService.getPurchesAcc = function(id) {
 		var deferred = $q.defer();
 		gapi.client.accountService.getPurchesAcc({
@@ -1688,7 +1670,7 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-//////
+	// ////
 
 	AccountService.getAccountListByGroupId = function(groupId) {
 		var deferred = $q.defer();
@@ -2000,10 +1982,10 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	
-	StockService.getStockShipmentByID = function(busId,id){
+
+	StockService.getStockShipmentByID = function(busId, id) {
 		var deferred = $q.defer();
-		gapi.client.stockService.getPOByID({
+		gapi.client.stockService.getStockShipmentByID({
 			'busId' : busId,
 			"id" : id
 		}).execute(function(resp) {
@@ -2091,9 +2073,8 @@ function googleEndpointSF($q) {
 				});
 		return deferred.promise;
 	}
-	
-	StockService.fetchBudgetListByPaging = function(busId, status,
-			pagingInfo) {
+
+	StockService.fetchBudgetListByPaging = function(busId, status, pagingInfo) {
 		var deferred = $q.defer();
 		gapi.client.stockService.fetchBudgetListByPaging({
 			"id" : busId,
@@ -2103,7 +2084,7 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	
+
 	StockService.getAllPurchaseOrder = function(id) {
 		var deferred = $q.defer();
 
@@ -2168,7 +2149,7 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
-	StockService.getStockReceiptByID = function(busId,id){
+	StockService.getStockReceiptByID = function(busId, id) {
 		var deferred = $q.defer();
 		gapi.client.stockService.getPOByID({
 			'busId' : busId,

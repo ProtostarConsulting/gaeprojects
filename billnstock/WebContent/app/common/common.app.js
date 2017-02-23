@@ -766,6 +766,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/view/:selectedleadNo",
 		templateUrl : '/app/crm/crm_lead_view.html',
 		controller : 'lead_view',
+		params : {
+			selectedleadNo : null
+		}
 	}).state('crm.contacts', {
 		url : "/contact",
 		templateUrl : '/app/crm/contact_list.html',
@@ -779,9 +782,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		templateUrl : '/app/crm/crm_contacts.html',
 		controller : 'contacts',
 	}).state('crm.viewContact', {
-		url : "/viewContact/:selectedcontactNo",
+		url : "/viewContact/:selectedContactNo",
 		templateUrl : '/app/crm/crm_contacts_view.html',
 		controller : 'contactsList',
+		params : {
+			selectedContactNo : null
+		}
 	}).state('crm.opportunity', {
 		url : "/opportunity",
 		templateUrl : '/app/crm/opportunity_list.html',
