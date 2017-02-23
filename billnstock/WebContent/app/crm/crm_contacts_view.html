@@ -8,7 +8,7 @@
 		<div layout layout-sm="column">
 			<md-input-container flex> <label>First
 				Name 
-			</label> <input name="fname" ng-model="contactL.fName" ng-required="true">
+			</label> <input name="fname" ng-model="contact.fName" ng-required="true">
 			<div ng-messages="contactform.fname.$error"
 				ng-if="contactform.fname.$submitted || contactform.fname.$touched">
 				<div ng-message="required">Please Enter first Name.</div>
@@ -18,7 +18,7 @@
 
 			<md-input-container flex> <label>Last
 				Name 
-			</label> <input name="lname" ng-model="contactL.lName" ng-required="true">
+			</label> <input name="lname" ng-model="contact.lName" ng-required="true">
 			<div ng-messages="contactform.lname.$error"
 				ng-if="contactform.lname.$submitted || contactform.lname.$touched">
 				<div ng-message="required">Please Enter Last Name.</div>
@@ -29,7 +29,7 @@
 		<div layout layout-sm="column">
 			<md-input-container flex> <label>Status
 				
-			</label> <input name="status" ng-model="contactL.status" ng-required="true">
+			</label> <input name="status" ng-model="contact.status" ng-required="true">
 			<div ng-messages="contactform.status.$error"
 				ng-if="contactform.status.$submitted || contactform.status.$touched">
 				<div ng-message="required">Please Enter Status.</div>
@@ -37,7 +37,7 @@
 			</md-input-container>
 			<md-input-container flex> <label>Phone <span
 				style="color: red;">*</span></label> <input type="number" name="phone"
-				ng-minlength="10" ng-maxlength="11" ng-model="contactL.phone"
+				ng-minlength="10" ng-maxlength="11" ng-model="contact.phone"
 				ng-required="true">
 			<div ng-messages="contactform.phone.$error"
 				ng-if="contactform.phone.$submitted || contactform.phone.$touched">
@@ -50,7 +50,7 @@
 		<div layout layout-sm="column">
 			<md-input-container flex> <label>Email <span
 				style="color: red;">*</span></label> <input type="email"
-				ng-pattern="/^.+@.+\..+$/" name="email" ng-model="contactL.email"
+				ng-pattern="/^.+@.+\..+$/" name="email" ng-model="contact.email"
 				ng-required="true" disabled>
 			<div ng-messages="contactform.email.$error"
 				ng-if="contactform.email.$submitted || contactform.email.$touched">
@@ -66,7 +66,7 @@
 		<div layout layout-sm="column">
 			<md-input-container flex> <label>user Id
 				
-			</label> <input name="uid" ng-model="contactL.uid" ng-required="true">
+			</label> <input name="uid" ng-model="contact.uid" ng-required="true">
 			<div ng-messages="contactform.uid.$error"
 				ng-if="contactform.uid.$submitted || contactform.uid.$touched">
 				<div ng-message="required">Please Enter user id.</div>
@@ -75,7 +75,7 @@
 			</md-input-container>
 			<md-input-container flex> <label>Supplier
 				
-			</label> <input name="supp" ng-model="contactL.supp" ng-required="true">
+			</label> <input name="supp" ng-model="contact.supp" ng-required="true">
 
 			<div ng-messages="contactform.supp.$error"
 				ng-if="contactform.supp.$submitted || contactform.supp.$touched">
@@ -86,7 +86,7 @@
 		<div layout layout-sm="column">
 			<md-input-container flex> <label>Customer
 				
-			</label> <input name="cust" ng-model="contactL.cust" ng-required="true">
+			</label> <input name="cust" ng-model="contact.cust" ng-required="true">
 
 			<div ng-messages="contactform.cust.$error"
 				ng-if="contactform.cust.$submitted || contactform.cust.$touched">
@@ -95,7 +95,7 @@
 			</md-input-container>
 			<md-input-container flex> <label>Sales </span>
 				Partner <span style="color: red;">*</label> <input
-				name="salespartner" ng-model="contactL.salespartner"
+				name="salespartner" ng-model="contact.salespartner"
 				ng-required="true">
 
 			<div ng-messages="contactform.salespartner.$error"

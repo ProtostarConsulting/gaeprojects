@@ -8,35 +8,35 @@ angular.module("stockApp").controller(
 						.position("top").hideDelay(3000));
 			};
 			$scope.selectedCustomerId = $stateParams.selectedCustomerId;
-			
+
 			$scope.curUser = appEndpointSF.getLocalUserService()
 					.getLoggedinUser();
-			
+
 			$scope.query = {
-			         order: 'name',
-			         limit: 5,
-			         page: 1
-			       };
-			
-	
+				order : 'name',
+				limit : 5,
+				page : 1
+			};
+
 			$scope.getContactByCustomerId = function() {
 				$log.debug("Inside Ctr $scope.getAlllead");
 				var leadService = appEndpointSF.getleadService();
 				$scope.ctaskid;
 				if (typeof $scope.selectedCustomerId != "undefined") {
-				leadService.getContactByCustomerId($scope.selectedCustomerId).then(
-						function(contactList) {
-							$log.debug("Inside Ctr getAllleads");
-							$scope.contactL = contactList.items;
-						});	
+					leadService.getContactByCustomerId(
+							$scope.selectedCustomerId).then(
+							function(contactList) {
+								$log.debug("Inside Ctr getAllleads");
+								$scope.contactL = contactList.items;
+							});
 
-			}
+				}
 			}
 			$scope.contactL = [];
-			
+
 			$scope.waitForServiceLoad1 = function() {
 				if (appEndpointSF.is_service_ready) {
-					$scope.getContactByCustomerId();	
+					$scope.getContactByCustomerId();
 				} else {
 					$log.debug("Services Not Loaded, watiting...");
 					$timeout($scope.waitForServiceLoad1, 1000);

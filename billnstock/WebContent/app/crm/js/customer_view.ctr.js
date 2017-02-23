@@ -1,64 +1,55 @@
-var app= angular.module("stockApp");
+var app = angular.module("stockApp");
 
-app.controller(
-		"customerViewCtr",
-		function($scope, $window, $mdToast, $timeout, $mdSidenav, $mdUtil,
-				$log,$stateParams, objectFactory, appEndpointSF) {
+app.controller("customerViewCtr", function($scope, $window, $mdToast, $timeout,
+		$mdSidenav, $mdUtil, $log, $stateParams, objectFactory, appEndpointSF) {
 
-			$log.debug("Inside customerViewCtr");
+	$log.debug("Inside customerViewCtr");
 
-			$scope.showSimpleToast = function() {
-				$mdToast.show($mdToast.simple().content('Customer Data Saved!')
-						.position("top").hideDelay(3000));
-			};
-		
-			$log.debug("$stateParams:", $stateParams);
-			$log.debug("$stateParams.selectedCustomerId:",
-					$stateParams.selectedCustomerId);
+	$scope.showSimpleToast = function() {
+		$mdToast.show($mdToast.simple().content('Customer Data Saved!')
+				.position("top").hideDelay(3000));
+	};
 
-			$scope.customerId = $stateParams.selectedCustomerId;
-		
-			$scope.getAllInvoiceByCustId = function() {
-				$log.debug("Inside Ctr $scope.getAllInvoiceByCustId");
-				var invoiceService = appEndpointSF.getInvoiceService();
+	$log.debug("$stateParams:", $stateParams);
+	$log.debug("$stateParams.selectedCustomerId:",
+			$stateParams.selectedCustomerId);
 
-				invoiceService
-						.getAllInvoiceByCustId($scope.customerId)
-						.then(
-								function(custInvoiveList) {
-									$log
-											.debug("Inside Ctr getAllInvoiceByCustId");
-									$scope.custInvoiceData = custInvoiveList;
-									$log
-											.debug("Inside Ctr $scope.custInvoiceData:"
-													+ angular
-															.toJson($scope.custInvoiceData));
-								});
-			}
+	$scope.customerId = $stateParams.selectedCustomerId;
 
-			$scope.custInvoiceData = [];
-			$scope.getAllInvoiceByCustId();
-			
-			
-			
-			$scope.toggleRight = buildToggler('right');
+	$scope.getAllInvoiceByCustId = function() {
+		$log.debug("Inside Ctr $scope.getAllInvoiceByCustId");
+		var invoiceService = appEndpointSF.getInvoiceService();
 
-			function buildToggler(navID) {
-				var debounceFn = $mdUtil.debounce(function() {
-					$mdSidenav(navID).toggle().then(function() {
-						$log.debug("toggle " + navID + " is done");
-					});
-				}, 200);
-				return debounceFn;
-			}
-
-			$scope.close = function() {
-				$mdSidenav('right').close().then(function() {
-					$log.debug("close RIGHT is done");
+		invoiceService.getAllInvoiceByCustId($scope.customerId).then(
+				function(custInvoiveList) {
+					$log.debug("Inside Ctr getAllInvoiceByCustId");
+					$scope.custInvoiceData = custInvoiveList;
+					$log.debug("Inside Ctr $scope.custInvoiceData:"
+							+ angular.toJson($scope.custInvoiceData));
 				});
-			};
-			
-			$scope.back = function() {
-				 window.history.back();
-			}
+	}
+
+	$scope.custInvoiceData = [];
+	$scope.getAllInvoiceByCustId();
+
+	$scope.toggleRight = buildToggler('right');
+
+	function buildToggler(navID) {
+		var debounceFn = $mdUtil.debounce(function() {
+			$mdSidenav(navID).toggle().then(function() {
+				$log.debug("toggle " + navID + " is done");
+			});
+		}, 200);
+		return debounceFn;
+	}
+
+	$scope.close = function() {
+		$mdSidenav('right').close().then(function() {
+			$log.debug("close RIGHT is done");
 		});
+	};
+
+	$scope.back = function() {
+		window.history.back();
+	}
+});

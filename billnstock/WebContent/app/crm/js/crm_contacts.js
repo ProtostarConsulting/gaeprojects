@@ -11,6 +11,7 @@ angular
 								.position("top").hideDelay(3000));
 					};
 					$scope.selectedcontactNo = $stateParams.selectedcontactNo;
+
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
 
@@ -26,7 +27,7 @@ angular
 						fName : "",
 						lName : "",
 						status : "",
-						phone : "",
+						phone : null,
 						email : "",
 						uid : "",
 						supp : "",

@@ -7,24 +7,26 @@ angular.module("stockApp").controller(
 				$mdToast.show($mdToast.simple().content(msgBean)
 						.position("top").hideDelay(3000));
 			};
-			$scope.selectedcontactNo = $stateParams.selectedcontactNo;
+
+			$scope.selectedContactNo = $stateParams.selectedContactNo;
+
 			$scope.curUser = appEndpointSF.getLocalUserService()
 					.getLoggedinUser();
-			
+
 			$scope.query = {
-			         order: 'name',
-			         limit: 5,
-			         page: 1
-			       };
-			
+				order : 'name',
+				limit : 5,
+				page : 1
+			};
+
 			$scope.contact = {
-					business:"",
+				business : "",
 				loggedInUser : "",
 				cid : "",
 				fName : "",
 				lName : "",
 				status : "",
-				phone : "",
+				phone : null,
 				email : "",
 				uid : "",
 				supp : "",
@@ -32,26 +34,26 @@ angular.module("stockApp").controller(
 				salespartner : ""
 			}
 
-			
 			$scope.getAllcontact = function() {
 				$scope.loading = true;
 				var leadService = appEndpointSF.getleadService();
-				leadService.getAllcontact($scope.curUser.business.id).then(function(contactList) {
-					$log.debug("Inside Ctr getAllleads");
-					$scope.contacts = contactList.items;
-					$scope.loading = false;
-					$scope.cleadid = $scope.contacts.length + 1;
-					$scope.contact.cid = $scope.cleadid;
+				leadService.getAllcontact($scope.curUser.business.id).then(
+						function(contactList) {
+							$log.debug("Inside Ctr getAllleads");
+							$scope.contacts = contactList.items;
+							$scope.loading = false;
+							$scope.cleadid = $scope.contacts.length + 1;
+							$scope.contact.cid = $scope.cleadid;
 
-				});
+						});
 			}
-			
+
 			$scope.contacts = [];
-			
+
 			$scope.waitForServiceLoad = function() {
 				if (appEndpointSF.is_service_ready) {
 					$scope.getAllcontact();
-					
+
 				} else {
 					$log.debug("Services Not Loaded, watiting...");
 					$timeout($scope.waitForServiceLoad, 1000);
@@ -63,18 +65,24 @@ angular.module("stockApp").controller(
 				$log.debug("Inside Ctr $scope.getAlllead");
 				var leadService = appEndpointSF.getleadService();
 				$scope.ctaskid;
-				if (typeof $scope.selectedcontactNo != "undefined") {
-				leadService.getContactById($scope.selectedcontactNo).then(
-						function(contactList) {
-							$log.debug("Inside Ctr getAllleads");
-							$scope.contactL = contactList.result;
+				if (typeof $scope.selectedContactNo != "undefined") {
+					leadService.getContactById($scope.curUser.business.id,
+							$scope.selectedContactNo).then(function(contact) {
+						$log.debug("Inside Ctr getAllleads");
+						$scope.contact = contact;
+						$scope.contact.phone = Number(contact.phone);// else
+						// throws
+						// error
+						// while
+						// editing
 
-						});	
+					});
 
+				}
 			}
-			}
+
 			$scope.contactL = [];
-			
+
 			$scope.waitForServiceLoad1 = function() {
 				if (appEndpointSF.is_service_ready) {
 					$scope.getContactById();
@@ -86,9 +94,9 @@ angular.module("stockApp").controller(
 			$scope.waitForServiceLoad1();
 
 			$scope.updatecontact = function() {
-				$scope.contactL.modifiedBy=$scope.curUser.email_id;
+				$scope.contactL.modifiedBy = $scope.curUser.email_id;
 				var leadService = appEndpointSF.getleadService();
-				leadService.updatecontact($scope.contactL).then(
+				leadService.updatecontact($scope.contact).then(
 						function(msgBean) {
 							$log.debug("Inside Ctr updateemp");
 							$log.debug("msgBean.msg:" + msgBean.msg);
