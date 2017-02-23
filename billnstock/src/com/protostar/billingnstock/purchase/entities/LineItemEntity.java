@@ -5,6 +5,7 @@ public class LineItemEntity {
 	private String itemName;
 	private double price;
 	private String qty;
+	private double currentBudgetBalance;
 	
 	public String getItemName() {
 		return itemName;
@@ -23,5 +24,11 @@ public class LineItemEntity {
 	}
 	public void setQty(String qty) {
 		this.qty = qty;
+	}
+	public double getCurrentBudgetBalance() {
+		return currentBudgetBalance;
+	}
+	public void setCurrentBudgetBalance(double currentBudgetBalance) {
+		this.currentBudgetBalance = currentBudgetBalance;
 	}
 }

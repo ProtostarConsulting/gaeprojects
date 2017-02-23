@@ -4,7 +4,7 @@ import java.util.List;
 
 public class LineItemCategory{
 	private String categoryName;
-	List<LineItemEntity> items;
+	private List<LineItemEntity> items;	
 	
 	public String getCategoryName() {
 		return categoryName;
