@@ -9,6 +9,9 @@ import com.googlecode.objectify.annotation.Index;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.user.entities.UserEntity;
 import com.protostar.billnstock.entity.BaseEntity;
+import com.protostar.billnstock.until.data.Constants;
+import com.protostar.billnstock.until.data.EntityUtil;
+import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 
 @Entity
 public class Lead extends Contact{
@@ -37,6 +40,16 @@ public class Lead extends Contact{
 	private String designation;
 	/*private String address;*/
 	
+	@Override
+	public void beforeSave() {
+		super.beforeSave();
+		if (getId() == null) {
+			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
+					EntityUtil.getBusinessRawKey(getBusiness()),
+					Constants.LEAD_NO_COUNTER);
+			setItemNumber(sequenceGenService.getNextSequenceNumber());
+		}
+	}
 
 	public String getLid() {
 		return lid;

@@ -7,6 +7,9 @@ import com.protostar.billingnstock.cust.entities.Customer;
 import com.protostar.billingnstock.user.entities.UserEntity;
 import com.protostar.billnstock.entity.Address;
 import com.protostar.billnstock.entity.BaseEntity;
+import com.protostar.billnstock.until.data.Constants;
+import com.protostar.billnstock.until.data.EntityUtil;
+import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 
 @Entity
 public class Contact extends BaseEntity {
@@ -41,6 +44,17 @@ public class Contact extends BaseEntity {
 	private String salespartner;
 
 	private Address address;
+
+	@Override
+	public void beforeSave() {
+		super.beforeSave();
+		if (getId() == null) {
+			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
+					EntityUtil.getBusinessRawKey(getBusiness()),
+					Constants.CONTACT_NO_COUNTER);
+			setItemNumber(sequenceGenService.getNextSequenceNumber());
+		}
+	}
 
 	public Address getAddress() {
 		return address == null ? null : address;
