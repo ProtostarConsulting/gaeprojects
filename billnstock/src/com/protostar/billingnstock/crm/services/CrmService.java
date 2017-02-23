@@ -30,17 +30,24 @@ public class CrmService {
 
 	@ApiMethod(name = "getAllleads")
 	public List<Lead> getAllleads(@Named("id") Long busId) {
-		List<Lead> filteredlead = ofy().load().type(Lead.class).ancestor(Key.create(BusinessEntity.class, busId))
-				.list();
+		List<Lead> filteredlead = ofy().load().type(Lead.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).list();
 		return filteredlead;
 
 	}
 
 	@ApiMethod(name = "getLeadById")
-	public Lead getLeadById(@Named("id") Long selectedid) {
+	public Lead getLeadById(@Named("busId") Long busId,
+			@Named("id") Long selectedid) {
 
-		Lead lead = ofy().load().type(Lead.class).id(selectedid).now();
+		List<Lead> list = ofy()
+				.load()
+				.type(Lead.class)
+				.filterKey(
+						Key.create(Key.create(BusinessEntity.class, busId),
+								Lead.class, selectedid)).list();
 
+		Lead lead = list.size() > 0 ? list.get(0) : null;
 		return lead;
 	}
 
@@ -76,36 +83,51 @@ public class CrmService {
 	}
 
 	@ApiMethod(name = "getContactById")
-	public Contact getContactById(@Named("id") Long contactNo) {
-		Contact contact = ofy().load().type(Contact.class).id(contactNo).now();
+	public Contact getContactById(@Named("busId") Long busId,
+			@Named("id") Long contactNo) {
+		List<Contact> list = ofy()
+				.load()
+				.type(Contact.class)
+				.filterKey(
+						Key.create(Key.create(BusinessEntity.class, busId),
+								Contact.class, contactNo)).list();
+
+		Contact contact = list.size() > 0 ? list.get(0) : null;
 		return contact;
 	}
 
 	@ApiMethod(name = "getContactByCustomerId", path = "getContactByCustomerId")
 	public List<Contact> getContactByCustomerId(@Named("id") Long CustId) {
-		List<Contact> contact = ofy().load().type(Contact.class)
-				.filter("customer", Ref.create(Key.create(Customer.class, CustId))).list();
+		List<Contact> contact = ofy()
+				.load()
+				.type(Contact.class)
+				.filter("customer",
+						Ref.create(Key.create(Customer.class, CustId))).list();
 
 		return contact;
 	}
 
 	@ApiMethod(name = "getContactByEmailID", path = "getContactByEmailID")
 	public Contact getContactByEmailID(@Named("email") String email) {
-		List<Contact> contact = ofy().load().type(Contact.class).filter("email", email).list();
+		List<Contact> contact = ofy().load().type(Contact.class)
+				.filter("email", email).list();
 
 		return (contact == null || contact.size() == 0) ? null : contact.get(0);
 	}
 
 	public Contact getCustomerPrimaryContact(Customer cust) {
-		List<Contact> contact = ofy().load().type(Contact.class).ancestor(cust.getBusiness())
-				.filter("customer", Ref.create(cust)).filter("email", cust.getEmail()).list();
+		List<Contact> contact = ofy().load().type(Contact.class)
+				.ancestor(cust.getBusiness())
+				.filter("customer", Ref.create(cust))
+				.filter("email", cust.getEmail()).list();
 		return (contact == null || contact.size() == 0) ? null : contact.get(0);
 	}
 
 	@ApiMethod(name = "isContactExists")
 	public ServerMsg isContactExists(@Named("email") String email) {
 		ServerMsg serverMsg = new ServerMsg();
-		List<Contact> customer = ofy().load().type(Contact.class).filter("email", email).list();
+		List<Contact> customer = ofy().load().type(Contact.class)
+				.filter("email", email).list();
 
 		if (customer.size() == 0) {
 			serverMsg.setReturnBool(false);

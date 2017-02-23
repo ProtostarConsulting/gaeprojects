@@ -33,15 +33,17 @@ public class OpportunityService {
 
 	@ApiMethod(name = "getAllopportunity")
 	public List<Opportunity> getAllopportunity(@Named("id") Long id) {
-		List<Opportunity> filteredopportunity = ofy().load().type(Opportunity.class)
-				.ancestor(Ref.create(Key.create(BusinessEntity.class, id))).list();
+		List<Opportunity> filteredopportunity = ofy().load()
+				.type(Opportunity.class)
+				.ancestor(Key.create(BusinessEntity.class, id)).list();
 		return filteredopportunity;
 
 	}
 
 	@ApiMethod(name = "getopportunityById")
 	public Opportunity getopportunityById(@Named("id") Long selectedid) {
-		Opportunity opportunity = ofy().load().type(Opportunity.class).id(selectedid).now();
+		Opportunity opportunity = ofy().load().type(Opportunity.class)
+				.id(selectedid).now();
 		return opportunity;
 	}
 
