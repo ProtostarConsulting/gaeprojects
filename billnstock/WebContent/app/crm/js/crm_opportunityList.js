@@ -10,16 +10,18 @@ angular
 						$mdToast.show($mdToast.simple().content(msgBean)
 								.position("top").hideDelay(3000));
 					};
+
 					$scope.selectedopportunityNo = $stateParams.selectedopportunityNo;
+
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
-					
+
 					$scope.query = {
-					         order: 'name',
-					         limit: 5,
-					         page: 1
-					       };
-					
+						order : 'name',
+						limit : 5,
+						page : 1
+					};
+
 					var d = new Date();
 					var year = d.getFullYear();
 					var month = d.getMonth() + 1;
@@ -33,7 +35,7 @@ angular
 					$scope.taskType = [ "Phone Call", "Email", "Visit" ];
 
 					$scope.opportunity = {
-							business:"",
+						business : "",
 						loggedInUser : "",
 						oid : "",
 						from : "",
@@ -61,15 +63,12 @@ angular
 						status : ""
 					}
 
-				
-
 					$scope.getAllopportunity = function() {
 						$scope.loading = true;
 						var opportunityService = appEndpointSF
 								.getopportunityService();
 						opportunityService
-								.getAllopportunity(
-										$scope.curUser.business.id)
+								.getAllopportunity($scope.curUser.business.id)
 								.then(
 										function(opportunityList) {
 											$log
@@ -83,11 +82,11 @@ angular
 					}
 
 					$scope.opportunitys = [];
-					
+
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
 							$scope.getAllopportunity();
-							
+
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
 							$timeout($scope.waitForServiceLoad, 1000);
@@ -100,27 +99,26 @@ angular
 						var opportunityService = appEndpointSF
 								.getopportunityService();
 						if (typeof $scope.selectedopportunityNo != "undefined") {
-						opportunityService
-								.getopportunityById(
-										$scope.selectedopportunityNo)
-								.then(
-										function(opportunityList) {
-											$log
-													.debug("Inside Ctr opportunityList");
-											$scope.opportunityL = opportunityList.result;
-											$scope.ctaskid = $scope.opportunityL.tasks.length + 1;
-											$scope.taskobj.id = $scope.ctaskid;
-											$scope.taskobj.date = $scope.curdate;
-										});
-					}
+							opportunityService
+									.getopportunityById(
+											$scope.curUser.business.id,
+											$scope.selectedopportunityNo)
+									.then(
+											function(opportunity) {
+												$log
+														.debug("Inside Ctr opportunityList");
+												$scope.opportunity = opportunity;
+												$scope.ctaskid = $scope.opportunity.tasks.length + 1;
+												$scope.taskobj.id = $scope.ctaskid;
+												$scope.taskobj.date = $scope.curdate;
+											});
+						}
 					}
 
-					$scope.opportunityL = [];
-					
 					$scope.waitForServiceLoad1 = function() {
 						if (appEndpointSF.is_service_ready) {
 							$scope.getopportunityById();
-							
+
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
 							$timeout($scope.waitForServiceLoad1, 1000);
@@ -129,17 +127,18 @@ angular
 					$scope.waitForServiceLoad1();
 
 					$scope.updateopportunity = function() {
-						$scope.opportunityL.modifiedBy=$scope.curUser.email_id;
-						
+						$scope.opportunity.modifiedBy = $scope.curUser.email_id;
+
 						var opportunityService = appEndpointSF
-								.getopportunityService();	
-						opportunityService.updateopportunity(
-								$scope.opportunityL).then(function(msgBean) {
-							$log.debug("Inside CtropportunityL");
-							$log.debug("msgBean.msg:" + msgBean.msg);
-							$scope.showUpdateToast();
-							// $scope.empDetail =[];
-						});
+								.getopportunityService();
+						opportunityService
+								.updateopportunity($scope.opportunity)
+								.then(function(msgBean) {
+									$log.debug("Inside CtropportunityL");
+									$log.debug("msgBean.msg:" + msgBean.msg);
+									$scope.showUpdateToast();
+									// $scope.empDetail =[];
+								});
 					}
 
 					// ----------hide and show ---------------------------
@@ -152,15 +151,15 @@ angular
 					// ------------------save task----------
 
 					$scope.addupdatetask = function(oppid) {
-						
-						$scope.opportunityL.modifiedBy=$scope.curUser.email_id;
-						
+
+						$scope.opportunity.modifiedBy = $scope.curUser.email_id;
+
 						var opportunityService = appEndpointSF
 								.getopportunityService();
-						$scope.opportunityL.tasks.push($scope.taskobj);
+						$scope.opportunity.tasks.push($scope.taskobj);
 
-						opportunityService.addupdatetask($scope.opportunityL)// $scope.task,
-																				// oppid
+						opportunityService.addupdatetask($scope.opportunity)// $scope.task,
+						// oppid
 						.then(function(msgBean) {
 							$scope.showUpdateToast();
 							$scope.getopportunityById();

@@ -1,46 +1,42 @@
 
 <md-content layout-padding>
-<h3>
-	<u>Contact Add</u>
-</h3>
-[<span style="color: red;">Field Marked as asterik (*) are
-	mandetory</span>]
-	
+<section layout="row" layout-xs="column">
+	<md-subheader class="md-primary">
+	<h4 class="md-title">Contact Add</h4>
+	</md-subheader>
+	<span flex></span>
+</section>
+[<span style="color: red;">Field Marked as asterisk (*) are
+	mandatory.</span>]
+
 <form name="contactform">
-<div id="addField">
-<div layout="column" ><br>
+	<div id="addField">
+		<div layout="column">
+			<br>
 			<div layout-gt-sm="row">
-			<md-autocomplete flex required
-				md-input-name="autocompleteField"
-				md-input-minlength="2"
-				md-input-maxlength="18"
-				md-no-cache=true
-				md-selected-item="contact.customer"
-				md-search-text="searchText"
-				md-items="item in querySearch(searchText)"
-				md-item-text="item.companyName"
-				md-floating-label="Select Reference Company Customer">
-					<md-item-template>
-						<span md-highlight-text="searchText">{{item.companyName}}</span>
-					</md-item-template>
-					<div ng-messages="contactform.autocompleteField.$error" ng-if="contactform.autocompleteField.$touched">
-						<div ng-message="required">
-							You <b>must</b> have a favorite state.
-						</div>
-						<div ng-message="minlength">
-							Your entry is not long enough.
-						</div>
-						<div ng-message="maxlength">
-							Your entry is too long.
-						</div>
+				<md-autocomplete flex required md-input-name="autocompleteField"
+					md-input-minlength="2" md-input-maxlength="18" md-no-cache=true
+					md-selected-item="contact.customer" md-search-text="searchText"
+					md-items="item in querySearch(searchText)"
+					md-item-text="item.companyName"
+					md-floating-label="Select Reference Company Customer">
+				<md-item-template> <span
+					md-highlight-text="searchText">{{item.companyName}}</span> </md-item-template>
+				<div ng-messages="contactform.autocompleteField.$error"
+					ng-if="contactform.autocompleteField.$touched">
+					<div ng-message="required">
+						You <b>must</b> have a favorite state.
 					</div>
+					<div ng-message="minlength">Your entry is not long enough.</div>
+					<div ng-message="maxlength">Your entry is too long.</div>
+				</div>
 				</md-autocomplete>
 			</div>
-</div>
+		</div>
 		<div layout layout-sm="column">
 			<md-input-container flex> <label>First
-				Name 
-			</label> <input name="fname" ng-model="contact.fName" ng-required="true">
+				Name </label> <input name="fname" ng-model="contact.fName"
+				ng-required="true">
 			<div ng-messages="contactform.fname.$error"
 				ng-if="contactform.fname.$submitted || contactform.fname.$touched">
 				<div ng-message="required">Please Enter first Name.</div>
@@ -49,8 +45,8 @@
 			</md-input-container>
 
 			<md-input-container flex> <label>Last
-				Name 
-			</label> <input name="lname" ng-model="contact.lName" ng-required="true">
+				Name </label> <input name="lname" ng-model="contact.lName"
+				ng-required="true">
 			<div ng-messages="contactform.lname.$error"
 				ng-if="contactform.lname.$submitted || contactform.lname.$touched">
 				<div ng-message="required">Please Enter Last Name.</div>
@@ -60,7 +56,7 @@
 		</div>
 		<div layout layout-sm="column">
 			<md-input-container flex> <label>Status
-				
+
 			</label> <input name="status" ng-model="contact.status" ng-required="true">
 			<div ng-messages="contactform.status.$error"
 				ng-if="contactform.status.$submitted || contactform.status.$touched">
@@ -75,7 +71,7 @@
 				ng-if="contactform.phone.$submitted || contactform.phone.$touched">
 				<div ng-message="required">Please Enter phone Number.</div>
 			</div>
-			<span class="help-block"style="color: red;"
+			<span class="help-block" style="color: red;"
 				ng-show="((contactform.phone.$error.minlength || contactform.phone.$error.maxlength) && contactform.phone.$dirty) ">Mobile
 				Number should be 10 digits(Example.:0123456789)</span> </md-input-container>
 		</div>
@@ -83,9 +79,9 @@
 			<md-input-container flex> <label>Email <span
 				style="color: red;">*</span></label> <input type="email"
 				ng-pattern="/^.+@.+\..+$/" name="email" ng-model="contact.email"
-				ng-required="true"  ng-blur="Checkemail(contact.email)">
-				 <span style="color: red"> {{userexists}}</span>
-				 
+				ng-required="true" ng-blur="Checkemail(contact.email)"> <span
+				style="color: red"> {{userexists}}</span>
+
 			<div ng-messages="contactform.email.$error"
 				ng-if="contactform.email.$submitted || contactform.email.$touched">
 				<div ng-message="required">Please Enter Email id.</div>
@@ -99,7 +95,7 @@
 		</h4>
 		<div layout layout-sm="column">
 			<md-input-container flex> <label>user Id
-				
+
 			</label> <input id="uid" name="uid" ng-model="contact.uid" ng-required="true">
 			<div ng-messages="contactform.uid.$error"
 				ng-if="contactform.uid.$submitted || contactform.uid.$touched">
@@ -108,8 +104,9 @@
 
 			</md-input-container>
 			<md-input-container flex> <label>Supplier
-				
-			</label> <input id="supp" name="supp" ng-model="contact.supp" ng-required="true">
+
+			</label> <input id="supp" name="supp" ng-model="contact.supp"
+				ng-required="true">
 
 			<div ng-messages="contactform.supp.$error"
 				ng-if="contactform.supp.$submitted || contactform.supp.$touched">
@@ -119,8 +116,9 @@
 		</div>
 		<div layout layout-sm="column">
 			<md-input-container flex> <label>Customer
-				
-			</label> <input id="cust" name="cust" ng-model="contact.cust" ng-required="true">
+
+			</label> <input id="cust" name="cust" ng-model="contact.cust"
+				ng-required="true">
 
 			<div ng-messages="contactform.cust.$error"
 				ng-if="contactform.cust.$submitted || contactform.cust.$touched">
@@ -128,8 +126,8 @@
 			</div>
 			</md-input-container>
 			<md-input-container flex> <label>Sales </span>
-				Partner <span style="color: red;">*</label> <input
-				id="salespartner" name="salespartner" ng-model="contact.salespartner"
+				Partner <span style="color: red;">*</label> <input id="salespartner"
+				name="salespartner" ng-model="contact.salespartner"
 				ng-required="true">
 
 			<div ng-messages="contactform.salespartner.$error"

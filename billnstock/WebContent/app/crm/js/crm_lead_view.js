@@ -9,7 +9,9 @@ angular.module("stockApp").controller(
 			};
 			$scope.selectedleadNo = $stateParams.selectedleadNo;
 
-			$log.debug("$scope.selectedleadNo=========" + $scope.selectedleadNo);
+			$log
+					.debug("$scope.selectedleadNo========="
+							+ $scope.selectedleadNo);
 
 			$scope.curUser = appEndpointSF.getLocalUserService()
 					.getLoggedinUser();
@@ -19,7 +21,7 @@ angular.module("stockApp").controller(
 				limit : 5,
 				page : 1
 			};
-			
+
 			$scope.Address = {
 				line1 : "",
 				line2 : "",
@@ -59,7 +61,7 @@ angular.module("stockApp").controller(
 				note : "",
 				status : ""
 			}
-			
+
 			$scope.converttocustomer = {
 				customerId : "",
 				customerName : "",
@@ -72,16 +74,16 @@ angular.module("stockApp").controller(
 				$log.debug("Inside Ctr $scope.getAlllead");
 				var leadService = appEndpointSF.getleadService();
 				$scope.ctaskid = [];
-				leadService.getLeadById($scope.curUser.business.id,$scope.selectedleadNo).then(
-						function(lead) {
-							$log.debug("Inside Ctr getAllleads");
-							$scope.lead = $scope.initDateFields(lead);
-							$scope.lead.phone = Number(lead.phone);
-							$scope.Address = $scope.lead.address;
-							$scope.ctaskid = $scope.lead.tasks;
-							$scope.task.id = $scope.ctaskid.length + 1;
-							// $scope.task.date= $scope.curdate;
-						});
+				leadService.getLeadById($scope.curUser.business.id,
+						$scope.selectedleadNo).then(function(lead) {
+					$log.debug("Inside Ctr getAllleads");
+					$scope.lead = $scope.initDateFields(lead);
+					$scope.lead.phone = Number(lead.phone);
+					$scope.Address = $scope.lead.address;
+					$scope.ctaskid = $scope.lead.tasks;
+					$scope.task.id = $scope.ctaskid.length + 1;
+					// $scope.task.date= $scope.curdate;
+				});
 
 			}
 
@@ -93,7 +95,6 @@ angular.module("stockApp").controller(
 				return leadList;
 			}
 
-			$scope.leads = [];
 			$scope.activetask = [];
 
 			$scope.waitForServiceLoad = function() {
@@ -110,8 +111,8 @@ angular.module("stockApp").controller(
 			// ------------------save task----------
 
 			$scope.updateLead = function() {
-				$scope.leads.address = $scope.Address;
-				$scope.leads.modifiedBy = $scope.curUser.email_id;
+				$scope.lead.address = $scope.Address;
+				$scope.lead.modifiedBy = $scope.curUser.email_id;
 				var leadService = appEndpointSF.getleadService();
 				leadService.addupdatetask($scope.lead).then(function(msgBean) {
 
@@ -126,14 +127,14 @@ angular.module("stockApp").controller(
 				 * $scope.objlead=$scope.leads;
 				 * $scope.objlead.tasks.push($scope.task);
 				 */
-				$scope.leads.modifiedBy = $scope.curUser.email_id;
+				$scope.lead.modifiedBy = $scope.curUser.email_id;
 				if (typeof $scope.task.type != 'undefined'
 						&& $scope.task.type != "") {
-					$scope.leads.tasks.push($scope.task);
+					$scope.lead.tasks.push($scope.task);
 				}
 				var leadService = appEndpointSF.getleadService();
 
-				leadService.addupdatetask($scope.leads).then(function(msgBean) {
+				leadService.addupdatetask($scope.lead).then(function(msgBean) {
 
 					$log.debug("Inside Ctr addlead");
 					$log.debug("msgBean.msg:" + msgBean.msg);
@@ -174,13 +175,12 @@ angular.module("stockApp").controller(
 			 * appEndpointSF.getleadService();
 			 * leadService.deletelead(leadid).then(function(msgBean) {
 			 * $scope.showSimpleToast(msgBean); }); $scope.leads={};
-			 * $scope.task={};
-			 *  }
+			 * $scope.task={}; }
 			 */
 
 			$scope.convertocustomer = function(id) {
 
-				alert($scope.leads.id);
+				alert($scope.lead.id);
 			}
 
 			$scope.toggleRight = buildToggler('right');

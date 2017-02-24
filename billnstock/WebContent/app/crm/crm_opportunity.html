@@ -1,13 +1,17 @@
 
 <md-content layout-padding>
-<h3>
-	<u>Opportunity Add</u>
-</h3>
-[<span style="color: red;">Field Marked as asterik (*) are
-	mandetory</span>]
+<section layout="row" layout-xs="column">
+	<md-subheader class="md-primary">
+	<h4 class="md-title">Opportunity Add</h4>
+	</md-subheader>
+	<span flex></span>
+</section>
+[<span style="color: red;">Field Marked as asterisk (*) are
+	mandatory.</span>]
 <form name="oppform">
 
-	<div id="addField"><br>
+	<div id="addField">
+		<br>
 		<div layout layout-sm="column">
 			<md-input-container flex> <label>Opportunity
 				Id</label> <input ng-model="opportunity.oid" disabled> </md-input-container>
@@ -16,21 +20,21 @@
 		</div>
 
 		<div layout layout-sm="column">
-			<md-input-container flex>  <md-select
+			<md-input-container flex> <md-select
 				name="leadcust" placeholder="Select Lead/Customer" id="selectedfrom"
-				ng-model="f" ng-change="getleadcust(f)"  ng-required="true"> <md-option
-				ng-repeat="f in from"> {{f}} </md-option> </md-select>
+				ng-model="f" ng-change="getleadcust(f)" ng-required="true">
+			<md-option ng-repeat="f in from" ng-value="f"> {{f}} </md-option> </md-select>
 			<div ng-messages="oppform.leadcust.$error"
 				ng-if="oppform.leadcust.$submitted || oppform.leadcust.$touched">
 				<div ng-message="required">Please select lead/customer Name.</div>
 			</div>
-			 </md-input-container>
-			<md-input-container flex>  <md-select name="ldcu"
+			</md-input-container>
+			<md-input-container flex> <md-select name="ldcu"
 				placeholder="Lead/Customer" id="selectedfrom"
-				ng-model="opportunity.name"  ng-required="true"> <md-option
-				ng-repeat="list in leadorcustlist">
+				ng-model="opportunity.name" ng-required="true"> <md-option
+				ng-repeat="list in leadorcustlist" ng-value="list">
 			{{list.firstName}}{{list.name}} </md-option> </md-select>
-			
+
 			<div ng-messages="oppform.ldcu.$error"
 				ng-if="oppform.ldcu.$submitted || oppform.ldcu.$touched">
 				<div ng-message="required">Please Select lead/cust Name.</div>
@@ -38,18 +42,20 @@
 			</md-input-container>
 		</div>
 		<div layout layout-sm="column">
-			<md-input-container flex> <label>description  
-			</label> <textarea  name="description" ng-model="opportunity.description" rows="2" cols="50" ng-required="true"> </textarea>
+			<md-input-container flex> <label>description
+			</label> <textarea name="description" ng-model="opportunity.description"
+				rows="2" cols="50" ng-required="true"> </textarea>
 			<div ng-messages="oppform.description.$error"
 				ng-if="oppform.description.$submitted || oppform.description.$touched">
 				<div ng-message="required">Please Enter the Description.</div>
 			</div>
-			
+
 			</md-input-container>
 		</div>
 
 		<section layout="row" layout-sm="column" layout-align="left left">
-			<md-button ng-disabled="oppform.$invalid" class="md-raised md-primary" ng-click="addopportunity()">Add</md-button>
+			<md-button ng-disabled="oppform.$invalid"
+				class="md-raised md-primary" ng-click="addopportunity()">Add</md-button>
 
 		</section>
 	</div>

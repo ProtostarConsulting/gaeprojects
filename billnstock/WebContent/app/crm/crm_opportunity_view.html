@@ -1,21 +1,26 @@
-
 <md-content layout-padding>
+<section layout="row" layout-xs="column">
+	<md-subheader class="md-primary">
+	<h4 class="md-title">Edit Opportunity </h4>
+	</md-subheader>
+	<span flex></span>
+</section>
 <form name="contactform">
 
 	<div id="addField">
 		<div layout layout-sm="column">
 			<md-input-container flex> <label>Opportunity
-				Id</label> <input ng-model="opportunityL.oid" disabled> </md-input-container>
+				Id</label> <input ng-model="opportunity.oid" disabled> </md-input-container>
 			<md-input-container flex> <label>Date </label> <input
-				ng-model="opportunityL.date" disabled> </md-input-container>
+				ng-model="opportunity.date" disabled> </md-input-container>
 		</div>
 
 		<div layout layout-sm="column">
 
 			<md-input-container flex> <label>from</label> <input
-				ng-model="opportunityL.from" disabled> </md-input-container>
+				ng-model="opportunity.from" disabled> </md-input-container>
 			<md-input-container flex> <label>Name</label> <input
-				ng-model="opportunityL.name" disabled> </md-input-container>
+				ng-model="opportunity.name" disabled> </md-input-container>
 
 			<!-- <md-input-container flex> <md-select
 				placeholder="Select Lead/C ustomer" id="selectedfrom" ng-model="f" ng-change="getleadcust(f)" >
@@ -28,7 +33,7 @@
 		</div>
 		<div layout layout-sm="column">
 			<md-input-container flex> <label>description
-			</label> <textarea ng-model="opportunityL.description" rows="2" cols="1"> </textarea></md-input-container>
+			</label> <textarea ng-model="opportunity.description" rows="2" cols="1"> </textarea></md-input-container>
 		</div>
 		<div layout layout-sm="column">
 			<section layout="row" layout-sm="column" layout-align="left left">
@@ -58,7 +63,7 @@
 				</thead>
 				<tbody>
 					<tr md-auto-select
-						ng-repeat="t in opportunityL.tasks | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit"">
+						ng-repeat="t in opportunity.tasks | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit"">
 						<td width="20%" align="left">{{t.date}}</td>
 						<td width="20%" align="left">{{t.type}}</td>
 						<td width="60%" align="left">{{t.description}}</td>
@@ -68,7 +73,7 @@
 
 			</table>
 			<md-data-table-pagination md-limit="query.limit" md-page="query.page"
-				md-total={{opportunityL.tasks.length}} md-trigger="onpagechange"></md-data-table-pagination>
+				md-total={{opportunity.tasks.length}} md-trigger="onpagechange"></md-data-table-pagination>
 			</md-data-table-container>
 		</div>
 		<br>
@@ -107,7 +112,7 @@
 		<md-input-container flex>
 		<section layout="row" layout-sm="column" layout-align="left left">
 			<md-button class="md-raised md-primary"
-				ng-click="addupdatetask(opportunityL.id)">Add/Update
+				ng-click="addupdatetask(opportunity.id)">Add/Update
 			Task</md-button>
 
 		</section>

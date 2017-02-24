@@ -19,13 +19,13 @@
 		</div>
 	</section>
 </div>
-<table md-data-table md-row-select="selected" md-progress="deferred">
+<table md-data-table md-progress="deferred">
 	<thead md-order="query.order" md-trigger="onOrderChange">
 		<tr>
 
-			<th name="fName" order-by="fName"></th>
-			<th name="lName" order-by="lName"></th>
-			<th name="phone" order-by="Phone"></th>
+			<th name="First Name" order-by="fName"></th>
+			<th name="Last Name" order-by="lName"></th>
+			<th name="Phone No." order-by="Phone"></th>
 			<th name="Email" order-by="Email"></th>
 			<th name="View" order-by="view"></th>
 		</tr>
@@ -41,8 +41,10 @@
 			<td>{{contact.email}}</td>
 			<td>
 				<section layout="row" layout-sm="column">
-					<md-button class="md-raised md-primary"
-						ui-sref="crm.viewContact({selectedContactNo: contact.id})">Edit</md-button>
+					<md-button class="md-icon-button"
+						ui-sref="crm.viewContact({selectedContactNo: contact.id})">
+					<ng-md-icon icon="edit" style="fill: md-default" size="20">
+					<md-tooltip> Edit</md-tooltip></ng-md-icon></md-button>
 				</section>
 			</td>
 		</tr>

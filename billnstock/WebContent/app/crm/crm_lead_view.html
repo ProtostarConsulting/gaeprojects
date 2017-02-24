@@ -1,10 +1,15 @@
-
 <md-content layout-padding>
+<section layout="row" layout-xs="column">
+	<md-subheader class="md-primary">
+	<h4 class="md-title">Edit Lead</h4>
+	</md-subheader>
+	<span flex></span>
+</section>
 <form name="leadform">
 	<div layout layout-xs="column">
 		<md-input-container flex>
 		<section layout="row" layout-xs="column" layout-align="end end">
-			<a ng-href='#' ng-click="convertocustomer(leads.id)">Convert to
+			<a ng-href='#' ng-click="convertocustomer(lead.id)">Convert to
 				Customer</a>
 		</section>
 		</md-input-container>
@@ -15,8 +20,7 @@
 			</label> <input ng-model="lead.lid" ng-readonly="true"> </md-input-container>
 
 			<md-input-container flex> <label>Person
-				Name 
-			</label> <input name="name" ng-model="lead.name" ng-required="true">
+				Name </label> <input name="name" ng-model="lead.name" ng-required="true">
 
 			<div ng-messages="leadform.name.$error"
 				ng-if="leadform.name.$submitted || leadform.name.$touched">
@@ -44,7 +48,7 @@
 		</div> -->
 		<div layout layout-xs="column">
 			<md-input-container flex> <label>Company
-				
+
 			</label> <input name="company" ng-model="lead.company" ng-required="true">
 			<div ng-messages="leadform.company.$error"
 				ng-if="leadform.company.$submitted || leadform.company.$touched">
@@ -77,7 +81,7 @@
 			</div>
 			</md-input-container>
 			<md-input-container flex> <label>Designation
-				
+
 			</label> <input name="designation" ng-model="lead.designation"
 				ng-required="true">
 			<div ng-messages="leadform.designation.$error"
@@ -88,7 +92,7 @@
 
 			</md-input-container>
 		</div>
-	<!-- 	<div>
+		<!-- 	<div>
 			<md-input-container flex> <label>Address
 				
 			</label> <textarea name="address" ng-model="leads.address" rows="4" cols="50"
@@ -100,57 +104,49 @@
 			</div>
 			</md-input-container>
 		</div> -->
-		
-		
-			<h3 class="md-subhead">Address</h3><br>
-    			<div layout="row" >
-    				<md-input-container flex>
-      				<label>Line1 </label>
-      				<input name="line1" ng-model="Address.line1" ng-required="true">
-      				<div ng-messages="leadform.line1.$error"
-					ng-if="leadform.line1.$submitted || leadform.line1.$touched">
-					<div ng-message="required">Please Enter Address Name.</div>
-					</div>
-    				</md-input-container>
-    				
-    				<md-input-container flex>
-      				<label>Line2</label>
-      				<input name="line2" ng-model="Address.line2" >
-    				</md-input-container>
-    			</div>
-    			<div layout="row" >
-    				<md-input-container flex>
-      				<label>State </label>
-      				<input name="state" ng-model="Address.state" ng-required="true" >
-      				<div ng-messages="leadform.state.$error"
-					ng-if="leadform.state.$submitted || leadform.state.$touched">
-					<div ng-message="required">Please Enter State Name.</div>
-					</div>
-    				</md-input-container>
-    				
-    				<md-input-container flex>
-      				<label>Country</label>
-      				<input name="country" ng-model="Address.country" >
-    				</md-input-container>
-    				
-    				
-    			</div>
-    			<div layout="row" >
-    				<md-input-container flex>
-      				<label>City </label>
-      				<input name="city" ng-model="Address.city" ng-required="true" >
-      				<div ng-messages="leadform.city.$error"
-					ng-if="leadform.city.$submitted || leadform.city.$touched">
-					<div ng-message="required">Please Enter City Name.</div>
-					</div>
-    				</md-input-container>
-    				
-    				<md-input-container flex>
-      				<label>Pin</label>
-      				<input name="pin" ng-model="Address.pin" >
-    				</md-input-container>
-    			</div>
-		
+
+
+		<h3 class="md-subhead">Address</h3>
+		<br>
+		<div layout="row">
+			<md-input-container flex> <label>Line1 </label>
+			<input name="line1" ng-model="Address.line1" ng-required="true">
+			<div ng-messages="leadform.line1.$error"
+				ng-if="leadform.line1.$submitted || leadform.line1.$touched">
+				<div ng-message="required">Please Enter Address Name.</div>
+			</div>
+			</md-input-container>
+
+			<md-input-container flex> <label>Line2</label> <input
+				name="line2" ng-model="Address.line2"> </md-input-container>
+		</div>
+		<div layout="row">
+			<md-input-container flex> <label>State </label>
+			<input name="state" ng-model="Address.state" ng-required="true">
+			<div ng-messages="leadform.state.$error"
+				ng-if="leadform.state.$submitted || leadform.state.$touched">
+				<div ng-message="required">Please Enter State Name.</div>
+			</div>
+			</md-input-container>
+
+			<md-input-container flex> <label>Country</label>
+			<input name="country" ng-model="Address.country"> </md-input-container>
+
+
+		</div>
+		<div layout="row">
+			<md-input-container flex> <label>City </label> <input
+				name="city" ng-model="Address.city" ng-required="true">
+			<div ng-messages="leadform.city.$error"
+				ng-if="leadform.city.$submitted || leadform.city.$touched">
+				<div ng-message="required">Please Enter City Name.</div>
+			</div>
+			</md-input-container>
+
+			<md-input-container flex> <label>Pin</label> <input
+				name="pin" ng-model="Address.pin"> </md-input-container>
+		</div>
+
 		<div layout layout-sm="column">
 			<section layout="row" layout-sm="column" layout-align="left left">
 				<md-button class="md-raised md-primary" ng-click="updateLead()">update</md-button>
@@ -162,8 +158,7 @@
 
 		<div layout="row" layout-xs="column" layout-align="end end">
 			<a href='' ng-click='ShowHide()'>Follow up <lable
-					ng-show="IsHidden">+</lable>
-				<lable ng-hide="IsHidden">-</lable></a>
+					ng-show="IsHidden">+</lable> <lable ng-hide="IsHidden">-</lable></a>
 		</div>
 		<div ng-hide="IsHidden">
 			<md-data-table-container>
@@ -178,7 +173,7 @@
 				</thead>
 				<tbody>
 					<tr md-auto-select
-						ng-repeat="t in leads.tasks | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit"">
+						ng-repeat="t in lead.tasks | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit"">
 						<td width="20%" align="left">{{t.date | formatDate}}</td>
 						<td width="20%" align="left">{{t.type}}</td>
 						<td width="60%" align="left">{{t.description}}</td>
@@ -188,7 +183,7 @@
 
 			</table>
 			<md-data-table-pagination md-limit="query.limit" md-page="query.page"
-				md-total={{leads.tasks.length}} md-trigger="onpagechange"></md-data-table-pagination>
+				md-total={{lead.tasks.length}} md-trigger="onpagechange"></md-data-table-pagination>
 			</md-data-table-container>
 		</div>
 		<br> <br>
@@ -204,7 +199,8 @@
 				Id:-</label> <input ng-model="task.id" disabled> </md-input-container>
 			<md-input-container flex> <md-select
 				placeholder="Task Type" ng-model="task.type"> <md-option
-				ng-repeat="type in taskType"> {{type}} </md-option> </md-select></md-input-container>
+				ng-repeat="type in taskType" ng-value="type"> {{type}} </md-option>
+			</md-select></md-input-container>
 
 
 			<div layout layout-xs="column">
@@ -231,7 +227,7 @@
 			<md-input-container flex>
 			<section layout="row" layout-xs="column" layout-align="left left">
 				<md-button class="md-raised md-primary"
-					ng-click="addupdatetask(leads.id)">Add/Update Task</md-button>
+					ng-click="addupdatetask(lead.id)">Add/Update Task</md-button>
 
 			</section>
 			</md-input-container>

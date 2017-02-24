@@ -1,14 +1,20 @@
 
 <md-content layout-padding>
+<section layout="row" layout-xs="column">
+	<md-subheader class="md-primary">
+	<h4 class="md-title">Edit Contact</h4>
+	</md-subheader>
+	<span flex></span>
+</section>
 <form name="contactform">
 
 	<div id="addField">
 
-		
+
 		<div layout layout-sm="column">
 			<md-input-container flex> <label>First
-				Name 
-			</label> <input name="fname" ng-model="contact.fName" ng-required="true">
+				Name </label> <input name="fname" ng-model="contact.fName"
+				ng-required="true">
 			<div ng-messages="contactform.fname.$error"
 				ng-if="contactform.fname.$submitted || contactform.fname.$touched">
 				<div ng-message="required">Please Enter first Name.</div>
@@ -17,8 +23,8 @@
 			</md-input-container>
 
 			<md-input-container flex> <label>Last
-				Name 
-			</label> <input name="lname" ng-model="contact.lName" ng-required="true">
+				Name </label> <input name="lname" ng-model="contact.lName"
+				ng-required="true">
 			<div ng-messages="contactform.lname.$error"
 				ng-if="contactform.lname.$submitted || contactform.lname.$touched">
 				<div ng-message="required">Please Enter Last Name.</div>
@@ -28,7 +34,7 @@
 		</div>
 		<div layout layout-sm="column">
 			<md-input-container flex> <label>Status
-				
+
 			</label> <input name="status" ng-model="contact.status" ng-required="true">
 			<div ng-messages="contactform.status.$error"
 				ng-if="contactform.status.$submitted || contactform.status.$touched">
@@ -65,7 +71,7 @@
 		</h4>
 		<div layout layout-sm="column">
 			<md-input-container flex> <label>user Id
-				
+
 			</label> <input name="uid" ng-model="contact.uid" ng-required="true">
 			<div ng-messages="contactform.uid.$error"
 				ng-if="contactform.uid.$submitted || contactform.uid.$touched">
@@ -74,7 +80,7 @@
 
 			</md-input-container>
 			<md-input-container flex> <label>Supplier
-				
+
 			</label> <input name="supp" ng-model="contact.supp" ng-required="true">
 
 			<div ng-messages="contactform.supp.$error"
@@ -85,7 +91,7 @@
 		</div>
 		<div layout layout-sm="column">
 			<md-input-container flex> <label>Customer
-				
+
 			</label> <input name="cust" ng-model="contact.cust" ng-required="true">
 
 			<div ng-messages="contactform.cust.$error"
