@@ -1249,10 +1249,11 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	opportunityService.getopportunityById = function(opportunityoid) {
+	opportunityService.getopportunityById = function(busId, id) {
 		var deferred = $q.defer();
 		gapi.client.opportunityService.getopportunityById({
-			'id' : opportunityoid
+			'busId' : busId,
+			'id' : id
 		}).execute(function(resp) {
 			deferred.resolve(resp);
 		});

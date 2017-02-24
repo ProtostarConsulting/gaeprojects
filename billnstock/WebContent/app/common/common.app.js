@@ -800,6 +800,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/opportunityView/:selectedopportunityNo",
 		templateUrl : '/app/crm/crm_opportunity_view.html',
 		controller : 'opportunityList',
+		params : {
+			selectedopportunityNo : null
+		}
 	}).state('crm.customerList', {
 		url : "/customerList",
 		templateUrl : '/app/crm/customer_list.html',
