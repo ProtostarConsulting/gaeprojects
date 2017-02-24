@@ -27,8 +27,8 @@ app
 							noteToCustomer : '',
 							createdDate : new Date(),
 							modifiedDate : new Date(),
-							createdBy: $scope.curUser,
-							approvedBy: null,
+							createdBy : $scope.curUser,
+							approvedBy : null,
 							modifiedBy : '',
 							discountType : 'NA',
 							discountPercent : 0,
@@ -47,6 +47,8 @@ app
 						};
 					}
 
+					$scope.createdBy = $scope.curUser.firstName + " "
+							+ $scope.curUser.lastName;
 					// list of `state` value/display objects
 					$scope.supplierList = [];
 					$scope.searchTextInput = null;
@@ -121,14 +123,17 @@ app
 								.textContent('').ariaLabel('finalize?')
 								.targetEvent(ev).ok('Yes').cancel('No');
 
-						$mdDialog.show(confirm).then(function() {
-							$log.debug("Inside Yes, function");
-							$scope.purchaseOrderObj.status = 'FINALIZED';
-							$scope.purchaseOrderObj.approvedBy = $scope.curUser;
-							$scope.addPurchaseOrder();
-						}, function() {
-							$log.debug("Cancelled...");
-						});
+						$mdDialog
+								.show(confirm)
+								.then(
+										function() {
+											$log.debug("Inside Yes, function");
+											$scope.purchaseOrderObj.status = 'FINALIZED';
+											$scope.purchaseOrderObj.approvedBy = $scope.curUser;
+											$scope.addPurchaseOrder();
+										}, function() {
+											$log.debug("Cancelled...");
+										});
 					}
 					$scope.addServiceLineItem = function() {
 						var item = {
@@ -354,18 +359,15 @@ app
 								});
 					}
 
-					/*$scope.checkStock = function(item, $event) {
-						for (var i = 0; i <= $scope.stockItemList.length; i++) {
-							if ($scope.stockItemList[i].itemName == item.itemName) {
-								$scope.qtyErrorMsg = "";
-								if ($scope.stockItemList[i].qty < item.qty) {
-									$scope.qtyErrorMsg = "Quantity entered is not available in stock";
-									// $scope.showSimpleToastError();
-									$scope.dialogBox();
-								}
-							}
-						}
-					}*/
+					/*
+					 * $scope.checkStock = function(item, $event) { for (var i =
+					 * 0; i <= $scope.stockItemList.length; i++) { if
+					 * ($scope.stockItemList[i].itemName == item.itemName) {
+					 * $scope.qtyErrorMsg = ""; if ($scope.stockItemList[i].qty <
+					 * item.qty) { $scope.qtyErrorMsg = "Quantity entered is not
+					 * available in stock"; // $scope.showSimpleToastError();
+					 * $scope.dialogBox(); } } } }
+					 */
 
 					$scope.dialogBox = function(ev) {
 						$mdDialog
@@ -500,15 +502,18 @@ app
 							$scope.stock.createdDate = new Date();
 							$scope.stock.modifiedBy = curUser.email_id;
 							var stockService = appEndpointSF.getStockService();
-							stockService.addStockItemType($scope.stock).then(
-									function(addedItem) {
-										if (addedItem.id) {
-											lineItem.stockItem.stockItemType = addedItem;
-											lineItem.price = addedItem.price;
-											stockItemList.push(addedItem);
-											calProductSubTotalFn();
-										}
-									});
+							stockService
+									.addStockItemType($scope.stock)
+									.then(
+											function(addedItem) {
+												if (addedItem.id) {
+													lineItem.stockItem.stockItemType = addedItem;
+													lineItem.price = addedItem.price;
+													stockItemList
+															.push(addedItem);
+													calProductSubTotalFn();
+												}
+											});
 							$scope.cancel();
 						}
 

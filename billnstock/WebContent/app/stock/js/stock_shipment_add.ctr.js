@@ -390,7 +390,9 @@ app
 							$scope.getTaxesByVisibility();
 							$scope.getAllWarehouseByBusiness();
 							$scope.calProductSubTotal();
-							$scope.calServiceSubTotal();
+							if ($scope.stockShipmentObj.serviceLineItemList) {
+								$scope.calServiceSubTotal();
+							}
 							if (!$scope.stockShipmentObj.id) {
 								$scope.addProductLineItem();
 							}

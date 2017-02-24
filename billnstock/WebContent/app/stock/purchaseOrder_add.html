@@ -22,8 +22,8 @@
 					ng-repeat="warehouse in warehouses">{{warehouse.warehouseName
 				}}</md-option> </md-select> </md-input-container>
 				<md-input-container flex=15> <label>Created
-					By </label> <input ng-disabled="true" ng-model="createdyBy"
-					ng-init="createdyBy = purchaseOrderObj.createdBy? purchaseOrderObj.createdBy.firstName + ' ' + purchaseOrderObj.createdBy.lastName: ''"></input>
+					By </label> <input ng-disabled="true" ng-model="createdBy"
+					ng-init="createdBy = purchaseOrderObj.createdBy? purchaseOrderObj.createdBy.firstName + ' ' + purchaseOrderObj.createdBy.lastName: ''"></input>
 				</md-input-container>
 			</div>
 		</div>
@@ -51,8 +51,8 @@
 					Status </label> <input type="text" ng-disabled="true"
 					ng-model="purchaseOrderObj.status"> </md-input-container>
 				<md-input-container flex=15> <label>Approved
-					By </label> <input ng-disabled="true" ng-model="approvedBy"
-					ng-init="approvedBy = purchaseOrderObj.approvedBy? purchaseOrderObj.createdBy.firstName + ' ' + purchaseOrderObj.createdBy.lastName : 'NA'"></input>
+					By </label> <input ng-disabled="true" ng-model="purchaseOrderObj.approvedBy"
+					ng-init="approvedBy = purchaseOrderObj.approvedBy? purchaseOrderObj.approvedBy.firstName + ' ' + purchaseOrderObj.approvedBy.lastName : 'NA'"></input>
 				</md-input-container>
 
 
