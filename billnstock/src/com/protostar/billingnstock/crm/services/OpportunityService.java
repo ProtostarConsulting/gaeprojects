@@ -10,7 +10,6 @@ import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
 import com.googlecode.objectify.Key;
-import com.googlecode.objectify.Ref;
 import com.protostar.billingnstock.crm.entities.Opportunity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 
@@ -41,9 +40,17 @@ public class OpportunityService {
 	}
 
 	@ApiMethod(name = "getopportunityById")
-	public Opportunity getopportunityById(@Named("id") Long selectedid) {
-		Opportunity opportunity = ofy().load().type(Opportunity.class)
-				.id(selectedid).now();
+	public Opportunity getopportunityById(@Named("busId") Long busId,
+			@Named("id") Long selectedid) {
+
+		List<Opportunity> list = ofy()
+				.load()
+				.type(Opportunity.class)
+				.filterKey(
+						Key.create(Key.create(BusinessEntity.class, busId),
+								Opportunity.class, selectedid)).list();
+
+		Opportunity opportunity = list.size() > 0 ? list.get(0) : null;
 		return opportunity;
 	}
 

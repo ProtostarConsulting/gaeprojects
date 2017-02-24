@@ -84,7 +84,7 @@ td {
 								</tr>
 								<tr>
 									<td align="right" style="border: 0px;">
-										<b>Create By:</b>
+										<b>Created By:</b>
 									</td>
 									<td align="left" style="border: 0px;">
 										${createdBy}

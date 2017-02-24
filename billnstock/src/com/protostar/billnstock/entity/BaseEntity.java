@@ -85,6 +85,7 @@ public abstract class BaseEntity {
 	}
 
 	public void setCreatedBy(UserEntity createdBy) {
+		if (createdBy != null)
 		this.createdBy = Ref.create(createdBy);
 	}
 	public UserEntity getApprovedBy() {
@@ -92,6 +93,7 @@ public abstract class BaseEntity {
 	}
 
 	public void setApprovedBy(UserEntity approvedBy) {
+		if (approvedBy != null)
 		this.approvedBy = Ref.create(approvedBy);
 	}
 
