@@ -201,7 +201,7 @@ public class UserService {
 			// Login will be checked against first/the created first. Notice
 			// order by clause above
 			UserEntity foundUser = list.get(0);
-			if (foundUser.getPassword().equals(pass)) {
+			if (foundUser.getPassword() != null && foundUser.getPassword().equalsIgnoreCase(pass)) {
 				foundUser.setLastLoginDate(new Date());
 				ofy().save().entity(foundUser);
 				// This is save async

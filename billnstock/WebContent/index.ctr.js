@@ -8,7 +8,7 @@ angular
 
 					$log.log("Inside indexCtr");
 					$scope.loading = true;
-					$scope.angular = angular;					
+					$scope.angular = angular;
 
 					$scope.showUpdateToast = function() {
 						$mdToast.show($mdToast.simple().content(
@@ -60,20 +60,23 @@ angular
 						return Number(auth.orderNumber);
 					}
 					$scope.login = function() {
+						$scope.loginMsg = "";
 						var UserService = appEndpointSF.getUserService();
 						UserService
 								.login($scope.user.email_id,
 										$scope.user.password)
 								.then(
 										function(result) {
-											if (result.items) {												
+											if (result.items) {
 												if (result.items.length > 1) {
 													$scope.multiUsers = result.items;
-													if (!$scope.user.isGoogleUser) {
-														$state
-																.go("selectmultibiz", {multiUsers: $scope.multiUsers});
-														return;
-													}
+													$state
+															.go(
+																	"selectmultibiz",
+																	{
+																		multiUsers : $scope.multiUsers
+																	});
+													return;
 												} else {
 													var user = result.items[0];
 													appEndpointSF
@@ -262,7 +265,11 @@ angular
 																							.getImageUrl();
 																				});
 																$state
-																		.go("selectmultibiz", {multiUsers: $scope.multiUsers});
+																		.go(
+																				"selectmultibiz",
+																				{
+																					multiUsers : $scope.multiUsers
+																				});
 																return;
 															} else {
 																var loggedInUser = loggedInUserList.items[0];
