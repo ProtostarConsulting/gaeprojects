@@ -41,10 +41,9 @@
 				<div ng-message="required">Please Enter Status.</div>
 			</div>
 			</md-input-container>
-			<md-input-container flex> <label>Phone <span
-				style="color: red;">*</span></label> <input type="number" name="phone"
-				ng-minlength="10" ng-maxlength="11" ng-model="contact.phone"
-				ng-required="true">
+			<md-input-container flex> <label>Phone</label> <input
+				type="number" name="phone" ng-minlength="10" ng-maxlength="11"
+				ng-model="contact.phone" ng-required="true">
 			<div ng-messages="contactform.phone.$error"
 				ng-if="contactform.phone.$submitted || contactform.phone.$touched">
 				<div ng-message="required">Please Enter phone Number.</div>
@@ -54,10 +53,9 @@
 				Number should be 10 digits(Example.:0123456789)</span> </md-input-container>
 		</div>
 		<div layout layout-sm="column">
-			<md-input-container flex> <label>Email <span
-				style="color: red;">*</span></label> <input type="email"
-				ng-pattern="/^.+@.+\..+$/" name="email" ng-model="contact.email"
-				ng-required="true" disabled>
+			<md-input-container flex> <label>Email</label> <input
+				type="email" ng-pattern="/^.+@.+\..+$/" name="email"
+				ng-model="contact.email" ng-required="true" disabled>
 			<div ng-messages="contactform.email.$error"
 				ng-if="contactform.email.$submitted || contactform.email.$touched">
 				<div ng-message="required">Please Enter Email id.</div>
@@ -72,46 +70,23 @@
 		<div layout layout-sm="column">
 			<md-input-container flex> <label>user Id
 
-			</label> <input name="uid" ng-model="contact.uid" ng-required="true">
-			<div ng-messages="contactform.uid.$error"
-				ng-if="contactform.uid.$submitted || contactform.uid.$touched">
-				<div ng-message="required">Please Enter user id.</div>
-			</div>
-
-			</md-input-container>
+			</label> <input name="uid" ng-model="contact.uid"> </md-input-container>
 			<md-input-container flex> <label>Supplier
 
-			</label> <input name="supp" ng-model="contact.supp" ng-required="true">
-
-			<div ng-messages="contactform.supp.$error"
-				ng-if="contactform.supp.$submitted || contactform.supp.$touched">
-				<div ng-message="required">Please Enter Supplier.</div>
-			</div>
-			</md-input-container>
+			</label> <input name="supp" ng-model="contact.supp"> </md-input-container>
 		</div>
 		<div layout layout-sm="column">
 			<md-input-container flex> <label>Customer
 
-			</label> <input name="cust" ng-model="contact.cust" ng-required="true">
+			</label> <input name="cust" ng-model="contact.cust"> </md-input-container>
+			<md-input-container flex> <label>Sales
+				Partner</label> <input name="salespartner" ng-model="contact.salespartner">
 
-			<div ng-messages="contactform.cust.$error"
-				ng-if="contactform.cust.$submitted || contactform.cust.$touched">
-				<div ng-message="required">Please Enter Customer.</div>
-			</div>
-			</md-input-container>
-			<md-input-container flex> <label>Sales </span>
-				Partner <span style="color: red;">*</label> <input
-				name="salespartner" ng-model="contact.salespartner"
-				ng-required="true">
-
-			<div ng-messages="contactform.salespartner.$error"
-				ng-if="contactform.salespartner.$submitted || contactform.salespartner.$touched">
-				<div ng-message="required">Please Enter Sales Partner.</div>
-			</div>
 			</md-input-container>
 		</div>
 		<section layout="row" layout-sm="column" layout-align="left left">
-			<md-button class="md-raised md-primary" ng-click="updatecontact()">Update</md-button>
+			<md-button class="md-raised md-primary" ng-click="updatecontact()"
+				ng-disabled="contactform.$invalid">Update</md-button>
 
 		</section>
 	</div>

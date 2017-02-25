@@ -34,14 +34,8 @@ angular.module("stockApp").controller(
 				tasks : []
 			};
 
-			$scope.task = [ {
-				id : "",
-				description : "",
-				type : "",
-				date : new Date(),
-				note : "",
-				status : ""
-			} ]
+			
+			$scope.task = [];
 
 			$scope.addlead = function() {
 				$scope.lead.address = $scope.Address;

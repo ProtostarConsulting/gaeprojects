@@ -32,8 +32,8 @@
 			<md-input-container flex> <md-select name="ldcu"
 				placeholder="Lead/Customer" id="selectedfrom"
 				ng-model="opportunity.name" ng-required="true"> <md-option
-				ng-repeat="list in leadorcustlist" ng-value="list">
-			{{list.firstName}}{{list.name}} </md-option> </md-select>
+				ng-repeat="customer in leadorcustlist" ng-value="customer">
+			{{customer.firstName+" "+customer.lastName}} </md-option> </md-select>
 
 			<div ng-messages="oppform.ldcu.$error"
 				ng-if="oppform.ldcu.$submitted || oppform.ldcu.$touched">
