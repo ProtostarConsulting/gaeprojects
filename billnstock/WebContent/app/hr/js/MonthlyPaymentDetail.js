@@ -34,11 +34,30 @@ angular
 						if (!(monthlyPayDetailObj.esiDeductionAmt)) {
 							monthlyPayDetailObj.esiDeductionAmt = 0;
 						}
-						if (monthlyPayDetailObj.monthlyGrossSalary <= 15000
+						if (monthlyPayDetailObj.calculatedGrossSalary <= 25000
 								&& monthlyPayDetailObj.esiDeductionAmt == 0) {
-							// ESI is 6.5% of monthly salary
-							monthlyPayDetailObj.esiDeductionAmt = monthlyPayDetailObj.monthlyGrossSalary
-									* (6.50 / 100);
+							// ESI is 1.75% of monthly salary
+							monthlyPayDetailObj.esiDeductionAmt = monthlyPayDetailObj.calculatedGrossSalary
+									* (1 / 100);
+							monthlyPayDetailObj.esiDeductionAmt = Math
+									.round(monthlyPayDetailObj.esiDeductionAmt
+											.toFixed(2));
+						}
+						if (monthlyPayDetailObj.calculatedGrossSalary > 0
+								&& monthlyPayDetailObj.pfDeductionAmt == 0) {
+							// PF is 12% of monthly salary
+							monthlyPayDetailObj.pfDeductionAmt = monthlyPayDetailObj.payableDays
+									* (monthlyPayDetailObj.salStruct.monthlyBasic / $scope.totalDaysInSelectedMonth)
+									* (12 / 100);
+							monthlyPayDetailObj.pfDeductionAmt = Math
+									.round(monthlyPayDetailObj.pfDeductionAmt
+											.toFixed(2));
+						}
+						if (monthlyPayDetailObj.ptDeductionAmt == 0) {
+							if (monthlyPayDetailObj.calculatedGrossSalary <= 10000)
+								monthlyPayDetailObj.ptDeductionAmt = 175;
+							else
+								monthlyPayDetailObj.ptDeductionAmt = 200;
 						}
 
 						monthlyPayDetailObj.netSalaryAmt = (monthlyPayDetailObj.calculatedGrossSalary
@@ -147,8 +166,7 @@ angular
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
-
-							$scope.getMonthlyPaymentList();
+							//$scope.getMonthlyPaymentList();
 							$scope.indvIt();
 						} else {
 							$log.debug("Services Not Loaded, watiting...");

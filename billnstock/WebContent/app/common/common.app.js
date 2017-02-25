@@ -66,6 +66,29 @@ app.directive('focusOn', function($timeout) {
 		}
 	}
 });
+app.filter('proOrderObjectBySubTextField', function() {
+	return function(input, subObject, attribute) {
+		if (!angular.isObject(input))
+			return input;
+		var reverseOrder = attribute.startsWith("-");
+		if (reverseOrder)
+			attribute = attribute.split("-")[1];
+		var array = [];
+		for ( var objectKey in input) {
+			array.push(input[objectKey]);
+		}
+
+		array.sort(function(a, b) {
+			var subObA = a[subObject];
+			var subObB = a[subObject];
+			a = String(subObA[attribute]);
+			b = String(subObB[attribute]);
+			return a.localeCompare(b)
+		});
+		return array;
+	}
+});
+
 app.filter('proOrderObjectByTextField', function() {
 	return function(input, attribute) {
 		if (!angular.isObject(input))

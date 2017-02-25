@@ -140,10 +140,15 @@ angular
 						}
 
 						taskService.filterTasksByFitlerData(
-								taskEntityFilterData).then(function(resp) {
-							$scope.taskEntityList = resp.items;
-							$scope.loading = false;
-						});
+								taskEntityFilterData).then(
+								function(resp) {
+									$scope.taskEntityList = resp.items;
+									$scope.taskEntityList = $filter(
+											'proOrderObjectBySubTextField')(
+											$scope.taskEntityList,
+											"assignedTo", "firstName");
+									$scope.loading = false;
+								});
 					}
 
 					$scope.getMyAllTask = function() {
@@ -255,26 +260,6 @@ angular
 						}, 2000);
 
 						return deferred.promise;
-					};
-					/* Setup menu */
-					$scope.toggleRight = buildToggler('right');
-					/**
-					 * Build handler to open/close a SideNav; when animation
-					 * finishes report completion in console
-					 */
-					function buildToggler(navID) {
-						var debounceFn = $mdUtil.debounce(function() {
-							$mdSidenav(navID).toggle().then(function() {
-								$log.debug("toggle " + navID + " is done");
-							});
-						}, 200);
-						return debounceFn;
-					}
-
-					$scope.close = function() {
-						$mdSidenav('right').close().then(function() {
-							$log.debug("close RIGHT is done");
-						});
 					};
 
 				});

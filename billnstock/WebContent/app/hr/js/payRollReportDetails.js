@@ -37,7 +37,7 @@ angular
 											$scope.totalOther = 0;
 											$scope.totalESI = 0;
 											for (var i = 0; i < $scope.monthlyPayDetailsList.length; i++) {
-												$scope.totalSal += $scope.monthlyPayDetailsList[i].calculatedGrossSalary;
+												$scope.totalSal += $scope.monthlyPayDetailsList[i].netSalaryAmt;
 												$scope.totalPF += $scope.monthlyPayDetailsList[i].pfDeductionAmt;
 												$scope.totalPT += $scope.monthlyPayDetailsList[i].ptDeductionAmt;
 												$scope.totalCanteen += $scope.monthlyPayDetailsList[i].canteenDeductionAmt;

@@ -17,8 +17,8 @@
 		<tr>
 			<th style="border: 1px solid black; padding: 5px; text-align:center">Emp.No</th>
 			<th style="border: 1px solid black; padding: 5px; text-align:center">Employee Name</th>
-			<th ng-show="toShow == 'calculatedGrossSalary'"
-				style="border: 1px solid black; padding: 5px; text-align:center">Gross Salary</th>
+			<th ng-show="toShow == 'netSalaryAmt'"
+				style="border: 1px solid black; padding: 5px; text-align:center">Net Salary</th>
 			<th ng-show="toShow == 'pfDeductionAmt'"
 				style="border: 1px solid black; padding: 5px; text-align:center">PF Deduction</th>
 			<th ng-show="toShow == 'ptDeductionAmt'"
@@ -42,9 +42,9 @@
 		<td style="border: 1px solid black; padding: 5px;">
 			{{monthlyPayObj.leaveDetailEntity.user.firstName + ' ' +
 			monthlyPayObj.leaveDetailEntity.user.lastName}}</td>
-		<td ng-show="toShow == 'calculatedGrossSalary'"
+		<td ng-show="toShow == 'netSalaryAmt'"
 			style="border: 1px solid black; padding: 5px; text-align:right;">
-			{{monthlyPayObj.calculatedGrossSalary | number : 2}}</td>
+			{{monthlyPayObj.netSalaryAmt | number : 2}}</td>
 		<td ng-show="toShow == 'pfDeductionAmt'"
 			style="border: 1px solid black; padding: 5px; text-align:right;">
 			{{monthlyPayObj.pfDeductionAmt | number : 2}}</td>
@@ -69,7 +69,7 @@
 			<td style="border: 1px solid black; padding: 5px; text-align:center;"><b>Total
 			</b></td>
 			<td style="border: 1px solid black; padding: 5px; text-align:right;"></td>
-			<td ng-show="toShow == 'calculatedGrossSalary'"
+			<td ng-show="toShow == 'netSalaryAmt'"
 				style="border: 1px solid black; padding: 5px; text-align:right;"><b>{{totalSal | number : 2}}</b></td>
 			<td ng-show="toShow == 'pfDeductionAmt'"
 				style="border: 1px solid black; padding: 5px; text-align:right;"><b>{{totalPF | number : 2}}</b></td>

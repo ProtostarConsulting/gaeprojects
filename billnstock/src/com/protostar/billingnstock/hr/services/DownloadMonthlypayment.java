@@ -27,21 +27,19 @@ public class DownloadMonthlypayment extends HttpServlet {
 
 	}
 
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		HrService hrService = new HrService();
 		Long businessId = Long.parseLong(request.getParameter("id"));
 		String currentMonth = request.getParameter("month");
-		List<MonthlyPaymentDetailEntity> monthlypay = hrService
-				.getMonthlyPayment(businessId, currentMonth);
+		List<MonthlyPaymentDetailEntity> monthlypay = hrService.getMonthlyPayment(businessId, currentMonth);
 		OutputStream out = null;
 
 		try {
 
 			response.setContentType("text/csv");
 
-			response.setHeader("Content-Disposition",
-					"attachment; filename=SalarySheet_" + currentMonth + ".csv");
+			response.setHeader("Content-Disposition", "attachment; filename=SalarySheet_" + currentMonth + ".csv");
 			ServletOutputStream outputStream = response.getOutputStream();
 			OutputStreamWriter writer = new OutputStreamWriter(outputStream);
 			writer.append("Emp. No.");
@@ -49,6 +47,28 @@ public class DownloadMonthlypayment extends HttpServlet {
 			writer.append("Employee Name");
 			writer.append(',');
 			writer.append("Dept");
+			writer.append(',');
+			writer.append("Monthly Gross");
+			writer.append(',');
+			writer.append("Monthly Basic");
+			writer.append(',');
+			writer.append("Pay Days");
+			writer.append(',');
+			writer.append("Calulated Gross");
+			writer.append(',');
+			writer.append("Calulated Basic");
+			writer.append(',');
+			writer.append("PF");
+			writer.append(',');
+			writer.append("PT");
+			writer.append(',');
+			writer.append("ESI");
+			writer.append(',');
+			writer.append("IT");
+			writer.append(',');
+			writer.append("Canteen");
+			writer.append(',');
+			writer.append("OtherDeduction");
 			writer.append(',');
 			writer.append("Net Salary");
 			writer.append(',');
@@ -61,19 +81,40 @@ public class DownloadMonthlypayment extends HttpServlet {
 					UserEntity empAccount = salaryObj.getEmpAccount();
 					if (empAccount == null)
 						continue;
-					EmployeeDetail employeeDetail = empAccount
-							.getEmployeeDetail();
-					writer.append(""
-							+ (employeeDetail == null ? "" : employeeDetail
-									.getEmpId()));
+					EmployeeDetail employeeDetail = empAccount.getEmployeeDetail();
+					writer.append("" + (employeeDetail == null ? "" : employeeDetail.getEmpId()));
 					writer.append(',');
 
-					writer.append("" + empAccount.getFirstName() + " "
-							+ empAccount.getLastName());
+					writer.append("" + empAccount.getFirstName() + " " + empAccount.getLastName());
 					writer.append(',');
 					EmpDepartment department = employeeDetail.getDepartment();
-					writer.append((department == null ? "" : department
-							.getName()));
+					writer.append((department == null ? "" : department.getName()));
+					writer.append(',');
+					writer.append("" + salaryObj.getSalStruct().getMonthlyGrossSal());
+					writer.append(',');
+					writer.append("" + salaryObj.getSalStruct().getMonthlyBasic());
+					writer.append(',');
+					writer.append("" + salaryObj.getPayableDays());
+					writer.append(',');
+					writer.append("" + salaryObj.getCalculatedGrossSalary());
+					writer.append(',');
+					float calBasicSal = 0;
+					if(salaryObj.getTotalDays() >0)
+						calBasicSal = salaryObj.getSalStruct().getMonthlyBasic() / salaryObj.getTotalDays()
+							* salaryObj.getPayableDays();
+					writer.append("" + calBasicSal);
+					writer.append(',');
+					writer.append("" + salaryObj.getPfDeductionAmt());
+					writer.append(',');
+					writer.append("" + salaryObj.getPtDeductionAmt());
+					writer.append(',');
+					writer.append("" + salaryObj.getEsiDeductionAmt());
+					writer.append(',');
+					writer.append("" + salaryObj.getItDeductionAmt());
+					writer.append(',');
+					writer.append("" + salaryObj.getCanteenDeductionAmt());
+					writer.append(',');
+					writer.append("" + salaryObj.getOtherDeductionAmt());
 					writer.append(',');
 					writer.append("" + salaryObj.getNetSalaryAmt());
 					writer.append(',');
@@ -89,8 +130,7 @@ public class DownloadMonthlypayment extends HttpServlet {
 		} catch (Exception e) {
 
 			e.printStackTrace();
-			throw new ServletException(
-					"Error Occurred while downloading the csv file.", e);
+			throw new ServletException("Error Occurred while downloading the csv file.", e);
 		} finally {
 			if (out != null)
 				out.close();

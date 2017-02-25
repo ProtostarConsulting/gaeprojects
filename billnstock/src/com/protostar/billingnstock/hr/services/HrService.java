@@ -231,9 +231,7 @@ public class HrService {
 
 	@ApiMethod(name = "saveSalaryMasterDetail", path = "saveSalaryMasterDetail")
 	public void saveSalaryMasterDetail(SalStruct salStruct) {
-
 		ofy().save().entities(salStruct).now();
-
 	}
 
 	@ApiMethod(name = "saveSalaryMasterDetailList", path = "saveSalaryMasterDetailList")
@@ -352,7 +350,7 @@ public class HrService {
 		return now.values();
 	}
 
-	@ApiMethod(name = "getMonthlyPayment")
+	@ApiMethod(name = "getMonthlyPayment", path = "getMonthlyPayment")
 	public List<MonthlyPaymentDetailEntity> getMonthlyPayment(
 			@Named("id") Long busId, @Named("currentmonth") String currentmonth) {
 
@@ -563,7 +561,7 @@ public class HrService {
 				float totalSal = 0, totalPF = 0, totalPT = 0, totalCanteen = 0, totalIT = 0, totalESI = 0, totalOther = 0;
 				for (int j = 0; j < monthlyPaymentDetailEntity.size(); j++) {
 					totalSal += monthlyPaymentDetailEntity.get(j)
-							.getCalculatedGrossSalary();
+							.getNetSalaryAmt();
 					totalPF += monthlyPaymentDetailEntity.get(j)
 							.getPfDeductionAmt();
 					totalPT += monthlyPaymentDetailEntity.get(j)

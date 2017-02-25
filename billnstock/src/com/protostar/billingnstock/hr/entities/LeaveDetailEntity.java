@@ -11,12 +11,12 @@ public class LeaveDetailEntity extends BaseEntity {
 
 	@Index
 	private Ref<UserEntity> user;
-	private int openingBalance;
-	private int mothLeave;
-	private int takenmothLeave;
-	private int withoutpay;
+	private float openingBalance;
+	private float mothLeave;
+	private float takenmothLeave;
+	private float withoutpay;
 	private float overtimeDays;
-	private int nextOpeningBalance;
+	private float nextOpeningBalance;
 	@Index
 	private String currentMonth;
 
@@ -36,43 +36,43 @@ public class LeaveDetailEntity extends BaseEntity {
 		this.currentMonth = currentMonth;
 	}
 
-	public int getOpeningBalance() {
+	public float getOpeningBalance() {
 		return openingBalance;
 	}
 
-	public void setOpeningBalance(int openingBalance) {
+	public void setOpeningBalance(float openingBalance) {
 		this.openingBalance = openingBalance;
 	}
 
-	public int getMothLeave() {
+	public float getMothLeave() {
 		return mothLeave;
 	}
 
-	public void setMothLeave(int mothLeave) {
+	public void setMothLeave(float mothLeave) {
 		this.mothLeave = mothLeave;
 	}
 
-	public int getTakenmothLeave() {
+	public float getTakenmothLeave() {
 		return takenmothLeave;
 	}
 
-	public void setTakenmothLeave(int takenmothLeave) {
+	public void setTakenmothLeave(float takenmothLeave) {
 		this.takenmothLeave = takenmothLeave;
 	}
 
-	public int getWithoutpay() {
+	public float getWithoutpay() {
 		return withoutpay;
 	}
 
-	public void setWithoutpay(int withoutpay) {
+	public void setWithoutpay(float withoutpay) {
 		this.withoutpay = withoutpay;
 	}
 
-	public int getNextOpeningBalance() {
+	public float getNextOpeningBalance() {
 		return nextOpeningBalance;
 	}
 
-	public void setNextOpeningBalance(int nextOpeningBalance) {
+	public void setNextOpeningBalance(float nextOpeningBalance) {
 		this.nextOpeningBalance = nextOpeningBalance;
 	}
 
