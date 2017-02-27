@@ -595,7 +595,8 @@ public class PDFHtmlTemplateService {
 
 			float specialAllow2 = mtlyPayObj.getSpecialAllow();
 			float overtimeAmt = mtlyPayObj.getOvertimeAmt();
-			float totalEarnings = basicAmt + hraAmt + conAmt + medAmt + eduAmt + adhAmt + splAmt + specialAllow2;
+			
+			float totalEarnings = basicAmt + hraAmt + conAmt + medAmt + eduAmt + overtimeAmt + adhAmt + splAmt + specialAllow2;
 
 			float pfDeductionAmt = mtlyPayObj.getPfDeductionAmt();
 			float ptDeductionAmt = mtlyPayObj.getPtDeductionAmt();

@@ -350,10 +350,12 @@ public class HrService {
 					break;
 				}
 			}
-			if (foundSalEntity == null || (foundSalEntity != null && !foundSalEntity.isFinalized())) {
+			if (foundSalEntity == null) {
 				LeaveDetailEntity empLeaveDetail = getEmpLeaveDetail(salStruct.getEmpAccount(), leaveListEmp);
 				foundSalEntity = new MonthlyPaymentDetailEntity(salStruct.getEmpAccount().getBusiness(), empLeaveDetail,
 						salStruct, currentmonth);
+			}else if(!foundSalEntity.isFinalized()){
+				foundSalEntity.setSalStruct(salStruct);
 			}
 			monthlyPaymentDetailEntityListToReturn.add(foundSalEntity);
 		}
