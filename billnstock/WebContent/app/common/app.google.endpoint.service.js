@@ -490,6 +490,17 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
+	proadminService.addBusinessPlan = function(businessPlan) {
+		var deferred = $q.defer();
+		gapi.client.proadminService.addBusinessPlan(businessPlan).execute(function() {
+			deferred.resolve({
+				"msg" : "Business Plan Added Successfully."
+			});
+
+		});
+		return deferred.promise;
+	}
+	
 	proadminService.updateAccountType = function(account) {
 		var deferred = $q.defer();
 		gapi.client.proadminService.addAccountType(account).execute(function() {

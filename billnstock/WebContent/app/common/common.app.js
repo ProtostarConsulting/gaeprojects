@@ -262,8 +262,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/selectbiz",
 		templateUrl : "/app/login/multiselectbusiness.html",
 		controller : 'multiSelectBusinessCtr',
-		params: {
-			multiUsers: null
+		params : {
+			multiUsers : null
 		}
 	}).state('home', {
 		url : "/home",
@@ -507,11 +507,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			record : null
 		}
 	})
-	
-	
-	
-	
-	
+
 	.state('accounting.trialBalance', {
 		url : "/trialBalance",
 		templateUrl : '/app/accounting/accountTrialBalance.html',
@@ -590,7 +586,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		templateUrl : '/app/accounting/voucherPurchesList.html',
 		controller : 'voucherPurchesListCtr'
 	})
-	
+
 	.state('accounting.voucherPayment', {
 		url : "/PaymentVoucher",
 		templateUrl : '/app/accounting/voucherPayment.html',
@@ -1106,6 +1102,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/EditAccoutType/:typeid",
 		templateUrl : '/app/ProAdmin/EditAccoutType.html',
 		controller : 'ListAccountType',
+		params : {
+			selectedAccountType : null
+		}
 	}).state('proAdmin.manageauthmaster', {
 		url : "/proadmin/manage_auth_master",
 		templateUrl : '/app/ProAdmin/manage_auth_master.html',
