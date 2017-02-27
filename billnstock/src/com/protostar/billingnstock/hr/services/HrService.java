@@ -52,12 +52,8 @@ public class HrService {
 
 	@ApiMethod(name = "getSalStructByUser")
 	public SalStruct getSalStructByUser(UserEntity currRowUser) {
-		List<SalStruct> list = ofy()
-				.load()
-				.type(SalStruct.class)
-				.ancestor(
-						Key.create(BusinessEntity.class, currRowUser
-								.getBusiness().getId()))
+		List<SalStruct> list = ofy().load().type(SalStruct.class)
+				.ancestor(Key.create(BusinessEntity.class, currRowUser.getBusiness().getId()))
 				.filter("empAccount", currRowUser).list();
 		SalStruct salStruct = list.size() > 0 ? list.get(0) : null;
 		return salStruct;
@@ -116,12 +112,8 @@ public class HrService {
 	@ApiMethod(name = "findsalstructfromemp")
 	public SalStruct findsalstructfromemp(@Named("id") Long id) {
 
-		SalStruct filteredsalstruct = ofy()
-				.load()
-				.type(SalStruct.class)
-				.filter("empAccount",
-						Ref.create(Key.create(UserEntity.class, id))).first()
-				.now();
+		SalStruct filteredsalstruct = ofy().load().type(SalStruct.class)
+				.filter("empAccount", Ref.create(Key.create(UserEntity.class, id))).first().now();
 		return filteredsalstruct;
 	}
 
@@ -134,8 +126,7 @@ public class HrService {
 	@ApiMethod(name = "countofrecord")
 	public List<SalSlip> countofrecord(@Named("id") Long busId) {
 		// return ofy().load().type(SalSlip.class).list();
-		return ofy().load().type(SalSlip.class)
-				.ancestor(Key.create(BusinessEntity.class, busId)).list();
+		return ofy().load().type(SalSlip.class).ancestor(Key.create(BusinessEntity.class, busId)).list();
 	}
 
 	@ApiMethod(name = "addgsalslip")
@@ -151,12 +142,10 @@ public class HrService {
 	}
 
 	@ApiMethod(name = "displyOnlySelected")
-	public List<SalSlip> displyOnlySelected(@Named("month") String mon,
-			@Named("id") Long busId) {
+	public List<SalSlip> displyOnlySelected(@Named("month") String mon, @Named("id") Long busId) {
 
-		return ofy().load().type(SalSlip.class)
-				.ancestor(Key.create(BusinessEntity.class, busId))
-				.filter("month", mon).list();
+		return ofy().load().type(SalSlip.class).ancestor(Key.create(BusinessEntity.class, busId)).filter("month", mon)
+				.list();
 
 	}
 
@@ -189,19 +178,16 @@ public class HrService {
 	@ApiMethod(name = "getcurweekdata")
 	public TimeSheet getcurweekdata(@Named("week") String weekNumber) {
 
-		TimeSheet weekdata = ofy().load().type(TimeSheet.class)
-				.filter("week", weekNumber).first().now();
+		TimeSheet weekdata = ofy().load().type(TimeSheet.class).filter("week", weekNumber).first().now();
 
 		return weekdata;
 	}
 
 	@ApiMethod(name = "getallsalslip")
-	public List<SalSlip> getallsalslip(@Named("year") String curryear,
-			@Named("id") Long busId) {
+	public List<SalSlip> getallsalslip(@Named("year") String curryear, @Named("id") Long busId) {
 
 		List<SalSlip> filteredSalslip = ofy().load().type(SalSlip.class)
-				.ancestor(Key.create(BusinessEntity.class, busId))
-				.filter("year", curryear).list();
+				.ancestor(Key.create(BusinessEntity.class, busId)).filter("year", curryear).list();
 		return filteredSalslip;
 
 	}
@@ -237,8 +223,7 @@ public class HrService {
 	@ApiMethod(name = "saveSalaryMasterDetailList", path = "saveSalaryMasterDetailList")
 	public void saveSalaryMasterDetailList(SalStructEntityList salStructList) {
 		@SuppressWarnings("unchecked")
-		List<SalStruct> list = (List<SalStruct>) EntityUtil
-				.updateCreatedModifiedDate(salStructList.getList());
+		List<SalStruct> list = (List<SalStruct>) EntityUtil.updateCreatedModifiedDate(salStructList.getList());
 		ofy().save().entities(list).now();
 	}
 
@@ -257,8 +242,7 @@ public class HrService {
 		for (UserEntity usere : userList) {
 			SalStruct foundSalMaster = null;
 			for (SalStruct salStruct : salStructlist) {
-				if (salStruct.getEmpAccount() != null
-						&& usere.getId() == salStruct.getEmpAccount().getId()) {
+				if (salStruct.getEmpAccount() != null && usere.getId() == salStruct.getEmpAccount().getId()) {
 					foundSalMaster = salStruct;
 				}
 			}
@@ -277,14 +261,12 @@ public class HrService {
 	}
 
 	@ApiMethod(name = "getLeaveListEmp")
-	public List<LeaveDetailEntity> getLeaveListEmp(@Named("id") Long busId,
-			@Named("month") String month, @Named("prevMonth") String prevMonth) {
+	public List<LeaveDetailEntity> getLeaveListEmp(@Named("id") Long busId, @Named("month") String month,
+			@Named("prevMonth") String prevMonth) {
 
 		List<LeaveDetailEntity> empLeaveListToReturn = new ArrayList<LeaveDetailEntity>();
-		List<LeaveDetailEntity> empLeaveListCurrentMonth = ofy().load()
-				.type(LeaveDetailEntity.class)
-				.ancestor(Key.create(BusinessEntity.class, busId))
-				.filter("currentMonth", month.trim()).list();
+		List<LeaveDetailEntity> empLeaveListCurrentMonth = ofy().load().type(LeaveDetailEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).filter("currentMonth", month.trim()).list();
 
 		UserService userService = new UserService();
 		List<UserEntity> userList = userService.getUsersByBusinessId(busId);
@@ -295,16 +277,13 @@ public class HrService {
 		 * returning. return empLeaveListCurrentMonth; }
 		 */
 
-		List<LeaveDetailEntity> empLeaveListPrevMonth = ofy().load()
-				.type(LeaveDetailEntity.class)
-				.ancestor(Key.create(BusinessEntity.class, busId))
-				.filter("currentMonth", prevMonth).list();
+		List<LeaveDetailEntity> empLeaveListPrevMonth = ofy().load().type(LeaveDetailEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).filter("currentMonth", prevMonth).list();
 
 		for (UserEntity userEntity : userList) {
 
 			LeaveDetailEntity foundLeaveDetail = null;
-			if (empLeaveListCurrentMonth != null
-					& !empLeaveListCurrentMonth.isEmpty()) {
+			if (empLeaveListCurrentMonth != null & !empLeaveListCurrentMonth.isEmpty()) {
 
 				for (LeaveDetailEntity leaveDetail : empLeaveListCurrentMonth) {
 					if (leaveDetail.getUser().getId() == userEntity.getId()) {
@@ -321,10 +300,8 @@ public class HrService {
 			}
 
 			for (LeaveDetailEntity prevMonthleaveDetail : empLeaveListPrevMonth) {
-				if (prevMonthleaveDetail.getUser().getId() == userEntity
-						.getId()) {
-					foundLeaveDetail.setOpeningBalance(prevMonthleaveDetail
-							.getNextOpeningBalance());
+				if (prevMonthleaveDetail.getUser().getId() == userEntity.getId()) {
+					foundLeaveDetail.setOpeningBalance(prevMonthleaveDetail.getNextOpeningBalance());
 
 				}
 			}
@@ -343,41 +320,39 @@ public class HrService {
 			MonthlyPaymentDetailEntityList monthlyPaymentDetailEntityList) {
 		@SuppressWarnings("unchecked")
 		List<MonthlyPaymentDetailEntity> list = (List<MonthlyPaymentDetailEntity>) EntityUtil
-				.updateCreatedModifiedDate(monthlyPaymentDetailEntityList
-						.getList());
-		Map<Key<MonthlyPaymentDetailEntity>, MonthlyPaymentDetailEntity> now = ofy()
-				.save().entities(list).now();
+				.updateCreatedModifiedDate(monthlyPaymentDetailEntityList.getList());
+		Map<Key<MonthlyPaymentDetailEntity>, MonthlyPaymentDetailEntity> now = ofy().save().entities(list).now();
 		return now.values();
 	}
 
 	@ApiMethod(name = "getMonthlyPayment", path = "getMonthlyPayment")
-	public List<MonthlyPaymentDetailEntity> getMonthlyPayment(
-			@Named("id") Long busId, @Named("currentmonth") String currentmonth) {
+	public List<MonthlyPaymentDetailEntity> getMonthlyPayment(@Named("id") Long busId,
+			@Named("currentmonth") String currentmonth) {
 
 		List<MonthlyPaymentDetailEntity> monthlyPaymentDetailEntityListToReturn = new ArrayList<MonthlyPaymentDetailEntity>();
-		List<MonthlyPaymentDetailEntity> monthlyPaymentDetailEntityList = ofy()
-				.load().type(MonthlyPaymentDetailEntity.class)
-				.ancestor(Key.create(BusinessEntity.class, busId))
+		List<MonthlyPaymentDetailEntity> monthlyPaymentDetailEntityList = ofy().load()
+				.type(MonthlyPaymentDetailEntity.class).ancestor(Key.create(BusinessEntity.class, busId))
 				.filter("currentMonth", currentmonth).list();
 
 		List<SalStruct> salaryMasterlist = getSalaryMasterlist(busId);
 		String prevMonth = null;
-		List<LeaveDetailEntity> leaveListEmp = getLeaveListEmp(busId,
-				currentmonth, prevMonth);
+		List<LeaveDetailEntity> leaveListEmp = getLeaveListEmp(busId, currentmonth, prevMonth);
 		for (SalStruct salStruct : salaryMasterlist) {
+			if (salStruct.getMonthlyGrossSal() < 100) {
+				continue;
+				// This is to ignore the employees for whom salary structure is
+				// not set
+			}
 			MonthlyPaymentDetailEntity foundSalEntity = null;
 			for (MonthlyPaymentDetailEntity salEntity : monthlyPaymentDetailEntityList) {
-				if (salStruct.getEmpAccount().getId() == salEntity
-						.getSalStruct().getEmpAccount().getId()) {
+				if (salStruct.getEmpAccount().getId() == salEntity.getSalStruct().getEmpAccount().getId()) {
 					foundSalEntity = salEntity;
 					break;
 				}
 			}
-			if (foundSalEntity == null) {
-				LeaveDetailEntity empLeaveDetail = getEmpLeaveDetail(
-						salStruct.getEmpAccount(), leaveListEmp);
-				foundSalEntity = new MonthlyPaymentDetailEntity(salStruct
-						.getEmpAccount().getBusiness(), empLeaveDetail,
+			if (foundSalEntity == null || (foundSalEntity != null && !foundSalEntity.isFinalized())) {
+				LeaveDetailEntity empLeaveDetail = getEmpLeaveDetail(salStruct.getEmpAccount(), leaveListEmp);
+				foundSalEntity = new MonthlyPaymentDetailEntity(salStruct.getEmpAccount().getBusiness(), empLeaveDetail,
 						salStruct, currentmonth);
 			}
 			monthlyPaymentDetailEntityListToReturn.add(foundSalEntity);
@@ -387,8 +362,7 @@ public class HrService {
 
 	}
 
-	private static LeaveDetailEntity getEmpLeaveDetail(UserEntity user,
-			List<LeaveDetailEntity> leaveList) {
+	private static LeaveDetailEntity getEmpLeaveDetail(UserEntity user, List<LeaveDetailEntity> leaveList) {
 		for (LeaveDetailEntity leaveEntity : leaveList) {
 			if (leaveEntity.getUser().getId() == user.getId()) {
 				return leaveEntity;
@@ -407,15 +381,12 @@ public class HrService {
 
 	@ApiMethod(name = "approveLeaveApp", path = "approveLeaveApp")
 	public void approveLeaveApp(LeaveAppEntity leaveApp) {
-		List<LeaveMasterEntity> leaveMastList = ofy().load()
-				.type(LeaveMasterEntity.class)
+		List<LeaveMasterEntity> leaveMastList = ofy().load().type(LeaveMasterEntity.class)
 				.filter("user", leaveApp.getUser()).list();
 
-		LeaveMasterEntity leaveMast = leaveMastList.size() > 0 ? leaveMastList
-				.get(0) : null;
+		LeaveMasterEntity leaveMast = leaveMastList.size() > 0 ? leaveMastList.get(0) : null;
 		if (leaveMast == null) {
-			throw new RuntimeException(
-					"Leave Master record not found. Please contact HR department.");
+			throw new RuntimeException("Leave Master record not found. Please contact HR department.");
 		}
 
 		leaveMast.setBalance(leaveMast.getBalance() - leaveApp.getTotalDays());
@@ -433,35 +404,30 @@ public class HrService {
 	@ApiMethod(name = "getLeaveAppList")
 	public List<LeaveAppEntity> getLeaveAppList() {
 
-		List<LeaveAppEntity> leaveAppList = ofy().load()
-				.type(LeaveAppEntity.class).list();
+		List<LeaveAppEntity> leaveAppList = ofy().load().type(LeaveAppEntity.class).list();
 
 		return leaveAppList;
 
 	}
 
 	@ApiMethod(name = "getLeaveAppListByUser", path = "getLeaveAppListByUser")
-	public List<LeaveAppEntity> getLeaveAppListByUser(
-			@Named("busId") Long busId, @Named("userId") Long userId) {
+	public List<LeaveAppEntity> getLeaveAppListByUser(@Named("busId") Long busId, @Named("userId") Long userId) {
 		UserService userService = new UserService();
 
 		UserEntity user = userService.getUserByID(busId, userId);
 
-		List<LeaveAppEntity> leaveList = ofy().load()
-				.type(LeaveAppEntity.class).filter("user", user).list();
+		List<LeaveAppEntity> leaveList = ofy().load().type(LeaveAppEntity.class).filter("user", user).list();
 
 		return leaveList;
 	}
 
 	@ApiMethod(name = "getLeaveAppListByManager", path = "getLeaveAppListByManager")
-	public List<LeaveAppEntity> getLeaveAppListByManager(
-			@Named("busId") Long busId, @Named("userId") Long userId) {
+	public List<LeaveAppEntity> getLeaveAppListByManager(@Named("busId") Long busId, @Named("userId") Long userId) {
 		UserService userService = new UserService();
 
 		UserEntity user = userService.getUserByID(busId, userId);
 
-		List<LeaveAppEntity> empLeaveAppList = ofy().load()
-				.type(LeaveAppEntity.class).filter("manager", user).list();
+		List<LeaveAppEntity> empLeaveAppList = ofy().load().type(LeaveAppEntity.class).filter("manager", user).list();
 
 		return empLeaveAppList;
 	}
@@ -477,22 +443,20 @@ public class HrService {
 	@ApiMethod(name = "getLeaveMasterList", path = "getLeaveMasterList")
 	public List<LeaveMasterEntity> getLeaveMasterList() {
 
-		List<LeaveMasterEntity> leaveMasterList = ofy().load()
-				.type(LeaveMasterEntity.class).list();
+		List<LeaveMasterEntity> leaveMasterList = ofy().load().type(LeaveMasterEntity.class).list();
 
 		return leaveMasterList;
 
 	}
 
 	@ApiMethod(name = "getLeaveMasterListByUser", path = "getLeaveMasterListByUser")
-	public List<LeaveMasterEntity> getLeaveMasterListByUser(
-			@Named("busId") Long busId, @Named("userId") Long userId) {
+	public List<LeaveMasterEntity> getLeaveMasterListByUser(@Named("busId") Long busId, @Named("userId") Long userId) {
 		UserService userService = new UserService();
 
 		UserEntity user = userService.getUserByID(busId, userId);
 
-		List<LeaveMasterEntity> leaveMasterListByUser = ofy().load()
-				.type(LeaveMasterEntity.class).filter("user", user).list();
+		List<LeaveMasterEntity> leaveMasterListByUser = ofy().load().type(LeaveMasterEntity.class).filter("user", user)
+				.list();
 
 		return leaveMasterListByUser;
 	}
@@ -504,13 +468,11 @@ public class HrService {
 	}
 
 	@ApiMethod(name = "getMonthlyPaymentByID")
-	public MonthlyPaymentDetailEntity getMonthlyPaymentByID(
-			@Named("bid") Long busId, @Named("month") String currentmonth,
-			@Named("id") Long empid) {
+	public MonthlyPaymentDetailEntity getMonthlyPaymentByID(@Named("bid") Long busId,
+			@Named("month") String currentmonth, @Named("id") Long empid) {
 		MonthlyPaymentDetailEntity monthlyPaymen = new MonthlyPaymentDetailEntity();
-		List<MonthlyPaymentDetailEntity> monthlyPaymentDetailEntity = ofy()
-				.load().type(MonthlyPaymentDetailEntity.class)
-				.ancestor(Key.create(BusinessEntity.class, busId))
+		List<MonthlyPaymentDetailEntity> monthlyPaymentDetailEntity = ofy().load()
+				.type(MonthlyPaymentDetailEntity.class).ancestor(Key.create(BusinessEntity.class, busId))
 				.filter("currentMonth", currentmonth).list();
 
 		for (MonthlyPaymentDetailEntity monthlyPaymentDetailEntityId : monthlyPaymentDetailEntity) {
@@ -526,15 +488,12 @@ public class HrService {
 	}
 
 	@ApiMethod(name = "fecthMonthlyPaymentByUser", path = "fecthMonthlyPaymentByUser")
-	public List<MonthlyPaymentDetailEntity> fecthMonthlyPaymentByUser(
-			UserEntity user) {
+	public List<MonthlyPaymentDetailEntity> fecthMonthlyPaymentByUser(UserEntity user) {
 
-		List<MonthlyPaymentDetailEntity> monthlyPaymentDetailEntity = ofy()
-				.load()
+		List<MonthlyPaymentDetailEntity> monthlyPaymentDetailEntity = ofy().load()
 				.type(MonthlyPaymentDetailEntity.class)
-				.ancestor(
-						Key.create(BusinessEntity.class, user.getBusiness()
-								.getId())).filter("empAccount", user).list();
+				.ancestor(Key.create(BusinessEntity.class, user.getBusiness().getId())).filter("empAccount", user)
+				.list();
 
 		return monthlyPaymentDetailEntity;
 
@@ -545,35 +504,28 @@ public class HrService {
 
 		List<PayRollMonthlyData> payrolldatalist = new ArrayList<PayRollMonthlyData>();
 
-		String monthList[] = { "January", "February", "March", "April", "May",
-				"June", "July", "August", "September", "October", "November",
-				"December" };
+		String monthList[] = { "January", "February", "March", "April", "May", "June", "July", "August", "September",
+				"October", "November", "December" };
 
-		//int year = Calendar.getInstance().get(Calendar.YEAR);
+		// int year = Calendar.getInstance().get(Calendar.YEAR);
 
 		HrService hrService = new HrService();
 		for (int i = 0; i < 12; i++) {
 			String month = monthList[i] + "-" + year;
-			List<MonthlyPaymentDetailEntity> monthlyPaymentDetailEntity = hrService
-					.getMonthlyPayment(busId, month.trim());
+			List<MonthlyPaymentDetailEntity> monthlyPaymentDetailEntity = hrService.getMonthlyPayment(busId,
+					month.trim());
 
 			if (monthlyPaymentDetailEntity.size() > 0) {
-				float totalSal = 0, totalPF = 0, totalPT = 0, totalCanteen = 0, totalIT = 0, totalESI = 0, totalOther = 0;
+				float totalSal = 0, totalPF = 0, totalPT = 0, totalCanteen = 0, totalIT = 0, totalESI = 0,
+						totalOther = 0;
 				for (int j = 0; j < monthlyPaymentDetailEntity.size(); j++) {
-					totalSal += monthlyPaymentDetailEntity.get(j)
-							.getNetSalaryAmt();
-					totalPF += monthlyPaymentDetailEntity.get(j)
-							.getPfDeductionAmt();
-					totalPT += monthlyPaymentDetailEntity.get(j)
-							.getPtDeductionAmt();
-					totalCanteen += monthlyPaymentDetailEntity.get(j)
-							.getCanteenDeductionAmt();
-					totalIT += monthlyPaymentDetailEntity.get(j)
-							.getItDeductionAmt();
-					totalESI += monthlyPaymentDetailEntity.get(j)
-							.getEsiDeductionAmt();
-					totalOther += monthlyPaymentDetailEntity.get(j)
-							.getOtherDeductionAmt();
+					totalSal += monthlyPaymentDetailEntity.get(j).getNetSalaryAmt();
+					totalPF += monthlyPaymentDetailEntity.get(j).getPfDeductionAmt();
+					totalPT += monthlyPaymentDetailEntity.get(j).getPtDeductionAmt();
+					totalCanteen += monthlyPaymentDetailEntity.get(j).getCanteenDeductionAmt();
+					totalIT += monthlyPaymentDetailEntity.get(j).getItDeductionAmt();
+					totalESI += monthlyPaymentDetailEntity.get(j).getEsiDeductionAmt();
+					totalOther += monthlyPaymentDetailEntity.get(j).getOtherDeductionAmt();
 				}
 
 				PayRollMonthlyData payData = new PayRollMonthlyData();
@@ -583,7 +535,7 @@ public class HrService {
 				payData.totalPT = totalPT;
 				payData.totalCanteen = totalCanteen;
 				payData.totalIT = totalIT;
-				payData.totalESI = totalESI;				
+				payData.totalESI = totalESI;
 				payData.totalOther = totalOther;
 				payrolldatalist.add(payData);
 			}
@@ -593,8 +545,7 @@ public class HrService {
 	}
 
 	@ApiMethod(name = "getpayRollReportByMonth", path = "getpayRollReportByMonth")
-	public List<PayRollMonthlyData> getpayRollReportByMonth(
-			@Named("id") Long busId, @Named("month") String month) {
+	public List<PayRollMonthlyData> getpayRollReportByMonth(@Named("id") Long busId, @Named("month") String month) {
 		List<PayRollMonthlyData> payrolldatalist = new ArrayList<PayRollMonthlyData>();
 
 		int year = Calendar.getInstance().get(Calendar.YEAR);
@@ -602,26 +553,19 @@ public class HrService {
 		HrService hrService = new HrService();
 
 		String selectedMonth = month + "-" + year;
-		List<MonthlyPaymentDetailEntity> monthlyPaymentDetailEntity = hrService
-				.getMonthlyPayment(busId, selectedMonth.trim());
+		List<MonthlyPaymentDetailEntity> monthlyPaymentDetailEntity = hrService.getMonthlyPayment(busId,
+				selectedMonth.trim());
 
 		if (monthlyPaymentDetailEntity.size() > 0) {
 			float totalSal = 0, totalPF = 0, totalPT = 0, totalCanteen = 0, totalIT = 0, totalOther = 0, totalESI = 0;
 			for (int j = 0; j < monthlyPaymentDetailEntity.size(); j++) {
-				totalSal += monthlyPaymentDetailEntity.get(j)
-						.getCalculatedGrossSalary();
-				totalPF += monthlyPaymentDetailEntity.get(j)
-						.getPfDeductionAmt();
-				totalPT += monthlyPaymentDetailEntity.get(j)
-						.getPtDeductionAmt();
-				totalCanteen += monthlyPaymentDetailEntity.get(j)
-						.getCanteenDeductionAmt();
-				totalIT += monthlyPaymentDetailEntity.get(j)
-						.getItDeductionAmt();
-				totalOther += monthlyPaymentDetailEntity.get(j)
-						.getOtherDeductionAmt();
-				totalESI += monthlyPaymentDetailEntity.get(j)
-						.getEsiDeductionAmt();
+				totalSal += monthlyPaymentDetailEntity.get(j).getCalculatedGrossSalary();
+				totalPF += monthlyPaymentDetailEntity.get(j).getPfDeductionAmt();
+				totalPT += monthlyPaymentDetailEntity.get(j).getPtDeductionAmt();
+				totalCanteen += monthlyPaymentDetailEntity.get(j).getCanteenDeductionAmt();
+				totalIT += monthlyPaymentDetailEntity.get(j).getItDeductionAmt();
+				totalOther += monthlyPaymentDetailEntity.get(j).getOtherDeductionAmt();
+				totalESI += monthlyPaymentDetailEntity.get(j).getEsiDeductionAmt();
 			}
 
 			PayRollMonthlyData payData = new PayRollMonthlyData();
