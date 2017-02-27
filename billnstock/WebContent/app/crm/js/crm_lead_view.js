@@ -54,7 +54,7 @@ angular.module("stockApp").controller(
 			$scope.objlead = $scope.lead;
 
 			$scope.task = {
-				id : "",
+				tid : "",
 				description : "",
 				type : "",
 				date : new Date(),
@@ -80,8 +80,11 @@ angular.module("stockApp").controller(
 					$scope.lead = $scope.initDateFields(lead);
 					$scope.lead.phone = Number(lead.phone);
 					$scope.Address = $scope.lead.address;
+					if (!$scope.lead.tasks) {
+						$scope.lead.tasks = [];
+					}
 					$scope.ctaskid = $scope.lead.tasks;
-					$scope.task.id = $scope.ctaskid.length + 1;
+					$scope.task.tid = $scope.ctaskid.length + 1;
 					// $scope.task.date= $scope.curdate;
 				});
 
@@ -122,15 +125,34 @@ angular.module("stockApp").controller(
 					$scope.getLeadById();
 				});
 			}
-			$scope.addupdatetask = function(leadid) {
+
+			$scope.editTask = function(task) {
+				$scope.task = task;
+				$scope.task.date = new Date(task.date);
+			};
+
+			$scope.addEditTask = function(leadid) {
 				/*
 				 * $scope.objlead=$scope.leads;
 				 * $scope.objlead.tasks.push($scope.task);
 				 */
+				if (!$scope.lead.tasks) {
+					$scope.lead.tasks = [];
+				}
 				$scope.lead.modifiedBy = $scope.curUser.email_id;
+
 				if (typeof $scope.task.type != 'undefined'
 						&& $scope.task.type != "") {
-					$scope.lead.tasks.push($scope.task);
+					var i;
+					for( i = 0; i<$scope.lead.tasks.length; i++)	{
+						if($scope.task.tid== $scope.lead.tasks[i].tid){
+							break;
+						}
+					}
+					 
+					if(i == $scope.lead.tasks.length){
+					  $scope.lead.tasks.push($scope.task);
+					}
 				}
 				var leadService = appEndpointSF.getleadService();
 

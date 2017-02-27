@@ -55,10 +55,9 @@
 				<div ng-message="required">Please Enter Company Name.</div>
 			</div>
 			</md-input-container>
-			<md-input-container flex> <label>Phone <span
-				style="color: red;">*</span>
-			</label> <input type="number" name="phone" ng-minlength="10"
-				ng-maxlength="11" ng-model="lead.phone" ng-required="true">
+			<md-input-container flex> <label>Phone</label> <input
+				type="number" name="phone" ng-minlength="10" ng-maxlength="11"
+				ng-model="lead.phone" ng-required="true">
 			<div ng-messages="leadform.phone.$error"
 				ng-if="leadform.phone.$submitted || leadform.phone.$touched">
 				<div ng-message="required">Please Enter Phone Name.</div>
@@ -68,9 +67,9 @@
 				Number should be 10 digits(Example.:0123456789)</span> </md-input-container>
 		</div>
 		<div layout layout-xs="column">
-			<md-input-container flex> <label>Email <span
-				style="color: red;">*</span></label> <input type="email" name="email"
-				ng-model="lead.email" ng-pattern="/^.+@.+\..+$/" ng-required="true">
+			<md-input-container flex> <label>Email</label> <input
+				type="email" name="email" ng-model="lead.email"
+				ng-pattern="/^.+@.+\..+$/">
 			<div ng-messages="leadform.email.$error"
 				ng-if="leadform.email.$submitted || leadform.email.$touched">
 				<div ng-message="required">Please Enter Email id.</div>
@@ -82,15 +81,7 @@
 			</md-input-container>
 			<md-input-container flex> <label>Designation
 
-			</label> <input name="designation" ng-model="lead.designation"
-				ng-required="true">
-			<div ng-messages="leadform.designation.$error"
-				ng-if="leadform.designation.$submitted || leadform.designation.$touched">
-				<div ng-show="leadform.designation.$error.pattern"
-					ng-message="required">Please Enter Designation Name.</div>
-			</div>
-
-			</md-input-container>
+			</label> <input name="designation" ng-model="lead.designation"> </md-input-container>
 		</div>
 		<!-- 	<div>
 			<md-input-container flex> <label>Address
@@ -149,10 +140,11 @@
 
 		<div layout layout-sm="column">
 			<section layout="row" layout-sm="column" layout-align="left left">
-				<md-button class="md-raised md-primary" ng-click="updateLead()">update</md-button>
+				<md-button class="md-raised md-primary" ng-click="updateLead()">Update</md-button>
 
 			</section>
 		</div>
+
 
 		<!---------------------------------------------------------->
 
@@ -167,16 +159,21 @@
 					<tr>
 						<th name="Due Date" order-by="discussion Date"></th>
 						<th name="Type" order-by="description Type"></th>
-						<th name="previous discussion" order-by="previous discussion"></th>
+						<th name="Previous Discussion" order-by="previous discussion"></th>
+						<th name="Actions"></th>
 
 					</tr>
 				</thead>
 				<tbody>
 					<tr md-auto-select
-						ng-repeat="t in lead.tasks | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit"">
+						ng-repeat="t in lead.tasks track by $index | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit"">
 						<td width="20%" align="left">{{t.date | formatDate}}</td>
 						<td width="20%" align="left">{{t.type}}</td>
-						<td width="60%" align="left">{{t.description}}</td>
+						<td width="40%" align="left">{{t.description}}</td>
+						<td width="20%" align="left"><md-button
+								ng-click="editTask(t)" class="md-icon-button"> <ng-md-icon
+								icon="edit" style="fill: md-default" size="20"> <md-tooltip>Edit</md-tooltip>
+							</ng-md-icon> </md-button></td>
 
 					</tr>
 				</tbody>
@@ -196,30 +193,35 @@
 
 		<div layout layout-xs="column">
 			<md-input-container flex> <label>Task
-				Id:-</label> <input ng-model="task.id" disabled> </md-input-container>
+				Id:-</label> <input ng-model="task.tid" ng-readonly="true"> </md-input-container>
 			<md-input-container flex> <md-select
-				placeholder="Task Type" ng-model="task.type"> <md-option
+				placeholder="Task Type" ng-model="task.type" ng-required="true"
+				ng-disabled="task.status=='inactive'"> <md-option
 				ng-repeat="type in taskType" ng-value="type"> {{type}} </md-option>
 			</md-select></md-input-container>
 
 
 			<div layout layout-xs="column">
 				<md-datepicker flex name="DueDate" date-format="MM/dd/yyyy"
-					ng-model="task.date" md-placeholder="Enter Due Date"></md-datepicker>
+					ng-model="task.date" md-placeholder="Enter Due Date"
+					ng-required="true" ng-disabled="task.status=='inactive'"></md-datepicker>
 			</div>
 
 		</div>
 		<div layout layout-xs="column">
 			<md-input-container flex> <label>description
-			</label> <textarea ng-model="task.description" rows="2" cols="1"> </textarea></md-input-container>
+			</label> <textarea ng-model="task.description" rows="2" cols="1"
+				ng-disabled="task.status=='inactive'"> </textarea></md-input-container>
 		</div>
 		<div layout layout-xs="column">
 			<md-input-container flex> <label>Note </label> <textarea
-				ng-model="task.note" rows="4" cols="1"> </textarea></md-input-container>
+				ng-model="task.note" rows="4" cols="1"
+				ng-disabled="task.status=='inactive'"> </textarea></md-input-container>
 		</div>
 		<div>
-			<md-checkbox ng-model="task.status" ng-true-value="'active'"
-				ng-false-value="'inactive'"> Close </md-checkbox>
+			<md-checkbox ng-model="task.status" ng-true-value="'inactive'"
+				ng-false-value="'active'" ng-hide="task.status=='inactive'">
+			Close </md-checkbox>
 
 		</div>
 
@@ -227,12 +229,11 @@
 			<md-input-container flex>
 			<section layout="row" layout-xs="column" layout-align="left left">
 				<md-button class="md-raised md-primary"
-					ng-click="addupdatetask(lead.id)">Add/Update Task</md-button>
+					ng-click="addEditTask(lead.id)" ng-hide="task.status=='inactive'">Add/Update
+				Task</md-button>
 
 			</section>
 			</md-input-container>
 		</div>
-
-	</div>
 </form>
 </md-content>
