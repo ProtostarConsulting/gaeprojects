@@ -26,9 +26,14 @@ angular
 
 						monthlyPayDetailObj.overtimeAmt = monthlyPayDetailObj.leaveDetailEntity.overtimeDays
 								* (monthlyPayDetailObj.monthlyGrossSalary / $scope.totalDaysInSelectedMonth);
+						
+						monthlyPayDetailObj.overtimeAmt = Math
+						.round(monthlyPayDetailObj.overtimeAmt);
 
 						monthlyPayDetailObj.calculatedGrossSalary = monthlyPayDetailObj.payableDays
 								* (monthlyPayDetailObj.monthlyGrossSalary / $scope.totalDaysInSelectedMonth);
+						monthlyPayDetailObj.calculatedGrossSalary = Math
+						.round(monthlyPayDetailObj.calculatedGrossSalary);
 
 						// Manual entry takes priority
 						if (!(monthlyPayDetailObj.esiDeductionAmt)) {
@@ -69,8 +74,6 @@ angular
 								- monthlyPayDetailObj.esiDeductionAmt
 								- monthlyPayDetailObj.otherDeductionAmt;
 
-						monthlyPayDetailObj.calculatedGrossSalary = monthlyPayDetailObj.calculatedGrossSalary
-								.toFixed(2);
 						monthlyPayDetailObj.netSalaryAmt = Math
 								.round(monthlyPayDetailObj.netSalaryAmt);
 
