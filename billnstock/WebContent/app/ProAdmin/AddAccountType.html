@@ -4,19 +4,19 @@
 
 	<div id="addField">
 		<div layout layout-sm="column">
-			<md-input-container flex> <label>Business Plan Name   </label> <input name="AccountName" ng-model="AccountType.accountName"
+			<md-input-container flex> <label>Business Plan Name   </label> <input name="AccountName" ng-model="accountType.planName"
 				ng-required="true">
 
 			<div ng-messages="AccountTypeForm.AccountName.$error"
 				ng-if="AccountTypeForm.AccountName.$submitted || AccountTypeForm.AccountName.$touched">
-				<div ng-message="required">Please Enter Asset Name.</div>
+				<div ng-message="required">Please Enter Plan Name.</div>
 			</div>
 			</md-input-container>
 		</div>
 		<div layout layout-sm="column">
 			<md-input-container flex> <label>Description  
 			</label> <input type="text" name="Description"
-				ng-model="AccountType.description" ng-required="true">
+				ng-model="accountType.description" ng-required="true">
 			<div ng-messages="AccountTypeForm.Description.$error"
 				ng-if="AccountTypeForm.Description.$submitted || AccountTypeForm.Description.$touched">
 				<div ng-message="required">Please Enter category.</div>
@@ -24,7 +24,7 @@
 			</md-input-container>
 			<md-input-container flex> <label>Max
 				User   </label> <input type="text" name="Maxuser"
-				ng-model="AccountType.maxuser" ng-required="true">
+				ng-model="accountType.maxuser" ng-required="true">
 			<div ng-messages="AccountTypeForm.Maxuser.$error"
 				ng-if="AccountTypeForm.Maxuser.$submitted || AccountTypeForm.Maxuser.$touched">
 				<div ng-message="required">Please Enter the max user.</div>
@@ -34,7 +34,7 @@
 		<div layout layout-sm="column">
 			<md-input-container flex> <label>Payment
 				Description   </label> <input type="text" name="PaymentDesc"
-				ng-model="AccountType.paymentDesc" ng-required="true">
+				ng-model="accountType.paymentDesc" ng-required="true">
 
 			<div ng-messages="AccountTypeForm.PaymentDesc.$error"
 				ng-if="AccountTypeForm.PaymentDesc.$submitted || AccountTypeForm.PaymentDesc.$touched">

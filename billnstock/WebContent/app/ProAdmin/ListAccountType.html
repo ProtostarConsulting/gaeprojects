@@ -23,7 +23,7 @@
 			<thead md-order="query.order" md-trigger="onOrderChange">
 				<tr>
 					<th name="Business Plan" order-by="planName"></th>
-					<th name="Discription"></th>
+					<th name="Description" order-by="desciption"></th>
 					<th name="Maxuser" order-by="maxuser"></th>
 					<th name="Payment Description""></th>
 					<th name="Edit"></th>
@@ -38,9 +38,10 @@
 					<td>{{account.maxuser}}</td>
 					<td>{{account.paymentDesc}}</td>
 					<td><section layout="row" layout-sm="column">
-							<md-button class="md-raised md-primary"
-								ui-sref="proAdmin.editAccoutType({plan: account})">
-							Edit Plan </md-button>
+							<md-button class="md-icon-button"
+								ui-sref="proAdmin.editAccoutType({selectedAccountType:account})">
+							<ng-md-icon icon="edit" style="fill: md-default" size="20">
+					<md-tooltip> Edit Plan</md-tooltip></ng-md-icon> </md-button>
 						</section></td>
 				</tr>
 			</tbody>

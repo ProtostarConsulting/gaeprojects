@@ -12,9 +12,9 @@ angular.module("stockApp").controller(
 			$scope.curuser = appEndpointSF.getLocalUserService()
 					.getLoggedinUser();
 
-			$scope.AccountType = {
+			$scope.accountType = {
 				/*loggedInUser : "",*/
-				accountName : "",
+				planName : "",
 				description : "",
 				maxuser : "",
 				paymentDesc : ""
@@ -23,7 +23,7 @@ angular.module("stockApp").controller(
 			$scope.addAccountType = function() {
 				/*$scope.AccountType.loggedInUser = $scope.curUser;*/
 				var proadminService = appEndpointSF.getproadminService();
-				proadminService.addAccountType($scope.AccountType).then(
+				proadminService.addBusinessPlan($scope.accountType).then(
 						function(msgBean) {
 							$scope.showAddToast();
 
@@ -31,7 +31,7 @@ angular.module("stockApp").controller(
 				$scope.AccountTypeForm.$setPristine();
 				  $scope.AccountTypeForm.$setValidity();
 				  $scope.AccountTypeForm.$setUntouched();
-				$scope.AccountType = {};
+				$scope.accountType = {};
 			}
 
 		
