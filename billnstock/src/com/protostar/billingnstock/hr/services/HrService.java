@@ -517,7 +517,7 @@ public class HrService {
 			List<MonthlyPaymentDetailEntity> monthlyPaymentDetailEntity = hrService.getMonthlyPayment(busId,
 					month.trim());
 
-			if (monthlyPaymentDetailEntity.size() > 0) {
+			if (monthlyPaymentDetailEntity.size() > 0 && monthlyPaymentDetailEntity.get(0).isFinalized()) {
 				float totalSal = 0, totalPF = 0, totalPT = 0, totalCanteen = 0, totalIT = 0, totalESI = 0,
 						totalOther = 0;
 				for (int j = 0; j < monthlyPaymentDetailEntity.size(); j++) {
@@ -541,7 +541,6 @@ public class HrService {
 				payData.totalOther = totalOther;
 				payrolldatalist.add(payData);
 			}
-
 		}
 		return payrolldatalist;
 	}
@@ -558,7 +557,7 @@ public class HrService {
 		List<MonthlyPaymentDetailEntity> monthlyPaymentDetailEntity = hrService.getMonthlyPayment(busId,
 				selectedMonth.trim());
 
-		if (monthlyPaymentDetailEntity.size() > 0) {
+		if (monthlyPaymentDetailEntity.size() > 0 && monthlyPaymentDetailEntity.get(0).isFinalized()) {
 			float totalSal = 0, totalPF = 0, totalPT = 0, totalCanteen = 0, totalIT = 0, totalOther = 0, totalESI = 0;
 			for (int j = 0; j < monthlyPaymentDetailEntity.size(); j++) {
 				totalSal += monthlyPaymentDetailEntity.get(j).getCalculatedGrossSalary();
