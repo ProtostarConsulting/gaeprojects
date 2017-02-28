@@ -1,5 +1,6 @@
 package com.protostar.billingnstock.crm.entities;
 
+import java.util.Date;
 import java.util.List;
 
 import com.googlecode.objectify.Ref;
@@ -25,9 +26,9 @@ public class Opportunity extends BaseEntity{
 
 	@Index
 	private String oid;
-	private String name;
+	private String opName;
 	private String from;
-	private String date;
+	private Date date;
 	private String description;
 	private List<OTask> tasks;
 
@@ -66,13 +67,6 @@ public class Opportunity extends BaseEntity{
 		this.oid = oid;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
 
 	public String getFrom() {
 		return from;
@@ -82,14 +76,6 @@ public class Opportunity extends BaseEntity{
 		this.from = from;
 	}
 
-	public String getDate() {
-		return date;
-	}
-
-	public void setDate(String date) {
-		this.date = date;
-	}
-
 	public String getDescription() {
 		return description;
 	}
@@ -97,5 +83,22 @@ public class Opportunity extends BaseEntity{
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	public String getOpName() {
+		return opName;
+	}
+
+	public void setOpName(String opName) {
+		this.opName = opName;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
 
 }

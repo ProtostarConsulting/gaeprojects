@@ -1,10 +1,12 @@
 package com.protostar.billingnstock.crm.entities;
 
+import java.util.Date;
+
 public class OTask {
 
 	private String tid;
 	private String type;
-	private String date;
+	private Date date;
 	private String note;
 	private String status;
 	private String description;
@@ -33,13 +35,6 @@ public class OTask {
 		this.type = type;
 	}
 
-	public String getDate() {
-		return date;
-	}
-
-	public void setDate(String date) {
-		this.date = date;
-	}
 
 	public String getNote() {
 		return note;
@@ -55,6 +50,14 @@ public class OTask {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
 }
