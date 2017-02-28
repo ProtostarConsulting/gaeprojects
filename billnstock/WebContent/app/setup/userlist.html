@@ -69,7 +69,7 @@
 								<md-button class="md-raised md-primary"
 									ng-click="changePassword($event, user)" md-menu-align-target>Change
 								Password </md-button> </md-menu-item> <md-menu-item> <md-button
-									class="md-raised md-primary" ng-click="suspendUser(user)"
+									class="md-raised md-primary" ng-click="suspendUser(user, false)"
 									md-menu-align-target>Suspend </md-button> </md-menu-item> <md-menu-item>
 								<md-button class="md-raised md-primary"
 									ng-click="changeAuthView({selectedUser:user})"
@@ -135,8 +135,8 @@
 								<md-button class="md-raised md-primary"
 									ng-click="changePassword($event, user)" md-menu-align-target>Change
 								Password </md-button> </md-menu-item> <md-menu-item> <md-button
-									class="md-raised md-primary" ng-click="suspendUser(user)"
-									md-menu-align-target>Suspend </md-button> </md-menu-item> <md-menu-item>
+									class="md-raised md-primary" ng-click="suspendUser(user, true)"
+									md-menu-align-target>Restore </md-button> </md-menu-item> <md-menu-item>
 								<md-button class="md-raised md-primary"
 									ng-click="changeAuthView({selectedUser:user})"
 									md-menu-align-target>Manange Authorization </md-button> </md-menu-item> </md-menu-content> </md-menu>

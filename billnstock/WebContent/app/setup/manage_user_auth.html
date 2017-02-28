@@ -1,5 +1,6 @@
 <div layout="column" layout-padding>
-	<p class="md-subheader">Edit User Authorizations- {{selectedUser.email_id}}</p>
+	<h3 class="md-headline">{{selectedUser.email_id}}</h3>
+	<p class="md-subheader">Setup User Authorizations</p>
 	<div ng-repeat="auth in instituteAuthMasterEntity.authorizations">
 		<hr>
 		<md-checkbox ng-model="auth.selected" ng-change="topAuthChange(auth)" ng-true-value="true"

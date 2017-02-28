@@ -110,8 +110,7 @@ public class StockManagementService extends BaseService {
 					txnEntity.setBusiness(stockItemsReceipt.getBusiness());
 					txnEntity.setStockItem(stockLineItem.getStockItem());
 					txnEntity.setQty(Math.abs(qtyDiff));
-					txnEntity.setPrice(stockLineItem.getPrice());
-					txnEntity.setPrice(stockLineItem.getCost());
+					txnEntity.setPrice(stockLineItem.getPrice());					
 
 					if (qtyDiff > 0) {
 						txnEntity

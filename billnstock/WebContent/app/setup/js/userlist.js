@@ -78,27 +78,43 @@ angular
 										function(users) {
 											$scope.userslist = users.items;
 											$scope.activeUsers = [];
-											$scope.suspendedUsers = [];
+
 											for (var i = 0; i < $scope.userslist.length; i++) {
 												if ($scope.userslist[i].isActive) {
 													$scope.activeUsers
 															.push($scope.userslist[i]);
 													$scope.fabMenuData.activeUsersIsOpen
 															.push(false);
-												} else {													
+												}
+											}
+											$scope.loading = false;
+											$scope.getSuspendedUserOfOrg();
+										});
+					}
+
+					$scope.getSuspendedUserOfOrg = function() {
+						var UserService = appEndpointSF.getUserService();
+						var bizId = Number($scope.selectedBusiness.id);
+						UserService
+								.getInActiveUsersByBusinessId(bizId)
+								.then(
+										function(users) {
+											$scope.userslist = users.items;
+											$scope.suspendedUsers = [];
+
+											for (var i = 0; i < $scope.userslist.length; i++) {
+												if (!$scope.userslist[i].isActive) {
 													$scope.suspendedUsers
 															.push($scope.userslist[i]);
 													$scope.fabMenuData.suspendedUsersIsOpen
 															.push(false);
 												}
 											}
-											$scope.loading = false;											
 										});
-
 					}
 
 					$scope.activeUsers = [];
-					$scope.suspendedUsers = [];	
+					$scope.suspendedUsers = [];
 					$scope.userslist = [];
 
 					$scope.waitForServiceLoad = function() {
@@ -111,24 +127,13 @@ angular
 					}
 					$scope.waitForServiceLoad();
 
-					$scope.suspendUser = function(user) {
+					$scope.suspendUser = function(user, what) {
 						var UserService = appEndpointSF.getUserService();
-						user.isActive = false;
-						UserService.updateUser(user).then(
-								function(msgBean) {
-									$scope.showSimpleToast(msgBean.msg);
-									$scope.getAllUserOfOrg();
-								});
-					}
-					
-					$scope.activateUser = function(user) {
-						var UserService = appEndpointSF.getUserService();
-						user.isActive = true;
-						UserService.updateUser(user).then(
-								function(msgBean) {
-									$scope.showSimpleToast(msgBean.msg);
-									$scope.getAllUserOfOrg();
-								});
+						user.isActive = what;
+						UserService.updateUser(user).then(function(msgBean) {
+							$scope.showSimpleToast(msgBean.msg);
+							$scope.getAllUserOfOrg();
+						});
 					}
 
 					$scope.changePassword = function(ev, user) {

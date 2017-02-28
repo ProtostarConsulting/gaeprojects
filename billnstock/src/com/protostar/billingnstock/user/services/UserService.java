@@ -201,7 +201,8 @@ public class UserService {
 			// Login will be checked against first/the created first. Notice
 			// order by clause above
 			UserEntity foundUser = list.get(0);
-			if (foundUser.getPassword() != null && foundUser.getPassword().equalsIgnoreCase(pass)) {
+			if (foundUser.getIsLoginAllowed() && foundUser.getPassword() != null
+					&& foundUser.getPassword().equalsIgnoreCase(pass)) {
 				foundUser.setLastLoginDate(new Date());
 				ofy().save().entity(foundUser);
 				// This is save async
@@ -268,8 +269,14 @@ public class UserService {
 	@ApiMethod(name = "getUsersByBusinessId", path = "getUsersByBusinessId")
 	public List<UserEntity> getUsersByBusinessId(@Named("id") Long id) {
 		List<UserEntity> list = ofy().load().type(UserEntity.class).ancestor(Key.create(BusinessEntity.class, id))
-				.list();
-
+				.filter("isActive", true).list();
+		return list;
+	}
+	
+	@ApiMethod(name = "getInActiveUsersByBusinessId", path = "getInActiveUsersByBusinessId")
+	public List<UserEntity> getInActiveUsersByBusinessId(@Named("id") Long id) {
+		List<UserEntity> list = ofy().load().type(UserEntity.class).ancestor(Key.create(BusinessEntity.class, id))
+				.filter("isActive", false).list();
 		return list;
 	}
 

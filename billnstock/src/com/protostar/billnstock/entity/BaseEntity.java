@@ -29,6 +29,9 @@ public abstract class BaseEntity {
 	@Index
 	private Ref<UserEntity> approvedBy;
 
+	@Index
+	private boolean isDeleted = false;
+	
 	public BaseEntity() {
 		super();
 	}
@@ -119,6 +122,14 @@ public abstract class BaseEntity {
 
 	public void setItemNumber(int itemNumber) {
 		this.itemNumber = itemNumber;
+	}
+
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 
 }
