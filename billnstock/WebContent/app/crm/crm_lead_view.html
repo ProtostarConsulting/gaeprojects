@@ -193,7 +193,7 @@
 
 		<div layout layout-xs="column">
 			<md-input-container flex> <label>Task
-				Id:-</label> <input ng-model="task.tid" ng-readonly="true"> </md-input-container>
+				Id:-</label> <input ng-model="task.tid" ng-disabled="true"> </md-input-container>
 			<md-input-container flex> <md-select
 				placeholder="Task Type" ng-model="task.type" ng-required="true"
 				ng-disabled="task.status=='inactive'"> <md-option
@@ -229,8 +229,7 @@
 			<md-input-container flex>
 			<section layout="row" layout-xs="column" layout-align="left left">
 				<md-button class="md-raised md-primary"
-					ng-click="addEditTask(lead.id)" ng-hide="task.status=='inactive'">Add/Update
-				Task</md-button>
+					ng-click="addEditTask(lead.id)">Add/Update Task</md-button>
 
 			</section>
 			</md-input-container>

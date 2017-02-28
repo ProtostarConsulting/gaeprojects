@@ -32,14 +32,6 @@ angular.module("stockApp").controller(
 			}
 
 			$scope.taskType = [ "Phone Call", "Email", "Visit" ];
-			var d = new Date();
-			var year = d.getFullYear();
-			var month = d.getMonth() + 1;
-			if (month < 10) {
-				month = "0" + month;
-			}
-
-			var day = d.getDate();
 
 			$scope.lead = {
 				lid : "",
@@ -144,14 +136,14 @@ angular.module("stockApp").controller(
 				if (typeof $scope.task.type != 'undefined'
 						&& $scope.task.type != "") {
 					var i;
-					for( i = 0; i<$scope.lead.tasks.length; i++)	{
-						if($scope.task.tid== $scope.lead.tasks[i].tid){
+					for (i = 0; i < $scope.lead.tasks.length; i++) {
+						if ($scope.task.tid == $scope.lead.tasks[i].tid) {
 							break;
 						}
 					}
-					 
-					if(i == $scope.lead.tasks.length){
-					  $scope.lead.tasks.push($scope.task);
+
+					if (i == $scope.lead.tasks.length) {
+						$scope.lead.tasks.push($scope.task);
 					}
 				}
 				var leadService = appEndpointSF.getleadService();

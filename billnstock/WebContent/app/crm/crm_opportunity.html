@@ -15,8 +15,11 @@
 		<div layout layout-sm="column">
 			<md-input-container flex> <label>Opportunity
 				Id</label> <input ng-model="opportunity.oid" disabled> </md-input-container>
-			<md-input-container flex> <label>Date </label> <input
-				ng-model="opportunity.date" disabled> </md-input-container>
+			<div layout layout-xs="column">
+				<md-datepicker flex name="DueDate" date-format="MM/dd/yyyy"
+					md-placeholder="Enter Date" ng-model="opportunity.date"
+					ng-disabled="true"></md-datepicker>
+			</div>
 		</div>
 
 		<div layout layout-sm="column">
@@ -31,18 +34,19 @@
 			</md-input-container>
 			<md-input-container flex> <md-select name="ldcu"
 				placeholder="Lead/Customer" id="selectedfrom"
-				ng-model="opportunity.name" ng-required="true"> <md-option
-				ng-repeat="customer in leadorcustlist" ng-value="customer">
-			{{customer.firstName+" "+customer.lastName}} </md-option> </md-select>
+				ng-model="opportunity.opName" ng-required="true"> <md-option
+				ng-repeat="customer in leadorcustlist"
+				ng-value="customer.name?customer.name:customer.firstName+' '+customer.lastName">
+			{{customer.firstName+" "+customer.lastName}}{{customer.name}} </md-option> </md-select>
 
 			<div ng-messages="oppform.ldcu.$error"
 				ng-if="oppform.ldcu.$submitted || oppform.ldcu.$touched">
-				<div ng-message="required">Please Select lead/cust Name.</div>
+				<div ng-message="required">Please Select lead/customer Name.</div>
 			</div>
 			</md-input-container>
 		</div>
 		<div layout layout-sm="column">
-			<md-input-container flex> <label>description
+			<md-input-container flex> <label>Description
 			</label> <textarea name="description" ng-model="opportunity.description"
 				rows="2" cols="50" ng-required="true"> </textarea>
 			<div ng-messages="oppform.description.$error"
@@ -54,7 +58,7 @@
 		</div>
 
 		<section layout="row" layout-sm="column" layout-align="left left">
-			<md-button ng-disabled="oppform.$invalid"
+			<md-button ng-disabled="oppform.$invalid || oppform.$submitted"
 				class="md-raised md-primary" ng-click="addopportunity()">Add</md-button>
 
 		</section>

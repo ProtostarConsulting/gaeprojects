@@ -22,15 +22,6 @@ angular
 						page : 1
 					};
 
-					var d = new Date();
-					var year = d.getFullYear();
-					var month = d.getMonth() + 1;
-					if (month < 10) {
-						month = "0" + month;
-					}
-					var day = d.getDate();
-					$scope.curdate = year + "-" + month + "-" + day;
-
 					$scope.from = [ "Lead", "Customer" ];
 					$scope.taskType = [ "Phone Call", "Email", "Visit" ];
 
@@ -40,7 +31,7 @@ angular
 						oid : "",
 						from : "",
 						name : "",
-						date : $scope.curdate,
+						date : new Date(),
 						description : "",
 						tasks : []
 
@@ -49,7 +40,7 @@ angular
 						tid : "",
 						description : "",
 						type : "",
-						date : $scope.curdate,
+						date : new Date(),
 						note : "",
 						status : ""
 					} ]
@@ -58,10 +49,15 @@ angular
 						tid : "",
 						description : "",
 						type : "",
-						date : $scope.curdate,
+						date : new Date(),
 						note : "",
 						status : ""
 					}
+
+					$scope.editTask = function(task) {
+						$scope.taskobj = task;
+						$scope.taskobj.date = new Date(task.date);
+					};
 
 					$scope.getAllopportunity = function() {
 						$scope.loading = true;
@@ -76,8 +72,6 @@ angular
 											$scope.opportunitys = opportunityList.items;
 											$scope.loading = false;
 											$scope.cleadid = $scope.opportunitys.length + 1;
-											$scope.opportunity.oid = $scope.cleadid;
-
 										});
 					}
 
@@ -108,9 +102,14 @@ angular
 												$log
 														.debug("Inside Ctr opportunityList");
 												$scope.opportunity = opportunity;
+												$scope.opportunity.date = new Date(
+														opportunity.date);
+												if (!$scope.opportunity.tasks) {
+													$scope.opportunity.tasks = [];
+												}
 												$scope.ctaskid = $scope.opportunity.tasks.length + 1;
-												$scope.taskobj.id = $scope.ctaskid;
-												$scope.taskobj.date = $scope.curdate;
+												$scope.taskobj.tid = $scope.ctaskid;
+												$scope.taskobj.date = new Date();
 											});
 						}
 					}
@@ -137,7 +136,6 @@ angular
 									$log.debug("Inside CtropportunityL");
 									$log.debug("msgBean.msg:" + msgBean.msg);
 									$scope.showUpdateToast();
-									// $scope.empDetail =[];
 								});
 					}
 
@@ -154,9 +152,26 @@ angular
 
 						$scope.opportunity.modifiedBy = $scope.curUser.email_id;
 
+						if (!$scope.opportunity.tasks) {
+							$scope.opportunity.tasks = [];
+						}
+
+						if (typeof $scope.taskobj.type != 'undefined'
+								&& $scope.taskobj.type != "") {
+							var i;
+							for (i = 0; i < $scope.opportunity.tasks.length; i++) {
+								if ($scope.taskobj.tid == $scope.opportunity.tasks[i].tid) {
+									break;
+								}
+							}
+
+							if (i == $scope.opportunity.tasks.length) {
+								$scope.opportunity.tasks.push($scope.taskobj);
+							}
+						}
+
 						var opportunityService = appEndpointSF
 								.getopportunityService();
-						$scope.opportunity.tasks.push($scope.taskobj);
 
 						opportunityService.addupdatetask($scope.opportunity)// $scope.task,
 						// oppid
@@ -166,7 +181,7 @@ angular
 						});
 
 						$scope.taskobj = {};
-						$scope.task.date = $scope.curdate;
+						$scope.task.date = new Date();
 					}
 
 					// --------------------------------------

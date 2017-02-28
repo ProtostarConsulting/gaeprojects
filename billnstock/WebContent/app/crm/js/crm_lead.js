@@ -34,7 +34,6 @@ angular.module("stockApp").controller(
 				tasks : []
 			};
 
-			
 			$scope.task = [];
 
 			$scope.addlead = function() {
@@ -62,7 +61,6 @@ angular.module("stockApp").controller(
 						function(leadList) {
 							$scope.leads = leadList.items;
 							$scope.Address = $scope.leads.address;
-
 							$scope.cleadid = $scope.leads.length + 1;
 							$scope.lead.lid = $scope.cleadid;
 

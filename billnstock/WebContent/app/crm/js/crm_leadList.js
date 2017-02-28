@@ -31,7 +31,7 @@ angular.module("stockApp").controller(
 				id : "",
 				description : "",
 				type : "",
-				date : $scope.curdate,
+				date : new Date(),
 				note : "",
 				status : ""
 			} ]

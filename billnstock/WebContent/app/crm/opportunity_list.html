@@ -35,7 +35,7 @@
 			ng-repeat="opportunity in opportunitys | orderBy: query.order | filter : searchText | limitTo: query.limit: (query.page - 1) * query.limit"">
 			<td>{{opportunity.oid}}</td>
 			<td>{{opportunity.from}}</td>
-			<td>{{opportunity.name}}</td>
+			<td>{{opportunity.opName}}</td>
 
 			<td>
 				<section layout="row" layout-sm="column">

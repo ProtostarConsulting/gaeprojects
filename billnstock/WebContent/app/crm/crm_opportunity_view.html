@@ -1,7 +1,7 @@
 <md-content layout-padding>
 <section layout="row" layout-xs="column">
 	<md-subheader class="md-primary">
-	<h4 class="md-title">Edit Opportunity </h4>
+	<h4 class="md-title">Edit Opportunity</h4>
 	</md-subheader>
 	<span flex></span>
 </section>
@@ -11,8 +11,9 @@
 		<div layout layout-sm="column">
 			<md-input-container flex> <label>Opportunity
 				Id</label> <input ng-model="opportunity.oid" disabled> </md-input-container>
-			<md-input-container flex> <label>Date </label> <input
-				ng-model="opportunity.date" disabled> </md-input-container>
+			<md-input-container flex> <md-datepicker flex
+				name="DueDate" date-format="MM/dd/yyyy" ng-model="opportunity.date"
+				md-placeholder="Enter date" ng-disabled="true"></md-datepicker> </md-input-container>
 		</div>
 
 		<div layout layout-sm="column">
@@ -20,7 +21,7 @@
 			<md-input-container flex> <label>from</label> <input
 				ng-model="opportunity.from" disabled> </md-input-container>
 			<md-input-container flex> <label>Name</label> <input
-				ng-model="opportunity.name" disabled> </md-input-container>
+				ng-model="opportunity.opName" disabled> </md-input-container>
 
 			<!-- <md-input-container flex> <md-select
 				placeholder="Select Lead/C ustomer" id="selectedfrom" ng-model="f" ng-change="getleadcust(f)" >
@@ -32,13 +33,13 @@
 		-->
 		</div>
 		<div layout layout-sm="column">
-			<md-input-container flex> <label>description
+			<md-input-container flex> <label>Description
 			</label> <textarea ng-model="opportunity.description" rows="2" cols="1"> </textarea></md-input-container>
 		</div>
 		<div layout layout-sm="column">
 			<section layout="row" layout-sm="column" layout-align="left left">
 				<md-button class="md-raised md-primary"
-					ng-click="updateopportunity()">update</md-button>
+					ng-click="updateopportunity()">Update</md-button>
 
 			</section>
 		</div>
@@ -47,8 +48,7 @@
 
 		<div layout="row" layout-xs="column" layout-align="end end">
 			<a href='' ng-click='ShowHide()'>Follow up <lable
-					ng-show="IsHidden">+</lable>
-				<lable ng-hide="IsHidden">-</lable></a>
+					ng-show="IsHidden">+</lable> <lable ng-hide="IsHidden">-</lable></a>
 		</div>
 		<div ng-hide="IsHidden">
 			<md-data-table-container>
@@ -57,17 +57,21 @@
 					<tr>
 						<th name="Date" order-by="discussion Date"></th>
 						<th name="Type" order-by="description Type"></th>
-						<th name="previous discussion" order-by="previous discussion"></th>
+						<th name="Previous Discussion" order-by="previous discussion"></th>
+						<th name="Edit"></th>
 
 					</tr>
 				</thead>
 				<tbody>
 					<tr md-auto-select
 						ng-repeat="t in opportunity.tasks | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit"">
-						<td width="20%" align="left">{{t.date}}</td>
+						<td width="20%" align="left">{{t.date | formatDate}}</td>
 						<td width="20%" align="left">{{t.type}}</td>
-						<td width="60%" align="left">{{t.description}}</td>
-
+						<td width="40%" align="left">{{t.description}}</td>
+						<td width="20%" align="left"><md-button
+								ng-click="editTask(t)" class="md-icon-button"> <ng-md-icon
+								icon="edit" style="fill: md-default" size="20"> <md-tooltip>Edit</md-tooltip>
+							</ng-md-icon> </md-button></td>
 					</tr>
 				</tbody>
 
@@ -76,8 +80,7 @@
 				md-total={{opportunity.tasks.length}} md-trigger="onpagechange"></md-data-table-pagination>
 			</md-data-table-container>
 		</div>
-		<br>
-		<br>
+		<br> <br>
 
 		<!-- 	<div layout layout-sm="column">
 			<md-input-container flex> <label>Previous
@@ -87,23 +90,29 @@
 
 		<div layout layout-sm="column">
 			<md-input-container flex> <label>Task
-				Id:-</label> <input ng-model="taskobj.id" disabled> </md-input-container>
+				Id:-</label> <input ng-model="taskobj.tid" disabled> </md-input-container>
 			<md-input-container flex> <md-select
-				placeholder="Task Type" ng-model="taskobj.type"> <md-option
-				ng-repeat="type in taskType"> {{type}} </md-option> </md-select></md-input-container>
-			<md-input-container flex> <label>Date </label> <input
-				ng-model="taskobj.date" disabled> </md-input-container>
+				placeholder="Task Type" ng-model="taskobj.type"
+				ng-disabled="taskobj.status=='inactive'"> <md-option
+				ng-repeat="type in taskType" ng-value="type"> {{type}} </md-option>
+			</md-select></md-input-container>
+			<md-input-container flex> <md-datepicker flex
+				name="DueDate" date-format="MM/dd/yyyy" ng-model="taskobj.date"
+				md-placeholder="Enter Date" ng-disabled="true"></md-datepicker> </md-input-container>
 		</div>
 		<div layout layout-sm="column">
-			<md-input-container flex> <label>description
-			</label> <textarea ng-model="taskobj.description" rows="2" cols="1"> </textarea></md-input-container>
+			<md-input-container flex> <label>Description
+			</label> <textarea ng-model="taskobj.description" rows="2" cols="1"
+				ng-disabled="taskobj.status=='inactive'"> </textarea></md-input-container>
 		</div>
 		<div layout layout-sm="column">
 			<md-input-container flex> <label>Note </label> <textarea
-				ng-model="taskobj.note" rows="4" cols="1"> </textarea></md-input-container>
+				ng-model="taskobj.note" rows="4" cols="1"
+				ng-disabled="taskobj.status=='inactive'"> </textarea></md-input-container>
 		</div>
 		<div>
-			<md-checkbox ng-model="taskobj.status" ng-true-value="'active'" ng-false-value="'inactive'">
+			<md-checkbox ng-model="taskobj.status" ng-true-value="'inactive'"
+				ng-false-value="'active'" ng-hide="taskobj.status=='inactive'">
 			Close </md-checkbox>
 
 		</div>
@@ -112,8 +121,7 @@
 		<md-input-container flex>
 		<section layout="row" layout-sm="column" layout-align="left left">
 			<md-button class="md-raised md-primary"
-				ng-click="addupdatetask(opportunity.id)">Add/Update
-			Task</md-button>
+				ng-click="addupdatetask(opportunity.id)">Add/Update Task</md-button>
 
 		</section>
 		</md-input-container>
