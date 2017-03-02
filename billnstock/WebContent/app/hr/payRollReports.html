@@ -6,9 +6,9 @@
 <md-content ng-if="!loading" ng-cloak layout-padding>
 <form name="payRollRepo">
 	<div>
-		<div flex flex-gt-xs="60" layout="row"><span>Filter By Year: </span><span
+		<div flex flex-gt-xs="60" layout="row"><span style="padding-right: 20px;">Filter By Year: </span><span
 			style="padding-right: 8px;"
-			md-colors="{color:'primary'}"
+			md-colors="{color:'default-primary-700'}"
 			ng-repeat="year in yearFilterList"
 			ng-click="getPayRollReport(year)">{{year}}</span> </div>
 		<table

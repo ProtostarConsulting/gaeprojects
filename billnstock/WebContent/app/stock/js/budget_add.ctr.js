@@ -94,19 +94,19 @@ app
 					};
 
 					$scope.calItemSubTotal = function(category, item) {
-
-						item.currentBudgetBalance = item.price;
+						if (item.currentBudgetBalance == 0)
+							item.currentBudgetBalance = item.price;
 						category.itemSubTotal = 0;
+						category.itemBalanceSubTotal = 0;
 
 						if (category.items) {
 							for (var i = 0; i < category.items.length; i++) {
 								var budgetItem = category.items[i];
 								category.itemSubTotal += budgetItem.price;
+								category.itemBalanceSubTotal += budgetItem.currentBudgetBalance;
 							}
-						} else if (!category.items
-								|| category.items.length == 0) {
-							category.itemSubTotal = 0;
 						}
+						
 						$scope.calFinalTotal();
 					};
 

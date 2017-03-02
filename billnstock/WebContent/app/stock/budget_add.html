@@ -73,7 +73,9 @@
 						type="text" placeholder="Enter category name"
 						ng-model="category.categoryName" ng-required="true"> </md-input-container></td>
 
-				<td>Total:{{category.itemSubTotal| currency:"":"2"}}</td>
+				<td><span flex>Total: {{category.itemSubTotal|
+						currency:"":"2"}} </span> <span flex>,   Balance:
+						{{category.itemBalanceSubTotal| currency:"":"2"}} </span></td>
 
 				<td><md-icon
 						md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
@@ -93,7 +95,7 @@
 						ng-model="itemObj.price" ng-required="true"></md-input-container> <md-input-container>
 					<input type="number" placeholder="Current Balance."
 						ng-change="calItemSubTotal(category,itemObj)"
-						ng-model="itemObj.currentBudgetBalance" ng-readonly="true"></md-input-container></td>
+						ng-model="itemObj.currentBudgetBalance" ng-disabled="true"></md-input-container></td>
 				<td><md-icon
 						md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
 						ng-click="removeLineItem(category,$index)" class="name"

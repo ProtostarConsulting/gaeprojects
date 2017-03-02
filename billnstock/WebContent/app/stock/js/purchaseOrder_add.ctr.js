@@ -394,10 +394,10 @@ app
 					}
 					$scope.taxData = [];
 
-					$scope.getInvoiceSettingsByBiz = function() {
-						var invoiceService = appEndpointSF.getInvoiceService();
-						invoiceService
-								.getInvoiceSettingsByBiz(
+					$scope.getStockSettingsByBiz = function() {
+						var stockService = appEndpointSF.getStockService();
+						stockService
+								.getStockSettingsByBiz(
 										$scope.curUser.business.id)
 								.then(
 										function(settingsList) {
@@ -410,6 +410,30 @@ app
 											if ($scope.settingsObj.showDefaultProductItems
 													&& !$scope.purchaseOrderObj.id) {
 												$scope.addProductLineItem();
+											}
+
+											if ($scope.settingsObj.linkPOToBudget) {
+												$scope.budgetList = [];
+												var pagingInfoTemp = {
+													entityList : null,
+													startPage : 1,
+													limit : 1000,
+													totalEntities : 0,
+													webSafeCursorString : null
+												};
+												var selectedStatus = "SUBMITTED";
+												var stockService = appEndpointSF
+														.getStockService();
+												stockService
+														.fetchBudgetListByPaging(
+																$scope.curUser.business.id,
+																selectedStatus,
+																pagingInfoTemp)
+														.then(
+																function(
+																		pagingInfoReturned) {
+																	$scope.budgetList = pagingInfoReturned.entityList;
+																});
 											}
 										});
 					}
@@ -431,6 +455,7 @@ app
 						if (appEndpointSF.is_service_ready) {
 							loadAllSuppliers();
 							$scope.getAllWarehouseByBusiness();
+							$scope.getStockSettingsByBiz();
 							$scope.getStockItemTypes();
 							$scope.getTaxesByVisibility();
 							$scope.calProductSubTotal();

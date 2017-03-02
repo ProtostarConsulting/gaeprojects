@@ -22,12 +22,16 @@ public class PurchaseOrderEntity extends InvoiceEntity {
 	private String shippedVia;
 	private String fOBPoint;
 	private String terms;
-	
-	
 
+	@Index
 	private Ref<SupplierEntity> supplier;
 	@Index
 	private Ref<WarehouseEntity> warehouse;
+	@Index
+	private Ref<BudgetEntity> budget;
+	
+	private LineItemCategory budgetLineItemCategory;
+	private LineItemEntity budgetLineItem;
 
 	@Override
 	public void beforeSave() {
@@ -77,6 +81,15 @@ public class PurchaseOrderEntity extends InvoiceEntity {
 	public void setSupplier(SupplierEntity supplier) {
 		if (supplier != null)
 			this.supplier = Ref.create(supplier);
+	}
+
+	public BudgetEntity getBudget() {
+		return budget == null ? null : budget.get();
+	}
+
+	public void setBudget(BudgetEntity budget) {
+		if (budget != null)
+			this.budget = Ref.create(budget);
 	}
 
 	public String getShipTo() {
@@ -142,4 +155,20 @@ public class PurchaseOrderEntity extends InvoiceEntity {
 	public void setPoDueDate(Date poDueDate) {
 		this.poDueDate = poDueDate;
 	}
+
+	public LineItemCategory getBudgetLineItemCategory() {
+		return budgetLineItemCategory;
+	}
+
+	public void setBudgetLineItemCategory(LineItemCategory budgetLineItemCategory) {
+		this.budgetLineItemCategory = budgetLineItemCategory;
+	}
+
+	public LineItemEntity getBudgetLineItem() {
+		return budgetLineItem;
+	}
+
+	public void setBudgetLineItem(LineItemEntity budgetLineItem) {
+		this.budgetLineItem = budgetLineItem;
+	}	
 }

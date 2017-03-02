@@ -16,8 +16,8 @@
 					placeholder="Auto generated number" ng-disabled="true"></input> </md-input-container>
 				<md-input-container flex> <label>Warehouse
 				</label> <md-select flex ng-model="purchaseOrderObj.warehouse"
-					placeholder="Select Warehouse" ng-change="warehouseChanged">
-				<md-option ng-value="warehouse" ng-required="true"
+					placeholder="Select Warehouse" ng-change="warehouseChanged"
+					ng-required="true"> <md-option ng-value="warehouse"
 					ng-selected="(purchaseOrderObj.warehouse.id)?(purchaseOrderObj.warehouse.id == warehouse.id):($index == 0)"
 					ng-repeat="warehouse in warehouses">{{warehouse.warehouseName
 				}}</md-option> </md-select> </md-input-container>
@@ -51,7 +51,8 @@
 					Status </label> <input type="text" ng-disabled="true"
 					ng-model="purchaseOrderObj.status"> </md-input-container>
 				<md-input-container flex=15> <label>Approved
-					By </label> <input ng-disabled="true" ng-model="purchaseOrderObj.approvedBy"
+					By </label> <input ng-disabled="true"
+					ng-model="purchaseOrderObj.approvedBy"
 					ng-init="approvedBy = purchaseOrderObj.approvedBy? purchaseOrderObj.approvedBy.firstName + ' ' + purchaseOrderObj.approvedBy.lastName : 'NA'"></input>
 				</md-input-container>
 
@@ -59,10 +60,46 @@
 			</div>
 		</div>
 
+		<div ng-if="settingsObj.linkPOToBudget" layout="row"
+			layout-xs="column">
+			<div layout="row" flex>
+				<md-input-container flex=40> <label>Budget
+				</label> <md-select flex ng-model="purchaseOrderObj.budget"
+					placeholder="Select Budget" ng-required="true"> <md-option
+					ng-value="budget"
+					ng-selected="(purchaseOrderObj.budget.id)?(purchaseOrderObj.budget.id == budget.id):false"
+					ng-repeat="budget in budgetList">{{budget.type + "-" +
+				budget.period }}</md-option> </md-select> </md-input-container>
+
+				<md-input-container flex> <label>Budget
+					Category </label> <md-select flex
+					ng-model="purchaseOrderObj.budgetLineItemCategory"
+					placeholder="Select Budget Category" ng-required="true">
+				<md-option ng-value="budgetLineItemCategory"
+					ng-selected="(purchaseOrderObj.budgetLineItemCategory)?(purchaseOrderObj.budgetLineItemCategory.categoryName == budgetLineItemCategory.categoryName):false"
+					ng-repeat="budgetLineItemCategory in purchaseOrderObj.budget.categoryList">{{budgetLineItemCategory.categoryName}}</md-option>
+				</md-select> </md-input-container>
+
+				<md-input-container flex> <label>Budget
+					Line Item </label> <md-select flex
+					ng-model="purchaseOrderObj.budgetLineItem"
+					placeholder="Select Budget Line Item" ng-required="true">
+				<md-option ng-value="budgetLineItem"
+					ng-selected="(purchaseOrderObj.budgetlineItem)?(purchaseOrderObj.budgetLineItem.itemName == budgetLineItem.itemName):false"
+					ng-repeat="budgetLineItem in purchaseOrderObj.budgetLineItemCategory.items">{{budgetLineItem.itemName}}</md-option>
+				</md-select>
+				<div ng-if="purchaseOrderObj.budgetLineItem">
+					Current Budget Balance <b>{{purchaseOrderObj.budgetLineItem.currentBudgetBalance}}</b>
+				</div>
+				</md-input-container>
+
+			</div>
+		</div>
+
 
 		<div layout="row" layout-xs="column">
-			<md-input-container flex=40> <label>Bill To
-			</label> <textarea ng-model="purchaseOrderObj.to" rows="4" cols="1"></textarea>
+			<md-input-container flex=40> <label>Bill
+				To </label> <textarea ng-model="purchaseOrderObj.to" rows="4" cols="1"></textarea>
 			</md-input-container>
 
 			<md-input-container flex> <label>Ship To
@@ -317,7 +354,7 @@
 				<md-button class="md-raised md-primary"
 					ng-disabled="pOForm.$invalid" ng-click="submitPurchaseOrder()">Submit</md-button>
 				<md-button
-					ng-show="hasUserAuthority(curUser, 'Stock.ModuleApprover')"
+					ng-show="!settingsObj.needPOApproval || hasUserAuthority(curUser, 'Stock.ModuleApprover')"
 					class="md-raised md-primary" ng-disabled="pOForm.$invalid"
 					ng-click="finalizePurchaseOrder($event)">Finalize\Aprrove
 				PO</md-button>

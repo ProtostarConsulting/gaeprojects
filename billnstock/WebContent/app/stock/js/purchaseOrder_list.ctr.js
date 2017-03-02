@@ -3,7 +3,7 @@ app
 		.controller(
 				"purchaseOrderListCtr",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
-						$mdUtil, $log, $state, $http, $stateParams,$mdColors,
+						$mdUtil, $log, $state, $http, $stateParams, $mdColors,
 						$routeParams, $filter, $location, $anchorScroll,
 						objectFactory, appEndpointSF) {
 
@@ -68,11 +68,12 @@ app
 											$scope.loading = false;
 										});
 					}
-					$scope.documentStatusList = [ 'DRAFT', 'SUBMITTED',
+					$scope.documentStatusList = [ 'ALL', 'DRAFT', 'SUBMITTED',
 							'FINALIZED', 'REJECTED' ];
 					$scope.selectedStatus = "";
 
 					$scope.fitlerListByStatus = function(status) {
+						status = (status == 'ALL') ? '' : status;
 						$scope.selectedStatus = status;
 						$scope.purchaseOrderList = [];
 						$scope.query = reSetQuery();

@@ -8,6 +8,7 @@ public class StockSettingsEntity extends BaseEntity {
 	private String poTermsAndConditions;
 	private String stockShipTermsAndConditions;
 	private boolean needPOApproval = false;
+	private boolean linkPOToBudget = false;
 	private boolean needStockShipmentApproval = false;
 	private boolean emailNotification = false;	
 	private String emailNotificationDL = "";
@@ -58,6 +59,14 @@ public class StockSettingsEntity extends BaseEntity {
 
 	public void setNeedStockShipmentApproval(boolean needStockShipmentApproval) {
 		this.needStockShipmentApproval = needStockShipmentApproval;
+	}
+
+	public boolean isLinkPOToBudget() {
+		return linkPOToBudget;
+	}
+
+	public void setLinkPOToBudget(boolean linkPOToBudget) {
+		this.linkPOToBudget = linkPOToBudget;
 	}
 
 }
