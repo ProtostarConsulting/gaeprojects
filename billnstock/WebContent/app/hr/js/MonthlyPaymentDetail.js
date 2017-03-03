@@ -3,7 +3,7 @@ angular
 		.controller(
 				"MonthlyPaymentDetail",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
-						$mdUtil, $stateParams, $log, objectFactory,
+						$mdUtil, $stateParams, $log, $filter, objectFactory,
 						appEndpointSF, $mdDialog, $mdMedia, $state) {
 					$scope.query = {
 						order : 'leaveDetailEntity.user.employeeDetail.empId',
@@ -93,10 +93,49 @@ angular
 												$scope
 														.calculateMonthlyPayment($scope.monthlyPayDetailsList[i]);
 											}
+											$scope.monthlyPayDetailsListBackup = $scope.monthlyPayDetailsList;
 											$scope.loading = false;
+											$scope.getEmpDepartments();
 										});
 
 					}
+					
+					$scope.fitlerUserListByDept = function(deptName) {
+						if (deptName == 'ALL') {
+							$scope.monthlyPayDetailsList = $scope.monthlyPayDetailsListBackup;
+						} else {
+							$scope.monthlyPayDetailsList = [];
+							angular
+									.forEach(
+											$scope.monthlyPayDetailsListBackup,
+											function(monthPay) {
+												if (monthPay.empAccount
+														&& monthPay.empAccount.employeeDetail.department
+														&& monthPay.empAccount.employeeDetail.department.name == deptName)
+													$scope.monthlyPayDetailsList
+															.push(monthPay);
+											});
+						}
+
+					}
+
+					$scope.getEmpDepartments = function() {
+						var userService = appEndpointSF.getUserService();
+						userService.getEmpDepartments(
+								$scope.curUser.business.id).then(
+								function(list) {
+									if (list.items) {
+										$scope.departmentList = list.items;
+										$scope.departmentList = $filter(
+												'proOrderObjectByTextField')(
+												$scope.departmentList, "name");
+										$scope.departmentList.splice(0, 0, {
+											name : 'ALL'
+										});
+									}
+								});
+					}
+					
 
 					$scope.monthSelectChange = function(selectedMonth) {
 						$log.debug("selectedMonth" + selectedMonth);

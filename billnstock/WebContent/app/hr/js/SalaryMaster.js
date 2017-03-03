@@ -3,7 +3,7 @@ angular
 		.controller(
 				"SalaryMaster",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
-						$mdUtil, $stateParams, $log, objectFactory,
+						$mdUtil, $stateParams, $log, $filter, objectFactory,
 						appEndpointSF, Upload, $mdDialog, $mdMedia, $state) {
 
 					$scope.query = {
@@ -30,9 +30,46 @@ angular
 								$scope.curUser.business.id).then(
 								function(list) {
 									$scope.empSalaryMasterList = list;
+									$scope.empSalaryMasterListBackup = list;
 									$scope.loading = false;
+									$scope.getEmpDepartments();
 								});
 
+					}
+					$scope.fitlerUserListByDept = function(deptName) {
+						if (deptName == 'ALL') {
+							$scope.empSalaryMasterList = $scope.empSalaryMasterListBackup;
+						} else {
+							$scope.empSalaryMasterList = [];
+							angular
+									.forEach(
+											$scope.empSalaryMasterListBackup,
+											function(salStruct) {
+												if (salStruct.empAccount
+														&& salStruct.empAccount.employeeDetail.department
+														&& salStruct.empAccount.employeeDetail.department.name == deptName)
+													$scope.empSalaryMasterList
+															.push(salStruct);
+											});
+						}
+
+					}
+
+					$scope.getEmpDepartments = function() {
+						var userService = appEndpointSF.getUserService();
+						userService.getEmpDepartments(
+								$scope.curUser.business.id).then(
+								function(list) {
+									if (list.items) {
+										$scope.departmentList = list.items;
+										$scope.departmentList = $filter(
+												'proOrderObjectByTextField')(
+												$scope.departmentList, "name");
+										$scope.departmentList.splice(0, 0, {
+											name : 'ALL'
+										});
+									}
+								});
 					}
 
 					$scope.calSpecialAllow = function(currEmpSalMasterObj) {
@@ -125,7 +162,8 @@ angular
 										});
 
 					};
-					function DialogController($scope, $mdDialog, curUser, refreshSalaryMasterlist) {
+					function DialogController($scope, $mdDialog, curUser,
+							refreshSalaryMasterlist) {
 
 						$scope.fileObject;
 						$scope.uploadProgressMsg = null;
@@ -167,8 +205,7 @@ angular
 												$timeout(function() {
 													$scope.cancel();
 												}, 1000);
-												
-												
+
 											},
 											function(resp) {
 												$log

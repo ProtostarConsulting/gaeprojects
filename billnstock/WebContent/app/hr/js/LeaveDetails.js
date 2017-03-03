@@ -3,7 +3,7 @@ angular
 		.controller(
 				"LeaveDetails",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
-						$mdUtil, $stateParams, $log, objectFactory,
+						$mdUtil, $stateParams, $log, $filter, objectFactory,
 						appEndpointSF, $mdDialog, $mdMedia, $state) {
 
 					$scope.Selectedmonth;// +new Date().getFullYear();
@@ -81,13 +81,50 @@ angular
 												$scope.worning = true;
 											} else
 												$scope.employeeLeaveDetailsList = list;
+												$scope.employeeLeaveDetailsListBackup = list;
 											for (var i = 0; i < $scope.employeeLeaveDetailsList.length; i++) {
 												$scope
 														.calculation($scope.employeeLeaveDetailsList[i]);
 											}
 											$scope.loading = false;
-
+											$scope.getEmpDepartments();
 										});
+					}
+					
+					$scope.fitlerUserListByDept = function(deptName) {
+						if (deptName == 'ALL') {
+							$scope.employeeLeaveDetailsList = $scope.employeeLeaveDetailsListBackup;
+						} else {
+							$scope.employeeLeaveDetailsList = [];
+							angular
+									.forEach(
+											$scope.employeeLeaveDetailsListBackup,
+											function(leaveDetail) {
+												if (leaveDetail.user
+														&& leaveDetail.user.employeeDetail.department
+														&& leaveDetail.user.employeeDetail.department.name == deptName)
+													$scope.employeeLeaveDetailsList
+															.push(leaveDetail);
+											});
+						}
+
+					}
+
+					$scope.getEmpDepartments = function() {
+						var userService = appEndpointSF.getUserService();
+						userService.getEmpDepartments(
+								$scope.curUser.business.id).then(
+								function(list) {
+									if (list.items) {
+										$scope.departmentList = list.items;
+										$scope.departmentList = $filter(
+												'proOrderObjectByTextField')(
+												$scope.departmentList, "name");
+										$scope.departmentList.splice(0, 0, {
+											name : 'ALL'
+										});
+									}
+								});
 					}
 
 					$scope.saveLeaveDetailList = function() {

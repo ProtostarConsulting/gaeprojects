@@ -29,6 +29,14 @@
 		</div>
 	</section>
 	<div ng-cloak>
+		<div>
+			<span style="padding-right: 20px;">Filter By Dept: </span><span
+				style="padding-right: 8px;"
+				md-colors="{color:'default-primary-700'}"
+				ng-repeat="dept in departmentList"
+				ng-click="fitlerUserListByDept(dept.name)">{{dept.name + "
+				"}}</span>
+		</div>
 		<table md-data-table md-progress="deferred">
 			<thead md-order="query.order" md-trigger="onOrderChange">
 				<tr>

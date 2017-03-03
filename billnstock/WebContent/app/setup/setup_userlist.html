@@ -10,6 +10,13 @@
 			NEW</md-button>
 		</section>
 	</div>
+	<div>
+		<span style="padding-right: 20px;">Filter By Dept: </span><span
+			style="padding-right: 8px;"
+			md-colors="{color:'default-primary-700'}"
+			ng-repeat="status in documentStatusList"
+			ng-click="fitlerListByStatus(status)">{{status + " "}}</span>
+	</div>
 	<table md-data-table md-row-select="selected" md-progress="deferred">
 		<thead md-order="query.order" md-trigger="onOrderChange">
 			<tr>

@@ -441,7 +441,7 @@ public class StockManagementService extends BaseService {
 			List<LineItemCategory> categoryList = budget.getCategoryList();
 			for (LineItemCategory lineItemCat : categoryList) {
 				if (lineItemCat.getCategoryName()
-						.equalsIgnoreCase(purchaseOrderEntity.getBudgetLineItemCategory().getCategoryName())) {
+						.equalsIgnoreCase(purchaseOrderEntity.getBudgetLineItemCategory().getCategoryName().trim())) {
 					List<LineItemEntity> items = lineItemCat.getItems();
 					for (LineItemEntity lineItemEntity : items) {
 						if (lineItemEntity.getItemName()

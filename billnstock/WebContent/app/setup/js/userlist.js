@@ -4,9 +4,14 @@ angular
 				"userlist",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
 						$mdUtil, $stateParams, $mdMedia, $mdDialog, $log,
-						$state, objectFactory, appEndpointSF) {
+						$state, $filter, objectFactory, appEndpointSF) {
 
 					$scope.loading = true;
+					$scope.activeUsers = [];
+					$scope.suspendedUsers = [];
+					$scope.userslist = [];
+					$scope.departmentList = [];
+
 					$scope.selectedBusiness = $stateParams.selectedBusiness ? $stateParams.selectedBusiness
 							: $scope.curUser.business;
 					$scope.currentStateName = $state.current.name;
@@ -36,7 +41,7 @@ angular
 							icon : "img/icons/hangout.svg",
 							direction : "bottom"
 						} ]
-					};
+					};				
 
 					$scope.openDialog = function($event, item) {
 						// Show the dialog
@@ -87,8 +92,10 @@ angular
 															.push(false);
 												}
 											}
+											$scope.activeUsersBackup = $scope.activeUsers;
 											$scope.loading = false;
 											$scope.getSuspendedUserOfOrg();
+											$scope.getEmpDepartments();
 										});
 					}
 
@@ -113,9 +120,38 @@ angular
 										});
 					}
 
-					$scope.activeUsers = [];
-					$scope.suspendedUsers = [];
-					$scope.userslist = [];
+					$scope.fitlerUserListByDept = function(deptName) {
+						if (deptName == 'ALL') {
+							$scope.activeUsers = $scope.activeUsersBackup;
+						} else {
+							$scope.activeUsers = [];
+							angular
+									.forEach(
+											$scope.activeUsersBackup,
+											function(user) {
+												if (user.employeeDetail
+														&& user.employeeDetail.department
+														&& user.employeeDetail.department.name == deptName)
+													$scope.activeUsers
+															.push(user);
+											});
+						}
+
+					}
+					$scope.getEmpDepartments = function() {
+						var userService = appEndpointSF.getUserService();
+						userService.getEmpDepartments(
+								$scope.curUser.business.id).then(
+								function(list) {
+									if (list.items) {
+										$scope.departmentList = list.items;
+										$scope.departmentList = $filter('proOrderObjectByTextField')($scope.departmentList, "name");
+										$scope.departmentList.splice(0, 0, {
+											name : 'ALL'
+										});
+									}
+								});
+					}
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
