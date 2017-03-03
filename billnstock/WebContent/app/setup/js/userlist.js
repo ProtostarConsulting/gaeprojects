@@ -41,7 +41,7 @@ angular
 							icon : "img/icons/hangout.svg",
 							direction : "bottom"
 						} ]
-					};				
+					};
 
 					$scope.openDialog = function($event, item) {
 						// Show the dialog
@@ -121,23 +121,28 @@ angular
 					}
 
 					$scope.fitlerUserListByDept = function(deptName) {
-						if (deptName == 'ALL') {
-							$scope.activeUsers = $scope.activeUsersBackup;
-						} else {
-							$scope.activeUsers = [];
-							angular
-									.forEach(
-											$scope.activeUsersBackup,
-											function(user) {
-												if (user.employeeDetail
-														&& user.employeeDetail.department
-														&& user.employeeDetail.department.name == deptName)
-													$scope.activeUsers
-															.push(user);
-											});
+						function filterListFnAsync() {
+							if (deptName == 'ALL') {
+								$scope.activeUsers = $scope.activeUsersBackup;
+							} else {
+								$scope.activeUsers = [];
+								angular
+										.forEach(
+												$scope.activeUsersBackup,
+												function(user) {
+													if (user.employeeDetail
+															&& user.employeeDetail.department
+															&& user.employeeDetail.department.name == deptName)
+														$scope.activeUsers
+																.push(user);
+												});
+							}
+							$scope.loading = false;
 						}
-
+						$scope.loading = true;
+						$timeout(filterListFnAsync, 100);
 					}
+
 					$scope.getEmpDepartments = function() {
 						var userService = appEndpointSF.getUserService();
 						userService.getEmpDepartments(
@@ -145,7 +150,9 @@ angular
 								function(list) {
 									if (list.items) {
 										$scope.departmentList = list.items;
-										$scope.departmentList = $filter('proOrderObjectByTextField')($scope.departmentList, "name");
+										$scope.departmentList = $filter(
+												'proOrderObjectByTextField')(
+												$scope.departmentList, "name");
 										$scope.departmentList.splice(0, 0, {
 											name : 'ALL'
 										});

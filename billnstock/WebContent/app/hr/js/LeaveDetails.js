@@ -19,8 +19,7 @@ angular
 					 * month) { return { user : emp, openingBalance : "",
 					 * mothLeave : "", takenmothLeave : "", withoutpay : "",
 					 * nextOpeningBalance : "", currentMonth : month + "-" + new
-					 * Date().getFullYear(), business : $scope.curUser.business
-					 *  }; }
+					 * Date().getFullYear(), business : $scope.curUser.business }; }
 					 */
 
 					$scope.monthSelectChange = function(selectedMonth) {
@@ -59,11 +58,9 @@ angular
 					 * 
 					 * $scope.employeeLeaveDetailsList .push($scope
 					 * .getEmptyEmployeeLeaveDetails( list[i],
-					 * $scope.Selectedmonth));
-					 *  }
+					 * $scope.Selectedmonth)); }
 					 * 
-					 * });
-					 *  }
+					 * }); }
 					 */
 
 					$scope.getEmpLeavList = function(month, prevMonth) {
@@ -81,7 +78,7 @@ angular
 												$scope.worning = true;
 											} else
 												$scope.employeeLeaveDetailsList = list;
-												$scope.employeeLeaveDetailsListBackup = list;
+											$scope.employeeLeaveDetailsListBackup = list;
 											for (var i = 0; i < $scope.employeeLeaveDetailsList.length; i++) {
 												$scope
 														.calculation($scope.employeeLeaveDetailsList[i]);
@@ -90,23 +87,28 @@ angular
 											$scope.getEmpDepartments();
 										});
 					}
-					
+
 					$scope.fitlerUserListByDept = function(deptName) {
-						if (deptName == 'ALL') {
-							$scope.employeeLeaveDetailsList = $scope.employeeLeaveDetailsListBackup;
-						} else {
-							$scope.employeeLeaveDetailsList = [];
-							angular
-									.forEach(
-											$scope.employeeLeaveDetailsListBackup,
-											function(leaveDetail) {
-												if (leaveDetail.user
-														&& leaveDetail.user.employeeDetail.department
-														&& leaveDetail.user.employeeDetail.department.name == deptName)
-													$scope.employeeLeaveDetailsList
-															.push(leaveDetail);
-											});
+						function filterListFnAsync() {
+							if (deptName == 'ALL') {
+								$scope.employeeLeaveDetailsList = $scope.employeeLeaveDetailsListBackup;
+							} else {
+								$scope.employeeLeaveDetailsList = [];
+								angular
+										.forEach(
+												$scope.employeeLeaveDetailsListBackup,
+												function(leaveDetail) {
+													if (leaveDetail.user
+															&& leaveDetail.user.employeeDetail.department
+															&& leaveDetail.user.employeeDetail.department.name == deptName)
+														$scope.employeeLeaveDetailsList
+																.push(leaveDetail);
+												});
+							}
+							$scope.loading = false;
 						}
+						$scope.loading = true;
+						$timeout(filterListFnAsync, 100);
 
 					}
 

@@ -37,21 +37,26 @@ angular
 
 					}
 					$scope.fitlerUserListByDept = function(deptName) {
-						if (deptName == 'ALL') {
-							$scope.empSalaryMasterList = $scope.empSalaryMasterListBackup;
-						} else {
-							$scope.empSalaryMasterList = [];
-							angular
-									.forEach(
-											$scope.empSalaryMasterListBackup,
-											function(salStruct) {
-												if (salStruct.empAccount
-														&& salStruct.empAccount.employeeDetail.department
-														&& salStruct.empAccount.employeeDetail.department.name == deptName)
-													$scope.empSalaryMasterList
-															.push(salStruct);
-											});
+						function filterListFnAsync() {
+							if (deptName == 'ALL') {
+								$scope.empSalaryMasterList = $scope.empSalaryMasterListBackup;
+							} else {
+								$scope.empSalaryMasterList = [];
+								angular
+										.forEach(
+												$scope.empSalaryMasterListBackup,
+												function(salStruct) {
+													if (salStruct.empAccount
+															&& salStruct.empAccount.employeeDetail.department
+															&& salStruct.empAccount.employeeDetail.department.name == deptName)
+														$scope.empSalaryMasterList
+																.push(salStruct);
+												});
+							}
+							$scope.loading = false;
 						}
+						$scope.loading = true;
+						$timeout(filterListFnAsync, 100);
 
 					}
 

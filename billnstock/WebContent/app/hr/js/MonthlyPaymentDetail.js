@@ -26,14 +26,14 @@ angular
 
 						monthlyPayDetailObj.overtimeAmt = monthlyPayDetailObj.leaveDetailEntity.overtimeDays
 								* (monthlyPayDetailObj.monthlyGrossSalary / $scope.totalDaysInSelectedMonth);
-						
+
 						monthlyPayDetailObj.overtimeAmt = Math
-						.round(monthlyPayDetailObj.overtimeAmt);
+								.round(monthlyPayDetailObj.overtimeAmt);
 
 						monthlyPayDetailObj.calculatedGrossSalary = monthlyPayDetailObj.payableDays
 								* (monthlyPayDetailObj.monthlyGrossSalary / $scope.totalDaysInSelectedMonth);
 						monthlyPayDetailObj.calculatedGrossSalary = Math
-						.round(monthlyPayDetailObj.calculatedGrossSalary);
+								.round(monthlyPayDetailObj.calculatedGrossSalary);
 
 						// Manual entry takes priority
 						if (!(monthlyPayDetailObj.esiDeductionAmt)) {
@@ -99,24 +99,28 @@ angular
 										});
 
 					}
-					
-					$scope.fitlerUserListByDept = function(deptName) {
-						if (deptName == 'ALL') {
-							$scope.monthlyPayDetailsList = $scope.monthlyPayDetailsListBackup;
-						} else {
-							$scope.monthlyPayDetailsList = [];
-							angular
-									.forEach(
-											$scope.monthlyPayDetailsListBackup,
-											function(monthPay) {
-												if (monthPay.empAccount
-														&& monthPay.empAccount.employeeDetail.department
-														&& monthPay.empAccount.employeeDetail.department.name == deptName)
-													$scope.monthlyPayDetailsList
-															.push(monthPay);
-											});
-						}
 
+					$scope.fitlerUserListByDept = function(deptName) {
+						function filterListFnAsync() {
+							if (deptName == 'ALL') {
+								$scope.monthlyPayDetailsList = $scope.monthlyPayDetailsListBackup;
+							} else {
+								$scope.monthlyPayDetailsList = [];
+								angular
+										.forEach(
+												$scope.monthlyPayDetailsListBackup,
+												function(monthPay) {
+													if (monthPay.empAccount
+															&& monthPay.empAccount.employeeDetail.department
+															&& monthPay.empAccount.employeeDetail.department.name == deptName)
+														$scope.monthlyPayDetailsList
+																.push(monthPay);
+												});
+							}
+							$scope.loading = false;
+						}
+						$scope.loading = true;
+						$timeout(filterListFnAsync, 100);
 					}
 
 					$scope.getEmpDepartments = function() {
@@ -135,7 +139,6 @@ angular
 									}
 								});
 					}
-					
 
 					$scope.monthSelectChange = function(selectedMonth) {
 						$log.debug("selectedMonth" + selectedMonth);
@@ -208,7 +211,7 @@ angular
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
-							//$scope.getMonthlyPaymentList();
+							// $scope.getMonthlyPaymentList();
 							$scope.indvIt();
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
