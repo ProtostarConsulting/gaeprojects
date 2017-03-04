@@ -24,7 +24,7 @@ angular.module("stockApp").controller(
 							$scope.list = list;
 							$scope.payRollReportList = list;
 							for (var i = 0; i < list.length; i++) {
-								$scope.totalSal += list[i].total;
+								$scope.totalSal += list[i].totalSal;
 								$scope.totalPF += list[i].totalPF;
 								$scope.totalPT += list[i].totalPT;
 								$scope.totalCanteen += list[i].totalCanteen;

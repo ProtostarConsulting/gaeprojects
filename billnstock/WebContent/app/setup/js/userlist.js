@@ -137,6 +137,11 @@ angular
 																.push(user);
 												});
 							}
+							$scope.query = {
+								order : 'id',
+								limit : 50,
+								page : 1
+							};
 							$scope.loading = false;
 						}
 						$scope.loading = true;

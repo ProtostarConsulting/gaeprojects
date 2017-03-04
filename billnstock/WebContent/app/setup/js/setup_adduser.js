@@ -3,7 +3,7 @@ angular
 		.controller(
 				"setup.adduser",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
-						$mdUtil, $stateParams, $log, objectFactory, $mdMedia,
+						$mdUtil, $stateParams, $log, $filter, objectFactory, $mdMedia,
 						$mdDialog, Upload, appEndpointSF) {
 
 					$scope.selectedBusiness = $stateParams.selectedBusiness ? $stateParams.selectedBusiness
@@ -247,8 +247,12 @@ angular
 						UserService.getEmpDepartments(
 								$scope.curUser.business.id).then(
 								function(list) {
-									$scope.departmentList = list.items;
-
+									if (list.items) {
+										$scope.departmentList = list.items;
+										$scope.departmentList = $filter(
+												'proOrderObjectByTextField')(
+												$scope.departmentList, "name");
+									}
 								});
 					}
 

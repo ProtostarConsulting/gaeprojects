@@ -3,6 +3,7 @@ package com.protostar.billingnstock.purchase.entities;
 import java.util.Date;
 
 import com.googlecode.objectify.Ref;
+import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
 import com.protostar.billingnstock.invoice.entities.InvoiceEntity;
@@ -12,6 +13,7 @@ import com.protostar.billnstock.until.data.Constants.DocumentStatus;
 import com.protostar.billnstock.until.data.EntityUtil;
 import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 
+@Cache
 @Entity
 public class RequisitionEntity extends InvoiceEntity {
 	@Index

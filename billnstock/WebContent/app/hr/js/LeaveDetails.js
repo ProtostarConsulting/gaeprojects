@@ -105,6 +105,11 @@ angular
 																.push(leaveDetail);
 												});
 							}
+							$scope.query = {
+								order : 'user.employeeDetail.empId',
+								limit : 50,
+								page : 1
+							};
 							$scope.loading = false;
 						}
 						$scope.loading = true;

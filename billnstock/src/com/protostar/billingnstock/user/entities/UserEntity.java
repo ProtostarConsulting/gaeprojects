@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
 import com.protostar.billnstock.entity.BaseEntity;
 import com.protostar.billnstock.until.data.EmployeeDetail;
 
+@Cache
 @Entity
 public class UserEntity extends BaseEntity {
 

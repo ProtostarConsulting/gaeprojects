@@ -5,6 +5,7 @@ angular
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
 						$mdUtil, $stateParams, $log, $filter, objectFactory,
 						appEndpointSF, $mdDialog, $mdMedia, $state) {
+					
 					$scope.query = {
 						order : 'leaveDetailEntity.user.employeeDetail.empId',
 						limit : 50,
@@ -117,6 +118,11 @@ angular
 																.push(monthPay);
 												});
 							}
+							$scope.query = {
+								order : 'leaveDetailEntity.user.employeeDetail.empId',
+								limit : 50,
+								page : 1
+							};
 							$scope.loading = false;
 						}
 						$scope.loading = true;
@@ -175,22 +181,7 @@ angular
 						});
 
 					}
-					$scope.indvIt = function() {
-						var hrService = appEndpointSF.gethrService();
-
-						$scope.totalIT = 0;
-						hrService.getpayRollReport($scope.curUser.business.id,
-								$scope.selectedMonth).then(function(list) {
-							$scope.list = list;
-							for (var i = 0; i < list.length; i++) {
-								if ($scope.selectedMonth == list[i].month) {
-									$scope.totalIT += list[i].totalIT;
-								}
-
-							}
-						});
-
-					}
+					
 					$scope.finalizeMonthlySalaryForTheMonth = function(ev) {
 						var confirm = $mdDialog
 								.confirm()
@@ -212,7 +203,8 @@ angular
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
 							// $scope.getMonthlyPaymentList();
-							$scope.indvIt();
+							//$scope.indvIt();
+							//NEVER User same controller for two pages. NEVER!!!!
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
 							$timeout($scope.waitForServiceLoad, 1000);

@@ -1,10 +1,12 @@
 package com.protostar.billingnstock.cust.entities;
 
+import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
 import com.protostar.billnstock.entity.Address;
 import com.protostar.billnstock.entity.BaseEntity;
 
+@Cache
 @Entity
 public class Customer extends BaseEntity {
 

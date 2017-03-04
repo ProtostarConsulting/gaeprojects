@@ -3,7 +3,7 @@ angular
 		.controller(
 				"setup.viewuser",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
-						$mdUtil, $stateParams, $log, objectFactory, $mdDialog,
+						$mdUtil, $stateParams, $log, $filter, objectFactory, $mdDialog,
 						$mdMedia, appEndpointSF) {
 
 					function defaultActionProcessing() {
@@ -40,7 +40,12 @@ angular
 						userService.getEmpDepartments(
 								$scope.selectedUser.business.id).then(
 								function(list) {
-									$scope.departmentList = list.items;
+									if (list.items) {
+										$scope.departmentList = list.items;
+										$scope.departmentList = $filter(
+												'proOrderObjectByTextField')(
+												$scope.departmentList, "name");
+									}
 								});
 
 					}

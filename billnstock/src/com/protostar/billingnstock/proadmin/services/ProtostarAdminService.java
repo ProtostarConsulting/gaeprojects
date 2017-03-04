@@ -177,6 +177,7 @@ public class ProtostarAdminService {
 		BusinessPlanType accounttype = new BusinessPlanType();
 		accounttype.setPlanName("Free");
 		accounttype.setDescription("Free for upto 20 users and 2 GB of data");
+		accounttype.setPlanType(PlanType.FREE);
 		accounttype.setMaxuser(20);
 		accounttype.setBaseCost(0f);
 		accounttype.setPaymentDesc("Free Plan");
@@ -185,6 +186,7 @@ public class ProtostarAdminService {
 		BusinessPlanType accounttype1 = new BusinessPlanType();
 		accounttype1.setPlanName("Silver");
 		accounttype1.setDescription("Upto 200 users and 10 GB of data");
+		accounttype1.setPlanType(PlanType.STANDARD);
 		accounttype1.setMaxuser(100);
 		accounttype1.setBaseCost(4000f);
 		accounttype1.setPaymentDesc("Rs. 4000 PM + Tax");
@@ -193,6 +195,7 @@ public class ProtostarAdminService {
 		BusinessPlanType accounttype2 = new BusinessPlanType();
 		accounttype2.setPlanName("Gold");
 		accounttype2.setDescription("Upto 500 users and 50 GB of data");
+		accounttype2.setPlanType(PlanType.STANDARD);
 		accounttype2.setMaxuser(500);
 		accounttype2.setBaseCost(8000f);
 		accounttype2.setPaymentDesc("Rs. 8000 PM + Tax");
@@ -201,6 +204,7 @@ public class ProtostarAdminService {
 		BusinessPlanType accounttype3 = new BusinessPlanType();
 		accounttype3.setPlanName("Platinum");
 		accounttype3.setDescription("Upto 1000 users and 100 GB of data");
+		accounttype3.setPlanType(PlanType.STANDARD);
 		accounttype3.setMaxuser(1000);
 		accounttype3.setBaseCost(25000f);
 		accounttype3.setPaymentDesc("Rs. 25,000 PM + Tax");

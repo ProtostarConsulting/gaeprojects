@@ -2,15 +2,17 @@ package com.protostar.billingnstock.purchase.entities;
 
 import java.util.List;
 
+import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
 import com.protostar.billnstock.entity.BaseEntity;
 import com.protostar.billnstock.until.data.Constants;
-import com.protostar.billnstock.until.data.EntityUtil;
-import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 import com.protostar.billnstock.until.data.Constants.BudgetType;
 import com.protostar.billnstock.until.data.Constants.DocumentStatus;
+import com.protostar.billnstock.until.data.EntityUtil;
+import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 
+@Cache
 @Entity
 public class BudgetEntity extends BaseEntity {
 	@Index

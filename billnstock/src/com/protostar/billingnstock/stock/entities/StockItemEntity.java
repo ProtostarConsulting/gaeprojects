@@ -1,11 +1,13 @@
 package com.protostar.billingnstock.stock.entities;
 
 import com.googlecode.objectify.Ref;
+import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
 import com.protostar.billingnstock.warehouse.entities.WarehouseEntity;
 import com.protostar.billnstock.entity.BaseEntity;
 
+@Cache
 @Entity
 public class StockItemEntity extends BaseEntity {
 	private int qty;

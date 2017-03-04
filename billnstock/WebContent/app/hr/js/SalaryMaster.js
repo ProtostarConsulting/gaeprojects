@@ -53,6 +53,11 @@ angular
 																.push(salStruct);
 												});
 							}
+							$scope.query = {
+								order : 'empAccount.employeeDetail.empId',
+								limit : 50,
+								page : 1
+							};
 							$scope.loading = false;
 						}
 						$scope.loading = true;

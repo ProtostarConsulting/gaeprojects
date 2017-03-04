@@ -1,6 +1,7 @@
 package com.protostar.billnstock.until.data;
 
 import com.googlecode.objectify.Ref;
+import com.googlecode.objectify.annotation.Index;
 import com.protostar.billingnstock.user.entities.EmpDepartment;
 import com.protostar.billnstock.entity.Address;
 
@@ -16,6 +17,7 @@ public class EmployeeDetail {
 
 	private Address address = new Address();
 	private BankDetail bankDetail = new BankDetail();
+	@Index
 	private Ref<EmpDepartment> department;
 
 	public BankDetail getBankDetail() {

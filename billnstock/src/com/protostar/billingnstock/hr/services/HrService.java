@@ -354,7 +354,7 @@ public class HrService {
 				LeaveDetailEntity empLeaveDetail = getEmpLeaveDetail(salStruct.getEmpAccount(), leaveListEmp);
 				foundSalEntity = new MonthlyPaymentDetailEntity(salStruct.getEmpAccount().getBusiness(), empLeaveDetail,
 						salStruct, currentmonth);
-			}else if(!foundSalEntity.isFinalized()){
+			} else if (!foundSalEntity.isFinalized()) {
 				foundSalEntity.setSalStruct(salStruct);
 			}
 			monthlyPaymentDetailEntityListToReturn.add(foundSalEntity);
@@ -510,76 +510,53 @@ public class HrService {
 				"October", "November", "December" };
 
 		// int year = Calendar.getInstance().get(Calendar.YEAR);
-
-		HrService hrService = new HrService();
 		for (int i = 0; i < 12; i++) {
-			String month = monthList[i] + "-" + year;
-			List<MonthlyPaymentDetailEntity> monthlyPaymentDetailEntity = hrService.getMonthlyPayment(busId,
-					month.trim());
-
-			if (monthlyPaymentDetailEntity.size() > 0 && monthlyPaymentDetailEntity.get(0).isFinalized()) {
-				float totalSal = 0, totalPF = 0, totalPT = 0, totalCanteen = 0, totalIT = 0, totalESI = 0,
-						totalOther = 0;
-				for (int j = 0; j < monthlyPaymentDetailEntity.size(); j++) {
-					totalSal += monthlyPaymentDetailEntity.get(j).getNetSalaryAmt();
-					totalPF += monthlyPaymentDetailEntity.get(j).getPfDeductionAmt();
-					totalPT += monthlyPaymentDetailEntity.get(j).getPtDeductionAmt();
-					totalCanteen += monthlyPaymentDetailEntity.get(j).getCanteenDeductionAmt();
-					totalIT += monthlyPaymentDetailEntity.get(j).getItDeductionAmt();
-					totalESI += monthlyPaymentDetailEntity.get(j).getEsiDeductionAmt();
-					totalOther += monthlyPaymentDetailEntity.get(j).getOtherDeductionAmt();
-				}
-
-				PayRollMonthlyData payData = new PayRollMonthlyData();
-				payData.month = month.trim();
-				payData.totalSal = totalSal;
-				payData.totalPF = totalPF;
-				payData.totalPT = totalPT;
-				payData.totalCanteen = totalCanteen;
-				payData.totalIT = totalIT;
-				payData.totalESI = totalESI;
-				payData.totalOther = totalOther;
-				payrolldatalist.add(payData);
+			String month = monthList[i] + "-" + year.trim();
+			List<PayRollMonthlyData> getpayRollReportByMonth = this.getpayRollReportByMonth(busId, month);
+			if (!getpayRollReportByMonth.isEmpty()) {
+				payrolldatalist.addAll(getpayRollReportByMonth);
 			}
 		}
+
 		return payrolldatalist;
 	}
 
 	@ApiMethod(name = "getpayRollReportByMonth", path = "getpayRollReportByMonth")
 	public List<PayRollMonthlyData> getpayRollReportByMonth(@Named("id") Long busId, @Named("month") String month) {
+
 		List<PayRollMonthlyData> payrolldatalist = new ArrayList<PayRollMonthlyData>();
-
 		int year = Calendar.getInstance().get(Calendar.YEAR);
-
-		HrService hrService = new HrService();
-
-		String selectedMonth = month + "-" + year;
-		List<MonthlyPaymentDetailEntity> monthlyPaymentDetailEntity = hrService.getMonthlyPayment(busId,
-				selectedMonth.trim());
-
-		if (monthlyPaymentDetailEntity.size() > 0 && monthlyPaymentDetailEntity.get(0).isFinalized()) {
-			float totalSal = 0, totalPF = 0, totalPT = 0, totalCanteen = 0, totalIT = 0, totalOther = 0, totalESI = 0;
-			for (int j = 0; j < monthlyPaymentDetailEntity.size(); j++) {
-				totalSal += monthlyPaymentDetailEntity.get(j).getCalculatedGrossSalary();
-				totalPF += monthlyPaymentDetailEntity.get(j).getPfDeductionAmt();
-				totalPT += monthlyPaymentDetailEntity.get(j).getPtDeductionAmt();
-				totalCanteen += monthlyPaymentDetailEntity.get(j).getCanteenDeductionAmt();
-				totalIT += monthlyPaymentDetailEntity.get(j).getItDeductionAmt();
-				totalOther += monthlyPaymentDetailEntity.get(j).getOtherDeductionAmt();
-				totalESI += monthlyPaymentDetailEntity.get(j).getEsiDeductionAmt();
+		String currentMonth;
+		if (month.contains("-")) {
+			currentMonth = month;
+		} else {
+			currentMonth = month + "-" + year;
+		}
+		List<MonthlyPaymentDetailEntity> monthlyPaymentDetailEntityList = ofy().load()
+				.type(MonthlyPaymentDetailEntity.class).ancestor(Key.create(BusinessEntity.class, busId))
+				.filter("currentMonth", currentMonth.trim()).list();
+		if (monthlyPaymentDetailEntityList.size() > 0 && monthlyPaymentDetailEntityList.get(0).isFinalized()) {
+			float totalSal = 0, totalPF = 0, totalPT = 0, totalCanteen = 0, totalIT = 0, totalESI = 0, totalOther = 0;
+			for (MonthlyPaymentDetailEntity monthlyPaymentDetailEntity : monthlyPaymentDetailEntityList) {
+				totalSal += monthlyPaymentDetailEntity.getNetSalaryAmt();
+				totalPF += monthlyPaymentDetailEntity.getPfDeductionAmt();
+				totalPT += monthlyPaymentDetailEntity.getPtDeductionAmt();
+				totalCanteen += monthlyPaymentDetailEntity.getCanteenDeductionAmt();
+				totalIT += monthlyPaymentDetailEntity.getItDeductionAmt();
+				totalESI += monthlyPaymentDetailEntity.getEsiDeductionAmt();
+				totalOther += monthlyPaymentDetailEntity.getOtherDeductionAmt();
 			}
 
 			PayRollMonthlyData payData = new PayRollMonthlyData();
-			payData.month = selectedMonth.trim();
+			payData.month = month.trim();
 			payData.totalSal = totalSal;
 			payData.totalPF = totalPF;
 			payData.totalPT = totalPT;
 			payData.totalCanteen = totalCanteen;
 			payData.totalIT = totalIT;
-			payData.totalOther = totalOther;
 			payData.totalESI = totalESI;
+			payData.totalOther = totalOther;
 			payrolldatalist.add(payData);
-
 		}
 
 		return payrolldatalist;
@@ -587,6 +564,7 @@ public class HrService {
 }
 
 class PayRollMonthlyData implements Serializable {
+	private static final long serialVersionUID = 1L;
 	String month;
 	float totalSal;
 	float totalPF;

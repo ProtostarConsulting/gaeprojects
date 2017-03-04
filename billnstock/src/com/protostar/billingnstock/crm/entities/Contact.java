@@ -1,6 +1,7 @@
 package com.protostar.billingnstock.crm.entities;
 
 import com.googlecode.objectify.Ref;
+import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
 import com.protostar.billingnstock.cust.entities.Customer;
@@ -11,6 +12,7 @@ import com.protostar.billnstock.until.data.Constants;
 import com.protostar.billnstock.until.data.EntityUtil;
 import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 
+@Cache
 @Entity
 public class Contact extends BaseEntity {
 

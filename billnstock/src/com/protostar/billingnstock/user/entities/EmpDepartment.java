@@ -1,10 +1,12 @@
 package com.protostar.billingnstock.user.entities;
 
 import com.googlecode.objectify.Ref;
+import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
 import com.protostar.billnstock.entity.BaseEntity;
 
+@Cache
 @Entity
 public class EmpDepartment extends BaseEntity {
 
