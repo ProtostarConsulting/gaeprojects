@@ -81,15 +81,17 @@ angular
 								.getUsersByBusinessId(bizId)
 								.then(
 										function(users) {
-											$scope.userslist = users.items;
 											$scope.activeUsers = [];
+											if (users.items) {
+												$scope.userslist = users.items;
 
-											for (var i = 0; i < $scope.userslist.length; i++) {
-												if ($scope.userslist[i].isActive) {
-													$scope.activeUsers
-															.push($scope.userslist[i]);
-													$scope.fabMenuData.activeUsersIsOpen
-															.push(false);
+												for (var i = 0; i < $scope.userslist.length; i++) {
+													if ($scope.userslist[i].isActive) {
+														$scope.activeUsers
+																.push($scope.userslist[i]);
+														$scope.fabMenuData.activeUsersIsOpen
+																.push(false);
+													}
 												}
 											}
 											$scope.activeUsersBackup = $scope.activeUsers;
@@ -106,15 +108,17 @@ angular
 								.getInActiveUsersByBusinessId(bizId)
 								.then(
 										function(users) {
-											$scope.userslist = users.items;
 											$scope.suspendedUsers = [];
+											if (users.items) {
+												$scope.userslist = users.items;
 
-											for (var i = 0; i < $scope.userslist.length; i++) {
-												if (!$scope.userslist[i].isActive) {
-													$scope.suspendedUsers
-															.push($scope.userslist[i]);
-													$scope.fabMenuData.suspendedUsersIsOpen
-															.push(false);
+												for (var i = 0; i < $scope.userslist.length; i++) {
+													if (!$scope.userslist[i].isActive) {
+														$scope.suspendedUsers
+																.push($scope.userslist[i]);
+														$scope.fabMenuData.suspendedUsersIsOpen
+																.push(false);
+													}
 												}
 											}
 										});

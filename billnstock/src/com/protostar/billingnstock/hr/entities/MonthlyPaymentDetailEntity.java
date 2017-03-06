@@ -3,14 +3,12 @@ package com.protostar.billingnstock.hr.entities;
 import javax.persistence.Embedded;
 
 import com.googlecode.objectify.Ref;
-import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.user.entities.UserEntity;
 import com.protostar.billnstock.entity.BaseEntity;
 
-@Cache
 @Entity
 public class MonthlyPaymentDetailEntity extends BaseEntity {
 	@Index

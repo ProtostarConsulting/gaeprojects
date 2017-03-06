@@ -503,38 +503,52 @@ public class HrService {
 
 	@ApiMethod(name = "getpayRollReport", path = "getpayRollReport")
 	public List<PayRollMonthlyData> getpayRollReport(@Named("id") Long busId, @Named("year") String year) {
+		try {
+			List<PayRollMonthlyData> payRollMonthlyDataList = new ArrayList<PayRollMonthlyData>();
 
-		List<PayRollMonthlyData> payrolldatalist = new ArrayList<PayRollMonthlyData>();
+			String monthList[] = { "January", "February", "March", "April", "May", "June", "July", "August",
+					"September", "October", "November", "December" };
 
-		String monthList[] = { "January", "February", "March", "April", "May", "June", "July", "August", "September",
-				"October", "November", "December" };
-
-		// int year = Calendar.getInstance().get(Calendar.YEAR);
-		for (int i = 0; i < 12; i++) {
-			String month = monthList[i] + "-" + year.trim();
-			List<PayRollMonthlyData> getpayRollReportByMonth = this.getpayRollReportByMonth(busId, month);
-			if (!getpayRollReportByMonth.isEmpty()) {
-				payrolldatalist.addAll(getpayRollReportByMonth);
+			for (int i = 0; i < 12; i++) {
+				String month = monthList[i] + "-" + year.trim();
+				List<PayRollMonthlyData> payRollMonthList = this.getpayRollReportByMonth(busId, month);
+				if (!payRollMonthList.isEmpty()) {
+					payRollMonthlyDataList.addAll(payRollMonthList);
+				}
 			}
+			return payRollMonthlyDataList;
+		} catch (Exception ex) {
+			throw ex;
 		}
-
-		return payrolldatalist;
 	}
 
 	@ApiMethod(name = "getpayRollReportByMonth", path = "getpayRollReportByMonth")
 	public List<PayRollMonthlyData> getpayRollReportByMonth(@Named("id") Long busId, @Named("month") String month) {
 
-		List<PayRollMonthlyData> payrolldatalist = new ArrayList<PayRollMonthlyData>();
 		int year = Calendar.getInstance().get(Calendar.YEAR);
 		String currentMonth;
+
 		if (month.contains("-")) {
 			currentMonth = month;
 		} else {
-			currentMonth = month + "-" + year;
+			currentMonth = month.trim() + "-" + year;
 		}
+
 		List<MonthlyPaymentDetailEntity> monthlyPaymentDetailEntityList = ofy().load()
 				.type(MonthlyPaymentDetailEntity.class).ancestor(Key.create(BusinessEntity.class, busId))
 				.filter("currentMonth", currentMonth.trim()).list();
+
+		List<PayRollMonthlyData> payRollMonthlyDataList = new ArrayList<PayRollMonthlyData>();
+		PayRollMonthlyData payData = getPayRollMonthlyDataObject(month, monthlyPaymentDetailEntityList);
+		if (payData != null) {
+			payRollMonthlyDataList.add(payData);
+		}
+		return payRollMonthlyDataList;
+	}
+
+	private PayRollMonthlyData getPayRollMonthlyDataObject(String month,
+			List<MonthlyPaymentDetailEntity> monthlyPaymentDetailEntityList) {
+		PayRollMonthlyData payData = null;
 		if (monthlyPaymentDetailEntityList.size() > 0 && monthlyPaymentDetailEntityList.get(0).isFinalized()) {
 			float totalSal = 0, totalPF = 0, totalPT = 0, totalCanteen = 0, totalIT = 0, totalESI = 0, totalOther = 0;
 			for (MonthlyPaymentDetailEntity monthlyPaymentDetailEntity : monthlyPaymentDetailEntityList) {
@@ -547,7 +561,7 @@ public class HrService {
 				totalOther += monthlyPaymentDetailEntity.getOtherDeductionAmt();
 			}
 
-			PayRollMonthlyData payData = new PayRollMonthlyData();
+			payData = new PayRollMonthlyData();
 			payData.month = month.trim();
 			payData.totalSal = totalSal;
 			payData.totalPF = totalPF;
@@ -556,10 +570,8 @@ public class HrService {
 			payData.totalIT = totalIT;
 			payData.totalESI = totalESI;
 			payData.totalOther = totalOther;
-			payrolldatalist.add(payData);
 		}
-
-		return payrolldatalist;
+		return payData;
 	}
 }
 
