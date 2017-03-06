@@ -18,6 +18,8 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
 import com.protostar.billingnstock.cust.entities.Customer;
 import com.protostar.billingnstock.hr.entities.Employee;
+import com.protostar.billingnstock.hr.entities.HREntityUtil;
+import com.protostar.billingnstock.hr.entities.HRSettingsEntity;
 import com.protostar.billingnstock.hr.entities.LeaveAppEntity;
 import com.protostar.billingnstock.hr.entities.LeaveDetailEntity;
 import com.protostar.billingnstock.hr.entities.LeaveMasterEntity;
@@ -141,6 +143,18 @@ public class HrService {
 
 	}
 
+	@ApiMethod(name = "addHRSettings")
+	public HRSettingsEntity addHRSettings(HRSettingsEntity hrSettingsEntity) {
+
+		if (hrSettingsEntity.getId() == null) {
+			hrSettingsEntity.setCreatedDate(new Date());
+		}
+		hrSettingsEntity.setModifiedDate(new Date());
+
+		ofy().save().entity(hrSettingsEntity).now();
+		return hrSettingsEntity;
+	}
+
 	@ApiMethod(name = "displyOnlySelected")
 	public List<SalSlip> displyOnlySelected(@Named("month") String mon, @Named("id") Long busId) {
 
@@ -257,6 +271,50 @@ public class HrService {
 		}
 
 		return salStructlistToReturn;
+
+	}
+
+	@ApiMethod(name = "getHRSettingsByBiz", path = "getHRSettingsByBiz")
+	public HRSettingsEntity getHRSettingsByBiz(@Named("id") Long busId) {
+
+		HRSettingsEntity filteredSettings = ofy().load()
+				.type(HRSettingsEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).first()
+				.now();
+
+		return filteredSettings;
+
+	}
+
+	@ApiMethod(name = "getSalaryHeadNames", path = "getSalaryHeadNames")
+	public List<String> getSalaryHeadNames() {
+
+		List<String> salHeads = new ArrayList<String>();
+
+		for (int i = 0; i < HREntityUtil
+				.getStandardMonthlySalaryStructureRules().size(); i++) {
+			String salHeadNames = HREntityUtil
+					.getStandardMonthlySalaryStructureRules().get(i)
+					.getHeadName();
+			salHeads.add(salHeadNames);
+		}
+		return salHeads;
+
+	}
+
+	@ApiMethod(name = "getDeductionHeadNames", path = "getDeductionHeadNames")
+	public List<String> getDeductionHeadNames() {
+
+		List<String> deductionHeadNames = new ArrayList<String>();
+
+		for (int i = 0; i < HREntityUtil
+				.getStandardMonthlySalaryDeductionRules().size(); i++) {
+			String headName = HREntityUtil
+					.getStandardMonthlySalaryDeductionRules().get(i)
+					.getHeadName();
+			deductionHeadNames.add(headName);
+		}
+		return deductionHeadNames;
 
 	}
 
@@ -502,19 +560,66 @@ public class HrService {
 	}
 
 	@ApiMethod(name = "getpayRollReport", path = "getpayRollReport")
-	public List<PayRollMonthlyData> getpayRollReport(@Named("id") Long busId, @Named("year") String year) {
+	public List<PayRollMonthlyData> getpayRollReport(@Named("id") Long busId,
+			@Named("year") String year) {
 		try {
 			List<PayRollMonthlyData> payRollMonthlyDataList = new ArrayList<PayRollMonthlyData>();
 
 			String monthList[] = { "January", "February", "March", "April", "May", "June", "July", "August",
 					"September", "October", "November", "December" };
 
+<<<<<<< .mine
+		String monthList[] = { "January", "February", "March", "April", "May",
+				"June", "July", "August", "September", "October", "November",
+				"December" };
+
+		// int year = Calendar.getInstance().get(Calendar.YEAR);
+
+		HrService hrService = new HrService();
+		for (int i = 0; i < 12; i++) {
+			String month = monthList[i] + "-" + year;
+			List<MonthlyPaymentDetailEntity> monthlyPaymentDetailEntity = hrService
+					.getMonthlyPayment(busId, month.trim());
+
+			if (monthlyPaymentDetailEntity.size() > 0) {
+				float totalSal = 0, totalPF = 0, totalPT = 0, totalCanteen = 0, totalIT = 0, totalESI = 0, totalOther = 0;
+				for (int j = 0; j < monthlyPaymentDetailEntity.size(); j++) {
+					totalSal += monthlyPaymentDetailEntity.get(j)
+							.getNetSalaryAmt();
+					totalPF += monthlyPaymentDetailEntity.get(j)
+							.getPfDeductionAmt();
+					totalPT += monthlyPaymentDetailEntity.get(j)
+							.getPtDeductionAmt();
+					totalCanteen += monthlyPaymentDetailEntity.get(j)
+							.getCanteenDeductionAmt();
+					totalIT += monthlyPaymentDetailEntity.get(j)
+							.getItDeductionAmt();
+					totalESI += monthlyPaymentDetailEntity.get(j)
+							.getEsiDeductionAmt();
+					totalOther += monthlyPaymentDetailEntity.get(j)
+							.getOtherDeductionAmt();
+=======
 			for (int i = 0; i < 12; i++) {
 				String month = monthList[i] + "-" + year.trim();
 				List<PayRollMonthlyData> payRollMonthList = this.getpayRollReportByMonth(busId, month);
 				if (!payRollMonthList.isEmpty()) {
 					payRollMonthlyDataList.addAll(payRollMonthList);
+>>>>>>> .r2401
 				}
+<<<<<<< .mine
+
+				PayRollMonthlyData payData = new PayRollMonthlyData();
+				payData.month = month.trim();
+				payData.totalSal = totalSal;
+				payData.totalPF = totalPF;
+				payData.totalPT = totalPT;
+				payData.totalCanteen = totalCanteen;
+				payData.totalIT = totalIT;
+				payData.totalESI = totalESI;
+				payData.totalOther = totalOther;
+				payrolldatalist.add(payData);
+=======
+>>>>>>> .r2401
 			}
 			return payRollMonthlyDataList;
 		} catch (Exception ex) {
