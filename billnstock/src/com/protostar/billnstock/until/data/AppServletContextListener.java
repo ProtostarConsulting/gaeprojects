@@ -2,7 +2,6 @@ package com.protostar.billnstock.until.data;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-
 import com.googlecode.objectify.ObjectifyService;
 import com.protostar.billingnstock.account.entities.AccountEntity;
 import com.protostar.billingnstock.account.entities.AccountEntryEntity;
@@ -24,6 +23,7 @@ import com.protostar.billingnstock.crm.entities.Lead;
 import com.protostar.billingnstock.crm.entities.Opportunity;
 import com.protostar.billingnstock.cust.entities.Customer;
 import com.protostar.billingnstock.hr.entities.Employee;
+import com.protostar.billingnstock.hr.entities.HRSettingsEntity;
 import com.protostar.billingnstock.hr.entities.LeaveAppEntity;
 import com.protostar.billingnstock.hr.entities.LeaveDetailEntity;
 import com.protostar.billingnstock.hr.entities.LeaveMasterEntity;
@@ -82,7 +82,7 @@ public class AppServletContextListener implements ServletContextListener {
 		ObjectifyService.register(UserEntity.class);
 		ObjectifyService.register(EmpDepartment.class);
 		ObjectifyService.register(BusinessEntity.class);
-		
+
 		ObjectifyService.register(Customer.class);
 		ObjectifyService.register(StockItemTypeEntity.class);
 		ObjectifyService.register(StockItemEntity.class);
@@ -90,8 +90,8 @@ public class AppServletContextListener implements ServletContextListener {
 		ObjectifyService.register(StockItemsReceiptEntity.class);
 		ObjectifyService.register(StockItemsShipmentEntity.class);
 		ObjectifyService.register(StockItemTxnEntity.class);
-		ObjectifyService.register(StockSettingsEntity.class);		
-		
+		ObjectifyService.register(StockSettingsEntity.class);
+
 		ObjectifyService.register(InvoiceEntity.class);
 		ObjectifyService.register(QuotationEntity.class);
 		ObjectifyService.register(TaxEntity.class);
@@ -101,16 +101,16 @@ public class AppServletContextListener implements ServletContextListener {
 		ObjectifyService.register(AccountGroupEntity.class);
 		ObjectifyService.register(AccountEntryEntity.class);
 		ObjectifyService.register(AccountingFYEntity.class);
-		ObjectifyService.register(GeneralEntryEntity.class);		
+		ObjectifyService.register(GeneralEntryEntity.class);
 		ObjectifyService.register(GeneralJournalEntity.class);
 		ObjectifyService.register(VoucherEntity.class);
-		
+
 		ObjectifyService.register(PayableEntity.class);
 		ObjectifyService.register(ReceivableEntity.class);
 		ObjectifyService.register(WarehouseEntity.class);
 		ObjectifyService.register(SupplierEntity.class);
 		ObjectifyService.register(InvoiceSettingsEntity.class);
-		
+
 		ObjectifyService.register(SalesVoucherEntity.class);
 		ObjectifyService.register(PaymentVoucherEntity.class);
 		ObjectifyService.register(ReceiptVoucherEntity.class);
@@ -120,10 +120,9 @@ public class AppServletContextListener implements ServletContextListener {
 		ObjectifyService.register(LeaveAppEntity.class);
 		ObjectifyService.register(LeaveMasterEntity.class);
 		ObjectifyService.register(MonthlyPaymentDetailEntity.class);
+		ObjectifyService.register(HRSettingsEntity.class);
 		ObjectifyService.register(RequisitionEntity.class);
 		ObjectifyService.register(BudgetEntity.class);
-
-
 
 	}
 
