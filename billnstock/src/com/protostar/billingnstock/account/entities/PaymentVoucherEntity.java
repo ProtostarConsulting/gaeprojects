@@ -3,6 +3,7 @@ package com.protostar.billingnstock.account.entities;
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.protostar.billingnstock.invoice.entities.InvoiceEntity;
+import com.protostar.billingnstock.stock.entities.StockItemsReceiptEntity;
 import com.protostar.billnstock.until.data.Constants;
 import com.protostar.billnstock.until.data.EntityUtil;
 import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
@@ -13,6 +14,8 @@ public class PaymentVoucherEntity extends VoucherEntity {
 	
 	private Ref<AccountEntity> paymentAccount;
 	private Ref<AccountEntity> creditAccount;
+	//private Ref<AccountEntity> creditAccount;
+	private Ref<StockItemsReceiptEntity> stockReceiptEntity;
 	
 	
 	public Double amount;
