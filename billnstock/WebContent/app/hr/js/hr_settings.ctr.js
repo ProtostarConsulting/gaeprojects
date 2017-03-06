@@ -63,7 +63,6 @@ app.controller("hrSettingsCtr", function($scope, $window, $mdToast, $timeout,
 		hrService.addHRSettings($scope.settingsObj).then(function(savedRecord) {
 			$scope.settingsObj = savedRecord;
 			$scope.showUpdateToast();
-			$scope.settingsObj = {};
 		});
 	}
 
