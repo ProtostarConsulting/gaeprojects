@@ -151,13 +151,12 @@ angular
 											});
 							$scope.hide();
 						}
-						$scope.hide = function() {
+						$scope.hide = function() { 
 							$mdDialog.hide();
 						};
 					}
 
-					// ----------------------UPLODE EXCEL
-					// FILE-------------------------------
+					// ----------------------UPLODE EXCEL FILE-------------------------------
 
 					$scope.UplodeExcel = function(ev) {
 						var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))

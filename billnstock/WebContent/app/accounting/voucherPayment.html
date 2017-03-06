@@ -39,9 +39,26 @@
 
 <div layout layout-xs="column"  ng-if="!vouchersReview1">
 			
+		
+			<md-input-container flex>  <label>Credit Account</label>
+	 <md-select ng-model="paymentVouchers.creditAccount" id="accountName"
+		name="Account" ng-required="true" ng-change="getAccountEntryByAccountId(paymentVouchers,2)" >
+			<md-option ng-value="type" ng-repeat="type in paymentCreditAcc">
+			{{type.accountName}}</md-option> </md-select> 
+			
+			<div ng-messages="voucherPaymentForm.Account.$error"
+			ng-if="voucherPaymentForm.Account.$submitted || voucherPaymentForm.Account.$touched">
+			<div ng-message="required">Please Select Credit Account</div>
+				</div>
+	<div>
+		Current Balance:<span>{{creditCurrentBalance.returnBalance}}</span>
+	</div>
+		</md-input-container>
+		
+		
 			 <md-input-container flex>  <label>Debit Account </label>
 	 <md-select ng-model="paymentVouchers.paymentAccount" id="accountName"
-		name="Account1" ng-required="true"  ng-change="getAccountEntryByAccountId(paymentVouchers.paymentAccount,1)">
+		name="Account1" ng-required="true"  ng-change="getAccountEntryByAccountId(paymentVouchers,1)">
 			<md-option ng-value="type" ng-repeat="type in paymentAccList">
 			{{type.accountName}}</md-option> </md-select> 
 			
@@ -54,24 +71,15 @@
 		</div>
 			
 			</md-input-container>
-			<md-input-container flex>  <label>Credit Account</label>
-	 <md-select ng-model="paymentVouchers.creditAccount" id="accountName"
-		name="Account" ng-required="true" ng-change="getAccountEntryByAccountId(paymentVouchers.creditAccount,2)" >
-			<md-option ng-value="type" ng-repeat="type in paymentCreditAcc">
-			{{type.accountName}}</md-option> </md-select> 
-			
-			<div ng-messages="voucherPaymentForm.Account.$error"
-			ng-if="voucherPaymentForm.Account.$submitted || voucherPaymentForm.Account.$touched">
-			<div ng-message="required">Please Select Credit Account</div>
-				</div>
-	<div>
-		Current Balance:<span>{{creditCurrentBalance.returnBalance}}</span>
-	</div>
-		</md-input-container>
+		
+		
 	</div>
 	
 	<div layout layout-xs="column" ng-if="!vouchersReview1">
-		<md-input-container flex> <label>Amount</label> <input ng-model="paymentVouchers.amount" name="amount" type="number" ng-required="true">
+	
+	
+	
+		<md-input-container flex> <label>Amount</label> <input ng-model="paymentVouchers.amount" name="amount" type="number" >
 
 		<div ng-messages="voucherPaymentForm.amount.$error"
 			ng-if="voucherPaymentForm.amount.$submitted || voucherPaymentForm.amount.$touched">
@@ -79,15 +87,34 @@
 		</div>
 		</md-input-container>
 		
-		
+		<!-- //////////////////////////////////// -->
 		
 		<md-input-container flex> <label>Narration</label>
 		 <textarea name="narration" ng-model="paymentVouchers.narration"
 			 maxlength="300"></textarea>
 	</md-input-container>
-		
+	
+	
+	
 		
 	</div>
+	<div ng-show="stockFlag">
+
+	<section layout="row" layout-xs="column" layout-align="left left" ng-if="!vouchersReview1">
+		<md-button class="md-raised md-primary"
+			ng-disabled="voucherPaymentForm.$invalid "
+			ng-click="addVoucher1()">Add</md-button>
+
+
+		<md-button class="md-raised md-primary" ng-click="cancle()">Cancle</md-button>
+
+		<md-button class="md-raised md-primary"
+			ng-disabled="voucherPaymentForm.$invalid" ng-show="account.id" ng-click="">Update</md-button>
+
+
+	</section>
+	</div>
+		
 
 <!-- ----------------------------------------------------------------------------- -->
 
@@ -127,8 +154,8 @@
 
 	<section layout="row" layout-xs="column" layout-align="left left" ng-if="!vouchersReview1">
 		<md-button class="md-raised md-primary"
-			ng-disabled="voucherPaymentForm.$invalid || accountForm.$pristine || accountForm.$touched"
-			ng-hide="account.id" ng-click="addvoucher()">Add</md-button>
+			ng-disabled="voucherPaymentForm.$invalid "
+			ng-click="addvoucher()">Add</md-button>
 
 
 		<md-button class="md-raised md-primary" ng-click="cancle()">Cancle</md-button>
@@ -138,6 +165,7 @@
 
 
 	</section>
+
 	</div>
 
 

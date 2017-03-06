@@ -4,7 +4,7 @@ app
 				"stockReceiptAddCtr",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
 						$mdUtil, $log, $state, $http, $stateParams,
-						$routeParams, $filter, $mdMedia, $mdDialog, $q,
+						$routeParams, $filter, $mdMedia, $mdDialog, $q,$rootScope,
 						objectFactory, appEndpointSF) {
 
 					$scope.curUser = appEndpointSF.getLocalUserService()
@@ -51,7 +51,11 @@ app
 								});
 
 					}
-
+					 $rootScope.$on("CallParentMethod", function(){
+				           $scope.parentmethod();
+				        });
+					 
+					 
 					$scope.finalizeStockReceipt = function(ev) {
 						var confirm = $mdDialog
 								.confirm()

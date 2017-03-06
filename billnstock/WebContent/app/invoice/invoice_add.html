@@ -16,7 +16,8 @@
 		<div flex layout="row" layout-xs="column">
 			<div flex layout="row">
 				<md-autocomplete flex required ng-model="invoiceObj.customer"
-					md-input-name="autocompleteField" md-no-cache=true
+					md-input-name="autocompleteField"
+					md-no-cache=true
 					md-selected-item="invoiceObj.customer"
 					ng-init="searchTextInput = invoiceObj.customer.isCompany?invoiceObj.customer.companyName:(invoiceObj.customer.firstName
 					+' '+ invoiceObj.customer.lastName)"
