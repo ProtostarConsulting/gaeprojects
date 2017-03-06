@@ -502,15 +502,16 @@ function googleEndpointSF($q) {
 
 	proadminService.addBusinessPlan = function(businessPlan) {
 		var deferred = $q.defer();
-		gapi.client.proadminService.addBusinessPlan(businessPlan).execute(function() {
-			deferred.resolve({
-				"msg" : "Business Plan Added Successfully."
-			});
+		gapi.client.proadminService.addBusinessPlan(businessPlan).execute(
+				function() {
+					deferred.resolve({
+						"msg" : "Business Plan Added Successfully."
+					});
 
-		});
+				});
 		return deferred.promise;
 	}
-	
+
 	proadminService.updateAccountType = function(account) {
 		var deferred = $q.defer();
 		gapi.client.proadminService.addAccountType(account).execute(function() {
@@ -736,6 +737,44 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
+	hrService.addHRSettings = function(hrSettings) {
+		var deferred = $q.defer();
+
+		gapi.client.hrService.addHRSettings(hrSettings).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+
+		return deferred.promise;
+	}
+
+	hrService.getHRSettingsByBiz = function(id) {
+		var deferred = $q.defer();
+		gapi.client.hrService.getHRSettingsByBiz({
+			'id' : id
+		}).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}
+
+	hrService.getSalaryHeadNames = function() {
+		var deferred = $q.defer();
+		gapi.client.hrService.getSalaryHeadNames().execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+
+	}
+	
+	hrService.getDeductionHeadNames = function() {
+		var deferred = $q.defer();
+		gapi.client.hrService.getDeductionHeadNames().execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+
+	}
+	
 	hrService.getLeaveListEmp = function(id, month, prevMonth) {
 		var deferred = $q.defer();
 		gapi.client.hrService.getLeaveListEmp({

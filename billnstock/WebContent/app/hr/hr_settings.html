@@ -1,0 +1,161 @@
+<md-content layout-padding>
+<h3 class="md-title">Current Monthly Salary Structure</h3>
+
+<form novalidate ng-submit="$event.preventDefault()"
+	name="addSalaryStructure">
+
+	<div>
+		<h4>Salary Heads</h4>
+		<table md-data-table md-progress="deferred">
+			<thead md-order="query.order" md-trigger="onOrderChange">
+				<tr>
+					<th name="Sr No" order-by="srNo"></th>
+					<th name="Head Name" order-by="categoryName"></th>
+					<th name="Type"></th>
+					<th name="Value"></th>
+					<th name="Percentage Of"></th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr
+					ng-repeat="salaryStruct in settingsObj.monthlySalaryStructureRules">
+
+					<td>{{ $index +1 }}</td>
+					<td><md-input-container flex layout="row">
+						<input type="text" placeholder="Enter Head name"
+							ng-model="salaryStruct.headName" ng-required="true"> </md-input-container></td>
+
+					<td><md-input-container class="md-block">
+						<label> Head Type </label> <md-select flex
+							ng-model="salaryStruct.headType"> <md-option
+							ng-value="salaryHead" ng-repeat="salaryHead in salaryHeadTypes"
+							ng-selected="(salaryStruct.headType)?(salaryStruct.headType == salaryHead):($index == 0)">{{salaryHead
+						}}</md-option> </md-select></md-input-container></td>
+
+					<td><md-input-container flex layout="row"
+							ng-hide="salaryStruct.headType=='PERCENTAGE'">
+						<input type="number" placeholder="Enter value"
+							ng-model="salaryStruct.fixedValue"> <md-icon
+							ng-hide="salaryStruct.headType=='PERCENTAGE'"
+							md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
+							ng-click="removeSalaryStructRule($index)" class="name"
+							style="color: Green; height: 18px; width: 18px"> <md-tooltip>Remove
+						Salary Rule</md-tooltip></md-icon> </md-input-container> <md-input-container flex layout="row"
+							ng-show="salaryStruct.headType=='PERCENTAGE'">
+						<input type="number" placeholder="Enter percentage"
+							ng-model="salaryStruct.percentageValue"> </md-input-container></td>
+					<td ng-show="salaryStruct.headType=='PERCENTAGE'"><md-input-container
+							flex> <label> Percentage Of </label> <md-select
+							flex ng-model="salaryStruct.percentageOfHeadName"
+							aria-label="salaryPercOfHeadName"> <md-option
+							ng-value="salaryHeadName"
+							ng-repeat="salaryHeadName in salaryHeadNames"
+							ng-selected="(salaryStruct.percentageOfHeadName)?(salaryStruct.percentageOfHeadName == salaryHeadName):($index == 0)">{{salaryHeadName
+						}}</md-option> </md-select></md-input-container> </md-input-container> <md-icon
+							md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
+							ng-click="removeSalaryStructRule($index)" class="name"
+							style="color: Green; height: 18px; width: 18px"> <md-tooltip>Remove
+						Salary Rule</md-tooltip></md-icon></td>
+
+				</tr>
+				<tr>
+					<td><md-button class="md-icon-button"
+							ng-click="addSalaryStructRule(salaryStruct)"> <ng-md-icon
+							icon="add_circle" style="fill: md-default" size="24">
+						<md-tooltip> Add New </md-tooltip></ng-md-icon> </md-button></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+
+	</div>
+	<div>
+		<h4>Deduction Heads</h4>
+		<table md-data-table md-progress="deferred">
+			<thead md-order="query.order" md-trigger="onOrderChange">
+				<tr>
+					<th name="Sr No" order-by="srNo"></th>
+					<th name="Head Name" order-by="categoryName"></th>
+					<th name="Type"></th>
+					<th name="Value"></th>
+					<th name="Percentage Of"></th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr
+					ng-repeat="deductionObj in settingsObj.monthlySalaryDeductionRules">
+
+					<td>{{ $index +1 }}</td>
+					<td><md-input-container flex layout="row">
+						<input type="text" placeholder="Enter Head name"
+							ng-model="deductionObj.headName" ng-required="true"> </md-input-container></td>
+
+					<td><md-input-container flex layout="row">
+						<label> Head Type </label> <md-select flex
+							ng-model="deductionObj.headType"> <md-option
+							ng-value="salaryHead" ng-repeat="salaryHead in salaryHeadTypes"
+							ng-selected="(deductionObj.headType)?(deductionObj.headType == salaryHead):($index == 0)">{{salaryHead
+						}}</md-option> </md-select></md-input-container></td>
+
+					<td><md-input-container flex layout="row"
+							ng-hide="deductionObj.headType=='PERCENTAGE'">
+						<input type="number" placeholder="Enter value"
+							ng-model="deductionObj.fixedValue"> <md-icon
+							md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
+							ng-click="removeDeductionRule($index)" class="name"
+							style="color: Green; height: 18px; width: 18px"
+							ng-hide="deductionObj.headType=='PERCENTAGE'"> <md-tooltip>Remove
+						Deduction Rule</md-tooltip></md-icon> </md-input-container> <md-input-container flex layout="row"
+							ng-show="deductionObj.headType=='PERCENTAGE'">
+						<input type="number" placeholder="Enter percentage"
+							ng-model="deductionObj.percentageValue"> </md-input-container></td>
+					<td ng-show="deductionObj.headType=='PERCENTAGE'"><md-input-container
+							flex> <label> Percentage Of </label> <md-select
+							flex ng-model="deductionObj.percentageOfHeadName"
+							aria-label="deductionPercOfHeadName"> <md-option
+							ng-value="deductionHeadName"
+							ng-repeat="deductionHeadName in deductionHeads track by $index"
+							ng-selected="(deductionObj.percentageOfHeadName)?(deductionObj.percentageOfHeadName == deductionHeadName):($index == 0)">{{deductionHeadName
+						}}</md-option> </md-select> </md-input-container> <md-icon
+							md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
+							ng-click="removeDeductionRule($index)" class="name"
+							style="color: Green; height: 18px; width: 18px"> <md-tooltip>Remove
+						Deduction Rule</md-tooltip></md-icon></td>
+
+				</tr>
+				<tr>
+					<td><md-button class="md-icon-button"
+							ng-click="addDeductionRule()"> <ng-md-icon
+							icon="add_circle" style="fill: md-default" size="24">
+						<md-tooltip> Add New </md-tooltip></ng-md-icon> </md-button></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+
+				</tr>
+			</tbody>
+		</table>
+
+	</div>
+</form>
+
+<md-checkbox ng-model="settingsObj.emailNotification"
+	ng-true-value="true" ng-false-value="false" aria-label="isGoogleUser">
+Email Notification</md-checkbox> <md-input-container flex="80" layout="row">
+
+<label>Email Notification List(enter comma separated email ids)</label>
+<textarea ng-model="settingsObj.emailNotificationDL" rows="2" cols="1"></textarea>
+</md-input-container>
+
+<section layout="row" layout-sm="column">
+	<md-button class="md-raised md-primary" ng-click="addSettings()">Save
+	Changes </md-button>
+</section>
+</md-content>
+
