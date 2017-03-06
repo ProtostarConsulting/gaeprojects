@@ -3,8 +3,8 @@ angular
 		.controller(
 				"setup.adduser",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
-						$mdUtil, $stateParams, $log, $filter, objectFactory, $mdMedia,
-						$mdDialog, Upload, appEndpointSF) {
+						$mdUtil, $stateParams, $log, $filter, objectFactory,
+						$mdMedia, $mdDialog, Upload, appEndpointSF) {
 
 					$scope.selectedBusiness = $stateParams.selectedBusiness ? $stateParams.selectedBusiness
 							: $scope.curuser.business;
@@ -163,9 +163,9 @@ angular
 						isLoginAllowed : true,
 						authority : [],
 						employeeDetail : {
-							department:"",
-							phone1:"",
-							phone2:"",
+							department : "",
+							phone1 : "",
+							phone2 : "",
 							bankDetail : {
 								bankName : "",
 								bankIfscCode : "",
@@ -175,7 +175,6 @@ angular
 						}
 					}
 
-				
 					$scope.adduser = function() {
 						$scope.user.business = $scope.selectedBusiness;
 						// use selection array true false value and push that
@@ -245,7 +244,7 @@ angular
 					$scope.getDepartmentList = function() {
 						var UserService = appEndpointSF.getUserService();
 						UserService.getEmpDepartments(
-								$scope.curUser.business.id).then(
+								$scope.selectedBusiness.id).then(
 								function(list) {
 									if (list.items) {
 										$scope.departmentList = list.items;
@@ -259,22 +258,4 @@ angular
 					$scope.getDepartmentList();
 					$scope.user11 = [];
 					$scope.userexist = "";
-
-					$scope.toggleRight = buildToggler('right');
-
-					function buildToggler(navID) {
-						var debounceFn = $mdUtil.debounce(function() {
-							$mdSidenav(navID).toggle().then(function() {
-								$log.debug("toggle " + navID + " is done");
-							});
-						}, 200);
-						return debounceFn;
-					}
-
-					$scope.close = function() {
-						$mdSidenav('right').close().then(function() {
-							$log.debug("close RIGHT is done");
-						});
-					};
-
 				});

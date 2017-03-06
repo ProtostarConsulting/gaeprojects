@@ -11,6 +11,16 @@
 		<property name="email_id" direction="asc" />
 		<property name="createdDate" direction="asc" />
 	</datastore-index>
+	<!-- Used 2 times in query history -->
+    <datastore-index kind="RequisitionEntity" ancestor="true" source="auto">
+        <property name="itemNumber" direction="desc"/>
+    </datastore-index>
+
+    <!-- Used 8 times in query history -->
+    <datastore-index kind="RequisitionEntity" ancestor="true" source="auto">
+        <property name="status" direction="asc"/>
+        <property name="itemNumber" direction="desc"/>
+    </datastore-index>
 	
 	<!-- Used 16 times in query history -->
 	<datastore-index kind="StockItemsReceiptEntity"
@@ -38,5 +48,9 @@
 		<property name="status" direction="asc" />
 		<property name="itemNumber" direction="desc" />
 	</datastore-index>
+	<!-- Used 2 times in query history -->
+    <datastore-index kind="BudgetEntity" ancestor="true" source="auto">
+        <property name="itemNumber" direction="desc"/>
+    </datastore-index>
 
 </datastore-indexes>

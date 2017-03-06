@@ -61,8 +61,10 @@ app
 								.then(
 										function(pagingInfoReturned) {
 											$scope.pagingInfoReturned = pagingInfoReturned;
-											$scope.purchaseOrderList = $scope.purchaseOrderList
-													.concat(pagingInfoReturned.entityList);
+											if (pagingInfoReturned.entityList) {
+												$scope.purchaseOrderList = $scope.purchaseOrderList
+														.concat(pagingInfoReturned.entityList);
+											}
 											$scope.query.totalSize = pagingInfoReturned.totalEntities;
 											$scope.query.pagesLoaded++;
 											$scope.loading = false;

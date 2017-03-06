@@ -3,7 +3,7 @@ app
 		.controller(
 				"invoiceListCtr",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
-						$mdUtil, $log, $state, $http, $stateParams,$mdColors,
+						$mdUtil, $log, $state, $http, $stateParams, $mdColors,
 						$routeParams, $filter, objectFactory, appEndpointSF) {
 
 					function reSetQuery() {
@@ -21,23 +21,10 @@ app
 							.getLoggedinUser();
 
 					$scope.updateInvoiceObj = {
-
 						id : '',
 						status : '',
 					};
 					$scope.selected = [];
-
-					$scope.getAllInvoice = function() {
-						$log.debug("Inside Ctr $scope.getAllInvoice");
-						$scope.loading = true;
-						var invoiceService = appEndpointSF.getInvoiceService();
-						invoiceService
-								.getAllInvoice($scope.curUser.business.id)
-								.then(function(invoiceList) {
-									$scope.invoiceData = invoiceList;
-									$scope.loading = false;
-								});
-					}
 
 					$scope.onpagechange = function() {
 						$location.hash('tp1');
@@ -66,8 +53,10 @@ app
 								.then(
 										function(pagingInfoReturned) {
 											$scope.pagingInfoReturned = pagingInfoReturned;
-											$scope.invoiceData = $scope.invoiceData
-													.concat(pagingInfoReturned.entityList);
+											if (pagingInfoReturned.entityList) {
+												$scope.invoiceData = $scope.invoiceData
+														.concat(pagingInfoReturned.entityList);
+											}
 											$scope.query.totalSize = pagingInfoReturned.totalEntities;
 											$scope.query.pagesLoaded++;
 											$scope.loading = false;
@@ -89,7 +78,6 @@ app
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
-							// $scope.getAllInvoice();
 							$scope.fetchEntityListByPaging();
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
