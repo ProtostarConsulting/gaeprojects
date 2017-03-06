@@ -70,9 +70,13 @@ table tr td:nth-child(1) {
 				</#if>
 				</tr>
 				<tr style="border-right: 1px solid black;  ">
-				<#if totalClosingStockBalance gt 0>
 				<th colspan="2"style="border: 0px;"></th>
 				<td colspan="1"style="border: 0px;"></td>
+				<#if totalGrossLoss gt 0>
+				<th colspan="2"style="border: 0px;">Gross Loss</th>
+				<td colspan="1"style="border: 0px;">${totalGrossLoss}</td>
+				</#if>
+				<#if totalClosingStockBalance gt 0>
 				<th colspan="2"style="border: 0px;">Closing Stock</th>
 				<td colspan="1"style="border: 0px;"><b>${totalClosingStockBalance}</b></td>
 				
@@ -118,8 +122,13 @@ table tr td:nth-child(1) {
 			
 			
 			<tr>
+			<#if totalGrossProfit gt 0>
 				<th colspan="2"style="border: 0px;" >Gross Profit c/o</th>
 				<td colspan="1"><b>${totalGrossProfit}</b></td>
+				
+				</#if>
+				
+				
 				<th colspan="2"style="border: 0px;" ></th>
 				<td colspan="1"><b></b></td>
 			</tr>
@@ -134,8 +143,10 @@ table tr td:nth-child(1) {
 			<tr>
 				<th colspan="2"style="border: 0px;" >Indirect Expence</th>
 				<td colspan="1" ><b>${totalIndirectExpences}</b></td>
+				<#if totalGrossProfit gt 0>
 				<th colspan="2" style="border: 0px;">Gross Profit c/o</th>
 				<td colspan="1"><b>${totalGrossProfit}</b></td>
+				</#if>
 			</tr>
 
 
@@ -160,8 +171,15 @@ table tr td:nth-child(1) {
 						</td>
 		</tr>
 <tr>
+<#if nettLoss gt 0>
+				<th colspan="2"style="border: 0px;" >Nett Loss</th>
+				<td colspan="1"><b>${nettLoss}</b></td>
+				
+				</#if>
+<#if nettProfit gt 0>				
 <th colspan="2"style="border: 0px;"><i>Nett Profit</i></th>
 <td colspan="1" ><b>${nettProfit}</b></td>
+</#if>
 </tr>
 
 <tr>
@@ -170,11 +188,29 @@ table tr td:nth-child(1) {
 
 <th style="right;border: 0px;"><b></b></th>
 <td colspan="1" style="border: 0px;"><b></b></td>
-</tr>	<tr>
+</tr>
+	<tr>
+
 				<th colspan="2"style="border: 0px;" >Total</th>
+				<#if totalGrossProfit gt 0>
 				<td colspan="1"><b>${totalGrossProfit}</b></td>
+				</#if>
+				<#if nettLoss gt 0>
+				<td colspan="1"><b>${nettLoss}</b></td>
+				</#if>
+				
+				<#if totalGrossProfit<=0 && nettLoss<=0>
+				<th colspan="2"style="border: 0px;"></th>
+				<td colspan="1" ><b></b></td>						
+				</#if>
+				
 				<th colspan="2"style="border: 0px;" >Total</th>
+				<#if totalGrossProfit gt 0>
 				<td colspan="1"><b>${totalGrossProfit}</b></td>
+				</#if>
+				<#if nettLoss gt 0>
+				<td colspan="1"><b>${nettLoss}</b></td>
+				</#if>
 				
 				
 			</tr>
