@@ -172,7 +172,9 @@
 
 						<td><md-input-container flex> <label>Qty
 							</label> <input type="number" ng-model="item.qty"
-								ng-change="calProductSubTotal()" ng-required="true"> </md-input-container></td>
+								ng-change="calProductSubTotal()" ng-required="true">
+							<div>{{item.stockItem.stockItemType.unit}}</div>
+							</md-input-container></td>
 						<td><md-input-container flex> <label>Purchase
 								Price </label> <input type="number" ng-model="item.price"
 								ng-change="calProductSubTotal()" aria-label="iprice"

@@ -1,7 +1,8 @@
 <md-content layout-padding>
 <section id="pagetoolbar" layout="row" layout-xs="column">
 	<md-subheader class="md-primary">
-	<h4 class="md-title">Add New Tax</h4>
+	<h4 class="md-title">{{selectedTax.id?'Update Tax': 'Add New
+		Tax'}}</h4>
 	</md-subheader>
 	<span flex> </span>
 	<div hide-xs>
@@ -13,40 +14,39 @@
 	<div>
 		<div layout="row" layout-xs="column">
 			<md-input-container flex> <label>Code
-				Name 
-			</label> <input name="taxName" ng-model="tax.taxCodeName"
-				 ng-required="true">
+				Name </label> <input name="taxName" ng-model="selectedTax.taxCodeName"
+				ng-required="true">
 			<div ng-messages="taxForm.taxName.$error"
 				ng-if="taxForm.taxName.$submitted || taxForm.taxName.$touched">
-				<div ng-message="required">Please Enter Tax Name(Example.:LBT)</div>
+				<div ng-message="required">Please Enter Tax Name(Example.:GST
+					12.50)</div>
 
-<!-- 				<span class="help-block"
+				<!-- 				<span class="help-block"
 					ng-show="((taxForm.taxName.$error.pattern) &&  taxForm.taxName.$dirty) ">Tax
 					Name should be text only.(Example.:abc)</span>
- -->			</div>
+ -->
+			</div>
 			</md-input-container>
 			<md-input-container flex> <label>Tax
-				Rate 
-			</label> <input type="number" name="taxPercenatge"
-				ng-model="tax.taxPercenatge" ng-required="true">
+				Rate </label> <input type="number" name="taxPercenatge"
+				ng-model="selectedTax.taxPercenatge" ng-required="true">
 			<div ng-messages="taxForm.taxPercenatge.$error"
-				ng-if="taxForm.taxPercenatge.$submitted || taxForm.taxPercenatge.$touched">
+				ng-if="taxForm.taxPercenatge.$touched">
 				<div ng-message="required">Please Enter Tax in
 					Percentage(Example.:12)</div>
-
-
-				<span class="help-block"
-					ng-show="((taxForm.taxPercenatge.$error.minlength || taxForm.taxPercenatge.$error.maxlength) && taxForm.taxPercenatge.$dirty) ">Tax
-					Percenatge should be 2 digits only(Example.:01)</span>
 			</div>
 			</md-input-container>
 		</div>
+		<label>Tax Visibility </label>
+		<md-checkbox ng-model="selectedTax.active" aria-label="active"
+			ng-true-value="true" ng-false-value="false" id="changer">
+		</md-checkbox>
 
-		
-			<section layout="row" layout-sm="column" layout-align="left left">
-				<md-button class="md-raised md-primary"
-					ng-disabled="taxForm.$invalid" ng-click="addTax()">Submit</md-button>
-			</section>
-		</div>
+		<section layout="row" layout-sm="column" layout-align="left left">
+			<md-button class="md-raised md-primary" ng-click="cancelUpdate()">Back</md-button>
+			<md-button class="md-raised md-primary"
+				ng-disabled="taxForm.$invalid" ng-click="addTax()">Submit</md-button>
+		</section>
+	</div>
 </form>
 </md-content>

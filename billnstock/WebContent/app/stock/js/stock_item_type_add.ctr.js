@@ -15,6 +15,7 @@ angular
 						return {
 							id : "",
 							itemName : "",
+							unit:"nos",
 							category : "",						
 							createdDate : new Date(),
 							modifiedDate : new Date(),

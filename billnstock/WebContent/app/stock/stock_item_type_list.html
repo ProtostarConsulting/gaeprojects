@@ -23,6 +23,7 @@
 			<tr>
 				<th name="Item No" order-by="itemNumber"></th>
 				<th name="Item Name" order-by="itemName"></th>
+				<th name="Units of Measure" order-by="unit"></th>
 				<th name="Category" order-by="category"></th>
 				<th name="Actions"></th>
 			</tr>
@@ -33,6 +34,7 @@
 				ng-repeat="stockItem in stockItemList | orderBy: query.order| filter: searchText | limitTo: query.limit: (query.page - 1) * query.limit">
 				<td>{{stockItem.itemNumber}}</td>
 				<td>{{stockItem.itemName}}</td>
+				<td>{{stockItem.unit}}</td>
 				<td>{{stockItem.category}}</td>
 				<td><md-button class="md-icon-button"
 						ui-sref="stock.stockItemTypeAdd({selectedStockItem: stockItem})">

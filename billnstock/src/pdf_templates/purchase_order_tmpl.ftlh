@@ -193,7 +193,7 @@ td {
 			</#if>	
 			<tr>
 			<td style="font-size:10px;" align="center">${lineItem.stockItem.stockItemType.itemName}</td>
-			<td style="font-size:10px;" align="center">${lineItem.qty}</td>
+			<td style="font-size:10px;" align="center">${lineItem.qty} <#if lineItem.stockItem.stockItemType.unit??>${lineItem.stockItem.stockItemType.unit}</#if>	</td>
 			<td style="font-size:10px;" align="right">${lineItem.price?string["0.00"]}</td>			
 			<td style="font-size:10px;" align="right">${subTotal?string["0.00"]}</td>
 			<td style="font-size:10px;" align="center">${taxCodeName}</td>

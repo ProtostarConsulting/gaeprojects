@@ -1,5 +1,8 @@
 package com.protostar.billingnstock.hr.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
@@ -10,11 +13,12 @@ import com.protostar.billnstock.entity.BaseEntity;
 
 @Cache
 @Entity
-public class LeaveMasterEntity extends BaseEntity {
+public class EmpSalMaster extends BaseEntity {
+
+	private List<EmpSalaryHead> monthlySalaryHeads = new ArrayList<EmpSalaryHead>();
 	@Index
 	private Ref<UserEntity> user;
-	private float balance;
-	
+
 	@OnSave
 	public void beforeSave() {
 		super.beforeSave();
@@ -32,11 +36,11 @@ public class LeaveMasterEntity extends BaseEntity {
 		this.user = Ref.create(user);
 	}
 
-	public float getBalance() {
-		return balance;
+	public List<EmpSalaryHead> getMonthlySalaryHeads() {
+		return monthlySalaryHeads;
 	}
 
-	public void setBalance(float balance) {
-		this.balance = balance;
+	public void setMonthlySalaryHeads(List<EmpSalaryHead> monthlySalaryHeads) {
+		this.monthlySalaryHeads = monthlySalaryHeads;
 	}
 }

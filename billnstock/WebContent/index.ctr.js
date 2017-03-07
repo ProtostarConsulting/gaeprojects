@@ -59,7 +59,9 @@ angular
 					$scope.orderByAuthOrderValue = function(auth) {
 						return Number(auth.orderNumber);
 					}
+					
 					$scope.login = function() {
+						$scope.loading = true;
 						$scope.loginMsg = "";
 						var UserService = appEndpointSF.getUserService();
 						UserService
@@ -68,6 +70,7 @@ angular
 								.then(
 										function(result) {
 											if (result.items) {
+												$scope.loading = false;
 												if (result.items.length > 1) {
 													$scope.multiUsers = result.items;
 													$state
@@ -97,6 +100,7 @@ angular
 												}
 
 											} else {
+												$scope.loading = false;
 												$log.debug("User Not logged  "
 														+ $scope.user.email_id);
 												$scope.loginMsg = "Authontication failed. Username/Password did not match.";
@@ -119,6 +123,7 @@ angular
 						getUserAuthTree();
 						// finally go to home...
 						$log.debug("Forwarding to home page...");
+						$scope.loading = false;
 						$state.go("home");
 					}
 					$scope.multiBizSelectUser = function(multiBizSelectedUser) {
@@ -206,6 +211,7 @@ angular
 							.$on(
 									'event:google-plus-signin-success',
 									function(event, authResult) {
+										$scope.loading = true;
 										// User successfully authorized the G+
 										// App!
 										$log.debug('Signed in!');
@@ -229,6 +235,7 @@ angular
 										if ($scope.curUser) {
 											// call is comming here twice. Hence
 											// needed
+											$scope.loading = false;
 											$log
 													.debug("Outside: curUser is alrady init. Returning back....");
 											return;
@@ -248,12 +255,14 @@ angular
 																// comming here
 																// twice. Hence
 																// needed
+																$scope.loading = false;
 																$log
 																		.debug("Inside: curUser is alrady init. Returning back....");
 																return;
 															}
 															$log
 																	.debug("Going ahead with call init inside getUserByEmailID....");
+															$scope.loading = false;
 															if (loggedInUserList.items.length > 1) {
 																$scope.multiUsers = loggedInUserList.items;
 																angular

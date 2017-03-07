@@ -351,7 +351,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	}).state('stock.taxadd', {
 		url : "/tax/taxadd",
 		templateUrl : '/app/tax/tax_add.html',
-		controller : 'taxCtr'
+		controller : 'taxCtr',
+		params : {
+			selectedTax : null
+		}
 	}).state('stock.taxlist', {
 		url : "/tax/taxlist",
 		templateUrl : '/app/tax/tax_list.html',

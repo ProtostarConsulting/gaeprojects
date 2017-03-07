@@ -1,103 +1,76 @@
-angular.module("stockApp").controller(
-		"taxCtr",
-		function($scope, $window, $mdToast, $timeout, $mdSidenav, $mdUtil,
-				$log, objectFactory, appEndpointSF) {
+angular
+		.module("stockApp")
+		.controller(
+				"taxCtr",
+				function($scope, $window, $mdToast, $timeout, $mdSidenav,
+						$mdUtil, $log, $stateParams, objectFactory,
+						appEndpointSF) {
 
-			$log.debug("Inside taxCtr");
+					$scope.query = {
+						order : 'taxCodeName',
+						limit : 50,
+						page : 1
+					};
 
-			$scope.query = {
-				order : 'name',
-				limit : 5,
-				page : 1
-			};
+					$scope.curUser = appEndpointSF.getLocalUserService()
+							.getLoggedinUser();
 
-			$scope.curUser = appEndpointSF.getLocalUserService()
-					.getLoggedinUser();
-			$log.debug("$scope.curUser++++++++"
-					+ angular.toJson($scope.curUser));
+					function newTax() {
+						return {
+							taxCodeName : '',
+							taxPercenatge : '',
+							active : true,
+							business : ""
+						}
+					}
 
-			$scope.tax = {
-				taxCodeName : '',
-				taxPercenatge : '',
-				active : true,
-				business : ""
-			}
+					$scope.taxList = [];
+					$scope.selectedTax = $stateParams.selectedTax ? $stateParams.selectedTax
+							: newTax();
 
-			$scope.addTax = function() {
-				$log.debug("No1");
-				$scope.tax.business = $scope.curUser.business;
+					$scope.addTax = function() {
+						$scope.selectedTax.business = $scope.curUser.business;
+						var taxService = appEndpointSF.getTaxService();
+						taxService.addTax($scope.selectedTax).then(
+								function(msgBean) {
+									if ($scope.selectedTax.id) {
+										$scope.showUpdateToast();										
+									} else {
+										$scope.showAddToast();
+										$scope.selectedTax = newTax();
+										resetTaxForm();
+									}
+								});
 
-				var taxService = appEndpointSF.getTaxService();
+					}
 
-				taxService.addTax($scope.tax).then(function(msgBean) {
-					
-				});
-				$scope.showAddToast();
+					$scope.getAllTaxes = function() {
+						var taxService = appEndpointSF.getTaxService();
+						taxService.getAllTaxes($scope.curUser.business.id)
+								.then(function(taxList) {
+									$scope.taxList = taxList;
+								});
+					}
 
-				$scope.taxForm.$setPristine();
-				$scope.taxForm.$setValidity();
-				$scope.taxForm.$setUntouched();
-				$scope.tax = {};
-			}
-
-			$scope.getAllTaxes = function() {
-				$log.debug("Inside Ctr $scope.getAllTaxes");
-				var taxService = appEndpointSF.getTaxService();
-
-				taxService.getAllTaxes($scope.curUser.business.id).then(
-						function(taxList) {
-							$scope.taxData = taxList;
-							$log.debug("Inside Ctr $scope.taxData:"
-									+ angular.toJson($scope.taxData));
-						});
-			}
-
-			$scope.waitForServiceLoad = function() {
-				if (appEndpointSF.is_service_ready) {
-					$scope.getAllTaxes();
-				} else {
-					$log.debug("Services Not Loaded, watiting...");
-					$timeout($scope.waitForServiceLoad, 1000);
-				}
-			}
-			$scope.taxData = [];
-			$scope.waitForServiceLoad();
-
-			$scope.selected = [];
-
-			$scope.updateTax = function() {
-				var taxService = appEndpointSF.getTaxService();
-
-				taxService.updateTax($scope.selected[0]).then(
-						function(msgBean) {
-							$scope.showUpdateToast();
+					$scope.waitForServiceLoad = function() {
+						if (appEndpointSF.is_service_ready) {
 							$scope.getAllTaxes();
-						});
-				$scope.taxForm.$setPristine();
-				$scope.taxForm.$setValidity();
-				$scope.taxForm.$setUntouched();
-				$scope.selected[0] = "";
-			}
+						} else {
+							$log.debug("Services Not Loaded, watiting...");
+							$timeout($scope.waitForServiceLoad, 1000);
+						}
+					}
 
-			$scope.cancelUpdate = function() {
-				$scope.selected = [];
-			}
+					$scope.waitForServiceLoad();
 
-			// Setup menu
-			$scope.toggleRight = buildToggler('right');
+					function resetTaxForm() {
+						$scope.taxForm.$setPristine();
+						$scope.taxForm.$setValidity();
+						$scope.taxForm.$setUntouched();
+						$scope.selected = [];
+					}
 
-			function buildToggler(navID) {
-				var debounceFn = $mdUtil.debounce(function() {
-					$mdSidenav(navID).toggle().then(function() {
-						$log.debug("toggle " + navID + " is done");
-					});
-				}, 200);
-				return debounceFn;
-			}
-
-			$scope.close = function() {
-				$mdSidenav('right').close().then(function() {
-					$log.debug("close RIGHT is done");
+					$scope.cancelUpdate = function() {
+						$scope.back();
+					}
 				});
-			};
-		});

@@ -18,6 +18,8 @@ public class StockItemTypeEntity extends BaseEntity {
 	private String itemName;
 	@Index
 	private String category;
+	@Index
+	private String unit;
 	private boolean maintainStockBySerialNumber = false;
 	private Ref<TaxEntity> selectedTaxItem;
 
@@ -64,6 +66,14 @@ public class StockItemTypeEntity extends BaseEntity {
 	public void setMaintainStockBySerialNumber(
 			boolean maintainStockBySerialNumber) {
 		this.maintainStockBySerialNumber = maintainStockBySerialNumber;
+	}
+
+	public String getUnit() {
+		return unit;
+	}
+
+	public void setUnit(String unit) {
+		this.unit = unit;
 	}
 
 }

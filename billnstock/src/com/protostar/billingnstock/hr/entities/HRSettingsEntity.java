@@ -3,9 +3,11 @@ package com.protostar.billingnstock.hr.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.protostar.billnstock.entity.BaseEntity;
 
+@Cache
 @Entity
 public class HRSettingsEntity extends BaseEntity {
 
