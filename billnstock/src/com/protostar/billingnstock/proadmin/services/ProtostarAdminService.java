@@ -213,8 +213,8 @@ public class ProtostarAdminService {
 	}
 
 	public BusinessPlanType getFreeBusinessPlan() {
-		List<BusinessPlanType> accountList = ofy().load().type(BusinessPlanType.class).filter("planType", PlanType.FREE)
-				.list();
+		List<BusinessPlanType> accountList = ofy().transactionless().load().type(BusinessPlanType.class)
+				.filter("planType", PlanType.FREE).list();
 		if (accountList.size() > 0) {
 			return accountList.get(0);
 		}

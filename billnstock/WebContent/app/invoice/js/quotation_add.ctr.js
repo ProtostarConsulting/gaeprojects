@@ -83,6 +83,15 @@ app
 
 									});
 
+							/*for (var i = 1; i < 100; i++) {
+								quotationObj.invoiceObj.noteToCustomer = "Adding with i:"
+										+ i;
+								quotationObj.invoiceObj.finalTotal = 100 + i;
+								InvoiceService.addQuotation(quotationObj).then(
+										function(msgBean) {
+										});
+							}*/
+
 						}
 					}
 
@@ -117,24 +126,24 @@ app
 					};
 
 					$scope.toggleServices = function() {
-						$scope.settingsObj.showDefaultServiceItems =!$scope.settingsObj.showDefaultServiceItems
+						$scope.settingsObj.showDefaultServiceItems = !$scope.settingsObj.showDefaultServiceItems
 						$scope.invoiceObj.serviceLineItemList = [];
 						if ($scope.settingsObj.showDefaultServiceItems) {
 							$scope.addServiceLineItem();
 						}
 						$scope.calServiceSubTotal();
 					};
-					
-					$scope.toggleProducts = function() {						
+
+					$scope.toggleProducts = function() {
 						$scope.settingsObj.showDefaultProductItems = !$scope.settingsObj.showDefaultProductItems;
 						$scope.invoiceObj.productLineItemList = [];
 						if ($scope.settingsObj.showDefaultProductItems) {
 							$scope.addProductLineItem();
-						}					
+						}
 						$scope.calProductSubTotal();
 					};
 
-					$scope.productLineItemChangedEventFn = function(){
+					$scope.productLineItemChangedEventFn = function() {
 						$scope.productLineItemChangedEvent = true;
 					}
 					$scope.productLineItemChanged = function(selectedLineItem) {
@@ -293,13 +302,13 @@ app
 						window.open("PrintPdfInvoice?bid=" + bid
 								+ "&invoiceId=" + invoiceId);
 					}
-					
 
 					$scope.getAllStockItems = function() {
 						$scope.loading = true;
 						var stockService = appEndpointSF.getStockService();
-						stockService.getAllStockItems($scope.curUser.business.id)
-								.then(function(stockList) {
+						stockService.getAllStockItems(
+								$scope.curUser.business.id).then(
+								function(stockList) {
 									$scope.stockItemList = stockList;
 									$scope.loading = false;
 								});
@@ -351,22 +360,35 @@ app
 								.then(
 										function(settingsList) {
 											$scope.settingsObj = settingsList;
-											$scope.invoiceObj.noteToCustomer = $scope.settingsObj.noteToCustomer;
-											if ($scope.settingsObj.showDefaultServiceItems
-													&& !$scope.invoiceObj.id) {
-												$scope.addServiceLineItem();
-											}
-											if ($scope.settingsObj.showDefaultProductItems
-													&& !$scope.invoiceObj.id) {
-												$scope.addProductLineItem();
+											if ($scope.invoiceObj.id) {
+												if ($scope.invoiceObj.serviceLineItemList
+														&& $scope.invoiceObj.serviceLineItemList.length) {
+													$scope.settingsObj.showDefaultServiceItems = true;
+												}
+
+												if ($scope.invoiceObj.productLineItemList
+														&& $scope.invoiceObj.productLineItemList.length) {
+													$scope.settingsObj.showDefaultProductItems = true;
+												}
+											} else {
+												$scope.invoiceObj.noteToCustomer = $scope.settingsObj.noteToCustomer;
+												$scope.invoiceObj.paymentNotes = $scope.settingsObj.paymentNotes;
+												$scope.invoiceObj.termsAndConditions = $scope.settingsObj.termsAndConditions;
+
+												if ($scope.settingsObj.showDefaultServiceItems) {
+													$scope.addServiceLineItem();
+												}
+
+												if ($scope.settingsObj.showDefaultProductItems) {
+													$scope.addProductLineItem();
+												}
 											}
 										});
 					}
 
 					$scope.querySearch = function(query) {
 						var results = query ? $scope.customerList
-								.filter(createFilterFor(query))
-								: [];
+								.filter(createFilterFor(query)) : [];
 						var deferred = $q.defer();
 						$timeout(function() {
 							deferred.resolve(results);

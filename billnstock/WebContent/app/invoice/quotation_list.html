@@ -25,7 +25,7 @@
 			<tr>
 				<th name="Quotaion No" order-by="itemNumber"></th>
 				<th name="Customer Name" order-by="customer.companyName"></th>
-				<th name="Final Total" order-by="finalTotal"></th>
+				<th name="Final Total" order-by="invoiceObj.finalTotal"></th>
 				<th name="Action"></th>
 			</tr>
 		</thead>
@@ -50,9 +50,6 @@
 						Print Quotation</md-tooltip></ng-md-icon></md-button>
 					</section>
 				</td>
-
-
-
 			</tr>
 		</tbody>
 	</table>

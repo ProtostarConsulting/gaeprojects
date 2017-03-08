@@ -13,12 +13,16 @@ import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
+import com.googlecode.objectify.TxnType;
+import com.googlecode.objectify.Work;
 import com.protostar.billingnstock.cust.entities.Customer;
 import com.protostar.billingnstock.invoice.entities.InvoiceEntity;
 import com.protostar.billingnstock.invoice.entities.InvoiceSettingsEntity;
 import com.protostar.billingnstock.invoice.entities.QuotationEntity;
 import com.protostar.billingnstock.stock.services.StockManagementService;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
+import com.protostar.billingnstock.warehouse.entities.WarehouseEntity;
+import com.protostar.billingnstock.warehouse.services.WarehouseService;
 import com.protostar.billnstock.service.BaseService;
 import com.protostar.billnstock.until.data.Constants;
 import com.protostar.billnstock.until.data.Constants.DocumentStatus;
@@ -129,16 +133,35 @@ public class InvoiceService extends BaseService {
 	@ApiMethod(name = "addQuotation", path = "addQuotation")
 	public QuotationEntity addQuotation(QuotationEntity quotationEntity) {
 
-		if (quotationEntity.getId() == null) {
-			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
-					EntityUtil.getBusinessRawKey(quotationEntity.getBusiness()), Constants.QUOTATION_NO_COUNTER);
-			int nextSequenceNumber = sequenceGenService.getNextSequenceNumber();
-			quotationEntity.setItemNumber(nextSequenceNumber);
-			quotationEntity.getInvoiceObj().setItemNumber(nextSequenceNumber);
-		}
+		return ofy().execute(TxnType.REQUIRED, new Work<QuotationEntity>() {
 
-		ofy().save().entity(quotationEntity).now();
-		return quotationEntity;
+			private QuotationEntity quotationEntity;
+
+			private Work<QuotationEntity> init(QuotationEntity quotationEntity) {
+				this.quotationEntity = quotationEntity;
+				return this;
+			}
+
+			public QuotationEntity run() {
+				if (quotationEntity.getId() == null) {
+					WarehouseService warehouseService = new WarehouseService();
+					WarehouseEntity defaultWarehouse = warehouseService
+							.getDefaultWarehouseByBizId(quotationEntity.getBusiness().getId());
+					quotationEntity.getInvoiceObj().setFromWH(defaultWarehouse);
+					SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
+							EntityUtil.getBusinessRawKey(quotationEntity.getBusiness()),
+							Constants.QUOTATION_NO_COUNTER);
+					int nextSequenceNumber = sequenceGenService.getNextSequenceNumber();
+					quotationEntity.setItemNumber(nextSequenceNumber);
+					quotationEntity.getInvoiceObj().setItemNumber(nextSequenceNumber);
+					// This is needed, else it increments invoice id
+					quotationEntity.getInvoiceObj().setId(new Long(nextSequenceNumber));
+				}
+
+				ofy().save().entity(quotationEntity).now();
+				return quotationEntity;
+			}
+		}.init(quotationEntity));
 	}
 
 	@ApiMethod(name = "getQuotationByID", path = "getQuotationByID")

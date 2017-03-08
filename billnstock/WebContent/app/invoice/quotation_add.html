@@ -64,20 +64,20 @@
 			<h3 layout="row" layout-align="start center">
 				Service Line Items
 				<md-button
-					ng-show="settingsObj.showDefaultServiceItems || invoiceObj.serviceLineItemList"
+					ng-show="settingsObj.showDefaultServiceItems"
 					class="md-icon-button" id="toremove" ng-click="toggleServices()">
 				<ng-md-icon icon="remove_circle_outline" style="fill: md-default"
 					size="24"> <md-tooltip>Remove Service
 				Line Items</md-tooltip></ng-md-icon></md-button>
 				<md-button
-					ng-hide="settingsObj.showDefaultServiceItems || invoiceObj.serviceLineItemList"
+					ng-hide="settingsObj.showDefaultServiceItems"
 					class="md-icon-button" id="toshow" ng-click="toggleServices()">
 				<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
 				<md-tooltip>Add Service Line Items</md-tooltip></ng-md-icon></md-button>
 			</h3>
 
 			<div
-				ng-show="settingsObj.showDefaultServiceItems || invoiceObj.serviceLineItemList">
+				ng-show="settingsObj.showDefaultServiceItems">
 				<table md-data-table md-progress="deferred">
 					<thead md-order="query.order" md-trigger="onOrderChange">
 						<tr>
@@ -172,19 +172,19 @@
 			<h3 layout="row" layout-align="start center">
 				Product Line Items
 				<md-button
-					ng-show="settingsObj.showDefaultProductItems || invoiceObj.productLineItemList"
+					ng-show="settingsObj.showDefaultProductItems"
 					class="md-icon-button" id="toremove" ng-click="toggleProducts()">
 				<ng-md-icon icon="remove_circle_outline" style="fill: md-default"
 					size="24"> <md-tooltip>Remove Product
 				Line Items</md-tooltip></ng-md-icon></md-button>
 				<md-button
-					ng-hide="settingsObj.showDefaultProductItems || invoiceObj.productLineItemList"
+					ng-hide="settingsObj.showDefaultProductItems"
 					class="md-icon-button" id="toshow" ng-click="toggleProducts()">
 				<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
 				<md-tooltip>Add Product Line Items</md-tooltip></ng-md-icon></md-button>
 			</h3>
 			<div
-				ng-show="settingsObj.showDefaultProductItems || invoiceObj.productLineItemList">
+				ng-show="settingsObj.showDefaultProductItems">
 				<table md-data-table md-progress="deferred">
 					<thead md-order="query.order" md-trigger="onOrderChange">
 						<tr>

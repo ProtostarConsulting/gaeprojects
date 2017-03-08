@@ -72,7 +72,7 @@ public class SequenceGeneratorShardedService {
 	/**
 	 * Default number of shards.
 	 */
-	private static final int INITIAL_SHARDS = 5;
+	private static final int INITIAL_SHARDS = 15;
 
 	/**
 	 * Cache duration for memcache.
@@ -137,7 +137,11 @@ public class SequenceGeneratorShardedService {
 	 * @return Summed total of all shards' counts
 	 */
 	public final int getNextSequenceNumber() {
-		Integer value = (Integer) mc.get(kind);
+		Integer value = null;
+		synchronized (this) {
+			value = (Integer) mc.get(kind);
+			mc.increment(kind, 1);
+		}
 		if (value == null) {
 			int sum = 0;
 			Query query = new Query(kind);
@@ -164,7 +168,7 @@ public class SequenceGeneratorShardedService {
 
 		Key shardKey = KeyFactory.createKey(kind, Long.toString(shardNum));
 		incrementPropertyTx(shardKey, CounterShard.COUNT, 1, 1);
-		mc.increment(kind, 1);
+		// mc.increment(kind, 1);
 	}
 
 	/**
@@ -219,7 +223,10 @@ public class SequenceGeneratorShardedService {
 			LOG.log(Level.WARNING, e.toString(), e);
 		} finally {
 			if (tx.isActive()) {
+				mc.increment(kind, -1);
 				tx.rollback();
+				throw new RuntimeException(
+						"Could not generate unique counter. You may need more shards. Consider adding more shards.");
 			}
 		}
 	}

@@ -24,6 +24,8 @@ import com.google.api.server.spi.config.Named;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.googlecode.objectify.Key;
+import com.googlecode.objectify.TxnType;
+import com.googlecode.objectify.Work;
 import com.protostar.billingnstock.hr.entities.HREntityUtil;
 import com.protostar.billingnstock.hr.entities.HRSettingsEntity;
 import com.protostar.billingnstock.hr.services.HrService;
@@ -32,6 +34,8 @@ import com.protostar.billingnstock.proadmin.services.ProtostarAdminService;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.user.entities.EmpDepartment;
 import com.protostar.billingnstock.user.entities.UserEntity;
+import com.protostar.billingnstock.warehouse.entities.WarehouseEntity;
+import com.protostar.billingnstock.warehouse.services.WarehouseService;
 import com.protostar.billnstock.until.data.Constants;
 import com.protostar.billnstock.until.data.EntityUtil;
 import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
@@ -230,45 +234,66 @@ public class UserService {
 
 	@ApiMethod(name = "addBusiness")
 	public BusinessEntity addBusiness(BusinessEntity business) {
-		Date date = new Date();
-		String DATE_FORMAT = "dd/MM/yyyy";
-		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-		boolean isFreshBusiness = business.getId() == null;
-		if (isFreshBusiness) {
-			// Seth Basic Auths
-			if (business.getAuthorizations() == null || business.getAuthorizations().isEmpty())
-				business.setAuthorizations(Constants.NEW_BIZ_DEFAULT_AUTHS);
-			business.setCreatedDate(new Date());
-			business.setRegisterDate(sdf.format(date));
-			ProtostarAdminService protostarAdminService = new ProtostarAdminService();
-			BusinessPlanType freeBusinessPlan = protostarAdminService.getFreeBusinessPlan();
-			business.setBusinessPlan(freeBusinessPlan);
 
-		} else {
-			business.setModifiedDate(new Date());
-		}
+		return ofy().execute(TxnType.REQUIRED, new Work<BusinessEntity>() {
 
-		ofy().save().entity(business).now();
+			private BusinessEntity business;
 
-		if (isFreshBusiness) {
-			// this is being created. Perform basic configs
-			// Set default department
-			EmpDepartment defaultDepartment = new EmpDepartment();
-			defaultDepartment.setName("Default");
-			defaultDepartment.setBusiness(business);
-			defaultDepartment.setCreatedDate(new Date());
-			addEmpDepartment(defaultDepartment);
+			private Work<BusinessEntity> init(BusinessEntity business) {
+				this.business = business;
+				return this;
+			}
 
-			HrService hrservice = new HrService();
-			HRSettingsEntity hrSettingsEntity = new HRSettingsEntity();
+			public BusinessEntity run() {
+				Date date = new Date();
+				String DATE_FORMAT = "dd/MM/yyyy";
+				SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+				boolean isFreshBusiness = business.getId() == null;
+				if (isFreshBusiness) {
+					// Seth Basic Auths
+					if (business.getAuthorizations() == null || business.getAuthorizations().isEmpty())
+						business.setAuthorizations(Constants.NEW_BIZ_DEFAULT_AUTHS);
+					business.setCreatedDate(new Date());
+					business.setRegisterDate(sdf.format(date));
+					ProtostarAdminService protostarAdminService = new ProtostarAdminService();
+					BusinessPlanType freeBusinessPlan = protostarAdminService.getFreeBusinessPlan();
+					business.setBusinessPlan(freeBusinessPlan);
 
-			hrSettingsEntity.setBusiness(business);
-			hrSettingsEntity.setMonthlySalaryStructureRules(HREntityUtil.getStandardMonthlySalaryStructureRules());
-			hrSettingsEntity.setMonthlySalaryDeductionRules(HREntityUtil.getStandardMonthlySalaryDeductionRules());
-			hrservice.addHRSettings(hrSettingsEntity);
+				} else {
+					business.setModifiedDate(new Date());
+				}
 
-		}
-		return business;
+				ofy().save().entity(business).now();
+
+				if (isFreshBusiness) {
+					// this is being created. Perform basic configs
+					// Set default department
+					EmpDepartment defaultDepartment = new EmpDepartment();
+					defaultDepartment.setName(Constants.DEFAULT_EMP_DEPT);
+					defaultDepartment.setBusiness(business);
+					defaultDepartment.setCreatedDate(new Date());
+					addEmpDepartment(defaultDepartment);
+
+					HrService hrservice = new HrService();
+					HRSettingsEntity hrSettingsEntity = new HRSettingsEntity();
+
+					hrSettingsEntity.setBusiness(business);
+					hrSettingsEntity
+							.setMonthlySalaryStructureRules(HREntityUtil.getStandardMonthlySalaryStructureRules());
+					hrSettingsEntity
+							.setMonthlySalaryDeductionRules(HREntityUtil.getStandardMonthlySalaryDeductionRules());
+					hrservice.addHRSettings(hrSettingsEntity);
+
+					WarehouseService warehouseService = new WarehouseService();
+					WarehouseEntity defaultWH = new WarehouseEntity();
+					defaultWH.setBusiness(business);
+					defaultWH.setWarehouseName(Constants.DEFAULT_STOCK_WAREHOUSE);
+					warehouseService.addWarehouse(defaultWH);
+
+				}
+				return business;
+			}
+		}.init(business));
 	}
 
 	@ApiMethod(name = "getUsersByLoginAllowed", path = "getUsersByLoginAllowed")
@@ -282,15 +307,15 @@ public class UserService {
 
 	@ApiMethod(name = "getUsersByBusinessId", path = "getUsersByBusinessId")
 	public List<UserEntity> getUsersByBusinessId(@Named("id") Long id) {
-		List<UserEntity> list = ofy().load().type(UserEntity.class).ancestor(Key.create(BusinessEntity.class, id))
-				.filter("isActive", true).list();
+		List<UserEntity> list = ofy().transactionless().load().type(UserEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, id)).filter("isActive", true).list();
 		return list;
 	}
 
 	@ApiMethod(name = "getInActiveUsersByBusinessId", path = "getInActiveUsersByBusinessId")
 	public List<UserEntity> getInActiveUsersByBusinessId(@Named("id") Long id) {
-		List<UserEntity> list = ofy().load().type(UserEntity.class).ancestor(Key.create(BusinessEntity.class, id))
-				.filter("isActive", false).list();
+		List<UserEntity> list = ofy().transactionless().load().type(UserEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, id)).filter("isActive", false).list();
 		return list;
 	}
 

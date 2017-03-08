@@ -38,18 +38,17 @@ public class ExcelStockUpload extends HttpServlet {
 		// TODO Auto-generated constructor stub
 	}
 
-	private BlobstoreService blobstoreService = BlobstoreServiceFactory
-			.getBlobstoreService();
+	private BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		System.out.println("hi i m in servlet ");
 		this.doGet(request, response);
 	}
 
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
 		Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(request);
 		List<BlobKey> blobKeys = blobs.get("myFile");
@@ -68,26 +67,18 @@ public class ExcelStockUpload extends HttpServlet {
 
 				FileItemStream item = iterator.next();
 				// InputStream stream = item.openStream();
-				BlobstoreInputStream stream = new BlobstoreInputStream(
-						new BlobKey(blobKeys.get(0).getKeyString()));
+				BlobstoreInputStream stream = new BlobstoreInputStream(new BlobKey(blobKeys.get(0).getKeyString()));
 				if (item.isFormField()) {
-					System.out.println("Got a form field: "
-							+ item.getFieldName());
+					System.out.println("Got a form field: " + item.getFieldName());
 					if (item.getFieldName().equals("WareHouseID")) {
-						System.out.println("warehouse id=="
-								+ request.getParameter(item.getFieldName()));
-						if (!request.getParameter(item.getFieldName()).equals(
-								""))
-							WareHouseID = Long.parseLong(request
-									.getParameter(item.getFieldName()));
+						System.out.println("warehouse id==" + request.getParameter(item.getFieldName()));
+						if (!request.getParameter(item.getFieldName()).equals(""))
+							WareHouseID = Long.parseLong(request.getParameter(item.getFieldName()));
 					}
 					if (item.getFieldName().equals("bizID")) {
-						System.out.println("bizID id=="
-								+ request.getParameter(item.getFieldName()));
-						if (!request.getParameter(item.getFieldName()).equals(
-								""))
-							bizID = Long.parseLong(request.getParameter(item
-									.getFieldName()));
+						System.out.println("bizID id==" + request.getParameter(item.getFieldName()));
+						if (!request.getParameter(item.getFieldName()).equals(""))
+							bizID = Long.parseLong(request.getParameter(item.getFieldName()));
 					}
 				} else {
 
@@ -97,12 +88,10 @@ public class ExcelStockUpload extends HttpServlet {
 
 					int read = stream.read(fileContent);
 					// System.out.println("No of bytes read:" + read);
-					while ((len = stream.read(fileContent, 0,
-							fileContent.length)) != -1) {
+					while ((len = stream.read(fileContent, 0, fileContent.length)) != -1) {
 						// res.getOutputStream().write(fileContent, 0, len);
 					}
-					System.out.println("File content is : "
-							+ new String(fileContent));
+					System.out.println("File content is : " + new String(fileContent));
 					System.out.println("File Read is Done!!");
 					// Write code here to parse sheet of patients and upload to
 					// database
@@ -122,7 +111,6 @@ public class ExcelStockUpload extends HttpServlet {
 			try {
 				// gte business entity
 				UserService us = new UserService();
-				BusinessEntity getbusinessById = us.getBusinessById(bizID);
 				WarehouseService wc = new WarehouseService();
 				WarehouseEntity we;
 				if (WareHouseID != null) {
@@ -130,12 +118,6 @@ public class ExcelStockUpload extends HttpServlet {
 				} else {
 					// check default is allready exits
 					we = wc.getDefaultWarehouseByBizId(bizID);
-					if (we == null) {
-						we = new WarehouseEntity();
-						we.setBusiness(getbusinessById);
-						we.setWarehouseName("Default");
-						we = wc.addWarehouse(we);
-					}
 				}
 				StockManagementService ss = new StockManagementService();
 
@@ -158,11 +140,12 @@ public class ExcelStockUpload extends HttpServlet {
 
 					stockItemType.setItemName(split[0]);
 					stockItemType.setCategory(split[1]);
-					/*si.setQty(Integer.parseInt(split[2]));
-					si.setPrice(Double.parseDouble(split[3]));
-					si.setThresholdValue(Integer.parseInt(split[4]));
-					si.setBusiness(getbusinessById);
-					si.setWarehouse(we);*/
+					/*
+					 * si.setQty(Integer.parseInt(split[2]));
+					 * si.setPrice(Double.parseDouble(split[3]));
+					 * si.setThresholdValue(Integer.parseInt(split[4]));
+					 * si.setBusiness(getbusinessById); si.setWarehouse(we);
+					 */
 					ss.addStockItemType(stockItemType);
 					Thread.sleep(2000);
 
@@ -175,8 +158,7 @@ public class ExcelStockUpload extends HttpServlet {
 			}
 
 		} catch (Exception e) {
-			response.getOutputStream().print(
-					"File Uploading Failed!" + e.getMessage());
+			response.getOutputStream().print("File Uploading Failed!" + e.getMessage());
 		}
 
 	}
