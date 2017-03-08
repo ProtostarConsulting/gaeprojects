@@ -338,11 +338,12 @@ app
 								.then(
 										function(warehouseList) {
 											$scope.warehouses = warehouseList;
-											if ($scope.warehouses.length > 0) {
+											if ($scope.stockShipmentObj.fromWH == null
+													&& $scope.warehouses.length > 0) {
 												$scope.stockShipmentObj.fromWH = $scope.warehouses[0];
-												$scope
-														.filterStockItemsByWarehouse($scope.stockShipmentObj.fromWH);
 											}
+											$scope
+													.filterStockItemsByWarehouse($scope.stockShipmentObj.fromWH);
 											$scope.loading = false;
 										});
 					}

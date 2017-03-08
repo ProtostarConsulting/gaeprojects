@@ -11,6 +11,7 @@ import com.googlecode.objectify.annotation.Index;
 import com.protostar.billingnstock.cust.entities.Customer;
 import com.protostar.billingnstock.stock.entities.StockLineItem;
 import com.protostar.billingnstock.tax.entities.TaxEntity;
+import com.protostar.billingnstock.warehouse.entities.WarehouseEntity;
 import com.protostar.billnstock.entity.BaseEntity;
 import com.protostar.billnstock.until.data.Constants;
 import com.protostar.billnstock.until.data.Constants.DiscountType;
@@ -53,10 +54,16 @@ public class InvoiceEntity extends BaseEntity {
 	@Index
 	private Ref<Customer> customer;
 	private String pOrder;
+	private Ref<WarehouseEntity> fromWH;
 
 	@Override
 	public void beforeSave() {
 		super.beforeSave();
+
+		if (getFromWH() == null) {
+			throw new RuntimeException("Warehouse entity is not set on: " + this.getClass().getSimpleName()
+					+ " This is required field. Aborting save operation...");
+		}
 
 		if (this.status == DocumentStatus.FINALIZED) {
 			this.isStatusAlreadyFinalized = true;
@@ -64,10 +71,18 @@ public class InvoiceEntity extends BaseEntity {
 
 		if (getId() == null) {
 			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
-					EntityUtil.getBusinessRawKey(getBusiness()),
-					Constants.INVOICE_NO_COUNTER);
+					EntityUtil.getBusinessRawKey(getBusiness()), Constants.INVOICE_NO_COUNTER);
 			setItemNumber(sequenceGenService.getNextSequenceNumber());
 		}
+	}
+
+	public WarehouseEntity getFromWH() {
+		return this.fromWH == null ? null : this.fromWH.get();
+	}
+
+	public void setFromWH(WarehouseEntity fromWH) {
+		if (fromWH != null)
+			this.fromWH = Ref.create(fromWH);
 	}
 
 	public Customer getCustomer() {

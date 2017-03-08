@@ -133,20 +133,18 @@ public class HREntityUtil {
 		}
 
 		if (existingSalaryHead == null) {
-			existingSalaryHead = new EmpSalaryHead();		
+			existingSalaryHead = new EmpSalaryHead();
 			empSalMaster.getMonthlySalaryHeads().add(existingSalaryHead);
 		}
 		existingSalaryHead.setSalaryStructureRule(rule);
-		
+
 		if (rule.getHeadType() == SalaryHeadType.PERCENTAGE) {
-			EmpSalaryHead percentageSalaryHead = createOrUpdateSalaryHead(rule,
-					empSalMaster);
-			float newAmt = percentageSalaryHead.getAmount()
-					* (rule.getPercentageValue() / 100f);
+			EmpSalaryHead percentageSalaryHead = createOrUpdateSalaryHead(rule, empSalMaster);
+			float newAmt = percentageSalaryHead.getAmount() * (rule.getPercentageValue() / 100f);
 			// round the value of newAmt
 			newAmt = Math.round(newAmt);
 			existingSalaryHead.setAmount(newAmt);
-		}else{
+		} else {
 			existingSalaryHead.setAmount(rule.getFixedValue());
 		}
 

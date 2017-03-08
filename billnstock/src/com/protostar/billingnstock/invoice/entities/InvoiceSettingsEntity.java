@@ -11,6 +11,8 @@ public class InvoiceSettingsEntity extends BaseEntity {
 	private boolean showDefaultServiceItems = true;
 	private boolean showDefaultProductItems = false;
 
+	private boolean needInvoiceApproval = false;
+	
 	private boolean emailNotification = false;
 	private String emailNotificationDL = "";
 
@@ -72,5 +74,13 @@ public class InvoiceSettingsEntity extends BaseEntity {
 
 	public void setPaymentNotes(String paymentNotes) {
 		this.paymentNotes = paymentNotes;
+	}
+
+	public boolean isNeedInvoiceApproval() {
+		return needInvoiceApproval;
+	}
+
+	public void setNeedInvoiceApproval(boolean needInvoiceApproval) {
+		this.needInvoiceApproval = needInvoiceApproval;
 	}
 }

@@ -355,7 +355,6 @@ public class StockManagementService extends BaseService {
 					stockItemInstanceToUpdateList.addAll(invoiceLineItem.getStockItemInstanceList());
 				}
 			}
-
 		}
 		if (stockItemTxnList.size() > 0) {
 			addStockItemTxnList(stockItemTxnList, stockItemInstanceToUpdateList);

@@ -30,7 +30,9 @@ app
 							isPaid : false,
 							isDraft : false,
 							paidDate : null,
-							business : null
+							business : null,
+							fromWH : null,
+							status : 'DRAFT'
 						};
 					}
 
@@ -64,7 +66,64 @@ app
 
 						}
 					}
+					$scope.submitInvoice = function(ev) {
+						$scope.invoiceObj.status = 'SUBMITTED';
+						$scope.addInvoice();
+					}
+					$scope.finalizeInvoice = function(ev) {
+						var confirm = $mdDialog
+								.confirm()
+								.title(
+										'Do you want to finalize this Invoice? Note, after this you will not be able to make any changes in this document.')
+								.textContent('').ariaLabel('finalize?')
+								.targetEvent(ev).ok('Yes').cancel('No');
 
+						$mdDialog.show(confirm).then(function() {
+							$log.debug("Inside Yes, function");
+							$scope.invoiceObj.status = 'FINALIZED';
+							$scope.invoiceObj.approvedBy = $scope.curUser;
+							$scope.addInvoice();
+						}, function() {
+							$log.debug("Cancelled...");
+						});
+					}
+
+					$scope.filterStockItemsByWarehouse = function(
+							selectedWarehouse) {
+						$scope.loading = true;
+						$scope.selectedWarehouse = selectedWarehouse;
+						var stockService = appEndpointSF.getStockService();
+
+						stockService.filterStockItemsByWarehouse(
+								$scope.selectedWarehouse).then(
+								function(stockList) {
+									$scope.stockItemList = stockList;
+									$scope.loading = false;
+								});
+					}
+
+					$scope.getAllWarehouseByBusiness = function() {
+						$log
+								.debug("Inside function $scope.getAllWarehouseByBusiness");
+						$scope.loading = true;
+						var warehouseService = appEndpointSF
+								.getWarehouseManagementService();
+
+						warehouseService
+								.getAllWarehouseByBusiness(
+										$scope.curUser.business.id)
+								.then(
+										function(warehouseList) {
+											$scope.warehouses = warehouseList;
+											if ($scope.invoiceObj.fromWH == null
+													&& $scope.warehouses.length > 0) {
+												$scope.invoiceObj.fromWH = $scope.warehouses[0];
+											}
+											$scope
+													.filterStockItemsByWarehouse($scope.invoiceObj.fromWH);
+											$scope.loading = false;
+										});
+					}
 					$scope.addServiceLineItem = function() {
 						var item = {
 							isProduct : false,
@@ -97,20 +156,37 @@ app
 
 					$scope.toggleServices = function() {
 						$scope.settingsObj.showDefaultServiceItems = !$scope.settingsObj.showDefaultServiceItems
-						$scope.invoiceObj.serviceLineItemList = [];
+						$scope.invoiceObj.serviceLineItemList = null;
+						$scope.invoiceObj.selectedServiceTax = null;
+
 						if ($scope.settingsObj.showDefaultServiceItems) {
 							$scope.addServiceLineItem();
 						}
-						$scope.calServiceSubTotal();
+						$scope.reCalculateTotal();
 					};
+
+					$scope.reCalculateTotal = function() {
+						$scope.serviceTaxChanged();
+						$scope.productTaxChanged();
+						$scope.calServiceSubTotal();
+						$scope.calProductSubTotal();
+						// This is needed as tax and sub-totals depend on each
+						// other
+						$scope.serviceTaxChanged();
+						$scope.productTaxChanged();
+
+						$scope.calfinalTotal();
+					}
 
 					$scope.toggleProducts = function() {
 						$scope.settingsObj.showDefaultProductItems = !$scope.settingsObj.showDefaultProductItems;
-						$scope.invoiceObj.productLineItemList = [];
+						$scope.invoiceObj.productLineItemList = null;
+						$scope.invoiceObj.selectedProductTax = null;
+
 						if ($scope.settingsObj.showDefaultProductItems) {
 							$scope.addProductLineItem();
 						}
-						$scope.calProductSubTotal();
+						$scope.reCalculateTotal();
 					};
 
 					$scope.productLineItemChangedEventFn = function() {
@@ -121,7 +197,7 @@ app
 							selectedLineItem.price = selectedLineItem.stockItem.price;
 							$scope.productLineItemChangedEvent = null;
 						}
-						$scope.calProductSubTotal();
+						$scope.reCalculateTotal();
 					};
 
 					$scope.calProductSubTotal = function() {
@@ -131,14 +207,12 @@ app
 								var lineItem = $scope.invoiceObj.productLineItemList[i];
 								$scope.invoiceObj.productSubTotal += (lineItem.qty * lineItem.price);
 							}
-
-							$scope.productTaxChanged();
 						}
 					}
 
 					$scope.serviceLineItemChanged = function(selectedLineItem) {
 						selectedLineItem.price = selectedLineItem.stockItem.price;
-						$scope.calServiceSubTotal();
+						$scope.reCalculateTotal();
 					};
 
 					$scope.calServiceSubTotal = function() {
@@ -148,8 +222,6 @@ app
 								var lineItem = $scope.invoiceObj.serviceLineItemList[i];
 								$scope.invoiceObj.serviceSubTotal += (lineItem.qty * lineItem.price);
 							}
-
-							$scope.serviceTaxChanged();
 						}
 					}
 
@@ -162,7 +234,6 @@ app
 						}
 						$scope.invoiceObj.serviceTotal = $scope.invoiceObj.serviceSubTotal
 								+ $scope.invoiceObj.serviceTaxTotal;
-						$scope.calfinalTotal();
 					};
 
 					$scope.productTaxChanged = function() {
@@ -175,7 +246,6 @@ app
 						}
 						$scope.invoiceObj.productTotal = $scope.invoiceObj.productSubTotal
 								+ $scope.invoiceObj.productTaxTotal;
-						$scope.calfinalTotal();
 					}
 
 					$scope.calfinalTotal = function() {
@@ -238,9 +308,7 @@ app
 							$scope.invoiceObj.serviceTaxTotal = 0;
 							$scope.invoiceObj.selectedServiceTax = null;
 						}
-
-						$scope.calServiceSubTotal();
-						$scope.calfinalTotal();
+						$scope.reCalculateTotal();
 					};
 
 					$scope.removeProductItem = function(index) {
@@ -252,9 +320,7 @@ app
 							$scope.invoiceObj.productTaxTotal = 0;
 							$scope.invoiceObj.selectedProductTax = null;
 						}
-
-						$scope.calProductSubTotal();
-						$scope.calfinalTotal();
+						$scope.reCalculateTotal();
 					};
 
 					$scope.discountType = [ "%", "Fixed" ];
@@ -263,8 +329,6 @@ app
 						$log.debug("##Came to lineItemStockChange...");
 						$scope.lineSelectedDiscount = selectedDiscount;
 						$scope.invoiceObj.discount = selectedDiscount;
-						// $scope.calSubTotal();
-						// $scope.calfinalTotal();
 					};
 
 					$scope.printInvoice = function(invoiceId) {
@@ -282,19 +346,6 @@ app
 									$scope.stockItemList = stockList;
 									$scope.loading = false;
 								});
-					}
-
-					$scope.checkStock = function(item, $event) {
-						for (var i = 0; i <= $scope.stockItemList.length; i++) {
-							if ($scope.stockItemList[i].itemName == item.itemName) {
-								$scope.qtyErrorMsg = "";
-								if ($scope.stockItemList[i].qty < item.qty) {
-									$scope.qtyErrorMsg = "Quantity entered is not available in stock";
-									// $scope.showSimpleToastError();
-									$scope.dialogBox();
-								}
-							}
-						}
 					}
 
 					$scope.dialogBox = function(ev) {
@@ -330,7 +381,17 @@ app
 								.then(
 										function(settingsList) {
 											$scope.settingsObj = settingsList;
-											if (!$scope.invoiceObj.id) {
+											if ($scope.invoiceObj.id) {
+												if ($scope.invoiceObj.serviceLineItemList
+														&& $scope.invoiceObj.serviceLineItemList.length) {
+													$scope.settingsObj.showDefaultServiceItems = true;
+												}
+
+												if ($scope.invoiceObj.productLineItemList
+														&& $scope.invoiceObj.productLineItemList.length) {
+													$scope.settingsObj.showDefaultProductItems = true;
+												}
+											} else {
 												$scope.invoiceObj.noteToCustomer = $scope.settingsObj.noteToCustomer;
 												$scope.invoiceObj.paymentNotes = $scope.settingsObj.paymentNotes;
 												$scope.invoiceObj.termsAndConditions = $scope.settingsObj.termsAndConditions;
@@ -338,6 +399,7 @@ app
 												if ($scope.settingsObj.showDefaultServiceItems) {
 													$scope.addServiceLineItem();
 												}
+
 												if ($scope.settingsObj.showDefaultProductItems) {
 													$scope.addProductLineItem();
 												}
@@ -383,11 +445,10 @@ app
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
 							loadAllCustomers();
-							$scope.getAllStockItems();
+							$scope.getAllWarehouseByBusiness();
 							$scope.getTaxesByVisibility();
 							$scope.getInvoiceSettingsByBiz();
-							$scope.calServiceSubTotal();
-							$scope.calProductSubTotal();
+							$scope.reCalculateTotal();
 
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
