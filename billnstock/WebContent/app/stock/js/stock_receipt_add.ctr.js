@@ -45,8 +45,9 @@ app
 
 						stockService.addStockReceipt($scope.stockReceiptObj)
 								.then(function(entityObj) {
-									if (entityObj.id) {
+									if (entityObj.id) {										
 										$scope.stockReceiptObj.id = entityObj.id;
+										$scope.stockReceiptObj.itemNumber = entityObj.itemNumber;
 										$scope.showUpdateToast();
 									}
 								});

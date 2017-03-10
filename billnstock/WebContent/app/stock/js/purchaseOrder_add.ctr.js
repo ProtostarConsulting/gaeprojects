@@ -109,6 +109,7 @@ app
 											function(entityObj) {
 												if (entityObj.id) {
 													$scope.purchaseOrderObj.id = entityObj.id;
+													$scope.purchaseOrderObj.itemNumber = entityObj.itemNumber;
 													$scope.showUpdateToast();
 												}
 											});

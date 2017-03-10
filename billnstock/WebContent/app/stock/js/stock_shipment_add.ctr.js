@@ -51,6 +51,7 @@ app
 										function(entityObj) {
 											if (entityObj.id) {
 												$scope.stockShipmentObj.id = entityObj.id;
+												$scope.stockShipmentObj.itemNumber = entityObj.itemNumber;
 												$scope.showUpdateToast();
 											}
 										});
