@@ -63,12 +63,12 @@ app
 										});
 					}
 
-					$scope.stutusValues = [ "Paid", "NotPaid" ];
-					$scope.documentStatusList = [ 'DRAFT', 'SUBMITTED', 'SENT',
-							'PAID', 'UNPAID' ];
+					$scope.documentStatusList = [ 'ALL', 'DRAFT', 'SUBMITTED',
+							'FINALIZED', 'SENT', 'PAID', 'UNPAID' ];
 					$scope.selectedStatus = "";
 
 					$scope.fitlerListByStatus = function(status) {
+						status = (status == 'ALL') ? '' : status;
 						$scope.selectedStatus = status;
 						$scope.invoiceData = [];
 						$scope.query = reSetQuery();

@@ -35,7 +35,7 @@ public class EntityUtil {
 		return entityObj;
 	}
 
-	public static com.google.appengine.api.datastore.Key getBusinessRawKey(BusinessEntity entityObj) {
-		return Key.create(BusinessEntity.class, entityObj.getId()).getRaw();
+	public static Key<BusinessEntity> getBusinessRawKey(BusinessEntity entityObj) {
+		return Key.create(BusinessEntity.class, entityObj.getId());
 	}
 }

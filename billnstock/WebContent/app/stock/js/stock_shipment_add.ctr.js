@@ -45,12 +45,15 @@ app
 						$scope.stockShipmentObj.modifiedBy = $scope.curUser.email_id;
 						var stockService = appEndpointSF.getStockService();
 
-						stockService.addStockShipment($scope.stockShipmentObj)
-								.then(function(msgBean) {
-									if (msgBean.id) {
-										$scope.showUpdateToast();
-									}
-								});
+						stockService
+								.addStockShipment($scope.stockShipmentObj)
+								.then(
+										function(entityObj) {
+											if (entityObj.id) {
+												$scope.stockShipmentObj.id = entityObj.id;
+												$scope.showUpdateToast();
+											}
+										});
 
 					}
 

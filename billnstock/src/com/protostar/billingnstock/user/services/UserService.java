@@ -39,6 +39,8 @@ import com.protostar.billingnstock.warehouse.services.WarehouseService;
 import com.protostar.billnstock.until.data.Constants;
 import com.protostar.billnstock.until.data.EntityUtil;
 import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
+import com.protostar.billnstock.until.data.SequenceGeneratorShardedService.CounterEntity;
+import com.protostar.billnstock.until.data.SequenceGeneratorShardedService.CounterShard;
 import com.protostar.billnstock.until.data.ServerMsg;
 
 @Api(name = "userService", version = "v0.1", clientIds = { Constants.WEB_CLIENT_ID, Constants.ANDROID_CLIENT_ID,
@@ -335,7 +337,27 @@ public class UserService {
 		return serverMsg;
 	}
 
-	@ApiMethod(name = "getBusinessList")
+	@ApiMethod(name = "getBusinessCounterList", path = "getBusinessCounterList")
+	public List<CounterEntity> getBusinessCounterList(@Named("id") Long id) {
+		List<CounterEntity> counterList = ofy().load().type(CounterEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, id)).list();
+		for (CounterEntity counterEntity : counterList) {
+			int sum = 0;
+			List<CounterShard> shardList = ofy().load().type(CounterShard.class).ancestor(counterEntity).list();
+			for (CounterShard counterShard : shardList) {
+				sum += counterShard.getCount();
+			}
+
+			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
+					Key.create(BusinessEntity.class, id), counterEntity.getCounterName());
+			counterEntity.setTempDSCounterValue(sum);
+			counterEntity.setTempMCCounterValue(sequenceGenService.getTempMCValue());
+
+		}
+		return counterList;
+	}
+
+	@ApiMethod(name = "getBusinessList", path = "getBusinessList")
 	public List<BusinessEntity> getBusinessList() {
 		return ofy().load().type(BusinessEntity.class).list();
 	}

@@ -32,17 +32,26 @@
 					style="color: Green; height: 10px; width: 10px"></md-icon> </md-button>
 
 			</div>
+			
+			<md-input-container flex> <label>From
+				Warehouse </label> <md-select flex ng-model="invoiceObj.fromWH"
+				placeholder="Select Warehouse"
+				ng-change="filterStockItemsByWarehouse(invoiceObj.fromWH)">
+			<md-option ng-value="warehouse" ng-required="true"
+				ng-selected="(invoiceObj.fromWH.id)?(invoiceObj.fromWH.id == warehouse.id):($index == 0)"
+				ng-repeat="warehouse in warehouses">{{warehouse.warehouseName
+			}}</md-option> </md-select> </md-input-container>
 
-			<md-input-container flex> <label>Quotation
+			<md-input-container flex> <label>Due
 				Date</label> <md-datepicker flex ng-model="invoiceObj.invoiceDueDate"
 				md-placeholder="Select Date" string-to-date></md-datepicker> </md-input-container>
-			<md-input-container flex> <label>Quotation
+			<md-input-container flex> <label>Invoice
 				Number</label> <input ng-model="invoiceObj.itemNumber"
 				placeholder="Auto generated number" ng-disabled="true"></input> </md-input-container>
 			<md-button class="md-icon-button" ng-show="invoiceObj.id"
 				ng-click="printInvoice(invoiceObj.id)"> <ng-md-icon
 				icon="print" style="fill: md-default" size="20"> <md-tooltip>
-			Print Quotation</md-tooltip></ng-md-icon></md-button>
+			Print Invoice</md-tooltip></ng-md-icon></md-button>
 		</div>
 
 
@@ -104,11 +113,11 @@
 							<td><md-input-container flex
 									style="padding-left:2px; padding-right:0px;">
 								<input type="number" ng-model="serviceItem.qty"
-									ng-change="calServiceSubTotal()" aria-label="iqty" /> </md-input-container></td>
+									ng-change="reCalculateTotal()" aria-label="iqty" /> </md-input-container></td>
 							<td><md-input-container flex
 									style="padding-left:2px; padding-right:0px;">
 								<input type="number" ng-model="serviceItem.price"
-									ng-change="calServiceSubTotal()" aria-label="iprice" /></md-input-container></td>
+									ng-change="reCalculateTotal()" aria-label="iprice" /></md-input-container></td>
 							<td><b>{{serviceItem.qty * serviceItem.price |
 									currency:"":"2"}} </b></td>
 							<td><md-icon
@@ -135,7 +144,7 @@
 							<td><md-input-container flex
 									ng-hide="invoiceObj.serviceLineItemList.length==0">
 								<md-select ng-model="invoiceObj.selectedServiceTax"
-									placeholder="Select Tax" ng-change="serviceTaxChanged()">
+									placeholder="Select Tax" ng-change="reCalculateTotal()">
 								<md-option ng-value="taxValue"
 									ng-repeat="taxValue in taxforinvoice"
 									ng-selected="invoiceObj.selectedServiceTax.id == taxValue.id">{{taxValue.taxCodeName}}</md-option>
@@ -166,7 +175,6 @@
 				</table>
 
 			</div>
-
 		</div>
 		<div>
 			<h3 layout="row" layout-align="start center">
@@ -183,6 +191,7 @@
 				<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
 				<md-tooltip>Add Product Line Items</md-tooltip></ng-md-icon></md-button>
 			</h3>
+
 			<div
 				ng-show="settingsObj.showDefaultProductItems">
 				<table md-data-table md-progress="deferred">
@@ -211,23 +220,23 @@
 										ng-selected="item.stockItem.id == stockItem.id"
 										ng-repeat="stockItem in stockItemList">{{stockItem.stockItemType.itemName
 									}}</md-option> </md-select> </md-input-container>
-									<span></span>
+									<!-- <span></span>
 									<div>
 										<md-button class="md-icon-button"
-											ng-click="addStock($event, item)" aria-label="as">
+											ng-click="addStockItem($event, item)" aria-label="as">
 										<md-icon md-svg-src="img/icons/ic_queue_black_24px.svg"
 											class="name" style="color: Green; height: 18px; width: 18px"></md-icon></md-button>
-									</div>
+									</div> -->
 								</div>
 							</td>
 
 							<td><md-input-container flex> <input
 									type="number" ng-model="item.qty"
 									ng-blur="checkStock(item,$event)"
-									ng-change="calProductSubTotal()" aria-label="iqty" /> </md-input-container></td>
+									ng-change="reCalculateTotal()" aria-label="iqty" /> </md-input-container></td>
 							<td><md-input-container flex> <input
 									type="number" ng-model="item.price"
-									ng-change="calProductSubTotal()" aria-label="iprice" /></md-input-container></td>
+									ng-change="reCalculateTotal()" aria-label="iprice" /></md-input-container></td>
 							<td><b>{{item.qty * item.price | currency:"":"2"}} </b></td>
 							<td><md-icon
 									md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
@@ -252,7 +261,7 @@
 							<td><md-input-container flex
 									ng-hide="invoiceObj.productLineItemList.length==0">
 								<md-select ng-model="invoiceObj.selectedProductTax"
-									placeholder="Select Tax" ng-change="productTaxChanged()">
+									placeholder="Select Tax" ng-change="reCalculateTotal()">
 								<md-option ng-value="taxValue"
 									ng-selected="invoiceObj.selectedProductTax.id == taxValue.id"
 									ng-repeat="taxValue in taxforinvoice">{{taxValue.taxCodeName}}</md-option>
@@ -300,6 +309,25 @@
 					</tbody>
 				</table>
 			</div>
+		</div>
+		<h4 ng-init="otherDetailToogle=false"
+			ng-click="otherDetailToogle=!otherDetailToogle">
+			Other Detail
+			<md-button class="md-icon-button" ng-show="otherDetailToogle">
+			<ng-md-icon icon="keyboard_arrow_up" style="fill: md-default"
+				size="24"> <md-tooltip> Expand</md-tooltip></ng-md-icon></md-button>
+			<md-button class="md-icon-button" ng-show="!otherDetailToogle">
+			<ng-md-icon icon="keyboard_arrow_down" style="fill: md-default"
+				size="24"> <md-tooltip> Collapse</md-tooltip></ng-md-icon></md-button>
+		</h4>
+		<div ng-show="otherDetailToogle">
+			<md-input-container flex layout="row"> <label>Payment
+				Notes</label> <textarea ng-model="invoiceObj.paymentNotes" rows="3" cols="1"></textarea>
+			</md-input-container>
+			<md-input-container flex layout="row"> <label>Invoice
+				Terms and Conditions</label> <textarea
+				ng-model="invoiceObj.termsAndConditions" rows="3" cols="1"></textarea>
+			</md-input-container>
 		</div>
 	</form>
 </div>

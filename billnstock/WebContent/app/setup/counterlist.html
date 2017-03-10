@@ -1,0 +1,50 @@
+<md-content layout="column" flex layout-padding>
+<div ng-if="loading" layout-padding>
+	<div layout="row" layout-sm="column" layout-align="space-around">
+		<md-progress-circular md-diameter="60" md-mode="indeterminate"></md-progress-circular>
+	</div>
+</div>
+<div ng-if="!loading" layout-padding layout="column">
+	<div layout="column" ng-cloak>
+		<section layout="row" layout-xs="column">
+			<md-subheader class="md-primary">
+			<h4 class="md-title">Counter List</h4>
+			</md-subheader>
+			<span flex></span>
+			<div layout="row" flex="33" flex-sm="50" flex-xs="100">
+				<md-input-container flex> <label>Search
+					Counter</label> <input ng-model="searchText"> </md-input-container>
+			</div>
+		</section>
+		<div>
+
+			<md-data-table-container>
+			<table md-data-table md-progress="deferred">
+				<thead md-order="query.order" md-trigger="onOrderChange">
+					<tr>
+						<th name="Counter Name" order-by="counterName"></th>
+						<th name="ShardCount" order-by="shardCount"></th>
+						<th name="Current MC Value" order-by="tempMCCounterValue"></th>
+						<th name="Current DS Value" order-by="tempDSCounterValue"></th>
+						<th name="Edit | Actions"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr
+						ng-repeat="counter in counterlist | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+						<td>{{counter.counterName}}</td>
+						<td>{{counter.shardCount}}</td>
+						<td>{{counter.tempMCCounterValue}}</td>
+						<td>{{counter.tempDSCounterValue}}</td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+
+			<md-data-table-pagination md-limit="query.limit" md-page="query.page"
+				md-total={{counterlist.length}} md-trigger="onpagechange"></md-data-table-pagination>
+			</md-data-table-container>
+		</div>
+	</div>
+</div>
+</md-content>

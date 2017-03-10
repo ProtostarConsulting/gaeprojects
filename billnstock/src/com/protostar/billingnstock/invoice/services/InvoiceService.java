@@ -136,7 +136,6 @@ public class InvoiceService extends BaseService {
 		return ofy().execute(TxnType.REQUIRED, new Work<QuotationEntity>() {
 
 			private QuotationEntity quotationEntity;
-
 			private Work<QuotationEntity> init(QuotationEntity quotationEntity) {
 				this.quotationEntity = quotationEntity;
 				return this;

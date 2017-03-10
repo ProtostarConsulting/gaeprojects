@@ -103,11 +103,15 @@ app
 							$scope.purchaseOrderObj.modifiedBy = $scope.curUser.email_id;
 							$scope.purchaseOrderObj.discAmount = $scope.discAmount;
 							var stockService = appEndpointSF.getStockService();
-							stockService.addPurchaseOrder(
-									$scope.purchaseOrderObj).then(
-									function(msgBean) {
-										$scope.showUpdateToast();
-									});
+							stockService
+									.addPurchaseOrder($scope.purchaseOrderObj)
+									.then(
+											function(entityObj) {
+												if (entityObj.id) {
+													$scope.purchaseOrderObj.id = entityObj.id;
+													$scope.showUpdateToast();
+												}
+											});
 						}
 					}
 
@@ -358,30 +362,6 @@ app
 									$scope.stockTypeList = list;
 								});
 					}
-
-					/*
-					 * $scope.checkStock = function(item, $event) { for (var i =
-					 * 0; i <= $scope.stockItemList.length; i++) { if
-					 * ($scope.stockItemList[i].itemName == item.itemName) {
-					 * $scope.qtyErrorMsg = ""; if ($scope.stockItemList[i].qty <
-					 * item.qty) { $scope.qtyErrorMsg = "Quantity entered is not
-					 * available in stock"; // $scope.showSimpleToastError();
-					 * $scope.dialogBox(); } } } }
-					 */
-
-					$scope.dialogBox = function(ev) {
-						$mdDialog
-								.show($mdDialog
-										.alert()
-										.targetEvent(ev)
-										.clickOutsideToClose(true)
-										.parent('body')
-										.title('Error')
-										.textContent(
-												'Quantity entered is not available in stock!')
-										.ok('OK'));
-						ev = null;
-					};
 
 					$scope.getTaxesByVisibility = function() {
 						var taxService = appEndpointSF.getTaxService();

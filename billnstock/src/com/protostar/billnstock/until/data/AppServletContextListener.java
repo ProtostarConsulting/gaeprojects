@@ -2,6 +2,7 @@ package com.protostar.billnstock.until.data;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+
 import com.googlecode.objectify.ObjectifyService;
 import com.protostar.billingnstock.account.entities.AccountEntity;
 import com.protostar.billingnstock.account.entities.AccountEntryEntity;
@@ -53,6 +54,8 @@ import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.user.entities.EmpDepartment;
 import com.protostar.billingnstock.user.entities.UserEntity;
 import com.protostar.billingnstock.warehouse.entities.WarehouseEntity;
+import com.protostar.billnstock.until.data.SequenceGeneratorShardedService.CounterEntity;
+import com.protostar.billnstock.until.data.SequenceGeneratorShardedService.CounterShard;
 
 public class AppServletContextListener implements ServletContextListener {
 
@@ -66,6 +69,8 @@ public class AppServletContextListener implements ServletContextListener {
 		System.out.println("###Inside AppServletContextListener###");
 		// register all your entities here
 
+		ObjectifyService.register(CounterEntity.class);
+		ObjectifyService.register(CounterShard.class);
 		ObjectifyService.register(Employee.class);
 		ObjectifyService.register(SalStruct.class);
 		ObjectifyService.register(SalSlip.class);

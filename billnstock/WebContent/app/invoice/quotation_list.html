@@ -37,7 +37,7 @@
 				<td>{{quotation.itemNumber}}</td>
 				<td>{{quotation.invoiceObj.customer.isCompany?quotation.invoiceObj.customer.companyName:(quotation.invoiceObj.customer.firstName
 					+' '+ quotation.invoiceObj.customer.lastName)}}</td>
-				<td>{{quotation.invoiceObj.finalTotal}}</td>
+				<td>{{quotation.invoiceObj.finalTotal | currency:"":"2"}}</td>
 				<td flex=30>
 					<section layout="row">
 						<md-button class="md-icon-button"

@@ -44,8 +44,9 @@ app
 						var stockService = appEndpointSF.getStockService();
 
 						stockService.addStockReceipt($scope.stockReceiptObj)
-								.then(function(msgBean) {
-									if (msgBean.id) {
+								.then(function(entityObj) {
+									if (entityObj.id) {
+										$scope.stockReceiptObj.id = entityObj.id;
 										$scope.showUpdateToast();
 									}
 								});

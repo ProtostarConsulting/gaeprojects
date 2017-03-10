@@ -124,6 +124,7 @@ app
 											$scope.loading = false;
 										});
 					}
+
 					$scope.addServiceLineItem = function() {
 						var item = {
 							isProduct : false,
@@ -145,7 +146,9 @@ app
 							itemName : "",
 							qty : 1,
 							price : "",
-							stockItem : null,
+							stockItem : {
+								stockItemType : null
+							},
 							selectedTaxItem : null
 						};
 						if (!$scope.invoiceObj.productLineItemList) {
@@ -165,6 +168,17 @@ app
 						$scope.reCalculateTotal();
 					};
 
+					$scope.toggleProducts = function() {
+						$scope.settingsObj.showDefaultProductItems = !$scope.settingsObj.showDefaultProductItems;
+						$scope.invoiceObj.productLineItemList = null;
+						$scope.invoiceObj.selectedProductTax = null;
+
+						if ($scope.settingsObj.showDefaultProductItems) {
+							$scope.addProductLineItem();
+						}
+						$scope.reCalculateTotal();
+					};
+
 					$scope.reCalculateTotal = function() {
 						$scope.serviceTaxChanged();
 						$scope.productTaxChanged();
@@ -177,17 +191,6 @@ app
 
 						$scope.calfinalTotal();
 					}
-
-					$scope.toggleProducts = function() {
-						$scope.settingsObj.showDefaultProductItems = !$scope.settingsObj.showDefaultProductItems;
-						$scope.invoiceObj.productLineItemList = null;
-						$scope.invoiceObj.selectedProductTax = null;
-
-						if ($scope.settingsObj.showDefaultProductItems) {
-							$scope.addProductLineItem();
-						}
-						$scope.reCalculateTotal();
-					};
 
 					$scope.productLineItemChangedEventFn = function() {
 						$scope.productLineItemChangedEvent = true;
@@ -335,17 +338,6 @@ app
 						var bid = $scope.curUser.business.id;
 						window.open("PrintPdfInvoice?bid=" + bid
 								+ "&invoiceId=" + invoiceId);
-					}
-
-					$scope.getAllStockItems = function() {
-						$scope.loading = true;
-						var stockService = appEndpointSF.getStockService();
-						stockService.getAllStockItems(
-								$scope.curUser.business.id).then(
-								function(stockList) {
-									$scope.stockItemList = stockList;
-									$scope.loading = false;
-								});
 					}
 
 					$scope.dialogBox = function(ev) {
@@ -515,76 +507,6 @@ app
 							$mdDialog.cancel();
 						};
 					}
-
-					// For Add Stock from Invoice Page through popup
-					$scope.addStock = function(ev, lineItem) {
-						var getAllWarehouseByBusiness = function() {
-							var warehouseService = appEndpointSF
-									.getWarehouseManagementService();
-
-							warehouseService.getAllWarehouseByBusiness(
-									$scope.curUser.business.id).then(
-									function(warehouseList) {
-										$scope.warehouses = warehouseList;
-									});
-						}
-
-						getAllWarehouseByBusiness();
-
-						var useFullScreen = $mdMedia('xs');
-						$mdDialog
-								.show(
-										{
-											controller : addStockItemDialogController,
-											templateUrl : '/app/stock/stockitem_add_dialog.html',
-											parent : angular
-													.element(document.body),
-											targetEvent : ev,
-											clickOutsideToClose : true,
-											fullscreen : useFullScreen,
-											locals : {
-												curUser : $scope.curUser,
-												stock : $scope.stock,
-												warehouses : $scope.warehouses,
-												stockItemList : $scope.stockItemList,
-												lineItem : lineItem,
-												calProductSubTotalFn : $scope.calProductSubTotal
-											}
-										})
-								.then(
-										function(answer) {
-											$scope.status = 'You said the information was'
-													+ answer + '".';
-										},
-										function() {
-											$scope.status = 'You cancelled the dialog.';
-										});
-					};
-
-					function addStockItemDialogController($scope, $mdDialog,
-							curUser, stock, warehouses, stockItemList,
-							lineItem, calProductSubTotalFn) {
-						$scope.warehouses = warehouses;
-						$scope.addStock = function() {
-							$scope.stock.business = curUser.business;
-							$scope.stock.createdDate = new Date();
-							$scope.stock.modifiedBy = curUser.email_id;
-							var stockService = appEndpointSF.getStockService();
-							stockService.addStock($scope.stock).then(
-									function(addedItem) {
-										if (addedItem.id) {
-											lineItem.stockItem = addedItem;
-											lineItem.price = addedItem.price;
-											stockItemList.push(addedItem);
-											calProductSubTotalFn();
-										}
-									});
-							$scope.cancel();
-						}
-
-						$scope.cancel = function() {
-							$mdDialog.cancel();
-						};
-					}
+					
 
 				});
