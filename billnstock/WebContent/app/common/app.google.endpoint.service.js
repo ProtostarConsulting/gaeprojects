@@ -163,6 +163,16 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
+	
+	UserService.getBusinessCounterList = function(id) {
+		var deferred = $q.defer();
+		gapi.client.userService.getBusinessCounterList({
+			'id' : id
+		}).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}
 
 	UserService.getUsersByBusinessId = function(id) {
 		var deferred = $q.defer();

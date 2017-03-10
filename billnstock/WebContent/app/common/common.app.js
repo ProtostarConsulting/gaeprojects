@@ -899,6 +899,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		params : {
 			action : 'useradd'
 		}
+	}).state('setup.counterlist', {
+		url : "/counterlist",
+		templateUrl : '/app/setup/counterlist.html',
+		controller : 'counterList'
 	}).state('setup.disclaimer', {
 		url : "/disclaimer",
 		templateUrl : '/app/setup/disclaimer.html',
