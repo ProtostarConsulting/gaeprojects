@@ -63,7 +63,8 @@ public class StockManagementService extends BaseService {
 
 	@ApiMethod(name = "addStockReceipt", path = "addStockReceipt")
 	public StockItemsReceiptEntity addStockReceipt(
-			StockItemsReceiptEntity stockItemsReceipt) {
+			StockItemsReceiptEntity stockItemsReceipt)
+			throws MessagingException, IOException {
 		logger.info("Inside addStockReceipt...");
 		if (stockItemsReceipt.getStatus() == DocumentStatus.FINALIZED
 				&& stockItemsReceipt.isStatusAlreadyFinalized()) {
@@ -138,6 +139,7 @@ public class StockManagementService extends BaseService {
 				addStockItemTxnList(stockItemTxnList,
 						stockItemInstanceToUpdateList);
 			}
+			new EmailHandler().sendStockReceiptEmail(stockItemsReceipt);
 		}
 
 		ofy().save().entity(stockItemsReceipt).now();
@@ -215,7 +217,8 @@ public class StockManagementService extends BaseService {
 
 	@ApiMethod(name = "addStockShipment", path = "addStockShipment")
 	public StockItemsShipmentEntity addStockShipment(
-			StockItemsShipmentEntity stockItemsShipment) {
+			StockItemsShipmentEntity stockItemsShipment)
+			throws MessagingException, IOException {
 		if (stockItemsShipment.getStatus() == DocumentStatus.FINALIZED
 				&& stockItemsShipment.isStatusAlreadyFinalized()) {
 			throw new RuntimeException(
@@ -269,6 +272,8 @@ public class StockManagementService extends BaseService {
 			// Process stock items
 			StockManagementService.adjustStockItems(
 					stockItemsShipment.getBusiness(), stockLineItemsToProcess);
+			// stockShipment Email
+			new EmailHandler().sendStockShipmentEmail(stockItemsShipment);
 		} // enf of FINALIZED if
 
 		ofy().save().entity(stockItemsShipment).now();
