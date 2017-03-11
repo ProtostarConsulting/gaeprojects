@@ -2,10 +2,13 @@ package com.protostar.billingnstock.taskmangement;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
+
+import javax.mail.MessagingException;
 
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
@@ -17,6 +20,7 @@ import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.user.entities.UserEntity;
 import com.protostar.billingnstock.user.services.UserService;
 import com.protostar.billnstock.service.filters.TaskEntityFilterData;
+import com.protostar.billnstock.until.data.EmailHandler;
 
 @Api(name = "taskService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.taskmangement", ownerName = "com.protostar.billingnstock.taskmangement", packagePath = ""))
 public class TaskManagementService {
@@ -25,13 +29,14 @@ public class TaskManagementService {
 			.getName());
 	
 	@ApiMethod(name = "saveTask", path = "saveTask")
-	public void saveTask(TaskEntity taskEntity) {
+	public void saveTask(TaskEntity taskEntity) throws MessagingException, IOException {
 		if (taskEntity.getId() == null) {
 			taskEntity.setCreatedDate(new Date());
 		} else {
 			taskEntity.setModifiedDate(new Date());
 		}
 		ofy().save().entity(taskEntity).now();
+		new EmailHandler().sendTaskAssignedEmail(taskEntity);
 	}
 
 	@ApiMethod(name = "getTaskById", path = "getTaskById")
