@@ -4,7 +4,7 @@ import com.google.appengine.api.taskqueue.DeferredTask;
 import com.google.appengine.labs.repackaged.org.json.JSONException;
 import com.protostar.billnstock.until.data.Sendgrid;
 
-public class SendPOFinalizedEmailAsyncOperation implements DeferredTask {
+public class EmailPOTask implements DeferredTask {
 
 	private static final long serialVersionUID = 1L;
 	private static final String SENDGRID_USERNAME = "ganesh.lawande@protostar.co.in";
@@ -17,7 +17,7 @@ public class SendPOFinalizedEmailAsyncOperation implements DeferredTask {
 	private String emailDLList;
 	private String messageBody;
 
-	public SendPOFinalizedEmailAsyncOperation(String fromEmail,
+	public EmailPOTask(String fromEmail,
 			String fromName, String messageBody, int poNumber,
 			String emailDLList) {
 
