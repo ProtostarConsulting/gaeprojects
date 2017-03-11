@@ -26,6 +26,7 @@ public class Constants {
 	public static final String PURCHASE_ORDER_NO_COUNTER = "PURCHASE_ORDER_NO_COUNTER";
 	public static final String BUDGET_NO_COUNTER = "BUDGET_NO_COUNTER";
 	public static final String LEAD_NO_COUNTER = "LEAD_NO_COUNTER";
+	public static final String TASK_NO_COUNTER = "TASK_NO_COUNTER";
 	public static final String CONTACT_NO_COUNTER = "CONTACT_NO_COUNTER";
 	public static final String VOUCHER_NO_COUNTER = "VOUCHER_NO_COUNTER";
 	public static final String GE_NO_COUNTER = "GE_NO_COUNTER";

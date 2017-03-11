@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
 import com.google.appengine.labs.repackaged.org.json.JSONArray;
 import com.google.appengine.labs.repackaged.org.json.JSONException;
 import com.google.appengine.labs.repackaged.org.json.JSONObject;
@@ -54,12 +55,15 @@ public class Sendgrid {
 	 * previous recipient 'to' data.
 	 *
 	 * @param email
-	 *            A list of email addresses
+	 *            A list of email addresses separated by comma
 	 * @return The SendGrid object.
 	 */
-	public Sendgrid setTo(String email) {
+	public Sendgrid setTo(String emailList) {
 		this.to_list = new ArrayList<String>();
-		this.addTo(email);
+		String[] emailIds = emailList.split(",");
+		for (String email : emailIds) {
+			this.addTo(email);
+		}	
 
 		return this;
 	}
