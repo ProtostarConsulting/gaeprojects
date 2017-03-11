@@ -1,6 +1,11 @@
 <html>
-  <p>Purchase order with the following details has been approved on ${pODate}.</p>
+  <p>Stock receipt with the following details has been approved on ${receiptDate}.</p>
   <p>Created By: ${createdBy}</p>
+  <p> 
+  <#if warehouse??>
+  		Warehouse: ${warehouse}
+  </#if> 
+  </p>
   <p>Supplier: ${supplier}</p>
   <p>Final Total: ${finalTotal}</p>
   

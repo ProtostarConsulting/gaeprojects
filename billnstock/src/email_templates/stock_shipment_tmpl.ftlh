@@ -1,7 +1,16 @@
 <html>
-  <p>Purchase order with the following details has been approved on ${pODate}.</p>
+  <p>Stock shipment request with the following details has been approved on ${shipmentDate}.</p>
   <p>Created By: ${createdBy}</p>
-  <p>Supplier: ${supplier}</p>
+  <p>From: ${fromWH}</p>
+  <#if toWH??>
+  <p>To :${toWH}</p>
+  </#if>
+  <#if customerName??>
+    <p>To: ${customerName}</p>
+  </#if>
+  <#if partnerName??>
+    <p>To :${partnerName}</p>
+  </#if>
   <p>Final Total: ${finalTotal}</p>
   
   <br>

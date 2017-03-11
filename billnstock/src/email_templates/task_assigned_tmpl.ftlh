@@ -1,8 +1,14 @@
 <html>
-  <p>Purchase order with the following details has been approved on ${pODate}.</p>
-  <p>Created By: ${createdBy}</p>
-  <p>Supplier: ${supplier}</p>
-  <p>Final Total: ${finalTotal}</p>
+  <p>Dear ${assignedTo},</p>
+  <p>A new task has been assigned to you in ProERP system. Please find the details below.</p>
+  <p>Task No: ${taskNo}.</p>
+  <p>Assigned Date: ${assignedDate}.</p>
+  <p>Assigned By: ${assignedBy}</p>
+  <p>Title: ${taskTitle}</p>
+  <p>Description :${taskDesciption}</p>
+  <#if estCompletionDate??>
+  <p>Estimated Completion Date: ${estCompletionDate}</p>
+  </#if>
   
   <br>
   <p>Thanks and Regards,</p>  
