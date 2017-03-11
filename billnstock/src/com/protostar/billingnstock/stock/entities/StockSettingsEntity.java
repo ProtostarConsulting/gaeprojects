@@ -9,6 +9,7 @@ import com.protostar.billnstock.entity.BaseEntity;
 public class StockSettingsEntity extends BaseEntity {	
 	private String poTermsAndConditions;
 	private String stockShipTermsAndConditions;
+	private boolean needModuleDocumentApproval = false;
 	private boolean needPOApproval = false;
 	private boolean linkPOToBudget = false;
 	private boolean needStockShipmentApproval = false;
@@ -69,6 +70,14 @@ public class StockSettingsEntity extends BaseEntity {
 
 	public void setLinkPOToBudget(boolean linkPOToBudget) {
 		this.linkPOToBudget = linkPOToBudget;
+	}
+
+	public boolean isNeedModuleDocumentApproval() {
+		return needModuleDocumentApproval;
+	}
+
+	public void setNeedModuleDocumentApproval(boolean needModuleDocumentApproval) {
+		this.needModuleDocumentApproval = needModuleDocumentApproval;
 	}
 
 }

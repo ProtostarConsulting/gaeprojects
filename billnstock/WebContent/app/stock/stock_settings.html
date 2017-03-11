@@ -2,12 +2,13 @@
 <h3 class="md-title">Stock Management Settings</h3>
 <form name="invoiceSettings" layout="column">
 	<div layout="row" layout-xs="column">
-		<md-checkbox ng-model="settingsObj.needPOApproval"
-			ng-true-value="true" ng-false-value="false" aria-label="isGoogleUser">
-		Need PO Approval</md-checkbox>
-		<md-checkbox ng-model="settingsObj.needStockShipmentApproval"
-			ng-true-value="true" ng-false-value="false" aria-label="isGoogleUser">
-		Need Stock Shipment Approval</md-checkbox>
+		<md-checkbox ng-model="settingsObj.needModuleDocumentApproval"
+			ng-true-value="true" ng-false-value="false"
+			aria-label="needModuleDocumentApproval"> Need Module
+		Document Approval</md-checkbox>
+		<div>This setting makes Approval Compulsary for this module
+			entities like Requisition, Purchase Order, Stock Receipt, Stock
+			Shipment etc.</div>		
 	</div>
 	<md-input-container flex="80" layout="row"> <label>PO
 		Terms and Conditions</label> <textarea
@@ -36,7 +37,8 @@
 			<md-checkbox ng-model="settingsObj.linkPOToBudget"
 				ng-true-value="true" ng-false-value="false"
 				aria-label="isGoogleUser"> Link PO to Budget</md-checkbox>
-		</div>	</div>
+		</div>
+	</div>
 </form>
 <section layout="row" layout-sm="column">
 	<md-button class="md-raised md-primary" ng-click="addSettings()">Save

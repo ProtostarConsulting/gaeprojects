@@ -2,63 +2,67 @@
 <section layout="row" layout-xs="column">
 	<md-subheader class="md-primary">
 	<h4 class="md-title"
-		ng-bind="stockReceiptObj.id?'Edit Stock Receipt':'Create Stock Receipt'"></h4>
+		ng-bind="documentEntity.id?'Edit Stock Receipt':'Create Stock Receipt'"></h4>
 	</md-subheader>
 	<span flex></span>
 </section>
 <div>
-	<form ng-submit="$event.preventDefault()" name="stockReceiptAddForm">
-
-		<div flex layout="row" layout-xs="column">
-			<md-input-container flex=40> <label>PO
-				Number </label> <input type="number" ng-model="stockReceiptObj.poNumber"
-				ng-change="getPOByItemNumber(stockReceiptObj.poNumber)"
-				ng-model-options="{ debounce: 1000 }"> </md-input-container>
-			<div flex layout="row" layout-xs="column">
-				<md-input-container flex> <label>Receipt
-					Date</label> <md-datepicker flex ng-model="stockReceiptObj.receiptDate"
-					md-placeholder="Select Date"></md-datepicker> </md-input-container>
-				<md-input-container flex> <label>Receipt
-					Status </label> <input type="text" ng-disabled="true"
-					ng-model="stockReceiptObj.status"> </md-input-container>
-				<md-input-container flex> <label>Stock
-					Receipt No.</label> <input ng-model="stockReceiptObj.itemNumber"
+	<form ng-submit="$event.preventDefault()" name="documentForm">
+		<div layout="row" layout-xs="column">
+			<div layout="row" flex>
+				<md-input-container flex=40> <label>Stock
+					Receipt No.</label> <input ng-model="documentEntity.itemNumber"
 					placeholder="Auto generated number" ng-disabled="true"></input> </md-input-container>
+				<md-input-container flex> <label>Document
+					Status </label> <input type="text" ng-disabled="true"
+					ng-model="documentEntity.status"> </md-input-container>
+				<md-input-container flex=15> <label>Created
+					By </label> <input ng-disabled="true" ng-model="createdBy"
+					ng-init="createdBy = documentEntity.createdBy? documentEntity.createdBy.firstName + ' ' + documentEntity.createdBy.lastName: ''"></input>
+				</md-input-container>
 			</div>
 		</div>
-
 		<div flex layout="row" layout-xs="column">
-			<md-input-container flex> <label>Warehouse
-			</label> <md-select flex ng-model="stockReceiptObj.warehouse"
+			<md-input-container flex=40> <label>Warehouse
+			</label> <md-select flex ng-model="documentEntity.warehouse"
 				placeholder="Select Warehouse" ng-change="warehouseChanged">
 			<md-option ng-value="warehouse" ng-required="true"
-				ng-selected="(stockReceiptObj.warehouse.id)?(stockReceiptObj.warehouse.id == warehouse.id):($index == 0)"
+				ng-selected="(documentEntity.warehouse.id)?(documentEntity.warehouse.id == warehouse.id):($index == 0)"
 				ng-repeat="warehouse in warehouses">{{warehouse.warehouseName
 			}}</md-option> </md-select> </md-input-container>
-			<div layout="row" flex>
-				<md-autocomplete flex required md-input-name="autocompleteField"
-					md-no-cache=true md-selected-item="stockReceiptObj.supplier"
-					md-search-text="searchTextInput"
-					md-items="item in querySearch(searchTextInput)"
-					md-item-text="item.supplierName" md-floating-label="Supplier Name">
-				<md-item-template> <span
-					md-highlight-text="searchTextInput">{{item.supplierName}}</span> </md-item-template>
-				<div ng-messages="stockReceiptAddForm.autocompleteField.$error"
-					ng-if="stockReceiptAddForm.autocompleteField.$touched">
-					<div ng-message="required">
-						You <b>must</b> have to enter Supplier Name.
+			<div flex layout="row" layout-xs="column">
+				<div layout="row" flex>
+					<md-autocomplete flex required md-input-name="autocompleteField"
+						md-no-cache=true md-selected-item="documentEntity.supplier"
+						md-search-text="searchTextInput"
+						md-items="item in querySearch(searchTextInput)"
+						md-item-text="item.supplierName" md-floating-label="Supplier Name">
+					<md-item-template> <span
+						md-highlight-text="searchTextInput">{{item.supplierName}}</span> </md-item-template>
+					<div ng-messages="documentForm.autocompleteField.$error"
+						ng-if="documentForm.autocompleteField.$touched">
+						<div ng-message="required">
+							You <b>must</b> have to enter Supplier Name.
+						</div>
 					</div>
+					</md-autocomplete>
+					<md-icon md-svg-src="img/icons/ic_queue_black_24px.svg"
+						ng-click="addSupplier()" class="name"
+						style="color: Green; height: 18px; width: 18px"></md-icon>
 				</div>
-				</md-autocomplete>
-				<md-icon md-svg-src="img/icons/ic_queue_black_24px.svg"
-					ng-click="addSupplier()" class="name"
-					style="color: Green; height: 18px; width: 18px"></md-icon>
+				<md-input-container flex> <label>Receipt
+					Date</label> <md-datepicker flex ng-model="documentEntity.receiptDate"
+					md-placeholder="Select Date"></md-datepicker> </md-input-container>
+				<md-input-container flex=40> <label>PO
+					Number </label> <input type="number" ng-model="documentEntity.poNumber"
+					ng-change="getPOByItemNumber(documentEntity.poNumber)"
+					ng-model-options="{ debounce: 1000 }"> </md-input-container>
 			</div>
 		</div>
 
 		<div layout="row" layout-xs="column">
 			<md-input-container flex> <label>Receipt
-				Notes</label> <textarea ng-model="stockReceiptObj.note" rows="2" cols="1"></textarea>
+				Notes</label> <textarea ng-model="documentEntity.note" rows="2" cols="1"></textarea>
 			</md-input-container>
 		</div>
 
@@ -68,7 +72,7 @@
 		</div>
 
 		<div
-			ng-show="stockReceiptObj.productLineItemList && stockReceiptObj.productLineItemList.length > 0">
+			ng-show="documentEntity.productLineItemList && documentEntity.productLineItemList.length > 0">
 			<h3>Product Line Items</h3>
 			<table md-data-table md-progress="deferred">
 				<thead md-order="query.order" md-trigger="onOrderChange">
@@ -83,7 +87,7 @@
 				</thead>
 
 				<tbody>
-					<tr ng-repeat="item in stockReceiptObj.productLineItemList">
+					<tr ng-repeat="item in documentEntity.productLineItemList">
 						<td>{{ $index +1 }}</td>
 						<td>
 							<div layout="row">
@@ -127,7 +131,8 @@
 						<td></td>
 						<td></td>
 						<td><label>Product Total</label></td>
-						<td><b> {{stockReceiptObj.productTotal | currency:"":"2"}}</b></td>
+						<td><b> {{documentEntity.productTotal |
+								currency:"":"2"}}</b></td>
 						<td></td>
 					</tr>
 				</tbody>
@@ -135,7 +140,7 @@
 		</div>
 
 		<div
-			ng-show="!stockReceiptObj.serviceLineItemList || stockReceiptObj.serviceLineItemList.length == 0">
+			ng-show="!documentEntity.serviceLineItemList || documentEntity.serviceLineItemList.length == 0">
 			Add New Other Cost Items:
 			<md-button class="md-icon-button" ng-click="addServiceLineItem()">
 			<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
@@ -143,7 +148,7 @@
 
 		</div>
 		<div
-			ng-show="stockReceiptObj.serviceLineItemList && stockReceiptObj.serviceLineItemList.length > 0">
+			ng-show="documentEntity.serviceLineItemList && documentEntity.serviceLineItemList.length > 0">
 			<h3>Other Cost Line Items</h3>
 			<table md-data-table md-progress="deferred">
 				<thead md-order="query.order" md-trigger="onOrderChange">
@@ -158,7 +163,7 @@
 				</thead>
 
 				<tbody>
-					<tr ng-repeat="serviceItem in stockReceiptObj.serviceLineItemList">
+					<tr ng-repeat="serviceItem in documentEntity.serviceLineItemList">
 
 						<td>{{ $index +1 }}</td>
 						<td><md-input-container flex> <label>Service
@@ -186,7 +191,8 @@
 						<td></td>
 						<td></td>
 						<td><label>Service Total</label></td>
-						<td><b> {{stockReceiptObj.serviceTotal | currency:"":"2"}}</b></td>
+						<td><b> {{documentEntity.serviceTotal |
+								currency:"":"2"}}</b></td>
 						<td></td>
 					</tr>
 					<tr>
@@ -194,7 +200,7 @@
 						<td></td>
 						<td></td>
 						<td><label>Final Total</label></td>
-						<td><b> {{stockReceiptObj.finalTotal | currency:"":"2"}}</b></td>
+						<td><b> {{documentEntity.finalTotal | currency:"":"2"}}</b></td>
 						<td></td>
 					</tr>
 				</tbody>
@@ -202,15 +208,17 @@
 
 		</div>
 		<div layout layout-xs="column"
-			ng-hide="stockReceiptObj.status == 'FINALIZED'">
+			ng-hide="documentEntity.status == 'FINALIZED'">
 			<section layout="row" layout-xs="column">
 				<md-button class="md-raised md-primary"
-					ng-disabled="stockReceiptAddForm.$invalid"
-					ng-click="addStockReceipt()">Save as Draft</md-button>
+					ng-disabled="documentForm.$invalid" ng-click="saveDocument()">Save
+				as Draft</md-button>
 				<md-button class="md-raised md-primary"
-					ng-disabled="stockReceiptAddForm.$invalid"
-					ng-click="finalizeStockReceipt($event)">Finalize
-				Receipt</md-button>
+					ng-disabled="documentForm.$invalid" ng-click="submitDocumnent()">Submit</md-button>
+				<md-button
+					ng-show="!settingsObj.needModuleDocumentApproval || hasUserAuthority(curUser, 'Stock.ModuleApprover')"
+					class="md-raised md-primary" ng-disabled="documentForm.$invalid"
+					ng-click="finalizeDocumnent($event)">Finalize Shipment</md-button>
 			</section>
 		</div>
 	</form>

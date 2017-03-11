@@ -5,13 +5,13 @@
 		<hr>
 		<md-checkbox ng-model="auth.selected" ng-change="topAuthChange(auth)" ng-true-value="true"
 			ng-false-value="false" aria-label="auth"> <b
-			ng-bind="auth.authName"> </b> </md-checkbox>
+			ng-bind="auth.authDisplayName"> </b> </md-checkbox>
 
 		<div ng-repeat="subAuth in auth.authorizations">
 			<span>&nbsp;&nbsp;&nbsp;&nbsp; <md-checkbox
 					ng-disabled="!auth.selected" ng-model="subAuth.selected"
 					ng-true-value="true" ng-false-value="false" aria-label="auth">
-				{{subAuth.authName}} </md-checkbox></span>
+				{{subAuth.authDisplayName}} </md-checkbox></span>
 
 			<div ng-repeat="thirdLevelSubAuth in subAuth.authorizations">
 				<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <md-checkbox

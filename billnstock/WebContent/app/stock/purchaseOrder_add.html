@@ -2,58 +2,59 @@
 <section layout="row" layout-xs="column">
 	<md-subheader class="md-primary">
 	<h4 class="md-title"
-		ng-bind="purchaseOrderObj.id?'Edit Purchase Order':'Add Purchase Order'"></h4>
+		ng-bind="documentEntity.id?'Edit Purchase Order':'Add Purchase Order'"></h4>
 	</md-subheader>
 	<span flex></span>
 </section>
 <div>
-	<form ng-submit="$event.preventDefault()" name="pOForm">
+	<form ng-submit="$event.preventDefault()" name="documentForm">
 
 		<div layout="row" layout-xs="column">
 			<div layout="row" flex>
 				<md-input-container flex=40> <label>Purchase
-					Order No.</label> <input ng-model="purchaseOrderObj.itemNumber"
+					Order No.</label> <input ng-model="documentEntity.itemNumber"
 					placeholder="Auto generated number" ng-disabled="true"></input> </md-input-container>
-				<md-input-container flex> <label>Warehouse
-				</label> <md-select flex ng-model="purchaseOrderObj.warehouse"
-					placeholder="Select Warehouse" ng-change="warehouseChanged"
-					ng-required="true"> <md-option ng-value="warehouse"
-					ng-selected="(purchaseOrderObj.warehouse.id)?(purchaseOrderObj.warehouse.id == warehouse.id):($index == 0)"
-					ng-repeat="warehouse in warehouses">{{warehouse.warehouseName
-				}}</md-option> </md-select> </md-input-container>
+				<md-input-container flex> <label>Document
+					Status </label> <input type="text" ng-disabled="true"
+					ng-model="documentEntity.status"> </md-input-container>
 				<md-input-container flex=15> <label>Created
 					By </label> <input ng-disabled="true" ng-model="createdBy"
-					ng-init="createdBy = purchaseOrderObj.createdBy? purchaseOrderObj.createdBy.firstName + ' ' + purchaseOrderObj.createdBy.lastName: ''"></input>
+					ng-init="createdBy = documentEntity.createdBy? documentEntity.createdBy.firstName + ' ' + documentEntity.createdBy.lastName: ''"></input>
 				</md-input-container>
 			</div>
 		</div>
 		<div layout="row" layout-xs="column">
 			<div layout="row" flex>
-				<md-autocomplete flex=40 required md-input-name="autocompleteField"
-					md-no-cache=true md-selected-item="purchaseOrderObj.supplier"
+				<md-input-container flex=40> <label>Warehouse
+				</label> <md-select flex ng-model="documentEntity.warehouse"
+					placeholder="Select Warehouse" ng-change="warehouseChanged"
+					ng-required="true"> <md-option ng-value="warehouse"
+					ng-selected="(documentEntity.warehouse.id)?(documentEntity.warehouse.id == warehouse.id):($index == 0)"
+					ng-repeat="warehouse in warehouses">{{warehouse.warehouseName
+				}}</md-option> </md-select> </md-input-container>
+
+				<md-autocomplete flex required md-input-name="autocompleteField"
+					md-no-cache=true md-selected-item="documentEntity.supplier"
 					md-search-text="searchTextInput"
 					md-items="item in querySearch(searchTextInput)"
 					md-item-text="item.supplierName" md-floating-label="Supplier Name">
 				<md-item-template> <span
 					md-highlight-text="searchTextInput">{{item.supplierName}}</span> </md-item-template>
-				<div ng-messages="pOForm.autocompleteField.$error"
-					ng-if="pOForm.autocompleteField.$touched">
+				<div ng-messages="documentForm.autocompleteField.$error"
+					ng-if="documentForm.autocompleteField.$touched">
 					<div ng-message="required">Supplier field is required.</div>
 				</div>
 				</md-autocomplete>
 				<md-icon md-svg-src="img/icons/ic_queue_black_24px.svg"
 					ng-click="addSupplier()" class="name"
 					style="color: Green; height: 18px; width: 18px"></md-icon>
+
 				<md-input-container flex> <label>Select
-					Due Date</label> <md-datepicker flex ng-model="purchaseOrderObj.poDueDate"
+					Due Date</label> <md-datepicker flex ng-model="documentEntity.poDueDate"
 					md-placeholder="Select Date"></md-datepicker> </md-input-container>
-				<md-input-container flex> <label>Receipt
-					Status </label> <input type="text" ng-disabled="true"
-					ng-model="purchaseOrderObj.status"> </md-input-container>
 				<md-input-container flex=15> <label>Approved
-					By </label> <input ng-disabled="true"
-					ng-model="purchaseOrderObj.approvedBy"
-					ng-init="approvedBy = purchaseOrderObj.approvedBy? purchaseOrderObj.approvedBy.firstName + ' ' + purchaseOrderObj.approvedBy.lastName : 'NA'"></input>
+					By </label> <input ng-disabled="true" ng-model="approvedBy"
+					ng-init="approvedBy = documentEntity.approvedBy? documentEntity.approvedBy.firstName + ' ' + documentEntity.approvedBy.lastName : 'NA'"></input>
 				</md-input-container>
 
 
@@ -64,32 +65,32 @@
 			layout-xs="column">
 			<div layout="row" flex>
 				<md-input-container flex=40> <label>Budget
-				</label> <md-select flex ng-model="purchaseOrderObj.budget"
+				</label> <md-select flex ng-model="documentEntity.budget"
 					placeholder="Select Budget" ng-required="true"> <md-option
 					ng-value="budget"
-					ng-selected="(purchaseOrderObj.budget.id)?(purchaseOrderObj.budget.id == budget.id):false"
+					ng-selected="(documentEntity.budget.id)?(documentEntity.budget.id == budget.id):false"
 					ng-repeat="budget in budgetList">{{budget.type + "-" +
 				budget.period }}</md-option> </md-select> </md-input-container>
 
 				<md-input-container flex> <label>Budget
 					Category </label> <md-select flex
-					ng-model="purchaseOrderObj.budgetLineItemCategory"
+					ng-model="documentEntity.budgetLineItemCategory"
 					placeholder="Select Budget Category" ng-required="true">
 				<md-option ng-value="budgetLineItemCategory"
-					ng-selected="(purchaseOrderObj.budgetLineItemCategory)?(purchaseOrderObj.budgetLineItemCategory.categoryName == budgetLineItemCategory.categoryName):false"
-					ng-repeat="budgetLineItemCategory in purchaseOrderObj.budget.categoryList">{{budgetLineItemCategory.categoryName}}</md-option>
+					ng-selected="(documentEntity.budgetLineItemCategory)?(documentEntity.budgetLineItemCategory.categoryName == budgetLineItemCategory.categoryName):false"
+					ng-repeat="budgetLineItemCategory in documentEntity.budget.categoryList">{{budgetLineItemCategory.categoryName}}</md-option>
 				</md-select> </md-input-container>
 
 				<md-input-container flex> <label>Budget
 					Line Item </label> <md-select flex
-					ng-model="purchaseOrderObj.budgetLineItem"
+					ng-model="documentEntity.budgetLineItem"
 					placeholder="Select Budget Line Item" ng-required="true">
 				<md-option ng-value="budgetLineItem"
-					ng-selected="(purchaseOrderObj.budgetlineItem)?(purchaseOrderObj.budgetLineItem.itemName == budgetLineItem.itemName):false"
-					ng-repeat="budgetLineItem in purchaseOrderObj.budgetLineItemCategory.items">{{budgetLineItem.itemName}}</md-option>
+					ng-selected="(documentEntity.budgetlineItem)?(documentEntity.budgetLineItem.itemName == budgetLineItem.itemName):false"
+					ng-repeat="budgetLineItem in documentEntity.budgetLineItemCategory.items">{{budgetLineItem.itemName}}</md-option>
 				</md-select>
-				<div ng-if="purchaseOrderObj.budgetLineItem">
-					Current Budget Balance <b>{{purchaseOrderObj.budgetLineItem.currentBudgetBalance}}</b>
+				<div ng-if="documentEntity.budgetLineItem">
+					Current Budget Balance <b>{{documentEntity.budgetLineItem.currentBudgetBalance}}</b>
 				</div>
 				</md-input-container>
 
@@ -99,34 +100,34 @@
 
 		<div layout="row" layout-xs="column">
 			<md-input-container flex=40> <label>Bill
-				To </label> <textarea ng-model="purchaseOrderObj.to" rows="4" cols="1"></textarea>
+				To </label> <textarea ng-model="documentEntity.to" rows="4" cols="1"></textarea>
 			</md-input-container>
 
 			<md-input-container flex> <label>Ship To
-			</label> <textarea ng-model="purchaseOrderObj.shipTo" rows="4" cols="1"></textarea>
+			</label> <textarea ng-model="documentEntity.shipTo" rows="4" cols="1"></textarea>
 			</md-input-container>
 		</div>
 
 		<div layout="row" layout-xs="column">
 
 			<md-input-container flex=40> <label>Requisitioner
-			</label> <input ng-model="purchaseOrderObj.requisitioner"> </md-input-container>
+			</label> <input ng-model="documentEntity.requisitioner"> </md-input-container>
 
 			<md-input-container flex> <label>Shipped
-				Via </label> <input ng-model="purchaseOrderObj.shippedVia"> </md-input-container>
+				Via </label> <input ng-model="documentEntity.shippedVia"> </md-input-container>
 		</div>
 		<div layout="row" layout-xs="column">
 			<md-input-container flex=40> <label>F.O.B.Point
-			</label> <input ng-model="purchaseOrderObj.fOBPoint"> </md-input-container>
+			</label> <input ng-model="documentEntity.fOBPoint"> </md-input-container>
 
 			<md-input-container flex> <label>Terms </label>
-			<input ng-model="purchaseOrderObj.terms"> </md-input-container>
+			<input ng-model="documentEntity.terms"> </md-input-container>
 		</div>
 
 
 		<div layout="row" layout-xs="column">
 			<md-input-container flex> <label>Note to
-				Customer</label> <textarea ng-model="purchaseOrderObj.noteToCustomer"
+				Customer</label> <textarea ng-model="documentEntity.noteToCustomer"
 				rows="3" cols="1"></textarea> </md-input-container>
 		</div>
 
@@ -136,7 +137,7 @@
 		</div>
 
 		<div
-			ng-show="purchaseOrderObj.productLineItemList && purchaseOrderObj.productLineItemList.length > 0">
+			ng-show="documentEntity.productLineItemList && documentEntity.productLineItemList.length > 0">
 			<h3>Product Line Items</h3>
 			<table md-data-table md-progress="deferred">
 				<thead md-order="query.order" md-trigger="onOrderChange">
@@ -151,7 +152,7 @@
 				</thead>
 
 				<tbody>
-					<tr ng-repeat="item in purchaseOrderObj.productLineItemList">
+					<tr ng-repeat="item in documentEntity.productLineItemList">
 
 						<td>{{ $index +1 }}</td>
 						<td>
@@ -195,7 +196,7 @@
 						<td></td>
 						<td></td>
 						<td><label>Product Sub Total</label></td>
-						<td><b>{{purchaseOrderObj.productSubTotal |
+						<td><b>{{documentEntity.productSubTotal |
 								currency:"":"2"}}</b></td>
 						<td></td>
 
@@ -204,15 +205,15 @@
 						<td></td>
 						<td><label>Product Tax</label></td>
 						<td><md-input-container flex
-								ng-hide="purchaseOrderObj.productLineItemList.length==0">
-							<md-select ng-model="purchaseOrderObj.selectedProductTax"
+								ng-hide="documentEntity.productLineItemList.length==0">
+							<md-select ng-model="documentEntity.selectedProductTax"
 								placeholder="Select Tax" ng-change="productTaxChanged()">
 							<md-option ng-value="taxValue"
-								ng-selected="purchaseOrderObj.selectedProductTax.id == taxValue.id"
+								ng-selected="documentEntity.selectedProductTax.id == taxValue.id"
 								ng-repeat="taxValue in taxforinvoice">{{taxValue.taxCodeName}}</md-option>
 							</md-select> </md-input-container></td>
-						<td>{{purchaseOrderObj.selectedProductTax.taxPercenatge}}</td>
-						<td><b>{{purchaseOrderObj.productTaxTotal |
+						<td>{{documentEntity.selectedProductTax.taxPercenatge}}</td>
+						<td><b>{{documentEntity.productTaxTotal |
 								currency:"":"2"}}</b></td>
 						<td></td>
 					</tr>
@@ -222,7 +223,7 @@
 						<td></td>
 						<td></td>
 						<td><label>Product Total </label></td>
-						<td><b>{{purchaseOrderObj.productTotal |
+						<td><b>{{documentEntity.productTotal |
 								currency:"":"2"}}</b></td>
 						<td></td>
 					</tr>
@@ -233,7 +234,7 @@
 		</div>
 
 		<div
-			ng-show="!purchaseOrderObj.serviceLineItemList || purchaseOrderObj.serviceLineItemList.length == 0">
+			ng-show="!documentEntity.serviceLineItemList || documentEntity.serviceLineItemList.length == 0">
 			Add New Other Cost Items:
 			<md-button class="md-icon-button" ng-click="addServiceLineItem()">
 			<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
@@ -241,7 +242,7 @@
 
 		</div>
 		<div
-			ng-show="purchaseOrderObj.serviceLineItemList && purchaseOrderObj.serviceLineItemList.length > 0">
+			ng-show="documentEntity.serviceLineItemList && documentEntity.serviceLineItemList.length > 0">
 			<h3>Other Cost Line Items</h3>
 			<table md-data-table md-progress="deferred">
 				<thead md-order="query.order" md-trigger="onOrderChange">
@@ -256,7 +257,7 @@
 				</thead>
 
 				<tbody>
-					<tr ng-repeat="serviceItem in purchaseOrderObj.serviceLineItemList">
+					<tr ng-repeat="serviceItem in documentEntity.serviceLineItemList">
 
 						<td>{{ $index +1 }}</td>
 						<td><md-input-container flex> <label>Service
@@ -285,7 +286,7 @@
 						<td></td>
 						<td></td>
 						<td><label>Service Sub Total</label></td>
-						<td><b>{{purchaseOrderObj.serviceTotal |
+						<td><b>{{documentEntity.serviceTotal |
 								currency:"":"2"}}</b></td>
 						<td></td>
 					</tr>
@@ -293,15 +294,15 @@
 						<td></td>
 						<td><label>Services Tax</label></td>
 						<td><md-input-container flex
-								ng-hide="purchaseOrderObj.serviceLineItemList.length==0">
-							<md-select ng-model="purchaseOrderObj.selectedServiceTax"
+								ng-hide="documentEntity.serviceLineItemList.length==0">
+							<md-select ng-model="documentEntity.selectedServiceTax"
 								placeholder="Select Tax" ng-change="serviceTaxChanged()">
 							<md-option ng-value="taxValue"
 								ng-repeat="taxValue in taxforinvoice"
-								ng-selected="purchaseOrderObj.selectedServiceTax.id == taxValue.id">{{taxValue.taxCodeName}}</md-option>
+								ng-selected="documentEntity.selectedServiceTax.id == taxValue.id">{{taxValue.taxCodeName}}</md-option>
 							</md-select> </md-input-container></td>
-						<td>{{purchaseOrderObj.selectedServiceTax.taxPercenatge}}</td>
-						<td><b>{{purchaseOrderObj.serviceTaxTotal |
+						<td>{{documentEntity.selectedServiceTax.taxPercenatge}}</td>
+						<td><b>{{documentEntity.serviceTaxTotal |
 								currency:"":"2"}}</b></td>
 						<td></td>
 					</tr>
@@ -311,7 +312,7 @@
 						<td></td>
 						<td></td>
 						<td><label>Service Total</label></td>
-						<td><b>{{purchaseOrderObj.serviceTotal |
+						<td><b>{{documentEntity.serviceTotal |
 								currency:"":"2"}}</b></td>
 						<td></td>
 					</tr>
@@ -330,7 +331,7 @@
 						<td></td>
 						<td></td>
 						<td><label>Final Total</label></td>
-						<td><b> {{purchaseOrderObj.finalTotal | currency:"":"2"}}</b></td>
+						<td><b> {{documentEntity.finalTotal | currency:"":"2"}}</b></td>
 						<td></td>
 					</tr>
 					<tr>
@@ -348,18 +349,17 @@
 
 		</div>
 		<div layout layout-xs="column"
-			ng-hide="purchaseOrderObj.status == 'FINALIZED'">
+			ng-hide="documentEntity.status == 'FINALIZED'">
 			<section layout="row" layout-xs="column">
 				<md-button class="md-raised md-primary"
-					ng-disabled="pOForm.$invalid" ng-click="addPurchaseOrder()">Save
+					ng-disabled="documentForm.$invalid" ng-click="saveDocument()">Save
 				as Draft</md-button>
 				<md-button class="md-raised md-primary"
-					ng-disabled="pOForm.$invalid" ng-click="submitPurchaseOrder()">Submit</md-button>
+					ng-disabled="documentForm.$invalid" ng-click="submitDocumnent()">Submit</md-button>
 				<md-button
-					ng-show="!settingsObj.needPOApproval || hasUserAuthority(curUser, 'Stock.ModuleApprover')"
-					class="md-raised md-primary" ng-disabled="pOForm.$invalid"
-					ng-click="finalizePurchaseOrder($event)">Finalize\Aprrove
-				PO</md-button>
+					ng-show="!settingsObj.needModuleDocumentApproval || hasUserAuthority(curUser, 'Stock.ModuleApprover')"
+					class="md-raised md-primary" ng-disabled="documentForm.$invalid"
+					ng-click="finalizeDocumnent($event)">Finalize Shipment</md-button>
 			</section>
 		</div>
 	</form>

@@ -2336,11 +2336,23 @@ function googleEndpointSF($q) {
 
 		return deferred.promise;
 	}
-
+	
 	InvoiceService.fetchInvoiceListByPaging = function(busId, status,
 			pagingInfo) {
 		var deferred = $q.defer();
 		gapi.client.invoiceService.fetchInvoiceListByPaging({
+			"id" : busId,
+			"status" : status
+		}, pagingInfo).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}
+	
+	InvoiceService.fetchQuotationListByPaging = function(busId, status,
+			pagingInfo) {
+		var deferred = $q.defer();
+		gapi.client.invoiceService.fetchQuotationListByPaging({
 			"id" : busId,
 			"status" : status
 		}, pagingInfo).execute(function(resp) {

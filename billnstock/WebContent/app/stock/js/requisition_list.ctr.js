@@ -10,18 +10,28 @@ app
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
 
-					$scope.query = {
-						order : 'requisition.expectedDate',
-						limit : 50,
-						page : 1,
-						totalSize : 0,
-						pagesLoaded : 0
-					};
-
-					$scope.documentStatusList = [ 'DRAFT', 'SUBMITTED',
+					function reSetQuery() {
+						return {
+							order : '-itemNumber',
+							limit : 50,
+							page : 1,
+							totalSize : 0,
+							pagesLoaded : 0
+						};
+					}
+					$scope.query = reSetQuery();
+					$scope.documentStatusList = [ 'ALL', 'DRAFT', 'SUBMITTED',
 							'FINALIZED', 'REJECTED' ];
-
 					$scope.selectedStatus = "";
+
+					$scope.fitlerListByStatus = function(status) {
+						status = (status == 'ALL') ? '' : status;
+						$scope.selectedStatus = status;
+						$scope.requisitionList = [];
+						$scope.query = reSetQuery();
+						$scope.pagingInfoReturned = null;
+						$scope.fetchEntityListByPaging();
+					}
 
 					$scope.requisitionList = [];
 
@@ -50,13 +60,6 @@ app
 											$scope.query.pagesLoaded++;
 											$scope.loading = false;
 										});
-					}
-
-					$scope.fitlerListByStatus = function(status) {
-						$scope.selectedStatus = status;
-						$scope.requisitionList = [];
-						$scope.pagingInfoReturned = null;
-						$scope.fetchEntityListByPaging();
 					}
 
 					$scope.waitForServiceLoad = function() {

@@ -7,6 +7,8 @@ app
 						$routeParams, $filter, $location, $anchorScroll,
 						objectFactory, appEndpointSF) {
 
+					$scope.purchaseOrderList = [];
+					
 					function reSetQuery() {
 						return {
 							order : '-itemNumber',
@@ -17,7 +19,18 @@ app
 						};
 					}
 					$scope.query = reSetQuery();
-					$scope.purchaseOrderList = [];
+					$scope.documentStatusList = [ 'ALL', 'DRAFT', 'SUBMITTED',
+							'FINALIZED', 'REJECTED' ];
+					$scope.selectedStatus = "";
+
+					$scope.fitlerListByStatus = function(status) {
+						status = (status == 'ALL') ? '' : status;
+						$scope.selectedStatus = status;
+						$scope.purchaseOrderList = [];
+						$scope.query = reSetQuery();
+						$scope.pagingInfoReturned = null;
+						$scope.fetchEntityListByPaging();
+					}
 
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
@@ -70,18 +83,7 @@ app
 											$scope.loading = false;
 										});
 					}
-					$scope.documentStatusList = [ 'ALL', 'DRAFT', 'SUBMITTED',
-							'FINALIZED', 'REJECTED' ];
-					$scope.selectedStatus = "";
-
-					$scope.fitlerListByStatus = function(status) {
-						status = (status == 'ALL') ? '' : status;
-						$scope.selectedStatus = status;
-						$scope.purchaseOrderList = [];
-						$scope.query = reSetQuery();
-						$scope.pagingInfoReturned = null;
-						$scope.fetchEntityListByPaging();
-					}
+				
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {

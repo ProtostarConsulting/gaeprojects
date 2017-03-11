@@ -27,49 +27,56 @@ app
 							isDraft : false,
 							paidDate : null,
 							business : null,
-							status : 'DRAFT'
+							status : 'DRAFT',
+							createdBy : $scope.curUser
 						};
 					}
 
-					$scope.stockShipmentObj = $stateParams.stockShipmentObj ? $stateParams.stockShipmentObj
+					$scope.documentEntity = $stateParams.stockShipmentObj ? $stateParams.stockShipmentObj
 							: $scope.getEmptystockShipmentObj();
 
-					$scope.stockShipmentObj.shipmentDate = $scope.stockShipmentObj.shipmentDate ? new Date(
-							$scope.stockShipmentObj.shipmentDate)
+					$scope.documentEntity.shipmentDate = $scope.documentEntity.shipmentDate ? new Date(
+							$scope.documentEntity.shipmentDate)
 							: new Date();
-					$scope.stockShipmentObj.poNumber = $scope.stockShipmentObj.poNumber ? Number($scope.stockShipmentObj.poNumber)
+					$scope.documentEntity.poNumber = $scope.documentEntity.poNumber ? Number($scope.documentEntity.poNumber)
 							: '';
 
-					$scope.addStockShipment = function() {
-						$scope.stockShipmentObj.business = $scope.curUser.business;
-						$scope.stockShipmentObj.modifiedBy = $scope.curUser.email_id;
+					$scope.saveDocument = function() {
+						$scope.documentEntity.business = $scope.curUser.business;
+						$scope.documentEntity.modifiedBy = $scope.curUser.email_id;
 						var stockService = appEndpointSF.getStockService();
 
 						stockService
-								.addStockShipment($scope.stockShipmentObj)
+								.addStockShipment($scope.documentEntity)
 								.then(
 										function(entityObj) {
 											if (entityObj.id) {
-												$scope.stockShipmentObj.id = entityObj.id;
-												$scope.stockShipmentObj.itemNumber = entityObj.itemNumber;
+												$scope.documentEntity.id = entityObj.id;
+												$scope.documentEntity.itemNumber = entityObj.itemNumber;
 												$scope.showUpdateToast();
 											}
 										});
 
 					}
 
-					$scope.finalizeStockShipment = function(ev) {
+					$scope.submitDocumnent = function(ev) {
+						$scope.documentEntity.status = 'SUBMITTED';
+						$scope.saveDocument();
+					}
+
+					$scope.finalizeDocumnent = function(ev) {
 						var confirm = $mdDialog
 								.confirm()
 								.title(
-										'Do you want to finalize this Shipment? Note, after this you will not be able to make any changes in this document.')
+										'Do you want to finalize this Stock Shipment? Note, after this you will not be able to make any changes in this document.')
 								.textContent('').ariaLabel('finalize?')
 								.targetEvent(ev).ok('Yes').cancel('No');
 
 						$mdDialog.show(confirm).then(function() {
 							$log.debug("Inside Yes, function");
-							$scope.stockShipmentObj.status = 'FINALIZED';
-							$scope.addStockShipment();
+							$scope.documentEntity.status = 'FINALIZED';
+							$scope.documentEntity.approvedBy = $scope.curUser;
+							$scope.saveDocument();
 						}, function() {
 							$log.debug("Cancelled...");
 						});
@@ -84,10 +91,10 @@ app
 							stockItem : null,
 							selectedTaxItem : null
 						};
-						if (!$scope.stockShipmentObj.serviceLineItemList) {
-							$scope.stockShipmentObj.serviceLineItemList = [];
+						if (!$scope.documentEntity.serviceLineItemList) {
+							$scope.documentEntity.serviceLineItemList = [];
 						}
-						$scope.stockShipmentObj.serviceLineItemList.push(item);
+						$scope.documentEntity.serviceLineItemList.push(item);
 					};
 
 					$scope.addProductLineItem = function() {
@@ -99,10 +106,10 @@ app
 							stockItem : null,
 							selectedTaxItem : null
 						};
-						if (!$scope.stockShipmentObj.productLineItemList) {
-							$scope.stockShipmentObj.productLineItemList = [];
+						if (!$scope.documentEntity.productLineItemList) {
+							$scope.documentEntity.productLineItemList = [];
 						}
-						$scope.stockShipmentObj.productLineItemList.push(item);
+						$scope.documentEntity.productLineItemList.push(item);
 					};
 
 					$scope.productLineItemChanged = function(selectedLineItem) {
@@ -112,11 +119,11 @@ app
 
 					$scope.calProductSubTotal = function() {
 						$log.debug("##Came to calSubTotal...");
-						$scope.stockShipmentObj.productSubTotal = 0;
+						$scope.documentEntity.productSubTotal = 0;
 
-						for (var i = 0; i < $scope.stockShipmentObj.productLineItemList.length; i++) {
-							var lineItem = $scope.stockShipmentObj.productLineItemList[i];
-							$scope.stockShipmentObj.productSubTotal += (lineItem.qty * lineItem.price);
+						for (var i = 0; i < $scope.documentEntity.productLineItemList.length; i++) {
+							var lineItem = $scope.documentEntity.productLineItemList[i];
+							$scope.documentEntity.productSubTotal += (lineItem.qty * lineItem.price);
 						}
 
 						$scope.productTaxChanged();
@@ -128,38 +135,38 @@ app
 					};
 
 					$scope.calServiceSubTotal = function() {
-						$scope.stockShipmentObj.serviceSubTotal = 0;
+						$scope.documentEntity.serviceSubTotal = 0;
 
-						for (var i = 0; i < $scope.stockShipmentObj.serviceLineItemList.length; i++) {
-							var lineItem = $scope.stockShipmentObj.serviceLineItemList[i];
-							$scope.stockShipmentObj.serviceSubTotal += (lineItem.qty * lineItem.price);
+						for (var i = 0; i < $scope.documentEntity.serviceLineItemList.length; i++) {
+							var lineItem = $scope.documentEntity.serviceLineItemList[i];
+							$scope.documentEntity.serviceSubTotal += (lineItem.qty * lineItem.price);
 						}
 
 						$scope.serviceTaxChanged();
 					}
 
 					$scope.serviceTaxChanged = function() {
-						if (!$scope.stockShipmentObj.selectedServiceTax) {
-							$scope.stockShipmentObj.serviceTaxTotal = 0;
+						if (!$scope.documentEntity.selectedServiceTax) {
+							$scope.documentEntity.serviceTaxTotal = 0;
 						} else {
-							$scope.stockShipmentObj.serviceTaxTotal = parseFloat(($scope.stockShipmentObj.selectedServiceTax.taxPercenatge / 100)
-									* ($scope.stockShipmentObj.serviceSubTotal));
+							$scope.documentEntity.serviceTaxTotal = parseFloat(($scope.documentEntity.selectedServiceTax.taxPercenatge / 100)
+									* ($scope.documentEntity.serviceSubTotal));
 						}
-						$scope.stockShipmentObj.serviceTotal = $scope.stockShipmentObj.serviceSubTotal
-								+ $scope.stockShipmentObj.serviceTaxTotal;
+						$scope.documentEntity.serviceTotal = $scope.documentEntity.serviceSubTotal
+								+ $scope.documentEntity.serviceTaxTotal;
 						$scope.calfinalTotal();
 					};
 
 					$scope.productTaxChanged = function() {
-						if (!$scope.stockShipmentObj.selectedProductTax) {
-							$scope.stockShipmentObj.productTaxTotal = 0;
+						if (!$scope.documentEntity.selectedProductTax) {
+							$scope.documentEntity.productTaxTotal = 0;
 
 						} else {
-							$scope.stockShipmentObj.productTaxTotal = parseFloat(($scope.stockShipmentObj.selectedProductTax.taxPercenatge / 100)
-									* ($scope.stockShipmentObj.productSubTotal));
+							$scope.documentEntity.productTaxTotal = parseFloat(($scope.documentEntity.selectedProductTax.taxPercenatge / 100)
+									* ($scope.documentEntity.productSubTotal));
 						}
-						$scope.stockShipmentObj.productTotal = $scope.stockShipmentObj.productSubTotal
-								+ $scope.stockShipmentObj.productTaxTotal;
+						$scope.documentEntity.productTotal = $scope.documentEntity.productSubTotal
+								+ $scope.documentEntity.productTaxTotal;
 						$scope.calfinalTotal();
 					}
 
@@ -167,15 +174,15 @@ app
 						$scope.tempDiscAmount = 0;
 						var finalTotal = 0;
 						var disc = 0;
-						$scope.stockShipmentObj.finalTotal = 0;
+						$scope.documentEntity.finalTotal = 0;
 
-						if ($scope.stockShipmentObj.serviceTotal)
-							finalTotal += parseFloat($scope.stockShipmentObj.serviceTotal);
+						if ($scope.documentEntity.serviceTotal)
+							finalTotal += parseFloat($scope.documentEntity.serviceTotal);
 
-						if ($scope.stockShipmentObj.productTotal)
-							finalTotal += parseFloat($scope.stockShipmentObj.productTotal);
+						if ($scope.documentEntity.productTotal)
+							finalTotal += parseFloat($scope.documentEntity.productTotal);
 
-						$scope.stockShipmentObj.finalTotal = finalTotal;
+						$scope.documentEntity.finalTotal = finalTotal;
 
 						return;
 
@@ -183,46 +190,46 @@ app
 							if ($scope.lineSelectedDiscount == "Fixed") {
 
 								$scope.tempDiscAmount = $scope.discAmount;
-								$scope.stockShipmentObj.discAmount = $scope.tempDiscAmount;
+								$scope.documentEntity.discAmount = $scope.tempDiscAmount;
 
-								if ($scope.stockShipmentObj.productTotal == undefined) {
-									$scope.stockShipmentObj.finalTotal = parseFloat($scope.stockShipmentObj.serviceTotal)
+								if ($scope.documentEntity.productTotal == undefined) {
+									$scope.documentEntity.finalTotal = parseFloat($scope.documentEntity.serviceTotal)
 											- parseFloat($scope.discAmount);
 								} else {
-									$scope.stockShipmentObj.finalTotal = (parseFloat($scope.stockShipmentObj.productTotal) + parseFloat($scope.stockShipmentObj.serviceTotal))
+									$scope.documentEntity.finalTotal = (parseFloat($scope.documentEntity.productTotal) + parseFloat($scope.documentEntity.serviceTotal))
 											- parseFloat($scope.discAmount);
 								}
 
 							} else {
 								disc = parseInt($scope.discAmount);
-								finalTotal = parseFloat($scope.stockShipmentObj.productSubTotal)
-										+ parseFloat($scope.stockShipmentObj.productTaxTotal)
-										+ parseFloat($scope.stockShipmentObj.serviceSubTotal);
+								finalTotal = parseFloat($scope.documentEntity.productSubTotal)
+										+ parseFloat($scope.documentEntity.productTaxTotal)
+										+ parseFloat($scope.documentEntity.serviceSubTotal);
 
 								$scope.tempDiscAmount = ((disc / 100) * finalTotal);
 
-								$scope.stockShipmentObj.discAmount = $scope.tempDiscAmount;
+								$scope.documentEntity.discAmount = $scope.tempDiscAmount;
 
 							}
-							if ($scope.stockShipmentObj.productTotal == undefined) {
-								$scope.stockShipmentObj.finalTotal = (parseFloat($scope.stockShipmentObj.serviceTotal))
+							if ($scope.documentEntity.productTotal == undefined) {
+								$scope.documentEntity.finalTotal = (parseFloat($scope.documentEntity.serviceTotal))
 										- parseFloat($scope.tempDiscAmount);
 							} else {
-								$scope.stockShipmentObj.finalTotal = (parseFloat($scope.stockShipmentObj.productTotal) + parseFloat($scope.stockShipmentObj.serviceTotal))
+								$scope.documentEntity.finalTotal = (parseFloat($scope.documentEntity.productTotal) + parseFloat($scope.documentEntity.serviceTotal))
 										- parseFloat($scope.tempDiscAmount);
 							}
 						}
 					}
 
 					$scope.removeServiceItem = function(index) {
-						$scope.stockShipmentObj.serviceLineItemList.splice(
-								index, 1);
+						$scope.documentEntity.serviceLineItemList.splice(index,
+								1);
 
-						if ($scope.stockShipmentObj.serviceLineItemList.length == 0) {
-							$scope.stockShipmentObj.serviceSubTotal = 0;
-							$scope.stockShipmentObj.serviceTotal = 0;
-							$scope.stockShipmentObj.serviceTaxTotal = 0;
-							$scope.stockShipmentObj.selectedServiceTax = null;
+						if ($scope.documentEntity.serviceLineItemList.length == 0) {
+							$scope.documentEntity.serviceSubTotal = 0;
+							$scope.documentEntity.serviceTotal = 0;
+							$scope.documentEntity.serviceTaxTotal = 0;
+							$scope.documentEntity.selectedServiceTax = null;
 						}
 
 						$scope.calServiceSubTotal();
@@ -230,14 +237,14 @@ app
 					};
 
 					$scope.removeProductItem = function(index) {
-						$scope.stockShipmentObj.productLineItemList.splice(
-								index, 1);
+						$scope.documentEntity.productLineItemList.splice(index,
+								1);
 
-						if ($scope.stockShipmentObj.productLineItemList.length == 0) {
-							$scope.stockShipmentObj.productSubTotal = 0;
-							$scope.stockShipmentObj.productTotal = 0;
-							$scope.stockShipmentObj.productTaxTotal = 0;
-							$scope.stockShipmentObj.selectedProductTax = null;
+						if ($scope.documentEntity.productLineItemList.length == 0) {
+							$scope.documentEntity.productSubTotal = 0;
+							$scope.documentEntity.productTotal = 0;
+							$scope.documentEntity.productTaxTotal = 0;
+							$scope.documentEntity.selectedProductTax = null;
 						}
 
 						$scope.calProductSubTotal();
@@ -249,7 +256,7 @@ app
 							selectedDiscount) {
 						$log.debug("##Came to lineItemStockChange...");
 						$scope.lineSelectedDiscount = selectedDiscount;
-						$scope.stockShipmentObj.discount = selectedDiscount;
+						$scope.documentEntity.discount = selectedDiscount;
 						// $scope.calSubTotal();
 						// $scope.calfinalTotal();
 					};
@@ -342,12 +349,12 @@ app
 								.then(
 										function(warehouseList) {
 											$scope.warehouses = warehouseList;
-											if ($scope.stockShipmentObj.fromWH == null
+											if ($scope.documentEntity.fromWH == null
 													&& $scope.warehouses.length > 0) {
-												$scope.stockShipmentObj.fromWH = $scope.warehouses[0];
+												$scope.documentEntity.fromWH = $scope.warehouses[0];
 											}
 											$scope
-													.filterStockItemsByWarehouse($scope.stockShipmentObj.fromWH);
+													.filterStockItemsByWarehouse($scope.documentEntity.fromWH);
 											$scope.loading = false;
 										});
 					}
@@ -389,16 +396,26 @@ app
 						};
 					}
 
+					function getStockSettingsByBiz() {
+						var stockService = appEndpointSF.getStockService();
+						stockService.getStockSettingsByBiz(
+								$scope.curUser.business.id).then(
+								function(settingsList) {
+									$scope.settingsObj = settingsList;
+								});
+					}
+
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
+							getStockSettingsByBiz();
 							loadAllCustomers();
 							$scope.getTaxesByVisibility();
 							$scope.getAllWarehouseByBusiness();
 							$scope.calProductSubTotal();
-							if ($scope.stockShipmentObj.serviceLineItemList) {
+							if ($scope.documentEntity.serviceLineItemList) {
 								$scope.calServiceSubTotal();
 							}
-							if (!$scope.stockShipmentObj.id) {
+							if (!$scope.documentEntity.id) {
 								$scope.addProductLineItem();
 							}
 

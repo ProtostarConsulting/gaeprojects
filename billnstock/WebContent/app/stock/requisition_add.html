@@ -2,27 +2,41 @@
 <section layout="row" layout-xs="column">
 	<md-subheader class="md-primary">
 	<h4 class="md-title"
-		ng-bind="requisition.id?'Edit Requisition':'Add Requisition'"></h4>
+		ng-bind="documentEntity.id?'Edit documentEntity':'Add documentEntity'"></h4>
 	</md-subheader>
 	<span flex></span>
 </section>
 
 <div>
-	<form ng-submit="$event.preventDefault()" name="requisitionForm">
+	<form ng-submit="$event.preventDefault()" name="documentForm">
 
+		<div layout="row" layout-xs="column">
+			<div layout="row" flex>
+				<md-input-container flex=40> <label>Purchase
+					Order No.</label> <input ng-model="documentEntity.itemNumber"
+					placeholder="Auto generated number" ng-disabled="true"></input> </md-input-container>
+				<md-input-container flex> <label>Document
+					Status </label> <input type="text" ng-disabled="true"
+					ng-model="documentEntity.status"> </md-input-container>
+				<md-input-container flex=15> <label>Created
+					By </label> <input ng-disabled="true" ng-model="createdBy"
+					ng-init="createdBy = purchaseOrderObj.createdBy? purchaseOrderObj.createdBy.firstName + ' ' + purchaseOrderObj.createdBy.lastName: ''"></input>
+				</md-input-container>
+			</div>
+		</div>
 		<div layout="row" layout-xs="column">
 			<div layout="row" flex>
 
 				<md-input-container flex> <label>
 					Expected Date</label> <md-datepicker flex
-					ng-model="requisition.expectedDate"
-					ng-change="requisition.expectedDate.toISOString()"
+					ng-model="documentEntity.expectedDate"
+					ng-change="documentEntity.expectedDate.toISOString()"
 					md-placeholder="Select Date" ng-required="true"></md-datepicker> </md-input-container>
 				<md-input-container flex> <label>
 					Status </label> <input type="text" ng-readonly="true"
-					ng-model="requisition.status"> </md-input-container>
-				<md-input-container flex> <label>Requisition
-					No.</label> <input ng-model="requisition.itemNumber"
+					ng-model="documentEntity.status"> </md-input-container>
+				<md-input-container flex> <label>documentEntity
+					No.</label> <input ng-model="documentEntity.itemNumber"
 					placeholder="Auto generated number" ng-readonly="true"></input> </md-input-container>
 
 			</div>
@@ -30,17 +44,17 @@
 		<div layout="row" layout-xs="column">
 			<div layout="row" flex>
 
-				<md-input-container flex=30> <label>Requisitioner</label>
+				<md-input-container flex=30> <label>documentEntityer</label>
 				<input type="text" ng-model="requesterName" ng-readonly="true">
 				</md-input-container>
 				<md-input-container flex=30> <label>On
-					Behalf Of</label> <input type="text" ng-model="requisition.onBehalfOf"
+					Behalf Of</label> <input type="text" ng-model="documentEntity.onBehalfOf"
 					ng-required="true"> </md-input-container>
 			</div>
 		</div>
 
 		<div
-			ng-show="!requisition.serviceLineItemList || requisition.serviceLineItemList.length == 0">
+			ng-show="!documentEntity.serviceLineItemList || documentEntity.serviceLineItemList.length == 0">
 			Add Line Items:
 			<md-button class="md-icon-button" ng-click="addLineItem()">
 			<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
@@ -48,20 +62,20 @@
 
 		</div>
 		<div
-			ng-show="requisition.serviceLineItemList && requisition.serviceLineItemList.length > 0">
+			ng-show="documentEntity.serviceLineItemList && documentEntity.serviceLineItemList.length > 0">
 			<h3>Line Items</h3>
 			<table md-data-table md-progress="deferred">
-				<thead md-order="query.order" md-trigger="onOrderChange">
+				<thead md-trigger="onOrderChange">
 					<tr>
-						<th name="Sr_No" order-by="srNo"></th>
-						<th name="Item Name" order-by="serviceName"></th>
-						<th name="Quantity" order-by="qty"></th>
+						<th name="Sr.No."></th>
+						<th name="Item Name"></th>
+						<th name="Quantity"></th>
 						<th name="Actions"></th>
 					</tr>
 				</thead>
 
 				<tbody>
-					<tr ng-repeat="lineItem in requisition.serviceLineItemList">
+					<tr ng-repeat="lineItem in documentEntity.serviceLineItemList">
 
 						<td>{{ $index +1 }}</td>
 						<td
@@ -95,13 +109,17 @@
 
 		</div>
 		<div layout layout-xs="column"
-			ng-hide="requisition.status == 'FINALIZED'">
+			ng-hide="documentEntity.status == 'FINALIZED'">
 			<section layout="row" layout-xs="column">
 				<md-button class="md-raised md-primary"
-					ng-disabled="requisitionForm.$invalid" ng-click="addReq()">Save
+					ng-disabled="documentForm.$invalid" ng-click="saveDocument()">Save
 				as Draft</md-button>
 				<md-button class="md-raised md-primary"
-					ng-disabled="requisitionForm.$invalid" ng-click="submitReq($event)">Submit</md-button>
+					ng-disabled="documentForm.$invalid" ng-click="submitDocumnent()">Submit</md-button>
+				<md-button
+					ng-show="!settingsObj.needModuleDocumentApproval || hasUserAuthority(curUser, 'Stock.ModuleApprover')"
+					class="md-raised md-primary" ng-disabled="documentForm.$invalid"
+					ng-click="finalizeDocumnent($event)">Finalize Shipment</md-button>
 			</section>
 		</div>
 	</form>

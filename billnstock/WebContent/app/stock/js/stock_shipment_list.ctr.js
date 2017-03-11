@@ -16,22 +16,23 @@ app
 						};
 					}
 					$scope.query = reSetQuery();
-
-					$scope.curUser = appEndpointSF.getLocalUserService()
-							.getLoggedinUser();
-
-					$scope.selected = [];
-					$scope.documentStatusList = [ 'DRAFT', 'SUBMITTED',
+					$scope.documentStatusList = [ 'ALL', 'DRAFT', 'SUBMITTED',
 							'FINALIZED', 'REJECTED' ];
 					$scope.selectedStatus = "";
 
 					$scope.fitlerListByStatus = function(status) {
+						status = (status == 'ALL') ? '' : status;
 						$scope.selectedStatus = status;
 						$scope.stockShipmentList = [];
 						$scope.query = reSetQuery();
 						$scope.pagingInfoReturned = null;
 						$scope.fetchEntityListByPaging();
 					}
+
+					$scope.curUser = appEndpointSF.getLocalUserService()
+							.getLoggedinUser();
+
+					$scope.selected = [];					
 
 					$scope.onpagechange = function() {
 						$location.hash('tp1');

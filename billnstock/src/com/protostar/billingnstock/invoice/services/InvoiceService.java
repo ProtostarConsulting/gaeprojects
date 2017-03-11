@@ -71,6 +71,17 @@ public class InvoiceService extends BaseService {
 			return super.fetchEntityListByPaging(busId, InvoiceEntity.class, pagingInfo);
 		}
 	}
+	
+	@ApiMethod(name = "fetchQuotationListByPaging", path = "fetchQuotationListByPaging")
+	public EntityPagingInfo fetchQuotationListByPaging(@Named("id") Long busId, @Named("status") String status,
+			EntityPagingInfo pagingInfo) {
+		if (status != null && !status.isEmpty()) {
+			DocumentStatus statusType = DocumentStatus.valueOf(status.toUpperCase(Locale.ENGLISH));
+			return super.fetchEntityListByPaging(busId, QuotationEntity.class, pagingInfo, statusType);
+		} else {
+			return super.fetchEntityListByPaging(busId, QuotationEntity.class, pagingInfo);
+		}
+	}
 
 	@ApiMethod(name = "getInvoiceByID", path = "getInvoiceByID")
 	public InvoiceEntity getInvoiceByID(@Named("busId") Long busId, @Named("id") Long invoiceId) {

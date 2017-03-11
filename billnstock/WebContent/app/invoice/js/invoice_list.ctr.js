@@ -16,6 +16,18 @@ app
 						};
 					}
 					$scope.query = reSetQuery();
+					$scope.documentStatusList = [ 'ALL', 'DRAFT', 'SUBMITTED',
+							'FINALIZED', 'SENT', 'PAID', 'UNPAID' ];
+					$scope.selectedStatus = "";
+
+					$scope.fitlerListByStatus = function(status) {
+						status = (status == 'ALL') ? '' : status;
+						$scope.selectedStatus = status;
+						$scope.invoiceData = [];
+						$scope.query = reSetQuery();
+						$scope.pagingInfoReturned = null;
+						$scope.fetchEntityListByPaging();
+					}
 
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
@@ -61,19 +73,6 @@ app
 											$scope.query.pagesLoaded++;
 											$scope.loading = false;
 										});
-					}
-
-					$scope.documentStatusList = [ 'ALL', 'DRAFT', 'SUBMITTED',
-							'FINALIZED', 'SENT', 'PAID', 'UNPAID' ];
-					$scope.selectedStatus = "";
-
-					$scope.fitlerListByStatus = function(status) {
-						status = (status == 'ALL') ? '' : status;
-						$scope.selectedStatus = status;
-						$scope.invoiceData = [];
-						$scope.query = reSetQuery();
-						$scope.pagingInfoReturned = null;
-						$scope.fetchEntityListByPaging();
 					}
 
 					$scope.waitForServiceLoad = function() {

@@ -99,6 +99,18 @@
 		 "uiStateName":"invoice",
 		 "orderNumber":"1",
 		 "authorizations":[]
+		 },
+		 {
+		 "authName":"Invoice.ModuleAdmin",
+		 "authDisplayName":"Module Admin",
+		 "uiStateName":"",		 
+		 "orderNumber":"1"
+		 },
+		 {
+		 "authName":"Invoice.ModuleApprover",
+		 "authDisplayName":"Module Approver",
+		 "uiStateName":"",		 
+		 "orderNumber":"1"
 		 }
 		 ]
 	},
@@ -139,7 +151,19 @@
 		  "uiStateName":"taskmanagement.tasklistreport",
 		  "orderNumber":"4",
 		  "authorizations":[]
-		  }
+		  },
+		 {
+		 "authName":"TaskManagement.ModuleAdmin",
+		 "authDisplayName":"Module Admin",
+		 "uiStateName":"",		 
+		 "orderNumber":"1"
+		 },
+		 {
+		 "authName":"TaskManagement.ModuleApprover",
+		 "authDisplayName":"Module Approver",
+		 "uiStateName":"",		 
+		 "orderNumber":"1"
+		 }
 		]
 	},
 	{

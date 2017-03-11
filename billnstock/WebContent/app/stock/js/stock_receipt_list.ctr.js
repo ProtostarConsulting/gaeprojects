@@ -21,11 +21,12 @@ app
 							.getLoggedinUser();
 
 					$scope.selected = [];
-					$scope.documentStatusList = [ 'DRAFT', 'SUBMITTED',
+					$scope.documentStatusList = [ 'ALL', 'DRAFT', 'SUBMITTED',
 							'FINALIZED', 'REJECTED' ];
 					$scope.selectedStatus = "";
 
 					$scope.fitlerListByStatus = function(status) {
+						status = (status == 'ALL') ? '' : status;
 						$scope.selectedStatus = status;
 						$scope.stockReceiptList = [];
 						$scope.query = reSetQuery();

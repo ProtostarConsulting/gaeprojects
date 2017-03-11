@@ -31,6 +31,7 @@
 			<tr>
 				<th name="Invoice No." order-by="itemNumber"></th>
 				<th name="Invoice Date" order-by="createdDate"></th>
+				<th name="Status" order-by="status"></th>
 				<th name="Customer Name" order-by="customer.companyName"></th>
 				<th name="Final Total" order-by="finalTotal"></th>
 				<th name="Actions"></th>
@@ -43,6 +44,7 @@
 
 				<td>{{invoice.itemNumber}}</td>
 				<td>{{invoice.createdDate | formatDate}}</td>
+				<td>{{invoice.status}}</td>
 				<td>{{invoice.customer.isCompany?invoice.customer.companyName:(invoice.customer.firstName
 					+' '+ invoice.customer.lastName)}}</td>
 				<td>{{invoice.finalTotal | currency:"":"2"}}</td>

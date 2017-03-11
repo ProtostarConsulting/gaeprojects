@@ -5,29 +5,65 @@ app
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
 						$mdUtil, $log, $state, $http, $stateParams,
 						$routeParams, $filter, objectFactory, appEndpointSF) {
-					$scope.query = {
-						order : '-itemNumber',
-						limit : 50,
-						page : 1
-					};
+					function reSetQuery() {
+						return {
+							order : '-itemNumber',
+							limit : 50,
+							page : 1,
+							totalSize : 0,
+							pagesLoaded : 0
+						};
+					}
+					$scope.query = reSetQuery();
+					$scope.documentStatusList = [ 'ALL', 'DRAFT', 'SUBMITTED',
+							'FINALIZED', 'SENT', 'PAID', 'UNPAID' ];
+					$scope.selectedStatus = "";
+
+					$scope.fitlerListByStatus = function(status) {
+						status = (status == 'ALL') ? '' : status;
+						$scope.selectedStatus = status;
+						$scope.quotationList = [];
+						$scope.query = reSetQuery();
+						$scope.pagingInfoReturned = null;
+						$scope.fetchEntityListByPaging();
+					}
 
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
 
-					$scope.getAllQuotationList = function() {
+					$scope.fetchEntityListByPaging = function() {
 						$scope.loading = true;
+						var pagingInfoTemp = {
+							entityList : null,
+							startPage : $scope.query.page,
+							limit : $scope.query.limit,
+							totalEntities : 0,
+							webSafeCursorString : $scope.pagingInfoReturned ? $scope.pagingInfoReturned.webSafeCursorString
+									: null
+						};
+
 						var invoiceService = appEndpointSF.getInvoiceService();
-						invoiceService.getAllQuotation(
-								$scope.curUser.business.id).then(
-								function(quotationList) {
-									$scope.quotationList = quotationList;
-									$scope.loading = false;
-								});
+						invoiceService
+								.fetchQuotationListByPaging(
+										$scope.curUser.business.id,
+										$scope.selectedStatus, pagingInfoTemp)
+								.then(
+										function(pagingInfoReturned) {
+											$scope.pagingInfoReturned = pagingInfoReturned;
+											if (pagingInfoReturned.entityList) {
+												$scope.quotationList = $scope.quotationList
+														.concat(pagingInfoReturned.entityList);
+											}
+											$scope.query.totalSize = pagingInfoReturned.totalEntities;
+											$scope.query.pagesLoaded++;
+											$scope.loading = false;
+										});
 					}
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
-							$scope.getAllQuotationList();
+							// $scope.getAllQuotationList();
+							$scope.fetchEntityListByPaging();
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
 							$timeout($scope.waitForServiceLoad, 1000);
@@ -36,28 +72,6 @@ app
 
 					$scope.quotationList = [];
 					$scope.waitForServiceLoad();
-
-					/* Setup menu */
-
-					$scope.toggleRight = buildToggler('right');
-					/**
-					 * Build handler to open/close a SideNav; when animation
-					 * finishes report completion in console
-					 */
-					function buildToggler(navID) {
-						var debounceFn = $mdUtil.debounce(function() {
-							$mdSidenav(navID).toggle().then(function() {
-								$log.debug("toggle " + navID + " is done");
-							});
-						}, 200);
-						return debounceFn;
-					}
-
-					$scope.close = function() {
-						$mdSidenav('right').close().then(function() {
-							$log.debug("close RIGHT is done");
-						});
-					};
 
 					var printDivCSS = new String(
 							'<link href="/lib/base/css/angular-material.min.css"" rel="stylesheet" type="text/css">'
@@ -74,7 +88,8 @@ app
 
 					$scope.printQuotation = function(quotnId) {
 						var bid = $scope.curUser.business.id;
-						window.open("PrintPdfQuotation?bid=" + bid + "&quotnId=" + quotnId);
+						window.open("PrintPdfQuotation?bid=" + bid
+								+ "&quotnId=" + quotnId);
 					}
 					/*
 					 * $scope.showSimpleToast = function() {
