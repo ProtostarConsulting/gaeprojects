@@ -59,7 +59,7 @@ angular
 					$scope.orderByAuthOrderValue = function(auth) {
 						return Number(auth.orderNumber);
 					}
-					
+
 					$scope.login = function() {
 						$scope.loading = true;
 						$scope.loginMsg = "";
@@ -461,6 +461,14 @@ angular
 								.containsInAuthTree(authorityToCheck,
 										angular.fromJson(user.authorizations));
 					};
+					
+					$scope.isDocumentEditAllowed = function(documentEntity) {
+						if (documentEntity && (documentEntity.status == 'FINALIZED'
+								|| documentEntity.status == 'REJECTED')) {
+							return false;
+						}
+						return true;
+					}
 
 				})
 		.controller(

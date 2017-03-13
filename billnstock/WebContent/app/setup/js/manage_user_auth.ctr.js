@@ -8,8 +8,7 @@ angular
 
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
-					$log.debug("Inside manageUserAuthCtr");
-
+				
 					$scope.selectedUser = $stateParams.selectedUser;
 
 					if (!$scope.selectedUser) {
@@ -33,10 +32,7 @@ angular
 							authorizations : []
 						};
 					}
-
-					$log.debug("$scope.curUser.business.authorizations: "
-							+ $scope.curUser.business.authorizations);
-
+					
 					$scope.topAuthChange = function(auth) {
 						var childAuths = auth.authorizations;
 						if(childAuths && childAuths.length && childAuths.length > 0){
@@ -85,16 +81,12 @@ angular
 					}
 
 					$scope.saveAuthorization = function() {
-
-						$log.debug("Called saveAuthorization...");
 						var authService = appEndpointSF
 								.getAuthorizationService();
 
 						var toSaveJsonString = angular
 								.toJson(authService
 										.getCurrentSelectedAuthorizations($scope.instituteAuthMasterEntity));
-
-						$log.debug("toSaveJsonString: " + toSaveJsonString);
 
 						$scope.selectedUser.authorizations = toSaveJsonString;
 
@@ -109,10 +101,7 @@ angular
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
 							getAuthorizationMasterEntity();
-
 						} else {
-							$log
-									.debug("proAdminManageInstituteAuth: Services Not Loaded, watiting...");
 							$timeout($scope.waitForServiceLoad, 1000);
 						}
 					}

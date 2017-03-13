@@ -207,18 +207,21 @@
 			</table>
 
 		</div>
-		<div layout layout-xs="column"
-			ng-hide="documentEntity.status == 'FINALIZED'">
+		<div layout layout-xs="column" ng-if="isDocumentEditAllowed(documentEntity)">
 			<section layout="row" layout-xs="column">
 				<md-button class="md-raised md-primary"
 					ng-disabled="documentForm.$invalid" ng-click="saveDocument()">Save
 				as Draft</md-button>
 				<md-button class="md-raised md-primary"
 					ng-disabled="documentForm.$invalid" ng-click="submitDocumnent()">Submit</md-button>
-				<md-button
-					ng-show="!settingsObj.needModuleDocumentApproval || hasUserAuthority(curUser, 'Stock.ModuleApprover')"
-					class="md-raised md-primary" ng-disabled="documentForm.$invalid"
-					ng-click="finalizeDocumnent($event)">Finalize Shipment</md-button>
+				<section layout="row" layout-xs="column"
+					ng-if="!settingsObj.needModuleDocumentApproval || hasUserAuthority(curUser, 'Stock.ModuleApprover')">
+					<md-button class="md-raised md-primary"
+						ng-disabled="documentForm.$invalid"
+						ng-click="finalizeDocumnent($event)">Approve/Finalize</md-button>
+					<md-button class="md-raised md-primary"
+						ng-disabled="documentForm.$invalid" ng-click="rejectDocumnent()">Reject</md-button>
+				</section>
 			</section>
 		</div>
 	</form>

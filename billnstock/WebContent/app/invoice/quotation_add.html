@@ -32,7 +32,7 @@
 					style="color: Green; height: 10px; width: 10px"></md-icon> </md-button>
 
 			</div>
-			
+
 			<md-input-container flex> <label>From
 				Warehouse </label> <md-select flex ng-model="documentEntity.fromWH"
 				placeholder="Select Warehouse"
@@ -72,21 +72,18 @@
 		<div>
 			<h3 layout="row" layout-align="start center">
 				Service Line Items
-				<md-button
-					ng-show="settingsObj.showDefaultServiceItems"
+				<md-button ng-show="settingsObj.showDefaultServiceItems"
 					class="md-icon-button" id="toremove" ng-click="toggleServices()">
 				<ng-md-icon icon="remove_circle_outline" style="fill: md-default"
 					size="24"> <md-tooltip>Remove Service
 				Line Items</md-tooltip></ng-md-icon></md-button>
-				<md-button
-					ng-hide="settingsObj.showDefaultServiceItems"
+				<md-button ng-hide="settingsObj.showDefaultServiceItems"
 					class="md-icon-button" id="toshow" ng-click="toggleServices()">
 				<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
 				<md-tooltip>Add Service Line Items</md-tooltip></ng-md-icon></md-button>
 			</h3>
 
-			<div
-				ng-show="settingsObj.showDefaultServiceItems">
+			<div ng-show="settingsObj.showDefaultServiceItems">
 				<table md-data-table md-progress="deferred">
 					<thead md-order="query.order" md-trigger="onOrderChange">
 						<tr>
@@ -134,7 +131,8 @@
 							<td></td>
 							<td></td>
 							<td><label>Service Sub Total</label></td>
-							<td><b>{{documentEntity.serviceSubTotal | currency:"":"2"}}</b></td>
+							<td><b>{{documentEntity.serviceSubTotal |
+									currency:"":"2"}}</b></td>
 							<td></td>
 						</tr>
 
@@ -150,7 +148,8 @@
 									ng-selected="documentEntity.selectedServiceTax.id == taxValue.id">{{taxValue.taxCodeName}}</md-option>
 								</md-select> </md-input-container></td>
 							<td>{{documentEntity.selectedServiceTax.taxPercenatge}}</td>
-							<td><b>{{documentEntity.serviceTaxTotal | currency:"":"2"}}</b></td>
+							<td><b>{{documentEntity.serviceTaxTotal |
+									currency:"":"2"}}</b></td>
 							<td></td>
 						</tr>
 
@@ -179,21 +178,18 @@
 		<div>
 			<h3 layout="row" layout-align="start center">
 				Product Line Items
-				<md-button
-					ng-show="settingsObj.showDefaultProductItems"
+				<md-button ng-show="settingsObj.showDefaultProductItems"
 					class="md-icon-button" id="toremove" ng-click="toggleProducts()">
 				<ng-md-icon icon="remove_circle_outline" style="fill: md-default"
 					size="24"> <md-tooltip>Remove Product
 				Line Items</md-tooltip></ng-md-icon></md-button>
-				<md-button
-					ng-hide="settingsObj.showDefaultProductItems"
+				<md-button ng-hide="settingsObj.showDefaultProductItems"
 					class="md-icon-button" id="toshow" ng-click="toggleProducts()">
 				<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
 				<md-tooltip>Add Product Line Items</md-tooltip></ng-md-icon></md-button>
 			</h3>
 
-			<div
-				ng-show="settingsObj.showDefaultProductItems">
+			<div ng-show="settingsObj.showDefaultProductItems">
 				<table md-data-table md-progress="deferred">
 					<thead md-order="query.order" md-trigger="onOrderChange">
 						<tr>
@@ -252,7 +248,8 @@
 							<td></td>
 							<td></td>
 							<td><label>Product Sub Total</label></td>
-							<td><b>{{documentEntity.productSubTotal | currency:"":"2"}}</b></td>
+							<td><b>{{documentEntity.productSubTotal |
+									currency:"":"2"}}</b></td>
 							<td></td>
 						</tr>
 						<tr>
@@ -267,7 +264,8 @@
 									ng-repeat="taxValue in taxforinvoice">{{taxValue.taxCodeName}}</md-option>
 								</md-select> </md-input-container></td>
 							<td>{{documentEntity.selectedProductTax.taxPercenatge}}</td>
-							<td><b>{{documentEntity.productTaxTotal | currency:"":"2"}}</b></td>
+							<td><b>{{documentEntity.productTaxTotal |
+									currency:"":"2"}}</b></td>
 							<td></td>
 						</tr>
 
@@ -322,8 +320,8 @@
 		</h4>
 		<div ng-show="otherDetailToogle">
 			<md-input-container flex layout="row"> <label>Payment
-				Notes</label> <textarea ng-model="documentEntity.paymentNotes" rows="3" cols="1"></textarea>
-			</md-input-container>
+				Notes</label> <textarea ng-model="documentEntity.paymentNotes" rows="3"
+				cols="1"></textarea> </md-input-container>
 			<md-input-container flex layout="row"> <label>Invoice
 				Terms and Conditions</label> <textarea
 				ng-model="documentEntity.termsAndConditions" rows="3" cols="1"></textarea>
@@ -332,16 +330,20 @@
 	</form>
 </div>
 <div layout layout-xs="column"
-	ng-hide="documentEntity.status == 'FINALIZED'">
+	ng-if="isDocumentEditAllowed(documentEntity)">
 	<section layout="row" layout-xs="column">
 		<md-button class="md-raised md-primary"
 			ng-disabled="documentForm.$invalid" ng-click="saveDocument()">Save
 		as Draft</md-button>
 		<md-button class="md-raised md-primary"
 			ng-disabled="documentForm.$invalid" ng-click="submitDocumnent()">Submit</md-button>
-		<md-button
-			ng-show="!settingsObj.needModuleDocumentApproval || hasUserAuthority(curUser, 'Invoice.ModuleApprover')"
-			class="md-raised md-primary" ng-disabled="documentForm.$invalid"
-			ng-click="finalizeDocumnent($event)">Finalize Shipment</md-button>
+		<section layout="row" layout-xs="column"
+			ng-if="!settingsObj.needModuleDocumentApproval || hasUserAuthority(curUser, 'Invoice.ModuleApprover')">
+			<md-button class="md-raised md-primary"
+				ng-disabled="documentForm.$invalid"
+				ng-click="finalizeDocumnent($event)">Approve/Finalize</md-button>
+			<md-button class="md-raised md-primary"
+				ng-disabled="documentForm.$invalid" ng-click="rejectDocumnent()">Reject</md-button>
+		</section>
 	</section>
 </div>

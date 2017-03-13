@@ -82,8 +82,7 @@
 				</md-select> </md-input-container>
 
 				<md-input-container flex> <label>Budget
-					Line Item </label> <md-select flex
-					ng-model="documentEntity.budgetLineItem"
+					Line Item </label> <md-select flex ng-model="documentEntity.budgetLineItem"
 					placeholder="Select Budget Line Item" ng-required="true">
 				<md-option ng-value="budgetLineItem"
 					ng-selected="(documentEntity.budgetlineItem)?(documentEntity.budgetLineItem.itemName == budgetLineItem.itemName):false"
@@ -127,8 +126,8 @@
 
 		<div layout="row" layout-xs="column">
 			<md-input-container flex> <label>Note to
-				Customer</label> <textarea ng-model="documentEntity.noteToCustomer"
-				rows="3" cols="1"></textarea> </md-input-container>
+				Customer</label> <textarea ng-model="documentEntity.noteToCustomer" rows="3"
+				cols="1"></textarea> </md-input-container>
 		</div>
 
 		<div layout="row" layout-align="center start"
@@ -223,8 +222,7 @@
 						<td></td>
 						<td></td>
 						<td><label>Product Total </label></td>
-						<td><b>{{documentEntity.productTotal |
-								currency:"":"2"}}</b></td>
+						<td><b>{{documentEntity.productTotal | currency:"":"2"}}</b></td>
 						<td></td>
 					</tr>
 
@@ -286,8 +284,7 @@
 						<td></td>
 						<td></td>
 						<td><label>Service Sub Total</label></td>
-						<td><b>{{documentEntity.serviceTotal |
-								currency:"":"2"}}</b></td>
+						<td><b>{{documentEntity.serviceTotal | currency:"":"2"}}</b></td>
 						<td></td>
 					</tr>
 					<tr>
@@ -312,8 +309,7 @@
 						<td></td>
 						<td></td>
 						<td><label>Service Total</label></td>
-						<td><b>{{documentEntity.serviceTotal |
-								currency:"":"2"}}</b></td>
+						<td><b>{{documentEntity.serviceTotal | currency:"":"2"}}</b></td>
 						<td></td>
 					</tr>
 
@@ -348,18 +344,21 @@
 			</table>
 
 		</div>
-		<div layout layout-xs="column"
-			ng-hide="documentEntity.status == 'FINALIZED'">
+		<div layout layout-xs="column" ng-if="isDocumentEditAllowed(documentEntity)">
 			<section layout="row" layout-xs="column">
 				<md-button class="md-raised md-primary"
 					ng-disabled="documentForm.$invalid" ng-click="saveDocument()">Save
 				as Draft</md-button>
 				<md-button class="md-raised md-primary"
 					ng-disabled="documentForm.$invalid" ng-click="submitDocumnent()">Submit</md-button>
-				<md-button
-					ng-show="!settingsObj.needModuleDocumentApproval || hasUserAuthority(curUser, 'Stock.ModuleApprover')"
-					class="md-raised md-primary" ng-disabled="documentForm.$invalid"
-					ng-click="finalizeDocumnent($event)">Finalize Shipment</md-button>
+				<section layout="row" layout-xs="column"
+					ng-if="!settingsObj.needModuleDocumentApproval || hasUserAuthority(curUser, 'Stock.ModuleApprover')">
+					<md-button class="md-raised md-primary"
+						ng-disabled="documentForm.$invalid"
+						ng-click="finalizeDocumnent($event)">Approve/Finalize</md-button>
+					<md-button class="md-raised md-primary"
+						ng-disabled="documentForm.$invalid" ng-click="rejectDocumnent()">Reject</md-button>
+				</section>
 			</section>
 		</div>
 	</form>

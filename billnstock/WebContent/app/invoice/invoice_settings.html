@@ -6,10 +6,14 @@
 	<span flex></span>
 </section>
 <form name="settingForm" layout="column">
-	<md-content layout="row"> <md-checkbox
-		ng-model="settingsObj.needInvoiceApproval" ng-true-value="true"
-		ng-false-value="false" aria-label="needInvoiceApproval">
-	Need Invoice Approval</md-checkbox> </md-content>
+	<div layout="row" layout-xs="column">
+		<md-checkbox ng-model="settingsObj.needModuleDocumentApproval"
+			ng-true-value="true" ng-false-value="false"
+			aria-label="needModuleDocumentApproval"> Need Module
+		Document Approval</md-checkbox>
+		<div>This setting makes Approval Compulsory for this module
+			Documents like Invoice, Quotation etc.</div>
+	</div>
 	<h4 class="md-subhead">Setup Default Invoice Items</h4>
 	<md-content layout="row"> <md-checkbox
 		ng-model="settingsObj.showDefaultServiceItems" ng-true-value="true"

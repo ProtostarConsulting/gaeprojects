@@ -64,6 +64,11 @@ app
 						$scope.saveDocument();
 					}
 
+					$scope.rejectDocumnent = function(ev) {
+						$scope.documentEntity.status = 'REJECTED';
+						$scope.saveDocument();
+					}
+					
 					$scope.finalizeDocumnent = function(ev) {
 						var confirm = $mdDialog
 								.confirm()

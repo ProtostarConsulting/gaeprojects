@@ -120,6 +120,11 @@ app
 						$scope.saveDocument();
 					}
 
+					$scope.rejectDocumnent = function(ev) {
+						$scope.documentEntity.status = 'REJECTED';
+						$scope.saveDocument();
+					}					
+
 					$scope.finalizeDocumnent = function(ev) {
 						var confirm = $mdDialog
 								.confirm()
@@ -299,8 +304,8 @@ app
 					}
 
 					$scope.removeServiceItem = function(index) {
-						$scope.documentEntity.serviceLineItemList.splice(
-								index, 1);
+						$scope.documentEntity.serviceLineItemList.splice(index,
+								1);
 
 						if ($scope.documentEntity.serviceLineItemList.length == 0) {
 							$scope.documentEntity.serviceSubTotal = 0;
@@ -314,8 +319,8 @@ app
 					};
 
 					$scope.removeProductItem = function(index) {
-						$scope.documentEntity.productLineItemList.splice(
-								index, 1);
+						$scope.documentEntity.productLineItemList.splice(index,
+								1);
 
 						if ($scope.documentEntity.productLineItemList.length == 0) {
 							$scope.documentEntity.productSubTotal = 0;
