@@ -1,6 +1,6 @@
 <html>
-  <p>Stock receipt with the following details has been approved on ${receiptDate}.</p>
-  <p>Created By: ${createdBy}</p>
+  <p>Stock receipt with the following details is ${documentStatus} on ${receiptModifiedDate}.</p>
+  <p>${docStatusLable}: ${stockModuleApprover}</p>
   <p> 
   <#if warehouse??>
   		Warehouse: ${warehouse}

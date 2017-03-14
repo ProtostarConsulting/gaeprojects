@@ -1,16 +1,8 @@
 <html>
-  <p>Stock shipment request with the following details is ${documentStatus} on ${shipmentModifiedDate}.</p>
-  <p>${docStatusLable}: ${stockModuleApprover}</p>
-  <p>From: ${fromWH}</p>
-  <#if toWH??>
-  <p>To :${toWH}</p>
-  </#if>
-  <#if customerName??>
-    <p>To: ${customerName}</p>
-  </#if>
-  <#if partnerName??>
-    <p>To :${partnerName}</p>
-  </#if>
+  <p>Dear ${customerName},
+  <p>An invoice with the following details is ${documentStatus} on ${approvedDate}.</p>
+  <p>${docStatusLable}: ${invoiceModuleApprover}</p>
+  <p>Warehouse: ${fromWH}</p>
   <p>Final Total: ${finalTotal}</p>
   
   <br>

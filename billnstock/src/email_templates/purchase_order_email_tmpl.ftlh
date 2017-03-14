@@ -1,6 +1,6 @@
 <html>
-  <p>Purchase order with the following details has been approved on ${pODate}.</p>
-  <p>Created By: ${createdBy}</p>
+  <p>Purchase order with the following details is ${documentStatus} on ${poModifiedDate}.</p>
+  <p>${docStatusLable}: ${stockModuleApprover}</p>
   <p>Supplier: ${supplier}</p>
   <p>Final Total: ${finalTotal}</p>
   
