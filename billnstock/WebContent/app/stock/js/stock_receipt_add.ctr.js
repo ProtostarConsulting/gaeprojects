@@ -42,7 +42,9 @@ app
 					$scope.saveDocument = function() {
 						$scope.documentEntity.business = $scope.curUser.business;
 						$scope.documentEntity.modifiedBy = $scope.curUser.email_id;
-						$scope.documentEntity.createdBy = $scope.curUser;
+						//$scope.documentEntity.createdBy = $scope.curUser; 
+						// Commenting this line. It will override the createdBy
+						// when someone approves/rejects it.
 						var stockService = appEndpointSF.getStockService();
 
 						stockService
