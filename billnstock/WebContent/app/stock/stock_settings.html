@@ -1,14 +1,19 @@
 <md-content layout-padding>
-<h3 class="md-title">Stock Management Settings</h3>
+<section layout="row" layout-xs="column">
+	<md-subheader class="md-primary">
+	<h4 class="md-title">Stock Module Settings</h4>
+	</md-subheader>
+	<span flex></span>
+</section>
 <form name="invoiceSettings" layout="column">
 	<div layout="row" layout-xs="column">
 		<md-checkbox ng-model="settingsObj.needModuleDocumentApproval"
 			ng-true-value="true" ng-false-value="false"
 			aria-label="needModuleDocumentApproval"> Need Module
 		Document Approval</md-checkbox>
-		<div>This setting makes Approval Compulsory for this module
+		<div class= "md-caption" style="padding-left:20px;">This setting makes Approval Compulsory for this module
 			Documents like Requisition, Purchase Order, Stock Receipt, Stock
-			Shipment etc.</div>		
+			Shipment etc.</div>
 	</div>
 	<md-input-container flex="80" layout="row"> <label>PO
 		Terms and Conditions</label> <textarea

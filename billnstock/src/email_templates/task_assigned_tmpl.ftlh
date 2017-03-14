@@ -1,13 +1,13 @@
 <html>
   <p>Dear ${assignedTo},</p>
-  <p>A new task has been assigned to you in ProERP system. Please find the details below.</p>
-  <p>Task No: ${taskNo}.</p>
-  <p>Assigned Date: ${assignedDate}.</p>
-  <p>Assigned By: ${assignedBy}</p>
-  <p>Title: ${taskTitle}</p>
-  <p>Description :${taskDesciption}</p>
+  <p>A new task is assigned to you in ProERP system. Please find the details below.</p>
+  <p><b>Task No:</b> ${taskNo}.</p>
+  <p><b>Assigned Date:</b> ${assignedDate}.</p>
+  <p><b>Assigned By:</b> ${assignedBy}</p>
+  <p><b>Title:</b> ${taskTitle}</p>
+  <p><b>Description:</b> ${taskDesciption}</p>
   <#if estCompletionDate??>
-  <p>Estimated Completion Date: ${estCompletionDate}</p>
+  <p><b>Estimated Completion Date:</b> ${estCompletionDate}</p>
   </#if>
   
   <br>

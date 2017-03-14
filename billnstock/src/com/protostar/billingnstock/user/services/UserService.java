@@ -23,6 +23,8 @@ import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.TxnType;
 import com.googlecode.objectify.Work;
@@ -51,7 +53,10 @@ public class UserService {
 	private final Logger logger = Logger.getLogger(UserService.class.getName());
 
 	@ApiMethod(name = "addUser", path = "addUser")
-	public void addUser(UserEntity usr) {
+	public void addUser(UserEntity usr, User user) {
+		System.out.println("user:" + user);
+		User currentUser = UserServiceFactory.getUserService().getCurrentUser();
+		System.out.println("currentUser:" + currentUser);
 		if (usr.getEmployeeDetail().getDepartment() == null)
 			setDefaultDepartment(usr);
 

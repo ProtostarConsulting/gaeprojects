@@ -64,22 +64,35 @@ app
 						$scope.saveDocument();
 					}
 
-					$scope.rejectDocumnent = function(ev) {
-						$scope.documentEntity.status = 'REJECTED';
-						$scope.saveDocument();
-					}
-					
 					$scope.finalizeDocumnent = function(ev) {
 						var confirm = $mdDialog
 								.confirm()
 								.title(
-										'Do you want to finalize this Stock Shipment? Note, after this you will not be able to make any changes in this document.')
+										'Do you want to approve/finalize this Document? Note, after this you will not be able to make any changes in this document.')
 								.textContent('').ariaLabel('finalize?')
 								.targetEvent(ev).ok('Yes').cancel('No');
 
 						$mdDialog.show(confirm).then(function() {
 							$log.debug("Inside Yes, function");
 							$scope.documentEntity.status = 'FINALIZED';
+							$scope.documentEntity.approvedBy = $scope.curUser;
+							$scope.saveDocument();
+						}, function() {
+							$log.debug("Cancelled...");
+						});
+					}
+					
+					$scope.rejectDocumnent = function(ev) {
+						var confirm = $mdDialog
+								.confirm()
+								.title(
+										'Do you want to reject this Document? Note, after this you will not be able to make any changes in this document.')
+								.textContent('').ariaLabel('finalize?')
+								.targetEvent(ev).ok('Yes').cancel('No');
+
+						$mdDialog.show(confirm).then(function() {
+							$log.debug("Inside Yes, function");
+							$scope.documentEntity.status = 'REJECTED';
 							$scope.documentEntity.approvedBy = $scope.curUser;
 							$scope.saveDocument();
 						}, function() {

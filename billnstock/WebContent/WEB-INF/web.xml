@@ -17,7 +17,15 @@
   <servlet-mapping>
     <servlet-name>SystemServiceServlet</servlet-name>
     <url-pattern>/_ah/spi/*</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping>  
+  <filter>
+    <filter-name>BusinessNSFilter</filter-name>
+    <filter-class>com.protostar.billnstock.until.data.BusinessNSFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>BusinessNSFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
   <filter>
     <filter-name>ObjectifyFilter</filter-name>
     <filter-class>com.googlecode.objectify.ObjectifyFilter</filter-class>

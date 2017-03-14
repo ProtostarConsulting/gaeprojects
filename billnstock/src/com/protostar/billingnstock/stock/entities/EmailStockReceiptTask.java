@@ -2,14 +2,12 @@ package com.protostar.billingnstock.stock.entities;
 
 import com.google.appengine.api.taskqueue.DeferredTask;
 import com.google.appengine.labs.repackaged.org.json.JSONException;
+import com.protostar.billnstock.until.data.Constants;
 import com.protostar.billnstock.until.data.Sendgrid;
 
 public class EmailStockReceiptTask implements DeferredTask {
 
 	private static final long serialVersionUID = 1L;
-
-	private static final String SENDGRID_USERNAME = "ganesh.lawande@protostar.co.in";
-	private static final String SENDGRID_PWD = "sangram12";
 	private static final String EMAIL_SUBJECT = "Stock Receipt Approved: ";
 
 	private String fromEmail;
@@ -18,8 +16,8 @@ public class EmailStockReceiptTask implements DeferredTask {
 	private String emailDLList;
 	private String messageBody;
 
-	public EmailStockReceiptTask(String fromEmail, String fromName,
-			String messageBody, int stockReceiptNumber, String emailDLList) {
+	public EmailStockReceiptTask(String fromEmail, String fromName, String messageBody, int stockReceiptNumber,
+			String emailDLList) {
 
 		this.fromEmail = fromEmail;
 		this.fromName = fromName;
@@ -33,12 +31,10 @@ public class EmailStockReceiptTask implements DeferredTask {
 		try {
 			// Now using SendGrid API below;
 			// Send grid email
-			Sendgrid sendGridMail = new Sendgrid(SENDGRID_USERNAME,
-					SENDGRID_PWD);
-			sendGridMail.setTo(getEmailDLList()).setFrom(getFromEmail())
-					.setReplyTo(getFromEmail()).setFromName(getFromName())
-					.setSubject(EMAIL_SUBJECT + stockReceiptNumber)
-					.setText(getMessageBody()).setHtml(getMessageBody());
+			Sendgrid sendGridMail = new Sendgrid(Constants.SENDGRID_USERNAME, Constants.SENDGRID_PWD);
+			sendGridMail.setTo(getEmailDLList()).setFrom(getFromEmail()).setReplyTo(getFromEmail())
+					.setFromName(getFromName()).setSubject(EMAIL_SUBJECT + stockReceiptNumber).setText(getMessageBody())
+					.setHtml(getMessageBody());
 			sendGridMail.send();
 
 		} catch (JSONException e) {

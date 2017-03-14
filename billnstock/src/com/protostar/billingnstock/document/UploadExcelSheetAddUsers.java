@@ -148,7 +148,7 @@ public class UploadExcelSheetAddUsers extends HttpServlet {
 					else{ue.setIsGoogleUser(true);}
 					ue.setPassword(split[4]);
 					ue.setAuthority(Arrays.asList("employee"));
-					us.addUser(ue);
+					us.addUser(ue, null);
 					Thread.sleep(2000);
 				}
 

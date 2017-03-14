@@ -4,6 +4,8 @@ public class Constants {
 
 	// Endpoint API Access Related
 	public static final String WEB_CLIENT_ID = "87556941487-36krkq9mr6iltvqpjd3k0r0il83h0b76.apps.googleusercontent.com";
+	public static final String SENDGRID_USERNAME = "ganesh.lawande@protostar.co.in";
+	public static final String SENDGRID_PWD = "sangram12";
 	public static final String ANDROID_CLIENT_ID = "";
 	public static final String ANDROID_AUDIENCE = WEB_CLIENT_ID;
 	public static final String API_EXPLORER_CLIENT_ID = com.google.api.server.spi.Constant.API_EXPLORER_CLIENT_ID;
