@@ -42,6 +42,7 @@ app
 					$scope.saveDocument = function() {
 						$scope.documentEntity.business = $scope.curUser.business;
 						$scope.documentEntity.modifiedBy = $scope.curUser.email_id;
+						$scope.documentEntity.createdBy = $scope.curUser;
 						var stockService = appEndpointSF.getStockService();
 
 						stockService
