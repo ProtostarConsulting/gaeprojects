@@ -141,6 +141,9 @@ public class StockManagementService extends BaseService {
 			}
 			new EmailHandler().sendStockReceiptEmail(stockItemsReceipt);
 		}
+		if (stockItemsReceipt.getStatus() == DocumentStatus.REJECTED) {
+			new EmailHandler().sendStockReceiptEmail(stockItemsReceipt);
+		}
 
 		ofy().save().entity(stockItemsReceipt).now();
 
@@ -276,11 +279,13 @@ public class StockManagementService extends BaseService {
 			new EmailHandler().sendStockShipmentEmail(stockItemsShipment);
 		} // enf of FINALIZED if
 
-		ofy().save().entity(stockItemsShipment).now();
-		// if entity is saved directly as finalized, need to update item id
-		if (stockItemsShipment.getStatus() == DocumentStatus.FINALIZED) {
-			updateRefEntityIdsIfMissing(stockItemsShipment, productLineItemList);
+		if (stockItemsShipment.getStatus() == DocumentStatus.REJECTED) {
+			new EmailHandler().sendStockShipmentEmail(stockItemsShipment);
 		}
+
+		ofy().save().entity(stockItemsShipment).now();
+
+		// if entity is saved directly as finalized, need to update item id
 		return stockItemsShipment;
 	}
 
@@ -570,6 +575,9 @@ public class StockManagementService extends BaseService {
 
 		}
 		if (purchaseOrderEntity.getStatus() == DocumentStatus.FINALIZED) {
+			new EmailHandler().sendPurchaseOrderEmail(purchaseOrderEntity);
+		}
+		if (purchaseOrderEntity.getStatus() == DocumentStatus.REJECTED) {
 			new EmailHandler().sendPurchaseOrderEmail(purchaseOrderEntity);
 		}
 		return purchaseOrderEntity;

@@ -1,27 +1,27 @@
-package com.protostar.billingnstock.stock.entities;
+package com.protostar.billingnstock.invoice.entities;
 
 import com.google.appengine.api.taskqueue.DeferredTask;
 import com.google.appengine.labs.repackaged.org.json.JSONException;
 import com.protostar.billnstock.until.data.Constants;
 import com.protostar.billnstock.until.data.Sendgrid;
 
-public class EmailStockShipmentTask implements DeferredTask {
+public class InvoiceEmailTask implements DeferredTask {
 
 	private static final long serialVersionUID = 1L;
 
 	private String fromEmail;
 	private String fromName;
-	private String emailDLList;
 	private String messageBody;
+	private String emailDLList;
 	private String emailSubject;
 
-	public EmailStockShipmentTask(String fromEmail, String fromName,
+	public InvoiceEmailTask(String fromEmail, String fromName,
 			String messageBody, String emailDLList, String emailSubject) {
 
 		this.fromEmail = fromEmail;
 		this.fromName = fromName;
-		this.emailDLList = emailDLList;
 		this.messageBody = messageBody;
+		this.emailDLList = emailDLList;
 		this.emailSubject = emailSubject;
 	}
 
@@ -44,6 +44,7 @@ public class EmailStockShipmentTask implements DeferredTask {
 		} catch (RuntimeException e) {
 			e.printStackTrace();
 		}
+
 	}
 
 	public String getFromEmail() {
@@ -62,20 +63,20 @@ public class EmailStockShipmentTask implements DeferredTask {
 		this.fromName = fromName;
 	}
 
-	public String getEmailDLList() {
-		return emailDLList;
-	}
-
-	public void setEmailDLList(String emailDLList) {
-		this.emailDLList = emailDLList;
-	}
-
 	public String getMessageBody() {
 		return messageBody;
 	}
 
 	public void setMessageBody(String messageBody) {
 		this.messageBody = messageBody;
+	}
+
+	public String getEmailDLList() {
+		return emailDLList;
+	}
+
+	public void setEmailDLList(String emailDLList) {
+		this.emailDLList = emailDLList;
 	}
 
 	public String getEmailSubject() {

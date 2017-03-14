@@ -8,22 +8,21 @@ import com.protostar.billnstock.until.data.Sendgrid;
 public class EmailStockReceiptTask implements DeferredTask {
 
 	private static final long serialVersionUID = 1L;
-	private static final String EMAIL_SUBJECT = "Stock Receipt Approved: ";
 
 	private String fromEmail;
 	private String fromName;
-	private int stockReceiptNumber;
 	private String emailDLList;
 	private String messageBody;
+	private String emailSubject;
 
-	public EmailStockReceiptTask(String fromEmail, String fromName, String messageBody, int stockReceiptNumber,
-			String emailDLList) {
+	public EmailStockReceiptTask(String fromEmail, String fromName,
+			String messageBody, String emailDLList, String emailSubject) {
 
 		this.fromEmail = fromEmail;
 		this.fromName = fromName;
 		this.messageBody = messageBody;
-		this.stockReceiptNumber = stockReceiptNumber;
 		this.emailDLList = emailDLList;
+		this.emailSubject = emailSubject;
 	}
 
 	@Override
@@ -31,11 +30,15 @@ public class EmailStockReceiptTask implements DeferredTask {
 		try {
 			// Now using SendGrid API below;
 			// Send grid email
-			Sendgrid sendGridMail = new Sendgrid(Constants.SENDGRID_USERNAME, Constants.SENDGRID_PWD);
-			sendGridMail.setTo(getEmailDLList()).setFrom(getFromEmail()).setReplyTo(getFromEmail())
-					.setFromName(getFromName()).setSubject(EMAIL_SUBJECT + stockReceiptNumber).setText(getMessageBody())
+			System.out.println("Sending Email async");
+			Sendgrid sendGridMail = new Sendgrid(Constants.SENDGRID_USERNAME,
+					Constants.SENDGRID_PWD);
+			sendGridMail.setTo(getEmailDLList()).setFrom(getFromEmail())
+					.setReplyTo(getFromEmail()).setFromName(getFromName())
+					.setSubject(getEmailSubject()).setText(getMessageBody())
 					.setHtml(getMessageBody());
 			sendGridMail.send();
+			System.out.println("Done sending email....");
 
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -60,14 +63,6 @@ public class EmailStockReceiptTask implements DeferredTask {
 		this.fromName = fromName;
 	}
 
-	public int getStockReceiptNumber() {
-		return stockReceiptNumber;
-	}
-
-	public void setStockReceiptNumber(int stockReceiptNumber) {
-		this.stockReceiptNumber = stockReceiptNumber;
-	}
-
 	public String getEmailDLList() {
 		return emailDLList;
 	}
@@ -82,6 +77,14 @@ public class EmailStockReceiptTask implements DeferredTask {
 
 	public void setMessageBody(String messageBody) {
 		this.messageBody = messageBody;
+	}
+
+	public String getEmailSubject() {
+		return emailSubject;
+	}
+
+	public void setEmailSubject(String emailSubject) {
+		this.emailSubject = emailSubject;
 	}
 
 }

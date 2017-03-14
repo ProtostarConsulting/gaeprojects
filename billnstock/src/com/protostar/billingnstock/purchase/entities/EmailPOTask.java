@@ -8,23 +8,21 @@ import com.protostar.billnstock.until.data.Sendgrid;
 public class EmailPOTask implements DeferredTask {
 
 	private static final long serialVersionUID = 1L;
-	private static final String EMAIL_SUBJECT = "Purchase Order Approved: ";
 
 	private String fromEmail;
 	private String fromName;
-	private int poNumber;
 	private String emailDLList;
 	private String messageBody;
+	private String emailSubject;
 
-	public EmailPOTask(String fromEmail,
-			String fromName, String messageBody, int poNumber,
-			String emailDLList) {
+	public EmailPOTask(String fromEmail, String fromName, String messageBody,
+			String emailDLList, String emailSubject) {
 
 		this.fromEmail = fromEmail;
 		this.fromName = fromName;
 		this.messageBody = messageBody;
-		this.poNumber = poNumber;
 		this.emailDLList = emailDLList;
+		this.emailSubject = emailSubject;
 	}
 
 	@Override
@@ -34,12 +32,15 @@ public class EmailPOTask implements DeferredTask {
 		try {
 			// Now using SendGrid API below;
 			// Send grid email
-			Sendgrid sendGridMail = new Sendgrid(Constants.SENDGRID_USERNAME, Constants.SENDGRID_PWD);
+			System.out.println("Sending Email async");
+			Sendgrid sendGridMail = new Sendgrid(Constants.SENDGRID_USERNAME,
+					Constants.SENDGRID_PWD);
 			sendGridMail.setTo(getEmailDLList()).setFrom(getFromEmail())
 					.setReplyTo(getFromEmail()).setFromName(getFromName())
-					.setSubject(EMAIL_SUBJECT + poNumber)
-					.setText(getMessageBody()).setHtml(getMessageBody());
+					.setSubject(getEmailSubject()).setText(getMessageBody())
+					.setHtml(getMessageBody());
 			sendGridMail.send();
+			System.out.println("Done Sending Email async...........");
 
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -78,6 +79,14 @@ public class EmailPOTask implements DeferredTask {
 
 	public void setFromName(String fromName) {
 		this.fromName = fromName;
+	}
+
+	public String getEmailSubject() {
+		return emailSubject;
+	}
+
+	public void setEmailSubject(String emailSubject) {
+		this.emailSubject = emailSubject;
 	}
 
 }
