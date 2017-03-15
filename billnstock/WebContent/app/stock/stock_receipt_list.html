@@ -30,6 +30,8 @@
 		<thead md-order="query.order" md-trigger="onorderchange">
 			<tr>
 				<th name="Receipt No." order-by="itemNumber"></th>
+				<th name="Created Date" order-by="createdBy"></th>
+				<th name="Created By" order-by="createdBy.firstName"></th>
 				<th name="Receipt Date" order-by="receiptDate"></th>
 				<th name="Status" order-by="status"></th>
 				<th name="Supplier Name" order-by="supplier.supplierName"></th>
@@ -42,6 +44,9 @@
 				ng-repeat="stockReceipt in stockReceiptList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
 
 				<td>{{stockReceipt.itemNumber}}</td>
+				<td>{{stockReceipt.createdDate|formatDate}}</td>
+				<td>{{stockReceipt.createdBy.firstName+"
+					"+stockReceipt.createdBy.lastName }}</td>
 				<td>{{stockReceipt.receiptDate | formatDate}}</td>
 				<td>{{stockReceipt.status}}</td>
 				<td>{{stockReceipt.supplier.supplierName}}</td>

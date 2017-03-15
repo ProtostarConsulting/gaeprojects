@@ -30,7 +30,8 @@
 		<thead md-order="query.order" md-trigger="onorderchange">
 			<tr>
 				<th name="Requisition No." order-by="itemNumber"></th>
-				<th name="Requisitioner" order-by="requester"></th>
+				<th name="Created Date" order-by="createdBy"></th>
+				<th name="Created By" order-by="createdBy.firstName"></th>
 				<th name="Status" order-by="status"></th>
 				<th name="Expected Date" order-by="expectedDate"></th>
 				<th name="On Behalf Of" order-by="onBehalfOf"></th>
@@ -42,15 +43,24 @@
 				ng-repeat="requisition in requisitionList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
 
 				<td>{{requisition.itemNumber}}</td>
-				<td>{{requisition.requester.firstName+"
-					"+requisition.requester.lastName }}</td>
+				<td>{{requisition.createdDate|formatDate}}</td>
+				<td>{{requisition.createdBy.firstName+"
+					"+requisition.createdBy.lastName }}</td>
 				<td>{{requisition.status}}</td>
 				<td>{{requisition.expectedDate|formatDate}}</td>
 				<td>{{requisition.onBehalfOf}}</td>
-				<td><md-button class="md-icon-button"
+				<td>
+					<section layout="row">
+						<md-button class="md-icon-button"
 							ui-sref="stock.requisitionAdd({selectedRequisition: requisition})">
 						<ng-md-icon icon="edit" style="fill: md-default" size="20">
-						<md-tooltip> Edit</md-tooltip></ng-md-icon></md-button></td>
+						<md-tooltip> Edit</md-tooltip></ng-md-icon></md-button>
+						<md-button class="md-icon-button"
+							ng-click="printAsPdf(requisition.id)"> <ng-md-icon
+							icon="print" style="fill: md-default" size="20"> <md-tooltip>
+						Print as PDF</md-tooltip></ng-md-icon></md-button>
+					</section>
+				</td>
 			</tr>
 		</tbody>
 	</table>

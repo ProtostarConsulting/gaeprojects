@@ -21,11 +21,14 @@
 					By </label> <input ng-disabled="true" ng-model="createdBy"
 					ng-init="createdBy = documentEntity.createdBy? documentEntity.createdBy.firstName + ' ' + documentEntity.createdBy.lastName: ''"></input>
 				</md-input-container>
+				<md-input-container flex=15> <label>Created
+					Date </label> <input ng-disabled="true"
+					ng-value="documentEntity.createdDate | formatDate"></input> </md-input-container>
 			</div>
 		</div>
 		<div layout="row" layout-xs="column">
-			<div layout="row" flex>
-				<md-input-container flex=40> <label>Warehouse
+			<div flex=40 layout="row" layout-xs="column">
+				<md-input-container flex> <label>Warehouse
 				</label> <md-select flex ng-model="documentEntity.warehouse"
 					placeholder="Select Warehouse" ng-change="warehouseChanged"
 					ng-required="true"> <md-option ng-value="warehouse"
@@ -45,20 +48,24 @@
 					<div ng-message="required">Supplier field is required.</div>
 				</div>
 				</md-autocomplete>
-				<md-icon md-svg-src="img/icons/ic_queue_black_24px.svg"
-					ng-click="addSupplier()" class="name"
-					style="color: Green; height: 18px; width: 18px"></md-icon>
-
-				<md-input-container flex> <label>Select
-					Due Date</label> <md-datepicker flex ng-model="documentEntity.poDueDate"
-					md-placeholder="Select Date"></md-datepicker> </md-input-container>
-				<md-input-container flex=15> <label>Approved
-					By </label> <input ng-disabled="true" ng-model="approvedBy"
-					ng-init="approvedBy = documentEntity.approvedBy? documentEntity.approvedBy.firstName + ' ' + documentEntity.approvedBy.lastName : 'NA'"></input>
-				</md-input-container>
-
-
+				<div>
+					<md-icon md-svg-src="img/icons/ic_queue_black_24px.svg"
+						ng-click="addSupplier()" class="name"
+						style="color: Green; height: 18px; width: 18px"></md-icon>
+				</div>
 			</div>
+			<md-input-container flex> <label>Select
+				Due Date</label> <md-datepicker flex ng-model="documentEntity.poDueDate"
+				md-placeholder="Select Date"></md-datepicker> </md-input-container>
+			<md-input-container flex=15> <label>Approved
+				By </label> <input ng-disabled="true" ng-model="approvedBy"
+				ng-init="approvedBy = documentEntity.approvedBy? documentEntity.approvedBy.firstName + ' ' + documentEntity.approvedBy.lastName : 'NA'"></input>
+			</md-input-container>
+			<md-input-container flex=15> <label>Created
+				Date </label> <input ng-disabled="true"
+				ng-value="documentEntity.modifiedDate | formatDate"></input> </md-input-container>
+
+
 		</div>
 
 		<div ng-if="settingsObj.linkPOToBudget" layout="row"
@@ -126,7 +133,7 @@
 
 		<div layout="row" layout-xs="column">
 			<md-input-container flex> <label>Note to
-				Customer</label> <textarea ng-model="documentEntity.noteToCustomer" rows="3"
+				Supplier</label> <textarea ng-model="documentEntity.noteToCustomer" rows="3"
 				cols="1"></textarea> </md-input-container>
 		</div>
 
@@ -344,7 +351,8 @@
 			</table>
 
 		</div>
-		<div layout layout-xs="column" ng-if="isDocumentEditAllowed(documentEntity)">
+		<div layout layout-xs="column"
+			ng-if="isDocumentEditAllowed(documentEntity)">
 			<section layout="row" layout-xs="column">
 				<md-button class="md-raised md-primary"
 					ng-disabled="documentForm.$invalid" ng-click="saveDocument()">Save

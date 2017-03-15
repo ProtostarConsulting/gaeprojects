@@ -10,13 +10,37 @@
 		ng-bind="documentEntity.id?'Edit Invoice':'Add Invoice'"></h4>
 	</md-subheader>
 	<span flex></span>
+	<div>
+		<md-button class="md-icon-button" ng-show="documentEntity.id"
+			ng-click="printInvoice(documentEntity.id)"> <ng-md-icon
+			icon="print" style="fill: md-default" size="20"> <md-tooltip>
+		Print Invoice</md-tooltip></ng-md-icon></md-button>
+	</div>
 </section>
 <div>
 	<form ng-submit="$event.preventDefault()" name="documentForm">
+
+		<div layout="row" layout-xs="column">
+			<div layout="row" flex>
+				<md-input-container flex=40> <label>Invoice
+					No.</label> <input ng-model="documentEntity.itemNumber"
+					placeholder="Auto generated number" ng-disabled="true"></input> </md-input-container>
+				<md-input-container flex> <label>Document
+					Status </label> <input type="text" ng-disabled="true"
+					ng-model="documentEntity.status"> </md-input-container>
+				<md-input-container flex=15> <label>Created
+					By </label> <input ng-disabled="true" ng-model="createdBy"
+					ng-init="createdBy = documentEntity.createdBy? documentEntity.createdBy.firstName + ' ' + documentEntity.createdBy.lastName: ''"></input>
+				</md-input-container>
+				<md-input-container flex=15> <label>Created
+					Date </label> <input ng-disabled="true"
+					ng-value="documentEntity.createdDate | formatDate"></input> </md-input-container>
+			</div>
+		</div>
 		<div flex layout="row" layout-xs="column">
-			<div flex layout="row">
+			<div flex=40 layout="row">
 				<md-autocomplete flex required ng-model="documentEntity.customer"
-					md-input-name="autocompleteField" md-no-cache=true
+					md-input-name="custAutocompleteField" md-no-cache=true
 					md-selected-item="documentEntity.customer"
 					ng-init="searchTextInput = documentEntity.customer.isCompany?documentEntity.customer.companyName:(documentEntity.customer.firstName
 					+' '+ documentEntity.customer.lastName)"
@@ -26,8 +50,8 @@
 					md-floating-label="Customer Name"> <md-item-template>
 				<span md-highlight-text="searchTextInput">{{item.isCompany?item.companyName:(item.firstName
 					+' '+ item.lastName) }}</span> </md-item-template>
-				<div ng-messages="documentForm.autocompleteField.$error"
-					ng-if="documentForm.autocompleteField.$touched">
+				<div ng-messages="documentForm.custAutocompleteField.$error"
+					ng-if="documentForm.custAutocompleteField.$touched">
 					<div ng-message="required">This is required field.</div>
 				</div>
 				</md-autocomplete>
@@ -46,17 +70,49 @@
 				ng-selected="(documentEntity.fromWH.id)?(documentEntity.fromWH.id == warehouse.id):($index == 0)"
 				ng-repeat="warehouse in warehouses">{{warehouse.warehouseName
 			}}</md-option> </md-select> </md-input-container>
+			<md-input-container flex=15> <label>Approved
+				By </label> <input ng-disabled="true" ng-model="approvedBy"
+				ng-init="approvedBy = documentEntity.approvedBy? documentEntity.approvedBy.firstName + ' ' + documentEntity.approvedBy.lastName : 'NA'"></input>
+			</md-input-container>
+			<md-input-container flex=15> <label>Last
+				Modified Date </label> <input ng-disabled="true"
+				ng-value="documentEntity.modifiedDate | formatDate"></input> </md-input-container>
+		</div>
 
+		<div flex layout="row" layout-xs="column">
+			<div flex=40 layout="row">
+				<md-autocomplete flex required ng-model="documentEntity.customerContact"
+					md-input-name="contactAutocompleteField" md-no-cache=true
+					md-selected-item="documentEntity.customerContact"
+					ng-init="contactSearchTextInput = documentEntity.customerContact.fName
+					+' '+ documentEntity.customerContact.lName"
+					md-search-text="contactSearchTextInput"
+					md-items="item in queryContactSearch(contactSearchTextInput)"
+					md-item-text="item.fName +' '+ item.lName"
+					md-floating-label="Customer Contact"> <md-item-template>
+				<span md-highlight-text="contactSearchTextInput">{{item.fName
+					+' '+ item.lName}}</span> </md-item-template>
+				<div ng-messages="documentForm.contactAutocompleteField.$error"
+					ng-if="documentForm.contactAutocompleteField.$touched">
+					<div ng-message="required">This is required field.</div>
+				</div>
+				</md-autocomplete>
+				<md-button class="md-icon-button"
+					ng-click="addCustomer($event, invoiceObj)" aria-label="ac">
+				<md-icon md-svg-src="img/icons/ic_queue_black_24px.svg" class="name"
+					style="color: Green; height: 10px; width: 10px"></md-icon> </md-button>
+
+			</div>
 			<md-input-container flex> <label>Due
 				Date</label> <md-datepicker flex ng-model="documentEntity.invoiceDueDate"
 				md-placeholder="Select Date" string-to-date></md-datepicker> </md-input-container>
-			<md-input-container flex> <label>Invoice
-				Number</label> <input ng-model="documentEntity.itemNumber"
-				placeholder="Auto generated number" ng-disabled="true"></input> </md-input-container>
-			<md-button class="md-icon-button" ng-show="documentEntity.id"
-				ng-click="printInvoice(documentEntity.id)"> <ng-md-icon
-				icon="print" style="fill: md-default" size="20"> <md-tooltip>
-			Print Invoice</md-tooltip></ng-md-icon></md-button>
+			<md-input-container flex=15> <label>Discount
+				Type </label> <input ng-model="documentEntity.discountType"
+				ng-disabled="true"></input> </md-input-container>
+			<md-input-container flex=15> <label>Discount
+			</label> <input ng-model="documentEntity.discountPercent"
+				ng-disabled="true"></input> </md-input-container>
+
 		</div>
 
 

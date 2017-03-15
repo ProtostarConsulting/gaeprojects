@@ -11,7 +11,7 @@ angular
 
 					$scope.selectedBusiness = $stateParams.selectedBusiness ? $stateParams.selectedBusiness
 							: $scope.curuser.business;
-					
+
 					$scope.Address = $scope.selectedBusiness.address;
 
 					$scope.updateBusiness = function() {
@@ -39,22 +39,5 @@ angular
 						$scope.IsHidden = $scope.IsHidden ? false : true;
 					}
 					// -----------------------------------------------------
-
-					$scope.toggleRight = buildToggler('right');
-
-					function buildToggler(navID) {
-						var debounceFn = $mdUtil.debounce(function() {
-							$mdSidenav(navID).toggle().then(function() {
-								$log.debug("toggle " + navID + " is done");
-							});
-						}, 200);
-						return debounceFn;
-					}
-
-					$scope.close = function() {
-						$mdSidenav('right').close().then(function() {
-							$log.debug("close RIGHT is done");
-						});
-					};
 
 				});

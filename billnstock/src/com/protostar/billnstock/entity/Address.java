@@ -12,6 +12,11 @@ public class Address {
 	private String state;
 	private String country;
 	private String pin;
+	
+	private String phone1;
+	private String phone2;
+	private String email;
+	private String website;
 
 	/*
 	 * public Long getId() { return id; }
@@ -73,6 +78,38 @@ public class Address {
 
 	public void setAddressType(AddressType addressType) {
 		this.addressType = addressType;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getWebsite() {
+		return website;
+	}
+
+	public void setWebsite(String website) {
+		this.website = website;
+	}
+
+	public String getPhone1() {
+		return phone1;
+	}
+
+	public void setPhone1(String phone1) {
+		this.phone1 = phone1;
+	}
+
+	public String getPhone2() {
+		return phone2;
+	}
+
+	public void setPhone2(String phone2) {
+		this.phone2 = phone2;
 	}
 
 }

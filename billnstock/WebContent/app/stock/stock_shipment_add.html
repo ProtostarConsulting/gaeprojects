@@ -21,29 +21,34 @@
 				<md-input-container flex> <label>Document
 					Status </label> <input type="text" ng-disabled="true"
 					ng-model="documentEntity.status"> </md-input-container>
-				<md-input-container flex=15> <label>Created
+				<md-input-container flex=10> <label>Created
 					By </label> <input ng-disabled="true" ng-model="createdBy"
 					ng-init="createdBy = documentEntity.createdBy? documentEntity.createdBy.firstName + ' ' + documentEntity.createdBy.lastName: ''"></input>
 				</md-input-container>
+				<md-input-container flex=10> <label>Created
+					Date </label> <input ng-disabled="true"
+					ng-value="documentEntity.createdDate | formatDate"></input> </md-input-container>
 			</div>
 		</div>
 
 		<div flex layout="row" layout-xs="column">
-			<md-input-container flex=40> <label>From
-				Warehouse </label> <md-select flex ng-model="documentEntity.fromWH"
-				placeholder="Select Warehouse"
-				ng-change="filterStockItemsByWarehouse(documentEntity.fromWH)">
-			<md-option ng-value="warehouse" ng-required="true"
-				ng-selected="(documentEntity.fromWH.id)?(documentEntity.fromWH.id == warehouse.id):($index == 0)"
-				ng-repeat="warehouse in warehouses">{{warehouse.warehouseName
-			}}</md-option> </md-select> </md-input-container>
-			<md-input-container flex> <label>Select
-				Shipment Type </label> <md-select flex
-				ng-model="documentEntity.shipmentType" placeholder="Shipment Type">
-			<md-option ng-value="shipmentType" ng-required="true"
-				ng-selected="(documentEntity.shipmentType)?(documentEntity.shipmentType == shipmentType):($index == 0)"
-				ng-repeat="shipmentType in shipmentTypes">{{shipmentType
-			}}</md-option> </md-select> </md-input-container>
+			<div flex=40 layout="row" layout-xs="column">
+				<md-input-container flex> <label>From
+					Warehouse </label> <md-select flex ng-model="documentEntity.fromWH"
+					placeholder="Select Warehouse"
+					ng-change="filterStockItemsByWarehouse(documentEntity.fromWH)">
+				<md-option ng-value="warehouse" ng-required="true"
+					ng-selected="(documentEntity.fromWH.id)?(documentEntity.fromWH.id == warehouse.id):($index == 0)"
+					ng-repeat="warehouse in warehouses">{{warehouse.warehouseName
+				}}</md-option> </md-select> </md-input-container>
+				<md-input-container flex> <label>Select
+					Shipment Type </label> <md-select flex
+					ng-model="documentEntity.shipmentType" placeholder="Shipment Type">
+				<md-option ng-value="shipmentType" ng-required="true"
+					ng-selected="(documentEntity.shipmentType)?(documentEntity.shipmentType == shipmentType):($index == 0)"
+					ng-repeat="shipmentType in shipmentTypes">{{shipmentType
+				}}</md-option> </md-select> </md-input-container>
+			</div>
 			<md-input-container flex
 				ng-if="documentEntity.shipmentType == 'TO_OTHER_WAREHOUSE'">
 			<label> To Warehouse </label> <md-select flex
@@ -74,6 +79,13 @@
 			<md-input-container flex> <label>Shipment
 				Date</label> <md-datepicker flex ng-model="documentEntity.shipmentDate"
 				md-placeholder="Select Date"></md-datepicker> </md-input-container>
+			<md-input-container flex=10> <label>Approved
+				By </label> <input ng-disabled="true" ng-model="approvedBy"
+				ng-init="approvedBy = documentEntity.approvedBy? documentEntity.approvedBy.firstName + ' ' + documentEntity.approvedBy.lastName : 'NA'"></input>
+			</md-input-container>
+			<md-input-container flex=10> <label>Last
+				Modified Date </label> <input ng-disabled="true"
+				ng-value="documentEntity.modifiedDate | formatDate"></input> </md-input-container>
 		</div>
 
 		<div layout="row" layout-xs="column">
@@ -221,7 +233,8 @@
 				</tbody>
 			</table>
 		</div>
-		<div layout layout-xs="column" ng-if="isDocumentEditAllowed(documentEntity)">
+		<div layout layout-xs="column"
+			ng-if="isDocumentEditAllowed(documentEntity)">
 			<section layout="row" layout-xs="column">
 				<md-button class="md-raised md-primary"
 					ng-disabled="documentForm.$invalid" ng-click="saveDocument()">Save

@@ -20,22 +20,22 @@ public class BusinessNSFilter implements Filter {
 
 		// Move to namespace based datastore once moved to angular 2/4 +
 		// endpoint 2.0
-		System.out.println("####BusinessNSFilter filter is invoked before");
+		//System.out.println("####BusinessNSFilter filter is invoked before");
 		String url = null;
 		String queryString = null;
 		if (request instanceof HttpServletRequest) {
 			url = ((HttpServletRequest) request).getRequestURL().toString();
 			queryString = ((HttpServletRequest) request).getQueryString();
 		}
-		System.out.println(url + "?" + queryString);
+		//System.out.println(url + "?" + queryString);
 		User currentUser = UserServiceFactory.getUserService().getCurrentUser();
 		if (currentUser != null) {
-			System.out.println("currentUser.getEmail():" + currentUser.getEmail());
-			System.out.println("currentUser.getNickname():" + currentUser.getNickname());
+			//System.out.println("currentUser.getEmail():" + currentUser.getEmail());
+			//System.out.println("currentUser.getNickname():" + currentUser.getNickname());
 		}
 
 		chain.doFilter(request, resp);// sends request to next resource
-		System.out.println("#####BusinessNSFilter filter is invoked after.....................");
+		//System.out.println("#####BusinessNSFilter filter is invoked after.....................");
 	}
 
 	public void destroy() {

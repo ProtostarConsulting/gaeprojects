@@ -1,61 +1,64 @@
 <div layout-align="centre centre" layout-padding>
 	<form name="editBusiness">
-		<!-- 	<md-whiteframe class="md-whiteframe-9dp" flex="30" layout layout-align="center center"> -->
 		<span>
-
-
-
 			<div layout="column">
 				<!-- layout-align="center center" -->
-
 				<md-input-container flex> <label>Business
-					Name 
-				</label> <input name="businessName" ng-model="selectedBusiness.businessName"
-					ng-required="true">
+					Name </label> <input name="businessName"
+					ng-model="selectedBusiness.businessName" ng-required="true">
 				<div ng-messages="editBusiness.businessName.$error"
 					ng-if="editBusiness.businessName.$submitted || editBusiness.businessName.$touched">
 					<div ng-message="required">Please Enter Business Name.</div>
 				</div>
 				</md-input-container>
-			</div> <b>Address :-</b>
-			<div layout="row">
+			</div> <b>Address :</b>
+			<div layout="row" layout-xs="column">
 				<md-input-container flex> <label>Line1
-					
 				</label> <input name="line1" ng-model="Address.line1" ng-required="true">
 				<div ng-messages="editBusiness.line1.$error"
 					ng-if="editBusiness.line1.$submitted || editBusiness.line1.$touched">
 					<div ng-message="required">Please Enter Address Name.</div>
 				</div>
 				</md-input-container>
-
 				<md-input-container flex> <label>Line2</label>
 				<input name="line2" ng-model="Address.line2"> </md-input-container>
 			</div>
-			<div layout="row">
-				<md-input-container flex> <label>State					
+			
+			<div layout="row" layout-xs="column">
+				<md-input-container flex> <label>State
 				</label> <input name="state" ng-model="Address.state" ng-required="true">
 				<div ng-messages="editBusiness.state.$error"
 					ng-if="editBusiness.state.$submitted || editBusiness.state.$touched">
 					<div ng-message="required">Please Enter State Name.</div>
 				</div>
 				</md-input-container>
-
 				<md-input-container flex> <label>Country</label>
 				<input name="country" ng-model="Address.country"> </md-input-container>
-
-
 			</div>
-			<div layout="row">
-				<md-input-container flex> <label>City</label> <input name="city"
-					ng-model="Address.city" ng-required="true">
+
+			<div layout="row" layout-xs="column">
+				<md-input-container flex> <label>City</label> <input
+					name="city" ng-model="Address.city" ng-required="true">
 				<div ng-messages="editBusiness.city.$error"
 					ng-if="editBusiness.city.$submitted || editBusiness.city.$touched">
 					<div ng-message="required">Please Enter City Name.</div>
 				</div>
 				</md-input-container>
-
 				<md-input-container flex> <label>Pin</label> <input
 					name="pin" ng-model="Address.pin"> </md-input-container>
+			</div> <b>Contact Detail :</b>
+			<div layout="row" layout-xs="column">
+				<md-input-container flex=50> <label>Phone
+					No. </label> <input name="addressPhone" ng-model="Address.phone1">
+				</md-input-container>
+			</div>
+
+			<div layout="row" layout-xs="column">
+				<md-input-container flex> <label>Email</label>
+				<input name="email" ng-model="Address.email"> </md-input-container>
+
+				<md-input-container flex> <label>Website</label>
+				<input name="website" ng-model="Address.website"> </md-input-container>
 			</div>
 
 			<div layout="row" layout-align="center end">
@@ -64,9 +67,6 @@
 				Business</md-button>
 			</div> </md-card-content>
 		</span>
-		<!-- 	</md-whiteframe> -->
-
-
 	</form>
 </div>
 

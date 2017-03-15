@@ -8,6 +8,7 @@ import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
+import com.protostar.billingnstock.crm.entities.Contact;
 import com.protostar.billingnstock.cust.entities.Customer;
 import com.protostar.billingnstock.stock.entities.StockLineItem;
 import com.protostar.billingnstock.tax.entities.TaxEntity;
@@ -53,6 +54,9 @@ public class InvoiceEntity extends BaseEntity {
 
 	@Index
 	private Ref<Customer> customer;
+	@Index
+	private Ref<Contact> customerContact;
+
 	private String pOrder;
 	private Ref<WarehouseEntity> fromWH;
 
@@ -92,6 +96,15 @@ public class InvoiceEntity extends BaseEntity {
 	public void setCustomer(Customer customer) {
 		if (customer != null)
 			this.customer = Ref.create(customer);
+	}
+
+	public Contact getCustomerContact() {
+		return customerContact == null ? null : customerContact.get();
+	}
+
+	public void setCustomerContact(Contact customerContact) {
+		if (customerContact != null)
+			this.customerContact = Ref.create(customerContact);
 	}
 
 	public TaxEntity getSelectedServiceTax() {

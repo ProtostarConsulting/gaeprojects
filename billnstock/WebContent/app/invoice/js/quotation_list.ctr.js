@@ -4,7 +4,7 @@ app
 				"quotationListCtr",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
 						$mdUtil, $log, $state, $http, $stateParams,
-						$routeParams, $filter, objectFactory, appEndpointSF) {
+						$routeParams, $filter, $location, $anchorScroll, objectFactory, appEndpointSF) {
 					function reSetQuery() {
 						return {
 							order : '-itemNumber',
@@ -59,6 +59,15 @@ app
 											$scope.loading = false;
 										});
 					}
+					
+					$scope.onpagechange = function() {
+						$location.hash('tp1');
+						$anchorScroll();
+						if ($scope.query.page > $scope.query.pagesLoaded) {
+							$scope.fetchEntityListByPaging();
+						}
+					}
+
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {

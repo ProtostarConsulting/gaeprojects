@@ -273,6 +273,16 @@
   </servlet-mapping>
   <servlet>
     <description></description>
+    <display-name>PrintPdfRequisition</display-name>
+    <servlet-name>PrintPdfRequisition</servlet-name>
+    <servlet-class>com.protostar.billingnstock.stock.services.PrintPdfRequisition</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PrintPdfRequisition</servlet-name>
+    <url-pattern>/PrintPdfRequisition</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
     <display-name>PrintPdfPurchaseOrder</display-name>
     <servlet-name>PrintPdfPurchaseOrder</servlet-name>
     <servlet-class>com.protostar.billingnstock.stock.services.PrintPdfPurchaseOrder</servlet-class>

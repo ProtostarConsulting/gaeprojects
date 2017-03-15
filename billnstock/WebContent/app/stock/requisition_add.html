@@ -2,7 +2,7 @@
 <section layout="row" layout-xs="column">
 	<md-subheader class="md-primary">
 	<h4 class="md-title"
-		ng-bind="documentEntity.id?'Edit documentEntity':'Add documentEntity'"></h4>
+		ng-bind="documentEntity.id?'Edit Requisition':'Add Requisition'"></h4>
 	</md-subheader>
 	<span flex></span>
 </section>
@@ -12,45 +12,45 @@
 
 		<div layout="row" layout-xs="column">
 			<div layout="row" flex>
-				<md-input-container flex=40> <label>Purchase
-					Order No.</label> <input ng-model="documentEntity.itemNumber"
+				<md-input-container flex=40> <label>Requisition
+					No.</label> <input ng-model="documentEntity.itemNumber"
 					placeholder="Auto generated number" ng-disabled="true"></input> </md-input-container>
 				<md-input-container flex> <label>Document
 					Status </label> <input type="text" ng-disabled="true"
 					ng-model="documentEntity.status"> </md-input-container>
 				<md-input-container flex=15> <label>Created
 					By </label> <input ng-disabled="true" ng-model="createdBy"
-					ng-init="createdBy = purchaseOrderObj.createdBy? purchaseOrderObj.createdBy.firstName + ' ' + purchaseOrderObj.createdBy.lastName: ''"></input>
+					ng-init="createdBy = documentEntity.createdBy? documentEntity.createdBy.firstName + ' ' + documentEntity.createdBy.lastName: ''"></input>
 				</md-input-container>
+				<md-input-container flex=15> <label>Created
+					Date </label> <input ng-disabled="true"
+					ng-value="documentEntity.createdDate | formatDate"></input> </md-input-container>
 			</div>
 		</div>
 		<div layout="row" layout-xs="column">
 			<div layout="row" flex>
 
-				<md-input-container flex> <label>
+				<md-input-container flex=40> <label>
 					Expected Date</label> <md-datepicker flex
 					ng-model="documentEntity.expectedDate"
 					ng-change="documentEntity.expectedDate.toISOString()"
 					md-placeholder="Select Date" ng-required="true"></md-datepicker> </md-input-container>
-				<md-input-container flex> <label>
-					Status </label> <input type="text" ng-readonly="true"
-					ng-model="documentEntity.status"> </md-input-container>
-				<md-input-container flex> <label>documentEntity
-					No.</label> <input ng-model="documentEntity.itemNumber"
-					placeholder="Auto generated number" ng-readonly="true"></input> </md-input-container>
-
+				<md-input-container flex> <label>On
+					behalf of, if any</label> <input type="text"
+					ng-model="documentEntity.onBehalfOf"> </md-input-container>
+				<md-input-container flex=15> <label>Approved
+					By </label> <input ng-disabled="true" ng-model="approvedBy"
+					ng-init="approvedBy = documentEntity.approvedBy? documentEntity.approvedBy.firstName + ' ' + documentEntity.approvedBy.lastName : 'NA'"></input>
+				</md-input-container>
+				<md-input-container flex=15> <label>Last
+					Modified Date </label> <input ng-disabled="true"
+					ng-value="documentEntity.modifiedDate | formatDate"></input> </md-input-container>
 			</div>
 		</div>
 		<div layout="row" layout-xs="column">
-			<div layout="row" flex>
-
-				<md-input-container flex=30> <label>documentEntityer</label>
-				<input type="text" ng-model="requesterName" ng-readonly="true">
-				</md-input-container>
-				<md-input-container flex=30> <label>On
-					Behalf Of</label> <input type="text" ng-model="documentEntity.onBehalfOf"
-					ng-required="true"> </md-input-container>
-			</div>
+			<md-input-container flex="80" layout="row"> <label>Requisition
+				Notes (Mention reasons and suggested vendors etc.)</label> <textarea
+				ng-model="documentEntity.note" rows="2" cols="1"></textarea> </md-input-container>
 		</div>
 
 		<div
@@ -81,10 +81,11 @@
 						<td
 							ng-selected="lineItem.itemName.id?lineItem.itemName.id:lineItem.itemName"><md-input-container
 								flex> <label>Item Name </label> <input
-								ng-model="lineItem.itemName"> </md-input-container></td>
+								ng-model="lineItem.itemName" ng-required="true"> </md-input-container></td>
 
 						<td><md-input-container flex> <label>Quantity
-							</label> <input type="number" ng-model="lineItem.qty"> </md-input-container></td>
+							</label> <input type="number" ng-model="lineItem.qty" ng-required="true">
+							</md-input-container></td>
 
 						<td><md-icon
 								md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
@@ -108,7 +109,8 @@
 			</table>
 
 		</div>
-		<div layout layout-xs="column" ng-if="isDocumentEditAllowed(documentEntity)">
+		<div layout layout-xs="column"
+			ng-if="isDocumentEditAllowed(documentEntity)">
 			<section layout="row" layout-xs="column">
 				<md-button class="md-raised md-primary"
 					ng-disabled="documentForm.$invalid" ng-click="saveDocument()">Save

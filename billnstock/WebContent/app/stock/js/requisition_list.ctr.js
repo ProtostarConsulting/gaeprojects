@@ -72,4 +72,10 @@ app
 					}
 
 					$scope.waitForServiceLoad();
+					
+					$scope.printAsPdf = function(id) {
+						var bid = $scope.curUser.business.id;
+						window.open("PrintPdfRequisition?bid=" + bid
+								+ "&id=" + id);
+					}
 				});

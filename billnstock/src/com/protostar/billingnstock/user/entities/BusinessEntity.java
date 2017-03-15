@@ -9,6 +9,7 @@ import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import com.protostar.billingnstock.proadmin.entities.BusinessPlanType;
 import com.protostar.billnstock.entity.Address;
+import com.protostar.billnstock.until.data.Constants.BusinessStatusType;
 
 @Cache
 @Entity
@@ -20,10 +21,11 @@ public class BusinessEntity {
 	@Index
 	private String businessName;
 	private String registerDate;
-	private Integer totalUser = 1;
+	private Integer totalUser = 0;
 
 	private Address address;
 	private String status = "active";
+	private BusinessStatusType bizStatus = BusinessStatusType.ACTIVE;
 	private String theme;
 	@Index
 	private String bizLogoGCSURL;
@@ -37,7 +39,7 @@ public class BusinessEntity {
 	private Date modifiedDate;
 	private String modifiedBy;
 	private String note;
-	
+
 	@Index
 	private Ref<BusinessPlanType> businessPlan;
 
@@ -169,6 +171,14 @@ public class BusinessEntity {
 
 	public void setNote(String note) {
 		this.note = note;
+	}
+
+	public BusinessStatusType getBizStatus() {
+		return bizStatus;
+	}
+
+	public void setBizStatus(BusinessStatusType bizStatus) {
+		this.bizStatus = bizStatus;
 	}
 
 }

@@ -17,6 +17,7 @@ app
 							noteToCustomer : '',
 							createdDate : new Date(),
 							modifiedDate : new Date(),
+							createdBy : $scope.curUser,
 							modifiedBy : '',
 							discountType : 'NA',
 							discountPercent : 0,
@@ -469,6 +470,32 @@ app
 									.indexOf(lowercaseQuery) >= 0);
 						};
 					}
+					
+					function createContactFilterFor(query) {
+						var lowercaseQuery = angular.lowercase(query);
+						return function filterFn(contact) {
+							var a = contact.fname + "" + contact.lname;
+							return (angular.lowercase(a)
+									.indexOf(lowercaseQuery) >= 0);
+						};
+					}
+					
+					$scope.queryContactSearch = function(query) {
+						var results = query ? $scope.contactList
+								.filter(createContactFilterFor(query)) : [];
+						var deferred = $q.defer();
+						$timeout(function() {
+							deferred.resolve(results);
+						}, Math.random() * 1000, false);
+						return deferred.promise;
+					}
+					$scope.getAllcontact = function() {
+						var leadService = appEndpointSF.getleadService();
+						leadService.getAllcontact($scope.curUser.business.id)
+								.then(function(contacts) {
+									$scope.contactList = contacts.items;
+								});
+					}
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
@@ -476,7 +503,8 @@ app
 							$scope.getAllWarehouseByBusiness();
 							$scope.getTaxesByVisibility();
 							$scope.getInvoiceSettingsByBiz();
-							$scope.reCalculateTotal();
+							$scope.reCalculateTotal();							
+							$scope.getAllcontact();
 
 						} else {
 							$log.debug("Services Not Loaded, watiting...");

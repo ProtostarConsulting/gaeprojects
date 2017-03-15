@@ -32,7 +32,8 @@
 		<thead md-order="query.order" md-trigger="onorderchange">
 			<tr>
 				<th name="PO No." order-by="itemNumber"></th>
-				<th name="PO Date" order-by="createdDate"></th>
+				<th name="Created Date" order-by="createdBy"></th>
+				<th name="Created By" order-by="createdBy.firstName"></th>
 				<th name="Status" order-by="status"></th>
 				<th name="Supplier Name" order-by="supplier.supplierName"></th>
 				<th name="Actions"></th>
@@ -42,7 +43,9 @@
 			<tr
 				ng-repeat="pOItem in purchaseOrderList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
 				<td>{{pOItem.itemNumber}}</td>
-				<td>{{pOItem.createdDate | formatDate}}</td>
+				<td>{{pOItem.createdDate|formatDate}}</td>
+				<td>{{pOItem.createdBy.firstName+"
+					"+pOItem.createdBy.lastName }}</td>
 				<td>{{pOItem.status}}</td>
 				<td>{{pOItem.supplier.supplierName}}</td>
 				<td>

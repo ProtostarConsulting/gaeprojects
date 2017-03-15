@@ -79,4 +79,8 @@ public class Constants {
 	public enum SalaryHeadType {
 		FIXED, PERCENTAGE
 	};
+
+	public enum BusinessStatusType {
+		TRIAL, ACTIVE, SUSPENDED, DELETED
+	};
 }

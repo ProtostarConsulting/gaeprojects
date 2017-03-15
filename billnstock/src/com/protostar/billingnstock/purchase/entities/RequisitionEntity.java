@@ -2,12 +2,9 @@ package com.protostar.billingnstock.purchase.entities;
 
 import java.util.Date;
 
-import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Index;
 import com.protostar.billingnstock.invoice.entities.InvoiceEntity;
-import com.protostar.billingnstock.user.entities.UserEntity;
 import com.protostar.billnstock.until.data.Constants;
 import com.protostar.billnstock.until.data.Constants.DocumentStatus;
 import com.protostar.billnstock.until.data.EntityUtil;
@@ -16,8 +13,6 @@ import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 @Cache
 @Entity
 public class RequisitionEntity extends InvoiceEntity {
-	@Index
-	private Ref<UserEntity> requester;	
 	private String onBehalfOf;
 	private Date expectedDate;
 
@@ -48,16 +43,6 @@ public class RequisitionEntity extends InvoiceEntity {
 			setItemNumber(sequenceGenService.getNextSequenceNumber());
 		}
 	}
-
-
-	public UserEntity getRequester() {
-		return requester == null ? null : requester.get();
-	}
-
-	public void setRequester(UserEntity requester) {
-		if (requester != null)
-			this.requester = Ref.create(requester);
-	}	
 
 	public String getOnBehalfOf() {
 		return onBehalfOf;

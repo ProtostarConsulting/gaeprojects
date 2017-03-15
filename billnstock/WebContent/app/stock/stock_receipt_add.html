@@ -20,17 +20,20 @@
 					By </label> <input ng-disabled="true" ng-model="createdBy"
 					ng-init="createdBy = documentEntity.createdBy? documentEntity.createdBy.firstName + ' ' + documentEntity.createdBy.lastName: ''"></input>
 				</md-input-container>
+				<md-input-container flex=15> <label>Created
+					Date </label> <input ng-disabled="true"
+					ng-value="documentEntity.createdDate | formatDate"></input> </md-input-container>
 			</div>
 		</div>
 		<div flex layout="row" layout-xs="column">
-			<md-input-container flex=40> <label>Warehouse
-			</label> <md-select flex ng-model="documentEntity.warehouse"
-				placeholder="Select Warehouse" ng-change="warehouseChanged">
-			<md-option ng-value="warehouse" ng-required="true"
-				ng-selected="(documentEntity.warehouse.id)?(documentEntity.warehouse.id == warehouse.id):($index == 0)"
-				ng-repeat="warehouse in warehouses">{{warehouse.warehouseName
-			}}</md-option> </md-select> </md-input-container>
-			<div flex layout="row" layout-xs="column">
+			<div flex=40 layout="row" layout-xs="column">
+				<md-input-container flex> <label>Warehouse
+				</label> <md-select flex ng-model="documentEntity.warehouse"
+					placeholder="Select Warehouse" ng-change="warehouseChanged">
+				<md-option ng-value="warehouse" ng-required="true"
+					ng-selected="(documentEntity.warehouse.id)?(documentEntity.warehouse.id == warehouse.id):($index == 0)"
+					ng-repeat="warehouse in warehouses">{{warehouse.warehouseName
+				}}</md-option> </md-select> </md-input-container>
 				<div layout="row" flex>
 					<md-autocomplete flex required md-input-name="autocompleteField"
 						md-no-cache=true md-selected-item="documentEntity.supplier"
@@ -46,18 +49,29 @@
 						</div>
 					</div>
 					</md-autocomplete>
-					<md-icon md-svg-src="img/icons/ic_queue_black_24px.svg"
-						ng-click="addSupplier()" class="name"
-						style="color: Green; height: 18px; width: 18px"></md-icon>
+					<div>
+						<md-icon md-svg-src="img/icons/ic_queue_black_24px.svg"
+							ng-click="addSupplier()" class="name"
+							style="color: Green; height: 18px; width: 18px"></md-icon>
+					</div>
 				</div>
-				<md-input-container flex> <label>Receipt
-					Date</label> <md-datepicker flex ng-model="documentEntity.receiptDate"
-					md-placeholder="Select Date"></md-datepicker> </md-input-container>
-				<md-input-container flex=40> <label>PO
-					Number </label> <input type="number" ng-model="documentEntity.poNumber"
-					ng-change="getPOByItemNumber(documentEntity.poNumber)"
-					ng-model-options="{ debounce: 1000 }"> </md-input-container>
 			</div>
+
+			<md-input-container flex> <label>Receipt
+				Date</label> <md-datepicker flex ng-model="documentEntity.receiptDate"
+				md-placeholder="Select Date"></md-datepicker> </md-input-container>
+			<md-input-container flex=10> <label>PO
+				Number </label> <input type="number" ng-model="documentEntity.poNumber"
+				ng-change="getPOByItemNumber(documentEntity.poNumber)"
+				ng-model-options="{ debounce: 1000 }"> </md-input-container>
+			<md-input-container flex=15> <label>Approved
+				By </label> <input ng-disabled="true" ng-model="approvedBy"
+				ng-init="approvedBy = documentEntity.approvedBy? documentEntity.approvedBy.firstName + ' ' + documentEntity.approvedBy.lastName : 'NA'"></input>
+			</md-input-container>
+			<md-input-container flex=15> <label>Last
+				Modified Date </label> <input ng-disabled="true"
+				ng-value="documentEntity.modifiedDate | formatDate"></input> </md-input-container>
+
 		</div>
 
 		<div layout="row" layout-xs="column">
@@ -131,8 +145,7 @@
 						<td></td>
 						<td></td>
 						<td><label>Product Total</label></td>
-						<td><b> {{documentEntity.productTotal |
-								currency:"":"2"}}</b></td>
+						<td><b> {{documentEntity.productTotal | currency:"":"2"}}</b></td>
 						<td></td>
 					</tr>
 				</tbody>
@@ -191,8 +204,7 @@
 						<td></td>
 						<td></td>
 						<td><label>Service Total</label></td>
-						<td><b> {{documentEntity.serviceTotal |
-								currency:"":"2"}}</b></td>
+						<td><b> {{documentEntity.serviceTotal | currency:"":"2"}}</b></td>
 						<td></td>
 					</tr>
 					<tr>
@@ -207,7 +219,8 @@
 			</table>
 
 		</div>
-		<div layout layout-xs="column" ng-if="isDocumentEditAllowed(documentEntity)">
+		<div layout layout-xs="column"
+			ng-if="isDocumentEditAllowed(documentEntity)">
 			<section layout="row" layout-xs="column">
 				<md-button class="md-raised md-primary"
 					ng-disabled="documentForm.$invalid" ng-click="saveDocument()">Save
