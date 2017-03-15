@@ -29,7 +29,7 @@ public class EmailHandler {
 
 		StockSettingsEntity stockSettings = new StockManagementService()
 				.getStockSettingsByBiz(purchaseOrder.getBusiness().getId());
-		if (!stockSettings.isEmailNotification()
+		if (stockSettings == null || !stockSettings.isEmailNotification()
 				|| stockSettings.getEmailNotificationDL().isEmpty()) {
 			return;
 		}
@@ -61,7 +61,7 @@ public class EmailHandler {
 
 		StockSettingsEntity stockSettings = new StockManagementService()
 				.getStockSettingsByBiz(stockShipment.getBusiness().getId());
-		if (!stockSettings.isEmailNotification()
+		if (stockSettings == null || !stockSettings.isEmailNotification()
 				|| stockSettings.getEmailNotificationDL().isEmpty()) {
 			return;
 		}
@@ -93,12 +93,11 @@ public class EmailHandler {
 
 		StockSettingsEntity stockSettings = new StockManagementService()
 				.getStockSettingsByBiz(stockReceipt.getBusiness().getId());
-		
 
-			 if (stockSettings== null || !stockSettings.isEmailNotification()
-			    || stockSettings.getEmailNotificationDL().isEmpty()) {
-			   return;
-			  }
+		if (stockSettings == null || !stockSettings.isEmailNotification()
+				|| stockSettings.getEmailNotificationDL().isEmpty()) {
+			return;
+		}
 
 		String emailSubject = "";
 
