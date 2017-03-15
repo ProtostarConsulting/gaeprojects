@@ -45,8 +45,6 @@ td {
 </div>
 <p>
 	<br></br>
-	<br></br>
-	<br></br>
 </p>
 <div class="container" style="width: 100%;">						 
 <table style="width: 100%; height: 100%;">
@@ -78,14 +76,6 @@ td {
 							<tbody>
 								<tr>
 									<td align="right" style="border: 0px;">
-										<b>PO No:</b>
-									</td>
-									<td align="left" style="border: 0px;">
-										${poNum}
-									</td>
-								</tr>
-								<tr>
-									<td align="right" style="border: 0px;">
 										<b>Receipt No:</b>
 									</td>
 									<td align="left" style="border: 0px;">
@@ -98,6 +88,30 @@ td {
 									</td>
 									<td align="left" style="border: 0px;">
 										${receiptDate}
+									</td>
+								</tr>
+								<tr>
+								<td align="right" style="border: 0px;">
+										<b>Status:</b>
+									</td>
+									<td align="left" style="border: 0px;">
+										${docuStatus}
+									</td>
+								</tr>
+								<tr>
+								<td align="right" style="border: 0px;">
+										<b>Created By:</b>
+									</td>
+									<td align="left" style="border: 0px;">
+										${createdBy}
+									</td>
+								</tr>
+								<tr>
+								<td align="right" style="border: 0px;">
+										<b>Approved By:</b>
+									</td>
+									<td align="left" style="border: 0px;">
+										${approvedBy}
 									</td>
 								</tr>
 								<#if Discount??>

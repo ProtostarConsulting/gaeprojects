@@ -59,6 +59,16 @@ td {
 										${supplierAddress}
 									</td>
 								</tr>
+								<tr>
+									<td align="left" style="border: 0px;"><b>Requisitioner:</b>
+										${requisitioner} 
+									</td>
+								</tr>
+								<tr>
+									<td align="left" style="border: 0px;"><b>Shipped Via:</b>
+										${shippedVia} 
+									</td>
+								</tr>
 							 </tbody>
 						 </table>					
 					</td>
@@ -80,6 +90,14 @@ td {
 									</td>
 									<td align="left" style="border: 0px;">
 										${pODate}
+									</td>
+								</tr>
+								<tr>
+									<td align="right" style="border: 0px;">
+										<b>Status:</b>
+									</td>
+									<td align="left" style="border: 0px;">
+										${docuStatus}
 									</td>
 								</tr>
 								<tr>

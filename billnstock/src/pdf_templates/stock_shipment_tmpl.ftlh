@@ -55,30 +55,20 @@ td {
 						<table style="width: 100%; height: 100%;">
 							<tbody>
 								<tr>
-									<td align="left" style="border: 0px;"><b>From :</b><br></br>
-										${fromWarehouse} <br></br>
-										${fromWHAddress}
+									<td align="left" style="border: 0px;"><b>Status:</b>
+										${docStatus}
+									</td>
+								</tr>
+							   <tr>
+									<td align="left" style="border: 0px;"><b>Created By:</b>
+										${createdBy}
 									</td>
 								</tr>
 								<tr>
-									<#if toWarehouse??>
-									<td align="left" style="border: 0px;"><b>To :</b><br></br>
-										${toWarehouse} <br></br>
-										${toWHAddress}
+									<td align="left" style="border: 0px;"><b>Approved By:</b>
+										${approvedBy}
 									</td>
-									<#elseif customerName??>
-									<td align="left" style="border: 0px;"><b>To :</b><br></br>
-										${customerName} <br></br>
-										${customerAddress}
-									</td>
-								   <#elseif partnerName??>
-									<td align="left" style="border: 0px;"><b>To :</b><br></br>
-										${partnerName} <br></br>
-										${partnerCoAddress}
-									</td>
-									</#if>
 								</tr>
-							
 							 </tbody>
 						 </table>					
 					</td>
@@ -116,6 +106,54 @@ td {
 							 </tbody>
 						</table>					
 					</td>					
+				</tr>
+				<tr align="left" style="border: 0px;">
+					<td style="width: 60%;"  style="border: 0px; padding: 7px;">
+						<table style="width: 100%; height: 100%;">
+					 			<tr>
+					 				<td  style="width:10%;border: 0px;">
+										<b>From:</b>
+									</td>
+								</tr>
+								<tr>
+									<td  style="width:40%;border: 0px;">
+										${fromWarehouse} <br></br>
+										${fromWHAddress}
+									</td> 
+								</tr>
+						</table>	
+					</td>
+					<td style="width: 40%;"  style="border: 0px; padding: 7px;">
+									<table style="width: 100%; height: 100%;">
+					 			<tr>
+					 				<td  style="width:10%;border: 0px;">
+										
+									</td>
+									<td  style="width:40%;border: 0px;">
+										<b> To :</b>
+									</td> 
+								</tr>	
+								<tr>
+								<td  style="width:10%;border: 0px;"></td>
+								<#if toWarehouse??>
+									<td align="left" style="border: 0px;">
+										${toWarehouse} <br></br>
+										${toWHAddress}
+									</td>
+								<#elseif customerName??>
+									<td align="left" style="border: 0px;">
+										${customerName} <br></br>
+										${customerAddress}
+									</td>
+								 <#elseif partnerName??>
+									<td align="left" style="border: 0px;">
+										${partnerName} <br></br>
+										${partnerCoAddress}
+									</td>
+									</#if>
+								</tr>	
+								</table>
+						</td>
 				</tr>
 				<!-- Contains a row across two tables -->
 				<#if shipmentNote??>
