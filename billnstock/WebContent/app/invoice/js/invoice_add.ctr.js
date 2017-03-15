@@ -16,6 +16,7 @@ app
 							invoiceDueDate : new Date(),
 							noteToCustomer : '',
 							createdDate : new Date(),
+							createdBy : $scope.curUser,
 							modifiedDate : new Date(),
 							modifiedBy : '',
 							discountType : 'NA',
@@ -70,7 +71,7 @@ app
 						$scope.documentEntity.status = 'SUBMITTED';
 						$scope.saveDocument();
 					}
-					
+
 					$scope.finalizeDocumnent = function(ev) {
 						var confirm = $mdDialog
 								.confirm()
@@ -88,7 +89,7 @@ app
 							$log.debug("Cancelled...");
 						});
 					}
-					
+
 					$scope.rejectDocumnent = function(ev) {
 						var confirm = $mdDialog
 								.confirm()
@@ -106,7 +107,7 @@ app
 							$log.debug("Cancelled...");
 						});
 					}
-					
+
 					$scope.filterStockItemsByWarehouse = function(
 							selectedWarehouse) {
 						$scope.loading = true;
@@ -322,7 +323,8 @@ app
 					}
 
 					$scope.removeServiceItem = function(index) {
-						$scope.documentEntity.serviceLineItemList.splice(index, 1);
+						$scope.documentEntity.serviceLineItemList.splice(index,
+								1);
 
 						if ($scope.documentEntity.serviceLineItemList.length == 0) {
 							$scope.documentEntity.serviceSubTotal = 0;
@@ -334,7 +336,8 @@ app
 					};
 
 					$scope.removeProductItem = function(index) {
-						$scope.documentEntity.productLineItemList.splice(index, 1);
+						$scope.documentEntity.productLineItemList.splice(index,
+								1);
 
 						if ($scope.documentEntity.productLineItemList.length == 0) {
 							$scope.documentEntity.productSubTotal = 0;
@@ -526,6 +529,5 @@ app
 							$mdDialog.cancel();
 						};
 					}
-					
 
 				});
