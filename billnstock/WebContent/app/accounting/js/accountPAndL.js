@@ -137,9 +137,9 @@ app
 											function(list) {
 												$scope.list = list;
 												var operatingRevenue = getOperatingRevenue();
-												var operatingExpense = getOperatingExpense();
+												$scope.operatingExpense = getOperatingExpense();
 												$scope.grossProfit = operatingRevenue
-														- operatingExpense;
+														- $scope.operatingExpense;
 												var otherExpense = getOtherExpense();
 												
 												$scope.operatingIncome=$scope.grossProfit-otherExpense;

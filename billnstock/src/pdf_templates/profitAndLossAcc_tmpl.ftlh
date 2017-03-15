@@ -44,8 +44,8 @@ border: 1px solid black;
 	<br></br>
 	<br></br>
 </p>
-	<table cellspacing="0"
-			style="width: 100%; height: 100%; border: 1px solid #dddddd; border-color: black; float: left"><tr>
+		<table
+			style="width: 100%; border-right: 0px;border: 1px solid #dddddd; border-color: black; float: left"><tr>
 			<th colspan="3">Operating Revenue</th>
 			</tr>
 			<tr>
@@ -68,6 +68,11 @@ border: 1px solid black;
 			<td>${purchase.groupBalance} </td>
 			</#list>
 			</tr>
+			
+			<tr><th colspan="2">Total Operating Expenses</th>
+			<td><b>${operatingExpense}</b></td>
+			</tr>
+			
 			<tr>
 <td colspan="2"><b>Gross Profit</b></td>
 <td> <b>${totalGrossProfit}</b> </td></tr>

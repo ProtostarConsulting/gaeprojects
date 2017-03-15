@@ -126,9 +126,6 @@ public class PDFHtmlTemplateService {
 	}
 
 	// --------------------------------------------------//
-
-	
-
 	public void getProfitAndLossAcc(List<TypeInfo> list,
 			ServletOutputStream outputStream, Long bid) {
 
@@ -189,6 +186,7 @@ public class PDFHtmlTemplateService {
 
 			String date = "1-Apr-2016 to 15-Apr-2016";
 			// nettProfit = totalGrossProfit - totalIndirectExpences;
+			root.put("operatingExpense", operatingExpense);
 			root.put("totalPurchase", operatingExpense);
 			root.put("totalOverhead", otherExpense);
 			root.put("totalOperatingRevenue", operatingRevenue);
@@ -214,7 +212,6 @@ public class PDFHtmlTemplateService {
 		}
 
 	}
-
 	// --------------------------------------------------
 
 	public void generatePdfBalanceSheet(List<TypeInfo> natureList,
@@ -253,11 +250,7 @@ public class PDFHtmlTemplateService {
 			for (int int2 = 0; int2 < natureList.size(); int2++) {
 				String typeName = natureList.get(int2).getTypeName();
 				if ((typeName == "ASSETS")
-						&& (natureList.get(int2).getGroupList() != null)
-				/*
-				 * && !(natureList.get(int2).getGroupList().get(int2)
-				 * .getGroupName() .equalsIgnoreCase("Sundry Debtors"))
-				 */) {
+						&& (natureList.get(int2).getGroupList() != null)) {
 					for (int i = 0; i < natureList.get(int2).getGroupList()
 							.size(); i++) {
 						System.out.println("get GRPLIST-----"
@@ -355,7 +348,6 @@ public class PDFHtmlTemplateService {
 							+ voucherEntity.getClass());
 		}
 	}
-
 	private void generateSalesVoucherPDF(SalesVoucherEntity salesEntity,
 			ServletOutputStream outputStream) {
 		try {
@@ -393,6 +385,8 @@ public class PDFHtmlTemplateService {
 			e.printStackTrace();
 		}
 	}
+
+
 	private void generateReceiptVoucherPDF(ReceiptVoucherEntity receiptEntity, ServletOutputStream outputStream) {
 		try {
 			Document document = new Document();

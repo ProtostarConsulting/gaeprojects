@@ -30,8 +30,9 @@ app.controller("accountlistCtr", function($scope, $window, $mdToast, $timeout,
 				function(list) {
 					//$log.debug("list:" + angular.toJson(list));
 					$scope.accounts = list;
-					$scope.loading = false;
+					
 					ajsCache.put(AccountServiceCacheKey, list);
+					$scope.loading = false;
 
 				});
 	}

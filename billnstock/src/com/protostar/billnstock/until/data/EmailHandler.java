@@ -93,10 +93,12 @@ public class EmailHandler {
 
 		StockSettingsEntity stockSettings = new StockManagementService()
 				.getStockSettingsByBiz(stockReceipt.getBusiness().getId());
-		if (!stockSettings.isEmailNotification()
-				|| stockSettings.getEmailNotificationDL().isEmpty()) {
-			return;
-		}
+		
+
+			 if (stockSettings== null || !stockSettings.isEmailNotification()
+			    || stockSettings.getEmailNotificationDL().isEmpty()) {
+			   return;
+			  }
 
 		String emailSubject = "";
 
