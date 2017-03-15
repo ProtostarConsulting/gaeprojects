@@ -173,7 +173,7 @@ public class AccountGroupService {
 
 			List<AccountGroupEntity> typeAccountGrpList = getAccountGroupListByType(
 					typeInfo.typeName, bid);
-			
+
 			double typeTotal = 0;
 			for (int j = 0; j < typeAccountGrpList.size(); j++) {
 				GroupInfo groupInfo = new GroupInfo();
@@ -181,15 +181,16 @@ public class AccountGroupService {
 				AccountingService as = new AccountingService();
 				List<AccountEntity> accList = as.getAccountListByGroupId(bid,
 						typeAccountGrpList.get(j).getId());
-				
+
 				double groupTotal = 0;
 				for (AccountEntity accountEntity : accList) {
 					ServerMsg accountBalance = as.getAccountBalance(
 							accountEntity.getId(), bid);
-					if(!accountEntity.getAccountGroup().getGroupName().equalsIgnoreCase("Sundry Debtors")){
-					groupTotal += accountBalance.getReturnBalance();
+					if (!accountEntity.getAccountGroup().getGroupName()
+							.equalsIgnoreCase("Sundry Debtors")) {
+						groupTotal += accountBalance.getReturnBalance();
 					}
-					
+
 				}
 
 				if (groupTotal != 0) {
@@ -215,6 +216,7 @@ public class AccountGroupService {
 		AccountGroupType[] groupTypes = { AccountGroupType.INCOME,
 				AccountGroupType.OTHERINCOMES, AccountGroupType.EXPENSES,
 				AccountGroupType.OTHEREXPENCES };
+
 		for (int i = 0; i < groupTypes.length; i++) {
 			TypeInfo typeInfo = new TypeInfo();
 			typeInfo.typeName = groupTypes[i].toString();
@@ -225,8 +227,10 @@ public class AccountGroupService {
 
 			double typeTotal = 0;
 			for (int j = 0; j < typeAccountList.size(); j++) {
+
 				GroupInfo groupInfo = new GroupInfo();
 				groupInfo.groupName = typeAccountList.get(j).getGroupName();
+				groupInfo.AccInfoList = new ArrayList<AccInfo>();
 				AccountingService as = new AccountingService();
 				List<AccountEntity> accList = as.getAccountListByGroupId(bid,
 						typeAccountList.get(j).getId());
@@ -244,17 +248,28 @@ public class AccountGroupService {
 					typeInfo.groupList.add(groupInfo);
 				}
 
+				for (AccountEntity accountEntity : accList) {
+					ServerMsg accountBalance = as.getAccountBalance(
+							accountEntity.getId(), bid);
+					AccInfo accinfo = new AccInfo();
+					accinfo.accName = accountEntity.getAccountName();
+					accinfo.accBalance = accountBalance.getReturnBalance();
+					groupInfo.AccInfoList.add(accinfo);
+
+				}
+
 			}
 
 			typeInfo.typeBalance = typeTotal;
 			typeList.add(typeInfo);
 
 		}
-
+		System.out.println("-------------------" + typeList.size());
 		return typeList;
 	}
 
-	public double goodsSold=0;;
+	public double goodsSold = 0;;
+
 	@ApiMethod(name = "getClosingStockBalance", path = "getClosingStockBalance")
 	public ServerMsg getClosingStockBalance(@Named("bid") Long bid) {
 
@@ -269,33 +284,31 @@ public class AccountGroupService {
 					groupList.get(i).getId());
 			for (int j = 0; j < accList.size(); j++) {
 
-			
-				
-				
-				if(accList.get(j).getAccountGroup().getGroupName().equalsIgnoreCase("Stock-in-Hand"))
-				{
-				ServerMsg accBalance = acc.getAccountBalance(accList.get(j)
-						.getId(), bid);
-				balance = balance + accBalance.getReturnBalance();
-				
+				if (accList.get(j).getAccountGroup().getGroupName()
+						.equalsIgnoreCase("Stock-in-Hand")) {
+					ServerMsg accBalance = acc.getAccountBalance(accList.get(j)
+							.getId(), bid);
+					balance = balance + accBalance.getReturnBalance();
+
 				}
-				
+
 			}
 
 		}
-		VoucherService vs=new VoucherService();
-		//	SalesVoucherEntity SalesVoucherEntity=new SalesVoucherEntity();
-			List<SalesVoucherEntity>SalesVoucherList=vs.getlistSalesVoucher(bid);
-			for (int k = 0; k < SalesVoucherList.size(); k++) {
-				
-				balance=balance-SalesVoucherList.get(k).getAmount();
-				goodsSold=goodsSold+SalesVoucherList.get(k).getAmount();
-				
-			}
+		VoucherService vs = new VoucherService();
+		// SalesVoucherEntity SalesVoucherEntity=new SalesVoucherEntity();
+		List<SalesVoucherEntity> SalesVoucherList = vs.getlistSalesVoucher(bid);
+		for (int k = 0; k < SalesVoucherList.size(); k++) {
+
+			balance = balance - SalesVoucherList.get(k).getAmount();
+			goodsSold = goodsSold + SalesVoucherList.get(k).getAmount();
+
+		}
 
 		ServerMsg serverMsg = new ServerMsg();
 		serverMsg.setReturnBalance(balance);
-		System.out.println("ClosingStockBalance:" + serverMsg.getReturnBalance());
+		System.out.println("ClosingStockBalance:"
+				+ serverMsg.getReturnBalance());
 
 		return serverMsg;
 
@@ -305,147 +318,45 @@ public class AccountGroupService {
 	public ServerMsg getProfitAndLossAccBalance(@Named("bid") Long bid) {
 		List<TypeInfo> list = getProfitAndLossAcc(bid);
 		ServerMsg serverMsg = new ServerMsg();
-		double netPandL = 0;
-		double totalSales = 0;
-		double totalIndirectExpences2 = 0;
-		double totalPurches = 0;
-		double totalIndirectExpences = 0;
-		double totalGrossProfit = 0;
-		double totalGrossLoss = 0;
-		double totalLeft = 0;
-		double totalRight = 0;
-		String typeName;
-		double totalOtherExp = 0;
-		double nettProfit = 0;
+		double operatingRevenue = 0;
+		double grossProfit = 0;
+		double otherExpense = 0;
+		double operatingExpense = 0;
+		double operatingIncome = 0;
+		List<GroupInfo> totalSalesList = new ArrayList<GroupInfo>();
+		List<GroupInfo> totalPurchaseList = new ArrayList<GroupInfo>();
+		List<GroupInfo> totalPaymentList = new ArrayList<GroupInfo>();
 
-		double  salesReturn=0;
-		double  cashSales=0;
-		double creditSales=0;
-		
-		double sellingExpenses=0;
-		ServerMsg closingStockBalance = getClosingStockBalance(bid);
-		
-		
-		
-		for (int int2 = 0; int2 < list.size(); int2++) {
-			typeName = list.get(int2).getTypeName().toString();
+		for (int count = 0; count < list.size(); count++) {
+			String typeName = list.get(count).getTypeName();
+
 			if ((typeName == "INCOME")
-					&& (list.get(int2).getGroupList() != null)) {
-				for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
-					totalSales = list.get(int2).getGroupList().get(i)
-							.getGroupBalance()
-							+ totalSales;
-				}
-				if (totalSales < 0) {
-					totalSales = totalSales * (-1);
-				}
+					&& (list.get(count).getGroupList() != null)) {
+				totalSalesList = list.get(count).getGroupList();
+				operatingRevenue = list.get(count).getTypeBalance();
 			}
 
 			if ((typeName == "OTHEREXPENCES")
-					&& (list.get(int2).getGroupList() != null)) {
-				for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
-					totalIndirectExpences = list.get(int2).getGroupList()
-							.get(i).getGroupBalance()
-							+ totalIndirectExpences;
+					&& (list.get(count).getGroupList() != null)) {
 
-				}
-
-				if (totalIndirectExpences < 0) {
-					totalIndirectExpences = totalIndirectExpences * (-1);
-				}
+				totalPaymentList = list.get(count).getGroupList();
+				otherExpense = list.get(count).getTypeBalance();
 
 			}
+
 			if ((typeName == "EXPENSES")
-					&& (list.get(int2).getGroupList() != null)) {
-				for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
-					totalPurches = list.get(int2).getGroupList().get(i)
-							.getGroupBalance()
-							+ totalPurches;
-				}
-				if (totalPurches < 0) {
-					totalPurches = totalPurches * -1;
-				}
+					&& (list.get(count).getGroupList() != null)) {
+				totalPurchaseList = list.get(count).getGroupList();
+				operatingExpense = list.get(count).getTypeBalance();
 
 			}
 
+			grossProfit = operatingRevenue - operatingExpense;
+			operatingIncome = grossProfit - otherExpense;
 		}
-
-		totalIndirectExpences2 = totalIndirectExpences + totalPurches;
-		if (totalIndirectExpences2 < 0) {
-			totalIndirectExpences2 = totalIndirectExpences2 * (-1);
-		}
-		if (totalGrossProfit < 0) {
-			totalGrossLoss = totalGrossProfit;
-		}
-		totalGrossProfit=totalSales-goodsSold;
-		
-		nettProfit = totalGrossProfit - totalIndirectExpences;
-
-		/*for (int int2 = 0; int2 < list.size(); int2++) {
-			typeName = list.get(int2).getTypeName().toString();
-			if ((typeName == "INCOME" || typeName == "EXPENSES")
-					&& (list.get(int2).getGroupList() != null)) {
-				for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
-					totalSales = list.get(int2).getGroupList().get(i).groupBalance
-							+ totalSales;
-				}
-
-				totalSales = totalSales
-						+ closingStockBalance.getReturnBalance();
-				if (totalSales < 0) {
-					totalSales = totalSales * (-1);
-				}
-			}
-
-			if ((typeName == "OTHEREXPENCES")
-					&& (list.get(int2).getGroupList() != null)) {
-				for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
-					totalIndirectExpences = list.get(int2).getGroupList()
-							.get(i).getGroupBalance()
-							+ totalIndirectExpences;
-
-				}
-
-				if (totalIndirectExpences < 0) {
-					totalIndirectExpences = totalIndirectExpences * (-1);
-				}
-
-			}
-			if ((typeName == "EXPENSES")
-					&& (list.get(int2).getGroupList() != null)) {
-				for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
-					totalPurches = list.get(int2).getGroupList().get(i)
-							.getGroupBalance()
-							+ totalPurches;
-				}
-				if (totalPurches < 0) {
-					totalPurches = totalPurches * -1;
-				}
-
-			}
-
-		}
-
-		totalIndirectExpences2 = totalIndirectExpences + totalPurches;
-		if (totalIndirectExpences2 < 0) {
-			totalIndirectExpences2 = totalIndirectExpences2 * (-1);
-		}
-
-		totalGrossProfit = totalSales - totalPurches;
-
-		if (totalGrossProfit < 0) {
-			totalGrossLoss = totalGrossProfit;
-		}
-		totalLeft = totalPurches + totalGrossProfit;
-		if (totalLeft < 0) {
-			totalLeft = totalLeft * (-1);
-		}
-		totalRight = totalSales;
-		nettProfit = totalGrossProfit - totalIndirectExpences;*/
-
-	
-		serverMsg.setReturnBalance(nettProfit);
+		serverMsg.setReturnBalance(operatingIncome);
 		return serverMsg;
+
 	}
 
 	// //

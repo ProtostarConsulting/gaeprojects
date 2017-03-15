@@ -276,7 +276,7 @@ public class ProtostarAdminService {
 		miscExpensesASSETGroupEntity.setBusiness(business);
 		miscExpensesASSETGroupEntity.setCreatedDate(new Date());
 		miscExpensesASSETGroupEntity.setModifiedDate(new Date());
-		miscExpensesASSETGroupEntity.setGroupName("Misc Expenses ASSET");
+		miscExpensesASSETGroupEntity.setGroupName("Misc.Expenses (ASSET)");
 		miscExpensesASSETGroupEntity.setIsPrimary(true);
 		miscExpensesASSETGroupEntity.setAccountGroupType(AccountGroupType.ASSETS);
 
@@ -481,7 +481,7 @@ public class ProtostarAdminService {
 		sundryCreditors.setModifiedDate(new Date());
 		sundryCreditors.setGroupName("Sundry Creditors");
 		sundryCreditors.setIsPrimary(false);
-		sundryCreditors.setParent(currentAssetsGroupEntity);
+		sundryCreditors.setParent(currentLiabilitiesGroupEntity);
 		ofy().save().entity(sundryCreditors).now();
 
 		AccountGroupEntity sundryDebtors = new AccountGroupEntity();

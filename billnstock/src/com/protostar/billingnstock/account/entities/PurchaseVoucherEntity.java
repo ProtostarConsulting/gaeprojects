@@ -14,7 +14,7 @@ public class PurchaseVoucherEntity extends VoucherEntity {
 	
 	private Ref<AccountEntity> purchaseAccount;
 	private Ref<AccountEntity> creditAccount;
-	private Ref<AccountEntity> stockAccount;
+//	private Ref<AccountEntity> stockAccount;
 	
 	public Double amount;
 	public String narration;
@@ -86,14 +86,14 @@ public class PurchaseVoucherEntity extends VoucherEntity {
 		if (purchaseAccount != null)
 			this.creditAccount = Ref.create(creditAccount);
 	}
-	public AccountEntity getStockAccount() {
+	/*public AccountEntity getStockAccount() {
 		return stockAccount == null ? null : stockAccount.get();
 	}
 	public void setStockAccount(AccountEntity stockAccount) {
 		if (stockAccount != null)
 			this.stockAccount = Ref.create(stockAccount);
 	}
-
+*/
 
 	
 

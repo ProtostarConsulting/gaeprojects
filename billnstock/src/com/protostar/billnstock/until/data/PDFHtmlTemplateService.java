@@ -8,6 +8,7 @@ import java.io.Writer;
 import java.net.MalformedURLException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +31,7 @@ import com.protostar.billingnstock.account.entities.ReceiptVoucherEntity;
 import com.protostar.billingnstock.account.entities.SalesVoucherEntity;
 import com.protostar.billingnstock.account.entities.VoucherEntity;
 import com.protostar.billingnstock.account.services.AccountGroupService;
+import com.protostar.billingnstock.account.services.AccountGroupService.GroupInfo;
 import com.protostar.billingnstock.account.services.AccountGroupService.TypeInfo;
 import com.protostar.billingnstock.account.services.VoucherService;
 import com.protostar.billingnstock.cust.entities.Customer;
@@ -124,7 +126,11 @@ public class PDFHtmlTemplateService {
 	}
 
 	// --------------------------------------------------//
-	public void getProfitAndLossAcc(List<TypeInfo> list, ServletOutputStream outputStream, Long bid) {
+
+	
+
+	public void getProfitAndLossAcc(List<TypeInfo> list,
+			ServletOutputStream outputStream, Long bid) {
 
 		try {
 			AccountGroupEntity accG = new AccountGroupEntity();
@@ -141,142 +147,59 @@ public class PDFHtmlTemplateService {
 			root.put("ProfitAndLossAcList", list);
 			root.put("date", "" + today);
 
-			Template temp = getConfiguration().getTemplate("pdf_templates/profitAndLossAcc_tmpl.ftlh");
+			// double accountGroupTypeGroupList[];
+			double operatingRevenue = 0;
+			double grossProfit = 0;
+			double otherExpense = 0;
+			double operatingExpense = 0;
+			double operatingIncome = 0;
+			List<GroupInfo> totalSalesList = new ArrayList<GroupInfo>();
+			List<GroupInfo> totalPurchaseList = new ArrayList<GroupInfo>();
+			List<GroupInfo> totalPaymentList = new ArrayList<GroupInfo>();
 
-			double netPandL = 0;
-			double totalSales1 = 0;
-			double totalIndirectExpences2 = 0;
-			double totalPurches = 0;
-			double totalIndirectExpences = 0;
-			double totalGrossProfit = 0;
-			double totalGrossLoss = 0;
-			double totalLeft = 0;
-			double totalRight = 0;
-			String typeName;
-			double totalOtherExp = 0;
-			double nettProfit = 0;
-			double totalGrossProfitCo = 0;
-			double totalGrossProfitBf = 0;
-			double totalOpeningStockBalance = 0;
-			double totalClosingStockBalance = 0;
-			// //
-			double goodsSold = 0;
-			double salesReturn = 0;
-			double cashSales = 0;
-			double creditSales = 0;
-			double totalPurchaes = 0;
-			double totalPayment = 0;
-			double totalSales = 0;
-			double totalReciept = 0;
-			double nettLoss = 0;
+			for (int count = 0; count < list.size(); count++) {
+				String typeName = list.get(count).getTypeName();
 
-			AccountGroupService accGS = new AccountGroupService();
-
-			totalClosingStockBalance = accGS.getClosingStockBalance(bid).getReturnBalance();
-			System.out.println("totalClosingStockBalance-----" + totalClosingStockBalance);
-
-			for (int int2 = 0; int2 < list.size(); int2++) {
-				typeName = list.get(int2).getTypeName().toString();
-				if ((typeName == "INCOME") && (list.get(int2).getGroupList() != null)) {
-					for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
-						totalSales = list.get(int2).getGroupList().get(i).getGroupBalance() + totalSales;
-					}
-					if (totalSales < 0) {
-						totalSales = totalSales * (-1);
-					}
+				if ((typeName == "INCOME")
+						&& (list.get(count).getGroupList() != null)) {
+					totalSalesList = list.get(count).getGroupList();
+					operatingRevenue = list.get(count).getTypeBalance();
 				}
 
-				if ((typeName == "OTHEREXPENCES") && (list.get(int2).getGroupList() != null)) {
-					for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
-						totalIndirectExpences = list.get(int2).getGroupList().get(i).getGroupBalance()
-								+ totalIndirectExpences;
+				if ((typeName == "OTHEREXPENCES")
+						&& (list.get(count).getGroupList() != null)) {
 
-					}
-
-					if (totalIndirectExpences < 0) {
-						totalIndirectExpences = totalIndirectExpences * (-1);
-					}
-
-				}
-				if ((typeName == "EXPENSES") && (list.get(int2).getGroupList() != null)) {
-					for (int i = 0; i < list.get(int2).getGroupList().size(); i++) {
-						totalPurches = list.get(int2).getGroupList().get(i).getGroupBalance() + totalPurches;
-					}
-					if (totalPurches < 0) {
-						totalPurches = totalPurches * -1;
-					}
+					totalPaymentList = list.get(count).getGroupList();
+					otherExpense = list.get(count).getTypeBalance();
 
 				}
 
+				if ((typeName == "EXPENSES")
+						&& (list.get(count).getGroupList() != null)) {
+					totalPurchaseList = list.get(count).getGroupList();
+					operatingExpense = list.get(count).getTypeBalance();
+
+				}
+
+				grossProfit = operatingRevenue - operatingExpense;
+				operatingIncome = grossProfit - otherExpense;
 			}
+			Template temp = getConfiguration().getTemplate(
+					"pdf_templates/profitAndLossAcc_tmpl.ftlh");
 
-			totalIndirectExpences2 = totalIndirectExpences + totalPurches;
-			if (totalIndirectExpences2 < 0) {
-				totalIndirectExpences2 = totalIndirectExpences2 * (-1);
-			}
-
-			VoucherService vs = new VoucherService();
-			// SalesVoucherEntity SalesVoucherEntity=new SalesVoucherEntity();
-			List<SalesVoucherEntity> salesVoucherList = vs.getlistSalesVoucher(bid);
-			List<PurchaseVoucherEntity> purchaseVoucherList = vs.listVoucherPurches(bid);
-
-			List<PaymentVoucherEntity> PaymentVoucherList = vs.listVoucherPayment(bid);
-			List<ReceiptVoucherEntity> receiptVoucherList = vs.listVoucherReciept(bid);
-
-			/*
-			 * for (int k = 0; k < SalesVoucherList.size(); k++) {
-			 * 
-			 * goodsSold = goodsSold + SalesVoucherList.get(k).getAmount();
-			 * 
-			 * }
-			 */
-			// Profit Loss Calculations///////////
-
-			for (int k = 0; k < salesVoucherList.size(); k++) {
-
-				totalSales1 = salesVoucherList.get(k).getAmount() + totalSales1;
-			}
-			for (int k = 0; k < purchaseVoucherList.size(); k++) {
-
-				totalPurchaes = purchaseVoucherList.get(k).getAmount() + totalPurchaes;
-			}
-			for (int k = 0; k < PaymentVoucherList.size(); k++) {
-
-				totalPayment = PaymentVoucherList.get(k).getAmount() + totalPayment;
-			}
-			for (int k = 0; k < receiptVoucherList.size(); k++) {
-
-				totalReciept = salesVoucherList.get(k).getAmount() + totalReciept;
-			}
-			nettLoss = totalGrossLoss = totalPayment - totalReciept;
-
-			totalGrossProfit = totalSales1 - totalPurchaes;
-			totalGrossProfitCo = totalGrossProfit;
-			totalGrossProfitBf = totalGrossProfit;
-			totalLeft = totalOpeningStockBalance + totalPurchaes;
-			totalRight = totalClosingStockBalance + totalSales;
-
-			// ///////////
-
-			/*
-			 * if (totalGrossProfit < 0) { totalGrossLoss = totalGrossProfit; }
-			 */
 			String date = "1-Apr-2016 to 15-Apr-2016";
-			nettProfit = totalGrossProfit - totalIndirectExpences;
-			root.put("totalPurches", totalPurchaes);
-			root.put("totalGrossProfit", totalGrossProfit);
-			root.put("totalIndirectExpences", totalIndirectExpences);
-			root.put("nettProfit", nettProfit);
-			root.put("totalSales", totalSales);
-			root.put("totalGrossProfit", totalGrossProfit);
-			root.put("totalLeft", totalLeft);
-			root.put("totalRight", totalRight);
-			root.put("totalGrossProfit", totalGrossProfit);
-			root.put("totalClosingStockBalance", totalClosingStockBalance);
-			root.put("totalGrossLoss", totalGrossLoss);
-			root.put("nettLoss", nettLoss);
+			// nettProfit = totalGrossProfit - totalIndirectExpences;
+			root.put("totalPurchase", operatingExpense);
+			root.put("totalOverhead", otherExpense);
+			root.put("totalOperatingRevenue", operatingRevenue);
+			root.put("totalPurchaseList", totalPurchaseList);
+			root.put("totalPaymentList", totalPaymentList);
+			root.put("totalGrossProfit", grossProfit);
+			root.put("totalSalesList", totalSalesList);
+			root.put("operatingIncome", operatingIncome);
 			root.put("date", date);
-			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(5000);
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
+					5000);
 			Writer out = new PrintWriter(byteArrayOutputStream);
 			temp.process(root, out);
 
@@ -294,7 +217,8 @@ public class PDFHtmlTemplateService {
 
 	// --------------------------------------------------
 
-	public void generatePdfBalanceSheet(List<TypeInfo> natureList, ServletOutputStream outputStream, Long bid) {
+	public void generatePdfBalanceSheet(List<TypeInfo> natureList,
+			ServletOutputStream outputStream, Long bid) {
 
 		try {
 			AccountGroupEntity accG = new AccountGroupEntity();
@@ -314,7 +238,8 @@ public class PDFHtmlTemplateService {
 
 			root.put("date", "" + today);
 
-			Template temp = getConfiguration().getTemplate("pdf_templates/balanceSheet_tmpl.ftlh");
+			Template temp = getConfiguration().getTemplate(
+					"pdf_templates/balanceSheet_tmpl.ftlh");
 
 			double totalAsset = 0;
 			double totalLiabilities2 = 0;
@@ -327,24 +252,32 @@ public class PDFHtmlTemplateService {
 
 			for (int int2 = 0; int2 < natureList.size(); int2++) {
 				String typeName = natureList.get(int2).getTypeName();
-				if ((typeName == "ASSETS") && (natureList.get(int2).getGroupList() != null)
+				if ((typeName == "ASSETS")
+						&& (natureList.get(int2).getGroupList() != null)
 				/*
 				 * && !(natureList.get(int2).getGroupList().get(int2)
 				 * .getGroupName() .equalsIgnoreCase("Sundry Debtors"))
 				 */) {
-					for (int i = 0; i < natureList.get(int2).getGroupList().size(); i++) {
-						System.out.println(
-								"get GRPLIST-----" + natureList.get(int2).getGroupList().get(int2).getGroupName());
-						totalAsset = natureList.get(int2).getGroupList().get(i).getGroupBalance() + totalAsset;
+					for (int i = 0; i < natureList.get(int2).getGroupList()
+							.size(); i++) {
+						System.out.println("get GRPLIST-----"
+								+ natureList.get(int2).getGroupList().get(int2)
+										.getGroupName());
+						totalAsset = natureList.get(int2).getGroupList().get(i)
+								.getGroupBalance()
+								+ totalAsset;
 					}
 					if (totalAsset < 0) {
 						totalAsset = totalAsset * (-1);
 					}
 				}
 
-				if ((typeName == "LIABILITIES") && (natureList.get(int2).getGroupList() != null)) {
-					for (int i = 0; i < natureList.get(int2).getGroupList().size(); i++) {
-						totalLiabilities = natureList.get(int2).getGroupList().get(i).getGroupBalance()
+				if ((typeName == "LIABILITIES")
+						&& (natureList.get(int2).getGroupList() != null)) {
+					for (int i = 0; i < natureList.get(int2).getGroupList()
+							.size(); i++) {
+						totalLiabilities = natureList.get(int2).getGroupList()
+								.get(i).getGroupBalance()
 								+ totalLiabilities;
 					}
 
@@ -353,9 +286,13 @@ public class PDFHtmlTemplateService {
 					}
 
 				}
-				if ((typeName == "EQUITY") && (natureList.get(int2).getGroupList() != null)) {
-					for (int i = 0; i < natureList.get(int2).getGroupList().size(); i++) {
-						totalEQUITY = natureList.get(int2).getGroupList().get(i).getGroupBalance() + totalEQUITY;
+				if ((typeName == "EQUITY")
+						&& (natureList.get(int2).getGroupList() != null)) {
+					for (int i = 0; i < natureList.get(int2).getGroupList()
+							.size(); i++) {
+						totalEQUITY = natureList.get(int2).getGroupList()
+								.get(i).getGroupBalance()
+								+ totalEQUITY;
 					}
 
 				}
@@ -379,7 +316,8 @@ public class PDFHtmlTemplateService {
 			root.put("totalAsset", totalAsset);
 			root.put("date", date);
 
-			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(5000);
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
+					5000);
 			Writer out = new PrintWriter(byteArrayOutputStream);
 			temp.process(root, out);
 
@@ -395,24 +333,31 @@ public class PDFHtmlTemplateService {
 
 	}
 
-	public void generateVoucherPDF(VoucherEntity voucherEntity, ServletOutputStream outputStream) {
+	public void generateVoucherPDF(VoucherEntity voucherEntity,
+			ServletOutputStream outputStream) {
 
 		if (voucherEntity instanceof SalesVoucherEntity) {
-			generateSalesVoucherPDF((SalesVoucherEntity) voucherEntity, outputStream);
+			generateSalesVoucherPDF((SalesVoucherEntity) voucherEntity,
+					outputStream);
 		} else if (voucherEntity instanceof ReceiptVoucherEntity) {
-			generateReceiptVoucherPDF((ReceiptVoucherEntity) voucherEntity, outputStream);
+			generateReceiptVoucherPDF((ReceiptVoucherEntity) voucherEntity,
+					outputStream);
 		}
 
 		else if (voucherEntity instanceof PurchaseVoucherEntity) {
-			generatePurchesVoucherPDF((PurchaseVoucherEntity) voucherEntity, outputStream);
+			generatePurchesVoucherPDF((PurchaseVoucherEntity) voucherEntity,
+					outputStream);
 		}
 
 		else {
-			throw new RuntimeException("Did not find this entity PDF handling methods: " + voucherEntity.getClass());
+			throw new RuntimeException(
+					"Did not find this entity PDF handling methods: "
+							+ voucherEntity.getClass());
 		}
 	}
 
-	private void generateSalesVoucherPDF(SalesVoucherEntity salesEntity, ServletOutputStream outputStream) {
+	private void generateSalesVoucherPDF(SalesVoucherEntity salesEntity,
+			ServletOutputStream outputStream) {
 		try {
 			Document document = new Document();
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
@@ -423,14 +368,18 @@ public class PDFHtmlTemplateService {
 			Map<String, Object> root = new HashMap<String, Object>();
 			addDocumentHeaderLogo(salesEntity, document, root);
 
-			root.put("DebitAccount", salesEntity.getAccountType1().getAccountName().toString());
-			root.put("CreditAccount", salesEntity.getAccountType2().getAccountName().toString());
+			root.put("DebitAccount", salesEntity.getAccountType1()
+					.getAccountName().toString());
+			root.put("CreditAccount", salesEntity.getAccountType2()
+					.getAccountName().toString());
 			root.put("Amount", salesEntity.getAmount().toString());
 			root.put("Narration", salesEntity.getNarration().toString());
 
-			Template temp = getConfiguration().getTemplate("pdf_templates/sales_voucher_tmpl.ftlh");
+			Template temp = getConfiguration().getTemplate(
+					"pdf_templates/sales_voucher_tmpl.ftlh");
 
-			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(5000);
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
+					5000);
 			Writer out = new PrintWriter(byteArrayOutputStream);
 			temp.process(root, out);
 
@@ -444,7 +393,6 @@ public class PDFHtmlTemplateService {
 			e.printStackTrace();
 		}
 	}
-
 	private void generateReceiptVoucherPDF(ReceiptVoucherEntity receiptEntity, ServletOutputStream outputStream) {
 		try {
 			Document document = new Document();

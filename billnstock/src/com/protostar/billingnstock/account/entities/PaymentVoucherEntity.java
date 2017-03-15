@@ -103,6 +103,18 @@ public class PaymentVoucherEntity extends VoucherEntity {
 		this.accdetail = accdetail;
 	}
 
+	public StockItemsReceiptEntity getStockReceiptEntity() {
+		return this.stockReceiptEntity == null ? null : this.stockReceiptEntity.get();
+	}
+
+	public void setStockReceiptEntity( StockItemsReceiptEntity stockReceiptEntity) {
+		
+		
+		if (stockReceiptEntity != null)
+			this.stockReceiptEntity = Ref.create(stockReceiptEntity);
+		
+	}
+
 	
 
 }

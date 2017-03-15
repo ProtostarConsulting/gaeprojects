@@ -1615,6 +1615,7 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
+	
 	VoucherService.listvoucherPayment = function(id) {
 		var deferred = $q.defer();
 		gapi.client.voucherService.listvoucherPayment({
@@ -1624,6 +1625,19 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
+////
+	
+	
+	
+	/*VoucherService.listvoucherPayment = function(id) {
+		var deferred = $q.defer();
+		gapi.client.voucherService.listvoucherPayment({
+			"id" : id
+		}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}*/
 
 	VoucherService.addvoucherReciept = function(vaccount) {
 		var deferred = $q.defer();

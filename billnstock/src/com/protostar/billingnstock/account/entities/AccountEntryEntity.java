@@ -77,7 +77,7 @@ public class AccountEntryEntity extends BaseEntity {
 	}
 
 	public AccountEntity getAccountEntity() {
-		return accountEntity.get();
+		return accountEntity==null?null:accountEntity.get();
 	}
 
 	public void setAccountEntity(AccountEntity accountEntity) {

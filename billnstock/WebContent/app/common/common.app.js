@@ -595,7 +595,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		templateUrl : '/app/accounting/voucherPayment.html',
 		controller : 'voucherPaymentCtr',
 		params : {
-			Account : null
+			Account : "",
+			stockReceiptObj:null
 			
 		}
 	}).state('accounting.voucherPaymentList', {

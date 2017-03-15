@@ -9,6 +9,10 @@ td, th { /* //border: 1px solid #dddddd; */
 	text-align: left;
 	padding: 8px;
 }
+td{
+border: 1px solid black;
+
+}
 </style>
 <section layout="row" layout-xs="column">
 	<md-subheader class="md-primary">
@@ -30,140 +34,54 @@ td, th { /* //border: 1px solid #dddddd; */
 	<div id="balanceSheetDiv" style="width: 100%;">
 
 		<table
-			style="width: 50%; border-right: 0px;border: 1px solid #dddddd; border-color: black; float: left">
-
+			style="width: 100%; border-right: 0px;border: 1px solid #dddddd; border-color: black; float: left">
 			<tr>
-				<th colspan="2">Purchase Accounts</th>
-				<td colspan="1"><b>{{totalPurches}}</b></td>
+			<th colspan="3">Operating Revenue</th>
 			</tr>
-
-
-			<tr>
-				<td style="text-align: left;" id="content">
-					<div ng-repeat="groupTypeObj in accountGroupTypeGroupList">
-						<div ng-if="groupTypeObj.typeName=='EXPENSES'">
-							<div ng-repeat="grp in groupTypeObj.groupList"
-								style="text-align: right;">
-								<span style="padding-right: 30%;">{{grp.groupName}}</span> <span
-									flex></span> <span ng-if="grp.groupBalance < 0">(</span><span
-									style="text-align: right;">{{grp.groupBalance|positive|number:2}}</span><span
-									ng-if="grp.groupBalance < 0">)</span> <br> <br>
-							</div>
-						</div>
-					</div>
-
-				</td>
+			<tr ng-repeat="sales in totalSalesList">
+			<td colspan="2"> {{sales.groupName}}</td>
+			<td>{{sales.groupBalance}} </td>
 			</tr>
-			<tr >
-				<th colspan="2" >Gross Profit c/o</th>
-				<td colspan="1"><b>{{totalGrossProfit}}</b></td>
+<tr>
+<td colspan="2"><b>Total Operating Revenue</b></td>
+<td> <b>{{totalOperatingRevenue}} </b></td>
+</tr>
+
+<tr>
+<th colspan="3">Operating Expenses</th>
+</tr>
+
+
+<tr ng-repeat="purchase in totalPurchaseList">
+			<td colspan="2"> {{purchase.groupName}}</td>
+			<td>{{purchase.groupBalance}} </td>
 			</tr>
 			<tr>
-				<th colspan="2">&nbsp;&nbsp;</th>
+<td colspan="2"><b>Gross Profit</b></td>
+<td> <b>{{grossProfit}}</b> </td></tr>
 
-				<td style="border-bottom: double; border-top: double;">{{totalLeft}}</td>
-			</tr>
-			<tr>
-				<th colspan="2">Indirect Expence</th>
-				<td colspan="1"><b>{{totalIndirectExpences}}</b></td>
-			</tr>
-			<tr>
-			<td style="text-align: left;" id="content">
-					<div ng-repeat="groupTypeObj in accountGroupTypeGroupList">
-						<div ng-if="groupTypeObj.typeName=='OTHEREXPENCES'">
-							<div ng-repeat="grp in groupTypeObj.groupList"
-								style="text-align: right;">
-								<span style="padding-right: 30%;">{{grp.groupName}}</span> <span
-									flex></span> <span ng-if="grp.groupBalance < 0">(</span><span
-									style="text-align: right;">{{grp.groupBalance|positive|number:2}}</span><span
-									ng-if="grp.groupBalance < 0">)</span> <br> <br>
-							</div>
-						</div>
-					</div>
 
-				</td>
-			</tr>
-			<tr>
-				<th colspan="2"><i>Nett Profit</i></th>
-				<td colspan="1"><b>{{nettProfit}}</b></td>
 
-			</tr>
-			<tr style="border-bottom: double; border-top: double;">
-				<td style="padding-right: 30%; text-align: right;"><b>Total
-				</b></td>
-				<td style="text-align: right;"><b>{{totalGrossProfit}} </b></td>
-			</tr>
-		</table>
-		<table
-			style="width: 50%; border: 1px solid #dddddd; border-color: black; float: left">
-			<tr ng-show="totalSales">
-				<th colspan="2">Sales Accounts</th>
-				<td colspan="1"><b>{{totalSales}}</b></td>
-			</tr>
-			<tr ng-show="totalClosingStockBalance">
-				<td colspan="2">Closing Balance</th>
-				<td colspan="1"><b>{{totalClosingStockBalance}}</b></td>
-			</tr>
-			<tr>
+<tr>
+<th colspan="3">Overhead</th>
+</tr>
 
-				<td style="text-align: left;" id="content">
-					<div ng-repeat="groupTypeObj in accountGroupTypeGroupList">
-						<div ng-if="groupTypeObj.typeName=='INCOME'">
-							<div ng-repeat="grp in groupTypeObj.groupList"
-								style="text-align: right;">
-								<span style="padding-right: 30%;">{{grp.groupName}}</span> <span
-									flex></span> <span ng-if="grp.groupBalance < 0">(</span><span
-									style="text-align: right;">{{grp.groupBalance|positive|number:2}}</span><span
-									ng-if="grp.groupBalance < 0">)</span> <br> <br>
-							</div>
-						</div>
-					</div>
 
-				</td>
-			</tr>
-			<tr>
-				<th colspan="2">&nbsp;&nbsp;</th>
-				<td colspan="1">&nbsp;&nbsp;</td>
-			</tr>
-			<tr>
-				<th colspan="2">&nbsp;&nbsp;</th>
+<tr ng-repeat="payment in totalPaymentList">
+<td colspan="2"> {{payment.groupName}}</td>
+<td>{{payment.groupBalance}} </td>
+</tr>
+<tr>
+<td colspan="2"><b>Total Overhead</b></td>
+<td> <b>{{totalOverhead}}</b> </td></tr>
 
-				<td style="border-bottom: double; border-top: double;">{{totalRight}}</td>
-			</tr>
+<tr>
+<td colspan="2"><b>Operating Income</b></td>
+<td> <b>{{operatingIncome}}</b> </td></tr>
 
-			<tr>
-				<th colspan="2">Gross Profit c/o</th>
-				<td colspan="1"><b>{{totalGrossProfit}}</b></td>
-			</tr>
-			<tr>
-				<td colspan="2"></td>
-				<td style="text-align: left;" id="content">
-					<div ng-repeat="groupTypeObj in accountGroupTypeGroupList">
-						<div ng-if="groupTypeObj.typeName=='INCOME'">
-							<div ng-repeat="grp in groupTypeObj.groupList"
-								style="text-align: right;">
-								<span style="padding-right: 30%;"></span> <span flex></span> <span
-									ng-if="grp.groupBalance < 0">(</span><span
-									style="text-align: right;"></span><span
-									ng-if="grp.groupBalance < 0">)</span> <br> <br>
-							</div>
-						</div>
-					</div>
 
-				</td>
-			</tr>
-			<tr rowspan="2">
-				<th colspan="2"><i>&nbsp;&nbsp;	</i></th>
-				<td colspan="1"><b>&nbsp;&nbsp;</b></td>
-
-			</tr>
-			<tr style="border-bottom: double; border-top: double;">
-				<td style="padding-right: 30%; text-align: right;"><b>Total
-				</b></td>
-
-				<td style="text-align: right;"><b>{{totalGrossProfit}}</b></td>
-			</tr>
-		</table>
+</table>
+		
 	</div>
 
 </form>

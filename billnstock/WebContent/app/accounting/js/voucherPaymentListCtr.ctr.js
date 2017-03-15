@@ -7,11 +7,11 @@ app.controller("voucherPaymentListCtr", function($scope, $window, $mdToast, $tim
 	
 	
 	
-$scope.getPurchesvoucherList=function(){
+$scope.getPaymentvoucherList=function(){
 		
 		var voucherServiceList=appEndpointSF.getVoucherService();
-		voucherServiceList.listVoucherPurches().then(function(list){
-			$scope.purcheslist=list;
+		voucherServiceList.listvoucherPayment($scope.curUser.business.id).then(function(list){
+			$scope.paymentlist=list;
 			
 		
 				});
@@ -19,13 +19,14 @@ $scope.getPurchesvoucherList=function(){
 
 $scope.waitForServiceLoad = function() {
 	if (appEndpointSF.is_service_ready) {
-		$scope.getPurchesvoucherList();
+		$scope.getPaymentvoucherList();
 	} else {
 		$log.debug("Services Not Loaded, watiting...");
 		$timeout($scope.waitForServiceLoad, 1000);
 	}
 }
-$scope.waitForServiceLoad();
+//$scope.waitForServiceLoad();
+$scope.getPaymentvoucherList();
 
 	
 });

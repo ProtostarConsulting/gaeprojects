@@ -8,16 +8,18 @@ app
 						appEndpointSF, $mdDialog, $mdMedia, $state) {
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
-					$scope.vouchersPuraview = $stateParams.Account;
+					$scope.stockReceiptObj = $stateParams.stockReceiptObj;
+							if($scope.stockReceiptObj!=undefined){$scope.addStock(1);}
+					$scope.vouchersReview1 = $stateParams.Account;
 					$scope.accountId = $stateParams.AccountId;
-					var i, flag, PurchesVoucherEntity = "PurchaseVoucherEntity";
+					var i, flag, PurchesVoucherEntity = "PaymentVoucherEntity";
 					$scope.loading = true;
 					var paymentVouchers = function() {
 						return {
 
 							paymentAccount : "",
 							creditAccount : "",
-							stockReceiptEntity : "",
+							//stockReceiptEntity :"",
 							amount : null,
 							narration : "",
 							isCash : true,
@@ -169,7 +171,8 @@ app
 											locals : {
 												curBusi : $scope.curUser.business,
 												acc : acc,
-												curUser : $scope.curUser
+												curUser : $scope.curUser,
+												stockReceiptObj :$scope.stockReceiptObj 
 											}
 										})
 								.then(
@@ -187,7 +190,7 @@ app
 							$mdToast, $timeout, $mdSidenav, $mdUtil, $log,
 							$state, $http, $stateParams, $routeParams, $filter,
 							$mdMedia, $mdDialog, $q, $rootScope, objectFactory,
-							appEndpointSF, acc) {
+							appEndpointSF, acc,stockReceiptObj) {
 
 						$scope.curUser = appEndpointSF.getLocalUserService()
 								.getLoggedinUser();
@@ -211,7 +214,7 @@ app
 							};
 						}
 
-						$scope.stockReceiptObj = $stateParams.stockReceiptObj ? $stateParams.stockReceiptObj
+						$scope.stockReceiptObj = stockReceiptObj ? stockReceiptObj
 								: $scope.getEmptyStockReceiptObj();
 
 						$scope.stockReceiptObj.receiptDate = $scope.stockReceiptObj.receiptDate ? new Date(
@@ -224,13 +227,14 @@ app
 							$scope.stockReceiptObj.business = $scope.curUser.business;
 							$scope.stockReceiptObj.modifiedBy = $scope.curUser.email_id;
 							var stockService = appEndpointSF.getStockService();
-
-							stockService
-									.addStockReceipt($scope.stockReceiptObj)
+/////////////////////////////
+							
+							stockService.addStockReceipt($scope.stockReceiptObj)
 									.then(
 											function(msgBean) {
 												acc.amount = $scope.stockReceiptObj.finalTotal;
-
+												acc.stockReceiptEntity=msgBean;
+												
 												if (msgBean.id) {
 													$scope.showUpdateToast();
 												}

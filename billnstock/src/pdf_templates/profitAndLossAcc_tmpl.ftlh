@@ -2,32 +2,18 @@
 
 <style type="text/css">
 table {
+	font-family: arial, sans-serif;
 	border-collapse: collapse;
+	width: 100%;
 }
-th {
-	border: 1px ; 
-	border-color: #cccccc; 
-	border-spacing: 5px; 
-	height: 30px; 
-	padding: 7px;
-	 border-collapse: collapse;
-}
-td {
-	border-right: 1px; 
-	border-color: #cccccc; 
-	border-spacing: 5px; 
-	height: 30px; 
-	padding: 5px;
-	 border-collapse: collapse;
-	 width:50%;
-}
-tr{
-border-right: 1px solid black; 
-	border-color: #cccccc; 
 
+td, th { /* //border: 1px solid #dddddd; */
+	text-align: left;
+	padding: 8px;
 }
-table tr td:nth-child(1) {
-    border-right: 1px solid black;
+td{
+border: 1px solid black;
+
 }
 
 </style>
@@ -59,160 +45,50 @@ table tr td:nth-child(1) {
 	<br></br>
 </p>
 	<table cellspacing="0"
-			style="width: 100%; height: 100%; border: 1px solid #dddddd; border-color: black; float: left">
-						
-			<tr style="border-right: 1px solid black;  ">
-				<th colspan="2"style="border: 0px;">Purchase Accounts</th>
-				<td  colspan="1"><b>${totalPurches}</b></td>
-				<#if totalSales gt 0>
-				<th colspan="2"style="border: 0px;">Sales Accounts</th>
-				<td colspan="1"style="border: 0px;"><b>${totalSales}</b></td>
-				</#if>
-				</tr>
-				<tr style="border-right: 1px solid black;  ">
-				<th colspan="2"style="border: 0px;"></th>
-				<td colspan="1"style="border: 0px;"></td>
-				<#if totalGrossLoss gt 0>
-				<th colspan="2"style="border: 0px;">Gross Loss</th>
-				<td colspan="1"style="border: 0px;">${totalGrossLoss}</td>
-				</#if>
-				<#if totalClosingStockBalance gt 0>
-				<th colspan="2"style="border: 0px;">Closing Stock</th>
-				<td colspan="1"style="border: 0px;"><b>${totalClosingStockBalance}</b></td>
-				
-				</#if>
-			</tr>
-			
-		<tr style="border: 0px;">
-			<td colspan="2" style="border: 0px;"></td>
-			<td style="text-align: left;" >
-			<#list  ProfitAndLossAcList as groupTypeObj>
-					<#list  groupTypeObj.groupList as grp>
-					<#if groupTypeObj.typeName=="EXPENSES">
-						
-												
-							<span style="padding-right: 30%;border: 0px;">${grp.groupName}</span>
-							&nbsp;&nbsp;
-								<span style="text-align: right;border: 0px;">${grp.groupBalance}</span>
-							
-						
-						</#if>
-						</#list>
-						</#list> 
-						</td>
-						<td colspan="2"style="border: 0px;"></td>
-			<td style="text-align: left;"style="border: 0px;">
-			
-			<#list  ProfitAndLossAcList as groupTypeObj>
-					<#list  groupTypeObj.groupList as grp>
-					<#if groupTypeObj.typeName=="INCOME">
-						
-							
-							
-								
-						</#if>
-						</#list>
-						</#list>
-		</td>
-			</tr>
-			
-			
-			
-			
-			
-			
-			<tr>
-			<#if totalGrossProfit gt 0>
-				<th colspan="2"style="border: 0px;" >Gross Profit c/o</th>
-				<td colspan="1"><b>${totalGrossProfit}</b></td>
-				
-				</#if>
-				
-				
-				<th colspan="2"style="border: 0px;" ></th>
-				<td colspan="1"><b></b></td>
+			style="width: 100%; height: 100%; border: 1px solid #dddddd; border-color: black; float: left"><tr>
+			<th colspan="3">Operating Revenue</th>
 			</tr>
 			<tr>
-				<th colspan="2"style="border: 0px;" >&nbsp;&nbsp;</th>
-				<td style="border-bottom: double; border-top: double;">${totalLeft}</td>
-				
-				<th colspan="2"style="border: 0px;" >&nbsp;&nbsp;</th>
-				<td style="border-bottom: double; border-top: double;">${totalRight}</td>
+			<#list  totalSalesList as sales >
+			<td colspan="2">
+			 ${sales.groupName}</td>
+			<td>${sales.groupBalance} </td>
+			</#list>
 			</tr>
-			
-			<tr>
-				<th colspan="2"style="border: 0px;" >Indirect Expence</th>
-				<td colspan="1" ><b>${totalIndirectExpences}</b></td>
-				<#if totalGrossProfit gt 0>
-				<th colspan="2" style="border: 0px;">Gross Profit c/o</th>
-				<td colspan="1"><b>${totalGrossProfit}</b></td>
-				</#if>
-			</tr>
-
-
-<tr style="border: 0px;">
-			<td colspan="2" style="border: 0px;"></td>
-			<td style="text-align: left;" >
-			<#list  ProfitAndLossAcList as groupTypeObj>
-					<#list  groupTypeObj.groupList as grp>
-					<#if groupTypeObj.typeName=="OTHEREXPENCES">
-						
-							<div style="text-align: right;border: 0px;">
-							
-							
-							<span style="padding-right: 30%;border: 0px;">${grp.groupName}</span>
-							&nbsp;&nbsp;
-								<span style="text-align: right;border: 0px;">${grp.groupBalance}</span>
-							</div>
-						
-						</#if>
-						</#list>
-						</#list> 
-						</td>
-		</tr>
 <tr>
-<#if nettLoss gt 0>
-				<th colspan="2"style="border: 0px;" >Nett Loss</th>
-				<td colspan="1"><b>${nettLoss}</b></td>
-				
-				</#if>
-<#if nettProfit gt 0>				
-<th colspan="2"style="border: 0px;"><i>Nett Profit</i></th>
-<td colspan="1" ><b>${nettProfit}</b></td>
-</#if>
+<td colspan="2"><b>Total Operating Revenue</b></td>
+<td> <b>${totalOperatingRevenue} </b></td>
 </tr>
 
 <tr>
-<th colspan="2"style=" border: 0px;"><b></b></th>
-<td colspan="1" ><b></b></td>
-
-<th style="right;border: 0px;"><b></b></th>
-<td colspan="1" style="border: 0px;"><b></b></td>
-</tr>
-	<tr>
-
-				<th colspan="2"style="border: 0px;" >Total</th>
-				<#if totalGrossProfit gt 0>
-				<td colspan="1"><b>${totalGrossProfit}</b></td>
-				</#if>
-				<#if nettLoss gt 0>
-				<td colspan="1"><b>${nettLoss}</b></td>
-				</#if>
-				
-				<#if totalGrossProfit<=0 && nettLoss<=0>
-				<th colspan="2"style="border: 0px;"></th>
-				<td colspan="1" ><b></b></td>						
-				</#if>
-				
-				<th colspan="2"style="border: 0px;" >Total</th>
-				<#if totalGrossProfit gt 0>
-				<td colspan="1"><b>${totalGrossProfit}</b></td>
-				</#if>
-				<#if nettLoss gt 0>
-				<td colspan="1"><b>${nettLoss}</b></td>
-				</#if>
-				
-				
+<th colspan="3">Operating Expenses</th>
+</tr><tr>
+<#list totalPurchaseList as  purchase >
+			<td colspan="2"> ${purchase.groupName}</td>
+			<td>${purchase.groupBalance} </td>
+			</#list>
 			</tr>
+			<tr>
+<td colspan="2"><b>Gross Profit</b></td>
+<td> <b>${totalGrossProfit}</b> </td></tr>
+<tr>
+<th colspan="3">Overhead</th>
+</tr>
+
+<tr>
+<#list  totalPaymentList as payment >
+<td colspan="2"> ${payment.groupName}</td>
+<td>${payment.groupBalance} </td>
+</#list>
+</tr>
+<tr>
+<td colspan="2"><b>Total Overhead</b></td>
+<td> <b>${totalOverhead}</b> </td></tr>
+
+<tr>
+<td colspan="2"><b>Operating Income</b></td>
+<td> <b>${operatingIncome}</b> </td></tr>
+		
+			
 </table>
 </html>
