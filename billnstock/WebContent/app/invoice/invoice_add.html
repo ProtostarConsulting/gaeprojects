@@ -172,18 +172,20 @@
 							<td width="40%"><div layout="row">
 									<md-input-container flex
 										style="padding-left:2px; padding-right:0px;">
-									<input ng-model="serviceItem.itemName" aria-label="iname">
-									</md-input-container>
+									<input ng-model="serviceItem.itemName" ng-required="true"
+										aria-label="iname"> </md-input-container>
 								</div></td>
 
 							<td><md-input-container flex
 									style="padding-left:2px; padding-right:0px;">
 								<input type="number" ng-model="serviceItem.qty"
-									ng-change="reCalculateTotal()" aria-label="iqty" /> </md-input-container></td>
+									ng-required="true" ng-change="reCalculateTotal()"
+									aria-label="iqty" /> </md-input-container></td>
 							<td><md-input-container flex
 									style="padding-left:2px; padding-right:0px;">
 								<input type="number" ng-model="serviceItem.price"
-									ng-change="reCalculateTotal()" aria-label="iprice" /></md-input-container></td>
+									ng-required="true" ng-change="reCalculateTotal()"
+									aria-label="iprice" /></md-input-container></td>
 							<td><b>{{serviceItem.qty * serviceItem.price |
 									currency:"":"2"}} </b></td>
 							<td><md-icon
