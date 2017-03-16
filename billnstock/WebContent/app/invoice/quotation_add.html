@@ -1,13 +1,25 @@
-<md-content layout-padding>
+<div ng-if="loading">
+	<div layout="row" layout-sm="column" layout-align="space-around">
+		<md-progress-circular md-diameter="60" md-mode="indeterminate"></md-progress-circular>
+	</div>
+</div>
+<md-content ng-if="!loading" layout-padding>
 <section layout="row" layout-xs="column">
 	<md-subheader class="md-primary">
 	<h4 class="md-title"
-		ng-bind="documentEntity.id?'Edit Quoation':'Add Quoation'"></h4>
+		ng-bind="documentEntity.id?'Edit Quotation':'Add Quotation'"></h4>
 	</md-subheader>
 	<span flex></span>
+	<div>
+		<md-button class="md-icon-button" ng-show="documentEntity.id"
+			ng-click="printInvoice(documentEntity.id)"> <ng-md-icon
+			icon="print" style="fill: md-default" size="20"> <md-tooltip>
+		Print Invoice</md-tooltip></ng-md-icon></md-button>
+	</div>
 </section>
 <div>
 	<form ng-submit="$event.preventDefault()" name="documentForm">
+
 		<div flex layout="row" layout-xs="column">
 			<div layout="row" flex=40 flex-xs=100>
 				<md-input-container flex> <label>Quotation
@@ -95,11 +107,26 @@
 					md-placeholder="Select Date" string-to-date></md-datepicker> </md-input-container>
 				<div layout="row" flex=50 flex-xs=100>
 					<md-input-container flex> <label>Discount
-						Type </label> <input ng-model="documentEntity.discountType"
-						ng-disabled="true"></input> </md-input-container>
-					<md-input-container flex> <label>Discount
-					</label> <input ng-model="documentEntity.discountPercent"
-						ng-disabled="true"></input> </md-input-container>
+						Type </label> <md-select flex ng-model="documentEntity.discountType"
+						placeholder="Select Type" ng-change="discountTypeChanged()">
+					<md-option ng-value="discountType"
+						ng-selected="discountType == documentEntity.discountType"
+						ng-repeat="discountType in discountTypeList">{{discountType}}</md-option>
+					</md-select> </md-input-container>
+					<md-input-container flex
+						ng-if="documentEntity.discountType == 'NA'">
+					<label>Discount </label> <input type="number"
+						ng-model="documentEntity.discAmount" ng-disabled="true"></input> </md-input-container>
+					<md-input-container flex
+						ng-if="documentEntity.discountType == 'PERCENTAGE'">
+					<label>Discount %</label> <input type="number"
+						ng-model="documentEntity.discountPercent"
+						ng-change="reCalculateTotal()"></input> </md-input-container>
+					<md-input-container flex
+						ng-if="documentEntity.discountType == 'FIXED'">
+					<label>Discount Amount</label> <input type="number"
+						ng-model="documentEntity.discAmount"
+						ng-change="reCalculateTotal()"></input> </md-input-container>
 				</div>
 			</div>
 		</div>
@@ -153,18 +180,20 @@
 							<td width="40%"><div layout="row">
 									<md-input-container flex
 										style="padding-left:2px; padding-right:0px;">
-									<input ng-model="serviceItem.itemName" ng-required="true" aria-label="iname">
-									</md-input-container>
+									<input ng-model="serviceItem.itemName" ng-required="true"
+										aria-label="iname"> </md-input-container>
 								</div></td>
 
 							<td><md-input-container flex
 									style="padding-left:2px; padding-right:0px;">
-								<input type="number" ng-model="serviceItem.qty" ng-required="true"
-									ng-change="reCalculateTotal()" aria-label="iqty" /> </md-input-container></td>
+								<input type="number" ng-model="serviceItem.qty"
+									ng-required="true" ng-change="reCalculateTotal()"
+									aria-label="iqty" /> </md-input-container></td>
 							<td><md-input-container flex
 									style="padding-left:2px; padding-right:0px;">
-								<input type="number" ng-model="serviceItem.price" ng-required="true"
-									ng-change="reCalculateTotal()" aria-label="iprice" /></md-input-container></td>
+								<input type="number" ng-model="serviceItem.price"
+									ng-required="true" ng-change="reCalculateTotal()"
+									aria-label="iprice" /></md-input-container></td>
 							<td><b>{{serviceItem.qty * serviceItem.price |
 									currency:"":"2"}} </b></td>
 							<td><md-icon
@@ -185,6 +214,24 @@
 									currency:"":"2"}}</b></td>
 							<td></td>
 						</tr>
+						<tr ng-if="documentEntity.serviceDiscAmount">
+							<td></td>
+							<td></td>
+							<td></td>
+							<td><label>Discount Amount</label></td>
+							<td><b>{{documentEntity.serviceDiscAmount |
+									currency:"":"2"}}</b></td>
+							<td></td>
+						</tr>
+						<tr ng-if="documentEntity.serviceDiscAmount">
+							<td></td>
+							<td></td>
+							<td></td>
+							<td><label>After Discount Total</label></td>
+							<td><b>{{(documentEntity.serviceSubTotal -
+									documentEntity.serviceDiscAmount) | currency:"":"2"}}</b></td>
+							<td></td>
+						</tr>
 
 						<tr>
 							<td></td>
@@ -193,9 +240,9 @@
 									ng-hide="documentEntity.serviceLineItemList.length==0">
 								<md-select ng-model="documentEntity.selectedServiceTax"
 									placeholder="Select Tax" ng-change="reCalculateTotal()">
-								<md-option ng-value="taxValue"
-									ng-repeat="taxValue in taxforinvoice"
-									ng-selected="documentEntity.selectedServiceTax.id == taxValue.id">{{taxValue.taxCodeName}}</md-option>
+								<md-option ng-value="taxItem"
+									ng-repeat="taxItem in taxList"
+									ng-selected="documentEntity.selectedServiceTax.id == taxItem.id">{{taxItem?taxItem.taxCodeName:'NA'}}</md-option>
 								</md-select> </md-input-container></td>
 							<td>{{documentEntity.selectedServiceTax.taxPercenatge}}</td>
 							<td><b>{{documentEntity.serviceTaxTotal |
@@ -302,6 +349,24 @@
 									currency:"":"2"}}</b></td>
 							<td></td>
 						</tr>
+						<tr ng-if="documentEntity.productDiscAmount">
+							<td></td>
+							<td></td>
+							<td></td>
+							<td><label>Discount Amount</label></td>
+							<td><b>{{documentEntity.productDiscAmount |
+									currency:"":"2"}}</b></td>
+							<td></td>
+						</tr>
+						<tr ng-if="documentEntity.productDiscAmount">
+							<td></td>
+							<td></td>
+							<td></td>
+							<td><label>After Discount Total</label></td>
+							<td><b>{{(documentEntity.productSubTotal -
+									documentEntity.productDiscAmount) | currency:"":"2"}}</b></td>
+							<td></td>
+						</tr>
 						<tr>
 							<td></td>
 							<td><label>Product Tax</label></td>
@@ -309,9 +374,9 @@
 									ng-hide="documentEntity.productLineItemList.length==0">
 								<md-select ng-model="documentEntity.selectedProductTax"
 									placeholder="Select Tax" ng-change="reCalculateTotal()">
-								<md-option ng-value="taxValue"
-									ng-selected="documentEntity.selectedProductTax.id == taxValue.id"
-									ng-repeat="taxValue in taxforinvoice">{{taxValue.taxCodeName}}</md-option>
+								<md-option ng-value="taxItem"
+									ng-selected="documentEntity.selectedProductTax.id == taxItem.id"
+									ng-repeat="taxItem in taxList">{{taxItem?taxItem.taxCodeName:'NA'}}</md-option>
 								</md-select> </md-input-container></td>
 							<td>{{documentEntity.selectedProductTax.taxPercenatge}}</td>
 							<td><b>{{documentEntity.productTaxTotal |
@@ -327,16 +392,6 @@
 							<td><b>{{documentEntity.productTotal | currency:"":"2"}}</b></td>
 							<td></td>
 						</tr>
-
-						<tr ng-show="tempDiscAmount">
-							<td></td>
-							<td></td>
-							<td></td>
-							<td><label>Discount</label></td>
-							<td><b> {{tempDiscAmount | currency:"":"2"}}</b></td>
-							<td></td>
-						</tr>
-
 						<tr>
 							<td></td>
 							<td></td>
@@ -372,7 +427,7 @@
 			<md-input-container flex layout="row"> <label>Payment
 				Notes</label> <textarea ng-model="documentEntity.paymentNotes" rows="3"
 				cols="1"></textarea> </md-input-container>
-			<md-input-container flex layout="row"> <label>Invoice
+			<md-input-container flex layout="row"> <label>Quotation
 				Terms and Conditions</label> <textarea
 				ng-model="documentEntity.termsAndConditions" rows="3" cols="1"></textarea>
 			</md-input-container>

@@ -61,7 +61,7 @@ public class Constants {
 	};
 
 	public static enum DiscountType {
-		NA, Fixed, Percentage
+		NA, FIXED, PERCENTAGE
 	};
 
 	public enum AccountingAccountType {

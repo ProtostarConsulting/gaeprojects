@@ -40,6 +40,8 @@ public class InvoiceEntity extends BaseEntity {
 
 	private float discountPercent;
 	private double discAmount;
+	private double serviceDiscAmount;
+	private double productDiscAmount;
 	@Index
 	private boolean isPaid = false;
 	@Index
@@ -251,6 +253,22 @@ public class InvoiceEntity extends BaseEntity {
 
 	public void setTermsAndConditions(String termsAndConditions) {
 		this.termsAndConditions = termsAndConditions;
+	}
+
+	public double getServiceDiscAmount() {
+		return serviceDiscAmount;
+	}
+
+	public void setServiceDiscAmount(double serviceDiscAmount) {
+		this.serviceDiscAmount = serviceDiscAmount;
+	}
+
+	public double getProductDiscAmount() {
+		return productDiscAmount;
+	}
+
+	public void setProductDiscAmount(double productDiscAmount) {
+		this.productDiscAmount = productDiscAmount;
 	}
 
 }// end of InvoiceEntity
