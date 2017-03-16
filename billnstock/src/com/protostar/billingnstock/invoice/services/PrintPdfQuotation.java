@@ -83,16 +83,16 @@ public class PrintPdfQuotation extends HttpServlet {
 
 			DecimalFormat df = new DecimalFormat("#0.00");
 
-			double discAmt = quotationEntity.getInvoiceObj().getDiscAmount();
+			double discAmt = quotationEntity.getDiscAmount();
 			if (discAmt > 0) {
 				root.put("Discount", df.format(discAmt));
 			}
 
-			TaxEntity servTax = quotationEntity.getInvoiceObj().getSelectedServiceTax();
-			TaxEntity prodTax = quotationEntity.getInvoiceObj().getSelectedProductTax();
+			TaxEntity servTax = quotationEntity.getSelectedServiceTax();
+			TaxEntity prodTax = quotationEntity.getSelectedProductTax();
 
-			List<StockLineItem> serviceLineItemListForQuot = quotationEntity.getInvoiceObj().getServiceLineItemList();
-			List<StockLineItem> productLineItemListForQuot = quotationEntity.getInvoiceObj().getProductLineItemList();
+			List<StockLineItem> serviceLineItemListForQuot = quotationEntity.getServiceLineItemList();
+			List<StockLineItem> productLineItemListForQuot = quotationEntity.getProductLineItemList();
 
 			if (serviceLineItemListForQuot != null && serviceLineItemListForQuot.size() > 0) {
 				root.put("serviceItemList", serviceLineItemListForQuot);
@@ -103,14 +103,14 @@ public class PrintPdfQuotation extends HttpServlet {
 				root.put("productTax", prodTax);
 			}
 
-			root.put("docuStatus", quotationEntity.getInvoiceObj().getStatus());
-			root.put("createdBy", quotationEntity.getInvoiceObj().getCreatedBy().getFirstName() + " "
-					+ quotationEntity.getInvoiceObj().getCreatedBy().getLastName());
-			UserEntity approvedBy = quotationEntity.getInvoiceObj().getApprovedBy();
+			root.put("docuStatus", quotationEntity.getStatus());
+			root.put("createdBy", quotationEntity.getCreatedBy().getFirstName() + " "
+					+ quotationEntity.getCreatedBy().getLastName());
+			UserEntity approvedBy = quotationEntity.getApprovedBy();
 			root.put("approvedBy",
 					approvedBy == null ? "" : approvedBy.getFirstName() + " " + approvedBy.getLastName());
 
-			Customer customer = quotationEntity.getInvoiceObj().getCustomer();
+			Customer customer = quotationEntity.getCustomer();
 			String custName = "";
 
 			if (customer.getIsCompany()) {
@@ -140,8 +140,8 @@ public class PrintPdfQuotation extends HttpServlet {
 			Date today = quotationEntity.getCreatedDate();
 			String quotationDate = sdfDate.format(today);
 
-			String noteToCust = quotationEntity.getInvoiceObj().getNoteToCustomer();
-			double finalTotal = quotationEntity.getInvoiceObj().getFinalTotal();
+			String noteToCust = quotationEntity.getNoteToCustomer();
+			double finalTotal = quotationEntity.getFinalTotal();
 
 			// Customer Details
 

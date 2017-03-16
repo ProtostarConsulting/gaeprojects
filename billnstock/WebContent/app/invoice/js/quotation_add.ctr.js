@@ -16,8 +16,8 @@ app
 							invoiceDueDate : new Date(),
 							noteToCustomer : '',
 							createdDate : new Date(),
-							modifiedDate : new Date(),
 							createdBy : $scope.curUser,
+							modifiedDate : new Date(),
 							modifiedBy : '',
 							discountType : 'NA',
 							discountPercent : 0,
@@ -31,16 +31,14 @@ app
 							isPaid : false,
 							isDraft : false,
 							paidDate : null,
-							business : null
+							business : null,
+							fromWH : null,
+							status : 'DRAFT'
 						};
 					}
 
-					if ($stateParams.invoiceObj) {
-						$scope.documentEntity = $stateParams.invoiceObj.invoiceObj;
-						$scope.documentEntity.id = $stateParams.invoiceObj.id;
-					} else {
-						$scope.documentEntity = $scope.getEmptyInvoiceObj();
-					}
+					$scope.documentEntity = $stateParams.invoiceObj ? $stateParams.invoiceObj
+							: $scope.getEmptyInvoiceObj();
 
 					$scope.saveDocument = function() {
 						$scope.loading = true;
@@ -51,48 +49,29 @@ app
 						} else {
 							var InvoiceService = appEndpointSF
 									.getInvoiceService();
-							var quotationObj = {
-								itemNumber : $scope.documentEntity.itemNumber,
-								id : $scope.documentEntity.id,
-								status : $scope.documentEntity.status,
-								invoiceObj : $scope.documentEntity
-							};
-
-							quotationObj.business = $scope.curUser.business;
-							quotationObj.modifiedBy = $scope.curUser.email_id;
-							quotationObj.invoiceObj = $scope.documentEntity;
-
 							$scope.documentEntity.business = $scope.curUser.business;
 							$scope.documentEntity.modifiedBy = $scope.curUser.email_id;
-
-							InvoiceService.addQuotation(quotationObj).then(
-									function(msgBean) {
-										if ($scope.documentEntity.id) {
-											// for edit
-											$scope.showUpdateToast();
-										} else {
-											// for new add
-
-											$scope.showAddToast();
-											$scope.documentEntity = $scope
-													.getEmptyInvoiceObj();
-										}
-										$scope.loading = false;
-
-										$scope.invoiceAdd.$setPristine();
-										$scope.invoiceAdd.$setValidity();
-										$scope.invoiceAdd.$setUntouched();
-
-									});
-
+							$scope.documentEntity.discAmount = $scope.discAmount;
+							InvoiceService
+									.addQuotation($scope.documentEntity)
+									.then(
+											function(invoice) {
+												if (invoice.id) {
+													// for edit
+													$scope.showUpdateToast();
+													$scope.documentEntity.id = invoice.id;
+													$scope.documentEntity.itemNumber = invoice.itemNumber;
+												}
+												$scope.loading = false;
+											});
 							// for (var i = 0; i < 100; i++) {
-							// InvoiceService.addQuotation(quotationObj).then(
+							// InvoiceService.addQuotation(documentEntity).then(
 							// function(msgBean) {
 							// });
 							// }
 
 						}
-					}
+					}					
 
 					$scope.submitDocumnent = function(ev) {
 						$scope.documentEntity.status = 'SUBMITTED';
@@ -435,28 +414,28 @@ app
 								});
 					}
 
-					$scope.getAllWarehouseByBusiness = function() {
-						$log
-								.debug("Inside function $scope.getAllWarehouseByBusiness");
-						$scope.loading = true;
-						var warehouseService = appEndpointSF
-								.getWarehouseManagementService();
-
-						warehouseService
-								.getAllWarehouseByBusiness(
-										$scope.curUser.business.id)
-								.then(
-										function(warehouseList) {
-											$scope.warehouses = warehouseList;
-											if ($scope.documentEntity.fromWH == null
-													&& $scope.warehouses.length > 0) {
-												$scope.documentEntity.fromWH = $scope.warehouses[0];
-											}
-											$scope
-													.filterStockItemsByWarehouse($scope.documentEntity.fromWH);
-											$scope.loading = false;
-										});
-					}
+//					$scope.getAllWarehouseByBusiness = function() {
+//						$log
+//								.debug("Inside function $scope.getAllWarehouseByBusiness");
+//						$scope.loading = true;
+//						var warehouseService = appEndpointSF
+//								.getWarehouseManagementService();
+//
+//						warehouseService
+//								.getAllWarehouseByBusiness(
+//										$scope.curUser.business.id)
+//								.then(
+//										function(warehouseList) {
+//											$scope.warehouses = warehouseList;
+//											if ($scope.documentEntity.fromWH == null
+//													&& $scope.warehouses.length > 0) {
+//												$scope.documentEntity.fromWH = $scope.warehouses[0];
+//											}
+//											$scope
+//													.filterStockItemsByWarehouse($scope.documentEntity.fromWH);
+//											$scope.loading = false;
+//										});
+//					}
 
 					/**
 					 * Create filter function for a query string
@@ -500,7 +479,7 @@ app
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
 							loadAllCustomers();
-							$scope.getAllWarehouseByBusiness();
+//							$scope.getAllWarehouseByBusiness();
 							$scope.getTaxesByVisibility();
 							$scope.getInvoiceSettingsByBiz();
 							$scope.reCalculateTotal();							

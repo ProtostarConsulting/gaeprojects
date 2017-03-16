@@ -20,25 +20,28 @@
 <div>
 	<form ng-submit="$event.preventDefault()" name="documentForm">
 
-		<div layout="row" layout-xs="column">
-			<div layout="row" flex>
-				<md-input-container flex=40> <label>Invoice
+		<div flex layout="row" layout-xs="column">
+			<div layout="row" flex=40 flex-xs=100>
+				<md-input-container flex> <label>Invoice
 					No.</label> <input ng-model="documentEntity.itemNumber"
 					placeholder="Auto generated number" ng-disabled="true"></input> </md-input-container>
 				<md-input-container flex> <label>Document
 					Status </label> <input type="text" ng-disabled="true"
 					ng-model="documentEntity.status"> </md-input-container>
-				<md-input-container flex=15> <label>Created
+			</div>
+			<div layout="row" flex=60 flex-xs=100>
+				<span flex></span>
+				<md-input-container flex=25 flex-xs=100> <label>Created
 					By </label> <input ng-disabled="true" ng-model="createdBy"
 					ng-init="createdBy = documentEntity.createdBy? documentEntity.createdBy.firstName + ' ' + documentEntity.createdBy.lastName: ''"></input>
 				</md-input-container>
-				<md-input-container flex=15> <label>Created
+				<md-input-container flex=25 flex-xs=100> <label>Created
 					Date </label> <input ng-disabled="true"
 					ng-value="documentEntity.createdDate | formatDate"></input> </md-input-container>
 			</div>
 		</div>
 		<div flex layout="row" layout-xs="column">
-			<div flex=40 layout="row">
+			<div layout="row" flex=40 flex-xs=100>
 				<md-autocomplete flex required ng-model="documentEntity.customer"
 					md-input-name="custAutocompleteField" md-no-cache=true
 					md-selected-item="documentEntity.customer"
@@ -59,29 +62,32 @@
 					ng-click="addCustomer($event, invoiceObj)" aria-label="ac">
 				<md-icon md-svg-src="img/icons/ic_queue_black_24px.svg" class="name"
 					style="color: Green; height: 10px; width: 10px"></md-icon> </md-button>
-
 			</div>
-
-			<md-input-container flex> <label>From
-				Warehouse </label> <md-select flex ng-model="documentEntity.fromWH"
-				placeholder="Select Warehouse"
-				ng-change="filterStockItemsByWarehouse(documentEntity.fromWH)">
-			<md-option ng-value="warehouse" ng-required="true"
-				ng-selected="(documentEntity.fromWH.id)?(documentEntity.fromWH.id == warehouse.id):($index == 0)"
-				ng-repeat="warehouse in warehouses">{{warehouse.warehouseName
-			}}</md-option> </md-select> </md-input-container>
-			<md-input-container flex=15> <label>Approved
-				By </label> <input ng-disabled="true" ng-model="approvedBy"
-				ng-init="approvedBy = documentEntity.approvedBy? documentEntity.approvedBy.firstName + ' ' + documentEntity.approvedBy.lastName : 'NA'"></input>
-			</md-input-container>
-			<md-input-container flex=15> <label>Last
-				Modified Date </label> <input ng-disabled="true"
-				ng-value="documentEntity.modifiedDate | formatDate"></input> </md-input-container>
+			<div layout="row" layout-xs="column" flex=60 flex-xs=100>
+				<md-input-container flex> <label>From
+					Warehouse </label> <md-select flex ng-model="documentEntity.fromWH"
+					placeholder="Select Warehouse"
+					ng-change="filterStockItemsByWarehouse(documentEntity.fromWH)">
+				<md-option ng-value="warehouse" ng-required="true"
+					ng-selected="(documentEntity.fromWH.id)?(documentEntity.fromWH.id == warehouse.id):($index == 0)"
+					ng-repeat="warehouse in warehouses">{{warehouse.warehouseName
+				}}</md-option> </md-select> </md-input-container>
+				<div layout="row" flex=50 flex-xs=100>
+					<md-input-container flex> <label>Approved
+						By </label> <input ng-disabled="true" ng-model="approvedBy"
+						ng-init="approvedBy = documentEntity.approvedBy? documentEntity.approvedBy.firstName + ' ' + documentEntity.approvedBy.lastName : 'NA'"></input>
+					</md-input-container>
+					<md-input-container flex> <label>Last
+						Modified Date </label> <input ng-disabled="true"
+						ng-value="documentEntity.modifiedDate | formatDate"></input> </md-input-container>
+				</div>
+			</div>
 		</div>
 
 		<div flex layout="row" layout-xs="column">
-			<div flex=40 layout="row">
-				<md-autocomplete flex required ng-model="documentEntity.customerContact"
+			<div flex=40 flex-xs=100 layout="row">
+				<md-autocomplete flex required
+					ng-model="documentEntity.customerContact"
 					md-input-name="contactAutocompleteField" md-no-cache=true
 					md-selected-item="documentEntity.customerContact"
 					ng-init="contactSearchTextInput = documentEntity.customerContact.fName
@@ -101,18 +107,20 @@
 					ng-click="addCustomer($event, invoiceObj)" aria-label="ac">
 				<md-icon md-svg-src="img/icons/ic_queue_black_24px.svg" class="name"
 					style="color: Green; height: 10px; width: 10px"></md-icon> </md-button>
-
 			</div>
-			<md-input-container flex> <label>Due
-				Date</label> <md-datepicker flex ng-model="documentEntity.invoiceDueDate"
-				md-placeholder="Select Date" string-to-date></md-datepicker> </md-input-container>
-			<md-input-container flex=15> <label>Discount
-				Type </label> <input ng-model="documentEntity.discountType"
-				ng-disabled="true"></input> </md-input-container>
-			<md-input-container flex=15> <label>Discount
-			</label> <input ng-model="documentEntity.discountPercent"
-				ng-disabled="true"></input> </md-input-container>
-
+			<div layout="row" layout-xs="column" flex=60 flex-xs=100>
+				<md-input-container flex> <label>Due
+					Date</label> <md-datepicker flex ng-model="documentEntity.invoiceDueDate"
+					md-placeholder="Select Date" string-to-date></md-datepicker> </md-input-container>
+				<div layout="row" flex=50 flex-xs=100>
+					<md-input-container flex> <label>Discount
+						Type </label> <input ng-model="documentEntity.discountType"
+						ng-disabled="true"></input> </md-input-container>
+					<md-input-container flex> <label>Discount
+					</label> <input ng-model="documentEntity.discountPercent"
+						ng-disabled="true"></input> </md-input-container>
+				</div>
+			</div>
 		</div>
 
 
