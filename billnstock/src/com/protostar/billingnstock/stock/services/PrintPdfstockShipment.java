@@ -78,8 +78,8 @@ public class PrintPdfstockShipment extends HttpServlet {
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
 
 			ShipmentType shipmentType = stockItemsShipment.getShipmentType();
-			root.put("shipmentDate", sdfDate.format(stockItemsShipment.getShipmentDate()));
-
+			root.put("createdDate", sdfDate.format(stockItemsShipment.getCreatedDate()));
+			root.put("modifiedDate", sdfDate.format(stockItemsShipment.getModifiedDate()));
 			root.put("docStatus", stockItemsShipment.getStatus());
 			root.put("createdBy", stockItemsShipment.getCreatedBy().getFirstName() + " "
 					+ stockItemsShipment.getCreatedBy().getLastName());

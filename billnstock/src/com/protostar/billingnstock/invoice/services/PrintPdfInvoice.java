@@ -43,13 +43,14 @@ public class PrintPdfInvoice extends HttpServlet {
 
 	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		Long invoiceId = Long.parseLong(request.getParameter("invoiceId"));
 		Long bid = Long.parseLong(request.getParameter("bid"));
 
 		InvoiceService invoiceService = new InvoiceService();
-		InvoiceEntity invoiceEntity = invoiceService.getInvoiceByID(bid, invoiceId);
+		InvoiceEntity invoiceEntity = invoiceService.getInvoiceByID(bid,
+				invoiceId);
 
 		response.setContentType("application/PDF");
 
@@ -58,13 +59,16 @@ public class PrintPdfInvoice extends HttpServlet {
 		String DATE_FORMAT = "dd/MMM/yyyy";
 		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 
-		String fileNameAppend = "Invoice_" + invoiceEntity.getItemNumber() + "_" + sdf.format(date);
-		response.setHeader("Content-disposition", "inline; filename='ProERP_" + fileNameAppend + ".pdf'");
+		String fileNameAppend = "Invoice_" + invoiceEntity.getItemNumber()
+				+ "_" + sdf.format(date);
+		response.setHeader("Content-disposition", "inline; filename='ProERP_"
+				+ fileNameAppend + ".pdf'");
 
 		this.generatePdf(invoiceEntity, outputStream);
 	}
 
-	private void generatePdf(InvoiceEntity invoiceEntity, ServletOutputStream outputStream) {
+	private void generatePdf(InvoiceEntity invoiceEntity,
+			ServletOutputStream outputStream) {
 		try {
 			Document document = new Document();
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
@@ -73,7 +77,8 @@ public class PrintPdfInvoice extends HttpServlet {
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 
 			Map<String, Object> root = new HashMap<String, Object>();
-			PDFHtmlTemplateService.addDocumentHeaderLogo(invoiceEntity, document, root);
+			PDFHtmlTemplateService.addDocumentHeaderLogo(invoiceEntity,
+					document, root);
 
 			DecimalFormat df = new DecimalFormat("#0.00");
 
@@ -89,15 +94,18 @@ public class PrintPdfInvoice extends HttpServlet {
 
 			// Long salesOrderNo = soe.getId();
 
-			List<StockLineItem> serviceLineItemList = invoiceEntity.getServiceLineItemList();
-			List<StockLineItem> productLineItemList = invoiceEntity.getProductLineItemList();
+			List<StockLineItem> serviceLineItemList = invoiceEntity
+					.getServiceLineItemList();
+			List<StockLineItem> productLineItemList = invoiceEntity
+					.getProductLineItemList();
 
 			root.put("docuStatus", invoiceEntity.getStatus());
-			root.put("createdBy",
-					invoiceEntity.getCreatedBy().getFirstName() + " " + invoiceEntity.getCreatedBy().getLastName());
+			root.put("createdBy", invoiceEntity.getCreatedBy().getFirstName()
+					+ " " + invoiceEntity.getCreatedBy().getLastName());
 			UserEntity approvedBy = invoiceEntity.getApprovedBy();
 			root.put("approvedBy",
-					approvedBy == null ? "" : approvedBy.getFirstName() + " " + approvedBy.getLastName());
+					approvedBy == null ? "" : approvedBy.getFirstName() + " "
+							+ approvedBy.getLastName());
 
 			// Imported Customer entity to get name and address
 			Customer cust1 = invoiceEntity.getCustomer();
@@ -114,29 +122,37 @@ public class PrintPdfInvoice extends HttpServlet {
 			StringBuffer custaddressBuf = new StringBuffer();
 			Address customerAddress = cust1.getAddress();
 			if (customerAddress != null) {
-				if (customerAddress.getLine1() != null && !customerAddress.getLine1().isEmpty())
+				if (customerAddress.getLine1() != null
+						&& !customerAddress.getLine1().isEmpty())
 					custaddressBuf.append(customerAddress.getLine1());
-				if (customerAddress.getLine2() != null && !customerAddress.getLine2().isEmpty())
-					custaddressBuf.append(", <br></br>" + customerAddress.getLine2());
-				if (customerAddress.getCity() != null && !customerAddress.getCity().isEmpty())
-					custaddressBuf.append(",<br></br>" + customerAddress.getCity());
-				if (customerAddress.getState() != null && !customerAddress.getState().isEmpty())
+				if (customerAddress.getLine2() != null
+						&& !customerAddress.getLine2().isEmpty())
+					custaddressBuf.append(", <br></br>"
+							+ customerAddress.getLine2());
+				if (customerAddress.getCity() != null
+						&& !customerAddress.getCity().isEmpty())
+					custaddressBuf.append(",<br></br>"
+							+ customerAddress.getCity());
+				if (customerAddress.getState() != null
+						&& !customerAddress.getState().isEmpty())
 					custaddressBuf.append(", " + customerAddress.getState());
 			}
 
 			String custAddress = custaddressBuf.toString();
 
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
-			Date now = new Date();
-			String strDate = sdfDate.format(now);
+			Date createdDate = invoiceEntity.getCreatedDate();
+			Date modifiedDate = invoiceEntity.getModifiedDate();
+			String createdDateStr = sdfDate.format(createdDate);
+			String modifiedDateStr = sdfDate.format(modifiedDate);
 
 			// Customer Details
 
 			root.put("CustomerAddress", custAddress);
 			// Invoice Details
-			root.put("InvoiceDate", invoiceEntity.getCreatedDate());
+			root.put("createdDate", createdDateStr);
+			root.put("modifiedDate", modifiedDateStr);
 			root.put("invoiceNumber", invoiceEntity.getItemNumber());
-			root.put("Date", strDate);
 
 			// root.put("SalesOrderNo", salesOrderNo);
 
@@ -157,28 +173,35 @@ public class PrintPdfInvoice extends HttpServlet {
 			// Product Table
 			// root.put("productTotal", df.format(productTotal));
 			root.put("finalTotal", finalTotal);
-			NumberToRupees numberToRupees = new NumberToRupees(Math.round(finalTotal));
+			NumberToRupees numberToRupees = new NumberToRupees(
+					Math.round(finalTotal));
 			String netInWords = numberToRupees.getAmountInWords();
 			root.put("finalTotalInWord", netInWords);
 			// root.put("FinalInWords", invoiceEntity.getFinalTotal());
 
 			root.put("PurchaseOrderNo", purchaseOrderNo);
 
-			if (invoiceEntity.getNoteToCustomer() != null && !invoiceEntity.getNoteToCustomer().trim().isEmpty())
-				root.put("noteToCustomer", "" + invoiceEntity.getNoteToCustomer());
-			if (invoiceEntity.getPaymentNotes() != null && !invoiceEntity.getPaymentNotes().trim().isEmpty())
+			if (invoiceEntity.getNoteToCustomer() != null
+					&& !invoiceEntity.getNoteToCustomer().trim().isEmpty())
+				root.put("noteToCustomer",
+						"" + invoiceEntity.getNoteToCustomer());
+			if (invoiceEntity.getPaymentNotes() != null
+					&& !invoiceEntity.getPaymentNotes().trim().isEmpty())
 				root.put("paymentNotes", "" + invoiceEntity.getPaymentNotes());
 			if (invoiceEntity.getTermsAndConditions() != null
 					&& !invoiceEntity.getTermsAndConditions().trim().isEmpty())
-				root.put("termsAndConditions", "" + invoiceEntity.getTermsAndConditions());
+				root.put("termsAndConditions",
+						"" + invoiceEntity.getTermsAndConditions());
 
 			if (discountAmt > 0) {
 				root.put("Discount", df.format(discountAmt));
 			}
 
-			Template temp = PDFHtmlTemplateService.getConfiguration().getTemplate("pdf_templates/invoice_tmpl.ftlh");
+			Template temp = PDFHtmlTemplateService.getConfiguration()
+					.getTemplate("pdf_templates/invoice_tmpl.ftlh");
 
-			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(5000);
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
+					5000);
 			Writer out = new PrintWriter(byteArrayOutputStream);
 			temp.process(root, out);
 			// return escapeHtml(byteArrayOutputStream.toString());

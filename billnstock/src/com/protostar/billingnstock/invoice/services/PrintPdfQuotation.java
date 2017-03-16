@@ -138,7 +138,9 @@ public class PrintPdfQuotation extends HttpServlet {
 
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
 			Date today = quotationEntity.getCreatedDate();
+			Date modifiedDate = quotationEntity.getModifiedDate();
 			String quotationDate = sdfDate.format(today);
+			String modifiedDateStr= sdfDate.format(modifiedDate);
 
 			String noteToCust = quotationEntity.getNoteToCustomer();
 			double finalTotal = quotationEntity.getFinalTotal();
@@ -150,7 +152,8 @@ public class PrintPdfQuotation extends HttpServlet {
 			root.put("noteToCustomer", "" + noteToCust);
 
 			// Quotation Date and No
-			root.put("Date", quotationDate);
+			root.put("createdDate", quotationDate);
+			root.put("modifiedDate",modifiedDateStr);
 			root.put("quotationNumber", quotationEntity.getItemNumber());
 
 			root.put("finalTotal", finalTotal);

@@ -73,9 +73,11 @@ public class PrintPdfstockReceipt extends HttpServlet {
 			PDFHtmlTemplateService.addDocumentHeaderLogo(stockReceiptEntity, document, root);
 
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
-			String receiptDate = sdfDate.format(stockReceiptEntity.getReceiptDate());
+			String createdDateStr = sdfDate.format(stockReceiptEntity.getCreatedDate());
+			String modifiedDateStr = sdfDate.format(stockReceiptEntity.getModifiedDate());
 			root.put("poNum", stockReceiptEntity.getPoNumber());
-			root.put("receiptDate", receiptDate);
+			root.put("createdDate", createdDateStr);
+			root.put("modifiedDate", modifiedDateStr);
 			root.put("receiptNo", stockReceiptEntity.getItemNumber());
 			root.put("docuStatus", stockReceiptEntity.getStatus());
 			root.put("createdBy", stockReceiptEntity.getCreatedBy().getFirstName() + " "
