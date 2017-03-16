@@ -86,10 +86,18 @@ td {
 								</tr>
 								<tr>
 									<td align="right" style="border: 0px;">
-										<b>Shipment Date:</b>
+										<b>Created Date:</b>
 									</td>
 									<td align="left" style="border: 0px;">
-										${shipmentDate}
+										${createdDate}
+									</td>
+								</tr>
+								<tr>
+									<td align="right" style="border: 0px;">
+										<b>Approved Date:</b>
+									</td>
+									<td align="left" style="border: 0px;">
+										${modifiedDate}
 									</td>
 								</tr>
 								<#if Discount??>

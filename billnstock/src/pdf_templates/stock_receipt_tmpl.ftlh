@@ -83,19 +83,19 @@ td {
 									</td>
 								</tr>
 								<tr>
-									<td align="right" style="border: 0px;">
-										<b>Receipt Date:</b>
-									</td>
-									<td align="left" style="border: 0px;">
-										${receiptDate}
-									</td>
-								</tr>
-								<tr>
 								<td align="right" style="border: 0px;">
 										<b>Status:</b>
 									</td>
 									<td align="left" style="border: 0px;">
 										${docuStatus}
+									</td>
+								</tr>
+								<tr>
+									<td align="right" style="border: 0px;">
+										<b>Receipt Date:</b>
+									</td>
+									<td align="left" style="border: 0px;">
+										${createdDate}
 									</td>
 								</tr>
 								<tr>
@@ -112,6 +112,14 @@ td {
 									</td>
 									<td align="left" style="border: 0px;">
 										${approvedBy}
+									</td>
+								</tr>
+								<tr>
+									<td align="right" style="border: 0px;">
+										<b>Approved Date:</b>
+									</td>
+									<td align="left" style="border: 0px;">
+										${modifiedDate}
 									</td>
 								</tr>
 								<#if Discount??>

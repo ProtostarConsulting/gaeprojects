@@ -58,6 +58,16 @@ p {
 						<table style="width: 100%; height: 100%;">
 							<tbody>
 								<tr>
+									<td align="left" style="border: 0px;">
+										<b>Invoice No:</b>	${invoiceNumber}
+									</td>
+								</tr>
+								<tr>
+									<td align="left" style="border: 0px;">
+										<b>Invoice Date:</b>${createdDate}
+									</td>
+								</tr>
+								<tr>
 									<td align="left" style="border: 0px;"><b>Customer Name and Address:</b><br></br>
 										${CustomerName} <br></br>
 										${CustomerAddress}
@@ -70,22 +80,6 @@ p {
 					<td style="width: 40%; border: 0px; vertical-align:top; padding-top: 0px;">										
 						<table style="width: 100%; height: 100%;">
 							<tbody>
-								<tr>
-									<td align="right" style="border: 0px;">
-										<b>Invoice No:</b>
-									</td>
-									<td align="left" style="border: 0px;">
-										${invoiceNumber}
-									</td>
-								</tr>
-								<tr>
-									<td align="right" style="border: 0px;">
-										<b>Invoice Date:</b>
-									</td>
-									<td align="left" style="border: 0px;">
-										${Date}
-									</td>
-								</tr>
 								<tr>
 									<td align="right" style="border: 0px;">
 										<b>Status:</b>
@@ -108,6 +102,14 @@ p {
 									</td>
 									<td align="left" style="border: 0px;">
 										${approvedBy}
+									</td>
+								</tr>
+								<tr>
+									<td align="right" style="border: 0px;">
+										<b>Approved Date:</b>
+									</td>
+									<td align="left" style="border: 0px;">
+										${modifiedDate}
 									</td>
 								</tr>
 								<#if Discount??>

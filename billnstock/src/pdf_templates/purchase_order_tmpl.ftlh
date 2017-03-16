@@ -86,18 +86,18 @@ td {
 								</tr>
 								<tr>
 									<td align="right" style="border: 0px;">
-										<b>PO Date:</b>
-									</td>
-									<td align="left" style="border: 0px;">
-										${pODate}
-									</td>
-								</tr>
-								<tr>
-									<td align="right" style="border: 0px;">
 										<b>Status:</b>
 									</td>
 									<td align="left" style="border: 0px;">
 										${docuStatus}
+									</td>
+								</tr>
+								<tr>
+									<td align="right" style="border: 0px;">
+										<b>Created Date:</b>
+									</td>
+									<td align="left" style="border: 0px;">
+										${createdDateStr}
 									</td>
 								</tr>
 								<tr>
@@ -113,7 +113,15 @@ td {
 										<b>Approved By:</b>
 									</td>
 									<td align="left" style="border: 0px;">
-										${approvedBy}
+										${approvedBy} <!-- Created by if in draft mode --> 
+									</td>
+								</tr>
+								<tr>
+									<td align="right" style="border: 0px;">
+										<b>Approved Date:</b>
+									</td>
+									<td align="left" style="border: 0px;">
+										${modifiedDateStr}
 									</td>
 								</tr>
 								<#if Discount??>
