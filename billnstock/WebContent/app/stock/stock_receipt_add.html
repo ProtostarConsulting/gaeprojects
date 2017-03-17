@@ -5,6 +5,12 @@
 		ng-bind="documentEntity.id?'Edit Stock Receipt':'Create Stock Receipt'"></h4>
 	</md-subheader>
 	<span flex></span>
+	<div align="right" ng-show="documentEntity.id">
+		<md-button class="md-icon-button"
+			ng-click="printstockReceipt(documentEntity.id)"> <ng-md-icon
+			icon="print" style="fill: md-default" size="20"> <md-tooltip>
+		Print Stock Receipt</md-tooltip></ng-md-icon></md-button>
+	</div>
 </section>
 <div>
 	<form ng-submit="$event.preventDefault()" name="documentForm">

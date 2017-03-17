@@ -212,13 +212,42 @@ angular
 						$scope.loading = false;
 					}
 
+					$scope.settingsObj = {};
+
+					$scope.addTaskSettings = function() {
+
+						$scope.settingsObj.business = $scope.curUser.business;
+						$scope.settingsObj.modifiedBy = $scope.curUser.email_id;
+
+						taskService.addTaskSettings($scope.settingsObj).then(
+								function(savedRecoed) {
+									$scope.settingsObj = savedRecoed;
+									$scope.showUpdateToast();
+								});
+
+					}
+
+					$scope.getTaskSettings= function() {
+					
+						taskService.getTaskSettingsByBiz($scope.curUser.business.id)
+								.then(
+										function(settingsList) {
+
+											$scope.settingsObj = settingsList;
+											$log.debug("Inside Ctr $scope.settingsObj:"
+													+ $scope.settingsObj);
+											return $scope.settingsObj;
+										});
+					}
+					
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
 							$scope.getUserList();
+							$scope.getTaskSettings();
 							if ($scope.action == 'listmytask') {
 								// $scope.getMyAllTask();
 								$scope.selectFilterData.assignedTo = $scope.curUser;
-								$scope.filterTasksByFitlerData();
+								$scope.filterTasksByFitlerData();	
 							} else if ($scope.action == 'listall') {
 								$scope.filterTasksByFitlerData();
 							} else if ($scope.action == 'tasklistreport') {

@@ -64,7 +64,7 @@ app
 						$scope.documentEntity.status = 'SUBMITTED';
 						$scope.saveDocument();
 					}
-					
+
 					$scope.finalizeDocumnent = function(ev) {
 						var confirm = $mdDialog
 								.confirm()
@@ -82,7 +82,7 @@ app
 							$log.debug("Cancelled...");
 						});
 					}
-					
+
 					$scope.rejectDocumnent = function(ev) {
 						var confirm = $mdDialog
 								.confirm()
@@ -126,6 +126,12 @@ app
 								function(settingsList) {
 									$scope.settingsObj = settingsList;
 								});
+					}
+
+					$scope.printAsPdf = function(id) {
+						var bid = $scope.curUser.business.id;
+						window.open("PrintPdfRequisition?bid=" + bid + "&id="
+								+ id);
 					}
 
 					$scope.waitForServiceLoad = function() {

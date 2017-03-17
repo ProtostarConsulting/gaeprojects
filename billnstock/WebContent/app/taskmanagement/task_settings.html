@@ -1,0 +1,30 @@
+<md-content layout-padding>
+<section layout="row" layout-xs="column">
+	<md-subheader class="md-primary">
+	<h4 class="md-title">Task Management Settings</h4>
+	</md-subheader>
+	<span flex></span>
+</section>
+<form name="settingForm" layout="column">
+	<div layout="row" layout-xs="column">
+		<md-checkbox ng-model="settingsObj.needModuleDocumentApproval"
+			ng-true-value="true" ng-false-value="false"
+			aria-label="needModuleDocumentApproval"> Need Module
+		Document Approval</md-checkbox>
+	</div>
+	<hr>
+	<md-checkbox ng-model="settingsObj.emailNotification"
+		ng-true-value="true" ng-false-value="false" aria-label="isGoogleUser">
+	Task Email Notification</md-checkbox>
+	<md-input-container flex="80" layout="row"> <label>Email
+		Notification List(enter comma separated email ids)</label> <textarea
+		ng-model="settingsObj.emailNotificationDL" rows="2" cols="1"></textarea>
+	</md-input-container>
+</form>
+
+<section layout="row" layout-sm="column">
+	<md-button class="md-raised md-primary" id="addTaskSettings"
+		ng-click="addTaskSettings()">Save Changes </md-button>
+</section>
+</md-content>
+

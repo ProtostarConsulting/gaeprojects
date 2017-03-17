@@ -5,6 +5,12 @@
 		ng-bind="documentEntity.id?'Edit Purchase Order':'Add Purchase Order'"></h4>
 	</md-subheader>
 	<span flex></span>
+	<div align="right" ng-show="documentEntity.id">
+		<md-button class="md-icon-button"
+			ng-click="printPO(documentEntity.id)"> <ng-md-icon
+			icon="print" style="fill: md-default" size="20"> <md-tooltip>
+		Print PO</md-tooltip></ng-md-icon></md-button>
+	</div>
 </section>
 <div>
 	<form ng-submit="$event.preventDefault()" name="documentForm">

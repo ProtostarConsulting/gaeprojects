@@ -10,6 +10,12 @@
 		ng-bind="documentEntity.id?'Edit Stock Shipment/Transfer: ' + documentEntity.itemNumber:'Create Stock Shipment/Transfer'"></h4>
 	</md-subheader>
 	<span flex></span>
+	<div align="right" ng-show="documentEntity.id">
+		<md-button class="md-icon-button"
+			ng-click="printstockShipment(documentEntity.id)"> <ng-md-icon
+			icon="print" style="fill: md-default" size="20"> <md-tooltip>
+		Print Stock Shipment</md-tooltip></ng-md-icon></md-button>
+	</div>
 </section>
 <div>
 	<form ng-submit="$event.preventDefault()" name="documentForm">

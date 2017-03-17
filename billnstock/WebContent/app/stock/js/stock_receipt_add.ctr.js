@@ -44,9 +44,10 @@ app
 					$scope.saveDocument = function() {
 						$scope.documentEntity.business = $scope.curUser.business;
 						$scope.documentEntity.modifiedBy = $scope.curUser.email_id;
-						//$scope.documentEntity.createdBy = $scope.curUser; 
+						// $scope.documentEntity.createdBy = $scope.curUser;
 						// Commenting this line. It will override the createdBy
 						// when someone approves/rejects it.
+
 						var stockService = appEndpointSF.getStockService();
 
 						stockService
@@ -69,7 +70,7 @@ app
 						$scope.documentEntity.status = 'SUBMITTED';
 						$scope.saveDocument();
 					}
-					
+
 					$scope.finalizeDocumnent = function(ev) {
 						var confirm = $mdDialog
 								.confirm()
@@ -87,7 +88,7 @@ app
 							$log.debug("Cancelled...");
 						});
 					}
-					
+
 					$scope.rejectDocumnent = function(ev) {
 						var confirm = $mdDialog
 								.confirm()
@@ -409,6 +410,12 @@ app
 								function(settingsList) {
 									$scope.settingsObj = settingsList;
 								});
+					}
+
+					$scope.printstockReceipt = function(stRcptId) {
+						var bid = $scope.curUser.business.id;
+						window.open("PrintPdfstockReceipt?bid=" + bid
+								+ "&stRcptId=" + stRcptId);
 					}
 
 					$scope.waitForServiceLoad = function() {

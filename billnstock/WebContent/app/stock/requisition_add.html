@@ -5,6 +5,12 @@
 		ng-bind="documentEntity.id?'Edit Requisition':'Add Requisition'"></h4>
 	</md-subheader>
 	<span flex></span>
+	<div align="right" ng-show="documentEntity.id">
+		<md-button class="md-icon-button"
+			ng-click="printAsPdf(documentEntity.id)"> <ng-md-icon
+			icon="print" style="fill: md-default" size="20"> <md-tooltip>
+		Print as PDF</md-tooltip></ng-md-icon></md-button>
+	</div>
 </section>
 
 <div>

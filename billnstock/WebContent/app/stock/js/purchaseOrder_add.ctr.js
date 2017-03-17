@@ -110,6 +110,7 @@ app
 													$scope.documentEntity.id = entityObj.id;
 													$scope.documentEntity.itemNumber = entityObj.itemNumber;
 													$scope.showUpdateToast();
+
 												}
 											});
 						}
@@ -119,7 +120,6 @@ app
 						$scope.documentEntity.status = 'SUBMITTED';
 						$scope.saveDocument();
 					}
-									
 
 					$scope.finalizeDocumnent = function(ev) {
 						var confirm = $mdDialog
@@ -138,7 +138,7 @@ app
 							$log.debug("Cancelled...");
 						});
 					}
-					
+
 					$scope.rejectDocumnent = function(ev) {
 						var confirm = $mdDialog
 								.confirm()
@@ -156,7 +156,7 @@ app
 							$log.debug("Cancelled...");
 						});
 					}
-					
+
 					$scope.addServiceLineItem = function() {
 						var item = {
 							isProduct : false,
@@ -358,10 +358,10 @@ app
 						// $scope.calfinalTotal();
 					};
 
-					$scope.printInvoice = function(invoiceId) {
+					$scope.printPO = function(poId) {
 						var bid = $scope.curUser.business.id;
-						window.open("PrintPdfInvoice?bid=" + bid
-								+ "&invoiceId=" + invoiceId);
+						window.open("PrintPdfPurchaseOrder?bid=" + bid
+								+ "&poId=" + poId);
 					}
 
 					$scope.showSimpleToastError = function() {

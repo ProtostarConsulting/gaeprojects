@@ -13,6 +13,13 @@
 		</h4>
 		</md-subheader>
 		<span flex></span>
+		<div align="right">
+		<md-button ng-show="hasUserAuthority(curUser, 'TaskManagement.ModuleAdmin')"
+				layout-align="center end" class="md-icon-button md-accent"
+				ui-sref="taskmanagement.taskSettings" aria-label="Favorite"> <md-icon
+				md-svg-icon="img/icons/ic_settings_black_24px.svg">
+			<md-tooltip>Task Settings</md-tooltip></md-icon> </md-button>
+		</div>
 	</section>
 	<form name="taskAddForm">
 		<div layout="column">

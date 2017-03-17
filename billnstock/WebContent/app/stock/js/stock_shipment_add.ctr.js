@@ -49,6 +49,7 @@ app
 						// $scope.documentEntity.createdBy = $scope.curUser;
 						// Commenting this line. It will override the createdBy
 						// when someone approves/rejects it.
+
 						var stockService = appEndpointSF.getStockService();
 
 						stockService
@@ -426,6 +427,13 @@ app
 								function(settingsList) {
 									$scope.settingsObj = settingsList;
 								});
+					}
+
+					$scope.printstockShipment = function(stShipId) {
+						var bid = $scope.curUser.business.id;
+						window.open("PrintPdfstockShipment?bid=" + bid
+								+ "&stShipId=" + stShipId);
+
 					}
 
 					$scope.waitForServiceLoad = function() {

@@ -47,6 +47,27 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
+	TaskService.addTaskSettings = function(taskSettings) {
+		var deferred = $q.defer();
+
+		gapi.client.taskService.addTaskSettings(taskSettings).execute(
+				function(resp) {
+					deferred.resolve(resp);
+				});
+
+		return deferred.promise;
+	}
+
+	TaskService.getTaskSettingsByBiz = function(id) {
+		var deferred = $q.defer();
+		gapi.client.taskService.getTaskSettingsByBiz({
+			"id" : id
+		}).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}
+
 	TaskService.getAllTask = function(busId) {
 		var deferred = $q.defer();
 		gapi.client.taskService.getAllTask({
@@ -163,7 +184,7 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	
+
 	UserService.getBusinessCounterList = function(id) {
 		var deferred = $q.defer();
 		gapi.client.userService.getBusinessCounterList({
@@ -183,7 +204,7 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	
+
 	UserService.getInActiveUsersByBusinessId = function(id) {
 		var deferred = $q.defer();
 		gapi.client.userService.getInActiveUsersByBusinessId({
@@ -775,7 +796,7 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 
 	}
-	
+
 	hrService.getDeductionHeadNames = function() {
 		var deferred = $q.defer();
 		gapi.client.hrService.getDeductionHeadNames().execute(function(resp) {
@@ -784,7 +805,7 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 
 	}
-	
+
 	hrService.getLeaveListEmp = function(id, month, prevMonth) {
 		var deferred = $q.defer();
 		gapi.client.hrService.getLeaveListEmp({
@@ -1615,7 +1636,6 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
-	
 	VoucherService.listvoucherPayment = function(id) {
 		var deferred = $q.defer();
 		gapi.client.voucherService.listvoucherPayment({
@@ -1625,19 +1645,14 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-////
-	
-	
-	
-	/*VoucherService.listvoucherPayment = function(id) {
-		var deferred = $q.defer();
-		gapi.client.voucherService.listvoucherPayment({
-			"id" : id
-		}).execute(function(resp) {
-			deferred.resolve(resp.items);
-		});
-		return deferred.promise;
-	}*/
+	// //
+
+	/*
+	 * VoucherService.listvoucherPayment = function(id) { var deferred =
+	 * $q.defer(); gapi.client.voucherService.listvoucherPayment({ "id" : id
+	 * }).execute(function(resp) { deferred.resolve(resp.items); }); return
+	 * deferred.promise; }
+	 */
 
 	VoucherService.addvoucherReciept = function(vaccount) {
 		var deferred = $q.defer();
@@ -2350,7 +2365,7 @@ function googleEndpointSF($q) {
 
 		return deferred.promise;
 	}
-	
+
 	InvoiceService.fetchInvoiceListByPaging = function(busId, status,
 			pagingInfo) {
 		var deferred = $q.defer();
@@ -2362,7 +2377,7 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	
+
 	InvoiceService.fetchQuotationListByPaging = function(busId, status,
 			pagingInfo) {
 		var deferred = $q.defer();

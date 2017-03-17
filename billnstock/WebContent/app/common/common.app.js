@@ -1085,6 +1085,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		params : {
 			action : 'listall'
 		}
+	}).state('taskmanagement.taskSettings', {
+		url : "/taskSettings",
+		templateUrl : '/app/taskmanagement/task_settings.html',
+		controller : 'taskModuleCtr',
 	}).state('taskmanagement.mytasklist', {
 		url : "/mytasklist",
 		templateUrl : '/app/taskmanagement/task_list.html',
