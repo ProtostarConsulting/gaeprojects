@@ -79,7 +79,7 @@ public class PrintPdfstockReceipt extends HttpServlet {
 			root.put("createdDate", createdDateStr);
 			root.put("modifiedDate", modifiedDateStr);
 			root.put("receiptNo", stockReceiptEntity.getItemNumber());
-			root.put("docuStatus", stockReceiptEntity.getStatus());
+			root.put("docStatus", stockReceiptEntity.getStatus());
 			root.put("createdBy", stockReceiptEntity.getCreatedBy().getFirstName() + " "
 					+ stockReceiptEntity.getCreatedBy().getLastName());
 			UserEntity approvedBy = stockReceiptEntity.getApprovedBy();

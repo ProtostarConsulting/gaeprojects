@@ -141,7 +141,7 @@ public class EmailHandler {
 		InvoiceSettingsEntity invoiceSettings = new InvoiceService()
 				.getInvoiceSettingsByBiz((invoice.getBusiness().getId()));
 
-		if (!invoiceSettings.isEmailNotification()
+		if (invoiceSettings == null || !invoiceSettings.isEmailNotification()
 				|| invoiceSettings.getEmailNotificationDL().isEmpty()) {
 			return;
 		}

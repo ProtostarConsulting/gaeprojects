@@ -27,9 +27,10 @@ public class TaskManagementService {
 
 	private final Logger logger = Logger.getLogger(TaskManagementService.class
 			.getName());
-	
+
 	@ApiMethod(name = "saveTask", path = "saveTask")
-	public void saveTask(TaskEntity taskEntity) throws MessagingException, IOException {
+	public void saveTask(TaskEntity taskEntity) throws MessagingException,
+			IOException {
 		if (taskEntity.getId() == null) {
 			taskEntity.setCreatedDate(new Date());
 		} else {
@@ -37,6 +38,30 @@ public class TaskManagementService {
 		}
 		ofy().save().entity(taskEntity).now();
 		new EmailHandler().sendTaskAssignedEmail(taskEntity);
+	}
+
+	@ApiMethod(name = "addTaskSettings")
+	public TaskSettingsEntity addTaskSettings(TaskSettingsEntity taskSettings) {
+
+		if (taskSettings.getId() == null) {
+			taskSettings.setCreatedDate(new Date());
+		}
+		taskSettings.setModifiedDate(new Date());
+
+		ofy().save().entity(taskSettings).now();
+		return taskSettings;
+	}
+
+	@ApiMethod(name = "getTaskSettingsByBiz", path = "getTaskSettingsByBiz")
+	public TaskSettingsEntity getTaskSettingsByBiz(@Named("id") Long busId) {
+
+		TaskSettingsEntity taskSettings = ofy().load()
+				.type(TaskSettingsEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).first()
+				.now();
+
+		return taskSettings;
+
 	}
 
 	@ApiMethod(name = "getTaskById", path = "getTaskById")
@@ -55,7 +80,8 @@ public class TaskManagementService {
 	}
 
 	@ApiMethod(name = "getMyAllTask", path = "getMyAllTask")
-	public List<TaskEntity> getMyAllTask(@Named("busId") Long busId, @Named("userId") Long userId) {
+	public List<TaskEntity> getMyAllTask(@Named("busId") Long busId,
+			@Named("userId") Long userId) {
 		UserService userService = new UserService();
 		// logger.info("getMyAllTask#email_id:" + email_id);
 		UserEntity user = userService.getUserByID(busId, userId);

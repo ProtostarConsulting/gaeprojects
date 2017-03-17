@@ -103,7 +103,7 @@ public class PrintPdfQuotation extends HttpServlet {
 				root.put("productTax", prodTax);
 			}
 
-			root.put("docuStatus", quotationEntity.getStatus());
+			root.put("docStatus", quotationEntity.getStatus());
 			root.put("createdBy", quotationEntity.getCreatedBy().getFirstName() + " "
 					+ quotationEntity.getCreatedBy().getLastName());
 			UserEntity approvedBy = quotationEntity.getApprovedBy();

@@ -49,6 +49,7 @@ import com.protostar.billingnstock.stock.entities.StockItemsReceiptEntity;
 import com.protostar.billingnstock.stock.entities.StockItemsShipmentEntity;
 import com.protostar.billingnstock.stock.entities.StockSettingsEntity;
 import com.protostar.billingnstock.taskmangement.TaskEntity;
+import com.protostar.billingnstock.taskmangement.TaskSettingsEntity;
 import com.protostar.billingnstock.tax.entities.TaxEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.user.entities.EmpDepartment;
@@ -121,6 +122,7 @@ public class AppServletContextListener implements ServletContextListener {
 		ObjectifyService.register(ReceiptVoucherEntity.class);
 		ObjectifyService.register(PurchaseVoucherEntity.class);
 		ObjectifyService.register(TaskEntity.class);
+		ObjectifyService.register(TaskSettingsEntity.class);
 		ObjectifyService.register(LeaveDetailEntity.class);
 		ObjectifyService.register(LeaveAppEntity.class);
 		ObjectifyService.register(LeaveMasterEntity.class);

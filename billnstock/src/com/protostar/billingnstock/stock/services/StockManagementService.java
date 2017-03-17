@@ -436,7 +436,7 @@ public class StockManagementService extends BaseService {
 
 		if (purchaseOrderEntity.getStatus() == DocumentStatus.FINALIZED
 				&& purchaseOrderEntity.isStatusAlreadyFinalized()) {
-			throw new RuntimeException("Save not allowed. StockItemsReceiptEntity is already FINALIZED: "
+			throw new RuntimeException("Save not allowed. Purchase Order is already FINALIZED: "
 					+ this.getClass().getSimpleName() + " Finalized entity can't be altered.");
 		}
 		List<StockLineItem> productLineItemList = purchaseOrderEntity.getProductLineItemList();

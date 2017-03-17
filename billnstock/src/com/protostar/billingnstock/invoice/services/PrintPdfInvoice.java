@@ -99,7 +99,7 @@ public class PrintPdfInvoice extends HttpServlet {
 			List<StockLineItem> productLineItemList = invoiceEntity
 					.getProductLineItemList();
 
-			root.put("docuStatus", invoiceEntity.getStatus());
+			root.put("docStatus", invoiceEntity.getStatus());
 			root.put("createdBy", invoiceEntity.getCreatedBy().getFirstName()
 					+ " " + invoiceEntity.getCreatedBy().getLastName());
 			UserEntity approvedBy = invoiceEntity.getApprovedBy();

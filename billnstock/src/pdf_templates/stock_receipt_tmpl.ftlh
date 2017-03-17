@@ -87,12 +87,12 @@ td {
 										<b>Status:</b>
 									</td>
 									<td align="left" style="border: 0px;">
-										${docuStatus}
+										${docStatus}
 									</td>
 								</tr>
 								<tr>
 									<td align="right" style="border: 0px;">
-										<b>Receipt Date:</b>
+										<b>Created Date:</b>
 									</td>
 									<td align="left" style="border: 0px;">
 										${createdDate}
@@ -108,7 +108,11 @@ td {
 								</tr>
 								<tr>
 								<td align="right" style="border: 0px;">
-										<b>Approved By:</b>
+										<#if docStatus = 'REJECTED'> 
+											<b>Rejected By:</b> 
+										<#else>
+											<b>Approved By:</b>									
+										</#if>
 									</td>
 									<td align="left" style="border: 0px;">
 										${approvedBy}
@@ -116,7 +120,11 @@ td {
 								</tr>
 								<tr>
 									<td align="right" style="border: 0px;">
+										<#if docStatus = 'REJECTED'> 
+											<b>Rejected Date:</b> 
+										<#else>
 										<b>Approved Date:</b>
+										</#if>
 									</td>
 									<td align="left" style="border: 0px;">
 										${modifiedDate}

@@ -99,6 +99,7 @@ public class PrintPdfPurchaseOrder extends HttpServlet {
 			root.put("billTo", purchaseOrderEntity.getTo());
 			root.put("shipTo", purchaseOrderEntity.getShipTo());
 			root.put("pONum", purchaseOrderEntity.getItemNumber());
+			root.put("docStatus", purchaseOrderEntity.getStatus());
 			root.put("createdDateStr", createdDateStr);
 			root.put("modifiedDateStr", modifiedDateStr);
 			root.put("shippedVia", "" + purchaseOrderEntity.getShippedVia());
