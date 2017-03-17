@@ -26,6 +26,7 @@ public class QuotationEntity extends InvoiceEntity {
 
 		if (getId() == null) {
 			setCreatedDate(new Date());
+			setModifiedDate(new Date());
 		} else {
 			setModifiedDate(new Date());
 		}

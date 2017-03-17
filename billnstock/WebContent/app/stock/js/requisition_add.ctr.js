@@ -15,15 +15,17 @@ app
 
 					$scope.documentEntityTemp = {
 						requester : $scope.curUser,
-						status : 'DRAFT',
-						createdBy : $scope.curUser,
 						onBehalfOf : "",
 						expectedDate : new Date(),
 						createdDate : new Date(),
 						modifiedDate : new Date(),
 						modifiedBy : "",
 						business : null,
-						serviceLineItemList : []
+						serviceLineItemList : [],
+						status : 'DRAFT',
+						createdBy : $scope.curUser,
+						createdDate : new Date(),
+						modifiedDate : new Date()
 					};
 
 					$scope.requesterName = $scope.curUser.firstName + " "

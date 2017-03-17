@@ -43,7 +43,7 @@
 			<tr
 				ng-repeat="pOItem in purchaseOrderList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
 				<td>{{pOItem.itemNumber}}</td>
-				<td>{{pOItem.createdDate|formatDate}}</td>
+				<td>{{pOItem.createdDate|formatDateWithTime}}</td>
 				<td>{{pOItem.createdBy.firstName+"
 					"+pOItem.createdBy.lastName }}</td>
 				<td>{{pOItem.status}}</td>

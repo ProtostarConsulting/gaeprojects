@@ -32,7 +32,7 @@
 		<thead md-order="query.order" md-trigger="onorderchange">
 			<tr>
 				<th name="Invoice No." order-by="itemNumber"></th>
-				<th name="Invoice Date" order-by="createdDate"></th>
+				<th name="Created Date" order-by="createdDate"></th>
 				<th name="Status" order-by="status"></th>
 				<th name="Customer Name" order-by="customer.companyName"></th>
 				<th name="Final Total" order-by="finalTotal"></th>
@@ -45,7 +45,7 @@
 				ng-repeat="invoice in invoiceData | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
 
 				<td>{{invoice.itemNumber}}</td>
-				<td>{{invoice.createdDate | formatDate}}</td>
+				<td>{{invoice.createdDate | formatDateWithTime}}</td>
 				<td>{{invoice.status}}</td>
 				<td>{{invoice.customer.isCompany?invoice.customer.companyName:(invoice.customer.firstName
 					+' '+ invoice.customer.lastName)}}</td>

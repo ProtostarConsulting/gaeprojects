@@ -28,7 +28,9 @@ app
 							paidDate : null,
 							business : null,
 							status : 'DRAFT',
-							createdBy : $scope.curUser
+							createdBy : $scope.curUser,
+							createdDate : new Date(),
+							modifiedDate : new Date()
 						};
 					}
 

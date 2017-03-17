@@ -29,12 +29,12 @@
 	<table md-data-table class="md-primary" md-progress="deferred">
 		<thead md-order="query.order" md-trigger="onorderchange">
 			<tr>
-				<th name="Requisition No." order-by="itemNumber"></th>
+				<th name="Req. No." order-by="itemNumber"></th>
 				<th name="Created Date" order-by="createdBy"></th>
 				<th name="Created By" order-by="createdBy.firstName"></th>
 				<th name="Status" order-by="status"></th>
 				<th name="Expected Date" order-by="expectedDate"></th>
-				<th name="On Behalf Of" order-by="onBehalfOf"></th>
+				<!-- <th name="On Behalf Of" order-by="onBehalfOf"></th> -->
 				<th name="Actions"></th>
 			</tr>
 		</thead>
@@ -43,12 +43,12 @@
 				ng-repeat="requisition in requisitionList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
 
 				<td>{{requisition.itemNumber}}</td>
-				<td>{{requisition.createdDate|formatDate}}</td>
+				<td>{{requisition.createdDate|formatDateWithTime}}</td>
 				<td>{{requisition.createdBy.firstName+"
 					"+requisition.createdBy.lastName }}</td>
 				<td>{{requisition.status}}</td>
 				<td>{{requisition.expectedDate|formatDate}}</td>
-				<td>{{requisition.onBehalfOf}}</td>
+				<!-- <td>{{requisition.onBehalfOf}}</td> -->
 				<td>
 					<section layout="row">
 						<md-button class="md-icon-button"

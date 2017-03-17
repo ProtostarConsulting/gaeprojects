@@ -37,7 +37,7 @@
 				</md-input-container>
 				<md-input-container flex=25 flex-xs=100> <label>Created
 					Date </label> <input ng-disabled="true"
-					ng-value="documentEntity.createdDate | formatDate"></input> </md-input-container>
+					ng-value="documentEntity.createdDate | formatDateWithTime"></input> </md-input-container>
 			</div>
 		</div>
 		<div flex layout="row" layout-xs="column">
@@ -64,7 +64,14 @@
 					style="color: Green; height: 10px; width: 10px"></md-icon> </md-button>
 			</div>
 			<div layout="row" layout-xs="column" flex=60 flex-xs=100>
-				<span flex></span>
+				<md-input-container flex> <label>From
+					Warehouse </label> <md-select flex ng-model="documentEntity.fromWH"
+					placeholder="Select Warehouse"
+					ng-change="filterStockItemsByWarehouse(documentEntity.fromWH)">
+				<md-option ng-value="warehouse" ng-required="true"
+					ng-selected="(documentEntity.fromWH.id)?(documentEntity.fromWH.id == warehouse.id):($index == 0)"
+					ng-repeat="warehouse in warehouses">{{warehouse.warehouseName
+				}}</md-option> </md-select> </md-input-container>
 				<div layout="row" flex=50 flex-xs=100>
 					<md-input-container flex> <label>Approved
 						By </label> <input ng-disabled="true" ng-model="approvedBy"
@@ -72,7 +79,7 @@
 					</md-input-container>
 					<md-input-container flex> <label>Last
 						Modified Date </label> <input ng-disabled="true"
-						ng-value="documentEntity.modifiedDate | formatDate"></input> </md-input-container>
+						ng-value="documentEntity.modifiedDate | formatDateWithTime"></input> </md-input-container>
 				</div>
 			</div>
 		</div>

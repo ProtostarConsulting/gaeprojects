@@ -23,7 +23,7 @@ public abstract class BaseEntity {
 	private Date modifiedDate;
 	private String modifiedBy;
 	private String note;
-	
+
 	@Index
 	private Ref<UserEntity> createdBy;
 	@Index
@@ -31,7 +31,7 @@ public abstract class BaseEntity {
 
 	@Index
 	private boolean isDeleted = false;
-	
+
 	public BaseEntity() {
 		super();
 	}
@@ -45,6 +45,7 @@ public abstract class BaseEntity {
 
 		if (getId() == null) {
 			setCreatedDate(new Date());
+			setModifiedDate(new Date());
 		} else {
 			setModifiedDate(new Date());
 		}
@@ -83,21 +84,23 @@ public abstract class BaseEntity {
 		if (business != null)
 			this.business = Ref.create(business);
 	}
+
 	public UserEntity getCreatedBy() {
 		return createdBy == null ? null : createdBy.get();
 	}
 
 	public void setCreatedBy(UserEntity createdBy) {
 		if (createdBy != null)
-		this.createdBy = Ref.create(createdBy);
+			this.createdBy = Ref.create(createdBy);
 	}
+
 	public UserEntity getApprovedBy() {
 		return approvedBy == null ? null : approvedBy.get();
 	}
 
 	public void setApprovedBy(UserEntity approvedBy) {
 		if (approvedBy != null)
-		this.approvedBy = Ref.create(approvedBy);
+			this.approvedBy = Ref.create(approvedBy);
 	}
 
 	public Long getId() {

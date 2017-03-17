@@ -486,7 +486,7 @@ app
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
 							loadAllCustomers();
-							//$scope.getAllWarehouseByBusiness();
+							$scope.getAllWarehouseByBusiness();
 							$scope.getTaxesByVisibility();
 							$scope.getInvoiceSettingsByBiz();
 							$scope.reCalculateTotal();
