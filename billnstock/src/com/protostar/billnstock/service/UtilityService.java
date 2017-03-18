@@ -15,8 +15,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 public class UtilityService {
 
-	private final static Logger log = Logger.getLogger(UtilityService.class
-			.getName());
+	private final static Logger log = Logger.getLogger(UtilityService.class.getName());
 
 	public static String getNextPRN(String role) {
 		Calendar rightNow = Calendar.getInstance();
@@ -26,8 +25,7 @@ public class UtilityService {
 		}
 
 		int cy = rightNow.get(Calendar.YEAR);
-		return role.toUpperCase().charAt(0) + "-" + cy + "-"
-				+ String.format("%05d", getCurrentYearNextCounter(cy));
+		return role.toUpperCase().charAt(0) + "-" + cy + "-" + String.format("%05d", getCurrentYearNextCounter(cy));
 	}
 
 	private static Long getCurrentYearNextCounter(final long cy) {
@@ -57,20 +55,18 @@ public class UtilityService {
 		return 0L;
 	}
 
-	public static Map<String, String> getMultiPartFileItemsWithFileAsString(
-			HttpServletRequest request) throws IOException {
+	public static Map<String, String> getMultiPartFileItemsWithFileAsString(HttpServletRequest request)
+			throws IOException {
 		try {
 			if (request.getHeader("Content-Type") != null
-					&& request.getHeader("Content-Type").startsWith(
-							"multipart/form-data")) {
+					&& request.getHeader("Content-Type").startsWith("multipart/form-data")) {
 
 				ServletFileUpload upload = new ServletFileUpload();
 				FileItemIterator iterator = upload.getItemIterator(request);
 				Map<String, String> items = new HashMap<String, String>();
 				while (iterator.hasNext()) {
 					FileItemStream next = iterator.next();
-					items.put(next.getFieldName(),
-							UtilityService.readAsString(next.openStream()));
+					items.put(next.getFieldName(), UtilityService.readAsString(next.openStream()));
 
 					/*
 					 * if (next.getName() == null)
@@ -84,21 +80,19 @@ public class UtilityService {
 		} catch (Exception e) {
 			log.severe(e.getMessage());
 			e.printStackTrace();
-			throw new IOException(
-					"Error Occurred while uploading the csv file.", e);
+			throw new IOException("Error Occurred while uploading the csv file.", e);
 		}
 
 		return null;
 
 	}
 
-	public static Map<String, Object> getMultiPartFileItemsWithFileAsBytes(
-			HttpServletRequest request) throws IOException {
+	public static Map<String, Object> getMultiPartFileItemsWithFileAsBytes(HttpServletRequest request)
+			throws IOException {
 		try {
 
 			if (request.getHeader("Content-Type") != null
-					&& request.getHeader("Content-Type").startsWith(
-							"multipart/form-data")) {
+					&& request.getHeader("Content-Type").startsWith("multipart/form-data")) {
 
 				ServletFileUpload upload = new ServletFileUpload();
 				FileItemIterator iterator = upload.getItemIterator(request);
@@ -107,14 +101,12 @@ public class UtilityService {
 					FileItemStream next = iterator.next();
 
 					if ("file".equalsIgnoreCase(next.getFieldName())) {
-						UploadFileInfo uploadFileInfo = new UploadFileInfo(
-								next.getName(), UtilityService.readAsBytes(next
-										.openStream()));
+						UploadFileInfo uploadFileInfo = new UploadFileInfo(next.getName(),
+								UtilityService.readAsBytes(next.openStream()));
 						uploadFileInfo.setContentType(next.getContentType());
 						items.put(next.getFieldName(), uploadFileInfo);
 					} else
-						items.put(next.getFieldName(),
-								UtilityService.readAsString(next.openStream()));
+						items.put(next.getFieldName(), UtilityService.readAsString(next.openStream()));
 
 				}
 				return items;
@@ -122,8 +114,7 @@ public class UtilityService {
 		} catch (Exception e) {
 			log.severe(e.getMessage());
 			e.printStackTrace();
-			throw new IOException(
-					"Error Occurred while uploading the csv file.", e);
+			throw new IOException("Error Occurred while uploading the csv file.", e);
 		}
 
 		return null;
@@ -172,5 +163,18 @@ public class UtilityService {
 		val = val.replace("\n", "").replace("\r", "").trim();
 		val = val.replace(',', '-');
 		return val.trim();
+	}
+
+	public static String getCurrentAppURL() {
+		String hostUrl;
+		String environment = System.getProperty("com.google.appengine.runtime.environment");
+		if ("Production".equalsIgnoreCase(environment)) {
+			String applicationId = System.getProperty("com.google.appengine.application.id");
+			//String version = System.getProperty("com.google.appengine.application.version");
+			hostUrl = "https://" + applicationId + ".appspot.com/";
+		} else {
+			hostUrl = "http://localhost:8888";
+		}
+		return hostUrl;
 	}
 }

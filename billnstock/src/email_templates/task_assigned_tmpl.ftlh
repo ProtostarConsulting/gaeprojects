@@ -14,6 +14,7 @@
   <#else><p><b>Completion Date:</b> ${completionDate}</p>
   </#if>
   
+  <p> Please use this URL to see further details:  <a href="${currentAppURL}"> ${currentAppURL} </a> <p>
   <br>
   <p>Thanks and Regards,</p>  
   <p>${businessName}</p>

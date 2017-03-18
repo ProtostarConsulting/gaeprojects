@@ -27,8 +27,7 @@ import com.protostar.billingnstock.taskmangement.TaskSettingsEntity;
 import com.protostar.billnstock.until.data.Constants.DocumentStatus;
 
 public class EmailHandler {
-	public void sendPurchaseOrderEmail(PurchaseOrderEntity purchaseOrder)
-			throws MessagingException, IOException {
+	public void sendPurchaseOrderEmail(PurchaseOrderEntity purchaseOrder) throws MessagingException, IOException {
 
 		StockSettingsEntity stockSettings = new StockManagementService()
 				.getStockSettingsByBiz(purchaseOrder.getBusiness().getId());
@@ -40,27 +39,22 @@ public class EmailHandler {
 		String emailSubject = "";
 
 		if (purchaseOrder.getStatus() == DocumentStatus.FINALIZED) {
-			emailSubject = "Purchase Order No." + purchaseOrder.getItemNumber()
-					+ " " + "Approved";
+			emailSubject = "Purchase Order No." + purchaseOrder.getItemNumber() + " " + "Approved";
 		}
 
 		if (purchaseOrder.getStatus() == DocumentStatus.REJECTED) {
-			emailSubject = "Purchase Order No." + purchaseOrder.getItemNumber()
-					+ " " + "Rejected";
+			emailSubject = "Purchase Order No." + purchaseOrder.getItemNumber() + " " + "Rejected";
 		}
 
-		String messageBody = new EmailHtmlTemplateService()
-				.purchaseOrderFinalizedEmail(purchaseOrder);
+		String messageBody = new EmailHtmlTemplateService().purchaseOrderFinalizedEmail(purchaseOrder);
 
 		Queue queue = QueueFactory.getDefaultQueue();
-		queue.add(TaskOptions.Builder.withPayload(new EmailPOTask(
-				"ganesh.lawande@protostar.co.in", stockSettings.getBusiness()
-						.getBusinessName(), messageBody, stockSettings
-						.getEmailNotificationDL(), emailSubject)));
+		queue.add(TaskOptions.Builder.withPayload(
+				new EmailPOTask("ganesh.lawande@protostar.co.in", stockSettings.getBusiness().getBusinessName(),
+						messageBody, stockSettings.getEmailNotificationDL(), emailSubject)));
 	}
 
-	public void sendStockShipmentEmail(StockItemsShipmentEntity stockShipment)
-			throws MessagingException, IOException {
+	public void sendStockShipmentEmail(StockItemsShipmentEntity stockShipment) throws MessagingException, IOException {
 
 		StockSettingsEntity stockSettings = new StockManagementService()
 				.getStockSettingsByBiz(stockShipment.getBusiness().getId());
@@ -72,27 +66,22 @@ public class EmailHandler {
 		String emailSubject = "";
 
 		if (stockShipment.getStatus() == DocumentStatus.FINALIZED) {
-			emailSubject = "Stock Shipment No." + stockShipment.getItemNumber()
-					+ " " + "Approved";
+			emailSubject = "Stock Shipment No." + stockShipment.getItemNumber() + " " + "Approved";
 		}
 
 		if (stockShipment.getStatus() == DocumentStatus.REJECTED) {
-			emailSubject = "Stock Shipment No." + stockShipment.getItemNumber()
-					+ " " + "Rejected";
+			emailSubject = "Stock Shipment No." + stockShipment.getItemNumber() + " " + "Rejected";
 		}
 
-		String messageBody = new EmailHtmlTemplateService()
-				.stockShipmentFinalizedEmail(stockShipment);
+		String messageBody = new EmailHtmlTemplateService().stockShipmentFinalizedEmail(stockShipment);
 
 		Queue queue = QueueFactory.getDefaultQueue();
-		queue.add(TaskOptions.Builder.withPayload(new EmailStockShipmentTask(
-				"ganesh.lawande@protostar.co.in", stockSettings.getBusiness()
-						.getBusinessName(), messageBody, stockSettings
-						.getEmailNotificationDL(), emailSubject)));
+		queue.add(TaskOptions.Builder.withPayload(new EmailStockShipmentTask("ganesh.lawande@protostar.co.in",
+				stockSettings.getBusiness().getBusinessName(), messageBody, stockSettings.getEmailNotificationDL(),
+				emailSubject)));
 	}
 
-	public void sendStockReceiptEmail(StockItemsReceiptEntity stockReceipt)
-			throws MessagingException, IOException {
+	public void sendStockReceiptEmail(StockItemsReceiptEntity stockReceipt) throws MessagingException, IOException {
 
 		StockSettingsEntity stockSettings = new StockManagementService()
 				.getStockSettingsByBiz(stockReceipt.getBusiness().getId());
@@ -105,59 +94,50 @@ public class EmailHandler {
 		String emailSubject = "";
 
 		if (stockReceipt.getStatus() == DocumentStatus.FINALIZED) {
-			emailSubject = "Stock Receipt No." + stockReceipt.getItemNumber()
-					+ " " + "Approved";
+			emailSubject = "Stock Receipt No." + stockReceipt.getItemNumber() + " " + "Approved";
 		}
 
 		if (stockReceipt.getStatus() == DocumentStatus.REJECTED) {
-			emailSubject = "Stock Receipt No." + stockReceipt.getItemNumber()
-					+ " " + "Rejected";
+			emailSubject = "Stock Receipt No." + stockReceipt.getItemNumber() + " " + "Rejected";
 		}
 
-		String messageBody = new EmailHtmlTemplateService()
-				.stockReceiptFinalizedEmail(stockReceipt);
+		String messageBody = new EmailHtmlTemplateService().stockReceiptFinalizedEmail(stockReceipt);
 
 		Queue queue = QueueFactory.getDefaultQueue();
-		queue.add(TaskOptions.Builder.withPayload(new EmailStockReceiptTask(
-				"ganesh.lawande@protostar.co.in", stockSettings.getBusiness()
-						.getBusinessName(), messageBody, stockSettings
-						.getEmailNotificationDL(), emailSubject)));
+		queue.add(TaskOptions.Builder.withPayload(new EmailStockReceiptTask("ganesh.lawande@protostar.co.in",
+				stockSettings.getBusiness().getBusinessName(), messageBody, stockSettings.getEmailNotificationDL(),
+				emailSubject)));
 	}
 
-	public void sendTaskAssignedEmail(TaskEntity taskEntity)
-			throws MessagingException, IOException {
+	public void sendTaskAssignedEmail(TaskEntity taskEntity) throws MessagingException, IOException {
 
 		TaskSettingsEntity taskSettings = new TaskManagementService()
 				.getTaskSettingsByBiz(taskEntity.getBusiness().getId());
 
-		if (taskSettings == null || !taskSettings.isEmailNotification()
-				|| taskSettings.getEmailNotificationDL().isEmpty()) {
+		if (taskSettings == null || !taskSettings.isEmailNotification()) {
 			return;
 		}
 
-		String messageBody = new EmailHtmlTemplateService()
-				.taskAssignedEmail(taskEntity);
+		String messageBody = new EmailHtmlTemplateService().taskAssignedEmail(taskEntity);
 
 		String emailSubject = "";
 
 		TaskStatus currentTaskStatus = taskEntity.getTaskStatus();
 		if (currentTaskStatus.equals(TaskStatus.COMPLETED)) {
-			emailSubject = "Task Completed, Task No:"
-					+ taskEntity.getItemNumber();
+			emailSubject = "Task Completed, Task No:" + taskEntity.getItemNumber();
 		} else {
-			emailSubject = "Task Assigned,Task No: "
-					+ taskEntity.getItemNumber();
+			emailSubject = "Task Assigned,Task No: " + taskEntity.getItemNumber();
 		}
-		
+
 		Queue queue = QueueFactory.getDefaultQueue();
-		queue.add(TaskOptions.Builder.withPayload(new TaskAssignedEmail(
-				"ganesh.lawande@protostar.co.in", taskEntity.getBusiness()
-						.getBusinessName(), messageBody, taskSettings
-						.getEmailNotificationDL(), emailSubject)));
+		String toEmailIds = taskEntity.getAssignedTo().getEmail_id() + "," + taskEntity.getAssignedBy().getEmail_id();
+		if (taskSettings.getEmailNotificationDL() != null && !taskSettings.getEmailNotificationDL().isEmpty())
+			toEmailIds += "," + taskSettings.getEmailNotificationDL();
+		queue.add(TaskOptions.Builder.withPayload(new TaskAssignedEmail(taskEntity.getAssignedBy().getEmail_id(),
+				taskEntity.getBusiness().getBusinessName(), messageBody, toEmailIds, emailSubject)));
 	}
 
-	public void sendInvoiceEmail(InvoiceEntity invoice)
-			throws MessagingException, IOException {
+	public void sendInvoiceEmail(InvoiceEntity invoice) throws MessagingException, IOException {
 
 		InvoiceSettingsEntity invoiceSettings = new InvoiceService()
 				.getInvoiceSettingsByBiz((invoice.getBusiness().getId()));
@@ -170,21 +150,17 @@ public class EmailHandler {
 		String emailSubject = "";
 
 		if (invoice.getStatus() == DocumentStatus.FINALIZED) {
-			emailSubject = "Invoice No." + invoice.getItemNumber() + " "
-					+ "Approved";
+			emailSubject = "Invoice No." + invoice.getItemNumber() + " " + "Approved";
 		}
 
 		if (invoice.getStatus() == DocumentStatus.REJECTED) {
-			emailSubject = "Invoice No." + invoice.getItemNumber() + " "
-					+ "Rejected";
+			emailSubject = "Invoice No." + invoice.getItemNumber() + " " + "Rejected";
 		}
-		String messageBody = new EmailHtmlTemplateService()
-				.invoiceFinalizedEmail(invoice);
+		String messageBody = new EmailHtmlTemplateService().invoiceFinalizedEmail(invoice);
 
 		Queue queue = QueueFactory.getDefaultQueue();
-		queue.add(TaskOptions.Builder.withPayload(new InvoiceEmailTask(
-				"ganesh.lawande@protostar.co.in", invoiceSettings.getBusiness()
-						.getBusinessName(), messageBody, invoiceSettings
-						.getEmailNotificationDL(), emailSubject)));
+		queue.add(TaskOptions.Builder.withPayload(
+				new InvoiceEmailTask("ganesh.lawande@protostar.co.in", invoiceSettings.getBusiness().getBusinessName(),
+						messageBody, invoiceSettings.getEmailNotificationDL(), emailSubject)));
 	}
 }

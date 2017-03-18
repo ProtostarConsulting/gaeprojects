@@ -14,10 +14,11 @@
 		</md-subheader>
 		<span flex></span>
 		<div align="right">
-		<md-button ng-show="hasUserAuthority(curUser, 'TaskManagement.ModuleAdmin')"
+			<md-button
+				ng-show="hasUserAuthority(curUser, 'TaskManagement.ModuleAdmin')"
 				layout-align="center end" class="md-icon-button md-accent"
-				ui-sref="taskmanagement.taskSettings" aria-label="Favorite"> <md-icon
-				md-svg-icon="img/icons/ic_settings_black_24px.svg">
+				ui-sref="taskmanagement.taskSettings" aria-label="Favorite">
+			<md-icon md-svg-icon="img/icons/ic_settings_black_24px.svg">
 			<md-tooltip>Task Settings</md-tooltip></md-icon> </md-button>
 		</div>
 	</section>
@@ -32,6 +33,9 @@
 					<div ng-message="required">This is required field.</div>
 				</div>
 				</md-input-container>
+				<md-input-container flex="25" flex-xs="100"> <label>Task
+					No.</label> <input ng-model="taskEntity.itemNumber"
+					placeholder="Auto generated number" ng-disabled="true"></input> </md-input-container>
 				<md-input-container flex="25" flex-xs="100"> <label>Assigned
 					To </label> <md-select name="assignedTo" placeholder="--Assign To--"
 					ng-model="taskEntity.assignedTo" ng-required="true"> <md-option

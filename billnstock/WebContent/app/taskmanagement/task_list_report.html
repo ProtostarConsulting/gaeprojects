@@ -52,7 +52,7 @@
 					style="font-family: arial, sans-serif; border-collapse: collapse; width: 100%;">
 					<thead md-order="reportQuery.order" md-trigger="onorderchange">
 						<tr>
-							<th name="Sr.No."
+							<th name="Task No."
 								style="border: 1px solid black; text-align: left; padding: 2px;"></th>
 							<th name="Assigned To"
 								style="border: 1px solid black; text-align: left; padding: 2px;"></th>
@@ -76,8 +76,7 @@
 						ng-repeat="task in taskEntityList | proOrderObjectByDateField: 'assignedDate'"> -->
 						<tr ng-repeat="task in taskEntityList | orderBy: reportQuery.order">
 							<td
-								style="border: 1px solid black; text-align: left; padding: 2px;">{{$index
-								+ 1}}</td>
+								style="border: 1px solid black; text-align: left; padding: 2px;">{{task.itemNumber}}</td>
 							<td
 								style="border: 1px solid black; text-align: left; padding: 2px;">{{(task.assignedTo.firstName
 								+ ' ' + task.assignedTo.lastName) | uppercase}}</td>

@@ -17,6 +17,7 @@ import com.protostar.billingnstock.stock.entities.StockItemsShipmentEntity.Shipm
 import com.protostar.billingnstock.taskmangement.TaskEntity;
 import com.protostar.billingnstock.taskmangement.TaskEntity.TaskStatus;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
+import com.protostar.billnstock.service.UtilityService;
 import com.protostar.billnstock.until.data.Constants.DocumentStatus;
 
 import freemarker.core.ParseException;
@@ -51,13 +52,10 @@ public class EmailHtmlTemplateService {
 			Map<String, Object> root = new HashMap<String, Object>();
 
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
-			String poModifiedDate = sdfDate.format(purchaseOrder
-					.getModifiedDate());
+			String poModifiedDate = sdfDate.format(purchaseOrder.getModifiedDate());
 
-			root.put("stockModuleApprover", purchaseOrder.getApprovedBy()
-					.getFirstName()
-					+ " "
-					+ purchaseOrder.getApprovedBy().getLastName());
+			root.put("stockModuleApprover",
+					purchaseOrder.getApprovedBy().getFirstName() + " " + purchaseOrder.getApprovedBy().getLastName());
 			root.put("poModifiedDate", poModifiedDate);
 			root.put("supplier", purchaseOrder.getSupplier().getSupplierName());
 			root.put("finalTotal", purchaseOrder.getFinalTotal());
@@ -100,11 +98,9 @@ public class EmailHtmlTemplateService {
 			root.put("businessAdressState", business.getAddress().getState());
 			root.put("businessAdressCountry", country);
 
-			Template temp = getConfiguration().getTemplate(
-					"email_templates/purchase_order_email_tmpl.ftlh");
+			Template temp = getConfiguration().getTemplate("email_templates/purchase_order_email_tmpl.ftlh");
 
-			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
-					500);
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(500);
 			Writer out = new PrintWriter(byteArrayOutputStream);
 			temp.process(root, out);
 			// return escapeHtml(byteArrayOutputStream.toString());
@@ -126,21 +122,17 @@ public class EmailHtmlTemplateService {
 		return "";
 	}
 
-	public String stockShipmentFinalizedEmail(
-			StockItemsShipmentEntity stockShipment) {
+	public String stockShipmentFinalizedEmail(StockItemsShipmentEntity stockShipment) {
 
 		try {
 
 			Map<String, Object> root = new HashMap<String, Object>();
 
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
-			String shipmentModifiedDate = sdfDate.format(stockShipment
-					.getModifiedDate());
+			String shipmentModifiedDate = sdfDate.format(stockShipment.getModifiedDate());
 
-			root.put("stockModuleApprover", stockShipment.getApprovedBy()
-					.getFirstName()
-					+ " "
-					+ stockShipment.getApprovedBy().getLastName());
+			root.put("stockModuleApprover",
+					stockShipment.getApprovedBy().getFirstName() + " " + stockShipment.getApprovedBy().getLastName());
 			root.put("shipmentModifiedDate", shipmentModifiedDate);
 			root.put("finalTotal", stockShipment.getFinalTotal());
 			root.put("fromWH", stockShipment.getFromWH().getWarehouseName());
@@ -176,8 +168,7 @@ public class EmailHtmlTemplateService {
 				if (customer.getIsCompany()) {
 					custName = customer.getCompanyName();
 				} else {
-					custName = customer.getFirstName() + " "
-							+ customer.getLastName();
+					custName = customer.getFirstName() + " " + customer.getLastName();
 				}
 
 				root.put("customerName", custName);
@@ -189,8 +180,7 @@ public class EmailHtmlTemplateService {
 				if (partner.getIsCompany()) {
 					partnerName = partner.getCompanyName();
 				} else {
-					partnerName = partner.getFirstName() + " "
-							+ partner.getLastName();
+					partnerName = partner.getFirstName() + " " + partner.getLastName();
 				}
 
 				root.put("partnerName", partnerName);
@@ -217,11 +207,9 @@ public class EmailHtmlTemplateService {
 			root.put("businessAdressState", business.getAddress().getState());
 			root.put("businessAdressCountry", country);
 
-			Template temp = getConfiguration().getTemplate(
-					"email_templates/stock_shipment_tmpl.ftlh");
+			Template temp = getConfiguration().getTemplate("email_templates/stock_shipment_tmpl.ftlh");
 
-			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
-					500);
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(500);
 			Writer out = new PrintWriter(byteArrayOutputStream);
 			temp.process(root, out);
 			// return escapeHtml(byteArrayOutputStream.toString());
@@ -243,26 +231,20 @@ public class EmailHtmlTemplateService {
 		return "";
 	}
 
-	public String stockReceiptFinalizedEmail(
-			StockItemsReceiptEntity stockItemsReceipt) {
+	public String stockReceiptFinalizedEmail(StockItemsReceiptEntity stockItemsReceipt) {
 
 		try {
 
 			Map<String, Object> root = new HashMap<String, Object>();
 
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
-			String receiptModifiedDate = sdfDate.format(stockItemsReceipt
-					.getModifiedDate());
+			String receiptModifiedDate = sdfDate.format(stockItemsReceipt.getModifiedDate());
 
-			root.put("stockModuleApprover", stockItemsReceipt.getApprovedBy()
-					.getFirstName()
-					+ " "
+			root.put("stockModuleApprover", stockItemsReceipt.getApprovedBy().getFirstName() + " "
 					+ stockItemsReceipt.getApprovedBy().getLastName());
 			root.put("receiptModifiedDate", receiptModifiedDate);
-			root.put("supplier", stockItemsReceipt.getSupplier()
-					.getSupplierName());
-			root.put("warehouse", stockItemsReceipt.getWarehouse()
-					.getWarehouseName());
+			root.put("supplier", stockItemsReceipt.getSupplier().getSupplierName());
+			root.put("warehouse", stockItemsReceipt.getWarehouse().getWarehouseName());
 			root.put("finalTotal", stockItemsReceipt.getFinalTotal());
 
 			String documentStatus = "";
@@ -303,11 +285,9 @@ public class EmailHtmlTemplateService {
 			root.put("businessAdressState", business.getAddress().getState());
 			root.put("businessAdressCountry", country);
 
-			Template temp = getConfiguration().getTemplate(
-					"email_templates/stock_receipt_tmpl.ftlh");
+			Template temp = getConfiguration().getTemplate("email_templates/stock_receipt_tmpl.ftlh");
 
-			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
-					500);
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(500);
 			Writer out = new PrintWriter(byteArrayOutputStream);
 			temp.process(root, out);
 			// return escapeHtml(byteArrayOutputStream.toString());
@@ -336,14 +316,12 @@ public class EmailHtmlTemplateService {
 			Map<String, Object> root = new HashMap<String, Object>();
 
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
-			String taskAssignedDate = sdfDate.format(taskEntity
-					.getAssignedDate());
+			String taskAssignedDate = sdfDate.format(taskEntity.getAssignedDate());
 
 			String estCompletionDate = "";
 			if (taskEntity.getEstCompletionDate() != null) {
 
-				estCompletionDate = sdfDate.format(taskEntity
-						.getEstCompletionDate());
+				estCompletionDate = sdfDate.format(taskEntity.getEstCompletionDate());
 
 			}
 
@@ -353,15 +331,14 @@ public class EmailHtmlTemplateService {
 				completionDate = sdfDate.format(taskEntity.getCompletionDate());
 			}
 
-			root.put("assignedBy", ""
-					+ taskEntity.getAssignedBy().getFirstName() + " "
-					+ taskEntity.getAssignedBy().getLastName());
-			root.put("assignedTo", taskEntity.getAssignedTo().getFirstName()
-					+ " " + taskEntity.getAssignedTo().getLastName());
+			root.put("assignedBy",
+					"" + taskEntity.getAssignedBy().getFirstName() + " " + taskEntity.getAssignedBy().getLastName());
+			root.put("assignedTo",
+					taskEntity.getAssignedTo().getFirstName() + " " + taskEntity.getAssignedTo().getLastName());
 
 			root.put("assignedDate", taskAssignedDate);
 			root.put("taskNo", taskEntity.getItemNumber());
-			root.put("estCompletionDate",estCompletionDate);
+			root.put("estCompletionDate", estCompletionDate);
 			root.put("completionDate", completionDate);
 
 			root.put("taskTitle", taskEntity.getTaskTitle());
@@ -392,11 +369,12 @@ public class EmailHtmlTemplateService {
 			root.put("businessAdressState", business.getAddress().getState());
 			root.put("businessAdressCountry", country);
 
-			Template temp = getConfiguration().getTemplate(
-					"email_templates/task_assigned_tmpl.ftlh");
+			String currentAppURL = UtilityService.getCurrentAppURL();
+			root.put("currentAppURL", currentAppURL);
 
-			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
-					500);
+			Template temp = getConfiguration().getTemplate("email_templates/task_assigned_tmpl.ftlh");
+
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(500);
 			Writer out = new PrintWriter(byteArrayOutputStream);
 			temp.process(root, out);
 			// return escapeHtml(byteArrayOutputStream.toString());
@@ -427,10 +405,8 @@ public class EmailHtmlTemplateService {
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
 			String approvedDate = sdfDate.format(invoice.getModifiedDate());
 
-			root.put("invoiceModuleApprover", invoice.getApprovedBy()
-					.getFirstName()
-					+ " "
-					+ invoice.getApprovedBy().getLastName());
+			root.put("invoiceModuleApprover",
+					invoice.getApprovedBy().getFirstName() + " " + invoice.getApprovedBy().getLastName());
 			root.put("approvedDate", approvedDate);
 			root.put("fromWH", invoice.getFromWH().getWarehouseName());
 			root.put("finalTotal", invoice.getFinalTotal());
@@ -459,8 +435,7 @@ public class EmailHtmlTemplateService {
 			if (customer.getIsCompany()) {
 				custName = customer.getCompanyName();
 			} else {
-				custName = customer.getFirstName() + " "
-						+ customer.getLastName();
+				custName = customer.getFirstName() + " " + customer.getLastName();
 			}
 
 			root.put("customerName", custName);
@@ -486,11 +461,9 @@ public class EmailHtmlTemplateService {
 			root.put("businessAdressState", business.getAddress().getState());
 			root.put("businessAdressCountry", country);
 
-			Template temp = getConfiguration().getTemplate(
-					"email_templates/invoice_tmpl.ftlh");
+			Template temp = getConfiguration().getTemplate("email_templates/invoice_tmpl.ftlh");
 
-			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
-					500);
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(500);
 			Writer out = new PrintWriter(byteArrayOutputStream);
 			temp.process(root, out);
 			// return escapeHtml(byteArrayOutputStream.toString());
