@@ -1311,6 +1311,27 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
+	
+	crmService.addCRMSettings = function(crmSettings) {
+		var deferred = $q.defer();
+
+		gapi.client.crmService.addCRMSettings(crmSettings).execute(
+				function(resp) {
+					deferred.resolve(resp);
+				});
+
+		return deferred.promise;
+	}
+
+	crmService.getCRMSettingsByBiz = function(id) {
+		var deferred = $q.defer();
+		gapi.client.crmService.getCRMSettingsByBiz({
+			"id" : id
+		}).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}
 
 	// opportunity service
 

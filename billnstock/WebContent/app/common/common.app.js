@@ -816,6 +816,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		params : {
 			selectedContactNo : null
 		}
+	}).state('crm.crmSettings', {
+		url : "/crmSettings",
+		templateUrl : '/app/crm/crm_settings.html',
+		controller : 'crmSettingsCtr',
 	}).state('crm.opportunity', {
 		url : "/opportunity",
 		templateUrl : '/app/crm/opportunity_list.html',

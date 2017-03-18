@@ -4,29 +4,34 @@
 		<span hide-xs> <md-button class="md-icon-button"
 				aria-label="prev" ng-click="back()"> <md-tooltip>
 			go back</md-tooltip> <md-icon md-svg-icon="img/icons/ic_reply_black_24px.svg"
-				aria-label="go back"></md-icon> </md-button> <md-button ui-sref="crm.lead"
-				ng-click="close()" class="md-primary" show-gt-md> Lead </md-button>
-			<md-button ui-sref="crm.customerList" ng-click="close()"
-				class="md-primary" show-gt-md> Customer </md-button> <md-button
-				ui-sref="crm.opportunity" ng-click="close()" class="md-primary"
-				show-gt-md> Opportunity </md-button> <md-button
-				ui-sref="crm.contacts" ng-click="close()" class="md-primary"
-				show-gt-md> Contact </md-button> <md-button ui-sref="x"
-				ng-click="close()" class="md-primary" show-gt-md>
-			Newsletter </md-button> <md-button ui-sref="x" ng-click="close()"
-				class="md-primary" show-gt-md> Communication </md-button>
-		</span> <span hide-gt-xs>
-			<div class="md-toolbar-tools">
-				<span flex></span>
-				<section layout="row">
-					<md-button class="md-icon-button" aria-label="More"
-						ng-click="toggleRight()"> <md-icon
-						md-svg-icon="img/icons/more_vert.svg"></md-icon> </md-button>
+				aria-label="go back"></md-icon> </md-button></span>
+		<md-button ui-sref="crm.lead" ng-click="close()" class="md-primary"
+			show-gt-md> Lead </md-button>
+		<md-button ui-sref="crm.customerList" ng-click="close()"
+			class="md-primary" show-gt-md> Customer </md-button>
+		<md-button ui-sref="crm.opportunity" ng-click="close()"
+			class="md-primary" show-gt-md> Opportunity </md-button>
+		<md-button ui-sref="crm.contacts" ng-click="close()"
+			class="md-primary" show-gt-md> Contact </md-button>
+		<md-button ui-sref="x" ng-click="close()" class="md-primary"
+			show-gt-md> Newsletter </md-button>
+		<md-button ui-sref="x" ng-click="close()" class="md-primary"
+			show-gt-md> Communication </md-button>
 
-				</section>
-			</div>
-		</span>
+		<span flex></span>
+		<md-button ng-show="hasUserAuthority(curUser, 'CRM.ModuleAdmin')"
+			layout-align="center end" class="md-icon-button md-accent"
+			ui-sref="crm.crmSettings" aria-label="Favorite"> <md-icon
+			md-svg-icon="img/icons/ic_settings_black_24px.svg"> <md-tooltip>CRM
+		Settings</md-tooltip></md-icon> </md-button>
+		<section layout="row">
+			<md-button class="md-icon-button" aria-label="More"
+				ng-click="toggleRight()"> <md-icon
+				md-svg-icon="img/icons/more_vert.svg"></md-icon> </md-button>
+		</section>
+
 	</section>
+
 </div>
 <div>
 	<section layout="column" layout-align="start start" flex>
@@ -42,7 +47,7 @@
 			ui-sref="crm.contacts" ng-click="close()" class="md-primary"
 			show-gt-md> Contact </md-button> <md-button ui-sref="x"
 			ng-click="close()" class="md-primary" show-gt-md>
-		Newslatter </md-button> <md-button ui-sref="x" ng-click="close()"
+		Newsletter </md-button> <md-button ui-sref="x" ng-click="close()"
 			class="md-primary" show-gt-md> Communication </md-button> </md-sidenav>
 
 	</section>
