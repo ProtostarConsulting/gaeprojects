@@ -15,26 +15,29 @@
 <div>
 	<form ng-submit="$event.preventDefault()" name="documentForm">
 
-		<div layout="row" layout-xs="column">
-			<div layout="row" flex>
-				<md-input-container flex=40> <label>Purchase
+		<div flex layout="row" layout-xs="column">
+			<div layout="row" flex=40 flex-xs=100>
+				<md-input-container flex> <label>Purchase
 					Order No.</label> <input ng-model="documentEntity.itemNumber"
 					placeholder="Auto generated number" ng-disabled="true"></input> </md-input-container>
 				<md-input-container flex> <label>Document
 					Status </label> <input type="text" ng-disabled="true"
 					ng-model="documentEntity.status"> </md-input-container>
-				<md-input-container flex=15> <label>Created
+			</div>
+			<div layout="row" flex=60 flex-xs=100>
+				<span flex></span>
+				<md-input-container flex=25 flex-xs=100> <label>Created
 					By </label> <input ng-disabled="true" ng-model="createdBy"
 					ng-init="createdBy = documentEntity.createdBy? documentEntity.createdBy.firstName + ' ' + documentEntity.createdBy.lastName: ''"></input>
 				</md-input-container>
-				<md-input-container flex=15> <label>Created
+				<md-input-container flex=25 flex-xs=100> <label>Created
 					Date </label> <input ng-disabled="true"
 					ng-value="documentEntity.createdDate | formatDateWithTime"></input>
 				</md-input-container>
 			</div>
 		</div>
 		<div layout="row" layout-xs="column">
-			<div flex=40 layout="row" layout-xs="column">
+			<div layout="row" layout-xs="column" flex=40 flex-xs=100>
 				<md-input-container flex> <label>Warehouse
 				</label> <md-select flex ng-model="documentEntity.warehouse"
 					placeholder="Select Warehouse" ng-change="warehouseChanged"
@@ -42,78 +45,79 @@
 					ng-selected="(documentEntity.warehouse.id)?(documentEntity.warehouse.id == warehouse.id):($index == 0)"
 					ng-repeat="warehouse in warehouses">{{warehouse.warehouseName
 				}}</md-option> </md-select> </md-input-container>
-
-				<md-autocomplete flex required md-input-name="autocompleteField"
-					md-no-cache=true md-selected-item="documentEntity.supplier"
-					md-search-text="searchTextInput"
-					md-items="item in querySearch(searchTextInput)"
-					md-item-text="item.supplierName" md-floating-label="Supplier Name">
-				<md-item-template> <span
-					md-highlight-text="searchTextInput">{{item.supplierName}}</span> </md-item-template>
-				<div ng-messages="documentForm.autocompleteField.$error"
-					ng-if="documentForm.autocompleteField.$touched">
-					<div ng-message="required">Supplier field is required.</div>
-				</div>
-				</md-autocomplete>
-				<div>
-					<md-icon md-svg-src="img/icons/ic_queue_black_24px.svg"
-						ng-click="addSupplier()" class="name"
-						style="color: Green; height: 18px; width: 18px"></md-icon>
+				<div layout="row" flex>
+					<md-autocomplete flex required md-input-name="autocompleteField"
+						md-no-cache=true md-selected-item="documentEntity.supplier"
+						md-search-text="searchTextInput"
+						md-items="item in querySearch(searchTextInput)"
+						md-item-text="item.supplierName" md-floating-label="Supplier Name">
+					<md-item-template> <span
+						md-highlight-text="searchTextInput">{{item.supplierName}}</span> </md-item-template>
+					<div ng-messages="documentForm.autocompleteField.$error"
+						ng-if="documentForm.autocompleteField.$touched">
+						<div ng-message="required">Supplier field is required.</div>
+					</div>
+					</md-autocomplete>
+					<div>
+						<md-icon md-svg-src="img/icons/ic_queue_black_24px.svg"
+							ng-click="addSupplier()" class="name"
+							style="color: Green; height: 18px; width: 18px"></md-icon>
+					</div>
 				</div>
 			</div>
-			<md-input-container flex> <label>Select
-				Due Date</label> <md-datepicker flex ng-model="documentEntity.poDueDate"
-				md-placeholder="Select Date"></md-datepicker> </md-input-container>
-			<md-input-container flex=15> <label>Approved
-				By </label> <input ng-disabled="true" ng-model="approvedBy"
-				ng-init="approvedBy = documentEntity.approvedBy? documentEntity.approvedBy.firstName + ' ' + documentEntity.approvedBy.lastName : 'NA'"></input>
-			</md-input-container>
-			<md-input-container flex=15> <label>Last
-				Modified Date </label> <input ng-disabled="true"
-				ng-value="documentEntity.modifiedDate | formatDateWithTime"></input>
-			</md-input-container>
-
+			<div layout="row" layout-xs="column" flex=60 flex-xs=100>
+				<md-input-container flex> <label>Select
+					Due Date</label> <md-datepicker flex ng-model="documentEntity.poDueDate"
+					md-placeholder="Select Date"></md-datepicker> </md-input-container>
+				<div layout="row" flex=50 flex-xs=100>
+					<md-input-container flex> <label>Approved
+						By </label> <input ng-disabled="true" ng-model="approvedBy"
+						ng-init="approvedBy = documentEntity.approvedBy? documentEntity.approvedBy.firstName + ' ' + documentEntity.approvedBy.lastName : 'NA'"></input>
+					</md-input-container>
+					<md-input-container flex> <label>Last
+						Modified Date </label> <input ng-disabled="true"
+						ng-value="documentEntity.modifiedDate | formatDateWithTime"></input>
+					</md-input-container>
+				</div>
+			</div>
 
 		</div>
 
 		<div ng-if="settingsObj.linkPOToBudget" layout="row"
 			layout-xs="column">
-			<div layout="row" flex>
-				<md-input-container flex=40> <label>Budget
-				</label> <md-select flex ng-model="documentEntity.budget"
-					placeholder="Select Budget" ng-required="true"> <md-option
-					ng-value="budget"
-					ng-selected="(documentEntity.budget.id)?(documentEntity.budget.id == budget.id):false"
-					ng-repeat="budget in budgetList">{{budget.type + "-" +
-				budget.period }}</md-option> </md-select> </md-input-container>
+			<md-input-container flex=40 flex-xs=100> <label>Budget
+			</label> <md-select flex ng-model="documentEntity.budget"
+				placeholder="Select Budget" ng-required="true"> <md-option
+				ng-value="budget"
+				ng-selected="(documentEntity.budget.id)?(documentEntity.budget.id == budget.id):false"
+				ng-repeat="budget in budgetList">{{budget.type + "-" +
+			budget.period }}</md-option> </md-select> </md-input-container>
 
-				<md-input-container flex> <label>Budget
-					Category </label> <md-select flex
-					ng-model="documentEntity.budgetLineItemCategory"
-					placeholder="Select Budget Category" ng-required="true">
-				<md-option ng-value="budgetLineItemCategory"
-					ng-selected="(documentEntity.budgetLineItemCategory)?(documentEntity.budgetLineItemCategory.categoryName == budgetLineItemCategory.categoryName):false"
-					ng-repeat="budgetLineItemCategory in documentEntity.budget.categoryList">{{budgetLineItemCategory.categoryName}}</md-option>
-				</md-select> </md-input-container>
+			<md-input-container flex> <label>Budget
+				Category </label> <md-select flex
+				ng-model="documentEntity.budgetLineItemCategory"
+				placeholder="Select Budget Category" ng-required="true">
+			<md-option ng-value="budgetLineItemCategory"
+				ng-selected="(documentEntity.budgetLineItemCategory)?(documentEntity.budgetLineItemCategory.categoryName == budgetLineItemCategory.categoryName):false"
+				ng-repeat="budgetLineItemCategory in documentEntity.budget.categoryList">{{budgetLineItemCategory.categoryName}}</md-option>
+			</md-select> </md-input-container>
 
-				<md-input-container flex> <label>Budget
-					Line Item </label> <md-select flex ng-model="documentEntity.budgetLineItem"
-					placeholder="Select Budget Line Item" ng-required="true">
-				<md-option ng-value="budgetLineItem"
-					ng-selected="(documentEntity.budgetlineItem)?(documentEntity.budgetLineItem.itemName == budgetLineItem.itemName):false"
-					ng-repeat="budgetLineItem in documentEntity.budgetLineItemCategory.items">{{budgetLineItem.itemName}}</md-option>
-				</md-select>
-				<div ng-if="documentEntity.budgetLineItem">
-					Current Budget Balance <b>{{documentEntity.budgetLineItem.currentBudgetBalance}}</b>
-				</div>
-				</md-input-container>
-
+			<md-input-container flex> <label>Budget
+				Line Item </label> <md-select flex ng-model="documentEntity.budgetLineItem"
+				placeholder="Select Budget Line Item" ng-required="true">
+			<md-option ng-value="budgetLineItem"
+				ng-selected="(documentEntity.budgetlineItem)?(documentEntity.budgetLineItem.itemName == budgetLineItem.itemName):false"
+				ng-repeat="budgetLineItem in documentEntity.budgetLineItemCategory.items">{{budgetLineItem.itemName}}</md-option>
+			</md-select>
+			<div ng-if="documentEntity.budgetLineItem">
+				Current Budget Balance <b>{{documentEntity.budgetLineItem.currentBudgetBalance}}</b>
 			</div>
+			</md-input-container>
 		</div>
 
 
 		<div layout="row" layout-xs="column">
-			<md-input-container flex=40> <label>Bill
+			<md-input-container flex=40 flex-xs=100> <label>Bill
 				To </label> <textarea ng-model="documentEntity.to" rows="4" cols="1"></textarea>
 			</md-input-container>
 
@@ -124,14 +128,14 @@
 
 		<div layout="row" layout-xs="column">
 
-			<md-input-container flex=40> <label>Requisitioner
+			<md-input-container flex=40 flex-xs=100> <label>Requisitioner
 			</label> <input ng-model="documentEntity.requisitioner"> </md-input-container>
 
 			<md-input-container flex> <label>Shipped
 				Via </label> <input ng-model="documentEntity.shippedVia"> </md-input-container>
 		</div>
 		<div layout="row" layout-xs="column">
-			<md-input-container flex=40> <label>F.O.B.Point
+			<md-input-container flex=40 flex-xs=100> <label>F.O.B.Point
 			</label> <input ng-model="documentEntity.fOBPoint"> </md-input-container>
 
 			<md-input-container flex> <label>Terms </label>

@@ -8,14 +8,16 @@
 	<md-subheader class="md-primary">
 	<h4 class="md-title">Requisition List</h4>
 	</md-subheader>
-	<span flex></span>
-	<div layout="row" flex="33" flex-sm="50" flex-xs="100">
-		<md-input-container flex> <label>Search</label> <input
-			ng-model="searchText"> </md-input-container>
+	<div layout="row" flex>
+		<span flex></span>
+		<div layout="row" flex="33" flex-sm="50" flex-xs="100">
+			<md-input-container flex> <label>Search</label>
+			<input ng-model="searchText"> </md-input-container>
+		</div>
+		<md-button class="md-icon-button" ui-sref="stock.requisitionAdd">
+		<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
+		<md-tooltip> Add New </md-tooltip></ng-md-icon> </md-button>
 	</div>
-	<md-button class="md-icon-button" ui-sref="stock.requisitionAdd">
-	<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
-	<md-tooltip> Add New </md-tooltip></ng-md-icon> </md-button>
 </section>
 
 <div>

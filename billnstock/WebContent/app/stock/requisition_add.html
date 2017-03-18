@@ -16,45 +16,52 @@
 <div>
 	<form ng-submit="$event.preventDefault()" name="documentForm">
 
-		<div layout="row" layout-xs="column">
-			<div layout="row" flex>
-				<md-input-container flex=40> <label>Requisition
+		<div flex layout="row" layout-xs="column">
+			<div layout="row" flex=40 flex-xs=100>
+				<md-input-container flex> <label>Requisition
 					No.</label> <input ng-model="documentEntity.itemNumber"
 					placeholder="Auto generated number" ng-disabled="true"></input> </md-input-container>
 				<md-input-container flex> <label>Document
 					Status </label> <input type="text" ng-disabled="true"
 					ng-model="documentEntity.status"> </md-input-container>
-				<md-input-container flex=15> <label>Created
+			</div>
+			<div layout="row" flex=60 flex-xs=100>
+				<span flex></span>
+				<md-input-container flex=25 flex-xs=100> <label>Created
 					By </label> <input ng-disabled="true" ng-model="createdBy"
 					ng-init="createdBy = documentEntity.createdBy? documentEntity.createdBy.firstName + ' ' + documentEntity.createdBy.lastName: ''"></input>
 				</md-input-container>
-				<md-input-container flex=15> <label>Created
+				<md-input-container flex=25 flex-xs=100> <label>Created
 					Date </label> <input ng-disabled="true"
-					ng-value="documentEntity.createdDate | formatDateWithTime"></input> </md-input-container>
+					ng-value="documentEntity.createdDate | formatDateWithTime"></input>
+				</md-input-container>
 			</div>
 		</div>
 		<div layout="row" layout-xs="column">
-			<div layout="row" flex>
-
-				<md-input-container flex=40> <label>
-					Expected Date</label> <md-datepicker flex
-					ng-model="documentEntity.expectedDate"
-					ng-change="documentEntity.expectedDate.toISOString()"
-					md-placeholder="Select Date" ng-required="true"></md-datepicker> </md-input-container>
-				<md-input-container flex> <label>On
-					behalf of, if any</label> <input type="text"
-					ng-model="documentEntity.onBehalfOf"> </md-input-container>
-				<md-input-container flex=15> <label>Approved
+		  <div layout="row" layout-xs="column" flex=40 flex-xs=100>
+			<md-input-container flex> <label>
+				Expected Date</label> <md-datepicker flex
+				ng-model="documentEntity.expectedDate"
+				ng-change="documentEntity.expectedDate.toISOString()"
+				md-placeholder="Select Date" ng-required="true"></md-datepicker> </md-input-container>
+			<md-input-container flex> <label>On
+				behalf of, if any</label> <input type="text"
+				ng-model="documentEntity.onBehalfOf"> </md-input-container>
+			</div>	
+			<div layout="row" flex=60 flex-xs=100>
+				<span flex></span>
+				<md-input-container flex=25 flex-xs=100> <label>Approved
 					By </label> <input ng-disabled="true" ng-model="approvedBy"
 					ng-init="approvedBy = documentEntity.approvedBy? documentEntity.approvedBy.firstName + ' ' + documentEntity.approvedBy.lastName : 'NA'"></input>
 				</md-input-container>
-				<md-input-container flex=15> <label>Last
+				<md-input-container flex=25 flex-xs=100> <label>Last
 					Modified Date </label> <input ng-disabled="true"
-					ng-value="documentEntity.modifiedDate | formatDateWithTime"></input> </md-input-container>
+					ng-value="documentEntity.modifiedDate | formatDateWithTime"></input>
+				</md-input-container>
 			</div>
 		</div>
 		<div layout="row" layout-xs="column">
-			<md-input-container flex="80" layout="row"> <label>Requisition
+			<md-input-container flex layout="row"> <label>Requisition
 				Notes (Mention reasons and suggested vendors etc.)</label> <textarea
 				ng-model="documentEntity.note" rows="2" cols="1"></textarea> </md-input-container>
 		</div>
