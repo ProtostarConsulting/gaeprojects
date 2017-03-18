@@ -14,26 +14,23 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.protostar.billingnstock.account.entities.AccountGroupEntity;
+import com.protostar.billingnstock.account.entities.AccountEntity;
 
 
-public class DownloadGroupListServlet extends HttpServlet {
+public class DownloadAccountListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private final Logger log = Logger.getLogger(DownloadGroupListServlet.class.getName());   
+	private final Logger log = Logger.getLogger(DownloadAccountListServlet.class.getName());   
     
-    public DownloadGroupListServlet() {
+    public DownloadAccountListServlet() {
         super();
         
     }
-
-	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		// TODO Auto-generated method stub
-	//			log.info("hi i am download servlet");
-				System.out.println("i am Groupservlet");
 				Long businessId = Long.parseLong(request.getParameter("id"));
-				AccountGroupService accGrpService= new AccountGroupService();
+			//	AccountEntity accEntity=new AccountEntity();
+				AccountingService accService=new AccountingService();
 				
 				Date date = new Date();
 				
@@ -41,7 +38,7 @@ public class DownloadGroupListServlet extends HttpServlet {
 				
 				SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 				
-				List<AccountGroupEntity> accEntity = accGrpService.getAccountGroupList(businessId);
+				List<AccountEntity> accEntity = accService.getAccountList(businessId);
 				
 				OutputStream out = null;
 				try {
@@ -49,26 +46,30 @@ public class DownloadGroupListServlet extends HttpServlet {
 					response.setContentType("text/csv");
 
 					response.setHeader("Content-Disposition",
-							"attachment; filename=GroupListData_" + sdf.format(date)
+							"attachment; filename=AccountListData_" + sdf.format(date)
 									+ ".csv");
 
 					ServletOutputStream outputStream = response.getOutputStream();
 					OutputStreamWriter writer = new OutputStreamWriter(outputStream);
-					writer.append("\t Group No  ");
+					writer.append("\t Account No  ");
 					writer.append("\t");
 					writer.append(',');
-					writer.append("\t GroupName  ");
+					writer.append("\t Account Name  ");
 					writer.append("\t");
 					writer.append(',');
-					writer.append("\tIs Primary  ");
+					writer.append("\t Business Account No ");
+					writer.append("\t");
 					writer.append(',');
-					writer.append("\tNature");
+					writer.append("\t Account Type");
 					writer.append(',');
-					writer.append("\tParent Group   ");
+					writer.append("\t Order No");
 					writer.append(',');
-					
-				
-				
+					writer.append("\t Description ");
+					writer.append(',');
+					writer.append("\t Contra ");
+					writer.append(',');
+					writer.append("\t Account Group ");
+					writer.append(',');
 					writer.append(System.lineSeparator());
 
 					for (int i = 0; i < accEntity.size(); i++) {
@@ -77,25 +78,28 @@ public class DownloadGroupListServlet extends HttpServlet {
 							writer.append("\t  "+accEntity.get(i).getItemNumber());
 							writer.append("\t");
 							writer.append(',');
-							writer.append("\t  "+accEntity.get(i).getGroupName());
+
+							writer.append("\t  "+accEntity.get(i).getAccountName().toString());
 							writer.append("\t");
 							writer.append(',');
-														writer.append("\t"+accEntity.get(i).getIsPrimary().toString());
-							writer.append(',');
-							writer.append("\t"+accEntity.get(i).getAccountGroupType().toString());
-							writer.append(',');
-							if(accEntity.get(i).getIsPrimary().equals(true))
-							{
-							writer.append(" \t");
-							writer.append(',');
-							}
-							else{
-								writer.append("\t"+accEntity.get(i).getParent().getGroupName().toString());
-								writer.append(',');
-								
-							}
-						
 							
+							writer.append("\t  "+accEntity.get(i).getAccountNo().toString());
+							writer.append("\t");
+							writer.append(',');
+							
+							writer.append("\t"+accEntity.get(i).getAccountType().toString());
+							writer.append(',');
+							
+							writer.append("\t"+accEntity.get(i).getDisplayOrderNo().toString());
+							writer.append(',');
+							
+							writer.append("\t"+accEntity.get(i).getDescription().toString());
+							writer.append(',');
+							writer.append("\t"+accEntity.get(i).getContra().toString());
+							writer.append(',');
+							writer.append("\t"+accEntity.get(i).getAccountGroup().getGroupName().toString());
+							
+							writer.append(',');
 							writer.append(System.lineSeparator());
 							} 
 						
@@ -103,11 +107,9 @@ public class DownloadGroupListServlet extends HttpServlet {
 									
 								log.warning(e.getMessage());
 									e.printStackTrace();
-						}
+									}
 					}
-
 					writer.close();
-
 				} catch (Exception e) {
 					log.severe(e.getMessage());
 					e.printStackTrace();
@@ -118,9 +120,4 @@ public class DownloadGroupListServlet extends HttpServlet {
 						out.close();
 				}
 
-			}
-
-	
-	
-
-}
+			}}

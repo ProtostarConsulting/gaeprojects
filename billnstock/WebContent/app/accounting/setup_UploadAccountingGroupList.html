@@ -1,0 +1,38 @@
+<div layout="row" ng-cloak class="md-inline-form">
+
+	<md-content layout="column">
+
+	<form name="fileUploadForm" method="post" enctype="multipart/form-data">
+
+		<div>
+			<b>Download sample CSV File. Click this Icon</b> <a
+				href="img/images/accountGroupList.csv" download> <img border="0"
+				src="img/images/CSV.png" alt="Sample CSV File" width="60"
+				height="45">
+			</a>
+		</div>
+
+		<div layout="row" layout-xs="column" flex>
+			<md-button class='md-raised' type="file" ngf-select
+				ng-model="fileObject" name="file2" accept="*.csv" ngf-max-size="2MB"
+				required ngf-model-invalid="errorFile">Choose CSV File</md-button>
+		</div>
+		<div layout="row" layout-xs="column" flex>
+			<label>{{uploadProgressMsg ==
+				null?fileObject.name:uploadProgressMsg}} </label>
+		</div>
+		<br>
+		<div>
+			<md-button class="md-raised md-primary" ng-click="uploadFile()"
+				ng-disabled="fileUploadForm.$invalid"> Submit </md-button>
+			<md-button class="md-raised md-primary" ng-click="cancel()">
+			Cancel </md-button>
+		</div>
+
+	</form>
+
+	<div>
+		<!-- This is temp second column -->
+	</div>
+	</md-content>
+</div>

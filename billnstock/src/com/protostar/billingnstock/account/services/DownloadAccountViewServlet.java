@@ -6,6 +6,7 @@ import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -14,15 +15,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.protostar.billingnstock.account.entities.AccountEntity;
+import com.google.appengine.repackaged.org.joda.time.LocalDateTime;
+import com.google.appengine.repackaged.org.joda.time.format.DateTimeFormatter;
 import com.protostar.billingnstock.account.entities.AccountEntryEntity;
 
-public class DownloadAccountsServlet extends HttpServlet {
+public class DownloadAccountViewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private final Logger log = Logger.getLogger(DownloadAccountsServlet.class.getName());
        
    
-    public DownloadAccountsServlet() {
+    public DownloadAccountViewServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,18 +35,22 @@ public class DownloadAccountsServlet extends HttpServlet {
 		
 		AccountEntryService accountEntryService=new AccountEntryService();
 		Date date = new Date();
-		String DATE_FORMAT = "dd/MMM/yyyy";
-		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+		String DATE_FORMAT = "dd-MMM-yyyyy  hh:mm:ss a";
+		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);		
+		
+		//LocalDateTime datetime = LocalDateTime.parse(oldstring, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S"));
 		
 		Long businessId = Long.parseLong(request.getParameter("id"));
 		Long searchId=Long.parseLong(request.getParameter("searchAccId"));
-		Date fromDate=new Date(request.getParameter("fromDate"));
-		Date toDate=new Date(request.getParameter("toDate"));
-		
-		//fromDate=Date.parse(request.getParameter("fromDate"));
-			
-		//AccountEntryEntity accEntryEntity=
-		
+		  TimeZone timeZone=TimeZone.getTimeZone("IST");
+		  sdf.setTimeZone(timeZone);
+	
+		String d1=request.getParameter("fromDate");
+		String d2=request.getParameter("toDate");
+	System.out.println("fromdate-------"+ d1);
+	System.out.println("todate-------"+ d2);
+		Date actualFromDate = new Date(Long.parseLong(d1));
+		Date actualtoDate = new Date(Long.parseLong(d2));
 		List<AccountEntryEntity> accEntryEntityList = accountEntryService.getAccountEntryByAccountId(searchId);
 		OutputStream out = null;
 		try {
@@ -69,18 +75,26 @@ public class DownloadAccountsServlet extends HttpServlet {
 			writer.append(',');
 			writer.append(System.lineSeparator());
 			for (int i = 0; i < accEntryEntityList.size(); i++) {
-					if(accEntryEntityList.get(i).getDate().after(fromDate)&&accEntryEntityList.get(i).getDate().before(toDate))
+			if(accEntryEntityList.get(i).getDate().after(actualFromDate)&&accEntryEntityList.get(i).getDate().before(actualtoDate))
 				try {
 					writer.append(""+(i+1));
 					writer.append(',');
-					writer.append(accEntryEntityList.get(i).getDate().toString());
+					writer.append(""+sdf.format(accEntryEntityList.get(i).getDate()));
 					writer.append(',');
 					writer.append(accEntryEntityList.get(i).getNarration());
 					writer.append(',');
-					writer.append(accEntryEntityList.get(i).getDebit().toString());
+					
+					
+					if(accEntryEntityList.get(i).getDebit()!=null){
+					writer.append(accEntryEntityList.get(i).getDebit().toString());}
+					else{writer.append("0");}
 					writer.append(',');
-					writer.append(accEntryEntityList.get(i).getCredit().toString());
+					if(accEntryEntityList.get(i).getCredit()!=null){
+					writer.append(accEntryEntityList.get(i).getCredit().toString());}
+					else{writer.append("0");}
 					writer.append(',');
+					
+					
 					writer.append(System.lineSeparator());
 				} catch (Exception e) {
 					log.warning(e.getMessage());

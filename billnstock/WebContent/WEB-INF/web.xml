@@ -119,6 +119,24 @@
     <servlet-name>DownloadAccountsServlet</servlet-name>
     <url-pattern>/DownloadAccountsServlet</url-pattern>
   </servlet-mapping>
+  
+  
+  
+  
+   <servlet>
+    <description></description>
+    <display-name>DownloadAccountViewServlet</display-name>
+    <servlet-name>DownloadAccountViewServlet</servlet-name>
+    <servlet-class>com.protostar.billingnstock.account.services.DownloadAccountViewServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DownloadAccountViewServlet</servlet-name>
+    <url-pattern>/DownloadAccountViewServlet</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+  
   <servlet>
     <description></description>
     <display-name>UploadGroupsListServlet</display-name>
@@ -139,6 +157,25 @@
     <servlet-name>DownloadGroupListServlet</servlet-name>
     <url-pattern>/DownloadGroupListServlet</url-pattern>
   </servlet-mapping>
+  
+  
+  
+  
+  
+  <servlet>
+    <description></description>
+    <display-name>DownloadAccountListServlet</display-name>
+    <servlet-name>DownloadAccountListServlet</servlet-name>
+    <servlet-class>com.protostar.billingnstock.account.services.DownloadAccountListServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DownloadAccountListServlet</servlet-name>
+    <url-pattern>/DownloadAccountListServlet</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+  
   <servlet>
     <description></description>
     <display-name>PdfVouchers</display-name>

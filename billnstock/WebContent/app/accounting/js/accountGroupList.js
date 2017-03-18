@@ -122,8 +122,8 @@ angular
 
 		}
 
-		$scope.downloadExcel = function() {
-			document.location.href = "DownloadGroupListServlet";
+		$scope.downloadData = function() {
+			document.location.href = "DownloadGroupListServlet?id="+$scope.curUser.business.id;
 		}
 
 	})

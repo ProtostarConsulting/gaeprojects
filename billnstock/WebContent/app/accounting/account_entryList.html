@@ -56,6 +56,14 @@
 	<md-button class="md-icon-button md-accent"
 		ng-click="printDiv('accountDiv')" aria-label="Favorite"> <md-icon
 		md-svg-icon="img/icons/print.svg"></md-icon> </md-button>
+		
+		<md-button class="md-icon-button" id="downloadExcel"
+			ng-click="downloadData(searchAccId)"> <ng-md-icon
+			icon="file_download" style="fill: md-default" size="24">
+		<md-tooltip>Download Account </md-tooltip></ng-md-icon></md-button>
+		
+		
+		
 </section>
 
 <div id="accountDiv"

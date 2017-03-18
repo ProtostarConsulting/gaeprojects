@@ -12,6 +12,8 @@ import com.google.api.server.spi.config.Named;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
 import com.protostar.billingnstock.account.entities.AccountEntity;
+import com.protostar.billingnstock.account.entities.AccountEntryEntity;
+import com.protostar.billingnstock.purchase.entities.PurchaseOrderEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billnstock.until.data.Constants;
 import com.protostar.billnstock.until.data.EntityUtil;
@@ -29,9 +31,7 @@ public class AccountEntityService {
 		} else {
 			accountEntity.setModifiedDate(new Date());
 		}
-		
 		ofy().save().entity(accountEntity).now();
-
 	}
 
 	/*
@@ -63,7 +63,22 @@ public class AccountEntityService {
 
 		return accountById;
 	}
-
+	
+	@ApiMethod(name = "getAccountById1")
+	public AccountEntity getAccountById1(@Named("bid") Long busId,@Named("id") Long accountId) {
+		
+		AccountEntity getAccountById1 = ofy().load()
+				.key(Key.create(Key.create(BusinessEntity.class, busId), AccountEntity.class, accountId)).now();
+			return getAccountById1;
+	}
+	
+/*	@ApiMethod(name = "getAccountEntriesById")
+	public AccountEntryEntity getAccountEntriesById(@Named("bid") Long busId,@Named("id") Long accountId) {
+		
+		AccountEntity getAccountById1 = ofy().load().type(AccountEntryEntity.class)
+				.key(Key.create(Key.create(BusinessEntity.class, busId), AccountEntity.class, accountId)).now();
+			return getAccountById1;
+	}*/
 	/*
 	 * public void createDefaltAccounts() {
 	 * 

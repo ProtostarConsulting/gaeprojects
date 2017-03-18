@@ -14,13 +14,12 @@ app
 				"accountEntryListController",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
 						$mdUtil, $log, $stateParams, objectFactory, $state,
-						appEndpointSF, $mdDialog, $mdMedia) {
-
+						appEndpointSF, $mdDialog, $mdMedia,$q,ajsCache,				
+						Upload) {
 					$scope.loading = true;
 					$scope.accountList = [];
 					var entryList = [];
 					$scope.closingBalance = 0;
-				
 					$scope.entries = [];
 					$scope.openingBalance = 0;
 
@@ -32,27 +31,19 @@ app
 						$scope.searchAccId = $scope.selectdAccount.id;
 						$scope.fromDate = $stateParams.fromDate;
 						$scope.toDate = $stateParams.toDate;
-
 					}
 
 					$scope.getAccountEntryByAccountId = function(accId,
 							fromDate, toDate) {
 						$scope.loading = true;
 						$scope.wait = true;
-
-						
 						var Ac = appEndpointSF.getAccountService();
 						Ac.getAccountBalance(accId).then(function(list1){
-					
-						
-						var AccountEntryService = appEndpointSF.getAccountEntryService();
+					var AccountEntryService = appEndpointSF.getAccountEntryService();
 						AccountEntryService.getAccountEntryByAccountId(accId)//,$scope.curUser.business.id)
 								.then(
 										function(list) {
-										
-									
-											
-												list = list.items; 
+											list = list.items; 
 											$scope.totaldebit = 0;
 											$scope.totalcredit = 0;
 											$log.debug("list:" + list);
@@ -63,10 +54,6 @@ app
 														&& new Date(
 																list[i].date) <= new Date(
 																$scope.toDate)) {
-													
-													
-													
-
 													entryList.push(list[i]);
 													if (angular	.isNumber(list[i].debit)) {
 														$scope.totaldebit = $scope.totaldebit
@@ -77,47 +64,17 @@ app
 														$scope.totalcredit = $scope.totalcredit
 																+ parseFloat(list[i].credit);
 													}
-
 												}
 											}
-
 											$scope.entries = [];
 											$scope.closingBalance = 0;
-											/*for (var i = 0; i < entryList.length; i++) {
-												if (entryList[i].accountEntity.accountType
-														.trim() == "PERSONAL") {
-													$scope.closingBalance = $scope.totaldebit
-															- $scope.totalcredit;
-												}
-												if (list[i].accountEntity.accountType
-														.trim() == "REAL") {
-													$scope.closingBalance = $scope.totaldebit
-															- $scope.totalcredit;
-												}
-												if (list[i].accountEntity.accountType
-														.trim() == "NOMINAL") {
-													$scope.closingBalance = $scope.totalcredit
-															- $scope.totaldebit;
-												}
-												
-												$log.debug("BALANCE of by id"+$scope.closingBalance);
-
-											}*/
-											//$scope.closingBalance=10;
 											$scope.closingBalance=list1.returnBalance;
 											$log.debug("BALANCE"+list1.returnBalance);
-											
-										//	$log.debug("BALANCE"+list.returnBalance);
-											//$scope.closingBalance=list.returnBalance;	
 											$scope.entries = entryList;
-
 											if ($scope.entries.length == 0) {
 												$scope.showAlert();
-											}
-
-											var maxWaitTime = 1000 * 5;
+											}var maxWaitTime = 1000 * 5;
 											var currentWaitTime = 0;
-
 											$scope.waitFn = function() {
 												if (currentWaitTime < maxWaitTime) {
 													$log
@@ -128,20 +85,13 @@ app
 												} else if (currentWaitTime == maxWaitTime) {
 													$scope.loading = false;
 													$scope.wait = false;
-
 												}
 											}
 											$scope.waitFn();
 											$scope.getselectdAccountName(accId);
-											
 										})
 						})
-
-						
 						};
-
-					
-					
 					$scope.getselectdAccountName = function(accId) {
 						for (var i = 0; i < $scope.accountList.length; i++) {
 							if ($scope.accountList[i].id == accId) {
@@ -165,28 +115,22 @@ app
 										.ariaLabel('Alert Dialog Demo').ok(
 												'Got it!').targetEvent(ev));
 					};
-
 					$scope.getAccountList = function() {
-
 						var AccountService = appEndpointSF.getAccountService();
 						AccountService
 								.getAccountList($scope.curUser.business.id)
 								.then(
 										function(list) {
 											$scope.accountList = list;
-
 											if ($scope.selectdAccount) {
 												$scope
 														.getAccountEntryByAccountId(
 																$scope.searchAccId,
 																$scope.fromDate,
 																$scope.toDate);
-
 											}
-
-										});
+									});
 					}
-
 					$scope.cancelButton = function() {
 						$state.go("accounting.accountGroupView", {
 							selectdAccount : $scope.selectdAccount,
@@ -194,7 +138,6 @@ app
 							fromDate : $scope.fromDate,
 							toDate : $scope.toDate
 						});
-
 					}
 					$scope.clear = function() {
 						$scope.loading = true;
@@ -202,33 +145,31 @@ app
 							$scope.toDate = "";
 						}
 						if ($scope.fromDate != undefined) {
-
 							$scope.fromDate = "";
 						}
 						if ($scope.searchAccId != undefined) {
-
 							$scope.searchAccId = "";
 						}
 						$scope.searchForm.$setPristine();
 						$scope.searchForm.$setUntouched();
-
 					}
-
-					var printDivCSS = new String(
-							'<link href="/lib/base/css/angular-material.min.css"" rel="stylesheet" type="text/css">'
-									+ '<link href="/lib/base/css/bootstrap.min.css"" rel="stylesheet" type="text/css">')
+					$scope.downloadData=function(searchAccId){
+						
+						
+						var fromDate=new Date($scope.fromDate).getTime();
+						var toDate=new Date($scope.toDate).getTime();
+						
+						document.location.href="DownloadAccountViewServlet?id="+ $scope.curUser.business.id+"&fromDate="+fromDate+"&toDate="+toDate+"&searchAccId="+searchAccId;
+						}
 					$scope.printDiv = function(divId) {
-
 						window.frames["print_frame"].document.body.innerHTML = document
 								.getElementById(divId).innerHTML;
 						window.frames["print_frame"].window.focus();
 						window.frames["print_frame"].window.print();
 					}
-
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
 							$scope.getAccountList();
-
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
 							$timeout($scope.waitForServiceLoad, 1000);

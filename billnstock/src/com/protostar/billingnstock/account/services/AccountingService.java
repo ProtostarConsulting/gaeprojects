@@ -42,7 +42,7 @@ public class AccountingService {
 				.filter("accountName", accountName).list();
 
 		if (list == null || list.size() == 0) {
-			serverMsg.setReturnBool(false);
+			serverMsg.setReturnBool(false); 
 		} else {
 			serverMsg.setReturnBool(true);
 		}

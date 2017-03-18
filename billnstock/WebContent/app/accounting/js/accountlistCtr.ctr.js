@@ -1,42 +1,32 @@
 var app = angular.module("stockApp");
-
 app.controller("accountlistCtr", function($scope, $window, $mdToast, $timeout,
 		Upload, $mdSidenav, $mdUtil, $log, $stateParams, objectFactory,
 		appEndpointSF, $mdDialog, $mdMedia, $state, ajsCache) {
-
 	$scope.query = {
 		order : 'accountName',
 		limit : 50,
 		page : 1
 	};
-
 	$scope.selected = [];
-
 	$scope.getAccountList = function(refresh) {
 		$scope.loading = true;
 		var AccountServiceCacheKey = "getAccountByName";
-
 		if (!angular.isUndefined(ajsCache.get(AccountServiceCacheKey))
 				&& !refresh) {
 			$log.debug("Found List in Cache, return it.");
 			$scope.accounts = ajsCache.get(AccountServiceCacheKey);
 			$scope.loading = false;
 			return;
-
 		}
-
 		var AccountService = appEndpointSF.getAccountService();
 		AccountService.getAccountList($scope.curUser.business.id).then(
 				function(list) {
 					//$log.debug("list:" + angular.toJson(list));
 					$scope.accounts = list;
-					
-					ajsCache.put(AccountServiceCacheKey, list);
 					$scope.loading = false;
-
+					ajsCache.put(AccountServiceCacheKey, list);
 				});
 	}
-
 	$scope.waitForServiceLoad = function() {
 		if (appEndpointSF.is_service_ready) {
 			$scope.getAccountList();
@@ -46,19 +36,13 @@ app.controller("accountlistCtr", function($scope, $window, $mdToast, $timeout,
 		}
 	}
 	$scope.waitForServiceLoad();
-
 	$scope.delAccByid = function(daccountid) {
-
 		var delrecord = appEndpointSF.getAccountService();
-
 		delrecord.deleteaccByid(daccountid).then(function() {
 			$scope.showDelToast();
 			$scope.getAccountList();
-
 		});
-
 	}
-
 	$scope.uploadExcel = function(ev) {
 		var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))
 				&& $scope.customFullscreen;
@@ -76,9 +60,7 @@ app.controller("accountlistCtr", function($scope, $window, $mdToast, $timeout,
 		}, function() {
 			$scope.status = 'You cancelled the dialog.';
 		});
-
 	};
-
 	function DialogController($scope, $mdDialog) {
 
 		$scope.csvFile;
@@ -112,7 +94,6 @@ app.controller("accountlistCtr", function($scope, $window, $mdToast, $timeout,
 						}
 						$mdDialog.hide();
 						$scope.csvFile = null;
-
 					},
 					function(resp) {
 						$log.debug('Error Ouccured, Error status: '
@@ -130,11 +111,8 @@ app.controller("accountlistCtr", function($scope, $window, $mdToast, $timeout,
 						+'...'
 					});
 		};
-
 	}
-
 	$scope.downloadExcel = function() {
-		document.location.href = "DownloadAccountsServlet";
+		document.location.href="DownloadAccountListServlet?id="+ $scope.curUser.business.id;
 	}
-
 });
