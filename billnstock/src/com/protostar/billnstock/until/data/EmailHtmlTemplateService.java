@@ -15,6 +15,7 @@ import com.protostar.billingnstock.stock.entities.StockItemsReceiptEntity;
 import com.protostar.billingnstock.stock.entities.StockItemsShipmentEntity;
 import com.protostar.billingnstock.stock.entities.StockItemsShipmentEntity.ShipmentType;
 import com.protostar.billingnstock.taskmangement.TaskEntity;
+import com.protostar.billingnstock.taskmangement.TaskEntity.TaskStatus;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billnstock.until.data.Constants.DocumentStatus;
 
@@ -337,8 +338,20 @@ public class EmailHtmlTemplateService {
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
 			String taskAssignedDate = sdfDate.format(taskEntity
 					.getAssignedDate());
-			String estCompletionDate = sdfDate.format(taskEntity
-					.getEstCompletionDate());
+
+			String estCompletionDate = "";
+			if (taskEntity.getEstCompletionDate() != null) {
+
+				estCompletionDate = sdfDate.format(taskEntity
+						.getEstCompletionDate());
+
+			}
+
+			String completionDate = "";
+			if (taskEntity.getTaskStatus() == TaskStatus.COMPLETED) {
+
+				completionDate = sdfDate.format(taskEntity.getCompletionDate());
+			}
 
 			root.put("assignedBy", ""
 					+ taskEntity.getAssignedBy().getFirstName() + " "
@@ -348,10 +361,14 @@ public class EmailHtmlTemplateService {
 
 			root.put("assignedDate", taskAssignedDate);
 			root.put("taskNo", taskEntity.getItemNumber());
-			root.put("estCompletionDate", estCompletionDate);
+			root.put("estCompletionDate",estCompletionDate);
+			root.put("completionDate", completionDate);
 
 			root.put("taskTitle", taskEntity.getTaskTitle());
 			root.put("taskDesciption", taskEntity.getTaskDesc());
+
+			TaskStatus taskStatus = taskEntity.getTaskStatus();
+			root.put("taskStatus", taskStatus);
 
 			BusinessEntity business = taskEntity.getBusiness();
 			root.put("businessName", business.getBusinessName());

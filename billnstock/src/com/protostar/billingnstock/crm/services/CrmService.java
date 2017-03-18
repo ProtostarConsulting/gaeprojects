@@ -11,9 +11,11 @@ import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
+import com.protostar.billingnstock.crm.entities.CRMSettingsEntity;
 import com.protostar.billingnstock.crm.entities.Contact;
 import com.protostar.billingnstock.crm.entities.Lead;
 import com.protostar.billingnstock.cust.entities.Customer;
+import com.protostar.billingnstock.taskmangement.TaskSettingsEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billnstock.until.data.ServerMsg;
 
@@ -136,6 +138,32 @@ public class CrmService {
 		}
 
 		return serverMsg;
+	}
+
+	@ApiMethod(name = "addCRMSettings")
+	public CRMSettingsEntity addCRMSettings(CRMSettingsEntity crmSettings) {
+
+		if (crmSettings.getId() == null) {
+			crmSettings.setCreatedDate(new Date());
+		}
+
+		crmSettings.setModifiedDate(new Date());
+
+		ofy().save().entity(crmSettings).now();
+
+		return crmSettings;
+	}
+	
+	@ApiMethod(name = "getCRMSettingsByBiz", path = "getCRMSettingsByBiz")
+	public CRMSettingsEntity getCRMSettingsByBiz(@Named("id") Long busId) {
+
+		CRMSettingsEntity crmSettings = ofy().load()
+				.type(CRMSettingsEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).first()
+				.now();
+
+		return crmSettings;
+
 	}
 
 }// end of InternetService

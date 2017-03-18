@@ -7,22 +7,21 @@ import com.protostar.billnstock.until.data.Sendgrid;
 
 public class TaskAssignedEmail implements DeferredTask {
 	private static final long serialVersionUID = 1L;
-	private static final String EMAIL_SUBJECT = "Task Assigned/Updated, Task No: ";
 
 	private String fromEmail;
 	private String fromName;
 	private String messageBody;
-	private int taskItemNumber;
 	private String emailTo;
+	private String emailSubject;
 
-	public TaskAssignedEmail(String fromEmail, String fromName, String messageBody, int taskItemNumber,
-			String emailTo) {
+	public TaskAssignedEmail(String fromEmail, String fromName,
+			String messageBody, String emailTo, String emailSubject) {
 
 		this.fromEmail = fromEmail;
 		this.fromName = fromName;
 		this.messageBody = messageBody;
-		this.taskItemNumber = taskItemNumber;
 		this.emailTo = emailTo;
+		this.emailSubject = emailSubject;
 
 	}
 
@@ -31,9 +30,11 @@ public class TaskAssignedEmail implements DeferredTask {
 		try {
 			// Now using SendGrid API below;
 			// Send grid email
-			Sendgrid sendGridMail = new Sendgrid(Constants.SENDGRID_USERNAME, Constants.SENDGRID_PWD);
-			sendGridMail.setTo(getEmailTo()).setFrom(getFromEmail()).setReplyTo(getFromEmail())
-					.setFromName(getFromName()).setSubject(EMAIL_SUBJECT + taskItemNumber).setText(getMessageBody())
+			Sendgrid sendGridMail = new Sendgrid(Constants.SENDGRID_USERNAME,
+					Constants.SENDGRID_PWD);
+			sendGridMail.setTo(getEmailTo()).setFrom(getFromEmail())
+					.setReplyTo(getFromEmail()).setFromName(getFromName())
+					.setSubject(getEmailSubject()).setText(getMessageBody())
 					.setHtml(getMessageBody());
 			sendGridMail.send();
 
@@ -61,14 +62,6 @@ public class TaskAssignedEmail implements DeferredTask {
 		this.fromName = fromName;
 	}
 
-	public int getTaskItemNumber() {
-		return taskItemNumber;
-	}
-
-	public void setTaskItemNumber(int taskItemNumber) {
-		this.taskItemNumber = taskItemNumber;
-	}
-
 	public String getEmailTo() {
 		return emailTo;
 	}
@@ -83,6 +76,14 @@ public class TaskAssignedEmail implements DeferredTask {
 
 	public void setMessageBody(String messageBody) {
 		this.messageBody = messageBody;
+	}
+
+	public String getEmailSubject() {
+		return emailSubject;
+	}
+
+	public void setEmailSubject(String emailSubject) {
+		this.emailSubject = emailSubject;
 	}
 
 }

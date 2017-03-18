@@ -11,16 +11,19 @@ import com.protostar.billingnstock.invoice.entities.InvoiceEmailTask;
 import com.protostar.billingnstock.invoice.entities.InvoiceEntity;
 import com.protostar.billingnstock.invoice.entities.InvoiceSettingsEntity;
 import com.protostar.billingnstock.invoice.services.InvoiceService;
-import com.protostar.billingnstock.purchase.entities.PurchaseOrderEntity;
 import com.protostar.billingnstock.purchase.entities.EmailPOTask;
+import com.protostar.billingnstock.purchase.entities.PurchaseOrderEntity;
 import com.protostar.billingnstock.stock.entities.EmailStockReceiptTask;
+import com.protostar.billingnstock.stock.entities.EmailStockShipmentTask;
 import com.protostar.billingnstock.stock.entities.StockItemsReceiptEntity;
 import com.protostar.billingnstock.stock.entities.StockItemsShipmentEntity;
 import com.protostar.billingnstock.stock.entities.StockSettingsEntity;
-import com.protostar.billingnstock.stock.entities.EmailStockShipmentTask;
 import com.protostar.billingnstock.stock.services.StockManagementService;
 import com.protostar.billingnstock.taskmangement.TaskAssignedEmail;
 import com.protostar.billingnstock.taskmangement.TaskEntity;
+import com.protostar.billingnstock.taskmangement.TaskEntity.TaskStatus;
+import com.protostar.billingnstock.taskmangement.TaskManagementService;
+import com.protostar.billingnstock.taskmangement.TaskSettingsEntity;
 import com.protostar.billnstock.until.data.Constants.DocumentStatus;
 
 public class EmailHandler {
@@ -124,15 +127,33 @@ public class EmailHandler {
 	public void sendTaskAssignedEmail(TaskEntity taskEntity)
 			throws MessagingException, IOException {
 
+		TaskSettingsEntity taskSettings = new TaskManagementService()
+				.getTaskSettingsByBiz(taskEntity.getBusiness().getId());
+
+		if (taskSettings == null || !taskSettings.isEmailNotification()
+				|| taskSettings.getEmailNotificationDL().isEmpty()) {
+			return;
+		}
+
 		String messageBody = new EmailHtmlTemplateService()
 				.taskAssignedEmail(taskEntity);
 
+		String emailSubject = "";
+
+		TaskStatus currentTaskStatus = taskEntity.getTaskStatus();
+		if (currentTaskStatus.equals(TaskStatus.COMPLETED)) {
+			emailSubject = "Task Completed, Task No:"
+					+ taskEntity.getItemNumber();
+		} else {
+			emailSubject = "Task Assigned,Task No: "
+					+ taskEntity.getItemNumber();
+		}
+		
 		Queue queue = QueueFactory.getDefaultQueue();
 		queue.add(TaskOptions.Builder.withPayload(new TaskAssignedEmail(
-				taskEntity.getAssignedBy().getEmail_id(), taskEntity
-						.getBusiness().getBusinessName(), messageBody,
-				taskEntity.getItemNumber(), taskEntity.getAssignedTo()
-						.getEmail_id())));
+				"ganesh.lawande@protostar.co.in", taskEntity.getBusiness()
+						.getBusinessName(), messageBody, taskSettings
+						.getEmailNotificationDL(), emailSubject)));
 	}
 
 	public void sendInvoiceEmail(InvoiceEntity invoice)
