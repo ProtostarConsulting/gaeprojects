@@ -60,6 +60,11 @@ app
 						}
 					}
 
+					$scope.draftDocumnent = function(ev) {
+						$scope.documentEntity.status = 'DRAFT';
+						$scope.saveDocument();
+					}
+					
 					$scope.submitDocumnent = function(ev) {
 						$scope.documentEntity.status = 'SUBMITTED';
 						$scope.saveDocument();

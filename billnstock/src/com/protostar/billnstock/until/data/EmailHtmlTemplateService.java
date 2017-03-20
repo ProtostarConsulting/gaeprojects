@@ -54,8 +54,12 @@ public class EmailHtmlTemplateService {
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
 			String poModifiedDate = sdfDate.format(purchaseOrder.getModifiedDate());
 
-			root.put("stockModuleApprover",
-					purchaseOrder.getApprovedBy().getFirstName() + " " + purchaseOrder.getApprovedBy().getLastName());
+			String approverName = "NA";
+			if (purchaseOrder.getApprovedBy() != null)
+				approverName = purchaseOrder.getApprovedBy().getFirstName() + " "
+						+ purchaseOrder.getApprovedBy().getLastName();
+
+			root.put("stockModuleApprover", approverName);
 			root.put("poModifiedDate", poModifiedDate);
 			root.put("supplier", purchaseOrder.getSupplier().getSupplierName());
 			root.put("finalTotal", purchaseOrder.getFinalTotal());
@@ -131,8 +135,12 @@ public class EmailHtmlTemplateService {
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
 			String shipmentModifiedDate = sdfDate.format(stockShipment.getModifiedDate());
 
-			root.put("stockModuleApprover",
-					stockShipment.getApprovedBy().getFirstName() + " " + stockShipment.getApprovedBy().getLastName());
+			String approverName = "NA";
+			if (stockShipment.getApprovedBy() != null)
+				approverName = stockShipment.getApprovedBy().getFirstName() + " "
+						+ stockShipment.getApprovedBy().getLastName();
+
+			root.put("stockModuleApprover", approverName);
 			root.put("shipmentModifiedDate", shipmentModifiedDate);
 			root.put("finalTotal", stockShipment.getFinalTotal());
 			root.put("fromWH", stockShipment.getFromWH().getWarehouseName());
@@ -240,8 +248,12 @@ public class EmailHtmlTemplateService {
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
 			String receiptModifiedDate = sdfDate.format(stockItemsReceipt.getModifiedDate());
 
-			root.put("stockModuleApprover", stockItemsReceipt.getApprovedBy().getFirstName() + " "
-					+ stockItemsReceipt.getApprovedBy().getLastName());
+			String approverName = "NA";
+			if (stockItemsReceipt.getApprovedBy() != null)
+				approverName = stockItemsReceipt.getApprovedBy().getFirstName() + " "
+						+ stockItemsReceipt.getApprovedBy().getLastName();
+
+			root.put("stockModuleApprover", approverName);
 			root.put("receiptModifiedDate", receiptModifiedDate);
 			root.put("supplier", stockItemsReceipt.getSupplier().getSupplierName());
 			root.put("warehouse", stockItemsReceipt.getWarehouse().getWarehouseName());
@@ -405,8 +417,11 @@ public class EmailHtmlTemplateService {
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
 			String approvedDate = sdfDate.format(invoice.getModifiedDate());
 
-			root.put("invoiceModuleApprover",
-					invoice.getApprovedBy().getFirstName() + " " + invoice.getApprovedBy().getLastName());
+			String approverName = "NA";
+			if (invoice.getApprovedBy() != null)
+				approverName = invoice.getApprovedBy().getFirstName() + " " + invoice.getApprovedBy().getLastName();
+
+			root.put("stockModuleApprover", approverName);
 			root.put("approvedDate", approvedDate);
 			root.put("fromWH", invoice.getFromWH().getWarehouseName());
 			root.put("finalTotal", invoice.getFinalTotal());

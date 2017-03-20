@@ -65,6 +65,11 @@ app
 					$rootScope.$on("CallParentMethod", function() {
 						$scope.parentmethod();
 					});
+					
+					$scope.draftDocumnent = function(ev) {
+						$scope.documentEntity.status = 'DRAFT';
+						$scope.saveDocument();
+					}					
 
 					$scope.submitDocumnent = function(ev) {
 						$scope.documentEntity.status = 'SUBMITTED';

@@ -1,49 +1,60 @@
 package com.protostar.billingnstock.purchase.entities;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
 import com.google.appengine.api.taskqueue.DeferredTask;
-import com.google.appengine.labs.repackaged.org.json.JSONException;
+import com.google.common.io.BaseEncoding;
+import com.protostar.billingnstock.stock.services.PrintPdfPurchaseOrder;
+import com.protostar.billingnstock.stock.services.StockManagementService;
 import com.protostar.billnstock.until.data.Constants;
-import com.protostar.billnstock.until.data.Sendgrid;
+import com.sendgrid.Attachments;
+import com.sendgrid.Content;
+import com.sendgrid.Email;
+import com.sendgrid.Mail;
+import com.sendgrid.Method;
+import com.sendgrid.Personalization;
+import com.sendgrid.Request;
+import com.sendgrid.Response;
+import com.sendgrid.SendGrid;
 
 public class EmailPOTask implements DeferredTask {
 
 	private static final long serialVersionUID = 1L;
 
 	private String fromEmail;
-	private String fromName;
 	private String emailDLList;
-	private String messageBody;
 	private String emailSubject;
+	private String messageBody;
+	private int itemNumber;
 
-	public EmailPOTask(String fromEmail, String fromName, String messageBody,
-			String emailDLList, String emailSubject) {
-
+	public EmailPOTask(String fromEmail, String emailDLList, String emailSubject, String messageBody, int itemNumber) {
 		this.fromEmail = fromEmail;
-		this.fromName = fromName;
-		this.messageBody = messageBody;
 		this.emailDLList = emailDLList;
 		this.emailSubject = emailSubject;
+		this.messageBody = messageBody;
+		this.itemNumber = itemNumber;
 	}
 
 	@Override
 	public void run() {
 		// expensive operation to be in the background goes here
-
 		try {
-			// Now using SendGrid API below;
-			// Send grid email
-			System.out.println("Sending Email async");
-			Sendgrid sendGridMail = new Sendgrid(Constants.SENDGRID_USERNAME,
-					Constants.SENDGRID_PWD);
-			sendGridMail.setTo(getEmailDLList()).setFrom(getFromEmail())
-					.setReplyTo(getFromEmail()).setFromName(getFromName())
-					.setSubject(getEmailSubject()).setText(getMessageBody())
-					.setHtml(getMessageBody());
-			sendGridMail.send();
-			System.out.println("Done Sending Email async...........");
+			SendGrid sg = new SendGrid(Constants.SENDGRID_API_KEY);
+			sg.addRequestHeader("X-Mock", "true");
 
-		} catch (JSONException e) {
-			e.printStackTrace();
+			Request request = new Request();
+			Mail taskEmail = buildEmail();
+			request.method = Method.POST;
+			request.endpoint = "mail/send";
+			request.body = taskEmail.build();
+			Response response = sg.api(request);
+			System.out.println(response.statusCode);
+			System.out.println(response.body);
+			System.out.println(response.headers);
+
+		} catch (IOException ex) {
+			ex.printStackTrace();
 		} catch (RuntimeException e) {
 			e.printStackTrace();
 		}
@@ -73,20 +84,92 @@ public class EmailPOTask implements DeferredTask {
 		this.fromEmail = fromEmail;
 	}
 
-	public String getFromName() {
-		return fromName;
-	}
-
-	public void setFromName(String fromName) {
-		this.fromName = fromName;
-	}
-
 	public String getEmailSubject() {
 		return emailSubject;
 	}
 
 	public void setEmailSubject(String emailSubject) {
 		this.emailSubject = emailSubject;
+	}
+
+	public Mail buildEmail() {
+		// See buildKitchenSinkExample() method in EmailHandler for detailed
+		// usage.
+		Mail mail = new Mail();
+
+		Email fromEmail = new Email();
+		fromEmail.setName(Constants.SENDGRID_FROM_EMAIL_NAME);
+		fromEmail.setEmail(this.fromEmail);
+		mail.setFrom(fromEmail);
+
+		Personalization personalization = new Personalization();
+
+		Email selfTo = new Email();
+		// cc.setName("Example User CC1");
+		selfTo.setEmail(this.fromEmail);
+		personalization.addTo(selfTo);
+
+		if (this.emailDLList != null && !this.emailDLList.isEmpty()) {
+			String[] emailIds = this.emailDLList.split(",");
+			for (String emailId : emailIds) {
+				// Can't have same email id in to, cc or bcc
+				String trimedTo = emailId.trim();
+				if (this.fromEmail.equalsIgnoreCase(trimedTo))
+					continue;
+
+				Email cc = new Email();
+				// to.setName("Example User To1");
+				cc.setEmail(trimedTo);
+				personalization.addCc(cc);
+			}
+		}
+
+		// Email bcc = new Email();
+		// bcc.setName("Example User BCC1");
+		// bcc.setEmail("info@protostar.co.in");
+		// personalization.addBcc(bcc);
+
+		personalization.setSubject(this.emailSubject);
+		personalization.addHeader("X-Test", "test");
+		personalization.addHeader("X-Mock", "true");
+
+		mail.addPersonalization(personalization);
+
+		Content content = new Content();
+		content.setType("text/html");
+		content.setValue(this.messageBody);
+		mail.addContent(content);
+
+		// Add PO PDF attachment
+		StockManagementService stockManagementService = new StockManagementService();
+		PurchaseOrderEntity poObject = stockManagementService.getPOByItemNumber(this.itemNumber);
+		PrintPdfPurchaseOrder printPdfPurchaseOrder = new PrintPdfPurchaseOrder();
+
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream(Constants.DOCUMENT_DEFAULT_MAX_SIZE);
+		printPdfPurchaseOrder.generatePdf(poObject, outputStream);
+		String base64Content = BaseEncoding.base64().encode(outputStream.toByteArray());
+
+		Attachments attachments = new Attachments();
+		attachments.setContent(base64Content);
+		attachments.setType("application/pdf");
+		attachments.setFilename("PurchaseOrder_" + this.itemNumber + ".pdf");
+		attachments.setDisposition("attachment");
+		mail.addAttachments(attachments);
+
+		Email replyTo = new Email();
+		// replyTo.setName("ProERP Notification");
+		replyTo.setEmail(this.fromEmail);
+		mail.setReplyTo(replyTo);
+
+		return mail;
+	}
+
+	public int getItemNumber() {
+		return itemNumber;
+	}
+
+	public void setItemNumber(int itemNumber) {
+		this.itemNumber = itemNumber;
 	}
 
 }

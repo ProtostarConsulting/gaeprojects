@@ -6,6 +6,8 @@ public class Constants {
 	public static final String WEB_CLIENT_ID = "87556941487-36krkq9mr6iltvqpjd3k0r0il83h0b76.apps.googleusercontent.com";
 	public static final String SENDGRID_USERNAME = "ganesh.lawande@protostar.co.in";
 	public static final String SENDGRID_PWD = "sangram12";
+	public static final String SENDGRID_API_KEY = "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";
+	public static final String SENDGRID_FROM_EMAIL_NAME = "ProERP Notification";
 	public static final String ANDROID_CLIENT_ID = "";
 	public static final String ANDROID_AUDIENCE = WEB_CLIENT_ID;
 	public static final String API_EXPLORER_CLIENT_ID = com.google.api.server.spi.Constant.API_EXPLORER_CLIENT_ID;
@@ -55,6 +57,9 @@ public class Constants {
 	// Misc
 	public static final String DEFAULT_EMP_DEPT = "Default";
 	public static final String DEFAULT_STOCK_WAREHOUSE = "Default";
+
+	public static final int DOCUMENT_DEFAULT_MAX_SIZE = 5000000;
+	// MAX Document size is 5 MB
 
 	public enum DocumentStatus {
 		DRAFT, SUBMITTED, FINALIZED, REJECTED, APPROVED, SENT, PAID

@@ -18,6 +18,8 @@ import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
+import com.googlecode.objectify.TxnType;
+import com.googlecode.objectify.Work;
 import com.googlecode.objectify.cmd.Query;
 import com.protostar.billingnstock.invoice.entities.InvoiceEntity;
 import com.protostar.billingnstock.purchase.entities.BudgetEntity;
@@ -60,79 +62,94 @@ public class StockManagementService extends BaseService {
 	}
 
 	@ApiMethod(name = "addStockReceipt", path = "addStockReceipt")
-	public StockItemsReceiptEntity addStockReceipt(StockItemsReceiptEntity stockItemsReceipt)
+	public StockItemsReceiptEntity addStockReceipt(StockItemsReceiptEntity documentEntity)
 			throws MessagingException, IOException {
 		logger.info("Inside addStockReceipt...");
-		if (stockItemsReceipt.getStatus() == DocumentStatus.FINALIZED && stockItemsReceipt.isStatusAlreadyFinalized()) {
+		if (documentEntity.getStatus() == DocumentStatus.FINALIZED && documentEntity.isStatusAlreadyFinalized()) {
 			throw new RuntimeException("Save not allowed. StockItemsReceiptEntity is already FINALIZED: "
 					+ this.getClass().getSimpleName() + " Finalized entity can't be altered.");
 		}
 
-		List<StockLineItem> productLineItemList = stockItemsReceipt.getProductLineItemList();
+		documentEntity = ofy().execute(TxnType.REQUIRED, new Work<StockItemsReceiptEntity>() {
+			private StockItemsReceiptEntity documentEntity;
 
-		for (StockLineItem stockLineItem : productLineItemList) {
-			StockItemEntity stockItem = getOrCreateWarehouseStockItem(stockItemsReceipt.getWarehouse(), stockLineItem);
-			stockLineItem.setStockItem(stockItem);
-			if (stockLineItem.getStockItem().getStockItemType().isMaintainStockBySerialNumber()) {
-				List<StockItemInstanceEntity> stockItemInstanceList = stockLineItem.getStockItemInstanceList();
-				for (StockItemInstanceEntity stockItemInstanceEntity : stockItemInstanceList) {
-					stockItemInstanceEntity.setBusiness(stockItem.getBusiness());
-					stockItemInstanceEntity.setStockItemId(stockItem.getId().toString());
-					stockItemInstanceEntity.setStockReceiptNumber(stockItemsReceipt.getItemNumber());
-				}
+			private Work<StockItemsReceiptEntity> init(StockItemsReceiptEntity documentEntity) {
+				this.documentEntity = documentEntity;
+				return this;
 			}
 
-		}
+			public StockItemsReceiptEntity run() {
+				List<StockLineItem> productLineItemList = documentEntity.getProductLineItemList();
 
-		if (stockItemsReceipt.getStatus() == DocumentStatus.FINALIZED) {
-			// Perform stock adjustment only when this entity is finalized and
-			// not in DRAFT status.
-			List<StockItemTxnEntity> stockItemTxnList = new ArrayList<StockItemTxnEntity>();
-			List<StockItemInstanceEntity> stockItemInstanceToUpdateList = new ArrayList<StockItemInstanceEntity>();
-
-			for (StockLineItem stockLineItem : productLineItemList) {
-				// This needed so that StockItemService.adjustStockItems adds
-				// the
-				// stock items
-				int qtyDiff = stockLineItem.getQty() - stockLineItem.getStockMaintainedQty();
-				if (qtyDiff != 0) {
-					StockItemTxnEntity txnEntity = new StockItemTxnEntity();
-					stockItemTxnList.add(txnEntity);
-					txnEntity.setBusiness(stockItemsReceipt.getBusiness());
-					txnEntity.setStockItem(stockLineItem.getStockItem());
-					txnEntity.setQty(Math.abs(qtyDiff));
-					txnEntity.setPrice(stockLineItem.getPrice());
-
-					if (qtyDiff > 0) {
-						txnEntity.setTxnType(StockItemTxnEntity.StockTxnType.CR);
-					} else {
-						txnEntity.setTxnType(StockItemTxnEntity.StockTxnType.DR);
+				for (StockLineItem stockLineItem : productLineItemList) {
+					StockItemEntity stockItem = getOrCreateWarehouseStockItem(documentEntity.getWarehouse(),
+							stockLineItem);
+					stockLineItem.setStockItem(stockItem);
+					if (stockLineItem.getStockItem().getStockItemType().isMaintainStockBySerialNumber()) {
+						List<StockItemInstanceEntity> stockItemInstanceList = stockLineItem.getStockItemInstanceList();
+						for (StockItemInstanceEntity stockItemInstanceEntity : stockItemInstanceList) {
+							stockItemInstanceEntity.setBusiness(stockItem.getBusiness());
+							stockItemInstanceEntity.setStockItemId(stockItem.getId().toString());
+							stockItemInstanceEntity.setStockReceiptNumber(documentEntity.getItemNumber());
+						}
 					}
 
-					stockLineItem.setStockMaintainedQty(stockLineItem.getQty());
-				}
-				if (stockLineItem.getStockItem().getStockItemType().isMaintainStockBySerialNumber()) {
-					stockItemInstanceToUpdateList.addAll(stockLineItem.getStockItemInstanceList());
 				}
 
+				if (documentEntity.getStatus() == DocumentStatus.FINALIZED) {
+					// Perform stock adjustment only when this entity is
+					// finalized and
+					// not in DRAFT status.
+					List<StockItemTxnEntity> stockItemTxnList = new ArrayList<StockItemTxnEntity>();
+					List<StockItemInstanceEntity> stockItemInstanceToUpdateList = new ArrayList<StockItemInstanceEntity>();
+
+					for (StockLineItem stockLineItem : productLineItemList) {
+						// This needed so that StockItemService.adjustStockItems
+						// adds
+						// the
+						// stock items
+						int qtyDiff = stockLineItem.getQty() - stockLineItem.getStockMaintainedQty();
+						if (qtyDiff != 0) {
+							StockItemTxnEntity txnEntity = new StockItemTxnEntity();
+							stockItemTxnList.add(txnEntity);
+							txnEntity.setBusiness(documentEntity.getBusiness());
+							txnEntity.setStockItem(stockLineItem.getStockItem());
+							txnEntity.setQty(Math.abs(qtyDiff));
+							txnEntity.setPrice(stockLineItem.getPrice());
+
+							if (qtyDiff > 0) {
+								txnEntity.setTxnType(StockItemTxnEntity.StockTxnType.CR);
+							} else {
+								txnEntity.setTxnType(StockItemTxnEntity.StockTxnType.DR);
+							}
+
+							stockLineItem.setStockMaintainedQty(stockLineItem.getQty());
+						}
+						if (stockLineItem.getStockItem().getStockItemType().isMaintainStockBySerialNumber()) {
+							stockItemInstanceToUpdateList.addAll(stockLineItem.getStockItemInstanceList());
+						}
+
+					}
+					if (stockItemTxnList.size() > 0) {
+						addStockItemTxnList(stockItemTxnList, stockItemInstanceToUpdateList);
+					}
+				}
+
+				// if entity is saved directly as finalized, need to update item
+				// id
+				if (documentEntity.getStatus() == DocumentStatus.FINALIZED) {
+					updateRefEntityIdsIfMissing(documentEntity, productLineItemList);
+				}
+				ofy().save().entity(documentEntity).now();
+				return documentEntity;
 			}
-			if (stockItemTxnList.size() > 0) {
-				addStockItemTxnList(stockItemTxnList, stockItemInstanceToUpdateList);
-			}
-			new EmailHandler().sendStockReceiptEmail(stockItemsReceipt);
-		}
-		if (stockItemsReceipt.getStatus() == DocumentStatus.REJECTED) {
-			new EmailHandler().sendStockReceiptEmail(stockItemsReceipt);
+		}.init(documentEntity));
+
+		if (documentEntity.getStatus() != DocumentStatus.DRAFT) {
+			new EmailHandler().sendStockReceiptEmail(documentEntity);
 		}
 
-		ofy().save().entity(stockItemsReceipt).now();
-
-		// if entity is saved directly as finalized, need to update item id
-		if (stockItemsReceipt.getStatus() == DocumentStatus.FINALIZED) {
-			updateRefEntityIdsIfMissing(stockItemsReceipt, productLineItemList);
-		}
-
-		return stockItemsReceipt;
+		return documentEntity;
 	}
 
 	private void updateRefEntityIdsIfMissing(Object toUpdateEntity, List<StockLineItem> productLineItemList) {
@@ -184,61 +201,70 @@ public class StockManagementService extends BaseService {
 	}
 
 	@ApiMethod(name = "addStockShipment", path = "addStockShipment")
-	public StockItemsShipmentEntity addStockShipment(StockItemsShipmentEntity stockItemsShipment)
+	public StockItemsShipmentEntity addStockShipment(StockItemsShipmentEntity documentEntity)
 			throws MessagingException, IOException {
-		if (stockItemsShipment.getStatus() == DocumentStatus.FINALIZED
-				&& stockItemsShipment.isStatusAlreadyFinalized()) {
+		if (documentEntity.getStatus() == DocumentStatus.FINALIZED && documentEntity.isStatusAlreadyFinalized()) {
 			throw new RuntimeException("Save not allowed. StockItemsShipmentEntity is already FINALIZED: "
 					+ this.getClass().getSimpleName() + " Finalized entity can't be altered.");
 		}
 
-		List<StockLineItem> productLineItemList = stockItemsShipment.getProductLineItemList();
+		documentEntity = ofy().execute(TxnType.REQUIRED, new Work<StockItemsShipmentEntity>() {
+			private StockItemsShipmentEntity documentEntity;
 
-		if (stockItemsShipment.getStatus() == DocumentStatus.FINALIZED) {
-			List<StockLineItem> stockLineItemsToProcess = new ArrayList<StockLineItem>();
-			if (stockItemsShipment.getShipmentType() != null
-					&& stockItemsShipment.getShipmentType() == ShipmentType.TO_OTHER_WAREHOUSE
-					&& stockItemsShipment.getToWH() != null) {
-
-				for (StockLineItem stockLineItem : productLineItemList) {
-					stockLineItemsToProcess.add(stockLineItem);
-					StockLineItem copy = StockLineItem.getCopy(stockLineItem);
-					StockItemEntity stockItem = getOrCreateWarehouseStockItem(stockItemsShipment.getToWH(), copy);
-					copy.setStockItem(stockItem);
-					// So that credits in adjustStockItems fn
-					copy.setStockMaintainedQty(copy.getQty() * 2);
-					stockLineItemsToProcess.add(copy);
-
-					if (stockLineItem.getStockItem().getStockItemType().isMaintainStockBySerialNumber()) {
-						List<StockItemInstanceEntity> stockItemInstanceList = stockLineItem.getStockItemInstanceList();
-						for (StockItemInstanceEntity stockItemInstanceEntity : stockItemInstanceList) {
-							stockItemInstanceEntity.setBusiness(stockItem.getBusiness());
-							stockItemInstanceEntity.setStockItemId(stockItem.getId().toString());
-							stockItemInstanceEntity.setStockShipmentNumber(stockItemsShipment.getItemNumber());
-						}
-					}
-					// So that credits in adjustStockItems fn
-					copy.setStockMaintainedQty(stockLineItem.getQty() * 2);
-					stockLineItemsToProcess.add(copy);
-				}
-			} else {
-				stockLineItemsToProcess = stockItemsShipment.getProductLineItemList();
+			private Work<StockItemsShipmentEntity> init(StockItemsShipmentEntity documentEntity) {
+				this.documentEntity = documentEntity;
+				return this;
 			}
 
-			// Process stock items
-			StockManagementService.adjustStockItems(stockItemsShipment.getBusiness(), stockLineItemsToProcess);
-			// stockShipment Email
-			new EmailHandler().sendStockShipmentEmail(stockItemsShipment);
-		} // enf of FINALIZED if
+			public StockItemsShipmentEntity run() {
+				List<StockLineItem> productLineItemList = documentEntity.getProductLineItemList();
 
-		if (stockItemsShipment.getStatus() == DocumentStatus.REJECTED) {
-			new EmailHandler().sendStockShipmentEmail(stockItemsShipment);
+				if (documentEntity.getStatus() == DocumentStatus.FINALIZED) {
+					List<StockLineItem> stockLineItemsToProcess = new ArrayList<StockLineItem>();
+					if (documentEntity.getShipmentType() != null
+							&& documentEntity.getShipmentType() == ShipmentType.TO_OTHER_WAREHOUSE
+							&& documentEntity.getToWH() != null) {
+
+						for (StockLineItem stockLineItem : productLineItemList) {
+							stockLineItemsToProcess.add(stockLineItem);
+							StockLineItem copy = StockLineItem.getCopy(stockLineItem);
+							StockItemEntity stockItem = getOrCreateWarehouseStockItem(documentEntity.getToWH(), copy);
+							copy.setStockItem(stockItem);
+							// So that credits in adjustStockItems fn
+							copy.setStockMaintainedQty(copy.getQty() * 2);
+							stockLineItemsToProcess.add(copy);
+
+							if (stockLineItem.getStockItem().getStockItemType().isMaintainStockBySerialNumber()) {
+								List<StockItemInstanceEntity> stockItemInstanceList = stockLineItem
+										.getStockItemInstanceList();
+								for (StockItemInstanceEntity stockItemInstanceEntity : stockItemInstanceList) {
+									stockItemInstanceEntity.setBusiness(stockItem.getBusiness());
+									stockItemInstanceEntity.setStockItemId(stockItem.getId().toString());
+									stockItemInstanceEntity.setStockShipmentNumber(documentEntity.getItemNumber());
+								}
+							}
+							// So that credits in adjustStockItems fn
+							copy.setStockMaintainedQty(stockLineItem.getQty() * 2);
+							stockLineItemsToProcess.add(copy);
+						}
+					} else {
+						stockLineItemsToProcess = documentEntity.getProductLineItemList();
+					}
+
+					// Process stock items
+					StockManagementService.adjustStockItems(documentEntity.getBusiness(), stockLineItemsToProcess);
+				} // enf of FINALIZED if
+
+				ofy().save().entity(documentEntity).now();
+				return documentEntity;
+			}
+		}.init(documentEntity));
+
+		if (documentEntity.getStatus() != DocumentStatus.DRAFT) {
+			new EmailHandler().sendStockShipmentEmail(documentEntity);
 		}
 
-		ofy().save().entity(stockItemsShipment).now();
-
-		// if entity is saved directly as finalized, need to update item id
-		return stockItemsShipment;
+		return documentEntity;
 	}
 
 	@ApiMethod(name = "getStockItemTypes", path = "getStockItemTypes")
@@ -471,10 +497,7 @@ public class StockManagementService extends BaseService {
 			}
 
 		}
-		if (purchaseOrderEntity.getStatus() == DocumentStatus.FINALIZED) {
-			new EmailHandler().sendPurchaseOrderEmail(purchaseOrderEntity);
-		}
-		if (purchaseOrderEntity.getStatus() == DocumentStatus.REJECTED) {
+		if (purchaseOrderEntity.getStatus() != DocumentStatus.DRAFT) {
 			new EmailHandler().sendPurchaseOrderEmail(purchaseOrderEntity);
 		}
 		return purchaseOrderEntity;

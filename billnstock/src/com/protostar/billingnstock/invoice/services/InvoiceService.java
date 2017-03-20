@@ -24,37 +24,45 @@ import com.protostar.billingnstock.invoice.entities.InvoiceSettingsEntity;
 import com.protostar.billingnstock.invoice.entities.QuotationEntity;
 import com.protostar.billingnstock.stock.services.StockManagementService;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
-import com.protostar.billingnstock.warehouse.entities.WarehouseEntity;
-import com.protostar.billingnstock.warehouse.services.WarehouseService;
 import com.protostar.billnstock.service.BaseService;
-import com.protostar.billnstock.until.data.Constants;
 import com.protostar.billnstock.until.data.Constants.DocumentStatus;
 import com.protostar.billnstock.until.data.EmailHandler;
 import com.protostar.billnstock.until.data.EntityPagingInfo;
-import com.protostar.billnstock.until.data.EntityUtil;
-import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 
 @Api(name = "invoiceService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.stock.services", ownerName = "com.protostar.billingnstock.stock.services", packagePath = ""))
 public class InvoiceService extends BaseService {
 
 	@ApiMethod(name = "addInvoice", path = "addInvoice")
-	public InvoiceEntity saveInvoice(InvoiceEntity invoiceEntity) throws MessagingException, IOException {
-		if (invoiceEntity.getStatus() == DocumentStatus.FINALIZED && invoiceEntity.isStatusAlreadyFinalized()) {
+	public InvoiceEntity saveInvoice(InvoiceEntity documentEntity) throws MessagingException, IOException {
+
+		if (documentEntity.getStatus() == DocumentStatus.FINALIZED && documentEntity.isStatusAlreadyFinalized()) {
 			throw new RuntimeException("Save not allowed. InvoiceEntity is already FINALIZED: "
 					+ this.getClass().getSimpleName() + " Finalized entity can't be altered.");
 		}
 
-		if (invoiceEntity.getStatus() == DocumentStatus.FINALIZED) {
-			StockManagementService.adjustStockItems(invoiceEntity.getBusiness(),
-					invoiceEntity.getProductLineItemList());
-			new EmailHandler().sendInvoiceEmail(invoiceEntity);
-		}
-		if (invoiceEntity.getStatus() == DocumentStatus.REJECTED) {
-			new EmailHandler().sendInvoiceEmail(invoiceEntity);
+		documentEntity = ofy().execute(TxnType.REQUIRED, new Work<InvoiceEntity>() {
+			private InvoiceEntity documentEntity;
+
+			private Work<InvoiceEntity> init(InvoiceEntity documentEntity) {
+				this.documentEntity = documentEntity;
+				return this;
+			}
+
+			public InvoiceEntity run() {
+				if (documentEntity.getStatus() == DocumentStatus.FINALIZED) {
+					StockManagementService.adjustStockItems(documentEntity.getBusiness(),
+							documentEntity.getProductLineItemList());
+				}
+				ofy().save().entity(documentEntity).now();
+				return documentEntity;
+			}
+		}.init(documentEntity));
+
+		if (documentEntity.getStatus() != DocumentStatus.DRAFT) {
+			new EmailHandler().sendInvoiceEmail(documentEntity);
 		}
 
-		ofy().save().entity(invoiceEntity).now();
-		return invoiceEntity;
+		return documentEntity;
 
 	}
 
@@ -153,7 +161,6 @@ public class InvoiceService extends BaseService {
 	public QuotationEntity addQuotation(QuotationEntity quotationEntity) {
 
 		return ofy().execute(TxnType.REQUIRED, new Work<QuotationEntity>() {
-
 			private QuotationEntity quotationEntity;
 
 			private Work<QuotationEntity> init(QuotationEntity quotationEntity) {
