@@ -1,0 +1,43 @@
+<md-content layout-padding>
+<section layout="row" layout-xs="column">
+	<md-subheader class="md-primary">
+	<h4 class="md-title">Other Business Settings</h4>
+	</md-subheader>
+	<span flex></span>
+</section>
+<form name="documentForm" layout="column">
+	<md-input-container flex="80" layout="row" flex> <label>SENDGRID_API_KEY</label>
+	<input type="text" ng-disabled="true"
+		ng-model="settingsObj.SENDGRID_API_KEY"> </md-input-container>
+
+	<md-input-container flex="80" layout="row" flex> <label>TEXTLOCAL_API_KEY</label>
+	<input type="text" ng-disabled="true"
+		ng-model="settingsObj.TEXTLOCAL_API_KEY"> </md-input-container>
+
+	<div layout="row" layout-xs="column">
+		<div flex-xs flex="20">
+			<md-checkbox ng-model="settingsObj.emailNotification"
+				ng-true-value="true" ng-false-value="false"
+				aria-label="emailNotification"> Email Notification</md-checkbox>
+		</div>
+
+		<div class="md-caption" style="padding-left: 20px;">This system
+			level email notification flag.</div>
+	</div>
+	<div layout="row" layout-xs="column">
+		<div flex-xs flex="20">
+			<md-checkbox ng-model="settingsObj.smsNotification"
+				ng-true-value="true" ng-false-value="false"
+				aria-label="smsNotification"> SMS Notification</md-checkbox>
+		</div>
+
+		<div class="md-caption" style="padding-left: 20px;">This system
+			level sms notification flag.</div>
+	</div>
+</form>
+<section layout="row" layout-sm="column">
+	<md-button class="md-raised md-primary" ng-click="addSettings()">Save
+	Changes </md-button>
+</section>
+</md-content>
+

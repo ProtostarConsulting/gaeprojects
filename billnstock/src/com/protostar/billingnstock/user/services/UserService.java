@@ -26,6 +26,7 @@ import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.googlecode.objectify.Key;
+import com.googlecode.objectify.LoadResult;
 import com.googlecode.objectify.TxnType;
 import com.googlecode.objectify.Work;
 import com.protostar.billingnstock.hr.entities.HREntityUtil;
@@ -33,7 +34,9 @@ import com.protostar.billingnstock.hr.entities.HRSettingsEntity;
 import com.protostar.billingnstock.hr.services.HrService;
 import com.protostar.billingnstock.proadmin.entities.BusinessPlanType;
 import com.protostar.billingnstock.proadmin.services.ProtostarAdminService;
+import com.protostar.billingnstock.stock.entities.StockSettingsEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
+import com.protostar.billingnstock.user.entities.BusinessSettingsEntity;
 import com.protostar.billingnstock.user.entities.EmpDepartment;
 import com.protostar.billingnstock.user.entities.UserEntity;
 import com.protostar.billingnstock.warehouse.entities.WarehouseEntity;
@@ -378,6 +381,21 @@ public class UserService {
 
 	public static void addUserBatch(List<UserEntity> userList) {
 		ofy().save().entities(userList);
+	}
+
+	@ApiMethod(name = "addBusinessSettingsEntity", path = "addBusinessSettingsEntity")
+	public BusinessSettingsEntity addBusinessSettingsEntity(BusinessSettingsEntity settingsEntity) {
+		ofy().save().entity(settingsEntity).now();
+		return settingsEntity;
+
+	}
+
+	@ApiMethod(name = "getBusinessSettingsEntity", path = "getBusinessSettingsEntity")
+	public BusinessSettingsEntity getBusinessSettingsEntity(@Named("id") Long busId) {
+		BusinessSettingsEntity settingsEntity = ofy().load().type(BusinessSettingsEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).first().now();
+		return settingsEntity;
+
 	}
 
 }

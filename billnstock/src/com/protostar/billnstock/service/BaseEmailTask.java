@@ -1,4 +1,4 @@
-package com.protostar.billingnstock.taskmangement;
+package com.protostar.billnstock.service;
 
 import java.io.IOException;
 
@@ -13,48 +13,82 @@ import com.sendgrid.Request;
 import com.sendgrid.Response;
 import com.sendgrid.SendGrid;
 
-public class TaskAssignedEmail implements DeferredTask {
+public class BaseEmailTask implements DeferredTask {
+
 	private static final long serialVersionUID = 1L;
 
 	private String fromEmail;
-	private String emailTo;
 	private String emailDLList;
 	private String emailSubject;
 	private String messageBody;
 	private String SENDGRID_API_KEY;
 
-	public TaskAssignedEmail(String SENDGRID_API_KEY, String fromEmail, String emailTo, String emailDLList,
-			String emailSubject, String messageBody) {
+	private Mail taskEmail;
+
+	public BaseEmailTask(String SENDGRID_API_KEY, String fromEmail, String emailDLList, String emailSubject,
+			String messageBody) {
 		this.SENDGRID_API_KEY = SENDGRID_API_KEY;
 		this.fromEmail = fromEmail;
-		this.emailTo = emailTo;
 		this.emailDLList = emailDLList;
 		this.emailSubject = emailSubject;
 		this.messageBody = messageBody;
+
+		setTaskEmail(buildEmail());
 	}
 
 	@Override
 	public void run() {
+		// expensive operation to be in the background goes here
 		try {
 			SendGrid sg = new SendGrid(SENDGRID_API_KEY);
 			sg.addRequestHeader("X-Mock", "true");
 
 			Request request = new Request();
-			Mail taskEmail = buildEmail();
-
 			request.method = Method.POST;
 			request.endpoint = "mail/send";
-			request.body = taskEmail.build();
+			request.body = getTaskEmail().build();
 			Response response = sg.api(request);
 			System.out.println(response.statusCode);
 			System.out.println(response.body);
 			System.out.println(response.headers);
+
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		} catch (RuntimeException e) {
 			e.printStackTrace();
 		}
+	}
 
+	public String getMessageBody() {
+		return messageBody;
+	}
+
+	public void setMessageBody(String messageBody) {
+		this.messageBody = messageBody;
+	}
+
+	public String getEmailDLList() {
+		return emailDLList;
+	}
+
+	public void setEmailDLList(String emailDLList) {
+		this.emailDLList = emailDLList;
+	}
+
+	public String getFromEmail() {
+		return fromEmail;
+	}
+
+	public void setFromEmail(String fromEmail) {
+		this.fromEmail = fromEmail;
+	}
+
+	public String getEmailSubject() {
+		return emailSubject;
+	}
+
+	public void setEmailSubject(String emailSubject) {
+		this.emailSubject = emailSubject;
 	}
 
 	public Mail buildEmail() {
@@ -69,30 +103,23 @@ public class TaskAssignedEmail implements DeferredTask {
 
 		Personalization personalization = new Personalization();
 
-		Email to = new Email();
+		Email selfTo = new Email();
 		// cc.setName("Example User CC1");
-		to.setEmail(this.emailTo);
-		personalization.addTo(to);
-		if (!this.emailTo.equalsIgnoreCase(this.fromEmail)) {
-			Email selfCc = new Email();
-			// to.setName("Example User To1");
-			selfCc.setEmail(this.fromEmail);
-			personalization.addCc(selfCc);
-		}
+		selfTo.setEmail(this.fromEmail);
+		personalization.addTo(selfTo);
 
-		// Add DL list in CC.
 		if (this.emailDLList != null && !this.emailDLList.isEmpty()) {
 			String[] emailIds = this.emailDLList.split(",");
 			for (String emailId : emailIds) {
 				// Can't have same email id in to, cc or bcc
 				String trimedTo = emailId.trim();
-				if (this.emailTo.equalsIgnoreCase(trimedTo) || this.fromEmail.equalsIgnoreCase(trimedTo))
+				if (this.fromEmail.equalsIgnoreCase(trimedTo))
 					continue;
 
 				Email cc = new Email();
 				// to.setName("Example User To1");
 				cc.setEmail(trimedTo);
-				personalization.addTo(cc);
+				personalization.addCc(cc);
 			}
 		}
 
@@ -112,52 +139,41 @@ public class TaskAssignedEmail implements DeferredTask {
 		content.setValue(this.messageBody);
 		mail.addContent(content);
 
+		// // Add PO PDF attachment
+		// StockManagementService stockManagementService = new
+		// StockManagementService();
+		// PurchaseOrderEntity poObject =
+		// stockManagementService.getPOByItemNumber(this.itemNumber);
+		// PrintPdfPurchaseOrder printPdfPurchaseOrder = new
+		// PrintPdfPurchaseOrder();
+		//
+		// ByteArrayOutputStream outputStream = new
+		// ByteArrayOutputStream(Constants.DOCUMENT_DEFAULT_MAX_SIZE);
+		// printPdfPurchaseOrder.generatePdf(poObject, outputStream);
+		// String base64Content =
+		// BaseEncoding.base64().encode(outputStream.toByteArray());
+		//
+		// Attachments attachments = new Attachments();
+		// attachments.setContent(base64Content);
+		// attachments.setType("application/pdf");
+		// attachments.setFilename("PurchaseOrder_" + this.itemNumber + ".pdf");
+		// attachments.setDisposition("attachment");
+		// mail.addAttachments(attachments);
+
 		Email replyTo = new Email();
-		// replyTo.setName(Constants.SENDGRID_FROM_EMAIL_NAME);
+		// replyTo.setName("ProERP Notification");
 		replyTo.setEmail(this.fromEmail);
 		mail.setReplyTo(replyTo);
 
 		return mail;
 	}
 
-	public String getFromEmail() {
-		return fromEmail;
+	public Mail getTaskEmail() {
+		return taskEmail;
 	}
 
-	public void setFromEmail(String fromEmail) {
-		this.fromEmail = fromEmail;
-	}
-
-	public String getEmailTo() {
-		return emailTo;
-	}
-
-	public void setEmailTo(String emailTo) {
-		this.emailTo = emailTo;
-	}
-
-	public String getMessageBody() {
-		return messageBody;
-	}
-
-	public void setMessageBody(String messageBody) {
-		this.messageBody = messageBody;
-	}
-
-	public String getEmailSubject() {
-		return emailSubject;
-	}
-
-	public void setEmailSubject(String emailSubject) {
-		this.emailSubject = emailSubject;
-	}
-
-	public String getEmailDLList() {
-		return emailDLList;
-	}
-
-	public void setEmailDLList(String emailDLList) {
-		this.emailDLList = emailDLList;
+	public void setTaskEmail(Mail taskEmail) {
+		this.taskEmail = taskEmail;
 	}
 
 }

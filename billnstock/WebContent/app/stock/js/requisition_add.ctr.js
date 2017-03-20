@@ -51,11 +51,17 @@ app
 
 							var stockService = appEndpointSF.getStockService();
 
-							stockService.addRequisition($scope.documentEntity)
-									.then(function() {
-										$scope.showUpdateToast();
-										$scope.documentEntity = {};
-									});
+							stockService
+									.addRequisition($scope.documentEntity)
+									.then(
+											function(entityObj) {
+												if (entityObj.id) {
+													$scope.documentEntity.id = entityObj.id;
+													$scope.documentEntity.itemNumber = entityObj.itemNumber;
+													$scope.showUpdateToast();
+
+												}
+											});
 							$scope.loading = false;
 						}
 					}
@@ -64,7 +70,7 @@ app
 						$scope.documentEntity.status = 'DRAFT';
 						$scope.saveDocument();
 					}
-					
+
 					$scope.submitDocumnent = function(ev) {
 						$scope.documentEntity.status = 'SUBMITTED';
 						$scope.saveDocument();

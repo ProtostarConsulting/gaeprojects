@@ -596,8 +596,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		controller : 'voucherPaymentCtr',
 		params : {
 			Account : "",
-			stockReceiptObj:null
-			
+			stockReceiptObj : null
+
 		}
 	}).state('accounting.voucherPaymentList', {
 		url : "/PaymentVoucherList",
@@ -912,15 +912,15 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/disclaimer",
 		templateUrl : '/app/setup/disclaimer.html',
 		controller : 'disclaimer',
-	})
-
-	.state('setup.departmentList', {
+	}).state('setup.departmentList', {
 		url : "/departmentList",
 		templateUrl : '/app/setup/setup_departmentList.html',
 		controller : 'setup.departmentList',
-	})
-
-	.state('setup.userauth', {
+	}).state('setup.settings', {
+		url : "/bizsettings",
+		templateUrl : '/app/setup/biz_settings.html',
+		controller : 'bizSettingsCtr'
+	}).state('setup.userauth', {
 		url : "/userauth",
 		templateUrl : '/app/setup/manage_user_auth.html',
 		controller : 'manageUserAuthCtr',

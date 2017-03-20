@@ -298,6 +298,25 @@ function googleEndpointSF($q) {
 
 	}
 
+	UserService.addBusinessSettingsEntity = function(settings) {
+		var deferred = $q.defer();
+		gapi.client.userService.addBusinessSettingsEntity(settings).execute(
+				function(resp) {
+					deferred.resolve(resp);
+				});
+		return deferred.promise;
+	}
+
+	UserService.getBusinessSettingsEntity = function(id) {
+		var deferred = $q.defer();
+		gapi.client.userService.getBusinessSettingsEntity({
+			"id" : id
+		}).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}
+
 	/*
 	 * UserService.addNewBusiness = function(business) { var deferred =
 	 * $q.defer();
@@ -1311,7 +1330,7 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	
+
 	crmService.addCRMSettings = function(crmSettings) {
 		var deferred = $q.defer();
 
@@ -1923,19 +1942,15 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
-	
-	
-	AccountEntryService.getAccountById1 = function(bid,id) {
+	AccountEntryService.getAccountById1 = function(bid, id) {
 		var deferred = $q.defer();
-		gapi.client.accountEntryService.getAccountById1(bid,id).execute(
+		gapi.client.accountEntryService.getAccountById1(bid, id).execute(
 				function(resp) {
 					deferred.resolve(resp.items);
 				});
 		return deferred.promise;
 	}
-	
-	
-	
+
 	AccountEntryService.getAccountEntryList = function() {
 		var deferred = $q.defer();
 		gapi.client.accountEntryService.getAccountEntryList().execute(

@@ -17,6 +17,7 @@ import com.protostar.billingnstock.stock.entities.StockItemsShipmentEntity.Shipm
 import com.protostar.billingnstock.taskmangement.TaskEntity;
 import com.protostar.billingnstock.taskmangement.TaskEntity.TaskStatus;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
+import com.protostar.billnstock.entity.BaseEntity;
 import com.protostar.billnstock.service.UtilityService;
 import com.protostar.billnstock.until.data.Constants.DocumentStatus;
 
@@ -54,53 +55,35 @@ public class EmailHtmlTemplateService {
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
 			String poModifiedDate = sdfDate.format(purchaseOrder.getModifiedDate());
 
+			String createdBy = purchaseOrder.getCreatedBy().getFirstName() + " "
+					+ purchaseOrder.getCreatedBy().getLastName();
 			String approverName = "NA";
 			if (purchaseOrder.getApprovedBy() != null)
 				approverName = purchaseOrder.getApprovedBy().getFirstName() + " "
 						+ purchaseOrder.getApprovedBy().getLastName();
 
+			root.put("createdBy", createdBy);
 			root.put("stockModuleApprover", approverName);
 			root.put("poModifiedDate", poModifiedDate);
 			root.put("supplier", purchaseOrder.getSupplier().getSupplierName());
 			root.put("finalTotal", purchaseOrder.getFinalTotal());
 
 			String documentStatus = "";
-
 			String docStatusLable = "";
 
 			DocumentStatus status = purchaseOrder.getStatus();
 
-			if (status == DocumentStatus.FINALIZED) {
-				documentStatus = "approved";
-				docStatusLable = "Approved By";
-			}
 			if (status == DocumentStatus.REJECTED) {
-				documentStatus = "rejected";
+				documentStatus = "Rejected";
 				docStatusLable = "Rejected By";
+			} else {
+				documentStatus = "Approved";
+				docStatusLable = "Approved By";
 			}
 			root.put("documentStatus", documentStatus);
 			root.put("docStatusLable", docStatusLable);
 
-			BusinessEntity business = purchaseOrder.getBusiness();
-			root.put("businessName", business.getBusinessName());
-			root.put("businessAdressLine1", business.getAddress().getLine1());
-			String line2 = business.getAddress().getLine2();
-			String pin = business.getAddress().getPin();
-			String country = business.getAddress().getCountry();
-			if (line2 == null || line2.trim().isEmpty()) {
-				line2 = null;
-			}
-			if (pin == null || pin.trim().isEmpty()) {
-				pin = null;
-			}
-			if (country == null || country.trim().isEmpty()) {
-				country = null;
-			}
-			root.put("businessAdressLine2", line2);
-			root.put("businessAdressCity", business.getAddress().getCity());
-			root.put("businessAdressPin", pin);
-			root.put("businessAdressState", business.getAddress().getState());
-			root.put("businessAdressCountry", country);
+			addFooterParams(purchaseOrder, root);
 
 			Template temp = getConfiguration().getTemplate("email_templates/purchase_order_email_tmpl.ftlh");
 
@@ -126,30 +109,56 @@ public class EmailHtmlTemplateService {
 		return "";
 	}
 
-	public String stockShipmentFinalizedEmail(StockItemsShipmentEntity stockShipment) {
+	private void addFooterParams(BaseEntity documentEntity, Map<String, Object> root) {
+		BusinessEntity business = documentEntity.getBusiness();
+		root.put("businessName", business.getBusinessName());
+		root.put("businessAdressLine1", business.getAddress().getLine1());
+		String line2 = business.getAddress().getLine2();
+		String pin = business.getAddress().getPin();
+		String country = business.getAddress().getCountry();
+		if (line2 == null || line2.trim().isEmpty()) {
+			line2 = null;
+		}
+		if (pin == null || pin.trim().isEmpty()) {
+			pin = null;
+		}
+		if (country == null || country.trim().isEmpty()) {
+			country = null;
+		}
+		root.put("businessAdressLine2", line2);
+		root.put("businessAdressCity", business.getAddress().getCity());
+		root.put("businessAdressPin", pin);
+		root.put("businessAdressState", business.getAddress().getState());
+		root.put("businessAdressCountry", country);
+
+		String currentAppURL = UtilityService.getCurrentAppURL();
+		root.put("currentAppURL", currentAppURL);
+	}
+
+	public String stockShipmentFinalizedEmail(StockItemsShipmentEntity documentEntity) {
 
 		try {
 
 			Map<String, Object> root = new HashMap<String, Object>();
 
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
-			String shipmentModifiedDate = sdfDate.format(stockShipment.getModifiedDate());
+			String shipmentModifiedDate = sdfDate.format(documentEntity.getModifiedDate());
 
 			String approverName = "NA";
-			if (stockShipment.getApprovedBy() != null)
-				approverName = stockShipment.getApprovedBy().getFirstName() + " "
-						+ stockShipment.getApprovedBy().getLastName();
+			if (documentEntity.getApprovedBy() != null)
+				approverName = documentEntity.getApprovedBy().getFirstName() + " "
+						+ documentEntity.getApprovedBy().getLastName();
 
 			root.put("stockModuleApprover", approverName);
 			root.put("shipmentModifiedDate", shipmentModifiedDate);
-			root.put("finalTotal", stockShipment.getFinalTotal());
-			root.put("fromWH", stockShipment.getFromWH().getWarehouseName());
+			root.put("finalTotal", documentEntity.getFinalTotal());
+			root.put("fromWH", documentEntity.getFromWH().getWarehouseName());
 
 			String documentStatus = "";
 
 			String docStatusLable = "";
 
-			DocumentStatus status = stockShipment.getStatus();
+			DocumentStatus status = documentEntity.getStatus();
 
 			if (status == DocumentStatus.FINALIZED) {
 				documentStatus = "approved";
@@ -162,14 +171,14 @@ public class EmailHtmlTemplateService {
 			root.put("documentStatus", documentStatus);
 			root.put("docStatusLable", docStatusLable);
 
-			ShipmentType shipmentType = stockShipment.getShipmentType();
+			ShipmentType shipmentType = documentEntity.getShipmentType();
 			if (shipmentType.equals(ShipmentType.TO_OTHER_WAREHOUSE)) {
-				root.put("toWH", stockShipment.getToWH().getWarehouseName());
+				root.put("toWH", documentEntity.getToWH().getWarehouseName());
 			}
 
 			else if (shipmentType.equals(ShipmentType.TO_CUSTOMER)) {
 
-				Customer customer = stockShipment.getCustomer();
+				Customer customer = documentEntity.getCustomer();
 
 				String custName = "";
 
@@ -182,7 +191,7 @@ public class EmailHtmlTemplateService {
 				root.put("customerName", custName);
 			} else if (shipmentType.equals(ShipmentType.TO_PARTNER)) {
 
-				Customer partner = stockShipment.getCustomer();
+				Customer partner = documentEntity.getCustomer();
 				String partnerName = "";
 
 				if (partner.getIsCompany()) {
@@ -194,26 +203,7 @@ public class EmailHtmlTemplateService {
 				root.put("partnerName", partnerName);
 			}
 
-			BusinessEntity business = stockShipment.getBusiness();
-			root.put("businessName", business.getBusinessName());
-			root.put("businessAdressLine1", business.getAddress().getLine1());
-			String line2 = business.getAddress().getLine2();
-			String pin = business.getAddress().getPin();
-			String country = business.getAddress().getCountry();
-			if (line2 == null || line2.trim().isEmpty()) {
-				line2 = null;
-			}
-			if (pin == null || pin.trim().isEmpty()) {
-				pin = null;
-			}
-			if (country == null || country.trim().isEmpty()) {
-				country = null;
-			}
-			root.put("businessAdressLine2", line2);
-			root.put("businessAdressCity", business.getAddress().getCity());
-			root.put("businessAdressPin", pin);
-			root.put("businessAdressState", business.getAddress().getState());
-			root.put("businessAdressCountry", country);
+			addFooterParams(documentEntity, root);
 
 			Template temp = getConfiguration().getTemplate("email_templates/stock_shipment_tmpl.ftlh");
 
@@ -239,31 +229,31 @@ public class EmailHtmlTemplateService {
 		return "";
 	}
 
-	public String stockReceiptFinalizedEmail(StockItemsReceiptEntity stockItemsReceipt) {
+	public String stockReceiptFinalizedEmail(StockItemsReceiptEntity documentEntity) {
 
 		try {
 
 			Map<String, Object> root = new HashMap<String, Object>();
 
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
-			String receiptModifiedDate = sdfDate.format(stockItemsReceipt.getModifiedDate());
+			String receiptModifiedDate = sdfDate.format(documentEntity.getModifiedDate());
 
 			String approverName = "NA";
-			if (stockItemsReceipt.getApprovedBy() != null)
-				approverName = stockItemsReceipt.getApprovedBy().getFirstName() + " "
-						+ stockItemsReceipt.getApprovedBy().getLastName();
+			if (documentEntity.getApprovedBy() != null)
+				approverName = documentEntity.getApprovedBy().getFirstName() + " "
+						+ documentEntity.getApprovedBy().getLastName();
 
 			root.put("stockModuleApprover", approverName);
 			root.put("receiptModifiedDate", receiptModifiedDate);
-			root.put("supplier", stockItemsReceipt.getSupplier().getSupplierName());
-			root.put("warehouse", stockItemsReceipt.getWarehouse().getWarehouseName());
-			root.put("finalTotal", stockItemsReceipt.getFinalTotal());
+			root.put("supplier", documentEntity.getSupplier().getSupplierName());
+			root.put("warehouse", documentEntity.getWarehouse().getWarehouseName());
+			root.put("finalTotal", documentEntity.getFinalTotal());
 
 			String documentStatus = "";
 
 			String docStatusLable = "";
 
-			DocumentStatus status = stockItemsReceipt.getStatus();
+			DocumentStatus status = documentEntity.getStatus();
 
 			if (status == DocumentStatus.FINALIZED) {
 				documentStatus = "approved";
@@ -276,26 +266,7 @@ public class EmailHtmlTemplateService {
 			root.put("documentStatus", documentStatus);
 			root.put("docStatusLable", docStatusLable);
 
-			BusinessEntity business = stockItemsReceipt.getBusiness();
-			root.put("businessName", business.getBusinessName());
-			root.put("businessAdressLine1", business.getAddress().getLine1());
-			String line2 = business.getAddress().getLine2();
-			String pin = business.getAddress().getPin();
-			String country = business.getAddress().getCountry();
-			if (line2 == null || line2.trim().isEmpty()) {
-				line2 = null;
-			}
-			if (pin == null || pin.trim().isEmpty()) {
-				pin = null;
-			}
-			if (country == null || country.trim().isEmpty()) {
-				country = null;
-			}
-			root.put("businessAdressLine2", line2);
-			root.put("businessAdressCity", business.getAddress().getCity());
-			root.put("businessAdressPin", pin);
-			root.put("businessAdressState", business.getAddress().getState());
-			root.put("businessAdressCountry", country);
+			addFooterParams(documentEntity, root);
 
 			Template temp = getConfiguration().getTemplate("email_templates/stock_receipt_tmpl.ftlh");
 
@@ -321,68 +292,45 @@ public class EmailHtmlTemplateService {
 		return "";
 	}
 
-	public String taskAssignedEmail(TaskEntity taskEntity) {
+	public String taskAssignedEmail(TaskEntity documentEntity) {
 
 		try {
 
 			Map<String, Object> root = new HashMap<String, Object>();
 
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
-			String taskAssignedDate = sdfDate.format(taskEntity.getAssignedDate());
+			String taskAssignedDate = sdfDate.format(documentEntity.getAssignedDate());
 
 			String estCompletionDate = "";
-			if (taskEntity.getEstCompletionDate() != null) {
+			if (documentEntity.getEstCompletionDate() != null) {
 
-				estCompletionDate = sdfDate.format(taskEntity.getEstCompletionDate());
+				estCompletionDate = sdfDate.format(documentEntity.getEstCompletionDate());
 
 			}
 
 			String completionDate = "";
-			if (taskEntity.getTaskStatus() == TaskStatus.COMPLETED) {
+			if (documentEntity.getTaskStatus() == TaskStatus.COMPLETED) {
 
-				completionDate = sdfDate.format(taskEntity.getCompletionDate());
+				completionDate = sdfDate.format(documentEntity.getCompletionDate());
 			}
 
-			root.put("assignedBy",
-					"" + taskEntity.getAssignedBy().getFirstName() + " " + taskEntity.getAssignedBy().getLastName());
+			root.put("assignedBy", "" + documentEntity.getAssignedBy().getFirstName() + " "
+					+ documentEntity.getAssignedBy().getLastName());
 			root.put("assignedTo",
-					taskEntity.getAssignedTo().getFirstName() + " " + taskEntity.getAssignedTo().getLastName());
+					documentEntity.getAssignedTo().getFirstName() + " " + documentEntity.getAssignedTo().getLastName());
 
 			root.put("assignedDate", taskAssignedDate);
-			root.put("taskNo", taskEntity.getItemNumber());
+			root.put("taskNo", documentEntity.getItemNumber());
 			root.put("estCompletionDate", estCompletionDate);
 			root.put("completionDate", completionDate);
 
-			root.put("taskTitle", taskEntity.getTaskTitle());
-			root.put("taskDesciption", taskEntity.getTaskDesc());
+			root.put("taskTitle", documentEntity.getTaskTitle());
+			root.put("taskDesciption", documentEntity.getTaskDesc());
 
-			TaskStatus taskStatus = taskEntity.getTaskStatus();
+			TaskStatus taskStatus = documentEntity.getTaskStatus();
 			root.put("taskStatus", taskStatus);
 
-			BusinessEntity business = taskEntity.getBusiness();
-			root.put("businessName", business.getBusinessName());
-			root.put("businessAdressLine1", business.getAddress().getLine1());
-
-			String line2 = business.getAddress().getLine2();
-			String pin = business.getAddress().getPin();
-			String country = business.getAddress().getCountry();
-			if (line2 == null || line2.trim().isEmpty()) {
-				line2 = null;
-			}
-			if (pin == null || pin.trim().isEmpty()) {
-				pin = null;
-			}
-			if (country == null || country.trim().isEmpty()) {
-				country = null;
-			}
-			root.put("businessAdressLine2", line2);
-			root.put("businessAdressCity", business.getAddress().getCity());
-			root.put("businessAdressPin", pin);
-			root.put("businessAdressState", business.getAddress().getState());
-			root.put("businessAdressCountry", country);
-
-			String currentAppURL = UtilityService.getCurrentAppURL();
-			root.put("currentAppURL", currentAppURL);
+			addFooterParams(documentEntity, root);
 
 			Template temp = getConfiguration().getTemplate("email_templates/task_assigned_tmpl.ftlh");
 
@@ -408,29 +356,30 @@ public class EmailHtmlTemplateService {
 		return "";
 	}
 
-	public String invoiceFinalizedEmail(InvoiceEntity invoice) {
+	public String invoiceFinalizedEmail(InvoiceEntity documentEntity) {
 
 		try {
 
 			Map<String, Object> root = new HashMap<String, Object>();
 
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
-			String approvedDate = sdfDate.format(invoice.getModifiedDate());
+			String approvedDate = sdfDate.format(documentEntity.getModifiedDate());
 
 			String approverName = "NA";
-			if (invoice.getApprovedBy() != null)
-				approverName = invoice.getApprovedBy().getFirstName() + " " + invoice.getApprovedBy().getLastName();
+			if (documentEntity.getApprovedBy() != null)
+				approverName = documentEntity.getApprovedBy().getFirstName() + " "
+						+ documentEntity.getApprovedBy().getLastName();
 
 			root.put("stockModuleApprover", approverName);
 			root.put("approvedDate", approvedDate);
-			root.put("fromWH", invoice.getFromWH().getWarehouseName());
-			root.put("finalTotal", invoice.getFinalTotal());
+			root.put("fromWH", documentEntity.getFromWH().getWarehouseName());
+			root.put("finalTotal", documentEntity.getFinalTotal());
 
 			String documentStatus = "";
 
 			String docStatusLable = "";
 
-			DocumentStatus status = invoice.getStatus();
+			DocumentStatus status = documentEntity.getStatus();
 
 			if (status == DocumentStatus.FINALIZED) {
 				documentStatus = "approved";
@@ -443,7 +392,7 @@ public class EmailHtmlTemplateService {
 			root.put("documentStatus", documentStatus);
 			root.put("docStatusLable", docStatusLable);
 
-			Customer customer = invoice.getCustomer();
+			Customer customer = documentEntity.getCustomer();
 
 			String custName = "";
 
@@ -455,26 +404,7 @@ public class EmailHtmlTemplateService {
 
 			root.put("customerName", custName);
 
-			BusinessEntity business = invoice.getBusiness();
-			root.put("businessName", business.getBusinessName());
-			root.put("businessAdressLine1", business.getAddress().getLine1());
-			String line2 = business.getAddress().getLine2();
-			String pin = business.getAddress().getPin();
-			String country = business.getAddress().getCountry();
-			if (line2 == null || line2.trim().isEmpty()) {
-				line2 = null;
-			}
-			if (pin == null || pin.trim().isEmpty()) {
-				pin = null;
-			}
-			if (country == null || country.trim().isEmpty()) {
-				country = null;
-			}
-			root.put("businessAdressLine2", line2);
-			root.put("businessAdressCity", business.getAddress().getCity());
-			root.put("businessAdressPin", pin);
-			root.put("businessAdressState", business.getAddress().getState());
-			root.put("businessAdressCountry", country);
+			addFooterParams(documentEntity, root);
 
 			Template temp = getConfiguration().getTemplate("email_templates/invoice_tmpl.ftlh");
 

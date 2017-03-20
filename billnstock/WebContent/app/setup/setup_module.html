@@ -19,7 +19,11 @@
 				ui-sref="setup.counterlist" ng-click="close()" class="md-primary">Counter List</md-button></md-content>
 
 			<span flex></span>
-
+			<md-button layout-align="center end"
+					class="md-icon-button md-accent" ui-sref="setup.settings"
+					aria-label="Favorite"> <md-icon
+					md-svg-icon="img/icons/ic_settings_black_24px.svg">
+				<md-tooltip>More Settings</md-tooltip></md-icon> </md-button>
 			<md-button class="md-icon-button" aria-label="More"
 				ng-click="toggleRight()"> <md-icon
 				md-svg-icon="img/icons/more_vert.svg"></md-icon> </md-button>

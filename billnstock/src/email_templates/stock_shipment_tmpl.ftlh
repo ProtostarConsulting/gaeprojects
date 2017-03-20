@@ -13,6 +13,7 @@
   </#if>
   <p>Final Total: ${finalTotal}</p>
   
+  <p> Please use this URL to see further details:  <a href="${currentAppURL}"> ${currentAppURL} </a> <p>
   <br>
   <p>Thanks and Regards,</p>  
   <p>${businessName}</p>
