@@ -15,6 +15,7 @@ import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 @Entity
 public class AccountEntryEntity extends BaseEntity {
 
+	@Index
 	private Date date;
 	private String narration;
 	private Double debit;

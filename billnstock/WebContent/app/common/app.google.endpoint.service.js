@@ -1812,15 +1812,29 @@ function googleEndpointSF($q) {
 	}
 	// ////
 
-	AccountService.getAccountListByGroupId = function(groupId) {
+	AccountService.getAccountListByGroupId = function(busId,groupId) {
 		var deferred = $q.defer();
 		gapi.client.accountService.getAccountListByGroupId({
+			"busId":busId,
 			"id" : groupId
 		}).execute(function(resp) {
 			deferred.resolve(resp.items);
 		});
 		return deferred.promise;
 	}
+	
+	
+	AccountService.getGroupViewtByGroupId = function(busId,groupId) {
+		var deferred = $q.defer();
+		gapi.client.accountService.getGroupViewtByGroupId({
+			"busId":busId,
+			"groupId" : groupId
+		}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}
+	
 
 	AccountService.getAccountBalance = function(id) {
 		var deferred = $q.defer();

@@ -36,7 +36,7 @@ public class DownloadAccountViewServlet extends HttpServlet {
 		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 
 		Long businessId = Long.parseLong(request.getParameter("id"));
-		Long searchId = Long.parseLong(request.getParameter("searchAccId"));
+		Long accountId = Long.parseLong(request.getParameter("searchAccId"));
 		TimeZone timeZone = TimeZone.getTimeZone("IST");
 		sdf.setTimeZone(timeZone);
 
@@ -46,7 +46,12 @@ public class DownloadAccountViewServlet extends HttpServlet {
 		System.out.println("todate-------" + d2);
 		Date actualFromDate = new Date(Long.parseLong(d1));
 		Date actualtoDate = new Date(Long.parseLong(d2));
-		List<AccountEntryEntity> accEntryEntityList = accountEntryService.getAccountEntryByAccountId(searchId);
+		
+		System.out.println("dates--------"+actualFromDate);
+		AccountEntryEntity bb=new AccountEntryEntity();
+		List<AccountEntryEntity> accEntryEntityList= accountEntryService.getAccountViewEntryByAccountId(actualFromDate,actualtoDate,accountId,businessId);
+	
+		
 		OutputStream out = null;
 		try {
 			response.setContentType("text/csv");

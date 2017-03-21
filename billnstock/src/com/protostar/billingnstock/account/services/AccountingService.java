@@ -70,6 +70,61 @@ public class AccountingService {
 		System.out.println("inside update details now" + now);
 		return now;
 	}
+	
+	
+	
+	
+	
+	
+	
+	@ApiMethod(name = "getGroupViewEntryByAccountId", path = "getAccountViewEntryByAccountId")
+	public List<AccountEntryEntity> getAccountViewEntryByAccountId(
+			@Named("actualFromDate") Date actualFromDate,
+			@Named("actualtoDate") Date actualtoDate, @Named("id") Long accId,
+			@Named("bid") Long bid) {
+		
+		System.out.println("actualFromDate:"+actualFromDate);
+		System.out.println("actualtoDate:"+actualtoDate);
+		System.out.println("id:"+accId);
+		System.out.println("bid:"+bid);
+		if (accId == null)
+			return new ArrayList<AccountEntryEntity>();
+
+		List<AccountEntryEntity> filteredEntries = ofy()
+				.load()
+				.type(AccountEntryEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, bid))
+				.filter("accountEntity", Key.create(Key.create(BusinessEntity.class, bid), AccountEntity.class, accId))
+				.filter("date >=", actualFromDate)
+				.filter("date <=", actualtoDate).list();
+		System.out.println("filteredEntries:"+filteredEntries.size());
+
+		return filteredEntries;
+	}
+
+	
+	
+	@ApiMethod(name = "getGroupViewtByGroupId", path = "getGroupViewtByGroupId")
+	public List<AccountGroupEntity> getGroupViewtByGroupId(
+			@Named("busId") Long busId, @Named("groupId") Long groupId) {
+		System.out.println("busId: " + busId);
+		System.out.println("groupId: " + groupId);
+
+			List<AccountGroupEntity> accountGroupList = ofy()
+				.load()
+				.type(AccountGroupEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId))
+				.filter("parent", Key.create(Key.create(BusinessEntity.class, busId), AccountGroupEntity.class, groupId))
+				.list();
+	
+		System.out.println("accountGroupList"+accountGroupList.size());
+
+		return accountGroupList;
+	}
+	
+	
+	
+	
 
 	@ApiMethod(name = "getAccountListByGroupId", path = "getAccountListByGroupId")
 	public List<AccountEntity> getAccountListByGroupId(
@@ -122,6 +177,14 @@ public class AccountingService {
 				totalDebit = totalDebit + entry.getDebit();
 			}
 		}
+		
+		
+		
+		
+		
+		
+		
+		
 
 		if (!(filteredEntries.isEmpty())) {
 			AccountEntryEntity accountEntryEntity = filteredEntries.get(0);

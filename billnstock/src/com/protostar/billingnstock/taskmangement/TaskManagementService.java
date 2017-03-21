@@ -109,8 +109,7 @@ public class TaskManagementService {
 	}
 
 	@ApiMethod(name = "filterTasksByFitlerData", path = "filterTasksByFitlerData")
-	public List<TaskEntity> filterTasksByFitlerData(
-			TaskEntityFilterData fitlerData) {
+	public List<TaskEntity> filterTasksByFitlerData(TaskEntityFilterData fitlerData) {
 
 		Query<TaskEntity> filterQuery = ofy()
 				.load()

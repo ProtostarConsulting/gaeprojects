@@ -28,7 +28,7 @@ app
 
 						var AccountService = appEndpointSF.getAccountService();
 						AccountService
-								.getAccountListByGroupId(groupId)
+								.getGroupViewtByGroupId($scope.curUser.business.id,groupId)
 								.then(
 										function(list) {
 												
@@ -88,8 +88,7 @@ app
 												$scope.selectedGroupName = $stateParams.selectdAccount.accountgroup.groupName;
 												$scope.fromDate = $stateParams.fromDate;
 												$scope.toDate = $stateParams.toDate;
-												$scope
-														.getAccountListByGroupId($scope.groupId);
+												//$scope.getAccountListByGroupId($scope.groupId);
 											}
 
 										})
