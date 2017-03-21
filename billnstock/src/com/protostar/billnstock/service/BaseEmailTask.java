@@ -42,7 +42,7 @@ public class BaseEmailTask implements DeferredTask {
 			Request request = new Request();
 			request.method = Method.POST;
 			request.endpoint = "mail/send";
-			request.body = getTaskEmail().build();
+			request.body = buildEmail().build();
 			Response response = sg.api(request);
 			System.out.println(response.statusCode);
 			System.out.println(response.body);
@@ -162,14 +162,6 @@ public class BaseEmailTask implements DeferredTask {
 		mail.setReplyTo(replyTo);
 
 		return mail;
-	}
-
-	public Mail getTaskEmail() {
-		return taskEmail;
-	}
-
-	public void setTaskEmail(Mail taskEmail) {
-		this.taskEmail = taskEmail;
 	}
 
 	public String getSendGridAPIKey() {
