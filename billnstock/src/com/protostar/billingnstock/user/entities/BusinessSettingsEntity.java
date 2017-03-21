@@ -10,8 +10,8 @@ public class BusinessSettingsEntity extends BaseEntity {
 
 	private boolean emailNotification = false;
 	private boolean smsNotification = false;
-	private String SENDGRID_API_KEY;
-	private String TEXTLOCAL_API_KEY;
+	private String sendGridAPIKey;
+	private String textLocalAPIKey;
 
 	public boolean isEmailNotification() {
 		return emailNotification;
@@ -29,20 +29,20 @@ public class BusinessSettingsEntity extends BaseEntity {
 		this.smsNotification = smsNotification;
 	}
 
-	public String getSENDGRID_API_KEY() {
-		return SENDGRID_API_KEY;
+	public String getSendGridAPIKey() {
+		return sendGridAPIKey;
 	}
 
-	public void setSENDGRID_API_KEY(String sENDGRID_API_KEY) {
-		this.SENDGRID_API_KEY = sENDGRID_API_KEY;
+	public void setSendGridAPIKey(String sendGridAPIKey) {
+		this.sendGridAPIKey = sendGridAPIKey;
 	}
 
-	public String getTEXTLOCAL_API_KEY() {
-		return TEXTLOCAL_API_KEY;
+	public String getTextLocalAPIKey() {
+		return textLocalAPIKey;
 	}
 
-	public void setTEXTLOCAL_API_KEY(String tEXTLOCAL_API_KEY) {
-		TEXTLOCAL_API_KEY = tEXTLOCAL_API_KEY;
+	public void setTextLocalAPIKey(String textLocalAPIKey) {
+		this.textLocalAPIKey = textLocalAPIKey;
 	}
 
 }

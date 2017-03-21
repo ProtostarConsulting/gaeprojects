@@ -21,26 +21,22 @@ public class BaseEmailTask implements DeferredTask {
 	private String emailDLList;
 	private String emailSubject;
 	private String messageBody;
-	private String SENDGRID_API_KEY;
+	private String sendGridAPIKey;
 
-	private Mail taskEmail;
-
-	public BaseEmailTask(String SENDGRID_API_KEY, String fromEmail, String emailDLList, String emailSubject,
+	public BaseEmailTask(String sendGridAPIKey, String fromEmail, String emailDLList, String emailSubject,
 			String messageBody) {
-		this.SENDGRID_API_KEY = SENDGRID_API_KEY;
+		this.sendGridAPIKey = sendGridAPIKey;
 		this.fromEmail = fromEmail;
 		this.emailDLList = emailDLList;
 		this.emailSubject = emailSubject;
 		this.messageBody = messageBody;
-
-		setTaskEmail(buildEmail());
 	}
 
 	@Override
 	public void run() {
 		// expensive operation to be in the background goes here
 		try {
-			SendGrid sg = new SendGrid(SENDGRID_API_KEY);
+			SendGrid sg = new SendGrid(this.sendGridAPIKey);
 			sg.addRequestHeader("X-Mock", "true");
 
 			Request request = new Request();
@@ -174,6 +170,14 @@ public class BaseEmailTask implements DeferredTask {
 
 	public void setTaskEmail(Mail taskEmail) {
 		this.taskEmail = taskEmail;
+	}
+
+	public String getSendGridAPIKey() {
+		return sendGridAPIKey;
+	}
+
+	public void setSendGridAPIKey(String sendGridAPIKey) {
+		this.sendGridAPIKey = sendGridAPIKey;
 	}
 
 }

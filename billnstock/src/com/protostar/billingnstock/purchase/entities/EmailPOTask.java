@@ -1,6 +1,7 @@
 package com.protostar.billingnstock.purchase.entities;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 import com.google.common.io.BaseEncoding;
 import com.protostar.billingnstock.stock.services.PrintPdfPurchaseOrder;
@@ -9,6 +10,10 @@ import com.protostar.billnstock.service.BaseEmailTask;
 import com.protostar.billnstock.until.data.Constants;
 import com.sendgrid.Attachments;
 import com.sendgrid.Mail;
+import com.sendgrid.Method;
+import com.sendgrid.Request;
+import com.sendgrid.Response;
+import com.sendgrid.SendGrid;
 
 public class EmailPOTask extends BaseEmailTask {
 
@@ -19,11 +24,34 @@ public class EmailPOTask extends BaseEmailTask {
 			String messageBody, int itemNumber) {
 		super(SENDGRID_API_KEY, fromEmail, emailDLList, emailSubject, messageBody);
 		this.itemNumber = itemNumber;
-		setTaskEmail(buildEmail());
 	}
 
 	@Override
-	public Mail buildEmail() {
+	public void run() {
+		// expensive operation to be in the background goes here
+		try {
+
+			SendGrid sg = new SendGrid(this.getSendGridAPIKey());
+			sg.addRequestHeader("X-Mock", "true");
+
+			Request request = new Request();
+			request.method = Method.POST;
+			request.endpoint = "mail/send";
+
+			request.body = updateEmail(super.buildEmail()).build();
+			Response response = sg.api(request);
+			System.out.println(response.statusCode);
+			System.out.println(response.body);
+			System.out.println(response.headers);
+
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} catch (RuntimeException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public Mail updateEmail(Mail mail) {
 		// Add PO PDF attachment
 		StockManagementService stockManagementService = new StockManagementService();
 		PurchaseOrderEntity poObject = stockManagementService.getPOByItemNumber(this.itemNumber);
@@ -38,9 +66,8 @@ public class EmailPOTask extends BaseEmailTask {
 		attachments.setType("application/pdf");
 		attachments.setFilename("PurchaseOrder_" + this.itemNumber + ".pdf");
 		attachments.setDisposition("attachment");
-		getTaskEmail().addAttachments(attachments);
-
-		return getTaskEmail();
+		mail.addAttachments(attachments);
+		return mail;
 	}
 
 	public int getItemNumber() {

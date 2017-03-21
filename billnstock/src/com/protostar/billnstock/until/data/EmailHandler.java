@@ -44,7 +44,7 @@ public class EmailHandler {
 		UserService userService = new UserService();
 		BusinessSettingsEntity businessSettingsEntity = userService
 				.getBusinessSettingsEntity(documentEntity.getBusiness().getId());
-		String sendgrid_API_KEY = businessSettingsEntity.getSENDGRID_API_KEY();
+		String sendgrid_API_KEY = businessSettingsEntity.getSendGridAPIKey();
 		if (sendgrid_API_KEY == null || sendgrid_API_KEY.isEmpty()) {
 			return;
 		}
@@ -70,7 +70,7 @@ public class EmailHandler {
 		UserService userService = new UserService();
 		BusinessSettingsEntity businessSettingsEntity = userService
 				.getBusinessSettingsEntity(documentEntity.getBusiness().getId());
-		String sendgrid_API_KEY = businessSettingsEntity.getSENDGRID_API_KEY();
+		String sendgrid_API_KEY = businessSettingsEntity.getSendGridAPIKey();
 		if (sendgrid_API_KEY == null || sendgrid_API_KEY.isEmpty()) {
 			return;
 		}
@@ -95,7 +95,7 @@ public class EmailHandler {
 		UserService userService = new UserService();
 		BusinessSettingsEntity businessSettingsEntity = userService
 				.getBusinessSettingsEntity(documentEntity.getBusiness().getId());
-		String sendgrid_API_KEY = businessSettingsEntity.getSENDGRID_API_KEY();
+		String sendgrid_API_KEY = businessSettingsEntity.getSendGridAPIKey();
 		if (sendgrid_API_KEY == null || sendgrid_API_KEY.isEmpty()) {
 			return;
 		}
@@ -118,7 +118,7 @@ public class EmailHandler {
 		UserService userService = new UserService();
 		BusinessSettingsEntity businessSettingsEntity = userService
 				.getBusinessSettingsEntity(documentEntity.getBusiness().getId());
-		String sendgrid_API_KEY = businessSettingsEntity.getSENDGRID_API_KEY();
+		String sendgrid_API_KEY = businessSettingsEntity.getSendGridAPIKey();
 		if (sendgrid_API_KEY == null || sendgrid_API_KEY.isEmpty()) {
 			return;
 		}
@@ -152,7 +152,7 @@ public class EmailHandler {
 		UserService userService = new UserService();
 		BusinessSettingsEntity businessSettingsEntity = userService
 				.getBusinessSettingsEntity(documentEntity.getBusiness().getId());
-		String sendgrid_API_KEY = businessSettingsEntity.getSENDGRID_API_KEY();
+		String sendgrid_API_KEY = businessSettingsEntity.getSendGridAPIKey();
 		if (sendgrid_API_KEY == null || sendgrid_API_KEY.isEmpty()) {
 			return;
 		}

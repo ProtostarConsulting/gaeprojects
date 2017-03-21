@@ -6,13 +6,11 @@
 	<span flex></span>
 </section>
 <form name="documentForm" layout="column">
-	<md-input-container flex="80" layout="row" flex> <label>SENDGRID_API_KEY</label>
-	<input type="text" ng-disabled="true"
-		ng-model="settingsObj.SENDGRID_API_KEY"> </md-input-container>
+	<md-input-container flex="80" layout="row" flex> <label>SENDGRID API KEY</label>
+	<input type="text" ng-model="settingsObj.sendGridAPIKey"> </md-input-container>
 
-	<md-input-container flex="80" layout="row" flex> <label>TEXTLOCAL_API_KEY</label>
-	<input type="text" ng-disabled="true"
-		ng-model="settingsObj.TEXTLOCAL_API_KEY"> </md-input-container>
+	<md-input-container flex="80" layout="row" flex> <label>TEXTLOCAL API KEY</label>
+	<input type="text" ng-model="settingsObj.textLocalAPIKey"> </md-input-container>
 
 	<div layout="row" layout-xs="column">
 		<div flex-xs flex="20">
@@ -21,8 +19,8 @@
 				aria-label="emailNotification"> Email Notification</md-checkbox>
 		</div>
 
-		<div class="md-caption" style="padding-left: 20px;">This system
-			level email notification flag.</div>
+		<div class="md-caption" style="padding-left: 20px;">This is a
+			system level email notification ON/OFF flag.</div>
 	</div>
 	<div layout="row" layout-xs="column">
 		<div flex-xs flex="20">
@@ -31,8 +29,8 @@
 				aria-label="smsNotification"> SMS Notification</md-checkbox>
 		</div>
 
-		<div class="md-caption" style="padding-left: 20px;">This system
-			level sms notification flag.</div>
+		<div class="md-caption" style="padding-left: 20px;">This is a
+			system level SMS notification ON/OFF flag.</div>
 	</div>
 </form>
 <section layout="row" layout-sm="column">
