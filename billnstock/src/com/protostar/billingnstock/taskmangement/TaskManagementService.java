@@ -38,6 +38,7 @@ public class TaskManagementService {
 		}
 		ofy().save().entity(taskEntity).now();
 		new EmailHandler().sendTaskAssignedEmail(taskEntity);
+
 	}
 
 	@ApiMethod(name = "addTaskSettings")

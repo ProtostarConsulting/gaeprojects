@@ -2,6 +2,7 @@ package com.protostar.billingnstock.stock.services;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.Writer;
@@ -24,6 +25,7 @@ import com.protostar.billingnstock.stock.entities.StockItemsReceiptEntity;
 import com.protostar.billingnstock.stock.entities.StockLineItem;
 import com.protostar.billingnstock.user.entities.UserEntity;
 import com.protostar.billnstock.entity.Address;
+import com.protostar.billnstock.until.data.Constants;
 import com.protostar.billnstock.until.data.NumberToRupees;
 import com.protostar.billnstock.until.data.PDFHtmlTemplateService;
 
@@ -60,7 +62,7 @@ public class PrintPdfstockReceipt extends HttpServlet {
 
 	}
 
-	private void generatePdf(StockItemsReceiptEntity stockReceiptEntity, ServletOutputStream outputStream) {
+	public void generatePdf(StockItemsReceiptEntity stockReceiptEntity,OutputStream outputStream) {
 		try {
 
 			Document document = new Document();
@@ -142,7 +144,8 @@ public class PrintPdfstockReceipt extends HttpServlet {
 			Template temp = PDFHtmlTemplateService.getConfiguration()
 					.getTemplate("pdf_templates/stock_receipt_tmpl.ftlh");
 
-			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(5000);
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
+					Constants.DOCUMENT_DEFAULT_MAX_SIZE);
 			Writer out = new PrintWriter(byteArrayOutputStream);
 			temp.process(root, out);
 			// return escapeHtml(byteArrayOutputStream.toString());

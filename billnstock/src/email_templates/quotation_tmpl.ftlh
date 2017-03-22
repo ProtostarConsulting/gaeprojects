@@ -1,17 +1,12 @@
 <html>
-  <p>Stock receipt with the following details is submitted/updated on ${receiptModifiedDate}.</p>
-   <p>Document Created By: ${createdBy}</p>
+  <p>Dear ${customerName},
+  <p>A quotation with the following details is submitted/updated on ${modifiedDate}.</p>
+  <p>Document Created By: ${createdBy}</p>
   <p>Status: ${documentStatus}</p>
-  <p>${docStatusLable}: ${stockModuleApprover}</p>
-  <p> 
-  <#if warehouse??>
-  		Warehouse: ${warehouse}
-  </#if> 
-  </p>
-  <p>Supplier: ${supplier}</p>
+  <p>${docStatusLable}: ${invoiceModuleApprover}</p>
+  <p>Warehouse: ${fromWH}</p>
   <p>Final Total: ${finalTotal}</p>
   
-  <p> Please use this URL to see further details:  <a href="${currentAppURL}"> ${currentAppURL} </a> <p>
   <br>
   <p>Thanks and Regards,</p>  
   <p>${businessName}</p>

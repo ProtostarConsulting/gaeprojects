@@ -2,6 +2,7 @@ package com.protostar.billingnstock.stock.services;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.Writer;
@@ -62,7 +63,7 @@ public class PrintPdfstockShipment extends HttpServlet {
 
 	}
 
-	private void generatePdf(StockItemsShipmentEntity stockItemsShipment, ServletOutputStream outputStream) {
+	public void generatePdf(StockItemsShipmentEntity stockItemsShipment,OutputStream outputStream) {
 
 		try {
 

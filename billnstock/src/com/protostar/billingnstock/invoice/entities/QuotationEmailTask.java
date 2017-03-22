@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import com.google.common.io.BaseEncoding;
 import com.protostar.billingnstock.invoice.services.InvoiceService;
-import com.protostar.billingnstock.invoice.services.PrintPdfInvoice;
+import com.protostar.billingnstock.invoice.services.PrintPdfQuotation;
 import com.protostar.billnstock.service.BaseEmailTask;
 import com.protostar.billnstock.until.data.Constants;
 import com.sendgrid.Attachments;
@@ -15,16 +15,15 @@ import com.sendgrid.Request;
 import com.sendgrid.Response;
 import com.sendgrid.SendGrid;
 
-public class InvoiceEmailTask extends BaseEmailTask {
+public class QuotationEmailTask extends BaseEmailTask {
 
 	private static final long serialVersionUID = 1L;
 	private int itemNumber;
 
-	public InvoiceEmailTask(String SENDGRID_API_KEY, String fromEmail,
+	public QuotationEmailTask(String sendGridAPIKey, String fromEmail,
 			String emailDLList, String emailSubject, String messageBody,
 			int itemNumber) {
-		super(SENDGRID_API_KEY, fromEmail, emailDLList, emailSubject,
-				messageBody);
+		super(sendGridAPIKey, fromEmail, emailDLList, emailSubject, messageBody);
 		this.itemNumber = itemNumber;
 	}
 
@@ -56,21 +55,21 @@ public class InvoiceEmailTask extends BaseEmailTask {
 	public Mail updateEmail(Mail mail) {
 
 		InvoiceService invoiceService = new InvoiceService();
-		InvoiceEntity invoiceEntity = invoiceService
-				.getInvoiceByItemNumber(this.itemNumber);
+		QuotationEntity quotationEntity = invoiceService
+				.getQuotationByItemNumber(this.itemNumber);
 
-		PrintPdfInvoice printPdfInvoice = new PrintPdfInvoice();
+		PrintPdfQuotation printPDFQuotation = new PrintPdfQuotation();
 
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream(
 				Constants.DOCUMENT_DEFAULT_MAX_SIZE);
-		printPdfInvoice.generatePdf(invoiceEntity, outputStream);
+		printPDFQuotation.generatePdf(quotationEntity, outputStream);
 		String base64Content = BaseEncoding.base64().encode(
 				outputStream.toByteArray());
 
 		Attachments attachments = new Attachments();
 		attachments.setContent(base64Content);
 		attachments.setType("application/pdf");
-		attachments.setFilename("Invoice_" + this.itemNumber + ".pdf");
+		attachments.setFilename("Quotation" + this.itemNumber + ".pdf");
 		attachments.setDisposition("attachment");
 		mail.addAttachments(attachments);
 		return mail;
@@ -83,4 +82,5 @@ public class InvoiceEmailTask extends BaseEmailTask {
 	public void setItemNumber(int itemNumber) {
 		this.itemNumber = itemNumber;
 	}
+
 }

@@ -10,6 +10,8 @@ import com.google.appengine.api.taskqueue.TaskOptions;
 import com.protostar.billingnstock.invoice.entities.InvoiceEmailTask;
 import com.protostar.billingnstock.invoice.entities.InvoiceEntity;
 import com.protostar.billingnstock.invoice.entities.InvoiceSettingsEntity;
+import com.protostar.billingnstock.invoice.entities.QuotationEmailTask;
+import com.protostar.billingnstock.invoice.entities.QuotationEntity;
 import com.protostar.billingnstock.invoice.services.InvoiceService;
 import com.protostar.billingnstock.purchase.entities.EmailPOTask;
 import com.protostar.billingnstock.purchase.entities.PurchaseOrderEntity;
@@ -33,7 +35,8 @@ import com.sendgrid.Mail;
 import com.sendgrid.Personalization;
 
 public class EmailHandler {
-	public void sendPurchaseOrderEmail(PurchaseOrderEntity documentEntity) throws MessagingException, IOException {
+	public void sendPurchaseOrderEmail(PurchaseOrderEntity documentEntity)
+			throws MessagingException, IOException {
 
 		StockSettingsEntity stockSettings = new StockManagementService()
 				.getStockSettingsByBiz(documentEntity.getBusiness().getId());
@@ -49,16 +52,20 @@ public class EmailHandler {
 			return;
 		}
 
-		String emailSubject = "Purchase Order No: " + documentEntity.getItemNumber() + " Submited/Updated";
-		String messageBody = new EmailHtmlTemplateService().purchaseOrderFinalizedEmail(documentEntity);
+		String emailSubject = "Purchase Order No: "
+				+ documentEntity.getItemNumber() + " Submited/Updated";
+		String messageBody = new EmailHtmlTemplateService()
+				.purchaseOrderFinalizedEmail(documentEntity);
 
 		Queue queue = QueueFactory.getDefaultQueue();
-		queue.add(TaskOptions.Builder.withPayload(new EmailPOTask(sendgrid_API_KEY,
-				documentEntity.getCreatedBy().getEmail_id(), stockSettings.getEmailNotificationDL(), emailSubject,
+		queue.add(TaskOptions.Builder.withPayload(new EmailPOTask(
+				sendgrid_API_KEY, documentEntity.getCreatedBy().getEmail_id(),
+				stockSettings.getEmailNotificationDL(), emailSubject,
 				messageBody, documentEntity.getItemNumber())));
 	}
 
-	public void sendStockShipmentEmail(StockItemsShipmentEntity documentEntity) throws MessagingException, IOException {
+	public void sendStockShipmentEmail(StockItemsShipmentEntity documentEntity)
+			throws MessagingException, IOException {
 
 		StockSettingsEntity stockSettings = new StockManagementService()
 				.getStockSettingsByBiz(documentEntity.getBusiness().getId());
@@ -74,16 +81,21 @@ public class EmailHandler {
 		if (sendgrid_API_KEY == null || sendgrid_API_KEY.isEmpty()) {
 			return;
 		}
-		String emailSubject = "Stock Shipment No: " + documentEntity.getItemNumber() + " Submited/Updated";
+		String emailSubject = "Stock Shipment No: "
+				+ documentEntity.getItemNumber() + " Submited/Updated";
 
-		String messageBody = new EmailHtmlTemplateService().stockShipmentFinalizedEmail(documentEntity);
+		String messageBody = new EmailHtmlTemplateService()
+				.stockShipmentFinalizedEmail(documentEntity);
 
 		Queue queue = QueueFactory.getDefaultQueue();
-		queue.add(TaskOptions.Builder.withPayload(new EmailStockShipmentTask(sendgrid_API_KEY,
-				"ganesh.lawande@protostar.co.in", stockSettings.getEmailNotificationDL(), emailSubject, messageBody)));
+		queue.add(TaskOptions.Builder.withPayload(new EmailStockShipmentTask(
+				sendgrid_API_KEY, "ganesh.lawande@protostar.co.in",
+				stockSettings.getEmailNotificationDL(), emailSubject,
+				messageBody, documentEntity.getItemNumber())));
 	}
 
-	public void sendStockReceiptEmail(StockItemsReceiptEntity documentEntity) throws MessagingException, IOException {
+	public void sendStockReceiptEmail(StockItemsReceiptEntity documentEntity)
+			throws MessagingException, IOException {
 
 		StockSettingsEntity stockSettings = new StockManagementService()
 				.getStockSettingsByBiz(documentEntity.getBusiness().getId());
@@ -99,15 +111,20 @@ public class EmailHandler {
 		if (sendgrid_API_KEY == null || sendgrid_API_KEY.isEmpty()) {
 			return;
 		}
-		String emailSubject = "Stock Receipt No:" + documentEntity.getItemNumber() + " Submited/Updated";
-		String messageBody = new EmailHtmlTemplateService().stockReceiptFinalizedEmail(documentEntity);
+		String emailSubject = "Stock Receipt No:"
+				+ documentEntity.getItemNumber() + " Submited/Updated";
+		String messageBody = new EmailHtmlTemplateService()
+				.stockReceiptFinalizedEmail(documentEntity);
 
 		Queue queue = QueueFactory.getDefaultQueue();
-		queue.add(TaskOptions.Builder.withPayload(new EmailStockReceiptTask(sendgrid_API_KEY,
-				"ganesh.lawande@protostar.co.in", stockSettings.getEmailNotificationDL(), emailSubject, messageBody)));
+		queue.add(TaskOptions.Builder.withPayload(new EmailStockReceiptTask(
+				sendgrid_API_KEY, "ganesh.lawande@protostar.co.in",
+				stockSettings.getEmailNotificationDL(), emailSubject,
+				messageBody, documentEntity.getItemNumber())));
 	}
 
-	public void sendTaskAssignedEmail(TaskEntity documentEntity) throws MessagingException, IOException {
+	public void sendTaskAssignedEmail(TaskEntity documentEntity)
+			throws MessagingException, IOException {
 
 		TaskSettingsEntity taskSettings = new TaskManagementService()
 				.getTaskSettingsByBiz(documentEntity.getBusiness().getId());
@@ -122,25 +139,30 @@ public class EmailHandler {
 		if (sendgrid_API_KEY == null || sendgrid_API_KEY.isEmpty()) {
 			return;
 		}
-		String messageBody = new EmailHtmlTemplateService().taskAssignedEmail(documentEntity);
+		String messageBody = new EmailHtmlTemplateService()
+				.taskAssignedEmail(documentEntity);
 
 		String emailSubject = "";
 
 		TaskStatus currentTaskStatus = documentEntity.getTaskStatus();
 		if (currentTaskStatus.equals(TaskStatus.COMPLETED)) {
-			emailSubject = "Task Completed, Task No: " + documentEntity.getItemNumber();
+			emailSubject = "Task Completed, Task No: "
+					+ documentEntity.getItemNumber();
 		} else {
-			emailSubject = "Task Assigned,Task No: " + documentEntity.getItemNumber();
+			emailSubject = "Task Assigned,Task No: "
+					+ documentEntity.getItemNumber();
 		}
 
 		Queue queue = QueueFactory.getDefaultQueue();
-		queue.add(TaskOptions.Builder.withPayload(new TaskAssignedEmail(sendgrid_API_KEY,
-				documentEntity.getAssignedBy().getEmail_id(), documentEntity.getAssignedTo().getEmail_id(),
-				taskSettings.getEmailNotificationDL(), emailSubject, messageBody)));
+		queue.add(TaskOptions.Builder.withPayload(new TaskAssignedEmail(
+				sendgrid_API_KEY, documentEntity.getAssignedBy().getEmail_id(),
+				documentEntity.getAssignedTo().getEmail_id(), taskSettings
+						.getEmailNotificationDL(), emailSubject, messageBody)));
 
 	}
 
-	public void sendInvoiceEmail(InvoiceEntity documentEntity) throws MessagingException, IOException {
+	public void sendInvoiceEmail(InvoiceEntity documentEntity)
+			throws MessagingException, IOException {
 
 		InvoiceSettingsEntity invoiceSettings = new InvoiceService()
 				.getInvoiceSettingsByBiz((documentEntity.getBusiness().getId()));
@@ -156,13 +178,44 @@ public class EmailHandler {
 		if (sendgrid_API_KEY == null || sendgrid_API_KEY.isEmpty()) {
 			return;
 		}
-		String emailSubject = "Invoice No: " + documentEntity.getItemNumber() + " Submited/Updated";
-		String messageBody = new EmailHtmlTemplateService().invoiceFinalizedEmail(documentEntity);
+		String emailSubject = "Invoice No: " + documentEntity.getItemNumber()
+				+ " Submited/Updated";
+		String messageBody = new EmailHtmlTemplateService()
+				.invoiceFinalizedEmail(documentEntity);
 
 		Queue queue = QueueFactory.getDefaultQueue();
-		queue.add(
-				TaskOptions.Builder.withPayload(new InvoiceEmailTask(sendgrid_API_KEY, "ganesh.lawande@protostar.co.in",
-						invoiceSettings.getEmailNotificationDL(), emailSubject, messageBody)));
+		queue.add(TaskOptions.Builder.withPayload(new InvoiceEmailTask(
+				sendgrid_API_KEY, "ganesh.lawande@protostar.co.in",
+				invoiceSettings.getEmailNotificationDL(), emailSubject,
+				messageBody, documentEntity.getItemNumber())));
+	}
+
+	public void sendQuotationEmail(QuotationEntity documentEntity)
+			throws MessagingException, IOException {
+
+		InvoiceSettingsEntity invoiceSettings = new InvoiceService()
+				.getInvoiceSettingsByBiz((documentEntity.getBusiness().getId()));
+
+		if (invoiceSettings == null || !invoiceSettings.isEmailNotification()
+				|| invoiceSettings.getEmailNotificationDL().isEmpty()) {
+			return;
+		}
+		UserService userService = new UserService();
+		BusinessSettingsEntity businessSettingsEntity = userService
+				.getBusinessSettingsEntity(documentEntity.getBusiness().getId());
+		String sendgrid_API_KEY = businessSettingsEntity.getSendGridAPIKey();
+		if (sendgrid_API_KEY == null || sendgrid_API_KEY.isEmpty()) {
+			return;
+		}
+		String emailSubject = "Quotation No: " + documentEntity.getItemNumber()
+				+ " Submited/Updated";
+		String messageBody = new EmailHtmlTemplateService()
+				.quotationEmail(documentEntity);
+		Queue queue = QueueFactory.getDefaultQueue();
+		queue.add(TaskOptions.Builder.withPayload(new QuotationEmailTask(
+				sendgrid_API_KEY, "ganesh.lawande@protostar.co.in",
+				invoiceSettings.getEmailNotificationDL(), emailSubject,
+				messageBody, documentEntity.getItemNumber())));
 	}
 
 	public static Mail buildKitchenSinkExample() throws IOException {
@@ -197,7 +250,8 @@ public class EmailHandler {
 		bcc.setName("Example User");
 		bcc.setEmail("test6@example.com");
 		personalization.addBcc(bcc);
-		personalization.setSubject("Hello World from the Personalized SendGrid Java Library");
+		personalization
+				.setSubject("Hello World from the Personalized SendGrid Java Library");
 		personalization.addHeader("X-Test", "test");
 		personalization.addHeader("X-Mock", "true");
 		personalization.addSubstitution("%name%", "Example User");
@@ -229,7 +283,8 @@ public class EmailHandler {
 		bcc2.setName("Example User");
 		bcc2.setEmail("test6@example.com");
 		personalization2.addBcc(bcc2);
-		personalization2.setSubject("Hello World from the Personalized SendGrid Java Library");
+		personalization2
+				.setSubject("Hello World from the Personalized SendGrid Java Library");
 		personalization2.addHeader("X-Test", "test");
 		personalization2.addHeader("X-Mock", "true");
 		personalization2.addSubstitution("%name%", "Example User");

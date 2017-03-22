@@ -1,5 +1,7 @@
 <html>
-  <p>Stock shipment request with the following details is ${documentStatus} on ${shipmentModifiedDate}.</p>
+  <p>Stock shipment request with the following details is submitted/updated on ${shipmentModifiedDate}.Also find enclosed document.</p>
+  <p>Document Created By: ${createdBy}</p>
+  <p>Status: ${documentStatus}</p>
   <p>${docStatusLable}: ${stockModuleApprover}</p>
   <p>From: ${fromWH}</p>
   <#if toWH??>

@@ -18,6 +18,7 @@ import com.google.appengine.labs.repackaged.org.json.JSONArray;
 import com.google.appengine.labs.repackaged.org.json.JSONException;
 import com.google.appengine.labs.repackaged.org.json.JSONObject;
 
+
 public class Sendgrid {
 
 	private String from, from_name, reply_to, subject, text, html;
@@ -63,7 +64,7 @@ public class Sendgrid {
 		String[] emailIds = emailList.split(",");
 		for (String email : emailIds) {
 			this.addTo(email);
-		}	
+		}
 
 		return this;
 	}

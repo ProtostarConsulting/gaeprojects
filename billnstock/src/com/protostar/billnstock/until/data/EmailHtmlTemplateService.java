@@ -10,6 +10,7 @@ import java.util.Map;
 
 import com.protostar.billingnstock.cust.entities.Customer;
 import com.protostar.billingnstock.invoice.entities.InvoiceEntity;
+import com.protostar.billingnstock.invoice.entities.QuotationEntity;
 import com.protostar.billingnstock.purchase.entities.PurchaseOrderEntity;
 import com.protostar.billingnstock.stock.entities.StockItemsReceiptEntity;
 import com.protostar.billingnstock.stock.entities.StockItemsShipmentEntity;
@@ -53,14 +54,15 @@ public class EmailHtmlTemplateService {
 			Map<String, Object> root = new HashMap<String, Object>();
 
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
-			String poModifiedDate = sdfDate.format(purchaseOrder.getModifiedDate());
+			String poModifiedDate = sdfDate.format(purchaseOrder
+					.getModifiedDate());
 
-			String createdBy = purchaseOrder.getCreatedBy().getFirstName() + " "
-					+ purchaseOrder.getCreatedBy().getLastName();
+			String createdBy = purchaseOrder.getCreatedBy().getFirstName()
+					+ " " + purchaseOrder.getCreatedBy().getLastName();
 			String approverName = "NA";
 			if (purchaseOrder.getApprovedBy() != null)
-				approverName = purchaseOrder.getApprovedBy().getFirstName() + " "
-						+ purchaseOrder.getApprovedBy().getLastName();
+				approverName = purchaseOrder.getApprovedBy().getFirstName()
+						+ " " + purchaseOrder.getApprovedBy().getLastName();
 
 			root.put("createdBy", createdBy);
 			root.put("stockModuleApprover", approverName);
@@ -85,9 +87,11 @@ public class EmailHtmlTemplateService {
 
 			addFooterParams(purchaseOrder, root);
 
-			Template temp = getConfiguration().getTemplate("email_templates/purchase_order_email_tmpl.ftlh");
+			Template temp = getConfiguration().getTemplate(
+					"email_templates/purchase_order_email_tmpl.ftlh");
 
-			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(500);
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
+					500);
 			Writer out = new PrintWriter(byteArrayOutputStream);
 			temp.process(root, out);
 			// return escapeHtml(byteArrayOutputStream.toString());
@@ -109,7 +113,8 @@ public class EmailHtmlTemplateService {
 		return "";
 	}
 
-	private void addFooterParams(BaseEntity documentEntity, Map<String, Object> root) {
+	private void addFooterParams(BaseEntity documentEntity,
+			Map<String, Object> root) {
 		BusinessEntity business = documentEntity.getBusiness();
 		root.put("businessName", business.getBusinessName());
 		root.put("businessAdressLine1", business.getAddress().getLine1());
@@ -135,20 +140,24 @@ public class EmailHtmlTemplateService {
 		root.put("currentAppURL", currentAppURL);
 	}
 
-	public String stockShipmentFinalizedEmail(StockItemsShipmentEntity documentEntity) {
+	public String stockShipmentFinalizedEmail(
+			StockItemsShipmentEntity documentEntity) {
 
 		try {
 
 			Map<String, Object> root = new HashMap<String, Object>();
 
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
-			String shipmentModifiedDate = sdfDate.format(documentEntity.getModifiedDate());
+			String shipmentModifiedDate = sdfDate.format(documentEntity
+					.getModifiedDate());
 
 			String approverName = "NA";
 			if (documentEntity.getApprovedBy() != null)
-				approverName = documentEntity.getApprovedBy().getFirstName() + " "
-						+ documentEntity.getApprovedBy().getLastName();
+				approverName = documentEntity.getApprovedBy().getFirstName()
+						+ " " + documentEntity.getApprovedBy().getLastName();
 
+			root.put("createdBy", documentEntity.getCreatedBy().getFirstName()
+					+ " " + documentEntity.getCreatedBy().getLastName());
 			root.put("stockModuleApprover", approverName);
 			root.put("shipmentModifiedDate", shipmentModifiedDate);
 			root.put("finalTotal", documentEntity.getFinalTotal());
@@ -160,13 +169,15 @@ public class EmailHtmlTemplateService {
 
 			DocumentStatus status = documentEntity.getStatus();
 
-			if (status == DocumentStatus.FINALIZED) {
-				documentStatus = "approved";
-				docStatusLable = "Approved By";
-			}
 			if (status == DocumentStatus.REJECTED) {
-				documentStatus = "rejected";
+				documentStatus = "Rejected";
 				docStatusLable = "Rejected By";
+			} else if (status == DocumentStatus.SUBMITTED) {
+				documentStatus = "Submitted";
+				docStatusLable = "Approved By";
+			} else {
+				documentStatus = "Approved";
+				docStatusLable = "Approved By";
 			}
 			root.put("documentStatus", documentStatus);
 			root.put("docStatusLable", docStatusLable);
@@ -185,7 +196,8 @@ public class EmailHtmlTemplateService {
 				if (customer.getIsCompany()) {
 					custName = customer.getCompanyName();
 				} else {
-					custName = customer.getFirstName() + " " + customer.getLastName();
+					custName = customer.getFirstName() + " "
+							+ customer.getLastName();
 				}
 
 				root.put("customerName", custName);
@@ -197,7 +209,8 @@ public class EmailHtmlTemplateService {
 				if (partner.getIsCompany()) {
 					partnerName = partner.getCompanyName();
 				} else {
-					partnerName = partner.getFirstName() + " " + partner.getLastName();
+					partnerName = partner.getFirstName() + " "
+							+ partner.getLastName();
 				}
 
 				root.put("partnerName", partnerName);
@@ -205,9 +218,11 @@ public class EmailHtmlTemplateService {
 
 			addFooterParams(documentEntity, root);
 
-			Template temp = getConfiguration().getTemplate("email_templates/stock_shipment_tmpl.ftlh");
+			Template temp = getConfiguration().getTemplate(
+					"email_templates/stock_shipment_tmpl.ftlh");
 
-			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(500);
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
+					500);
 			Writer out = new PrintWriter(byteArrayOutputStream);
 			temp.process(root, out);
 			// return escapeHtml(byteArrayOutputStream.toString());
@@ -229,24 +244,31 @@ public class EmailHtmlTemplateService {
 		return "";
 	}
 
-	public String stockReceiptFinalizedEmail(StockItemsReceiptEntity documentEntity) {
+	public String stockReceiptFinalizedEmail(
+			StockItemsReceiptEntity documentEntity) {
 
 		try {
 
 			Map<String, Object> root = new HashMap<String, Object>();
 
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
-			String receiptModifiedDate = sdfDate.format(documentEntity.getModifiedDate());
+			String receiptModifiedDate = sdfDate.format(documentEntity
+					.getModifiedDate());
 
 			String approverName = "NA";
 			if (documentEntity.getApprovedBy() != null)
-				approverName = documentEntity.getApprovedBy().getFirstName() + " "
-						+ documentEntity.getApprovedBy().getLastName();
+				approverName = documentEntity.getApprovedBy().getFirstName()
+						+ " " + documentEntity.getApprovedBy().getLastName();
 
+			String createdBy = documentEntity.getCreatedBy().getFirstName()
+					+ " " + documentEntity.getCreatedBy().getLastName();
+
+			root.put("createdBy", createdBy);
 			root.put("stockModuleApprover", approverName);
 			root.put("receiptModifiedDate", receiptModifiedDate);
 			root.put("supplier", documentEntity.getSupplier().getSupplierName());
-			root.put("warehouse", documentEntity.getWarehouse().getWarehouseName());
+			root.put("warehouse", documentEntity.getWarehouse()
+					.getWarehouseName());
 			root.put("finalTotal", documentEntity.getFinalTotal());
 
 			String documentStatus = "";
@@ -256,11 +278,13 @@ public class EmailHtmlTemplateService {
 			DocumentStatus status = documentEntity.getStatus();
 
 			if (status == DocumentStatus.FINALIZED) {
-				documentStatus = "approved";
+				documentStatus = "Approved";
 				docStatusLable = "Approved By";
-			}
-			if (status == DocumentStatus.REJECTED) {
-				documentStatus = "rejected";
+			} else if (status == DocumentStatus.SUBMITTED) {
+				documentStatus = "Submitted";
+				docStatusLable = "Approved By";
+			} else if (status == DocumentStatus.REJECTED) {
+				documentStatus = "Rejected";
 				docStatusLable = "Rejected By";
 			}
 			root.put("documentStatus", documentStatus);
@@ -268,9 +292,11 @@ public class EmailHtmlTemplateService {
 
 			addFooterParams(documentEntity, root);
 
-			Template temp = getConfiguration().getTemplate("email_templates/stock_receipt_tmpl.ftlh");
+			Template temp = getConfiguration().getTemplate(
+					"email_templates/stock_receipt_tmpl.ftlh");
 
-			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(500);
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
+					500);
 			Writer out = new PrintWriter(byteArrayOutputStream);
 			temp.process(root, out);
 			// return escapeHtml(byteArrayOutputStream.toString());
@@ -299,25 +325,31 @@ public class EmailHtmlTemplateService {
 			Map<String, Object> root = new HashMap<String, Object>();
 
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
-			String taskAssignedDate = sdfDate.format(documentEntity.getAssignedDate());
+			String taskAssignedDate = sdfDate.format(documentEntity
+					.getAssignedDate());
 
 			String estCompletionDate = "";
 			if (documentEntity.getEstCompletionDate() != null) {
 
-				estCompletionDate = sdfDate.format(documentEntity.getEstCompletionDate());
+				estCompletionDate = sdfDate.format(documentEntity
+						.getEstCompletionDate());
 
 			}
 
 			String completionDate = "";
 			if (documentEntity.getTaskStatus() == TaskStatus.COMPLETED) {
 
-				completionDate = sdfDate.format(documentEntity.getCompletionDate());
+				completionDate = sdfDate.format(documentEntity
+						.getCompletionDate());
 			}
 
-			root.put("assignedBy", "" + documentEntity.getAssignedBy().getFirstName() + " "
+			root.put("assignedBy", ""
+					+ documentEntity.getAssignedBy().getFirstName() + " "
 					+ documentEntity.getAssignedBy().getLastName());
-			root.put("assignedTo",
-					documentEntity.getAssignedTo().getFirstName() + " " + documentEntity.getAssignedTo().getLastName());
+			root.put("assignedTo", documentEntity.getAssignedTo()
+					.getFirstName()
+					+ " "
+					+ documentEntity.getAssignedTo().getLastName());
 
 			root.put("assignedDate", taskAssignedDate);
 			root.put("taskNo", documentEntity.getItemNumber());
@@ -332,9 +364,11 @@ public class EmailHtmlTemplateService {
 
 			addFooterParams(documentEntity, root);
 
-			Template temp = getConfiguration().getTemplate("email_templates/task_assigned_tmpl.ftlh");
+			Template temp = getConfiguration().getTemplate(
+					"email_templates/task_assigned_tmpl.ftlh");
 
-			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(500);
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
+					500);
 			Writer out = new PrintWriter(byteArrayOutputStream);
 			temp.process(root, out);
 			// return escapeHtml(byteArrayOutputStream.toString());
@@ -363,15 +397,20 @@ public class EmailHtmlTemplateService {
 			Map<String, Object> root = new HashMap<String, Object>();
 
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
-			String approvedDate = sdfDate.format(documentEntity.getModifiedDate());
+			String modifiedDate = sdfDate.format(documentEntity
+					.getModifiedDate());
 
 			String approverName = "NA";
 			if (documentEntity.getApprovedBy() != null)
-				approverName = documentEntity.getApprovedBy().getFirstName() + " "
-						+ documentEntity.getApprovedBy().getLastName();
+				approverName = documentEntity.getApprovedBy().getFirstName()
+						+ " " + documentEntity.getApprovedBy().getLastName();
 
-			root.put("stockModuleApprover", approverName);
-			root.put("approvedDate", approvedDate);
+			String createdBy = documentEntity.getCreatedBy().getFirstName()
+					+ " " + documentEntity.getCreatedBy().getLastName();
+
+			root.put("createdBy", createdBy);
+			root.put("invoiceModuleApprover", approverName);
+			root.put("modifiedDate", modifiedDate);
 			root.put("fromWH", documentEntity.getFromWH().getWarehouseName());
 			root.put("finalTotal", documentEntity.getFinalTotal());
 
@@ -382,11 +421,15 @@ public class EmailHtmlTemplateService {
 			DocumentStatus status = documentEntity.getStatus();
 
 			if (status == DocumentStatus.FINALIZED) {
-				documentStatus = "approved";
+				documentStatus = "Approved";
+				docStatusLable = "Approved By";
+			}
+			if (status == DocumentStatus.SUBMITTED) {
+				documentStatus = "Submitted";
 				docStatusLable = "Approved By";
 			}
 			if (status == DocumentStatus.REJECTED) {
-				documentStatus = "rejected";
+				documentStatus = "Rejected";
 				docStatusLable = "Rejected By";
 			}
 			root.put("documentStatus", documentStatus);
@@ -399,16 +442,105 @@ public class EmailHtmlTemplateService {
 			if (customer.getIsCompany()) {
 				custName = customer.getCompanyName();
 			} else {
-				custName = customer.getFirstName() + " " + customer.getLastName();
+				custName = customer.getFirstName() + " "
+						+ customer.getLastName();
 			}
 
 			root.put("customerName", custName);
 
 			addFooterParams(documentEntity, root);
 
-			Template temp = getConfiguration().getTemplate("email_templates/invoice_tmpl.ftlh");
+			Template temp = getConfiguration().getTemplate(
+					"email_templates/invoice_tmpl.ftlh");
 
-			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(500);
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
+					500);
+			Writer out = new PrintWriter(byteArrayOutputStream);
+			temp.process(root, out);
+			// return escapeHtml(byteArrayOutputStream.toString());
+
+			return byteArrayOutputStream.toString();
+
+		} catch (TemplateNotFoundException e) {
+			e.printStackTrace();
+		} catch (MalformedTemplateNameException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (TemplateException e) {
+			e.printStackTrace();
+		}
+
+		return "";
+	}
+
+	public String quotationEmail(QuotationEntity documentEntity) {
+
+		try {
+
+			Map<String, Object> root = new HashMap<String, Object>();
+
+			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
+			String modifiedDate = sdfDate.format(documentEntity
+					.getModifiedDate());
+
+			String approverName = "NA";
+			if (documentEntity.getApprovedBy() != null)
+				approverName = documentEntity.getApprovedBy().getFirstName()
+						+ " " + documentEntity.getApprovedBy().getLastName();
+
+			String createdBy = documentEntity.getCreatedBy().getFirstName()
+					+ " " + documentEntity.getCreatedBy().getLastName();
+
+			root.put("createdBy", createdBy);
+			root.put("invoiceModuleApprover", approverName);
+			root.put("modifiedDate", modifiedDate);
+			root.put("fromWH", documentEntity.getFromWH().getWarehouseName());
+			root.put("finalTotal", documentEntity.getFinalTotal());
+
+			String documentStatus = "";
+
+			String docStatusLable = "";
+
+			DocumentStatus status = documentEntity.getStatus();
+
+			if (status == DocumentStatus.FINALIZED) {
+				documentStatus = "Approved";
+				docStatusLable = "Approved By";
+			}
+			if (status == DocumentStatus.SUBMITTED) {
+				documentStatus = "Submitted";
+				docStatusLable = "Approved By";
+			}
+			if (status == DocumentStatus.REJECTED) {
+				documentStatus = "Rejected";
+				docStatusLable = "Rejected By";
+			}
+			root.put("documentStatus", documentStatus);
+			root.put("docStatusLable", docStatusLable);
+
+			Customer customer = documentEntity.getCustomer();
+
+			String custName = "";
+
+			if (customer.getIsCompany()) {
+				custName = customer.getCompanyName();
+			} else {
+				custName = customer.getFirstName() + " "
+						+ customer.getLastName();
+			}
+
+			root.put("customerName", custName);
+
+			addFooterParams(documentEntity, root);
+
+			Template temp = getConfiguration().getTemplate(
+					"email_templates/quotation_tmpl.ftlh");
+
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
+					500);
 			Writer out = new PrintWriter(byteArrayOutputStream);
 			temp.process(root, out);
 			// return escapeHtml(byteArrayOutputStream.toString());

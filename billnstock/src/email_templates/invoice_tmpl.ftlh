@@ -1,6 +1,8 @@
 <html>
   <p>Dear ${customerName},
-  <p>An invoice with the following details is ${documentStatus} on ${approvedDate}.</p>
+  <p>An invoice with the following details is submitted/updated on ${modifiedDate}.</p>
+  <p>Document Created By: ${createdBy}</p>
+  <p>Status: ${documentStatus}</p>
   <p>${docStatusLable}: ${invoiceModuleApprover}</p>
   <p>Warehouse: ${fromWH}</p>
   <p>Final Total: ${finalTotal}</p>

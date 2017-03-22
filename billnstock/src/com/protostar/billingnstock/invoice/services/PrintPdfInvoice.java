@@ -2,6 +2,7 @@ package com.protostar.billingnstock.invoice.services;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.Writer;
@@ -32,9 +33,6 @@ import com.protostar.billnstock.until.data.PDFHtmlTemplateService;
 
 import freemarker.template.Template;
 
-/**
- * Servlet implementation class PrintPdfInvoice
- */
 public class PrintPdfInvoice extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -67,8 +65,8 @@ public class PrintPdfInvoice extends HttpServlet {
 		this.generatePdf(invoiceEntity, outputStream);
 	}
 
-	private void generatePdf(InvoiceEntity invoiceEntity,
-			ServletOutputStream outputStream) {
+	public void generatePdf(InvoiceEntity invoiceEntity,
+			OutputStream outputStream) {
 		try {
 			Document document = new Document();
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
@@ -144,7 +142,13 @@ public class PrintPdfInvoice extends HttpServlet {
 			Date createdDate = invoiceEntity.getCreatedDate();
 			Date modifiedDate = invoiceEntity.getModifiedDate();
 			String createdDateStr = sdfDate.format(createdDate);
-			String modifiedDateStr = sdfDate.format(modifiedDate);
+			String modifiedDateStr = "";
+
+			if (invoiceEntity.getApprovedBy() != null) {
+				modifiedDateStr = sdfDate.format(modifiedDate);
+			} else {
+				modifiedDateStr = "";
+			}
 
 			// Customer Details
 
