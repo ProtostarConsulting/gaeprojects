@@ -20,15 +20,28 @@ app
 					$scope.accountList = [];
 					$scope.entryList = [];
 					$scope.flag = $stateParams.flag;
+					$scope.downloadData=function(groupId){	
+						var fromDate=new Date($scope.fromDate).getTime();
+						var toDate=new Date($scope.toDate).getTime();
+						
+						document.location.href="DownloadGroupViewServlet?id="+ $scope.curUser.business.id+"&fromDate="+fromDate+"&toDate="+toDate+"&groupId="+groupId;
+						}
 
 					$scope.getAccountListByGroupId = function(groupId) {
 						$scope.loading = true;
 						$scope.wait = true;
 						$scope.accountList = [];
+						
+						
+					
 
 						var AccountService = appEndpointSF.getAccountService();
+						var fromDate=new Date($scope.fromDate).getTime();
+						var toDate=new Date($scope.toDate).getTime();
+						
+						
 						AccountService
-								.getGroupViewtByGroupId($scope.curUser.business.id,groupId)
+						.getGroupViewtByGroupId($scope.curUser.business.id,groupId)
 								.then(
 										function(list) {
 												
@@ -90,22 +103,23 @@ app
 												$scope.toDate = $stateParams.toDate;
 												//$scope.getAccountListByGroupId($scope.groupId);
 											}
-
 										})
-
-					};
+										};
 
 					$scope.getAccountEntryByAccountId = function(accId, acIndex) {
 
 						var AccountEntryService = appEndpointSF
 								.getAccountEntryService();
-						AccountEntryService
-								.getAccountEntryByAccountId(accId)
-								.then(
+						var fromDate=new Date($scope.fromDate).getTime();
+						var toDate=new Date($scope.toDate).getTime();
+						
+						/*AccountEntryService.getAccountViewEntryByAccountId(fromDate,toDate,accId,$scope.curUser.business.id).then(
+								function(list) {})*/
+						
+						AccountEntryService.getAccountViewEntryByAccountId(fromDate,toDate,accId,$scope.curUser.business.id).then(
 										function(list) {
 
 											$scope.entryList = list.items;
-
 											$scope.totaldebit = 0;
 											$scope.totalcredit = 0;
 
@@ -113,12 +127,7 @@ app
 												$scope.accountList[acIndex].totaldebit = 0;
 												$scope.accountList[acIndex].totalcredit = 0;
 												
-												if (new Date($scope.entryList[i].date) >= new Date(
-														$scope.fromDate)
-														&& new Date(
-																$scope.entryList[i].date) <= new Date(
-																$scope.toDate)) {
-
+												
 													if ($scope.accountList.length > 0) {
 														if (angular
 																.isNumber($scope.entryList[i].debit)) {
@@ -136,7 +145,7 @@ app
 														}
 													}
 
-												}
+												
 
 												if ($scope.accountList.length > 0
 														&& $scope.accountList[acIndex] != undefined) {
@@ -156,16 +165,13 @@ app
 
 					};
 
-					$scope.clear = function() {
+						$scope.clear = function() {
 						$scope.loading = true;
-
 						$scope.toDate = "";
 						$scope.fromDate = "";
 						$scope.groupId = "";
-
 						$scope.searchForm.$setPristine();
 						$scope.searchForm.$setUntouched();
-
 					}
 
 					var printDivCSS = new String(

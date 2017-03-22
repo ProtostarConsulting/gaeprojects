@@ -35,14 +35,14 @@ public class AccountEntryService {
 		System.out.println("list credit" + list.get(0).getCredit().toString());
 		return list;
 	}
-
-	
-
 	@ApiMethod(name = "getAccountViewEntryByAccountId", path = "getAccountViewEntryByAccountId")
 	public List<AccountEntryEntity> getAccountViewEntryByAccountId(
-			@Named("actualFromDate") Date actualFromDate,
-			@Named("actualtoDate") Date actualtoDate, @Named("id") Long accId,
+			@Named("actualFromDate") long actualFromDate,
+			@Named("actualtoDate") long actualtoDate, @Named("id") Long accId,
 			@Named("bid") Long bid) {
+	    Date fromDate=new Date(actualFromDate);
+		Date toDate=new Date(actualtoDate);
+		
 		
 		System.out.println("actualFromDate:"+actualFromDate);
 		System.out.println("actualtoDate:"+actualtoDate);
@@ -56,16 +56,12 @@ public class AccountEntryService {
 				.type(AccountEntryEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, bid))
 				.filter("accountEntity", Key.create(Key.create(BusinessEntity.class, bid), AccountEntity.class, accId))
-				.filter("date >=", actualFromDate)
-				.filter("date <=", actualtoDate).list();
+				.filter("date >=", fromDate)
+				.filter("date <=", toDate).list();
 		System.out.println("filteredEntries:"+filteredEntries.size());
 
 		return filteredEntries;
-	}
-
-	
-
-	@ApiMethod(name = "getAccountEntryByAccountId", path = "getAccountEntryByAccountId")
+	}@ApiMethod(name = "getAccountEntryByAccountId", path = "getAccountEntryByAccountId")
 	public List<AccountEntryEntity> getAccountEntryByAccountId(
 			@Named("id") Long AccId) {
 		if (AccId == null)
@@ -74,6 +70,11 @@ public class AccountEntryService {
 
 		List<AccountEntryEntity> accountEntries = ofy().load()
 				.type(AccountEntryEntity.class).list();
+		
+		
+		
+		
+		
 		for (AccountEntryEntity ss : accountEntries) {
 			if (ss.getAccountEntity().getId().equals(AccId)) {
 				filteredEntries.add(ss);

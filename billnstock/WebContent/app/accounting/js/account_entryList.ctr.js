@@ -38,9 +38,12 @@ app
 						$scope.loading = true;
 						$scope.wait = true;
 						var Ac = appEndpointSF.getAccountService();
-						Ac.getAccountBalance(accId).then(function(list1){
+					Ac.getAccountBalance(accId).then(function(list1){
 					var AccountEntryService = appEndpointSF.getAccountEntryService();
-						AccountEntryService.getAccountEntryByAccountId(accId)//,$scope.curUser.business.id)
+					var fromDate=new Date($scope.fromDate).getTime();
+					var toDate=new Date($scope.toDate).getTime();
+					
+						AccountEntryService.getAccountViewEntryByAccountId(fromDate,toDate,accId,$scope.curUser.business.id)
 								.then(
 										function(list) {
 											list = list.items; 
@@ -48,13 +51,12 @@ app
 											$scope.totalcredit = 0;
 											$log.debug("list:" + list);
 											entryList = [];
+											
+											
+											
 											for (var i = 0; i < list.length; i++) {
-												if (new Date(list[i].date) >= new Date(
-														$scope.fromDate)
-														&& new Date(
-																list[i].date) <= new Date(
-																$scope.toDate)) {
-													entryList.push(list[i]);
+												entryList.push(list[i]);
+													
 													if (angular	.isNumber(list[i].debit)) {
 														$scope.totaldebit = $scope.totaldebit
 																+ parseFloat(list[i].debit);
@@ -64,7 +66,7 @@ app
 														$scope.totalcredit = $scope.totalcredit
 																+ parseFloat(list[i].credit);
 													}
-												}
+												
 											}
 											$scope.entries = [];
 											$scope.closingBalance = 0;

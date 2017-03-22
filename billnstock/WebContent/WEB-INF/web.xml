@@ -117,12 +117,7 @@
   <servlet-mapping>
     <servlet-name>DownloadAccountsServlet</servlet-name>
     <url-pattern>/DownloadAccountsServlet</url-pattern>
-  </servlet-mapping>
-  
-  
-  
-  
-   <servlet>
+  </servlet-mapping> <servlet>
     <description/>
     <display-name>DownloadAccountViewServlet</display-name>
     <servlet-name>DownloadAccountViewServlet</servlet-name>
@@ -131,10 +126,16 @@
   <servlet-mapping>
     <servlet-name>DownloadAccountViewServlet</servlet-name>
     <url-pattern>/DownloadAccountViewServlet</url-pattern>
+  </servlet-mapping><servlet>
+    <description/>
+    <display-name>DownloadGroupViewServlet</display-name>
+    <servlet-name>DownloadGroupViewServlet</servlet-name>
+    <servlet-class>com.protostar.billingnstock.account.services.DownloadGroupViewServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DownloadGroupViewServlet</servlet-name>
+    <url-pattern>/DownloadGroupViewServlet</url-pattern>
   </servlet-mapping>
-  
-  
-  
   
   <servlet>
     <description/>

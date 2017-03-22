@@ -15,13 +15,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.protostar.billingnstock.account.entities.AccountEntity;
 import com.protostar.billingnstock.account.entities.AccountEntryEntity;
 
-public class DownloadAccountViewServlet extends HttpServlet {
+public class DownloadGroupViewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private final Logger log = Logger.getLogger(DownloadAccountsServlet.class.getName());
 
-	public DownloadAccountViewServlet() {
+	public DownloadGroupViewServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -31,77 +32,79 @@ public class DownloadAccountViewServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 
 		AccountEntryService accountEntryService = new AccountEntryService();
+		AccountingService accountEntityService =new AccountingService();
 		Date date = new Date();
 		String DATE_FORMAT = "dd-MMM-yyyyy  hh:mm:ss a";
 		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-
-		Long businessId = Long.parseLong(request.getParameter("id"));
-		Long accountId = Long.parseLong(request.getParameter("searchAccId"));
-		TimeZone timeZone = TimeZone.getTimeZone("IST");
-		sdf.setTimeZone(timeZone);
-
-		String d1 = request.getParameter("fromDate");
-		String d2 = request.getParameter("toDate");
-		System.out.println("fromdate-------" + d1);
-		System.out.println("todate-------" + d2);
 		Long actualFromDate= Long.parseLong(request.getParameter("fromDate"));
 		Long actualtoDate= Long.parseLong(request.getParameter("toDate"));
-		List<AccountEntryEntity> accEntryEntityList= accountEntryService.getAccountViewEntryByAccountId(actualFromDate,actualtoDate,accountId,businessId);
-	
+		Long businessId = Long.parseLong(request.getParameter("id"));
+		Long groupId = Long.parseLong(request.getParameter("groupId"));
+		TimeZone timeZone = TimeZone.getTimeZone("IST");
+		sdf.setTimeZone(timeZone);
 		
+	
+	List<AccountEntity> list=accountEntityService.getGroupViewtByGroupId(businessId,groupId);
+	
+	
 		OutputStream out = null;
 		try {
 			response.setContentType("text/csv");
 			response.setHeader("Content-Disposition",
-					"attachment; filename=Account_View_Data" + sdf.format(date) + ".csv");
+					"attachment; filename=Group_View_Data" + sdf.format(date) + ".csv");
+		
+			
 			ServletOutputStream outputStream = response.getOutputStream();
 			OutputStreamWriter writer = new OutputStreamWriter(outputStream);
-
 			writer.append("No");
 			writer.append(',');
-			writer.append("Date");
+			writer.append("account Name");
 			writer.append(',');
-			writer.append("account Narration");
+			writer.append("	Total Debit");
 			writer.append(',');
-			writer.append("	Debit");
-			writer.append(',');
-			writer.append("	Credit");
+			writer.append("	Total Credit");
 			writer.append(',');
 			writer.append("Balance");
 			writer.append(',');
 			writer.append(System.lineSeparator());
+			for(int j=0;j<list.size();j++){
+				double totalDebit=0;
+				double totalCredit=0;
+				List<AccountEntryEntity> accEntryEntityList= accountEntryService.getAccountViewEntryByAccountId(actualFromDate,actualtoDate,list.get(j).getId(),businessId);
+
 			for (int i = 0; i < accEntryEntityList.size(); i++) {
-			
+				
+				if (accEntryEntityList.get(i).getDebit() != null) {
+
+					totalDebit=totalDebit+accEntryEntityList.get(i).getDebit();
+				} else {
+					totalDebit=totalDebit+0;
+				}
+				if (accEntryEntityList.get(i).getCredit() != null) {
+
+					totalCredit=totalCredit+accEntryEntityList.get(i).getCredit();
+				} else {
+					totalCredit=totalCredit+0;
+				}
+			}
+								
 					try {
-						writer.append("" + (i + 1));
+						writer.append("" + (j + 1));
 						writer.append(',');
-						writer.append("" + sdf.format(accEntryEntityList.get(i).getDate()));
+						writer.append(accEntryEntityList.get(j).getAccountEntity().getAccountName().toString());
 						writer.append(',');
-						writer.append(accEntryEntityList.get(i).getNarration());
+						writer.append(""+totalDebit);
 						writer.append(',');
-
-						if (accEntryEntityList.get(i).getDebit() != null) {
-							writer.append(accEntryEntityList.get(i).getDebit().toString());
-						} else {
-							writer.append("0");
-						}
+						writer.append(""+totalCredit);
 						writer.append(',');
-						if (accEntryEntityList.get(i).getCredit() != null) {
-							writer.append(accEntryEntityList.get(i).getCredit().toString());
-						} else {
-							writer.append("0");
-						}
-						writer.append(',');
-
 						writer.append(System.lineSeparator());
+						
 					} catch (Exception e) {
 						log.warning(e.getMessage());
 						e.printStackTrace();
 					}
-			}
-
+					}
 			writer.close();
-
 		} catch (Exception e) {
 			log.severe(e.getMessage());
 			e.printStackTrace();
@@ -110,7 +113,8 @@ public class DownloadAccountViewServlet extends HttpServlet {
 			if (out != null)
 				out.close();
 		}
-
+		
+	}
 	}
 
-}
+
