@@ -487,8 +487,8 @@ public class PDFHtmlTemplateService {
 		String bizLogoGCSURL = enity.getBusiness().getBizLogoGCSURL();
 		if (bizLogoGCSURL != null && !bizLogoGCSURL.isEmpty()) {
 			Image logoURL = Image.getInstance(bizLogoGCSURL);
-			logoURL.setAbsolutePosition(50f, 750f);
-			logoURL.scaleToFit(150f, 180f);
+			logoURL.setAbsolutePosition(50f, 740f);
+			logoURL.scaleToFit(150f, 80f);
 			document.add(logoURL);
 		}
 
