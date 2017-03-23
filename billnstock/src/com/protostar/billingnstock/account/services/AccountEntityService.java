@@ -33,15 +33,6 @@ public class AccountEntityService {
 		}
 		ofy().save().entity(accountEntity).now();
 	}
-
-	/*
-	 * @ApiMethod(name = "addAccounts") public void
-	 * addAccounts(List<AccountEntity> accountEntities) { for (AccountEntity
-	 * accountEntity : accountEntities) { addAccount(accountEntity); }
-	 * 
-	 * }
-	 */
-
 	@ApiMethod(name = "getAllAccountsByBusiness")
 	public List<AccountEntity> getAllAccountsByBusiness(@Named("id") Long busId) {
 
@@ -55,14 +46,6 @@ public class AccountEntityService {
 		return filteredAccounts;
 	}
 
-	@ApiMethod(name = "getAccountById")
-	public AccountEntity getAccountById(@Named("id") Long accountId) {
-
-		AccountEntity accountById = ofy().load().type(AccountEntity.class)
-				.id(accountId).now();
-
-		return accountById;
-	}
 	
 	@ApiMethod(name = "getAccountById1")
 	public AccountEntity getAccountById1(@Named("bid") Long busId,@Named("id") Long accountId) {
@@ -71,46 +54,5 @@ public class AccountEntityService {
 				.key(Key.create(Key.create(BusinessEntity.class, busId), AccountEntity.class, accountId)).now();
 			return getAccountById1;
 	}
-	
-/*	@ApiMethod(name = "getAccountEntriesById")
-	public AccountEntryEntity getAccountEntriesById(@Named("bid") Long busId,@Named("id") Long accountId) {
-		
-		AccountEntity getAccountById1 = ofy().load().type(AccountEntryEntity.class)
-				.key(Key.create(Key.create(BusinessEntity.class, busId), AccountEntity.class, accountId)).now();
-			return getAccountById1;
-	}*/
-	/*
-	 * public void createDefaltAccounts() {
-	 * 
-	 * // check if not there then only add esle return;
-	 * 
-	 * List<AccountEntity> accountEntities = new ArrayList<AccountEntity>(10);
-	 * accountEntities.add(new AccountEntity("ICIC Bank Current A/c",
-	 * AccountEntity.accountType.PERSONAL)); // Assets Group
-	 * accountEntities.add(new AccountEntity("ICIC Bank Personal A/c",
-	 * AccountEntity.accountType.PERSONAL)); // Assets Group
-	 * accountEntities.add(new AccountEntity("Capital A/c",
-	 * AccountEntity.accountType.PERSONAL)); // Capital/Equity Group
-	 * accountEntities.add(new AccountEntity("Cash A/c",
-	 * AccountEntity.accountType.PERSONAL)); // Assets Group
-	 * accountEntities.add(new AccountEntity("Computers A/c",
-	 * AccountEntity.accountType.REAL)); // Assets Group accountEntities.add(new
-	 * AccountEntity("Furniture A/c", AccountEntity.accountType.REAL)); //
-	 * Assets Group accountEntities.add(new AccountEntity("Salary A/c",
-	 * AccountEntity.accountType.NOMINAL)); // Expense Group
-	 * accountEntities.add(new AccountEntity("Rent A/c",
-	 * AccountEntity.accountType.NOMINAL)); // Expense Group
-	 * accountEntities.add(new AccountEntity("Utility Expesnes A/c",
-	 * AccountEntity.accountType.NOMINAL)); // Expense Group
-	 * accountEntities.add(new AccountEntity("Payables A/c",
-	 * AccountEntity.accountType.NOMINAL)); // Liabilities Group
-	 * accountEntities.add(new AccountEntity("HDFC Biz Loan (Feb-2016) A/c",
-	 * AccountEntity.accountType.NOMINAL)); // Liabilities Group
-	 * 
-	 * 
-	 * //this.addAccounts(accountEntities);
-	 * 
-	 * }
-	 */
 
 }

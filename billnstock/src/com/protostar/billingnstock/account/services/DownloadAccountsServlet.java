@@ -40,12 +40,7 @@ public class DownloadAccountsServlet extends HttpServlet {
 		Long searchId=Long.parseLong(request.getParameter("searchAccId"));
 		Date fromDate=new Date(request.getParameter("fromDate"));
 		Date toDate=new Date(request.getParameter("toDate"));
-		
-		//fromDate=Date.parse(request.getParameter("fromDate"));
-			
-		//AccountEntryEntity accEntryEntity=
-		
-		List<AccountEntryEntity> accEntryEntityList = accountEntryService.getAccountEntryByAccountId(searchId);
+		List<AccountEntryEntity> accEntryEntityList = accountEntryService.getAccountEntryByAccountId(searchId,businessId);
 		OutputStream out = null;
 		try {
 			response.setContentType("text/csv");

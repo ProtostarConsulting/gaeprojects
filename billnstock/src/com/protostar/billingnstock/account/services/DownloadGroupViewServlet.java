@@ -1,5 +1,4 @@
 package com.protostar.billingnstock.account.services;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -8,29 +7,23 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 import java.util.logging.Logger;
-
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.protostar.billingnstock.account.entities.AccountEntity;
 import com.protostar.billingnstock.account.entities.AccountEntryEntity;
-
 public class DownloadGroupViewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private final Logger log = Logger.getLogger(DownloadAccountsServlet.class.getName());
 
 	public DownloadGroupViewServlet() {
 		super();
-		// TODO Auto-generated constructor stub
-	}
+			}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-
 		AccountEntryService accountEntryService = new AccountEntryService();
 		AccountingService accountEntityService =new AccountingService();
 		Date date = new Date();
@@ -42,18 +35,12 @@ public class DownloadGroupViewServlet extends HttpServlet {
 		Long groupId = Long.parseLong(request.getParameter("groupId"));
 		TimeZone timeZone = TimeZone.getTimeZone("IST");
 		sdf.setTimeZone(timeZone);
-		
-	
-	List<AccountEntity> list=accountEntityService.getGroupViewtByGroupId(businessId,groupId);
-	
-	
+		List<AccountEntity> list=accountEntityService.getGroupViewtByGroupId(businessId,groupId);
 		OutputStream out = null;
 		try {
 			response.setContentType("text/csv");
 			response.setHeader("Content-Disposition",
 					"attachment; filename=Group_View_Data" + sdf.format(date) + ".csv");
-		
-			
 			ServletOutputStream outputStream = response.getOutputStream();
 			OutputStreamWriter writer = new OutputStreamWriter(outputStream);
 			writer.append("No");
@@ -86,8 +73,7 @@ public class DownloadGroupViewServlet extends HttpServlet {
 				} else {
 					totalCredit=totalCredit+0;
 				}
-			}
-								
+			}					
 					try {
 						writer.append("" + (j + 1));
 						writer.append(',');
@@ -98,8 +84,7 @@ public class DownloadGroupViewServlet extends HttpServlet {
 						writer.append(""+totalCredit);
 						writer.append(',');
 						writer.append(System.lineSeparator());
-						
-					} catch (Exception e) {
+						} catch (Exception e) {
 						log.warning(e.getMessage());
 						e.printStackTrace();
 					}
@@ -113,8 +98,7 @@ public class DownloadGroupViewServlet extends HttpServlet {
 			if (out != null)
 				out.close();
 		}
-		
 	}
-	}
+}
 
 

@@ -62,7 +62,6 @@ public class AccountingService {
 		return accountList;
 
 	}
-
 	@ApiMethod(name = "updateAccount")
 	public AccountEntity updateAccount(AccountEntity update) {
 		AccountEntity now = update;
@@ -130,7 +129,7 @@ public class AccountingService {
 		List<AccountEntryEntity> filteredEntries = new ArrayList<AccountEntryEntity>();
 
 		AccountEntryService accountEntryService = new AccountEntryService();
-		filteredEntries = accountEntryService.getAccountEntryByAccountId(id);// ,busId);
+		filteredEntries = accountEntryService.getAccountEntryByAccountId(id,busId);
 
 		for (AccountEntryEntity entry : filteredEntries) {
 			if (entry.getCredit() != null) {
@@ -306,57 +305,9 @@ public class AccountingService {
 				  .filter("accountGroup.groupName =",
 						  groupName).list();
 				  
-	
-		/*
-		String typeInfo="ASSETS";
-		// List<AccountGroupEntity> getAccountGroupListByType
-		AccountGroupService accg=new AccountGroupService();
-		List<AccountGroupEntity> typeAccountGroupList = accg.getAccountGroupListByType(
-				typeInfo, busId);
-		
-		List<AccountEntity> PurchesAcc=new ArrayList<AccountEntity>();
-		for(int i=0;i<typeAccountGroupList.size();i++)
-		{
-			if(typeAccountGroupList.get(i).getGroupName().equalsIgnoreCase("Purchase Accounts"))
-			{
-			PurchesAcc = ofy().load().type(AccountEntity.class)
-			.ancestor(Key.create(BusinessEntity.class, busId))				
-		    .filter("accountGroup",typeAccountGroupList.get(i)).list();
-				
-			}
-	   }*/
-		
-	//
-
-		
-		System.out.println("PurchesAcc" + PurchesAcc);
+			System.out.println("PurchesAcc" + PurchesAcc);
 		return PurchesAcc;
 
 	}
-	/*
-	 * @ApiMethod(name = "getPurchesCreditAcc", path = "getPurchesCreditAcc")
-	 * public List<AccountEntity> getPurchesCreditAcc(@Named("bid") Long busId)
-	 * { String creditAcc="Sundry Creditors"; String cashtAcc="Cash-in-hand";
-	 * String bankAcc="Bank Accounts";
-	 * 
-	 * List<AccountEntity> purchesCreditAcc = ofy().load()
-	 * .type(AccountEntity.class).ancestor(Key.create(BusinessEntity.class,
-	 * busId)).filter("accountGroup.groupName()",
-	 * creditAcc).filter("accountGroup"
-	 * ,cashtAcc).filter("accountGroup",bankAcc).list();
-	 * 
-	 * return purchesCreditAcc; }
-	 * 
-	 * @ApiMethod(name = "getStockItems", path = "getStockItems") public
-	 * List<AccountEntity> getStockItems(@Named("bid") Long busId) { String
-	 * stockAcc="Stock-in-Hand";
-	 * 
-	 * List<AccountEntity> stockItems = ofy().load()
-	 * .type(AccountEntity.class).ancestor(Key.create(BusinessEntity.class,
-	 * busId)).filter("accountGroup.groupName()", stockAcc).list();
-	 * 
-	 * 
-	 * return stockItems; }
-	 */
-
+	
 }

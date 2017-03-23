@@ -25,11 +25,9 @@ public class AccountGroupService {
 
 	String accountGroupTypeList[] = { "Assets", "EQUITY", "Liabilities",
 			"Incomes", "Expenses", "OTHERINCOMES", "OTHEREXPENCES" };
-
 	@ApiMethod(name = "addAccountGroup")
 	public AccountGroupEntity addAccountGroup(
 			AccountGroupEntity accountGroupEntity) {
-
 		if (accountGroupEntity.getId() == null) {
 			accountGroupEntity.setCreatedDate(new Date());
 			accountGroupEntity.setModifiedDate(new Date());
@@ -39,82 +37,36 @@ public class AccountGroupService {
 		ofy().save().entity(accountGroupEntity).now();
 		return accountGroupEntity;
 	}
-
 	@ApiMethod(name = "getAccountGroupList", path = "getAccountGroupList")
 	public List<AccountGroupEntity> getAccountGroupList(@Named("id") Long busId) {
-		System.out.println("busId:4444" + busId);
-		if (busId == null)
+			if (busId == null)
 			return new ArrayList<AccountGroupEntity>();
 		List<AccountGroupEntity> list = ofy().load()
 				.type(AccountGroupEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, busId)).list();
-		System.out.println("list:" + list);
-		return list;
+		    	return list;
 	}
-
 	@ApiMethod(name = "updateAccountGrp")
 	public AccountGroupEntity updateAccountGrp(AccountGroupEntity update) {
 		return addAccountGroup(update);
 	}
-
 	@ApiMethod(name = "deleteAccountGrp")
 	public void deleteAccountGrp(@Named("id") Long id) {
 
 		ofy().delete().type(AccountGroupEntity.class).id(id).now();
-
 	}
-
-	@ApiMethod(name = "checkAccountGrpAlreadyExist")
-	public ServerMsg checkAccountGrpAlreadyExist(
-			@Named("groupName") String groupName) {
-		ServerMsg serverMsg = new ServerMsg();
-		List<AccountGroupEntity> list = ofy().load()
-				.type(AccountGroupEntity.class).filter("groupName", groupName)
-				.list();
-
-		System.out.println("list ######" + list);
-		if (list == null || list.size() == 0) {
-			System.out.println("list888888888" + list);
-			serverMsg.setReturnBool(false);
-		} else {
-			serverMsg.setReturnBool(true);
-		}
-
-		return serverMsg;
-	}
-
 	@ApiMethod(name = "getAllAccountGroupsByBusiness", path = "getAllAccountGroupsByBusiness")
 	public List<AccountGroupEntity> getAllAccountGroupsByBusiness(
 			@Named("id") Long busId) {
-
 		List<AccountGroupEntity> filteredAccounts = ofy()
 				.load()
 				.type(AccountGroupEntity.class)
 				.filter("business",
-						Ref.create(Key.create(BusinessEntity.class, busId)))
+				Ref.create(Key.create(BusinessEntity.class, busId)))
 				.list();
 
 		return filteredAccounts;
 	}
-
-	@ApiMethod(name = "getAllBusiness")
-	public List<BusinessEntity> getAllBusnes() {
-
-		List<BusinessEntity> businessList = ofy().load()
-				.type(BusinessEntity.class).list();
-
-		return businessList;
-	}
-
-	@ApiMethod(name = "getAccountGroupById")
-	public AccountGroupEntity getAccountGroupById(@Named("id") Long accountId) {
-
-		AccountGroupEntity accountById = ofy().load()
-				.type(AccountGroupEntity.class).id(accountId).now();
-
-		return accountById;
-	}
-
 	public void createDefaltAccountGroups() {
 
 		List<AccountGroupEntity> accountGroupEntities = new ArrayList<AccountGroupEntity>(
@@ -131,37 +83,23 @@ public class AccountGroupService {
 		accountGroupEntities.add(new AccountGroupEntity("Current Liabilities",
 				null));
 	}
-
 	@ApiMethod(name = "getAccountGroupListByType", path = "getAccountGroupListByType")
 	public List<AccountGroupEntity> getAccountGroupListByType(
 			@Named("type") String type, @Named("bid") Long bid) {
-
 		List<AccountGroupEntity> filteraccount = new ArrayList<AccountGroupEntity>();
-
 		List<AccountGroupEntity> list = ofy().load()
 				.type(AccountGroupEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, bid)).list();
-
+				/////////////////////////////////////////filter//////////
 		for (AccountGroupEntity ss : list) {
-
 			if (ss.getIsPrimary() && ss.getAccountGroupType() != null) {
 				if (ss.getAccountGroupType().toString().equalsIgnoreCase(type)) {
 					filteraccount.add(ss);
 				}
-			}/*
-			 * else { if (ss.getParent() != null &&
-			 * ss.getParent().getAccountGroupType() != null &&
-			 * ss.getParent().getAccountGroupType().toString()
-			 * .trim().equalsIgnoreCase(type)) { continue; }
-			 * 
-			 * }
-			 */
+			}
 		}
-
 		return filteraccount;
-
 	}
-
 	@ApiMethod(name = "getBalanceSheet", path = "getBalanceSheet")
 	public List<TypeInfo> getBalanceSheet(@Named("bid") Long bid) {
 		List<TypeInfo> typeList = new ArrayList<TypeInfo>();
@@ -170,10 +108,8 @@ public class AccountGroupService {
 			TypeInfo typeInfo = new TypeInfo();
 			typeInfo.typeName = groupTypes[i].toString();
 			typeInfo.groupList = new ArrayList<GroupInfo>();
-
 			List<AccountGroupEntity> typeAccountGrpList = getAccountGroupListByType(
 					typeInfo.typeName, bid);
-
 			double typeTotal = 0;
 			for (int j = 0; j < typeAccountGrpList.size(); j++) {
 				GroupInfo groupInfo = new GroupInfo();
@@ -181,7 +117,6 @@ public class AccountGroupService {
 				AccountingService as = new AccountingService();
 				List<AccountEntity> accList = as.getAccountListByGroupId(bid,
 						typeAccountGrpList.get(j).getId());
-
 				double groupTotal = 0;
 				for (AccountEntity accountEntity : accList) {
 					ServerMsg accountBalance = as.getAccountBalance(
@@ -190,9 +125,7 @@ public class AccountGroupService {
 							.equalsIgnoreCase("Sundry Debtors")) {
 						groupTotal += accountBalance.getReturnBalance();
 					}
-
 				}
-
 				if (groupTotal != 0) {
 					groupInfo.groupBalance = groupTotal;
 					typeTotal += groupTotal;
@@ -200,12 +133,9 @@ public class AccountGroupService {
 				}
 
 			}
-
 			typeInfo.typeBalance = typeTotal;
 			typeList.add(typeInfo);
-
 		}
-
 		return typeList;
 	}
 
@@ -255,16 +185,11 @@ public class AccountGroupService {
 					accinfo.accName = accountEntity.getAccountName();
 					accinfo.accBalance = accountBalance.getReturnBalance();
 					groupInfo.AccInfoList.add(accinfo);
-
 				}
-
 			}
-
 			typeInfo.typeBalance = typeTotal;
 			typeList.add(typeInfo);
-
 		}
-		System.out.println("-------------------" + typeList.size());
 		return typeList;
 	}
 
@@ -272,9 +197,7 @@ public class AccountGroupService {
 
 	@ApiMethod(name = "getClosingStockBalance", path = "getClosingStockBalance")
 	public ServerMsg getClosingStockBalance(@Named("bid") Long bid) {
-
 		double balance = 0;
-
 		List<AccountGroupEntity> groupList = getAccountGroupListByType(
 				"ASSETS", bid);
 		for (int i = 0; i < groupList.size(); i++) {
@@ -296,22 +219,15 @@ public class AccountGroupService {
 
 		}
 		VoucherService vs = new VoucherService();
-		// SalesVoucherEntity SalesVoucherEntity=new SalesVoucherEntity();
 		List<SalesVoucherEntity> SalesVoucherList = vs.getlistSalesVoucher(bid);
 		for (int k = 0; k < SalesVoucherList.size(); k++) {
 
 			balance = balance - SalesVoucherList.get(k).getAmount();
 			goodsSold = goodsSold + SalesVoucherList.get(k).getAmount();
-
 		}
-
 		ServerMsg serverMsg = new ServerMsg();
 		serverMsg.setReturnBalance(balance);
-		System.out.println("ClosingStockBalance:"
-				+ serverMsg.getReturnBalance());
-
 		return serverMsg;
-
 	}
 
 	@ApiMethod(name = "getProfitAndLossAccBalance", path = "getProfitAndLossAccBalance")
@@ -341,25 +257,18 @@ public class AccountGroupService {
 
 				totalPaymentList = list.get(count).getGroupList();
 				otherExpense = list.get(count).getTypeBalance();
-
 			}
-
 			if ((typeName == "EXPENSES")
 					&& (list.get(count).getGroupList() != null)) {
 				totalPurchaseList = list.get(count).getGroupList();
 				operatingExpense = list.get(count).getTypeBalance();
-
 			}
-
 			grossProfit = operatingRevenue - operatingExpense;
 			operatingIncome = grossProfit - otherExpense;
 		}
 		serverMsg.setReturnBalance(operatingIncome);
 		return serverMsg;
-
 	}
-
-	// //
 	@ApiMethod(name = "getBalanceSheetCalculation", path = "getBalanceSheetCalculation")
 	public BalanceSheetData getBalanceSheetCalculation() {
 		BalanceSheetData BalanceSheetCalculation = new BalanceSheetData();
@@ -401,11 +310,9 @@ public class AccountGroupService {
 							+ BalanceSheetCalculation.totalEQUITY;
 				}
 
-			}
-		}
+			}	}
 		BalanceSheetCalculation.totalLiabilities2 = BalanceSheetCalculation.totalLiabilities
 				+ BalanceSheetCalculation.totalEQUITY;
-
 		return BalanceSheetCalculation;
 	}
 

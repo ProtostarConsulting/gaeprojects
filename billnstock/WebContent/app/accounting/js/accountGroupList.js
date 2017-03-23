@@ -11,9 +11,7 @@ angular
 		$scope.getList = function(refresh) {
 
 			var AccountGroupServiceCacheKey = "getAccountGroupByName";
-			// Note this key has to be unique across application
-			// else it will return unexpected result.
-			if (!angular.isUndefined(ajsCache.get(AccountGroupServiceCacheKey)) && !refresh) {
+				if (!angular.isUndefined(ajsCache.get(AccountGroupServiceCacheKey)) && !refresh) {
 				$log.debug("Found List in Cache, return it.");
 				$scope.List = ajsCache.get(AccountGroupServiceCacheKey);
 				return;
@@ -23,7 +21,6 @@ angular
 			listAccountGroupService.getAccountGroupList($scope.curUser.business.id)
 				.then(
 					function(list) {
-						//$log.debug("list:"+angular.toJson(list));
 						$scope.accountGroupList = list;
 						$scope.loading = false;
 						ajsCache.put(AccountGroupServiceCacheKey, list);

@@ -1847,7 +1847,7 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
-	AccountService.getAccountById = function(accountId) {
+	/*AccountService.getAccountById = function(accountId) {
 		var deferred = $q.defer();
 		gapi.client.accountService.getAccountById({
 			"id" : accountId
@@ -1855,7 +1855,7 @@ function googleEndpointSF($q) {
 			deferred.resolve(resp);
 		});
 		return deferred.promise;
-	}
+	}*/////////////////
 
 	AccountService.deleteaccByid = function(id) {
 		var deferred = $q.defer();
@@ -1966,14 +1966,14 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
-	AccountEntryService.getAccountEntryList = function() {
+	/*AccountEntryService.getAccountEntryList = function() {
 		var deferred = $q.defer();
 		gapi.client.accountEntryService.getAccountEntryList().execute(
 				function(resp) {
 					deferred.resolve(resp.items);
 				});
 		return deferred.promise;
-	}
+	}*/////////////
 
 	AccountEntryService.getAccountEntryByAccountId = function(accId) {// },bid)
 		// {
