@@ -18,6 +18,9 @@ angular
 						businessName : "",
 						accounttype : ""
 					}
+
+					$scope.registrationSuccess = false;
+
 					$scope.userEntity = {
 						business : "",
 						email_id : "",
@@ -37,13 +40,15 @@ angular
 											$scope.userEntity.business = business.result;
 											$scope.userEntity.authority
 													.push("admin");
-											UserService.addUser(
-													$scope.userEntity).then(
-													function(msg) {
-														$scope.showAddToast();
-														$state.go("login");
-
-													});
+											UserService
+													.addUser($scope.userEntity)
+													.then(
+															function(msg) {
+																$scope
+																		.showAddToast();
+																// $state.go("login");
+																$scope.registrationSuccess = true;
+															});
 										});
 
 					}

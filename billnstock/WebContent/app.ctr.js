@@ -240,121 +240,129 @@ angular
 													.debug("Outside: curUser is alrady init. Returning back....");
 											return;
 										}
+
 										$log
 												.debug("Going ahead with call to getUserByEmailID....");
-										appEndpointSF
-												.getUserService()
-												.getUserByEmailID(
-														profile.getEmail(),
-														true)
-												.then(
-														function(
-																loggedInUserList) {
-															if ($scope.curUser) {
-																// call is
-																// comming here
-																// twice. Hence
-																// needed
-																$scope.loading = false;
-																$log
-																		.debug("Inside: curUser is alrady init. Returning back....");
-																return;
-															}
-															$log
-																	.debug("Going ahead with call init inside getUserByEmailID....");
-															$scope.loading = false;
-															if (loggedInUserList.items.length > 1) {
-																$scope.multiUsers = loggedInUserList.items;
-																angular
-																		.forEach(
-																				$scope.multiUsers,
-																				function(
-																						fu) {
-																					fu.imageURl = $scope.googleUser
-																							.getImageUrl();
-																				});
-																$state
-																		.go(
-																				"selectmultibiz",
-																				{
-																					multiUsers : $scope.multiUsers
-																				});
-																return;
-															} else {
-																var loggedInUser = loggedInUserList.items[0];
-																loggedInUser.imageURl = $scope.googleUser
-																		.getImageUrl();
-																appEndpointSF
-																		.getLocalUserService()
-																		.saveLoggedInUser(
-																				loggedInUser);
-															}
-
-															$scope.curUser = loggedInUser;
-
-															if (loggedInUser.id == undefined) {
-
-																loggedInUser.email_id = profile
-																		.getEmail();
-																profile
-																		.getName()
-																		.split(
-																				" ")[0];
-																loggedInUser.firstName = profile
-																		.getName()
-																		.split(
-																				" ")[0];
-																loggedInUser.lastName = profile
-																		.getName()
-																		.split(
-																				" ")[1];
-
-																appEndpointSF
-																		.getLocalUserService()
-																		.saveLoggedInUser(
-																				loggedInUser);
-
-																// $scope.businessName
-																// = "XYZ Firm";
-																$state
-																		.go("needbusiness");
-																return;
-															}
-
-															$scope
-																	.initCommonSetting();
-
-														});
+										getUserDetailsFn(profile.getEmail());
 
 									});
 
-					/*
-					 * $log.debug('$scope.curUser' +
-					 * angular.toJson($scope.curUser));
-					 */
+					function getUserDetailsFn(emailId) {
+						$scope.loading = true;
+						if (!appEndpointSF.is_service_ready) {
+							$log
+									.debug("Index: Services Not Loaded, waiting...");
+							$timeout(function() {
+								getUserDetailsFn(emailId);
+							}, 2000);
+							return;
+						}
+						appEndpointSF
+								.getUserService()
+								.getUserByEmailID(emailId, true)
+								.then(
+										function(loggedInUserList) {
+											if ($scope.curUser) {
+												// call is
+												// comming here
+												// twice. Hence
+												// needed
+												$scope.loading = false;
+												$log
+														.debug("Inside: curUser is alrady init. Returning back....");
+												return;
+											}
+											$log.debug("Going ahead....");
+											$scope.loading = false;
+											if (loggedInUserList.items.length > 1) {
+												$scope.multiUsers = loggedInUserList.items;
+												angular
+														.forEach(
+																$scope.multiUsers,
+																function(fu) {
+																	fu.imageURl = $scope.googleUser
+																			.getImageUrl();
+																});
+												$state
+														.go(
+																"selectmultibiz",
+																{
+																	multiUsers : $scope.multiUsers
+																});
+												return;
+											} else {
+												var loggedInUser = loggedInUserList.items[0];
+												loggedInUser.imageURl = $scope.googleUser
+														.getImageUrl();
+												appEndpointSF
+														.getLocalUserService()
+														.saveLoggedInUser(
+																loggedInUser);
+											}
+
+											$scope.curUser = loggedInUser;
+
+											if (loggedInUser.id == undefined) {
+
+												loggedInUser.email_id = profile
+														.getEmail();
+												profile.getName().split(" ")[0];
+												loggedInUser.firstName = profile
+														.getName().split(" ")[0];
+												loggedInUser.lastName = profile
+														.getName().split(" ")[1];
+
+												appEndpointSF
+														.getLocalUserService()
+														.saveLoggedInUser(
+																loggedInUser);
+
+												// $scope.businessName
+												// = "XYZ Firm";
+												$state.go("needbusiness");
+												return;
+											}
+
+											$scope.initCommonSetting();
+
+										});
+					}
 
 					$scope.signOut = function() {
+
+						var hostBaseUrl = '//' + window.location.host
+								+ '/index.html';
+
 						if (gapi.auth2 == undefined) {
 							$scope.curUser = null;
 							$scope.curUser = appEndpointSF
 									.getLocalUserService().logout();
 
-							$state.go("home");
+							// $state.go("home");
+							$window.location.href = hostBaseUrl;
 							return;
 						}
 						var auth2 = gapi.auth2.getAuthInstance();
-						auth2.signOut().then(
-								function() {
-									// also remove login details from chrome
-									// browser
+						// try logout 3 times.
+						for (var i = 1; i <= 3; i++) {
+							auth2
+									.signOut()
+									.then(
+											function() {
+												// also remove login details
+												// from chrome
+												// browser
 
-									$scope.googleUser = null;
-									$scope.curUser = null;
-									$scope.curUser = appEndpointSF
-											.getLocalUserService().logout();
+												$scope.googleUser = null;
+												$scope.curUser = null;
+												$scope.curUser = appEndpointSF
+														.getLocalUserService()
+														.logout();
 
-									$state.go("home");
-								});
+												// $state.go("home");
+												$window.location.href = hostBaseUrl;
+											});
+						}
 					}
 
 					$scope.$on('event:google-plus-signin-failure', function(
@@ -461,10 +469,10 @@ angular
 								.containsInAuthTree(authorityToCheck,
 										angular.fromJson(user.authorizations));
 					};
-					
+
 					$scope.isDocumentEditAllowed = function(documentEntity) {
-						if (documentEntity && (documentEntity.status == 'FINALIZED'
-								|| documentEntity.status == 'REJECTED')) {
+						if (documentEntity
+								&& (documentEntity.status == 'FINALIZED' || documentEntity.status == 'REJECTED')) {
 							return false;
 						}
 						return true;

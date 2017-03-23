@@ -6,95 +6,92 @@
 	<span flex></span>
 </section>
 <form name="Signin" ng-model="Signin">
-	<div layout layout-sm="column">
-		<md-input-container flex flex-gt-xs="50"> <label>Enter
-			Business Name </label> <input name="businessName"
-			ng-model="business.businessName" ng-required="true">
+	<div id="regFrm" ng-if="!registrationSuccess">
+		<div layout layout-sm="column">
+			<md-input-container flex flex-gt-xs="50"> <label>Enter
+				Business Name </label> <input name="businessName"
+				ng-model="business.businessName" ng-required="true">
 
-		<div ng-messages="Signin.businessName.$error"
-			ng-if="Signin.businessName.$submitted || Signin.businessName.$touched">
-			<div ng-message="required">Please Enter Business Name.</div>
-		</div>
-		</md-input-container>
-	</div>
-	<div layout layout-xs="column">
-
-		<md-input-container
-			md-is-error="Signin.adminEmailId.$invalid && (Signin.$submitted || Signin.adminEmailId.$dirty)"
-			flex> <label>Admin Email Id </label> <input
-			type="email" name="adminEmailId" id="adminEmailId"
-			ng-model="userEntity.email_id"
-			ng-blur="Checkemail(userEntity.email_id)" ng-pattern="/^.+@.+\..+$/"
-			ng-required="true"> <span style="color: red">{{userexists}}</span>
-		<div ng-messages="Signin.adminEmailId.$error"
-			ng-if="Signin.adminEmailId.$submitted || Signin.adminEmailId.$touched">
-			<div ng-message="required">Please Enter Gmail Id.</div>
-		</div>
-		<span class="help-block" style="color: red"
-			ng-show="((Signin.adminEmailId.$error.pattern) && Signin.adminEmailId.$dirty) ">
-			Enter Valid Email Format </span> </md-input-container>
-		<div flex>
-			<md-input-container flex> Is Google User <md-checkbox
-				ng-model="userEntity.isGoogleUser" ng-true-value="true"
-				ng-false-value="false"> </md-checkbox> </md-input-container>
-			<md-input-container flex ng-hide="userEntity.isGoogleUser">
-			<label>Enter Password <span style="color: red"
-				ng-show="Signin.password.$error.required" class="mandatory">*</span></label>
-			<input type="password" name="password" ng-model="userEntity.password"
-				ng-required="condition()">
-
-			<div ng-messages="Signin.password.$error"
-				ng-if="Signin.password.$touched">
-				<div ng-message="required">Please Enter password.</div>
+			<div ng-messages="Signin.businessName.$error"
+				ng-if="Signin.businessName.$submitted || Signin.businessName.$touched">
+				<div ng-message="required">Please Enter Business Name.</div>
 			</div>
 			</md-input-container>
 		</div>
+		<div layout layout-xs="column">
+
+			<md-input-container
+				md-is-error="Signin.adminEmailId.$invalid && (Signin.$submitted || Signin.adminEmailId.$dirty)"
+				flex> <label>Admin Email Id </label> <input
+				type="email" name="adminEmailId" id="adminEmailId"
+				ng-model="userEntity.email_id"
+				ng-blur="Checkemail(userEntity.email_id)" ng-pattern="/^.+@.+\..+$/"
+				ng-required="true"> <span style="color: red">{{userexists}}</span>
+			<div ng-messages="Signin.adminEmailId.$error"
+				ng-if="Signin.adminEmailId.$submitted || Signin.adminEmailId.$touched">
+				<div ng-message="required">Please Enter Gmail Id.</div>
+			</div>
+			<span class="help-block" style="color: red"
+				ng-show="((Signin.adminEmailId.$error.pattern) && Signin.adminEmailId.$dirty) ">
+				Enter Valid Email Format </span> </md-input-container>
+			<div flex>
+				<md-input-container flex> Is Google User <md-checkbox
+					ng-model="userEntity.isGoogleUser" ng-true-value="true"
+					ng-false-value="false"> </md-checkbox> </md-input-container>
+				<md-input-container flex ng-hide="userEntity.isGoogleUser">
+				<label>Enter Password <span style="color: red"
+					ng-show="Signin.password.$error.required" class="mandatory">*</span></label>
+				<input type="password" name="password"
+					ng-model="userEntity.password" ng-required="condition()">
+
+				<div ng-messages="Signin.password.$error"
+					ng-if="Signin.password.$touched">
+					<div ng-message="required">Please Enter password.</div>
+				</div>
+				</md-input-container>
+			</div>
+		</div>
+		<div layout layout-sm="column">
+
+			<md-input-container
+				md-is-error="Signin.adminFirstName.$invalid && (Signin.$submitted || Signin.adminFirstName.$dirty)"
+				flex> <label>First Name </label> <input
+				name="adminFirstName" id="adminFirstName"
+				ng-model="userEntity.firstName" ng-required="true">
+			<div ng-messages="Signin.adminFirstName.$error"
+				ng-if="Signin.adminFirstName.$touched">
+				<div ng-message="required">Please Enter First Name.</div>
+			</div>
+
+
+			</md-input-container>
+
+			<md-input-container
+				md-is-error="Signin.adminLastName.$invalid && (Signin.$submitted || Signin.adminLastName.$dirty)"
+				flex> <label>Last Name </label> <input
+				id="adminLastName" name="adminLastName"
+				ng-model="userEntity.lastName" ng-required="true">
+
+			<div ng-messages="Signin.adminLastName.$error"
+				ng-if="Signin.adminLastName.$touched">
+				<div ng-message="required">Please Enter Last Name.</div>
+			</div>
+			</md-input-container>
+		</div>
+
+		<section layout="row" layout-sm="column" layout-align="left left">
+			<md-button class="md-raised md-primary" ng-disabled="Signin.$invalid"
+				ng-click="addBusiness()">Register</md-button>
+		</section>
 	</div>
-	<div layout layout-sm="column">
 
-		<md-input-container
-			md-is-error="Signin.adminFirstName.$invalid && (Signin.$submitted || Signin.adminFirstName.$dirty)"
-			flex> <label>First Name </label> <input
-			name="adminFirstName" id="adminFirstName"
-			ng-model="userEntity.firstName" ng-required="true">
-		<div ng-messages="Signin.adminFirstName.$error"
-			ng-if="Signin.adminFirstName.$touched">
-			<div ng-message="required">Please Enter First Name.</div>
-		</div>
-
-
-		</md-input-container>
-
-		<md-input-container
-			md-is-error="Signin.adminLastName.$invalid && (Signin.$submitted || Signin.adminLastName.$dirty)"
-			flex> <label>Last Name </label> <input
-			id="adminLastName" name="adminLastName"
-			ng-model="userEntity.lastName" ng-required="true">
-
-		<div ng-messages="Signin.adminLastName.$error"
-			ng-if="Signin.adminLastName.$touched">
-			<div ng-message="required">Please Enter Last Name.</div>
-		</div>
-		</md-input-container>
+	<div id="doneMsg" ng-if="registrationSuccess">
+		<p>
+			Thank you for registration. Please login with new credentials and
+			complete rest of business setup as explain in <a href="#">Quickstart
+			</a> help.
+		</p>
 	</div>
-	<!-- <div layout layout-sm="column">
-		<md-input-container flex> <md-select
-			name="selectedaccount" placeholder="accounttype"
-			ng-model="accounttype" ng-required="true"> <md-option
-			value={{list.id}} ng-repeat="list in accountlist"
-			ng-selected="$first"> {{list.planName}} (
-		{{list.description}} ) </md-option> </md-select>
-		<div ng-messages="Signin.selectedaccount.$error"
-			ng-if="Signin.selectedaccount.$submitted || Signin.selectedaccount.$touched">
-			<div ng-message="required">Select Account Type.</div>
-		</div>
-		</md-input-container>
-	</div> -->
-
-	<section layout="row" layout-sm="column" layout-align="left left">
-		<md-button class="md-raised md-primary" ng-disabled="Signin.$invalid"
-			ng-click="addBusiness()">Register</md-button>
-	</section>
 
 </form>
 </md-content>

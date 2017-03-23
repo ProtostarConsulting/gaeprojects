@@ -1,49 +1,59 @@
-angular
-		.module("stockApp")
+var app = angular.module("stockAppWebsite", [ 'ngMaterial', 'ngMessages',
+		'ngStorage', 'ngAnimate', 'directive.g+signin', 'ngMdIcons' ]);
+
+app
 		.controller(
 				"indexCtr",
 				function($scope, $rootScope, $window, $log, $q, $timeout,
-						$mdToast, $mdBottomSheet, $state, $http, $location,
-						$anchorScroll, $mdMedia, ajsCache, appEndpointSF) {
+						$mdToast, $mdBottomSheet, $localStorage, $http,
+						$location, $anchorScroll, $mdMedia, $mdUtil, $mdSidenav) {
 
-					$log.log("Inside indexCtr");
 					$scope.loading = true;
 					$scope.angular = angular;
-
-					$scope.showUpdateToast = function() {
-						$mdToast.show($mdToast.simple().content(
-								'Changes Saved Successfully.').position("top")
-								.hideDelay(3000));
-					};
-
-					$scope.showAddToast = function() {
-						$mdToast.show($mdToast.simple().content(
-								'New Record Saved Successfully.').position(
-								"top").hideDelay(3000));
-					};
-
-					$scope.showShowCustomToast = function(msg) {
-						$mdToast.show($mdToast.simple().content(msg).position(
-								"top").hideDelay(3000));
-					};
 
 					$scope.curUser = null;
 					$scope.googleUserDetails = "";
 					$scope.googleUser = null;
 					$scope.businessName = "";
-					$scope.eid = null;
-					$scope.test;
-					$scope.loginClick = function() {
-						$state.go("login");
+					$scope.prodigitalLogo = "/img/images/protostar_logo_pix_308_124.png";
+					$scope.mobileDevice = $mdMedia('gt-md');
+
+					/* Page Menu */
+					$scope.toggleRight = buildToggler('right');
+
+					function buildToggler(navID) {
+						var debounceFn = $mdUtil.debounce(function() {
+							$mdSidenav(navID).toggle().then(function() {
+								$log.debug("toggle " + navID + " is done");
+							});
+						}, 200);
+						return debounceFn;
+					}
+
+					$scope.close = function() {
+						$mdSidenav('right').close().then(function() {
+							$log.debug("close RIGHT is done");
+						});
 					};
 
-					// on page load firs see if user is already logged. if yes
-					// getch and set values.
-					$scope.curUser = appEndpointSF.getLocalUserService()
-							.getLoggedinUser();
-					// http://localhost:8888/serve?blob-key=sC_5uJK83qYiubjEWAz5zA
-					$scope.bizLogoGCSURL = null;
-					$scope.logFooterURL;
+					$scope.gotoPart = function(partId) {
+						$location.hash(partId);
+						$anchorScroll();
+					}
+
+					$scope.registerNewBiz = function() {
+						var hostBaseUrl = '//' + window.location.host
+								+ '/app.html#/NewBusinessAccount#tp1';
+						$log.debug("hostBaseUrl: " + hostBaseUrl);
+						$window.location.href = hostBaseUrl;
+					}
+
+					$scope.loginClick = function() {
+						var hostBaseUrl = '//' + window.location.host
+								+ '/app.html#/login#tp1';
+						$log.debug("hostBaseUrl: " + hostBaseUrl);
+						$window.location.href = hostBaseUrl;
+					}
 
 					$scope.user = {
 						business : "",
@@ -56,15 +66,10 @@ angular
 						authority : []
 					}
 
-					$scope.orderByAuthOrderValue = function(auth) {
-						return Number(auth.orderNumber);
-					}
-
 					$scope.login = function() {
 						$scope.loading = true;
 						$scope.loginMsg = "";
-						var UserService = appEndpointSF.getUserService();
-						UserService
+						gapi.client.userService
 								.login($scope.user.email_id,
 										$scope.user.password)
 								.then(
@@ -73,19 +78,16 @@ angular
 												$scope.loading = false;
 												if (result.items.length > 1) {
 													$scope.multiUsers = result.items;
-													$state
-															.go(
-																	"selectmultibiz",
-																	{
-																		multiUsers : $scope.multiUsers
-																	});
+													/*
+													 * $state .go(
+													 * "selectmultibiz", {
+													 * multiUsers :
+													 * $scope.multiUsers });
+													 */
 													return;
 												} else {
 													var user = result.items[0];
-													appEndpointSF
-															.getLocalUserService()
-															.saveLoggedInUser(
-																	user);
+													saveLoggedInUser(user);
 
 													$scope.$emit(
 															'customLoginEvent',
@@ -109,398 +111,93 @@ angular
 										});
 					}
 
-					$scope.$on('customLoginEvent', function(event, args) {
-						$log.debug("In side customLogin");
-						$scope.curUser = args.curUser;
-						$scope.initCommonSetting();
-					});
-
-					$scope.initCommonSetting = function() {
-						ajsCache.removeAll();
-						$scope.theme = $scope.curUser.business.theme;
-						$scope.bizLogoGCSURL = $scope.curUser.business.bizLogoGCSURL;
-
-						getUserAuthTree();
-						// finally go to home...
-						$log.debug("Forwarding to home page...");
-						$scope.loading = false;
-						$state.go("home");
-					}
-					$scope.multiBizSelectUser = function(multiBizSelectedUser) {
-						appEndpointSF.getLocalUserService().saveLoggedInUser(
-								multiBizSelectedUser);
-						if ($scope.googleUser)
-							multiBizSelectedUser.imageURl = $scope.googleUser
-									.getImageUrl();
-
-						$scope.curUser = multiBizSelectedUser;
-						appEndpointSF.getLocalUserService().saveLoggedInUser(
-								multiBizSelectedUser);
-
-						$scope.$emit('customLoginEvent', {
-							curUser : multiBizSelectedUser
-						});
-						$scope.$broadcast('customLoginEvent', {
-							curUser : multiBizSelectedUser
-						});
-						$state.go("home");
-
-					}
-
-					function getUserAuthTree() {
-						var authService = appEndpointSF
-								.getAuthorizationService();
-						authService
-								.getAuthorizationMasterEntity()
-								.then(
-										function(result) {
-											/* $log.debug("result:" + result); */
-											var authorizationMasterEntity = {
-												authorizations : []
-											};
-											var userAuthMasterEntity = {
-												authorizations : []
-											};
-
-											var jsonUserAuthObject = angular
-													.fromJson($scope.curUser.authorizations);
-
-											if ($scope.curUser.authorizations) {
-												var jsonUserAuthObject = angular
-														.fromJson($scope.curUser.authorizations);
-												$scope.userAuthObject = jsonUserAuthObject;
-											} else {
-												$scope.userAuthObject = {
-													authorizations : []
-												};
-											}
-
-											if (result
-													&& result.authorizations != undefined) {
-
-												authorizationMasterEntity.authorizations = result.authorizations;
-
-												userAuthMasterEntity = authService
-														.filterMasterAuthTree(
-																authorizationMasterEntity,
-																$scope.userAuthObject,
-																userAuthMasterEntity);
-
-												userAuthMasterEntity.authorizations
-														.sort(function(a, b) {
-															return (parseFloat(a.orderNumber) > parseFloat(b.orderNumber)) ? 1
-																	: -1
-														});
-
-												var curUser = appEndpointSF
-														.getLocalUserService()
-														.getLoggedinUser();
-												curUser.userAuthMasterEntity = userAuthMasterEntity;
-												appEndpointSF
-														.getLocalUserService()
-														.saveLoggedInUser(
-																curUser);
-
-												$scope.curUser = curUser;
-												// $scope.safeApply();
-											}
-										});
-					}
-
-					$scope
-							.$on(
-									'event:google-plus-signin-success',
-									function(event, authResult) {
-										$scope.loading = true;
-										// User successfully authorized the G+
-										// App!
-										$log.debug('Signed in!');
-										var profile = authResult
-												.getBasicProfile();
-										$scope.googleUser = profile;
-
-										$log.debug('ID: ' + profile.getId());
-										// Do not send to your backend! Use an
-										// ID token instead.
-										/*
-										 * $log .debug('Name: ' +
-										 * profile.getName()); $log.debug('Image
-										 * URL: ' + profile.getImageUrl());
-										 * $log.debug('email_id: ' +
-										 * profile.getEmail());
-										 */
-										$scope.googleUserDetails = profile
-												.getName()
-												+ "<br>" + profile.getEmail()
-										if ($scope.curUser) {
-											// call is comming here twice. Hence
-											// needed
-											$scope.loading = false;
-											$log
-													.debug("Outside: curUser is alrady init. Returning back....");
-											return;
-										}
-										$log
-												.debug("Going ahead with call to getUserByEmailID....");
-										appEndpointSF
-												.getUserService()
-												.getUserByEmailID(
-														profile.getEmail(),
-														true)
-												.then(
-														function(
-																loggedInUserList) {
-															if ($scope.curUser) {
-																// call is
-																// comming here
-																// twice. Hence
-																// needed
-																$scope.loading = false;
-																$log
-																		.debug("Inside: curUser is alrady init. Returning back....");
-																return;
-															}
-															$log
-																	.debug("Going ahead with call init inside getUserByEmailID....");
-															$scope.loading = false;
-															if (loggedInUserList.items.length > 1) {
-																$scope.multiUsers = loggedInUserList.items;
-																angular
-																		.forEach(
-																				$scope.multiUsers,
-																				function(
-																						fu) {
-																					fu.imageURl = $scope.googleUser
-																							.getImageUrl();
-																				});
-																$state
-																		.go(
-																				"selectmultibiz",
-																				{
-																					multiUsers : $scope.multiUsers
-																				});
-																return;
-															} else {
-																var loggedInUser = loggedInUserList.items[0];
-																loggedInUser.imageURl = $scope.googleUser
-																		.getImageUrl();
-																appEndpointSF
-																		.getLocalUserService()
-																		.saveLoggedInUser(
-																				loggedInUser);
-															}
-
-															$scope.curUser = loggedInUser;
-
-															if (loggedInUser.id == undefined) {
-
-																loggedInUser.email_id = profile
-																		.getEmail();
-																profile
-																		.getName()
-																		.split(
-																				" ")[0];
-																loggedInUser.firstName = profile
-																		.getName()
-																		.split(
-																				" ")[0];
-																loggedInUser.lastName = profile
-																		.getName()
-																		.split(
-																				" ")[1];
-
-																appEndpointSF
-																		.getLocalUserService()
-																		.saveLoggedInUser(
-																				loggedInUser);
-
-																// $scope.businessName
-																// = "XYZ Firm";
-																$state
-																		.go("needbusiness");
-																return;
-															}
-
-															$scope
-																	.initCommonSetting();
-
-														});
-
-									});
-
-					/*
-					 * $log.debug('$scope.curUser' +
-					 * angular.toJson($scope.curUser));
-					 */
-
-					$scope.signOut = function() {
-						if (gapi.auth2 == undefined) {
-							$scope.curUser = null;
-							$scope.curUser = appEndpointSF
-									.getLocalUserService().logout();
-
-							$state.go("home");
-							return;
-						}
-						var auth2 = gapi.auth2.getAuthInstance();
-						auth2.signOut().then(
-								function() {
-									// also remove login details from chrome
-									// browser
-
-									$scope.googleUser = null;
-									$scope.curUser = null;
-									$scope.curUser = appEndpointSF
-											.getLocalUserService().logout();
-
-									$state.go("home");
-								});
-					}
-
-					$scope.$on('event:google-plus-signin-failure', function(
-							event, authResult) {
-						// User has not authorized the G+ App!
-						$log.debug('Not signed into Google Plus.');
-						$scope.googleUser = null;
-					});
-					$rootScope.$on('$stateChangeSuccess', function(event,
-							toState, toParams, fromState, fromParams) {
-						// On any state change go the the top
-						$timeout(function() {
-							$location.hash('tp1');
-							$anchorScroll();
-						}, 10);
-
-					});
-					$rootScope.$on('$stateChangeStart', function(e, toState,
-							toParams, fromState, fromParams) {
-						// check access permission here.
-					});
-
 					$scope.initGAPI = function() {
 						$log.debug("Came to initGAPI");
 						// This will load all server side end points
 						// $scope.loadAppGoogleServices();
-						$timeout(
-								function() {
-									appEndpointSF
-											.loadAppGoogleServices($q.defer())
-											.then(
-													function() {
-														$log
-																.debug("##########Loaded All Google Endpoint Services....#########");
-														$scope.loading = false;
-													});
-								}, 2000);
+						$timeout(function() {
+							var apiRoot = '//' + window.location.host
+									+ '/_ah/api';
+							var apisToLoad = 1; // must match number of calls to
+							// gapi.client.load()
+							gapi.client.load('userService', 'v0.1', function() {
+								$log.debug("userService Loaded......");
+								$scope.loading = false;
+							}, apiRoot);
+						}, 2000);
 
-					};
-
-					$scope.openBottomSheet = function() {
-						$mdBottomSheet
-								.show({
-									template : '<md-bottom-sheet>Hello!</md-bottom-sheet>'
-								});
-					};
-					$scope.getDaysInMonth = function(month, year) {
-						// Here January is 1 based
-						// Day 0 is the last day in the previous month
-						return new Date(year, month, 0).getDate();
-						// If you need January is 0 based, use below
-						// return new Date(year, month+1, 0).getDate();
 					}
 
-					$scope.getHighlightRedStyle = function(numberValue) {
-						return {
-							color : numberValue < 0 ? 'red' : ''
-						};
+					$timeout(function() {
+						$scope.initGAPI();
+					}, 2000);
+
+					var saveLoggedInUser = function(user) {
+						$localStorage.loggedinUser = user;
 					}
 
-					// initialize local objects
-					/*
-					 * $scope.customer = $scope.newCustomer();
-					 * $scope.customerList = {};
-					 */
-					$scope.waitForServiceLoad = function(authResult) {
-						if (!appEndpointSF.is_service_ready) {
-							$log
-									.debug("Index: Services Not Loaded, waiting...");
-							$timeout($scope.waitForServiceLoad, 2000);
-							return;
-						}
-
-						$log
-								.debug("####Index: Loaded All Services, Continuing####");
-						if ($scope.curUser != undefined
-								|| $scope.curUser !== null) {
-							$scope.initCommonSetting();
-						}
+					var getLoggedinUser = function() {
+						var user = $localStorage.loggedinUser;
+						if (user == 'undefined' || user == null)
+							return null;
+						else
+							return $localStorage.loggedinUser;
 					}
 
-					$scope.initGAPI();
-					$scope.waitForServiceLoad();
+					// on page load first see if user is already logged. if yes
+					$scope.curUser = getLoggedinUser();
 
-					$scope.theme = 'default';
-
-					$scope.themeList = [ 'default', 'red', 'pink', 'purple',
-							'deep-purple', 'indigo', 'blue', 'light-blue',
-							'cyan', 'teal', 'green', 'light-green', 'lime',
-							'yellow', 'amber', 'orange', 'deep-orange',
-							'brown', 'grey', 'blue-grey' ];
-
-					$scope.changeTheme = function(themeName) {
-						$scope.theme = themeName
-					}
-
-					$scope.back = function() {
-						window.history.back();// for #tp1
-						window.history.back(); // to actual view
-					};
-
-					$scope.hasUserAuthority = function(user, authorityToCheck) {
-						return appEndpointSF.getAuthorizationService()
-								.containsInAuthTree(authorityToCheck,
-										angular.fromJson(user.authorizations));
-					};
-					
-					$scope.isDocumentEditAllowed = function(documentEntity) {
-						if (documentEntity && (documentEntity.status == 'FINALIZED'
-								|| documentEntity.status == 'REJECTED')) {
-							return false;
-						}
-						return true;
-					}
-
-				})
-		.controller(
-				'AppCtrl',
-				function($scope, $timeout, $mdSidenav, $mdUtil, $log, $mdMedia) {
-
-					$scope.toggleMainMenuSwitch = $mdMedia('gt-md');
-
-					$scope.toggleMainMenu = function() {
-						$scope.toggleMainMenuSwitch = !$scope.toggleMainMenuSwitch;
-						$log
-								.debug("toggle left menu. $scope.toggleMainMenuSwitch:"
-										+ $scope.toggleMainMenuSwitch);
-					}
-
-					$scope.close = function() {
-						if (!$mdMedia('gt-md'))
-							$scope.toggleMainMenu();
-					}
-
-					$scope.toggleLeft = buildToggler('left');
-					// $scope.toggleRight = buildToggler('right');
-					/**
-					 * Build handler to open/close a SideNav; when animation
-					 * finishes report completion in console
-					 */
-					function buildToggler(navID) {
-						var debounceFn = $mdUtil.debounce(function() {
-							$mdSidenav(navID).toggle().then(function() {
-								$log.debug("toggle " + navID + " is done");
-							});
-						}, 200);
-						return debounceFn;
-					}
 				});
+
+app.config(function($mdThemingProvider) {
+
+	/*
+	 * Available palettes: red, pink, purple, deep-purple, indigo, blue,
+	 * light-blue, cyan, teal, green, light-green, lime, yellow, amber, orange,
+	 * deep-orange, brown, grey, blue-grey
+	 */
+	$mdThemingProvider.theme('default').primaryPalette('light-blue')
+			.accentPalette('pink');
+	$mdThemingProvider.theme('red').primaryPalette('red').accentPalette(
+			'orange').warnPalette('blue');
+	$mdThemingProvider.theme('pink').primaryPalette('pink').accentPalette(
+			'orange').warnPalette('blue');
+	$mdThemingProvider.theme('purple').primaryPalette('purple').accentPalette(
+			'grey').warnPalette('blue');
+	$mdThemingProvider.theme('deep-purple').primaryPalette('deep-purple')
+			.accentPalette('grey').warnPalette('blue');
+	$mdThemingProvider.theme('indigo').primaryPalette('indigo').accentPalette(
+			'grey').warnPalette('blue');
+	$mdThemingProvider.theme('blue').primaryPalette('blue').accentPalette(
+			'grey').warnPalette('blue');
+	$mdThemingProvider.theme('light-blue').primaryPalette('light-blue')
+			.accentPalette('grey').warnPalette('blue');
+	$mdThemingProvider.theme('cyan').primaryPalette('cyan').accentPalette(
+			'grey').warnPalette('blue');
+	$mdThemingProvider.theme('teal').primaryPalette('teal').accentPalette(
+			'grey').warnPalette('blue');
+	$mdThemingProvider.theme('green').primaryPalette('green').accentPalette(
+			'grey').warnPalette('blue');
+	$mdThemingProvider.theme('light-green').primaryPalette('light-green')
+			.accentPalette('grey').warnPalette('blue');
+	$mdThemingProvider.theme('lime').primaryPalette('lime').accentPalette(
+			'grey').warnPalette('blue');
+	$mdThemingProvider.theme('yellow').primaryPalette('yellow').accentPalette(
+			'grey').warnPalette('blue');
+	$mdThemingProvider.theme('amber').primaryPalette('amber').accentPalette(
+			'grey').warnPalette('blue');
+	$mdThemingProvider.theme('orange').primaryPalette('orange').accentPalette(
+			'grey').warnPalette('blue');
+	$mdThemingProvider.theme('deep-orange').primaryPalette('deep-orange')
+			.accentPalette('grey').warnPalette('blue');
+	$mdThemingProvider.theme('brown').primaryPalette('brown').accentPalette(
+			'grey').warnPalette('blue');
+	$mdThemingProvider.theme('grey').primaryPalette('grey').accentPalette(
+			'grey').warnPalette('blue');
+	$mdThemingProvider.theme('blue-grey').primaryPalette('blue-grey')
+			.accentPalette('grey').warnPalette('blue');
+
+	// This is the absolutely vital part, without this, changes will not cascade
+	// down through the DOM.
+	$mdThemingProvider.alwaysWatchTheme(true);
+});

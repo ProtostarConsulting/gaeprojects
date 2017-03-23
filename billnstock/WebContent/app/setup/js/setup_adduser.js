@@ -163,7 +163,7 @@ angular
 						isLoginAllowed : true,
 						authority : [],
 						employeeDetail : {
-							department : "",
+							department : null,
 							phone1 : "",
 							phone2 : "",
 							bankDetail : {
@@ -177,67 +177,18 @@ angular
 
 					$scope.adduser = function() {
 						$scope.user.business = $scope.selectedBusiness;
-						// use selection array true false value and push that
-						// numbered item on authority
 
 						var UserService = appEndpointSF.getUserService();
-						if (typeof $scope.selectedBusiness.id != 'undefined') {
-							UserService
-									.getUsersByBusinessId(
-											$scope.selectedBusiness.id)
-									.then(
-											function(users) {
-												$scope.userslist = users.items.length;
-												if ($scope.userslist < $scope.selectedBusiness.businessPlan.maxuser) {
+						UserService.addUser($scope.user).then(
+								function(msgBean) {
+									if (msgBean.id) {
+										$scope.showAddToast();
 
-													var UserService = appEndpointSF
-															.getUserService();
-													UserService
-															.addUser(
-																	$scope.user)
-															.then(
-																	function(
-																			msgBean) {
-																		$scope
-																				.showAddToast();
-
-																	});
-
-													$scope.user = {};
-												} else {
-													$scope
-															.showShowCustomToast("Userlimit is low. Please contact support.");
-												}
-
-											});
-
-						}
-
-						$scope.addform.$setPristine();
-						$scope.addform.$setValidity();
-						$scope.addform.$setUntouched();
-
-					}
-
-					// -------------------Check
-					// email------------------------------------
-					$scope.Checkemail = function(emailid) {
-
-						var UserService = appEndpointSF.getUserService();
-						UserService
-								.isUserExists($scope.selectedBusiness.id,
-										emailid)
-								.then(
-										function(responce) {
-											if (responce.returnBool == true) {
-												$scope.userexists = "This user already exists.";
-												$scope.user.firstName = "";
-												$scope.user.lastName = "";
-											} else {
-												$scope.userexists = "";
-											}
-
-										});
+										$scope.addform.$setPristine();
+										$scope.addform.$setValidity();
+										$scope.addform.$setUntouched();
+									}
+								});
 
 					}
 

@@ -108,10 +108,8 @@ function googleEndpointSF($q) {
 
 	UserService.addUser = function(user) {
 		var deferred = $q.defer();
-		gapi.client.userService.addUser(user).execute(function() {
-			deferred.resolve({
-				"msg" : "user Successfully Added"
-			});
+		gapi.client.userService.addUser(user).execute(function(data) {
+			deferred.resolve(data);
 
 		});
 		return deferred.promise;
@@ -119,10 +117,8 @@ function googleEndpointSF($q) {
 
 	UserService.updateBusiness = function(update) {
 		var deferred = $q.defer();
-		gapi.client.userService.updateBusiness(update).execute(function() {
-			deferred.resolve({
-				"msg" : "Business Status Successfully Updated"
-			});
+		gapi.client.userService.updateBusiness(update).execute(function(data) {
+			deferred.resolve(data);
 		});
 		return deferred.promise;
 	}
