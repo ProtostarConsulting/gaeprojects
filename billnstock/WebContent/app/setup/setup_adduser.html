@@ -1,18 +1,15 @@
 <md-content layout-padding>
 <form name="addform">
-
-	<div ng-show="false">
-		<!-- show this if number of can login user exceeds the plan -->
-
-		Selected Business Name: {{selectedBusiness.businessName}} <span
-			id="hideSpan" style="color: red">Your Account exceed the user
-			limit. Click to <a href="">Upgrade Account</a>
-		</span>
-	</div>
 	<div>
-		<section layout="row" layout-align="end end" flex>
-			<md-button class="md-raised md-primary" id="uplodeExcel"
-				ng-click="UplodeExcel($event)">Upload Bulk Users</md-button>
+		<section layout="row" layout-xs="column">
+			<md-subheader class="md-primary">
+			<h4 class="md-title">Add User</h4>
+			</md-subheader>
+			<span flex></span>
+			<div>
+				<md-button class="md-raised md-primary" id="uplodeExcel"
+					ng-click="UplodeExcel($event)">Upload Bulk Users</md-button>
+			</div>
 		</section>
 		<div>
 			<h4 ng-init="basicDetailToogle=true"

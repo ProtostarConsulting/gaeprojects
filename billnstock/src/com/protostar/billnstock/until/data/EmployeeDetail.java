@@ -42,7 +42,8 @@ public class EmployeeDetail {
 	}
 
 	public void setDepartment(EmpDepartment department) {
-		this.department = Ref.create(department);
+		if (department != null)
+			this.department = Ref.create(department);
 	}
 
 	public String getDesignation() {

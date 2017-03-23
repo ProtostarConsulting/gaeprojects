@@ -8,7 +8,11 @@ import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
 import com.protostar.billnstock.entity.BaseEntity;
+import com.protostar.billnstock.until.data.Constants;
 import com.protostar.billnstock.until.data.EmployeeDetail;
+import com.protostar.billnstock.until.data.EntityUtil;
+import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
+import com.protostar.billnstock.until.data.Constants.DocumentStatus;
 
 @Cache
 @Entity
@@ -17,7 +21,7 @@ public class UserEntity extends BaseEntity {
 	private String firstName;
 	private String lastName;
 	private String fullName;
-	
+
 	@Index
 	private Boolean isActive = true;
 
@@ -32,7 +36,24 @@ public class UserEntity extends BaseEntity {
 	String authorizations;
 	@Index
 	private EmployeeDetail employeeDetail = new EmployeeDetail();
-	
+
+	@Override
+	public void beforeSave() {
+		super.beforeSave();
+
+		if (getId() == null) {
+			if (getAuthorizations() == null || getAuthorizations().isEmpty()) {
+				if (getAuthority().contains("admin"))
+					setAuthorizations(Constants.NEW_BIZ_DEFAULT_AUTHS);
+				else
+					setAuthorizations(Constants.NEW_BIZ_USER_DEFAULT_AUTHS);
+			}
+			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
+					EntityUtil.getBusinessRawKey(getBusiness()), Constants.EMP_NO_COUNTER);
+			getEmployeeDetail().setEmpId(sequenceGenService.getNextSequenceNumber());
+		}
+	}
+
 	public String getAuthorizations() {
 		return authorizations;
 	}

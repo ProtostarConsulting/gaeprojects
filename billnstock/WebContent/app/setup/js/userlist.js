@@ -188,23 +188,21 @@ angular
 						});
 					}
 
-					$scope.changePassword = function(ev, user) {
-						var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))
-								&& $scope.customFullscreen;
+					$scope.changePassword = function(ev, selectedUser) {
 						$mdDialog
 								.show(
 										{
 											controller : DialogController,
-											templateUrl : '/app/profile/changepassword.html',
+											templateUrl : '/app/profile/changepassword_dialog.html',
 											parent : angular
 													.element(document.body),
 											targetEvent : ev,
+											fullscreen : true,
 											clickOutsideToClose : true,
-											fullscreen : useFullScreen,
+											escapeToClose : true,
 											locals : {
-												curuser : $scope.curuser,
-												user : user
-
+												curUser : $scope.curUser,
+												selectedUser : selectedUser
 											}
 										})
 								.then(
@@ -222,8 +220,9 @@ angular
 
 					}
 
-					function DialogController($scope, $mdDialog, curuser, user) {
-
+					function DialogController($scope, $mdDialog, curUser,
+							selectedUser) {
+						$scope.selectedUser = selectedUser;
 						// alert(angular.toJson(user));
 						$scope.hide = function() {
 							$mdDialog.hide();
@@ -244,8 +243,8 @@ angular
 							} else {
 								$scope.inputType1 = 'password';
 							}
-
 						}
+
 						$scope.showpass2 = function() {
 							if ($scope.inputType2 == 'password') {
 								$scope.inputType2 = 'text';
@@ -253,13 +252,16 @@ angular
 								$scope.inputType2 = 'password';
 							}
 						}
+
 						$scope.setpassinput1 = function() {
 							$scope.inputType1 = 'password';
 						}
+
 						$scope.setpassinput2 = function() {
 							$scope.inputType2 = 'password';
 						}
-						$scope.changepass = function() {
+
+						$scope.changePassword = function() {
 
 							if ($scope.password == $scope.confirmpassword) {
 								$scope.savemsg = true;
@@ -270,19 +272,14 @@ angular
 							}
 
 							if ($scope.savemsg == true) {
-								$scope.userL = user;
-								/* $scope.userL.modifiedBy=user.email_id; */
-								$scope.userL.password = $scope.password;
+								selectedUser.password = $scope.password;
 								var UserService = appEndpointSF
 										.getUserService();
-								UserService
-										.updateUser($scope.userL)
-										.then(
-												function(msgBean) {
-													$scope
-															.showUpdateToast(msgBean.msg);
-
-												});
+								UserService.addUser(selectedUser).then(
+										function(user) {
+											if (user.id)
+												$scope.savemsg = "Done!";
+										});
 
 							}
 						}

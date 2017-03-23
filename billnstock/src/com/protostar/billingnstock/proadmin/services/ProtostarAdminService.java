@@ -104,7 +104,7 @@ public class ProtostarAdminService {
 		userEntity.setAuthority(Arrays.asList("admin"));
 		userEntity.setAuthorizations(authorizations);
 		// ofy().save().entity(userEntity).now();
-		userService.addUser(userEntity, null);
+		userService.addUser(userEntity);
 
 		// ------------------------------
 
@@ -117,7 +117,7 @@ public class ProtostarAdminService {
 		userEntity1.setAuthority(Arrays.asList("admin"));
 		userEntity1.setAuthorizations(authorizations);
 		// ofy().save().entity(userEntity1).now();
-		userService.addUser(userEntity1, null);
+		userService.addUser(userEntity1);
 
 		UserEntity userEntity2 = new UserEntity();
 		userEntity2.setBusiness(businessEntity);
@@ -128,7 +128,7 @@ public class ProtostarAdminService {
 		userEntity2.setAuthority(Arrays.asList("admin"));
 		userEntity2.setAuthorizations(authorizations);
 		// ofy().save().entity(userEntity2).now();
-		userService.addUser(userEntity2, null);
+		userService.addUser(userEntity2);
 
 		UserEntity userEntity3 = new UserEntity();
 		userEntity3.setBusiness(businessEntity);
@@ -139,7 +139,7 @@ public class ProtostarAdminService {
 		userEntity3.setAuthority(Arrays.asList("admin"));
 		userEntity3.setAuthorizations(authorizations);
 		// ofy().save().entity(userEntity3).now();
-		userService.addUser(userEntity3, null);
+		userService.addUser(userEntity3);
 	}
 
 	@ApiMethod(name = "createDefaultDepartments", path = "createDefaultDepartments")

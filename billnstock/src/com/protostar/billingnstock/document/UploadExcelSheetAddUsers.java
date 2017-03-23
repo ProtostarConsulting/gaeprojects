@@ -29,8 +29,7 @@ import com.protostar.billingnstock.user.services.UserService;
 public class UploadExcelSheetAddUsers extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private BlobstoreService blobstoreService = BlobstoreServiceFactory
-			.getBlobstoreService();
+	private BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 
 	// private PatientService patientService= new PatientServiceImpl();
 	// private static final Logger log =
@@ -48,8 +47,8 @@ public class UploadExcelSheetAddUsers extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		System.out.println("###Came to dopost  Uplode Excel Sheet");
 		this.doGet(request, response);
@@ -59,10 +58,10 @@ public class UploadExcelSheetAddUsers extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		Long bizID = null; 
+		Long bizID = null;
 		System.out.println("###Came to Uplode Excel Sheet");
 		Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(request);
 		List<BlobKey> blobKeys = blobs.get("myFile");
@@ -79,13 +78,11 @@ public class UploadExcelSheetAddUsers extends HttpServlet {
 
 				FileItemStream item = iterator.next();
 				// InputStream stream = item.openStream();
-				BlobstoreInputStream stream = new BlobstoreInputStream(
-						new BlobKey(blobKeys.get(0).getKeyString()));
+				BlobstoreInputStream stream = new BlobstoreInputStream(new BlobKey(blobKeys.get(0).getKeyString()));
 				if (item.isFormField()) {
-					System.out.println("Got a form field: "
-							+ item.getFieldName());
-				bizID=Long.parseLong(request.getParameter(item.getFieldName()));
-							
+					System.out.println("Got a form field: " + item.getFieldName());
+					bizID = Long.parseLong(request.getParameter(item.getFieldName()));
+
 				} else {
 
 					int len;
@@ -94,12 +91,10 @@ public class UploadExcelSheetAddUsers extends HttpServlet {
 
 					int read = stream.read(fileContent);
 					// System.out.println("No of bytes read:" + read);
-					while ((len = stream.read(fileContent, 0,
-							fileContent.length)) != -1) {
+					while ((len = stream.read(fileContent, 0, fileContent.length)) != -1) {
 						// res.getOutputStream().write(fileContent, 0, len);
 					}
-					System.out.println("File content is : "
-							+ new String(fileContent));
+					System.out.println("File content is : " + new String(fileContent));
 					System.out.println("File Read is Done!!");
 					// Write code here to parse sheet of patients and upload to
 					// database
@@ -112,16 +107,14 @@ public class UploadExcelSheetAddUsers extends HttpServlet {
 					split2 = fileAsString.split("\n");
 					// Start with 1 not 0, zero holds column headings
 
-					
-
 				}
 
 			}
-			
+
 			try {
-				//gte business entity
-				 UserService us = new UserService();
-				 BusinessEntity getbusinessById = us.getBusinessById(bizID);
+				// gte business entity
+				UserService us = new UserService();
+				BusinessEntity getbusinessById = us.getBusinessById(bizID);
 
 				for (int row = 1; row < split2.length; row++) {
 
@@ -135,34 +128,33 @@ public class UploadExcelSheetAddUsers extends HttpServlet {
 					System.out.println(" Col3: " + split[2]);
 					System.out.println(" Col4: " + split[3]);
 					System.out.println(" Col5: " + split[4]);
-					
-					//create user 
-				
-					UserEntity ue=new UserEntity();
+
+					// create user
+
+					UserEntity ue = new UserEntity();
 					ue.setBusiness(getbusinessById);
 					ue.setFirstName(split[0]);
 					ue.setLastName(split[1]);
 					ue.setEmail_id(split[2]);
-					if(split[3].contains("0"))
-					{ue.setIsGoogleUser(false);}
-					else{ue.setIsGoogleUser(true);}
+					if (split[3].contains("0")) {
+						ue.setIsGoogleUser(false);
+					} else {
+						ue.setIsGoogleUser(true);
+					}
 					ue.setPassword(split[4]);
 					ue.setAuthority(Arrays.asList("employee"));
-					us.addUser(ue, null);
+					us.addUser(ue);
 					Thread.sleep(2000);
 				}
 
-				
-				
-				response.sendRedirect("/#/setup/userlist");  
+				response.sendRedirect("/#/setup/userlist");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
 		} catch (Exception e) {
-			response.getOutputStream().print(
-					"File Uploading Failed!" + e.getMessage());
+			response.getOutputStream().print("File Uploading Failed!" + e.getMessage());
 		}
 	}
 

@@ -23,10 +23,7 @@ import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
-import com.google.appengine.api.users.User;
-import com.google.appengine.api.users.UserServiceFactory;
 import com.googlecode.objectify.Key;
-import com.googlecode.objectify.LoadResult;
 import com.googlecode.objectify.TxnType;
 import com.googlecode.objectify.Work;
 import com.protostar.billingnstock.hr.entities.HREntityUtil;
@@ -34,7 +31,6 @@ import com.protostar.billingnstock.hr.entities.HRSettingsEntity;
 import com.protostar.billingnstock.hr.services.HrService;
 import com.protostar.billingnstock.proadmin.entities.BusinessPlanType;
 import com.protostar.billingnstock.proadmin.services.ProtostarAdminService;
-import com.protostar.billingnstock.stock.entities.StockSettingsEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.user.entities.BusinessSettingsEntity;
 import com.protostar.billingnstock.user.entities.EmpDepartment;
@@ -42,7 +38,6 @@ import com.protostar.billingnstock.user.entities.UserEntity;
 import com.protostar.billingnstock.warehouse.entities.WarehouseEntity;
 import com.protostar.billingnstock.warehouse.services.WarehouseService;
 import com.protostar.billnstock.until.data.Constants;
-import com.protostar.billnstock.until.data.EntityUtil;
 import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 import com.protostar.billnstock.until.data.SequenceGeneratorShardedService.CounterEntity;
 import com.protostar.billnstock.until.data.SequenceGeneratorShardedService.CounterShard;
@@ -56,42 +51,35 @@ public class UserService {
 	private final Logger logger = Logger.getLogger(UserService.class.getName());
 
 	@ApiMethod(name = "addUser", path = "addUser")
-	public void addUser(UserEntity usr, User user) {
-		System.out.println("user:" + user);
-		User currentUser = UserServiceFactory.getUserService().getCurrentUser();
-		System.out.println("currentUser:" + currentUser);
+	public UserEntity addUser(UserEntity usr) {
+
 		if (usr.getEmployeeDetail().getDepartment() == null)
 			setDefaultDepartment(usr);
 
 		if (usr.getId() == null) {
-			logger.info("Adding New User:" + usr.getFirstName());
-			usr.setCreatedDate(new Date());
-			if (usr.getAuthorizations() == null || usr.getAuthorizations().isEmpty()) {
-				if (usr.getAuthority().contains("admin"))
-					usr.setAuthorizations(Constants.NEW_BIZ_DEFAULT_AUTHS);
-				else
-					usr.setAuthorizations(Constants.NEW_BIZ_USER_DEFAULT_AUTHS);
-			}
-			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
-					EntityUtil.getBusinessRawKey(usr.getBusiness()), Constants.EMP_NO_COUNTER);
-			usr.getEmployeeDetail().setEmpId(sequenceGenService.getNextSequenceNumber());
+			usr = ofy().execute(TxnType.REQUIRED, new Work<UserEntity>() {
+				private UserEntity usr;
+
+				private Work<UserEntity> init(UserEntity usr) {
+					this.usr = usr;
+					return this;
+				}
+
+				public UserEntity run() {
+					logger.info("Adding new user: " + usr.getEmail_id());
+					//Number of users should be calculated value.... 
+//					BusinessEntity businessEntity = usr.getBusiness();
+//					businessEntity.setTotalUser(businessEntity.getTotalUser() + 1);
+//					ofy().save().entity(businessEntity);
+
+					ofy().save().entity(usr);
+					return usr;
+				}
+			}.init(usr));
 		} else {
-			usr.setModifiedDate(new Date());
-			logger.info("Updating User:" + usr.getFirstName());
 			ofy().save().entity(usr).now();
-			return;
+			return usr;
 		}
-
-		ofy().save().entity(usr).now();
-		int count;
-		List<UserEntity> filtereduser = ofy().load().type(UserEntity.class)
-				.ancestor(Key.create(BusinessEntity.class, usr.getBusiness().getId())).list();
-		count = filtereduser.size() + 1;
-
-		BusinessEntity businessEntity = new BusinessEntity();
-		businessEntity = usr.getBusiness();
-		businessEntity.setTotalUser(count);
-		ofy().save().entity(businessEntity).now();
 
 		// Test Code to Send email to registered user
 
@@ -101,7 +89,7 @@ public class UserService {
 		 */
 		Properties props = new Properties();
 		Session session = Session.getDefaultInstance(props, null);
-		String messageBody = "Welcome to Example! Your account has been created. "
+		String messageBody = "Welcome to ProERP! Your account has been created. "
 				+ "You can edit your user profile by clicking the " + "following link:\n\n"
 				+ "http://www.example.com/profile/\n\n" + "Let us know if you have any questions.\n\n"
 				+ "The Example Team\n";
@@ -127,6 +115,7 @@ public class UserService {
 
 		// Email Send Code Ends
 
+		return usr;
 	}
 
 	private void setDefaultDepartment(UserEntity usr) {

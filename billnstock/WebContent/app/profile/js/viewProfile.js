@@ -5,62 +5,68 @@ angular
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
 						$mdUtil, $stateParams, $log, objectFactory,
 						appEndpointSF) {
-					
-					$scope.showSimpleToast = function(msgBean) {
-						$mdToast.show($mdToast.simple().content(msgBean)
-								.position("top").hideDelay(3000));
-					};
-					
-					$scope.printempidsalslip = $stateParams.printempidsalslip;
-					$scope.viewsalslips = $stateParams.viewsalslips;
-					$scope.curuser = appEndpointSF.getLocalUserService().getLoggedinUser();
-	
-					$scope.getuserById = function() {
-						$log.debug("Inside Ctr $scope.getuserById");
-						var UserService = appEndpointSF.getUserService();
-						if (typeof $scope.curuser.id != 'undefined') {
-							UserService.getUserByID($scope.curuser.id).then(
-									function(userList) {
-										$log.debug("Inside Ctr getAllleads");
-										$scope.userL = userList.result;
 
-									});
+					function defaultActionProcessing() {
+						return {
+							saving : false,
+							saveButtonText : "SAVE"
+						};
+					}
+					$scope.actionProcessing = defaultActionProcessing();
+
+					// $scope.selectedUser = $stateParams.selectedUser;
+
+					$scope.curUser = appEndpointSF.getLocalUserService()
+							.getLoggedinUser();
+					$scope.selectedUser = $scope.curUser;
+
+					$scope.condition = function() {
+						if ($scope.user.isGoogleUser == false) {
+							return true;
+						} else {
+							return false;
 						}
 					}
 
-					$scope.userL = [];
+					$scope.getEmpDepartments = function() {
+						$scope.newDept = false;
+
+						var userService = appEndpointSF.getUserService();
+						userService.getEmpDepartments(
+								$scope.selectedUser.business.id).then(
+								function(list) {
+									if (list.items) {
+										$scope.departmentList = list.items;
+										$scope.departmentList = $filter(
+												'proOrderObjectByTextField')(
+												$scope.departmentList, "name");
+									}
+								});
+
+					}
+
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
-							$scope.getuserById();
+							$scope.getEmpDepartments();
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
 							$timeout($scope.waitForServiceLoad, 1000);
 						}
 					}
 					$scope.waitForServiceLoad();
+
 					$scope.updateuser = function() {
+						$scope.actionProcessing.saving = true;
+						$scope.actionProcessing.saveButtonText = "Saving..."
+
+						$scope.selectedUser.modifiedBy = $scope.curUser.email_id;
 						var UserService = appEndpointSF.getUserService();
-						UserService.updateUser($scope.userL).then(function(msgBean) {
-							$scope.showUpdateToast();
-						});
+						UserService
+								.addUser($scope.selectedUser)
+								.then(
+										function(msgBean) {
+											$scope.showUpdateToast();
+											$scope.actionProcessing = defaultActionProcessing();
+										});
 					}
-					
-			
-					$scope.toggleRight = buildToggler('right');
-
-					function buildToggler(navID) {
-						var debounceFn = $mdUtil.debounce(function() {
-							$mdSidenav(navID).toggle().then(function() {
-								$log.debug("toggle " + navID + " is done");
-							});
-						}, 200);
-						return debounceFn;
-					}
-
-					$scope.close = function() {
-						$mdSidenav('right').close().then(function() {
-							$log.debug("close RIGHT is done");
-						});
-					};
-
 				});
