@@ -44,12 +44,12 @@
 	<md-button class="md-icon-button md-accent"
 		ng-click="printDiv('accountGroupDiv')" aria-label="Favorite">
 	<md-icon md-svg-icon="img/icons/print.svg"></md-icon> </md-button>
-	
-		<md-button class="md-icon-button" id="downloadExcel"
-			ng-click="downloadData(groupId)"> <ng-md-icon
-			icon="file_download" style="fill: md-default" size="24">
-		<md-tooltip>Download Account </md-tooltip></ng-md-icon></md-button>
-		
+
+	<md-button class="md-icon-button" id="downloadExcel"
+		ng-click="downloadData(groupId)"> <ng-md-icon
+		icon="file_download" style="fill: md-default" size="24">
+	<md-tooltip>Download Account </md-tooltip></ng-md-icon></md-button>
+
 </section>
 <div id="accountGroupDiv"
 	ng-show="!loading && !wait && wait!=undefined && accountList.length > 0">

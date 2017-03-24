@@ -32,7 +32,7 @@
 					class="md-icon-button md-accent" ui-sref="invoice.settings"
 					aria-label="Favorite"> <md-icon
 					md-svg-icon="img/icons/ic_lock_outline_black_24px.svg"></md-icon> </md-button> -->
-				<md-button layout-align="center end"
+				<md-button ng-show="hasUserAuthority(curUser, 'Invoice.ModuleAdmin')" layout-align="center end"
 					class="md-icon-button md-accent" ui-sref="invoice.settings"
 					aria-label="Favorite"> <md-icon
 					md-svg-icon="img/icons/ic_settings_black_24px.svg">

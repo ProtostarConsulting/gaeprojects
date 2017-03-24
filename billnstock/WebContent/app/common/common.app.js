@@ -466,6 +466,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/accounting",
 		templateUrl : '/app/accounting/accounting_module.html',
 		controller : 'accountModuleCtr'
+	}).state('accounting.settings', {
+		url : "/settings",
+		templateUrl : '/app/accounting/accounting_settings.html',
+		controller : 'accountingSettingsCtr',
 	}).state('accounting.account_add', {
 		url : "/account_add",
 		templateUrl : '/app/accounting/account_add.html',

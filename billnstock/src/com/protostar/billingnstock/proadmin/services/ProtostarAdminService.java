@@ -175,41 +175,50 @@ public class ProtostarAdminService {
 			return;
 		}
 
-		BusinessPlanType accounttype = new BusinessPlanType();
-		accounttype.setPlanName("Free");
-		accounttype.setDescription("Free for upto 20 users and 2 GB of data");
-		accounttype.setPlanType(PlanType.FREE);
-		accounttype.setMaxuser(20);
-		accounttype.setBaseCost(0f);
-		accounttype.setPaymentDesc("Free Plan");
-		ofy().save().entity(accounttype).now();
+		BusinessPlanType freePlan = new BusinessPlanType();
+		freePlan.setPlanName("Free");
+		freePlan.setDescription("Free life time, with upto 1000 Records.");
+		freePlan.setPlanType(PlanType.FREE);
+		freePlan.setMaxuser(20);
+		freePlan.setBaseCost(0f);
+		freePlan.setPaymentDesc("Free Plan");
+		ofy().save().entity(freePlan).now();
 
-		BusinessPlanType accounttype1 = new BusinessPlanType();
-		accounttype1.setPlanName("Silver");
-		accounttype1.setDescription("Upto 200 users and 10 GB of data");
-		accounttype1.setPlanType(PlanType.STANDARD);
-		accounttype1.setMaxuser(100);
-		accounttype1.setBaseCost(4000f);
-		accounttype1.setPaymentDesc("Rs. 4000 PM + Tax");
-		ofy().save().entity(accounttype1).now();
+		BusinessPlanType basicPlan = new BusinessPlanType();
+		basicPlan.setPlanName("Basic");
+		basicPlan.setDescription("Rs. 12,000 Per Year + tax, upto 1 Lakh Records.");
+		basicPlan.setPlanType(PlanType.STANDARD);
+		basicPlan.setMaxuser(100);
+		basicPlan.setBaseCost(12000f);
+		basicPlan.setPaymentDesc("Rs. 12000 Per Year + Tax");
+		ofy().save().entity(basicPlan).now();
 
-		BusinessPlanType accounttype2 = new BusinessPlanType();
-		accounttype2.setPlanName("Gold");
-		accounttype2.setDescription("Upto 500 users and 50 GB of data");
-		accounttype2.setPlanType(PlanType.STANDARD);
-		accounttype2.setMaxuser(500);
-		accounttype2.setBaseCost(8000f);
-		accounttype2.setPaymentDesc("Rs. 8000 PM + Tax");
-		ofy().save().entity(accounttype2).now();
+		BusinessPlanType silverPlan = new BusinessPlanType();
+		silverPlan.setPlanName("Silver");
+		silverPlan.setDescription("24,000 Per Year + tax, upto 10 Lakh Records.");
+		silverPlan.setPlanType(PlanType.STANDARD);
+		silverPlan.setMaxuser(100);
+		silverPlan.setBaseCost(24000f);
+		silverPlan.setPaymentDesc("Rs. 24000 Per Year + Tax");
+		ofy().save().entity(silverPlan).now();
 
-		BusinessPlanType accounttype3 = new BusinessPlanType();
-		accounttype3.setPlanName("Platinum");
-		accounttype3.setDescription("Upto 1000 users and 100 GB of data");
-		accounttype3.setPlanType(PlanType.STANDARD);
-		accounttype3.setMaxuser(1000);
-		accounttype3.setBaseCost(25000f);
-		accounttype3.setPaymentDesc("Rs. 25,000 PM + Tax");
-		ofy().save().entity(accounttype3).now();
+		BusinessPlanType goldPlan = new BusinessPlanType();
+		goldPlan.setPlanName("Gold");
+		goldPlan.setDescription("Rs. 36,000 Per Year + tax, upto 100 Lakh Records.");
+		goldPlan.setPlanType(PlanType.STANDARD);
+		goldPlan.setMaxuser(500);
+		goldPlan.setBaseCost(36000f);
+		goldPlan.setPaymentDesc("Rs. 36000 Per Year + Tax");
+		ofy().save().entity(goldPlan).now();
+
+		BusinessPlanType platinumPlan = new BusinessPlanType();
+		platinumPlan.setPlanName("Platinum");
+		platinumPlan.setDescription("1,00,000 Per Year + tax, umlimited Records.");
+		platinumPlan.setPlanType(PlanType.STANDARD);
+		platinumPlan.setMaxuser(10000);
+		platinumPlan.setBaseCost(100000f);
+		platinumPlan.setPaymentDesc("Rs. 100000 Per Year + Tax");
+		ofy().save().entity(platinumPlan).now();
 
 	}
 
@@ -226,8 +235,8 @@ public class ProtostarAdminService {
 	@ApiMethod(name = "createAccountingGroups", path = "createAccountingGroups")
 	public void createAccountingGroups(@Named("id") Long bizId) {
 
-		List<AccountGroupEntity> acList = ofy().load().type(AccountGroupEntity.class).ancestor(Key.create(BusinessEntity.class, bizId))
-				.list();
+		List<AccountGroupEntity> acList = ofy().load().type(AccountGroupEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, bizId)).list();
 
 		if (acList != null && acList.size() > 0) {
 			return;

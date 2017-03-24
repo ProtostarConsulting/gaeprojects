@@ -1745,6 +1745,45 @@ function googleEndpointSF($q) {
 
 		return deferred.promise;
 	}
+	
+	AccountService.addCurrentFinancialYear = function(settings) {
+		var deferred = $q.defer();
+		gapi.client.accountService.addCurrentFinancialYear(settings)
+				.execute(function(resp) {
+					deferred.resolve(resp);
+				});
+		return deferred.promise;
+	}
+
+	AccountService.getCurrentFinancialYear = function(id) {
+		var deferred = $q.defer();
+		gapi.client.accountService.getCurrentFinancialYear({
+			"id" : id
+		}).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}
+	
+	AccountService.addAccountingSettingsEntity = function(settings) {
+		var deferred = $q.defer();
+		gapi.client.accountService.addAccountingSettingsEntity(settings)
+				.execute(function(resp) {
+					deferred.resolve(resp);
+				});
+		return deferred.promise;
+	}
+
+	AccountService.getAccountingSettingsEntity = function(id) {
+		var deferred = $q.defer();
+		gapi.client.accountService.getAccountingSettingsEntity({
+			"id" : id
+		}).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}
+
 	AccountService.updateAccount = function(updateAccount) {
 		var deferred = $q.defer();
 		gapi.client.accountService.updateAccount(updateAccount).execute(
@@ -1808,30 +1847,29 @@ function googleEndpointSF($q) {
 	}
 	// ////
 
-	AccountService.getAccountListByGroupId = function(busId,groupId) {
+	AccountService.getAccountListByGroupId = function(busId, groupId) {
 		var deferred = $q.defer();
 		gapi.client.accountService.getAccountListByGroupId({
-			"busId":busId,
+			"busId" : busId,
 			"id" : groupId
 		}).execute(function(resp) {
 			deferred.resolve(resp.items);
 		});
 		return deferred.promise;
 	}
-	
-	
-	AccountService.getGroupViewtByGroupId = function(busId,groupId,fromDate,toDate) {
+
+	AccountService.getGroupViewtByGroupId = function(busId, groupId, fromDate,
+			toDate) {
 		var deferred = $q.defer();
 		gapi.client.accountService.getGroupViewtByGroupId({
-			"busId":busId,
+			"busId" : busId,
 			"groupId" : groupId
-			
+
 		}).execute(function(resp) {
 			deferred.resolve(resp.items);
 		});
 		return deferred.promise;
 	}
-	
 
 	AccountService.getAccountBalance = function(id) {
 		var deferred = $q.defer();
@@ -1843,16 +1881,12 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
-	/*AccountService.getAccountById = function(accountId) {
-		var deferred = $q.defer();
-		gapi.client.accountService.getAccountById({
-			"id" : accountId
-		}).execute(function(resp) {
-			deferred.resolve(resp);
-		});
-		return deferred.promise;
-	}*/////////////////
-
+	/*
+	 * AccountService.getAccountById = function(accountId) { var deferred =
+	 * $q.defer(); gapi.client.accountService.getAccountById({ "id" : accountId
+	 * }).execute(function(resp) { deferred.resolve(resp); }); return
+	 * deferred.promise; }
+	 */// //////////////
 	AccountService.deleteaccByid = function(id) {
 		var deferred = $q.defer();
 		gapi.client.accountService.deleteaccByid({
@@ -1962,15 +1996,13 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
-	/*AccountEntryService.getAccountEntryList = function() {
-		var deferred = $q.defer();
-		gapi.client.accountEntryService.getAccountEntryList().execute(
-				function(resp) {
-					deferred.resolve(resp.items);
-				});
-		return deferred.promise;
-	}*/////////////
-
+	/*
+	 * AccountEntryService.getAccountEntryList = function() { var deferred =
+	 * $q.defer();
+	 * gapi.client.accountEntryService.getAccountEntryList().execute(
+	 * function(resp) { deferred.resolve(resp.items); }); return
+	 * deferred.promise; }
+	 */// //////////
 	AccountEntryService.getAccountEntryByAccountId = function(accId) {// },bid)
 		// {
 		var deferred = $q.defer();
@@ -1981,31 +2013,22 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	
-	
-	AccountEntryService.getAccountViewEntryByAccountId = function(actualFromDate,actualtoDate,id,bid) {// },bid)
+
+	AccountEntryService.getAccountViewEntryByAccountId = function(
+			actualFromDate, actualtoDate, id, bid) {// },bid)
 		// {
 		var deferred = $q.defer();
 		gapi.client.accountEntryService.getAccountViewEntryByAccountId({
-			
-			"actualFromDate":actualFromDate,
-			"actualtoDate":actualtoDate,
+
+			"actualFromDate" : actualFromDate,
+			"actualtoDate" : actualtoDate,
 			"id" : id,
-			"bid":bid
+			"bid" : bid
 		}).execute(function(resp) {
 			deferred.resolve(resp);
 		});
 		return deferred.promise;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 	/* =============================================================================================================================== */
 

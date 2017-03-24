@@ -54,6 +54,7 @@ public class Constants {
 	// Misc
 	public static final String DEFAULT_EMP_DEPT = "Default";
 	public static final String DEFAULT_STOCK_WAREHOUSE = "Default";
+	public static final long CURRENT_FINANCIAL_YEAR_ID = 1;
 
 	public static final int DOCUMENT_DEFAULT_MAX_SIZE = 5000000;
 	// MAX Document size is 5 MB

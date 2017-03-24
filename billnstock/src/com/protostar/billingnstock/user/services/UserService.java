@@ -4,6 +4,7 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
 
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -26,6 +27,7 @@ import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.TxnType;
 import com.googlecode.objectify.Work;
+import com.protostar.billingnstock.account.entities.CurrentFinancialYear;
 import com.protostar.billingnstock.hr.entities.HREntityUtil;
 import com.protostar.billingnstock.hr.entities.HRSettingsEntity;
 import com.protostar.billingnstock.hr.services.HrService;
@@ -292,6 +294,21 @@ public class UserService {
 			defaultWH.setWarehouseName(Constants.DEFAULT_STOCK_WAREHOUSE);
 			warehouseService.addWarehouse(defaultWH);
 
+			Calendar fromCalendar = Calendar.getInstance();
+			Date today = new Date();
+			fromCalendar.setTime(today);
+			fromCalendar.set(Calendar.MONTH, Calendar.APRIL);
+			fromCalendar.set(Calendar.DAY_OF_MONTH, 0);
+
+			Calendar toCalendar = Calendar.getInstance();
+			toCalendar.setTime(today);
+			toCalendar.set(Calendar.MONTH, Calendar.MARCH);
+			toCalendar.set(Calendar.DAY_OF_MONTH, 30);
+
+			CurrentFinancialYear currentFinancialYear = new CurrentFinancialYear();
+			currentFinancialYear.setFromDate(fromCalendar.getTime());
+			currentFinancialYear.setToDate(toCalendar.getTime());
+
 			ProtostarAdminService adminService = new ProtostarAdminService();
 			adminService.createAccountingGroups(business.getId());
 
@@ -391,5 +408,4 @@ public class UserService {
 		return settingsEntity;
 
 	}
-
 }

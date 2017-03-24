@@ -12,7 +12,6 @@ import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 
 @Entity
 public class GeneralEntryEntity extends BaseEntity {
-
 	private Date date;
 	@Index
 	private Ref<AccountEntity> debitAccount;
@@ -20,21 +19,17 @@ public class GeneralEntryEntity extends BaseEntity {
 	private Ref<AccountEntity> creditAccount;
 	private String narration;
 	private Double amount;
-	
+
 	@Override
 	public void beforeSave() {
 		super.beforeSave();
-		
+
 		if (getId() == null) {
 			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
-					EntityUtil.getBusinessRawKey(getBusiness()),
-					Constants.GE_NO_COUNTER);
+					EntityUtil.getBusinessRawKey(getBusiness()), Constants.GE_NO_COUNTER);
 			setItemNumber(sequenceGenService.getNextSequenceNumber());
 		}
 	}
-
-	@Index
-	private Ref<AccountingFYEntity> fyEntity;
 
 	public Date getDate() {
 		return date;
@@ -74,14 +69,6 @@ public class GeneralEntryEntity extends BaseEntity {
 
 	public void setCreditAccount(AccountEntity creditAccount) {
 		this.creditAccount = Ref.create(creditAccount);
-	}
-
-	public AccountingFYEntity getFyEntity() {
-		return fyEntity == null ? null : fyEntity.get();
-	}
-
-	public void setFyEntity(AccountingFYEntity fyEntity) {
-		this.fyEntity = Ref.create(fyEntity);
 	}
 
 }

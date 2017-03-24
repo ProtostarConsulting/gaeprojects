@@ -1,0 +1,54 @@
+<md-content layout-padding>
+<section layout="row" layout-xs="column">
+	<md-subheader class="md-primary">
+	<h4 class="md-title">Accounting Module Settings</h4>
+	</md-subheader>
+	<span flex></span>
+</section>
+<form name="settingForm" layout="column">
+	<h4 class="md-subhead">Setup Your Financial Year</h4>
+	<md-content layout="row" layout-xs="column"> <md-input-container
+		flex> <label>Financial Year Start Date</label> <md-datepicker
+		id="fromDate" name="fromDate"
+		ng-model="currentFY.fromDate"
+		md-placeholder="Start Date" ng-required="true"></md-datepicker>
+	</md-input-container> <md-input-container flex> <label>Financial Year End Date</label>
+	<md-datepicker id="toDate" name="toDate"
+		ng-model="currentFY.toDate"
+		md-placeholder="End Date" ng-required="true"
+		md-min-date="settingsObj.currentFY.fromDate"></md-datepicker> </md-input-container> </md-content>
+	<section layout="row">
+		<md-button class="md-raised md-primary" id="save1"
+			ng-click="addCurrentFinancialYear()">Save Changes </md-button>
+	</section>
+	<!-- <h4 class="md-subhead">Note to Customer</h4> -->
+	<hr>
+	<md-input-container flex="80" layout="row"> <label>Note
+		to Customer</label> <textarea ng-model="settingsObj.noteToCustomer" rows="2"
+		cols="1"></textarea> </md-input-container>
+	<hr>
+	<md-input-container flex="80" layout="row"> <label>Payment
+		Notes</label> <textarea ng-model="settingsObj.paymentNotes" rows="3" cols="1"></textarea>
+	</md-input-container>
+	<hr>
+	<md-input-container flex="80" layout="row"> <label>Invoice
+		Terms and Conditions</label> <textarea
+		ng-model="settingsObj.termsAndConditions" rows="3" cols="1"></textarea>
+	</md-input-container>
+
+	<hr>
+	<md-checkbox ng-model="settingsObj.emailNotification"
+		ng-true-value="true" ng-false-value="false" aria-label="isGoogleUser">
+	Invoice Email Notification</md-checkbox>
+	<md-input-container flex="80" layout="row"> <label>Email
+		Notification List(enter comma separated email ids)</label> <textarea
+		ng-model="settingsObj.emailNotificationDL" rows="2" cols="1"></textarea>
+	</md-input-container>
+</form>
+
+<section layout="row" layout-sm="column">
+	<md-button class="md-raised md-primary" id="save2"
+		ng-click="addAccountingSettingsEntity()">Save Changes </md-button>
+</section>
+</md-content>
+

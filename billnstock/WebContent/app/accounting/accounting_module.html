@@ -1,4 +1,5 @@
- <md-content layout="column" layout-align="top stretch" layout-fill>
+
+<md-content layout="column" layout-align="top stretch" layout-fill>
 <div layout="column">
 	<style>
 .animate-show {
@@ -40,22 +41,24 @@
 				class="md-primary">PV List</md-button> <md-button hide-xs
 				ui-sref="accounting.voucherReceipt" class="md-primary">Add
 			RV</md-button> <md-button hide-xs ui-sref="accounting.voucherRecieptList"
-				class="md-primary">RV List</md-button>
-			
-				 </md-content>
+				class="md-primary">RV List</md-button> </md-content>
 			<span flex></span>
+			<md-button ng-show="hasUserAuthority(curUser, 'Accounting.ModuleAdmin')" layout-align="center end" class="md-icon-button md-accent"
+				ui-sref="accounting.settings" aria-label="Favorite"> <md-icon
+				md-svg-icon="img/icons/ic_settings_black_24px.svg"> <md-tooltip>Accounting
+			Settings</md-tooltip></md-icon> </md-button>
 			<md-button class="md-icon-button" aria-label="More"
 				ng-click="toggleRight()"> <md-icon
 				md-svg-icon="img/icons/more_vert.svg"></md-icon> </md-button>
 		</section>
 	</div>
-	<div>		<md-button hide-xs
-				ui-sref="accounting.voucherPayment" class="md-primary">Add
-			PayV</md-button> 
-			<md-button hide-xs ui-sref="accounting.voucherPaymentList"
-				class="md-primary">PayV List</md-button> 
-	
-	
+	<div>
+		<md-button hide-xs ui-sref="accounting.voucherPayment"
+			class="md-primary">Add PayV</md-button>
+		<md-button hide-xs ui-sref="accounting.voucherPaymentList"
+			class="md-primary">PayV List</md-button>
+
+
 	</div>
 
 	<md-sidenav class="md-sidenav-right md-whiteframe-z2"
@@ -88,10 +91,11 @@
 		class="md-primary">Receipt Voucher List</md-button> <md-button hide-xs
 		ui-sref="accounting.accountChart" ng-click="close()"
 		class="md-primary">Account Chart</md-button> <md-button hide-xs
-		ui-sref="accounting.accountPAndL" ng-click="close()" class="md-primary">P
-	    & L Statement</md-button> <md-button hide-xs ui-sref="accounting.balanceSheet"
-		ng-click="close()" class="md-primary">Balance Sheet</md-button> <md-button
-		hide-xs ui-sref="accounting.trialBalance" ng-click="close()"
+		ui-sref="accounting.accountPAndL" ng-click="close()"
+		class="md-primary">P & L Statement</md-button> <md-button hide-xs
+		ui-sref="accounting.balanceSheet" ng-click="close()"
+		class="md-primary">Balance Sheet</md-button> <md-button hide-xs
+		ui-sref="accounting.trialBalance" ng-click="close()"
 		class="md-primary">Trial Balance</md-button> <!-- 			Sidenav Buttons -->
 	</md-sidenav>
 </div>
