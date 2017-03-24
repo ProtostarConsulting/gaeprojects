@@ -659,6 +659,9 @@ public class StockManagementService extends BaseService {
 							+ " Finalized entity can't be altered.");
 		}
 		ofy().save().entity(requisitionEntity).now();
+		if (requisitionEntity.getStatus() != DocumentStatus.DRAFT) {
+			new EmailHandler().sendRequisitionEmail(requisitionEntity);
+		}
 		return requisitionEntity;
 
 	}
@@ -778,6 +781,17 @@ public class StockManagementService extends BaseService {
 					"RequisitionEntity with not found with id:" + id);
 		else
 			return now;
+	}
+
+	@ApiMethod(name = "getRequisitionByItemNumber", path = "getRequisitionByItemNumber")
+	public RequisitionEntity getRequisitionByItemNumber(
+			@Named("itemNumber") int itemNumber) {
+		Object entityByItemNumber = super.getEntityByItemNumber(
+				RequisitionEntity.class, itemNumber);
+		if (entityByItemNumber != null)
+			return (RequisitionEntity) entityByItemNumber;
+		else
+			return null;
 	}
 
 	@ApiMethod(name = "getPOByID", path = "getPOByID")

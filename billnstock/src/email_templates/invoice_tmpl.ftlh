@@ -1,6 +1,6 @@
 <html>
   <p>Dear ${customerName},
-  <p>An invoice with the following details is submitted/updated on ${modifiedDate}.</p>
+  <p>An invoice with the following details is submitted/updated on ${modifiedDate}.Also find the enclosed document.</p>
   <p>Document Created By: ${createdBy}</p>
   <p>Status: ${documentStatus}</p>
   <p>${docStatusLable}: ${invoiceModuleApprover}</p>

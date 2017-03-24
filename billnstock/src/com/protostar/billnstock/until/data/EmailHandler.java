@@ -15,8 +15,10 @@ import com.protostar.billingnstock.invoice.entities.QuotationEntity;
 import com.protostar.billingnstock.invoice.services.InvoiceService;
 import com.protostar.billingnstock.purchase.entities.EmailPOTask;
 import com.protostar.billingnstock.purchase.entities.PurchaseOrderEntity;
+import com.protostar.billingnstock.purchase.entities.RequisitionEntity;
 import com.protostar.billingnstock.stock.entities.EmailStockReceiptTask;
 import com.protostar.billingnstock.stock.entities.EmailStockShipmentTask;
+import com.protostar.billingnstock.stock.entities.RequisitionEmailTask;
 import com.protostar.billingnstock.stock.entities.StockItemsReceiptEntity;
 import com.protostar.billingnstock.stock.entities.StockItemsShipmentEntity;
 import com.protostar.billingnstock.stock.entities.StockSettingsEntity;
@@ -53,7 +55,7 @@ public class EmailHandler {
 		}
 
 		String emailSubject = "Purchase Order No: "
-				+ documentEntity.getItemNumber() + " Submited/Updated";
+				+ documentEntity.getItemNumber() + " Submitted/Updated";
 		String messageBody = new EmailHtmlTemplateService()
 				.purchaseOrderFinalizedEmail(documentEntity);
 
@@ -82,7 +84,7 @@ public class EmailHandler {
 			return;
 		}
 		String emailSubject = "Stock Shipment No: "
-				+ documentEntity.getItemNumber() + " Submited/Updated";
+				+ documentEntity.getItemNumber() + " Submitted/Updated";
 
 		String messageBody = new EmailHtmlTemplateService()
 				.stockShipmentFinalizedEmail(documentEntity);
@@ -112,7 +114,7 @@ public class EmailHandler {
 			return;
 		}
 		String emailSubject = "Stock Receipt No:"
-				+ documentEntity.getItemNumber() + " Submited/Updated";
+				+ documentEntity.getItemNumber() + " Submitted/Updated";
 		String messageBody = new EmailHtmlTemplateService()
 				.stockReceiptFinalizedEmail(documentEntity);
 
@@ -121,6 +123,38 @@ public class EmailHandler {
 				sendgrid_API_KEY, "ganesh.lawande@protostar.co.in",
 				stockSettings.getEmailNotificationDL(), emailSubject,
 				messageBody, documentEntity.getItemNumber())));
+	}
+
+	public void sendRequisitionEmail(RequisitionEntity documentEntity) {
+
+		StockSettingsEntity stockSettings = new StockManagementService()
+				.getStockSettingsByBiz(documentEntity.getBusiness().getId());
+
+		if (stockSettings == null || !stockSettings.isEmailNotification()
+				|| stockSettings.getEmailNotificationDL().isEmpty()) {
+			return;
+		}
+		UserService userService = new UserService();
+		BusinessSettingsEntity businessSettingsEntity = userService
+				.getBusinessSettingsEntity(documentEntity.getBusiness().getId());
+		String sendgrid_API_KEY = businessSettingsEntity.getSendGridAPIKey();
+		if (sendgrid_API_KEY == null || sendgrid_API_KEY.isEmpty()) {
+			return;
+		}
+		
+		String emailSubject = "Requisition No:"
+				+ documentEntity.getItemNumber() + " Submitted/Updated";
+		
+		String messageBody = new EmailHtmlTemplateService()
+				.requisitionEmail(documentEntity);
+
+		Queue queue = QueueFactory.getDefaultQueue();
+
+		queue.add(TaskOptions.Builder.withPayload(new RequisitionEmailTask(
+				sendgrid_API_KEY, "ganesh.lawande@protostar.co.in",
+				stockSettings.getEmailNotificationDL(), emailSubject,
+				messageBody, documentEntity.getItemNumber())));
+
 	}
 
 	public void sendTaskAssignedEmail(TaskEntity documentEntity)
@@ -179,7 +213,7 @@ public class EmailHandler {
 			return;
 		}
 		String emailSubject = "Invoice No: " + documentEntity.getItemNumber()
-				+ " Submited/Updated";
+				+ " Submitted/Updated";
 		String messageBody = new EmailHtmlTemplateService()
 				.invoiceFinalizedEmail(documentEntity);
 
@@ -208,7 +242,7 @@ public class EmailHandler {
 			return;
 		}
 		String emailSubject = "Quotation No: " + documentEntity.getItemNumber()
-				+ " Submited/Updated";
+				+ " Submitted/Updated";
 		String messageBody = new EmailHtmlTemplateService()
 				.quotationEmail(documentEntity);
 		Queue queue = QueueFactory.getDefaultQueue();

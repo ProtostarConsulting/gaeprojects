@@ -12,6 +12,7 @@ import com.protostar.billingnstock.cust.entities.Customer;
 import com.protostar.billingnstock.invoice.entities.InvoiceEntity;
 import com.protostar.billingnstock.invoice.entities.QuotationEntity;
 import com.protostar.billingnstock.purchase.entities.PurchaseOrderEntity;
+import com.protostar.billingnstock.purchase.entities.RequisitionEntity;
 import com.protostar.billingnstock.stock.entities.StockItemsReceiptEntity;
 import com.protostar.billingnstock.stock.entities.StockItemsShipmentEntity;
 import com.protostar.billingnstock.stock.entities.StockItemsShipmentEntity.ShipmentType;
@@ -538,6 +539,92 @@ public class EmailHtmlTemplateService {
 
 			Template temp = getConfiguration().getTemplate(
 					"email_templates/quotation_tmpl.ftlh");
+
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
+					500);
+			Writer out = new PrintWriter(byteArrayOutputStream);
+			temp.process(root, out);
+			// return escapeHtml(byteArrayOutputStream.toString());
+
+			return byteArrayOutputStream.toString();
+
+		} catch (TemplateNotFoundException e) {
+			e.printStackTrace();
+		} catch (MalformedTemplateNameException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (TemplateException e) {
+			e.printStackTrace();
+		}
+
+		return "";
+	}
+
+	public String requisitionEmail(RequisitionEntity documentEntity) {
+
+		try {
+
+			Map<String, Object> root = new HashMap<String, Object>();
+
+			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
+			String modifiedDate = sdfDate.format(documentEntity
+					.getModifiedDate());
+
+			String approverName = "NA";
+			if (documentEntity.getApprovedBy() != null)
+				approverName = documentEntity.getApprovedBy().getFirstName()
+						+ " " + documentEntity.getApprovedBy().getLastName();
+
+			String createdBy = documentEntity.getCreatedBy().getFirstName()
+					+ " " + documentEntity.getCreatedBy().getLastName();
+
+			root.put("createdBy", createdBy);
+			root.put("stockModuleApprover", approverName);
+			root.put("modifiedDate", modifiedDate);
+
+			String expectedDateStr = "";
+			if (documentEntity.getExpectedDate() != null) {
+				expectedDateStr = sdfDate.format(documentEntity
+						.getExpectedDate());
+			}
+
+			root.put("expectedDateStr", expectedDateStr);
+
+			String onBehalfOf = "";
+			if (documentEntity.getOnBehalfOf() != null
+					&& !documentEntity.getOnBehalfOf().trim().isEmpty()) {
+				onBehalfOf = documentEntity.getOnBehalfOf();
+			}
+			root.put("onBehalfOf", onBehalfOf);
+
+			String documentStatus = "";
+
+			String docStatusLable = "";
+
+			DocumentStatus status = documentEntity.getStatus();
+
+			if (status == DocumentStatus.FINALIZED) {
+				documentStatus = "Approved";
+				docStatusLable = "Approved By";
+			}
+			if (status == DocumentStatus.SUBMITTED) {
+				documentStatus = "Submitted";
+				docStatusLable = "Approved By";
+			}
+			if (status == DocumentStatus.REJECTED) {
+				documentStatus = "Rejected";
+				docStatusLable = "Rejected By";
+			}
+			root.put("documentStatus", documentStatus);
+			root.put("docStatusLable", docStatusLable);
+
+			addFooterParams(documentEntity, root);
+
+			Template temp = getConfiguration().getTemplate(
+					"email_templates/requisition_tmpl.ftlh");
 
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
 					500);

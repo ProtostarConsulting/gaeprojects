@@ -2,6 +2,7 @@ package com.protostar.billingnstock.stock.services;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.Writer;
@@ -35,15 +36,16 @@ public class PrintPdfRequisition extends HttpServlet {
 
 	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 
 		Long bid = Long.parseLong(request.getParameter("bid"));
 		Long id = Long.parseLong(request.getParameter("id"));
 
 		StockManagementService stockMgmtService = new StockManagementService();
 
-		RequisitionEntity requisitionEntity = stockMgmtService.getRequisitionByID(bid, id);
+		RequisitionEntity requisitionEntity = stockMgmtService
+				.getRequisitionByID(bid, id);
 		response.setContentType("application/PDF");
 
 		ServletOutputStream outputStream = response.getOutputStream();
@@ -51,13 +53,16 @@ public class PrintPdfRequisition extends HttpServlet {
 		String DATE_FORMAT = "dd/MMM/yyyy";
 		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 
-		String fileNameAppend = "Requisition" + requisitionEntity.getItemNumber() + "_" + sdf.format(date);
-		response.setHeader("Content-disposition", "inline; filename='ProERP_" + fileNameAppend + ".pdf'");
+		String fileNameAppend = "Requisition"
+				+ requisitionEntity.getItemNumber() + "_" + sdf.format(date);
+		response.setHeader("Content-disposition", "inline; filename='ProERP_"
+				+ fileNameAppend + ".pdf'");
 
 		this.generatePdf(requisitionEntity, outputStream);
 	}
 
-	private void generatePdf(RequisitionEntity requisitionEntity, ServletOutputStream outputStream) {
+	public void generatePdf(RequisitionEntity requisitionEntity,
+			OutputStream outputStream) {
 
 		try {
 			Document document = new Document();
@@ -67,7 +72,8 @@ public class PrintPdfRequisition extends HttpServlet {
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 
 			Map<String, Object> root = new HashMap<String, Object>();
-			PDFHtmlTemplateService.addDocumentHeaderLogo(requisitionEntity, document, root);
+			PDFHtmlTemplateService.addDocumentHeaderLogo(requisitionEntity,
+					document, root);
 
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
 
@@ -82,29 +88,37 @@ public class PrintPdfRequisition extends HttpServlet {
 			root.put("modifiedDateStr", modifiedDateStr);
 
 			UserEntity createdBy = requisitionEntity.getCreatedBy();
-			root.put("createdBy", createdBy == null ? "" : createdBy.getFirstName() + " " + createdBy.getLastName());
+			root.put("createdBy",
+					createdBy == null ? "" : createdBy.getFirstName() + " "
+							+ createdBy.getLastName());
 
 			UserEntity approvedBy = requisitionEntity.getApprovedBy();
 			root.put("approvedBy",
-					approvedBy == null ? "" : approvedBy.getFirstName() + " " + approvedBy.getLastName());
+					approvedBy == null ? "" : approvedBy.getFirstName() + " "
+							+ approvedBy.getLastName());
 
-			if (requisitionEntity.getOnBehalfOf() != null && !requisitionEntity.getOnBehalfOf().trim().isEmpty()) {
+			if (requisitionEntity.getOnBehalfOf() != null
+					&& !requisitionEntity.getOnBehalfOf().trim().isEmpty()) {
 				root.put("onBehalfOf", requisitionEntity.getOnBehalfOf());
 			}
 
-			if (requisitionEntity.getNote() != null && !requisitionEntity.getNote().trim().isEmpty()) {
+			if (requisitionEntity.getNote() != null
+					&& !requisitionEntity.getNote().trim().isEmpty()) {
 				root.put("docNotes", requisitionEntity.getNote());
 			}
 
-			List<StockLineItem> serviceLineItemListForPO = requisitionEntity.getServiceLineItemList();
+			List<StockLineItem> serviceLineItemListForPO = requisitionEntity
+					.getServiceLineItemList();
 
-			if (serviceLineItemListForPO != null && serviceLineItemListForPO.size() > 0) {
+			if (serviceLineItemListForPO != null
+					&& serviceLineItemListForPO.size() > 0) {
 				root.put("serviceItemList", serviceLineItemListForPO);
 			}
 			Template temp = PDFHtmlTemplateService.getConfiguration()
 					.getTemplate("pdf_templates/requisition_tmpl.ftlh");
 
-			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(5000);
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
+					5000);
 			Writer out = new PrintWriter(byteArrayOutputStream);
 			temp.process(root, out);
 			// return escapeHtml(byteArrayOutputStream.toString());
