@@ -2249,6 +2249,28 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
+
+	StockService.getRequisitionByID = function(busId, id) {
+		var deferred = $q.defer();
+		gapi.client.stockService.getRequisitionByID({
+			'busId' : busId,
+			"id" : id
+		}).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}
+
+	StockService.getRequisitionByItemNumber = function(itemNumber) {
+		var deferred = $q.defer();
+		gapi.client.stockService.getRequisitionByItemNumber({
+			"itemNumber" : itemNumber
+		}).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}
+
 	StockService.addBudget = function(budgetEntity) {
 
 		var deferred = $q.defer();
