@@ -67,10 +67,11 @@ public class UserService {
 
 				public UserEntity run() {
 					logger.info("Adding new user: " + usr.getEmail_id());
-					//Number of users should be calculated value.... 
-//					BusinessEntity businessEntity = usr.getBusiness();
-//					businessEntity.setTotalUser(businessEntity.getTotalUser() + 1);
-//					ofy().save().entity(businessEntity);
+					// Number of users should be calculated value....
+					// BusinessEntity businessEntity = usr.getBusiness();
+					// businessEntity.setTotalUser(businessEntity.getTotalUser()
+					// + 1);
+					// ofy().save().entity(businessEntity);
 
 					ofy().save().entity(usr);
 					return usr;
@@ -234,7 +235,8 @@ public class UserService {
 	@ApiMethod(name = "addBusiness")
 	public BusinessEntity addBusiness(BusinessEntity business) {
 
-		return ofy().execute(TxnType.REQUIRED, new Work<BusinessEntity>() {
+		boolean isFreshBusiness = business.getId() == null;
+		business = ofy().execute(TxnType.REQUIRED, new Work<BusinessEntity>() {
 
 			private BusinessEntity business;
 
@@ -247,8 +249,7 @@ public class UserService {
 				Date date = new Date();
 				String DATE_FORMAT = "dd/MM/yyyy";
 				SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-				boolean isFreshBusiness = business.getId() == null;
-				if (isFreshBusiness) {
+				if (business.getId() == null) {
 					// Seth Basic Auths
 					if (business.getAuthorizations() == null || business.getAuthorizations().isEmpty())
 						business.setAuthorizations(Constants.NEW_BIZ_DEFAULT_AUTHS);
@@ -264,38 +265,39 @@ public class UserService {
 
 				ofy().save().entity(business).now();
 
-				if (isFreshBusiness) {
-					// this is being created. Perform basic configs
-					// Set default department
-					EmpDepartment defaultDepartment = new EmpDepartment();
-					defaultDepartment.setName(Constants.DEFAULT_EMP_DEPT);
-					defaultDepartment.setBusiness(business);
-					defaultDepartment.setCreatedDate(new Date());
-					addEmpDepartment(defaultDepartment);
-
-					HrService hrservice = new HrService();
-					HRSettingsEntity hrSettingsEntity = new HRSettingsEntity();
-
-					hrSettingsEntity.setBusiness(business);
-					hrSettingsEntity
-							.setMonthlySalaryStructureRules(HREntityUtil.getStandardMonthlySalaryStructureRules());
-					hrSettingsEntity
-							.setMonthlySalaryDeductionRules(HREntityUtil.getStandardMonthlySalaryDeductionRules());
-					hrservice.addHRSettings(hrSettingsEntity);
-
-					WarehouseService warehouseService = new WarehouseService();
-					WarehouseEntity defaultWH = new WarehouseEntity();
-					defaultWH.setBusiness(business);
-					defaultWH.setWarehouseName(Constants.DEFAULT_STOCK_WAREHOUSE);
-					warehouseService.addWarehouse(defaultWH);
-					
-					ProtostarAdminService adminService = new ProtostarAdminService();
-					adminService.createAccountingGroups(business.getId());
-
-				}
 				return business;
 			}
 		}.init(business));
+
+		if (isFreshBusiness) {
+			// this is being created. Perform basic configs
+			// Set default department
+			EmpDepartment defaultDepartment = new EmpDepartment();
+			defaultDepartment.setName(Constants.DEFAULT_EMP_DEPT);
+			defaultDepartment.setBusiness(business);
+			defaultDepartment.setCreatedDate(new Date());
+			addEmpDepartment(defaultDepartment);
+
+			HrService hrservice = new HrService();
+			HRSettingsEntity hrSettingsEntity = new HRSettingsEntity();
+
+			hrSettingsEntity.setBusiness(business);
+			hrSettingsEntity.setMonthlySalaryStructureRules(HREntityUtil.getStandardMonthlySalaryStructureRules());
+			hrSettingsEntity.setMonthlySalaryDeductionRules(HREntityUtil.getStandardMonthlySalaryDeductionRules());
+			hrservice.addHRSettings(hrSettingsEntity);
+
+			WarehouseService warehouseService = new WarehouseService();
+			WarehouseEntity defaultWH = new WarehouseEntity();
+			defaultWH.setBusiness(business);
+			defaultWH.setWarehouseName(Constants.DEFAULT_STOCK_WAREHOUSE);
+			warehouseService.addWarehouse(defaultWH);
+
+			ProtostarAdminService adminService = new ProtostarAdminService();
+			adminService.createAccountingGroups(business.getId());
+
+		}
+
+		return business;
 	}
 
 	@ApiMethod(name = "getUsersByLoginAllowed", path = "getUsersByLoginAllowed")

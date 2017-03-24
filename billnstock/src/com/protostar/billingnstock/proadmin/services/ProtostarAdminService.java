@@ -12,6 +12,7 @@ import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
+import com.googlecode.objectify.Key;
 import com.protostar.billingnstock.account.entities.AccountGroupEntity;
 import com.protostar.billingnstock.proadmin.entities.BusinessPlanType;
 import com.protostar.billingnstock.proadmin.entities.BusinessPlanType.PlanType;
@@ -225,10 +226,13 @@ public class ProtostarAdminService {
 	@ApiMethod(name = "createAccountingGroups", path = "createAccountingGroups")
 	public void createAccountingGroups(@Named("id") Long bizId) {
 
-		List<AccountGroupEntity> acList = ofy().load().type(AccountGroupEntity.class).list();
-		/*
-		 * if (acList.size() > 0) { return; }
-		 */
+		List<AccountGroupEntity> acList = ofy().load().type(AccountGroupEntity.class).ancestor(Key.create(BusinessEntity.class, bizId))
+				.list();
+
+		if (acList != null && acList.size() > 0) {
+			return;
+		}
+
 		UserService userService = new UserService();
 
 		BusinessEntity business = userService.getBusinessById(bizId);
