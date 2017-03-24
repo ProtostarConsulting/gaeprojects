@@ -42,4 +42,4 @@ public class GeneralEntryService {
 		entryEntity.setModifiedDate(new Date());
 		ofy().save().entity(entryEntity).now();
 	}
-	}
+	  }

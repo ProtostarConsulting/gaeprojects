@@ -114,7 +114,11 @@ public class VoucherService {
 	@ApiMethod(name = "listVoucherReciept", path="listVoucherReciept")
 		public List<ReceiptVoucherEntity> listVoucherReciept(@Named("id") Long busId) 
 		{
-		List<ReceiptVoucherEntity> listRecipt= ofy().load().type(ReceiptVoucherEntity.class).list();
+		List<ReceiptVoucherEntity> listRecipt= 	
+		ofy()
+		.load()
+		.type(ReceiptVoucherEntity.class)
+		.ancestor(Key.create(BusinessEntity.class, busId)).list();
 		return listRecipt;
 		}
 			
@@ -144,7 +148,11 @@ public class VoucherService {
 	@ApiMethod(name = "listVoucherPurches", path="listVoucherPurches")
 	public List<PurchaseVoucherEntity>listVoucherPurches(@Named("id") Long busId) 
 	{
-		List<PurchaseVoucherEntity> listPurches= ofy().load().type(PurchaseVoucherEntity.class).list();
+		List<PurchaseVoucherEntity> listPurches=		
+		ofy()
+		.load()
+		.type(PurchaseVoucherEntity.class)
+		.ancestor(Key.create(BusinessEntity.class, busId)).list();
 		return listPurches;
 	}
 	///////////////////-------Payment--------------------------------
@@ -180,7 +188,12 @@ public void addvoucherPayment(PaymentVoucherEntity paymentVoucher  )
 @ApiMethod(name = "listvoucherPayment", path="listvoucherPayment")
 public List<PaymentVoucherEntity>listvoucherPayment(@Named("id") Long busId) 
 {
-	List<PaymentVoucherEntity> listPurches= ofy().load().type(PaymentVoucherEntity.class).list();
+	List<PaymentVoucherEntity> listPurches= 	
+	ofy()
+	.load()
+	.type(PaymentVoucherEntity.class)
+	.ancestor(Key.create(BusinessEntity.class, busId)).list();
+	
 	return listPurches;
 }
 	
@@ -192,6 +205,10 @@ public List<PaymentVoucherEntity>listvoucherPayment(@Named("id") Long busId)
 	public PurchaseVoucherEntity  getPurchesListById(@Named("id") Long accountId,@Named("bid") Long busId) 
 	{
 		PurchaseVoucherEntity relistByid= ofy().cache(false).load().key(Key.create(Key.create(BusinessEntity.class,busId), PurchaseVoucherEntity.class, accountId)).now();
+		
+		
+	
+		
 	return relistByid;
 	
 	}

@@ -3,10 +3,6 @@ var app = angular.module("stockApp");
 app.controller("voucherPaymentListCtr", function($scope, $window, $mdToast, $timeout,
 		$mdSidenav, $mdUtil, $log, $stateParams, objectFactory, appEndpointSF,$mdDialog,$mdMedia, $state  ) {
 	
-	
-	
-	
-	
 $scope.getPaymentvoucherList=function(){
 		
 		var voucherServiceList=appEndpointSF.getVoucherService();
