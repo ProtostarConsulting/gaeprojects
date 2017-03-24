@@ -11,7 +11,7 @@ function appEndpointSFFn($log, localDBServiceFactory, googleEndpointSF) {
 	var endpointFactory = {};
 	endpointFactory.is_service_ready = false;
 	// This will call the function to load services
-	
+
 	// -----------------------------------user login-----------------
 	endpointFactory.getTaskService = function() {
 		if (isTestMode)
@@ -26,7 +26,7 @@ function appEndpointSFFn($log, localDBServiceFactory, googleEndpointSF) {
 		else
 			return googleEndpointSF.getAuthorizationService();
 	};
-	
+
 	// -----------------------------------user login-----------------
 
 	endpointFactory.getLocalUserService = function() {
@@ -136,8 +136,6 @@ function appEndpointSFFn($log, localDBServiceFactory, googleEndpointSF) {
 			return googleEndpointSF.getopportunityService();
 	}
 
-	
-
 	// -----------------------------------------------------
 
 	endpointFactory.getStockService = function() {
@@ -160,8 +158,7 @@ function appEndpointSFFn($log, localDBServiceFactory, googleEndpointSF) {
 		else
 			return googleEndpointSF.getInvoiceService();
 	};
-	
-	
+
 	// ----------------------------------------------------
 
 	endpointFactory.getInternetService = function() {
@@ -177,7 +174,7 @@ function appEndpointSFFn($log, localDBServiceFactory, googleEndpointSF) {
 		else
 			return googleEndpointSF.getSalesOrderService();
 	};
-	
+
 	// ----------------------------------------------------
 
 	endpointFactory.getAssetManagementService = function() {
@@ -254,7 +251,7 @@ function appEndpointSFFn($log, localDBServiceFactory, googleEndpointSF) {
 		gapi.client.load('invoiceService', 'v0.1', function() {
 			$log.debug("invoiceService Loaded....");
 		}, apiRoot);
-	
+
 		gapi.client.load('accountService', 'v0.1', function() {
 			$log.debug("accountService Loaded....");
 		}, apiRoot);
@@ -269,14 +266,6 @@ function appEndpointSFFn($log, localDBServiceFactory, googleEndpointSF) {
 
 		gapi.client.load('accountEntryService', 'v0.1', function() {
 			$log.debug("accountEntryService Loaded....");
-		}, apiRoot);
-
-		gapi.client.load('generalJournalService', 'v0.1', function() {
-			$log.debug("generalJournalService Loaded....");
-		}, apiRoot);
-
-		gapi.client.load('generalEntryService', 'v0.1', function() {
-			$log.debug("generalEntryService Loaded....");
 		}, apiRoot);
 
 		gapi.client.load('hrService', 'v0.1', function() {
@@ -311,7 +300,7 @@ function appEndpointSFFn($log, localDBServiceFactory, googleEndpointSF) {
 		gapi.client.load('uploadUrlService', 'v0.1', function() {
 			$log.debug("uploadUrlService Loaded......");
 		}, apiRoot);
-		
+
 		gapi.client.load('authorizationService', 'v0.1', function() {
 			$log.debug("authorizationService Loaded......");
 		}, apiRoot);
@@ -319,7 +308,7 @@ function appEndpointSFFn($log, localDBServiceFactory, googleEndpointSF) {
 		gapi.client.load('taskService', 'v0.1', function() {
 			$log.debug("taskService Loaded......");
 		}, apiRoot);
-		
+
 		gapi.client.load('proadminService', 'v0.1', function() {
 			$log.debug("proadminService Loaded......");
 			endpointFactory.is_service_ready = true;
