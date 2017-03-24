@@ -288,6 +288,9 @@ public class UserService {
 					defaultWH.setBusiness(business);
 					defaultWH.setWarehouseName(Constants.DEFAULT_STOCK_WAREHOUSE);
 					warehouseService.addWarehouse(defaultWH);
+					
+					ProtostarAdminService adminService = new ProtostarAdminService();
+					adminService.createAccountingGroups(business.getId());
 
 				}
 				return business;
