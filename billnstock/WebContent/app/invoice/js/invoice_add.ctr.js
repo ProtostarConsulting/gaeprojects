@@ -79,7 +79,12 @@ app
 						$scope.documentEntity.status = 'SUBMITTED';
 						$scope.saveDocument();
 					}
-
+					
+					$scope.sendDocument = function(ev) {
+						$scope.documentEntity.status = 'SENT';
+						$scope.saveDocument();
+					}
+					
 					$scope.finalizeDocumnent = function(ev) {
 						var confirm = $mdDialog
 								.confirm()

@@ -15,6 +15,10 @@
 			ng-click="printInvoice(documentEntity.id)"> <ng-md-icon
 			icon="print" style="fill: md-default" size="20"> <md-tooltip>
 		Print Invoice</md-tooltip></ng-md-icon></md-button>
+		<md-button class="md-icon-button" ng-show="documentEntity.id"
+			ng-click="sendDocument($event)"> <ng-md-icon
+			icon="send" style="fill: md-default" size="20"> <md-tooltip>
+		Send This Invoice</md-tooltip></ng-md-icon></md-button>
 	</div>
 </section>
 <div>
