@@ -20,11 +20,9 @@ public class EmailStockShipmentTask extends BaseEmailTask {
 	private static final long serialVersionUID = 1L;
 	private int itemNumber;
 
-	public EmailStockShipmentTask(String SENDGRID_API_KEY, String fromEmail,
-			String emailDLList, String emailSubject, String messageBody,
-			int itemNumber) {
-		super(SENDGRID_API_KEY, fromEmail, emailDLList, emailSubject,
-				messageBody);
+	public EmailStockShipmentTask(long bizID, String fromEmail,
+			String emailSubject, String messageBody, int itemNumber) {
+		super(bizID, fromEmail, emailSubject, messageBody);
 		this.itemNumber = itemNumber;
 	}
 

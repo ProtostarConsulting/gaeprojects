@@ -3,6 +3,8 @@ package com.protostar.billingnstock.taskmangement;
 import java.io.IOException;
 
 import com.google.appengine.api.taskqueue.DeferredTask;
+import com.protostar.billingnstock.user.entities.BusinessSettingsEntity;
+import com.protostar.billingnstock.user.services.UserService;
 import com.protostar.billnstock.until.data.Constants;
 import com.sendgrid.Content;
 import com.sendgrid.Email;
@@ -23,12 +25,26 @@ public class TaskAssignedEmail implements DeferredTask {
 	private String messageBody;
 	private String SENDGRID_API_KEY;
 
-	public TaskAssignedEmail(String SENDGRID_API_KEY, String fromEmail, String emailTo, String emailDLList,
-			String emailSubject, String messageBody) {
-		this.SENDGRID_API_KEY = SENDGRID_API_KEY;
+	public TaskAssignedEmail(long bizId, String fromEmail, String emailTo,String emailSubject, String messageBody) {
+
+		TaskSettingsEntity taskSettings = new TaskManagementService()
+				.getTaskSettingsByBiz(bizId);
+
+		if (taskSettings == null || !taskSettings.isEmailNotification()) {
+			return;
+		}
+
+		UserService userService = new UserService();
+		BusinessSettingsEntity businessSettingsEntity = userService
+				.getBusinessSettingsEntity(bizId);
+		String sendgrid_API_KEY = businessSettingsEntity.getSendGridAPIKey();
+		if (sendgrid_API_KEY == null || sendgrid_API_KEY.isEmpty()) {
+			return;
+		}
+		this.SENDGRID_API_KEY = sendgrid_API_KEY;
 		this.fromEmail = fromEmail;
 		this.emailTo = emailTo;
-		this.emailDLList = emailDLList;
+		this.emailDLList = taskSettings.getEmailNotificationDL();
 		this.emailSubject = emailSubject;
 		this.messageBody = messageBody;
 	}
@@ -86,7 +102,8 @@ public class TaskAssignedEmail implements DeferredTask {
 			for (String emailId : emailIds) {
 				// Can't have same email id in to, cc or bcc
 				String trimedTo = emailId.trim();
-				if (this.emailTo.equalsIgnoreCase(trimedTo) || this.fromEmail.equalsIgnoreCase(trimedTo))
+				if (this.emailTo.equalsIgnoreCase(trimedTo)
+						|| this.fromEmail.equalsIgnoreCase(trimedTo))
 					continue;
 
 				Email cc = new Email();

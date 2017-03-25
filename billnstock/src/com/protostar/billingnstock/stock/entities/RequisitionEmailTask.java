@@ -21,10 +21,9 @@ public class RequisitionEmailTask extends BaseEmailTask {
 	private static final long serialVersionUID = 1L;
 	private int itemNumber;
 
-	public RequisitionEmailTask(String sendGridAPIKey, String fromEmail,
-			String emailDLList, String emailSubject, String messageBody,
+	public RequisitionEmailTask(long bizID, String fromEmail,String emailSubject, String messageBody,
 			int itemNumber) {
-		super(sendGridAPIKey, fromEmail, emailDLList, emailSubject, messageBody);
+		super(bizID, fromEmail,emailSubject, messageBody);
 		this.itemNumber = itemNumber;
 
 	}

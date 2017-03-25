@@ -3,6 +3,10 @@ package com.protostar.billnstock.service;
 import java.io.IOException;
 
 import com.google.appengine.api.taskqueue.DeferredTask;
+import com.protostar.billingnstock.stock.entities.StockSettingsEntity;
+import com.protostar.billingnstock.stock.services.StockManagementService;
+import com.protostar.billingnstock.user.entities.BusinessSettingsEntity;
+import com.protostar.billingnstock.user.services.UserService;
 import com.protostar.billnstock.until.data.Constants;
 import com.sendgrid.Content;
 import com.sendgrid.Email;
@@ -23,11 +27,26 @@ public class BaseEmailTask implements DeferredTask {
 	private String messageBody;
 	private String sendGridAPIKey;
 
-	public BaseEmailTask(String sendGridAPIKey, String fromEmail, String emailDLList, String emailSubject,
+	public BaseEmailTask(long bizID, String fromEmail, String emailSubject,
 			String messageBody) {
-		this.sendGridAPIKey = sendGridAPIKey;
+
+		StockSettingsEntity stockSettings = new StockManagementService()
+				.getStockSettingsByBiz(bizID);
+		if (stockSettings == null || !stockSettings.isEmailNotification()
+				|| stockSettings.getEmailNotificationDL().isEmpty()) {
+			return;
+		}
+		UserService userService = new UserService();
+		BusinessSettingsEntity businessSettingsEntity = userService
+				.getBusinessSettingsEntity(bizID);
+		String sendgrid_API_KEY = businessSettingsEntity.getSendGridAPIKey();
+		if (sendgrid_API_KEY == null || sendgrid_API_KEY.isEmpty()) {
+			return;
+		}
+
+		this.sendGridAPIKey = sendgrid_API_KEY;
 		this.fromEmail = fromEmail;
-		this.emailDLList = emailDLList;
+		this.emailDLList = stockSettings.getEmailNotificationDL();
 		this.emailSubject = emailSubject;
 		this.messageBody = messageBody;
 	}

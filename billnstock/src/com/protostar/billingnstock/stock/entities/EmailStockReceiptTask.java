@@ -20,11 +20,10 @@ public class EmailStockReceiptTask extends BaseEmailTask {
 	private static final long serialVersionUID = 1L;
 	private int itemNumber;
 
-	public EmailStockReceiptTask(String SENDGRID_API_KEY, String fromEmail,
-			String emailDLList, String emailSubject, String messageBody,
+	public EmailStockReceiptTask(long bizID, String fromEmail,
+			 String emailSubject, String messageBody,
 			int itemNumber) {
-		super(SENDGRID_API_KEY, fromEmail, emailDLList, emailSubject,
-				messageBody);
+		super(bizID, fromEmail,emailSubject,messageBody);
 		this.itemNumber = itemNumber;
 	}
 
