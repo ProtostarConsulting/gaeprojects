@@ -31,6 +31,9 @@ public abstract class BaseEntity {
 
 	@Index
 	private boolean isDeleted = false;
+	
+	@Index
+	private boolean isStared = false;
 
 	public BaseEntity() {
 		super();
@@ -133,6 +136,14 @@ public abstract class BaseEntity {
 
 	public void setDeleted(boolean isDeleted) {
 		this.isDeleted = isDeleted;
+	}
+
+	public boolean isStared() {
+		return isStared;
+	}
+
+	public void setStared(boolean isStared) {
+		this.isStared = isStared;
 	}
 
 }
