@@ -1996,15 +1996,16 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
-	/*
-	 * AccountEntryService.getAccountEntryList = function() { var deferred =
-	 * $q.defer();
-	 * gapi.client.accountEntryService.getAccountEntryList().execute(
-	 * function(resp) { deferred.resolve(resp.items); }); return
-	 * deferred.promise; }
-	 */// //////////
-	AccountEntryService.getAccountEntryByAccountId = function(accId) {// },bid)
-		// {
+	AccountEntryService.addGeneralEntry = function(accountEntry) {
+		var deferred = $q.defer();
+		gapi.client.accountEntryService.addGeneralEntry(accountEntry).execute(
+				function(resp) {
+					deferred.resolve(resp);
+				});
+		return deferred.promise;
+	} 
+	
+	AccountEntryService.getAccountEntryByAccountId = function(accId) {
 		var deferred = $q.defer();
 		gapi.client.accountEntryService.getAccountEntryByAccountId({
 			"id" : accId
@@ -2015,8 +2016,7 @@ function googleEndpointSF($q) {
 	}
 
 	AccountEntryService.getAccountViewEntryByAccountId = function(
-			actualFromDate, actualtoDate, id, bid) {// },bid)
-		// {
+			actualFromDate, actualtoDate, id, bid) {
 		var deferred = $q.defer();
 		gapi.client.accountEntryService.getAccountViewEntryByAccountId({
 
@@ -2031,21 +2031,10 @@ function googleEndpointSF($q) {
 	}
 
 	/* =============================================================================================================================== */
-
-	// Add GeneralEntryService Service
 	var GeneralEntryService = {};
 
 	serviceFactory.getGeneralEntryService = function() {
 		return GeneralEntryService;
-	}
-
-	GeneralEntryService.addGeneralEntry = function(accountEntry) {
-		var deferred = $q.defer();
-		gapi.client.generalEntryService.addGeneralEntry(accountEntry).execute(
-				function(resp) {
-					deferred.resolve(resp);
-				});
-		return deferred.promise;
 	}
 
 	GeneralEntryService.getGeneralEntryList = function(id) {
@@ -2068,8 +2057,6 @@ function googleEndpointSF($q) {
 	}
 
 	/* =============================================================================================================================== */
-
-	// Add GeneralJournal Service
 	var GeneralJournalService = {};
 
 	serviceFactory.getGeneralJournalService = function() {

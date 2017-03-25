@@ -11,7 +11,6 @@ import com.protostar.billnstock.entity.BaseEntity;
 public abstract class VoucherEntity extends BaseEntity {
 
 	private Date date;
-
 	@Index
 	private Long voucherNumber;
 	private Ref<GeneralEntryEntity> journalEntry;

@@ -15,6 +15,7 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
 import com.protostar.billingnstock.account.entities.AccountEntity;
 import com.protostar.billingnstock.account.entities.AccountGroupEntity;
+import com.protostar.billingnstock.account.entities.CurrentFinancialYear;
 import com.protostar.billingnstock.account.entities.SalesVoucherEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billnstock.until.data.Constants.AccountGroupType;
@@ -39,11 +40,16 @@ public class AccountGroupService {
 	}
 	@ApiMethod(name = "getAccountGroupList", path = "getAccountGroupList")
 	public List<AccountGroupEntity> getAccountGroupList(@Named("id") Long busId) {
+		AccountingService accountingService = new AccountingService();
+		CurrentFinancialYear currentFinancialYear = accountingService.getCurrentFinancialYear(busId);
 			if (busId == null)
 			return new ArrayList<AccountGroupEntity>();
 		List<AccountGroupEntity> list = ofy().load()
 				.type(AccountGroupEntity.class)
-				.ancestor(Key.create(BusinessEntity.class, busId)).list();
+				.ancestor(Key.create(BusinessEntity.class, busId))
+				.filter("date >=", currentFinancialYear.getFromDate())
+				.filter("date <=", currentFinancialYear.getToDate())
+				.list();
 		    	return list;
 	}
 	@ApiMethod(name = "updateAccountGrp")
@@ -58,11 +64,17 @@ public class AccountGroupService {
 	@ApiMethod(name = "getAllAccountGroupsByBusiness", path = "getAllAccountGroupsByBusiness")
 	public List<AccountGroupEntity> getAllAccountGroupsByBusiness(
 			@Named("id") Long busId) {
+		
+		AccountingService accountingService = new AccountingService();
+		CurrentFinancialYear currentFinancialYear = accountingService.getCurrentFinancialYear(busId);
+		
 		List<AccountGroupEntity> filteredAccounts = ofy()
 				.load()
 				.type(AccountGroupEntity.class)
 				.filter("business",
 				Ref.create(Key.create(BusinessEntity.class, busId)))
+				.filter("date >=", currentFinancialYear.getFromDate())
+				.filter("date <=", currentFinancialYear.getToDate())
 				.list();
 
 		return filteredAccounts;
@@ -86,10 +98,16 @@ public class AccountGroupService {
 	@ApiMethod(name = "getAccountGroupListByType", path = "getAccountGroupListByType")
 	public List<AccountGroupEntity> getAccountGroupListByType(
 			@Named("type") String type, @Named("bid") Long bid) {
+		
+		AccountingService accountingService = new AccountingService();
+		CurrentFinancialYear currentFinancialYear = accountingService.getCurrentFinancialYear(bid);
 		List<AccountGroupEntity> filteraccount = new ArrayList<AccountGroupEntity>();
 		List<AccountGroupEntity> list = ofy().load()
 				.type(AccountGroupEntity.class)
-				.ancestor(Key.create(BusinessEntity.class, bid)).list();
+				.ancestor(Key.create(BusinessEntity.class, bid))
+				.filter("date >=", currentFinancialYear.getFromDate())
+				.filter("date <=", currentFinancialYear.getToDate())
+				.list();
 				/////////////////////////////////////////filter//////////
 		for (AccountGroupEntity ss : list) {
 			if (ss.getIsPrimary() && ss.getAccountGroupType() != null) {
@@ -200,6 +218,7 @@ public class AccountGroupService {
 		double balance = 0;
 		List<AccountGroupEntity> groupList = getAccountGroupListByType(
 				"ASSETS", bid);
+		
 		for (int i = 0; i < groupList.size(); i++) {
 
 			AccountingService acc = new AccountingService();

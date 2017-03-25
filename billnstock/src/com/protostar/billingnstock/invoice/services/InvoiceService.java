@@ -43,17 +43,14 @@ public class InvoiceService extends BaseService {
 							+ this.getClass().getSimpleName()
 							+ " Finalized entity can't be altered.");
 		}
-
 		documentEntity = ofy().execute(TxnType.REQUIRED,
 				new Work<InvoiceEntity>() {
 					private InvoiceEntity documentEntity;
-
 					private Work<InvoiceEntity> init(
 							InvoiceEntity documentEntity) {
 						this.documentEntity = documentEntity;
 						return this;
 					}
-
 					public InvoiceEntity run() {
 						if (documentEntity.getStatus() == DocumentStatus.FINALIZED) {
 							StockManagementService.adjustStockItems(
@@ -64,30 +61,23 @@ public class InvoiceService extends BaseService {
 						return documentEntity;
 					}
 				}.init(documentEntity));
-
 		if (documentEntity.getStatus() != DocumentStatus.DRAFT) {
 			new EmailHandler().sendInvoiceEmail(documentEntity);
 		}
-
 		return documentEntity;
-
 	}
-
 	@ApiMethod(name = "getAllInvoice", path = "getAllInvoice")
 	public List<InvoiceEntity> getAllInvoice(@Named("id") Long busId) {
 
 		List<InvoiceEntity> filteredinvoice = ofy().load()
 				.type(InvoiceEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, busId)).list();
-
-		System.out.println("filteredinvoice:" + filteredinvoice.size());
 		return filteredinvoice;
-
 	}
-
 	@ApiMethod(name = "fetchInvoiceListByPaging", path = "fetchInvoiceListByPaging")
 	public EntityPagingInfo fetchInvoiceListByPaging(@Named("id") Long busId,
 			@Named("status") String status, EntityPagingInfo pagingInfo) {
+		
 		if (status != null && !status.isEmpty()) {
 			DocumentStatus statusType = DocumentStatus.valueOf(status
 					.toUpperCase(Locale.ENGLISH));
@@ -124,8 +114,6 @@ public class InvoiceService extends BaseService {
 						Key.create(Key.create(BusinessEntity.class, busId),
 								InvoiceEntity.class, invoiceId)).list();
 		InvoiceEntity foundInvoice = list.size() > 0 ? list.get(0) : null;
-		System.out.println("getInvoiceByID Recored is:" + foundInvoice);
-
 		return foundInvoice;
 	}
 
@@ -139,7 +127,6 @@ public class InvoiceService extends BaseService {
 		else
 			return null;
 	}
-
 	@ApiMethod(name = "getQuotationByItemNumber", path = "getQuotationByItemNumber")
 	public QuotationEntity getQuotationByItemNumber(
 			@Named("itemNumber") int itemNumber) {
@@ -150,32 +137,24 @@ public class InvoiceService extends BaseService {
 		else
 			return null;
 	}
-
 	@ApiMethod(name = "getReportByTaxReceived", path = "getReportByTaxReceived")
 	public List<InvoiceEntity> getReportByTaxReceived(@Named("id") Long busId) {
-
 		List<InvoiceEntity> filteredInvoice = ofy().load()
 				.type(InvoiceEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, busId)).list();
-
 		List<InvoiceEntity> invList = new ArrayList<InvoiceEntity>();
-
 		return filteredInvoice;
-
 	}
 
 	@ApiMethod(name = "getInvoiceListByCustId", path = "getInvoiceListByCustId")
 	public List<InvoiceEntity> getInvoiceListByCustId(@Named("id") Long custId) {
-
 		List<InvoiceEntity> filteredinvoice = ofy()
 				.load()
 				.type(InvoiceEntity.class)
 				.filter("customer",
 						Ref.create(Key.create(Customer.class, custId))).list();
-
 		return filteredinvoice;
 	}
-
 	/*
 	 * ====================================INVOICE
 	 * SETTINGS================================================
@@ -188,29 +167,23 @@ public class InvoiceService extends BaseService {
 			invoiceSettingsEntity.setCreatedDate(new Date());
 		}
 		invoiceSettingsEntity.setModifiedDate(new Date());
-
 		ofy().save().entity(invoiceSettingsEntity).now();
 		return invoiceSettingsEntity;
 	}
 
 	@ApiMethod(name = "getInvoiceSettingsByBiz", path = "getInvoiceSettingsByBiz")
 	public InvoiceSettingsEntity getInvoiceSettingsByBiz(@Named("id") Long busId) {
-
 		InvoiceSettingsEntity filteredSettings = ofy().load()
 				.type(InvoiceSettingsEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, busId)).first()
 				.now();
-
 		return filteredSettings;
-
 	}
 
 	@ApiMethod(name = "addQuotation", path = "addQuotation")
 	public QuotationEntity addQuotation(QuotationEntity quotationEntity) {
-
 		return ofy().execute(TxnType.REQUIRED, new Work<QuotationEntity>() {
 			private QuotationEntity quotationEntity;
-
 			private Work<QuotationEntity> init(QuotationEntity quotationEntity) {
 				this.quotationEntity = quotationEntity;
 				return this;
@@ -229,9 +202,7 @@ public class InvoiceService extends BaseService {
 				return quotationEntity;
 			}
 		}.init(quotationEntity));
-
 	}
-
 	@ApiMethod(name = "getQuotationByID", path = "getQuotationByID")
 	public QuotationEntity getQuotationByID(@Named("busId") Long busId,
 			@Named("id") Long quotnId) {
@@ -243,8 +214,6 @@ public class InvoiceService extends BaseService {
 						Key.create(Key.create(BusinessEntity.class, busId),
 								QuotationEntity.class, quotnId)).list();
 		QuotationEntity foundQuotation = list.size() > 0 ? list.get(0) : null;
-		System.out.println("getQuotationByID Record is:" + foundQuotation);
-
 		return foundQuotation;
 	}
 

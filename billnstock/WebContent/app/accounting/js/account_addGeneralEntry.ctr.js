@@ -74,8 +74,8 @@ $scope.loading=true;
 
 		$scope.tempGeneralEntry.debitAccount = $scope.debitAccount;
 		$scope.tempGeneralEntry.creditAccount = $scope.creditAccount;
-		var GeneralEntryService = appEndpointSF.getGeneralEntryService();
-		GeneralEntryService.addGeneralEntry($scope.tempGeneralEntry).then(
+		var AccountEntryServic = appEndpointSF.getAccountEntryService();
+		AccountEntryServic.addGeneralEntry($scope.tempGeneralEntry).then(
 				function(msgBean) {
 					$scope.tempGeneralEntry = blankTempGeneralEntry();
 					$scope.showSimpleToast();

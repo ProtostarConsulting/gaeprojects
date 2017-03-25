@@ -41,8 +41,8 @@ public class AccountEntryService {
 				.ancestor(Key.create(BusinessEntity.class, bid))
 				.filter("accountEntity", Key.create(Key.create(BusinessEntity.class, bid), AccountEntity.class, accId))
 				.filter("date >=", fromDate).filter("date <=", toDate)
-				.filter("date >=", currentFinancialYear.getFromDate())
-				.filter("date <=", currentFinancialYear.getToDate()).list();
+				.filter("createdDate >=", currentFinancialYear.getFromDate())
+				.filter("createdDate <=", currentFinancialYear.getToDate()).list();
 		return filteredEntries;
 	}
 
@@ -53,12 +53,12 @@ public class AccountEntryService {
 
 		AccountingService accountingService = new AccountingService();
 		CurrentFinancialYear currentFinancialYear = accountingService.getCurrentFinancialYear(bid);
-
+System.out.println("getAccountEntryByAccountId--id"+bid);
 		List<AccountEntryEntity> accountEntries = ofy().load().type(AccountEntryEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, bid))
 				.filter("accountEntity", Key.create(Key.create(BusinessEntity.class, bid), AccountEntity.class, AccId))
-				.filter("date >=", currentFinancialYear.getFromDate())
-				.filter("date <=", currentFinancialYear.getToDate()).list();
+				.filter("createdDate >=", currentFinancialYear.getFromDate())
+				.filter("createdDate <=", currentFinancialYear.getToDate()).list();
 		return accountEntries;
 	}
 
@@ -68,7 +68,6 @@ public class AccountEntryService {
 				.key(Key.create(Key.create(BusinessEntity.class, busId), AccountEntryEntity.class, accountId)).now();
 		return getAccountById1;
 	}
-
 	@ApiMethod(name = "addGeneralEntry")
 	public void addGeneralEntry(GeneralEntryEntity entryEntity) {
 

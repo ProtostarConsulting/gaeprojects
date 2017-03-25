@@ -13,6 +13,7 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
 import com.protostar.billingnstock.account.entities.AccountEntity;
 import com.protostar.billingnstock.account.entities.AccountEntryEntity;
+import com.protostar.billingnstock.account.entities.CurrentFinancialYear;
 import com.protostar.billingnstock.purchase.entities.PurchaseOrderEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billnstock.until.data.Constants;
@@ -35,24 +36,26 @@ public class AccountEntityService {
 	}
 	@ApiMethod(name = "getAllAccountsByBusiness")
 	public List<AccountEntity> getAllAccountsByBusiness(@Named("id") Long busId) {
-
+		AccountingService accountingService = new AccountingService();
+		CurrentFinancialYear currentFinancialYear = accountingService.getCurrentFinancialYear(busId);
 		List<AccountEntity> filteredAccounts = ofy()
 				.load()
 				.type(AccountEntity.class)
-				.filter("business",
-						Ref.create(Key.create(BusinessEntity.class, busId)))
+				.filter("createdDate >=", currentFinancialYear.getFromDate())
+				.filter("createdDate <=", currentFinancialYear.getToDate())
 				.list();
-
-		return filteredAccounts;
+				return filteredAccounts;
 	}
-
-	
 	@ApiMethod(name = "getAccountById1")
 	public AccountEntity getAccountById1(@Named("bid") Long busId,@Named("id") Long accountId) {
-		
-		AccountEntity getAccountById1 = ofy().load()
-				.key(Key.create(Key.create(BusinessEntity.class, busId), AccountEntity.class, accountId)).now();
+		AccountingService accountingService = new AccountingService();
+		CurrentFinancialYear currentFinancialYear = accountingService.getCurrentFinancialYear(busId);
+				AccountEntity getAccountById1 = ofy()
+				.load()
+				.key(Key.create(Key.create(BusinessEntity.class, busId), AccountEntity.class, accountId))
+				/*.filter("date >=", currentFinancialYear.getFromDate())
+				.filter("date <=", currentFinancialYear.getToDate())*/
+				.now();
 			return getAccountById1;
-	}
-
+			}
 }

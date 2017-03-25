@@ -34,16 +34,18 @@ public class AccountingService {
 	}
 
 	@ApiMethod(name = "checkAccountAlreadyExist")
-	public ServerMsg checkAccountAlreadyExist(@Named("accountName") String accountName) {
+	public ServerMsg checkAccountAlreadyExist(
+			@Named("accountName") String accountName, @Named("id") Long busId) {
 		ServerMsg serverMsg = new ServerMsg();
-		List<AccountEntity> list = ofy().load().type(AccountEntity.class).filter("accountName", accountName).list();
+		List<AccountEntity> list = ofy().load().type(AccountEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId))
+				.filter("accountName", accountName).list();
 
 		if (list == null || list.size() == 0) {
 			serverMsg.setReturnBool(false);
 		} else {
 			serverMsg.setReturnBool(true);
 		}
-
 		return serverMsg;
 	}
 
@@ -52,8 +54,10 @@ public class AccountingService {
 		if (busId == null)
 			return new ArrayList<AccountEntity>();
 
-		List<AccountEntity> accountList = ofy().load().type(AccountEntity.class)
-				.ancestor(Key.create(BusinessEntity.class, busId)).list();
+		List<AccountEntity> accountList = ofy().load()
+				.type(AccountEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId))
+				.list();
 
 		return accountList;
 
@@ -68,19 +72,22 @@ public class AccountingService {
 	}
 
 	@ApiMethod(name = "getGroupViewtByGroupId", path = "getGroupViewtByGroupId")
-	public List<AccountEntity> getGroupViewtByGroupId(@Named("busId") Long busId, @Named("groupId") Long groupId) {
+	public List<AccountEntity> getGroupViewtByGroupId(
+			@Named("busId") Long busId, @Named("groupId") Long groupId) {
 		return getAccountListByGroupId(busId, groupId);
 	}
 
 	@ApiMethod(name = "getAccountListByGroupId", path = "getAccountListByGroupId")
-	public List<AccountEntity> getAccountListByGroupId(@Named("busId") Long busId, @Named("groupId") Long groupId) {
-
-		List<AccountEntity> accountGroupList = ofy().load().type(AccountEntity.class)
-				.ancestor(Key.create(BusinessEntity.class, busId)).filter("accountGroup",
-						Key.create(Key.create(BusinessEntity.class, busId), AccountGroupEntity.class, groupId))
+	public List<AccountEntity> getAccountListByGroupId(
+			@Named("busId") Long busId, @Named("groupId") Long groupId) {
+				List<AccountEntity> accountGroupList = ofy()
+				.load()
+				.type(AccountEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId))
+				.filter("accountGroup",
+				Key.create(Key.create(BusinessEntity.class, busId),
+				AccountGroupEntity.class, groupId))
 				.list();
-		// System.out.println("accountGroupList" + accountGroupList.size());
-
 		return accountGroupList;
 	}
 
@@ -95,9 +102,10 @@ public class AccountingService {
 	// *************************************************************************
 
 	@ApiMethod(name = "getAccountBalance", path = "getAccountBalance")
-	public ServerMsg getAccountBalance(@Named("id") Long id, @Named("bid") Long busId) {
+	public ServerMsg getAccountBalance(@Named("id") Long id,
+			@Named("bid") Long busId) {
 		// System.out.println(" acc id" + id);
-
+System.out.println("getAccountBalanceBID"+busId);
 		Double accBalance = 0.0D;
 		Double totalCredit = 0.0D;
 		Double totalDebit = 0.0D;
@@ -105,7 +113,8 @@ public class AccountingService {
 		List<AccountEntryEntity> filteredEntries = new ArrayList<AccountEntryEntity>();
 
 		AccountEntryService accountEntryService = new AccountEntryService();
-		filteredEntries = accountEntryService.getAccountEntryByAccountId(id, busId);
+		filteredEntries = accountEntryService.getAccountEntryByAccountId(id,
+				busId);
 
 		for (AccountEntryEntity entry : filteredEntries) {
 			if (entry.getCredit() != null) {
@@ -119,7 +128,8 @@ public class AccountingService {
 
 			AccountEntity accountEntity = accountEntryEntity.getAccountEntity();
 			AccountGroupEntity accountGroup = accountEntity.getAccountGroup();
-			System.out.println("accountGroup.getAccountGroupType():" + accountGroup.getAccountGroupType());
+			System.out.println("accountGroup.getAccountGroupType():"
+					+ accountGroup.getAccountGroupType());
 			boolean isDebitBalanceAcc = accountGroup.getAccountGroupType() == AccountGroupType.ASSETS
 					|| accountGroup.getAccountGroupType() == AccountGroupType.EXPENSES
 					|| accountGroup.getAccountGroupType() == AccountGroupType.OTHEREXPENCES;
@@ -156,10 +166,13 @@ public class AccountingService {
 
 	@ApiMethod(name = "getAccountById", path = "getAccountById")
 	public AccountEntity getAccountById(@Named("id") Long accountId) {
+		
+		
 		if (accountId == null)
 			new ArrayList<AccountEntity>();
 
-		AccountEntity accountById = ofy().load().type(AccountEntity.class).id(accountId).now();
+		AccountEntity accountById = ofy().load().type(AccountEntity.class)
+				.id(accountId).now();
 
 		return accountById;
 	}
@@ -173,10 +186,10 @@ public class AccountingService {
 
 	@ApiMethod(name = "getAllAccountsByBusiness")
 	public List<AccountEntity> getAllAccountsByBusiness(@Named("id") Long busId) {
-
-		List<AccountEntity> filteredAccounts = ofy().load().type(AccountEntity.class)
-				.ancestor(Key.create(BusinessEntity.class, busId)).list();
-
+				List<AccountEntity> filteredAccounts = ofy().load()
+				.type(AccountEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId))
+				.list();
 		return filteredAccounts;
 	}
 
@@ -209,9 +222,10 @@ public class AccountingService {
 
 	@ApiMethod(name = "getAllPayablesByBusiness")
 	public List<PayableEntity> getAllPayablesByBusiness(@Named("id") Long busId) {
-
-		List<PayableEntity> filteredPayables = ofy().load().type(PayableEntity.class)
-				.ancestor(Key.create(BusinessEntity.class, busId)).list();
+		List<PayableEntity> filteredPayables = ofy().load()
+				.type(PayableEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId))
+				.list();
 
 		return filteredPayables;
 	}
@@ -219,7 +233,8 @@ public class AccountingService {
 	@ApiMethod(name = "getPayableByID", path = "getPayableByID")
 	public PayableEntity getPayableByID(@Named("id") Long payableId) {
 
-		PayableEntity payableById = ofy().load().type(PayableEntity.class).id(payableId).now();
+		PayableEntity payableById = ofy().load().type(PayableEntity.class)
+				.id(payableId).now();
 
 		return payableById;
 	}
@@ -238,23 +253,22 @@ public class AccountingService {
 			receivableEntity.setModifiedDate(new Date());
 		}
 		ofy().save().entity(receivableEntity).now();
-
 	}
 
 	@ApiMethod(name = "getAllReceivablesByBusiness", path = "getAllReceivablesByBusiness")
-	public List<ReceivableEntity> getAllReceivablesByBusiness(@Named("id") Long busId) {
-
-		List<ReceivableEntity> filteredReceivables = ofy().load().type(ReceivableEntity.class)
-				.ancestor(Key.create(BusinessEntity.class, busId)).list();
-
+	public List<ReceivableEntity> getAllReceivablesByBusiness(
+			@Named("id") Long busId) {
+				List<ReceivableEntity> filteredReceivables = ofy().load()
+				.type(ReceivableEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId))
+				.list();
 		return filteredReceivables;
 	}
 
 	@ApiMethod(name = "getReceivableByID", path = "getReceivableByID")
 	public ReceivableEntity getReceivableByID(@Named("id") Long receivableId) {
-
-		ReceivableEntity receivableById = ofy().load().type(ReceivableEntity.class).id(receivableId).now();
-
+		ReceivableEntity receivableById = ofy().load()
+				.type(ReceivableEntity.class).id(receivableId).now();
 		return receivableById;
 	}
 
@@ -264,41 +278,42 @@ public class AccountingService {
 	public List<AccountEntity> getPurchesAcc(@Named("bid") Long busId) {
 
 		String groupName = "Purchase Accounts";
-
 		List<AccountEntity> PurchesAcc = ofy().load().type(AccountEntity.class)
-				.ancestor(Key.create(BusinessEntity.class, busId)).filter("accountGroup.groupName =", groupName).list();
-
-		System.out.println("PurchesAcc" + PurchesAcc);
+				.ancestor(Key.create(BusinessEntity.class, busId))
+				.filter("accountGroup.groupName =", groupName).list();
 		return PurchesAcc;
-
 	}
 
 	@ApiMethod(name = "addCurrentFinancialYear", path = "addCurrentFinancialYear")
-	public CurrentFinancialYear addCurrentFinancialYear(CurrentFinancialYear currentFY) {
+	public CurrentFinancialYear addCurrentFinancialYear(
+			CurrentFinancialYear currentFY) {
 		currentFY.setId(Constants.CURRENT_FINANCIAL_YEAR_ID);
 		ofy().save().entity(currentFY).now();
 		return currentFY;
-
 	}
 
 	@ApiMethod(name = "getCurrentFinancialYear", path = "getCurrentFinancialYear")
 	public CurrentFinancialYear getCurrentFinancialYear(@Named("id") Long busId) {
-		CurrentFinancialYear currentFY = ofy().load().key(CurrentFinancialYear.getKey(busId)).now();
+		System.out.println("getCurrentFinancialYear--bid"+busId);
+		CurrentFinancialYear currentFY = ofy().load()
+				.key(CurrentFinancialYear.getKey(busId)).now();
 		return currentFY;
-
 	}
-
 	@ApiMethod(name = "addAccountingSettingsEntity", path = "addAccountingSettingsEntity")
-	public AccountingSettingsEntity addAccountingSettingsEntity(AccountingSettingsEntity settingsEntity) {
+	public AccountingSettingsEntity addAccountingSettingsEntity(
+			AccountingSettingsEntity settingsEntity) {
 		ofy().save().entity(settingsEntity).now();
 		return settingsEntity;
 
 	}
 
 	@ApiMethod(name = "getAccountingSettingsEntity", path = "getAccountingSettingsEntity")
-	public AccountingSettingsEntity getAccountingSettingsEntity(@Named("id") Long busId) {
-		AccountingSettingsEntity settingsEntity = ofy().load().type(AccountingSettingsEntity.class)
-				.ancestor(Key.create(BusinessEntity.class, busId)).first().now();
+	public AccountingSettingsEntity getAccountingSettingsEntity(
+			@Named("id") Long busId) {
+		AccountingSettingsEntity settingsEntity = ofy().load()
+				.type(AccountingSettingsEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).first()
+				.now();
 		return settingsEntity;
 
 	}
