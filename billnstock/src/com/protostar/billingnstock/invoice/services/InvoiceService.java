@@ -28,6 +28,7 @@ import com.protostar.billnstock.service.BaseService;
 import com.protostar.billnstock.until.data.Constants.DocumentStatus;
 import com.protostar.billnstock.until.data.EmailHandler;
 import com.protostar.billnstock.until.data.EntityPagingInfo;
+import com.protostar.billnstock.until.data.TextLocalSMSHandler;
 
 @Api(name = "invoiceService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.stock.services", ownerName = "com.protostar.billingnstock.stock.services", packagePath = ""))
 public class InvoiceService extends BaseService {
@@ -46,11 +47,13 @@ public class InvoiceService extends BaseService {
 		documentEntity = ofy().execute(TxnType.REQUIRED,
 				new Work<InvoiceEntity>() {
 					private InvoiceEntity documentEntity;
+
 					private Work<InvoiceEntity> init(
 							InvoiceEntity documentEntity) {
 						this.documentEntity = documentEntity;
 						return this;
 					}
+
 					public InvoiceEntity run() {
 						if (documentEntity.getStatus() == DocumentStatus.FINALIZED) {
 							StockManagementService.adjustStockItems(
@@ -64,8 +67,14 @@ public class InvoiceService extends BaseService {
 		if (documentEntity.getStatus() != DocumentStatus.DRAFT) {
 			new EmailHandler().sendInvoiceEmail(documentEntity);
 		}
+
+		if (documentEntity.getStatus() == DocumentStatus.SENT) {
+			new TextLocalSMSHandler().sendInvoiceTextMsg(documentEntity);
+		}
+
 		return documentEntity;
 	}
+
 	@ApiMethod(name = "getAllInvoice", path = "getAllInvoice")
 	public List<InvoiceEntity> getAllInvoice(@Named("id") Long busId) {
 
@@ -74,10 +83,11 @@ public class InvoiceService extends BaseService {
 				.ancestor(Key.create(BusinessEntity.class, busId)).list();
 		return filteredinvoice;
 	}
+
 	@ApiMethod(name = "fetchInvoiceListByPaging", path = "fetchInvoiceListByPaging")
 	public EntityPagingInfo fetchInvoiceListByPaging(@Named("id") Long busId,
 			@Named("status") String status, EntityPagingInfo pagingInfo) {
-		
+
 		if (status != null && !status.isEmpty()) {
 			DocumentStatus statusType = DocumentStatus.valueOf(status
 					.toUpperCase(Locale.ENGLISH));
@@ -127,6 +137,7 @@ public class InvoiceService extends BaseService {
 		else
 			return null;
 	}
+
 	@ApiMethod(name = "getQuotationByItemNumber", path = "getQuotationByItemNumber")
 	public QuotationEntity getQuotationByItemNumber(
 			@Named("itemNumber") int itemNumber) {
@@ -137,6 +148,7 @@ public class InvoiceService extends BaseService {
 		else
 			return null;
 	}
+
 	@ApiMethod(name = "getReportByTaxReceived", path = "getReportByTaxReceived")
 	public List<InvoiceEntity> getReportByTaxReceived(@Named("id") Long busId) {
 		List<InvoiceEntity> filteredInvoice = ofy().load()
@@ -155,6 +167,7 @@ public class InvoiceService extends BaseService {
 						Ref.create(Key.create(Customer.class, custId))).list();
 		return filteredinvoice;
 	}
+
 	/*
 	 * ====================================INVOICE
 	 * SETTINGS================================================
@@ -184,6 +197,7 @@ public class InvoiceService extends BaseService {
 	public QuotationEntity addQuotation(QuotationEntity quotationEntity) {
 		return ofy().execute(TxnType.REQUIRED, new Work<QuotationEntity>() {
 			private QuotationEntity quotationEntity;
+
 			private Work<QuotationEntity> init(QuotationEntity quotationEntity) {
 				this.quotationEntity = quotationEntity;
 				return this;
@@ -203,6 +217,7 @@ public class InvoiceService extends BaseService {
 			}
 		}.init(quotationEntity));
 	}
+
 	@ApiMethod(name = "getQuotationByID", path = "getQuotationByID")
 	public QuotationEntity getQuotationByID(@Named("busId") Long busId,
 			@Named("id") Long quotnId) {
