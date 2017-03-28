@@ -1,4 +1,3 @@
-
 <md-content layout-padding>
 <section layout="row" layout-xs="column">
 	<md-subheader class="md-primary">
@@ -6,8 +5,6 @@
 	</md-subheader>
 	<span flex></span>
 </section>
-[<span style="color: red;">Field Marked as asterisk (*) are
-	mandatory.</span>]
 
 <form name="contactform">
 	<div id="addField">
@@ -33,7 +30,7 @@
 				</md-autocomplete>
 			</div>
 		</div>
-		<div layout layout-sm="column">
+		<div layout="row" layout-sm="column">
 			<md-input-container flex> <label>First
 				Name </label> <input name="fname" ng-model="contact.fName"
 				ng-required="true">
@@ -54,41 +51,28 @@
 
 			</md-input-container>
 		</div>
-		<div layout layout-sm="column">
-			<md-input-container flex> <label>Status
+		
+		<div layout="row" layout-xs="column">
+			<md-input-container class="md-block" flex-gt-sm>
+			<label>Mobile Number</label> <input name="mobile"
+				ng-model="contact.phone" placeholder="9999933322" required
+				ng-pattern="/^[0-9]{10}$/" md-maxlength="10">
 
-			</label> <input name="status" ng-model="contact.status" ng-required="true">
-			<div ng-messages="contactform.status.$error"
-				ng-if="contactform.status.$submitted || contactform.status.$touched">
-				<div ng-message="required">Please Enter Status.</div>
+			<div ng-messages="contactform.mobile.$error" role="alert" multiple>
+				<div ng-message="required" class="my-message">You must supply
+					mobile number.</div>
+				<div ng-message="pattern" class="my-message">That doesn't look
+					like a valid mobile number.</div>
+				<div ng-message="md-maxlength" class="my-message">Don't use
+					the long version man...</div>
 			</div>
 			</md-input-container>
-			<md-input-container flex> <label>Phone</label> <input
-				type="number" name="phone" ng-minlength="10" ng-maxlength="11"
-				ng-model="contact.phone" ng-required="true">
-			<div ng-messages="contactform.phone.$error"
-				ng-if="contactform.phone.$submitted || contactform.phone.$touched">
-				<div ng-message="required">Please Enter phone Number.</div>
-			</div>
-			<span class="help-block" style="color: red;"
-				ng-show="((contactform.phone.$error.minlength || contactform.phone.$error.maxlength) && contactform.phone.$dirty) ">Mobile
-				Number should be 10 digits(Example.:0123456789)</span> </md-input-container>
+			<md-input-container flex> <label>Email
+				Address</label> <input type="email" name="email" ng-model="contact.email"
+				type="email"> </md-input-container>
 		</div>
-		<div layout layout-sm="column">
-			<md-input-container flex> <label>Email</label> <input
-				type="email" ng-pattern="/^.+@.+\..+$/" name="email"
-				ng-model="contact.email" ng-required="true"
-				ng-blur="Checkemail(contact.email)"> <span
-				style="color: red"> {{userexists}}</span>
 
-			<div ng-messages="contactform.email.$error"
-				ng-if="contactform.email.$submitted || contactform.email.$touched">
-				<div ng-message="required">Please Enter Email id.</div>
-			</div>
-			<span class="help-block" style="color: red"
-				ng-show="((contactform.email.$error.pattern) && contactform.email.$dirty) ">
-				Enter Valid Email Format </span> </md-input-container>
-		</div>
+
 		<h4>
 			<b>Reference</b>
 		</h4>
