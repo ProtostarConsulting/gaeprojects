@@ -69,7 +69,7 @@ app
 
 						}
 					}
-					
+
 					$scope.draftDocumnent = function(ev) {
 						$scope.documentEntity.status = 'DRAFT';
 						$scope.saveDocument();
@@ -436,9 +436,21 @@ app
 						}, Math.random() * 1000, false);
 						return deferred.promise;
 					}
-					/**
-					 * Build `states` list of key/value pairs
-					 */
+
+					$scope.querySearch = function(query) {
+						var autoCompleteUIService = appEndpointSF
+								.getAutoCompleteUIService();
+						return autoCompleteUIService.queryCustomerSearch(
+								$scope.customerList, query);
+					}
+
+					$scope.queryContactSearch = function(query) {
+						var autoCompleteUIService = appEndpointSF
+								.getAutoCompleteUIService();
+						return autoCompleteUIService.queryContactSearch(
+								$scope.contactList, query);
+					}
+
 					function loadAllCustomers() {
 						var customerService = appEndpointSF
 								.getCustomerService();
@@ -449,37 +461,7 @@ app
 								});
 
 					}
-					/**
-					 * Create filter function for a query string
-					 */
-					function createFilterFor(query) {
-						var lowercaseQuery = angular.lowercase(query);
-						return function filterFn(cus) {
-							var a = cus.isCompany ? cus.companyName
-									: (cus.firstName + "" + cus.lastName);
-							return (angular.lowercase(a)
-									.indexOf(lowercaseQuery) >= 0);
-						};
-					}
 
-					function createContactFilterFor(query) {
-						var lowercaseQuery = angular.lowercase(query);
-						return function filterFn(contact) {
-							var a = contact.fname + "" + contact.lname;
-							return (angular.lowercase(a)
-									.indexOf(lowercaseQuery) >= 0);
-						};
-					}
-
-					$scope.queryContactSearch = function(query) {
-						var results = query ? $scope.contactList
-								.filter(createContactFilterFor(query)) : [];
-						var deferred = $q.defer();
-						$timeout(function() {
-							deferred.resolve(results);
-						}, Math.random() * 1000, false);
-						return deferred.promise;
-					}
 					$scope.getAllcontact = function() {
 						var leadService = appEndpointSF.getleadService();
 						leadService.getAllcontact($scope.curUser.business.id)

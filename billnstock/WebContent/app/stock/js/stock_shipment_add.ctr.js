@@ -389,13 +389,10 @@ app
 					}
 
 					$scope.querySearch = function(query) {
-						var results = query ? $scope.customerList
-								.filter(createFilterFor(query)) : [];
-						var deferred = $q.defer();
-						$timeout(function() {
-							deferred.resolve(results);
-						}, Math.random() * 1000, false);
-						return deferred.promise;
+						var autoCompleteUIService = appEndpointSF
+								.getAutoCompleteUIService();
+						return autoCompleteUIService.queryCustomerSearch(
+								$scope.customerList, query);
 					}
 					/**
 					 * Build `states` list of key/value pairs
@@ -412,18 +409,7 @@ app
 								});
 
 					}
-					/**
-					 * Create filter function for a query string
-					 */
-					function createFilterFor(query) {
-						var lowercaseQuery = angular.lowercase(query);
-						return function filterFn(cus) {
-							var a = cus.isCompany ? cus.companyName
-									: (cus.firstName + "" + cus.lastName);
-							return (angular.lowercase(a)
-									.indexOf(lowercaseQuery) >= 0);
-						};
-					}
+					
 
 					function getStockSettingsByBiz() {
 						var stockService = appEndpointSF.getStockService();

@@ -376,14 +376,10 @@ app
 					$scope.searchTextInput = null;
 
 					$scope.querySearch = function(query) {
-						var results = query ? $scope.supplierList
-								.filter(createFilterFor(query)) : [];
-						var deferred = $q.defer();
-						$timeout(function() {
-							deferred.resolve(results);
-
-						}, Math.random() * 1000, false);
-						return deferred.promise;
+						var autoCompleteUIService = appEndpointSF
+								.getAutoCompleteUIService();
+						return autoCompleteUIService.querySupplierSearch(
+								$scope.supplierList, query);
 					}
 
 					function loadAllSuppliers() {
@@ -393,20 +389,11 @@ app
 						supplierService.getAllSuppliersByBusiness(
 								$scope.curUser.business.id).then(
 								function(supplierList) {
-
 									$scope.supplierList = supplierList;
-
 								});
 					}
 
-					function createFilterFor(query) {
-						var lowercaseQuery = angular.lowercase(query);
-						return function filterFn(supp) {
-
-							return (angular.lowercase(supp.supplierName)
-									.indexOf(lowercaseQuery) >= 0);
-						};
-					}
+					
 					// End Select supplier
 					function getStockSettingsByBiz() {
 						var stockService = appEndpointSF.getStockService();

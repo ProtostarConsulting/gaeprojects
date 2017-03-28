@@ -69,7 +69,7 @@ app
 
 						}
 					}
-					
+
 					$scope.draftDocumnent = function(ev) {
 						$scope.documentEntity.status = 'DRAFT';
 						$scope.saveDocument();
@@ -79,12 +79,12 @@ app
 						$scope.documentEntity.status = 'SUBMITTED';
 						$scope.saveDocument();
 					}
-					
+
 					$scope.sendDocument = function(ev) {
 						$scope.documentEntity.status = 'SENT';
 						$scope.saveDocument();
 					}
-					
+
 					$scope.finalizeDocumnent = function(ev) {
 						var confirm = $mdDialog
 								.confirm()
@@ -432,18 +432,6 @@ app
 										});
 					}
 
-					$scope.querySearch = function(query) {
-						var results = query ? $scope.customerList
-								.filter(createFilterFor(query)) : [];
-						var deferred = $q.defer();
-						$timeout(function() {
-							deferred.resolve(results);
-						}, Math.random() * 1000, false);
-						return deferred.promise;
-					}
-					/**
-					 * Build `states` list of key/value pairs
-					 */
 					function loadAllCustomers() {
 						var customerService = appEndpointSF
 								.getCustomerService();
@@ -454,43 +442,32 @@ app
 								});
 
 					}
-					/**
-					 * Create filter function for a query string
-					 */
-					function createFilterFor(query) {
-						var lowercaseQuery = angular.lowercase(query);
-						return function filterFn(cus) {
-							var a = cus.isCompany ? cus.companyName
-									: (cus.firstName + "" + cus.lastName);
-							return (angular.lowercase(a)
-									.indexOf(lowercaseQuery) >= 0);
-						};
+
+					$scope.getAllcontact = function() {
+						var leadService = appEndpointSF.getleadService();
+						$log.debug('Loading $scope.contactList... ');
+						leadService
+								.getAllcontact($scope.curUser.business.id)
+								.then(
+										function(contacts) {
+											$scope.contactList = contacts.items;
+											$log.debug('$scope.contactList: '
+													+ $scope.contactList);
+										});
 					}
 
-					function createContactFilterFor(query) {
-						var lowercaseQuery = angular.lowercase(query);
-						return function filterFn(contact) {
-							var a = contact.fname + "" + contact.lname;
-							return (angular.lowercase(a)
-									.indexOf(lowercaseQuery) >= 0);
-						};
+					$scope.querySearch = function(query) {
+						var autoCompleteUIService = appEndpointSF
+								.getAutoCompleteUIService();
+						return autoCompleteUIService.queryCustomerSearch(
+								$scope.customerList, query);
 					}
 
 					$scope.queryContactSearch = function(query) {
-						var results = query ? $scope.contactList
-								.filter(createContactFilterFor(query)) : [];
-						var deferred = $q.defer();
-						$timeout(function() {
-							deferred.resolve(results);
-						}, Math.random() * 1000, false);
-						return deferred.promise;
-					}
-					$scope.getAllcontact = function() {
-						var leadService = appEndpointSF.getleadService();
-						leadService.getAllcontact($scope.curUser.business.id)
-								.then(function(contacts) {
-									$scope.contactList = contacts.items;
-								});
+						var autoCompleteUIService = appEndpointSF
+								.getAutoCompleteUIService();
+						return autoCompleteUIService.queryContactSearch(
+								$scope.contactList, query);
 					}
 
 					$scope.waitForServiceLoad = function() {

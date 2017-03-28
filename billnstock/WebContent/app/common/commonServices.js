@@ -8,9 +8,66 @@ app.factory('MathService', function() {
 	return factory;
 });
 
-app.service('CalcService', function(MathService) {
+app.service('AutoCompleteUIService', function($log, $timeout, $q) {
 
-	this.square = function(a) {
-		return MathService.multiply(a, a);
+	this.createContactFilterFor = function(query) {
+		var lowercaseQuery = angular.lowercase(query);
+		return function filterFn(contact) {
+			var a = contact.fName + "" + contact.lName;
+			return (angular.lowercase(a).indexOf(lowercaseQuery) >= 0);
+		};
 	}
+
+	this.queryContactSearch = function(contactList, query) {
+		var results = query ? contactList.filter(this
+				.createContactFilterFor(query)) : [];
+		var deferred = $q.defer();
+		$timeout(function() {
+			deferred.resolve(results);
+		}, Math.random() * 100, false);
+		return deferred.promise;
+	}
+
+	/**
+	 * Create filter function for a query string
+	 */
+	this.createCustomerFilterFor = function(query) {
+		var lowercaseQuery = angular.lowercase(query);
+		return function filterFn(cus) {
+			var a = cus.isCompany ? cus.companyName
+					: (cus.firstName + "" + cus.lastName);
+			return (angular.lowercase(a).indexOf(lowercaseQuery) >= 0);
+		};
+	}
+
+	this.queryCustomerSearch = function(customerList, query) {
+		var results = query ? customerList.filter(this
+				.createCustomerFilterFor(query)) : [];
+		var deferred = $q.defer();
+		$timeout(function() {
+			deferred.resolve(results);
+		}, Math.random() * 100, false);
+		return deferred.promise;
+	}
+
+	this.createSupplierFilterFor = function(query) {
+		var lowercaseQuery = angular.lowercase(query);
+		return function filterFn(supp) {
+
+			return (angular.lowercase(supp.supplierName)
+					.indexOf(lowercaseQuery) >= 0);
+		};
+	}
+
+	this.querySupplierSearch = function(supplierList, query) {
+		var results = query ? supplierList.filter(this
+				.createSupplierFilterFor(query)) : [];
+		var deferred = $q.defer();
+		$timeout(function() {
+			deferred.resolve(results);
+
+		}, Math.random() * 1000, false);
+		return deferred.promise;
+	}
+
 });
