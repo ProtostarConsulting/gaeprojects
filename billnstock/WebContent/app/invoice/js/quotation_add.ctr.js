@@ -359,10 +359,10 @@ app
 								+ $scope.documentEntity.productDiscAmount;
 					}
 
-					$scope.printInvoice = function(invoiceId) {
+					$scope.printInvoice = function(quotnId) {
 						var bid = $scope.curUser.business.id;
-						window.open("PrintPdfInvoice?bid=" + bid
-								+ "&invoiceId=" + invoiceId);
+						window.open("PrintPdfQuotation?bid=" + bid
+								+ "&quotnId=" + quotnId);
 					}
 
 					$scope.dialogBox = function(ev) {

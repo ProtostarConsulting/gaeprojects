@@ -1,6 +1,7 @@
 angular.module("stockApp").factory('appEndpointSF', appEndpointSFFn);
 
-function appEndpointSFFn($log, localDBServiceFactory, googleEndpointSF, AutoCompleteUIService) {
+function appEndpointSFFn($log, localDBServiceFactory, googleEndpointSF,
+		AutoCompleteUIService) {
 
 	// When app is in test mode, it will return service from local db store.
 	// Else actual google end points.
@@ -11,8 +12,8 @@ function appEndpointSFFn($log, localDBServiceFactory, googleEndpointSF, AutoComp
 	var endpointFactory = {};
 	endpointFactory.is_service_ready = false;
 	// This will call the function to load services
-	
-	// -----------------------------------user login-----------------
+
+	// This is a Angular Service
 	endpointFactory.getAutoCompleteUIService = function() {
 		return AutoCompleteUIService;
 	};
