@@ -4,7 +4,8 @@ app
 				"invoiceListCtr",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
 						$mdUtil, $log, $state, $http, $stateParams, $mdColors,
-						$routeParams, $filter, $location, $anchorScroll, objectFactory, appEndpointSF) {
+						$routeParams, $filter, $location, $anchorScroll,
+						objectFactory, appEndpointSF) {
 
 					function reSetQuery() {
 						return {
@@ -16,8 +17,8 @@ app
 						};
 					}
 					$scope.query = reSetQuery();
-					$scope.documentStatusList = [ 'ALL', 'DRAFT', 'SUBMITTED',
-							'FINALIZED', 'SENT', 'PAID', 'UNPAID' ];
+					$scope.documentStatusList = [ 'ALL', 'STARRED', 'DRAFT',
+							'SUBMITTED', 'FINALIZED', 'SENT', 'PAID', 'UNPAID' ];
 					$scope.selectedStatus = "";
 
 					$scope.fitlerListByStatus = function(status) {
@@ -26,7 +27,11 @@ app
 						$scope.invoiceData = [];
 						$scope.query = reSetQuery();
 						$scope.pagingInfoReturned = null;
-						$scope.fetchEntityListByPaging();
+						if (status == 'STARRED') {
+							$scope.getStarredInvoices();
+						} else {
+							$scope.fetchEntityListByPaging();
+						}
 					}
 
 					$scope.curUser = appEndpointSF.getLocalUserService()
@@ -127,7 +132,29 @@ app
 									$scope.showSimpleToast(msgBean.msg);
 								});
 					}
-					
+
+					$scope.changeStarredValue = function(invoice) {
+
+						invoice.starred = !invoice.starred;
+
+						var invoiceService = appEndpointSF.getInvoiceService();
+						invoice.modifiedBy = $scope.curUser.email_id;
+						invoiceService.addInvoice(invoice).then(
+								function(invoice) {
+
+								});
+					}
+
+					$scope.getStarredInvoices = function() {
+
+						var invoiceService = appEndpointSF.getInvoiceService();
+
+						invoiceService.getStarredInvoices().then(
+								function(list) {
+									$scope.invoiceData = list;
+									$scope.loading = false;
+								});
+					}
 
 					$scope.printInvoice = function(invoiceId) {
 						var bid = $scope.curUser.business.id;

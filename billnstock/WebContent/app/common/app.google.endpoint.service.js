@@ -2473,6 +2473,14 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
+	InvoiceService.getStarredInvoices = function() {
+		var deferred = $q.defer();
+		gapi.client.invoiceService.getStarredInvoices().execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}
+	
 	InvoiceService.addInvoice = function(invoice) {
 		var deferred = $q.defer();
 
