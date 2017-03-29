@@ -79,7 +79,11 @@ public class EmailHtmlTemplateService {
 			if (status == DocumentStatus.REJECTED) {
 				documentStatus = "Rejected";
 				docStatusLable = "Rejected By";
-			} else {
+			}
+			else if (status == DocumentStatus.SUBMITTED) {
+				documentStatus = "Approved";
+				docStatusLable = "Approved By";
+			}else {
 				documentStatus = "Approved";
 				docStatusLable = "Approved By";
 			}

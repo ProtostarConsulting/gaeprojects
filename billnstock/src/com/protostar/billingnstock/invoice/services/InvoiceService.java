@@ -75,6 +75,13 @@ public class InvoiceService extends BaseService {
 		return documentEntity;
 	}
 
+	@ApiMethod(name = "getStarredInvoices", path = "getStarredInvoices")
+	public List<InvoiceEntity> getStarredInvoices() {
+		List<InvoiceEntity> starredInvoices = ofy().load()
+				.type(InvoiceEntity.class).filter("starred", true).list();
+		return starredInvoices;
+	}
+
 	@ApiMethod(name = "getAllInvoice", path = "getAllInvoice")
 	public List<InvoiceEntity> getAllInvoice(@Named("id") Long busId) {
 

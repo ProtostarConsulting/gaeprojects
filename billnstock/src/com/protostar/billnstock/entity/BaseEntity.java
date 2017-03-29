@@ -31,9 +31,9 @@ public abstract class BaseEntity {
 
 	@Index
 	private boolean isDeleted = false;
-	
+
 	@Index
-	private boolean isStared = false;
+	private boolean starred = false;
 
 	public BaseEntity() {
 		super();
@@ -42,7 +42,8 @@ public abstract class BaseEntity {
 	@OnSave
 	public void beforeSave() {
 		if (getBusiness() == null) {
-			throw new RuntimeException("Business entity is not set on: " + this.getClass().getSimpleName()
+			throw new RuntimeException("Business entity is not set on: "
+					+ this.getClass().getSimpleName()
 					+ " This is required field. Aborting save operation...");
 		}
 
@@ -138,12 +139,11 @@ public abstract class BaseEntity {
 		this.isDeleted = isDeleted;
 	}
 
-	public boolean isStared() {
-		return isStared;
+	public boolean isStarred() {
+		return starred;
 	}
 
-	public void setStared(boolean isStared) {
-		this.isStared = isStared;
+	public void setStarred(boolean starred) {
+		this.starred = starred;
 	}
-
 }
