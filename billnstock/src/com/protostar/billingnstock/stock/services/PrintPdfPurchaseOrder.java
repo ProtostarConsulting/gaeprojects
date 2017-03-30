@@ -107,7 +107,6 @@ public class PrintPdfPurchaseOrder extends HttpServlet {
 			UserEntity createdBy = purchaseOrderEntity.getCreatedBy();
 			root.put("createdBy", createdBy == null ? "" : createdBy.getFirstName() + " " + createdBy.getLastName());
 			UserEntity approvedBy = purchaseOrderEntity.getApprovedBy();
-			System.out.println("approvedBy: " + approvedBy);
 			root.put("approvedBy",
 					approvedBy == null ? "" : approvedBy.getFirstName() + " " + approvedBy.getLastName());
 

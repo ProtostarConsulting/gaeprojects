@@ -29,6 +29,10 @@ public class EmailStockReceiptTask extends BaseEmailTask {
 
 	@Override
 	public void run() {
+		
+		if (this.isSkipEmail())
+			return;
+		
 		// expensive operation to be in the background goes here
 		try {
 

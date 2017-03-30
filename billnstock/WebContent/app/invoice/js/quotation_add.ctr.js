@@ -503,7 +503,7 @@ app
 											locals : {
 												curUser : $scope.curUser,
 												customer : $scope.customer,
-												invoiceObj : invoiceObj,
+												invoiceObj : $scope.documentEntity,
 												customerList : $scope.customerList
 											}
 										})

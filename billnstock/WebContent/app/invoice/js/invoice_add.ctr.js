@@ -445,15 +445,10 @@ app
 
 					$scope.getAllcontact = function() {
 						var leadService = appEndpointSF.getleadService();
-						$log.debug('Loading $scope.contactList... ');
-						leadService
-								.getAllcontact($scope.curUser.business.id)
-								.then(
-										function(contacts) {
-											$scope.contactList = contacts.items;
-											$log.debug('$scope.contactList: '
-													+ $scope.contactList);
-										});
+						leadService.getAllcontact($scope.curUser.business.id)
+								.then(function(contacts) {
+									$scope.contactList = contacts.items;
+								});
 					}
 
 					$scope.querySearch = function(query) {
@@ -503,7 +498,7 @@ app
 											locals : {
 												curUser : $scope.curUser,
 												customer : $scope.customer,
-												invoiceObj : invoiceObj,
+												invoiceObj : $scope.documentEntity,
 												customerList : $scope.customerList
 											}
 										})

@@ -20,16 +20,19 @@ public class EmailStockShipmentTask extends BaseEmailTask {
 	private static final long serialVersionUID = 1L;
 	private int itemNumber;
 
-	public EmailStockShipmentTask(long bizID, String fromEmail,
-			String emailSubject, String messageBody, int itemNumber) {
+	public EmailStockShipmentTask(long bizID, String fromEmail, String emailSubject, String messageBody,
+			int itemNumber) {
 		super(bizID, fromEmail, emailSubject, messageBody);
 		this.itemNumber = itemNumber;
 	}
 
 	@Override
 	public void run() {
-		try {
 
+		if (this.isSkipEmail())
+			return;
+
+		try {
 			SendGrid sg = new SendGrid(this.getSendGridAPIKey());
 			sg.addRequestHeader("X-Mock", "true");
 
@@ -57,11 +60,9 @@ public class EmailStockShipmentTask extends BaseEmailTask {
 				.getStockShipmentByItemNumber(this.itemNumber);
 		PrintPdfstockShipment printPdfStockShipment = new PrintPdfstockShipment();
 
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream(
-				Constants.DOCUMENT_DEFAULT_MAX_SIZE);
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream(Constants.DOCUMENT_DEFAULT_MAX_SIZE);
 		printPdfStockShipment.generatePdf(stockItemsShipment, outputStream);
-		String base64Content = BaseEncoding.base64().encode(
-				outputStream.toByteArray());
+		String base64Content = BaseEncoding.base64().encode(outputStream.toByteArray());
 
 		Attachments attachments = new Attachments();
 		attachments.setContent(base64Content);

@@ -20,8 +20,7 @@ public class EmailPOTask extends BaseEmailTask {
 	private static final long serialVersionUID = 1L;
 	private int itemNumber;
 
-	public EmailPOTask(long bizID, String fromEmail, String emailSubject,
-			String messageBody, int itemNumber) {
+	public EmailPOTask(long bizID, String fromEmail, String emailSubject, String messageBody, int itemNumber) {
 		super(bizID, fromEmail, emailSubject, messageBody);
 		this.itemNumber = itemNumber;
 	}
@@ -29,7 +28,10 @@ public class EmailPOTask extends BaseEmailTask {
 	@Override
 	public void run() {
 		// expensive operation to be in the background goes here
-		try {
+		if (this.isSkipEmail())
+			return;
+		
+		try {		
 
 			SendGrid sg = new SendGrid(this.getSendGridAPIKey());
 			sg.addRequestHeader("X-Mock", "true");
@@ -54,15 +56,12 @@ public class EmailPOTask extends BaseEmailTask {
 	public Mail updateEmail(Mail mail) {
 		// Add PO PDF attachment
 		StockManagementService stockManagementService = new StockManagementService();
-		PurchaseOrderEntity poObject = stockManagementService
-				.getPOByItemNumber(this.itemNumber);
+		PurchaseOrderEntity poObject = stockManagementService.getPOByItemNumber(this.itemNumber);
 		PrintPdfPurchaseOrder printPdfPurchaseOrder = new PrintPdfPurchaseOrder();
 
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream(
-				Constants.DOCUMENT_DEFAULT_MAX_SIZE);
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream(Constants.DOCUMENT_DEFAULT_MAX_SIZE);
 		printPdfPurchaseOrder.generatePdf(poObject, outputStream);
-		String base64Content = BaseEncoding.base64().encode(
-				outputStream.toByteArray());
+		String base64Content = BaseEncoding.base64().encode(outputStream.toByteArray());
 
 		Attachments attachments = new Attachments();
 		attachments.setContent(base64Content);

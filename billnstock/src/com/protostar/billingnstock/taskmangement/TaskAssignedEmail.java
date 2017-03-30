@@ -18,6 +18,8 @@ import com.sendgrid.SendGrid;
 public class TaskAssignedEmail implements DeferredTask {
 	private static final long serialVersionUID = 1L;
 
+	private boolean skipEmail = false;
+	
 	private String fromEmail;
 	private String emailTo;
 	private String emailDLList;
@@ -31,6 +33,7 @@ public class TaskAssignedEmail implements DeferredTask {
 				.getTaskSettingsByBiz(bizId);
 
 		if (taskSettings == null || !taskSettings.isEmailNotification()) {
+			this.skipEmail= true;
 			return;
 		}
 
@@ -39,6 +42,7 @@ public class TaskAssignedEmail implements DeferredTask {
 				.getBusinessSettingsEntity(bizId);
 		String sendgrid_API_KEY = businessSettingsEntity.getSendGridAPIKey();
 		if (sendgrid_API_KEY == null || sendgrid_API_KEY.isEmpty()) {
+			this.skipEmail= true;
 			return;
 		}
 		this.SENDGRID_API_KEY = sendgrid_API_KEY;
@@ -51,6 +55,10 @@ public class TaskAssignedEmail implements DeferredTask {
 
 	@Override
 	public void run() {
+		
+		if (this.isSkipEmail())
+			return;
+		
 		try {
 			SendGrid sg = new SendGrid(SENDGRID_API_KEY);
 			sg.addRequestHeader("X-Mock", "true");
@@ -175,6 +183,14 @@ public class TaskAssignedEmail implements DeferredTask {
 
 	public void setEmailDLList(String emailDLList) {
 		this.emailDLList = emailDLList;
+	}
+
+	public boolean isSkipEmail() {
+		return skipEmail;
+	}
+
+	public void setSkipEmail(boolean skipEmail) {
+		this.skipEmail = skipEmail;
 	}
 
 }

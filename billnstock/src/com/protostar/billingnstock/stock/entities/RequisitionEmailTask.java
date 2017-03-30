@@ -21,9 +21,8 @@ public class RequisitionEmailTask extends BaseEmailTask {
 	private static final long serialVersionUID = 1L;
 	private int itemNumber;
 
-	public RequisitionEmailTask(long bizID, String fromEmail,String emailSubject, String messageBody,
-			int itemNumber) {
-		super(bizID, fromEmail,emailSubject, messageBody);
+	public RequisitionEmailTask(long bizID, String fromEmail, String emailSubject, String messageBody, int itemNumber) {
+		super(bizID, fromEmail, emailSubject, messageBody);
 		this.itemNumber = itemNumber;
 
 	}
@@ -31,8 +30,10 @@ public class RequisitionEmailTask extends BaseEmailTask {
 	@Override
 	public void run() {
 
-		try {
+		if (this.isSkipEmail())
+			return;
 
+		try {
 			SendGrid sg = new SendGrid(this.getSendGridAPIKey());
 			sg.addRequestHeader("X-Mock", "true");
 
@@ -57,8 +58,7 @@ public class RequisitionEmailTask extends BaseEmailTask {
 
 		StockManagementService stockManagementService = new StockManagementService();
 
-		RequisitionEntity requisitionEntity = stockManagementService
-				.getRequisitionByItemNumber(this.itemNumber);
+		RequisitionEntity requisitionEntity = stockManagementService.getRequisitionByItemNumber(this.itemNumber);
 
 		PrintPdfRequisition printPdfRequisition = new PrintPdfRequisition();
 

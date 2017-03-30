@@ -517,8 +517,9 @@ app
 											fullscreen : useFullScreen,
 											locals : {
 												curBusi : $scope.curUser.business,
-												supplier : $scope.supplier,
-												curUser : $scope.curUser
+												curUser : $scope.curUser,
+												supplierList : $scope.supplierList,
+												documentEntity : $scope.documentEntity
 											}
 										})
 								.then(
@@ -533,7 +534,7 @@ app
 					};
 
 					function addSupplierDialogController($scope, $mdDialog,
-							curBusi, curUser, supplier) {
+							curBusi, curUser, supplierList, documentEntity) {
 						$scope.addSupplier = function() {
 							$scope.supplier.business = curUser.business;
 							$scope.supplier.createdDate = new Date();
@@ -542,14 +543,16 @@ app
 									.getSupplierService();
 
 							supplierService.addSupplier($scope.supplier).then(
-									function(msgBean) {
+									function(supplierObj) {
+										supplierList.push(supplierObj);
+										documentEntity.supplier = supplierObj;										
 									});
 							$scope.cancel();
 							// window.history.back();
 						}
 
 						$scope.cancel = function() {
-							$mdDialog.hide();
+							$mdDialog.cancel();
 						};
 					}
 

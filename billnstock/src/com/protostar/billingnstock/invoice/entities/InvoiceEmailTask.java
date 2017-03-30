@@ -23,6 +23,7 @@ import com.sendgrid.SendGrid;
 public class InvoiceEmailTask implements DeferredTask {
 
 	private static final long serialVersionUID = 1L;
+	private boolean skipEmail = false;
 	private int itemNumber;
 	private String fromEmail;
 	private String emailDLList;
@@ -38,6 +39,7 @@ public class InvoiceEmailTask implements DeferredTask {
 
 		if (invoiceSettings == null || !invoiceSettings.isEmailNotification()
 				|| invoiceSettings.getEmailNotificationDL().isEmpty()) {
+			this.skipEmail= true;
 			return;
 		}
 		UserService userService = new UserService();
@@ -46,6 +48,7 @@ public class InvoiceEmailTask implements DeferredTask {
 		.getBusinessSettingsEntity(bizId);
 		String sendgrid_API_KEY = businessSettingsEntity.getSendGridAPIKey();
 		if (sendgrid_API_KEY == null || sendgrid_API_KEY.isEmpty()) {
+			this.skipEmail= true;
 			return;
 		}
 		this.itemNumber = itemNumber;
@@ -59,6 +62,9 @@ public class InvoiceEmailTask implements DeferredTask {
 	@Override
 	public void run() {
 		// expensive operation to be in the background goes here
+		if (this.isSkipEmail())
+			return;
+
 		try {
 			SendGrid sg = new SendGrid(this.SENDGRID_API_KEY);
 			sg.addRequestHeader("X-Mock", "true");
@@ -194,5 +200,13 @@ public class InvoiceEmailTask implements DeferredTask {
 
 	public void setSENDGRID_API_KEY(String sENDGRID_API_KEY) {
 		SENDGRID_API_KEY = sENDGRID_API_KEY;
+	}
+
+	public boolean isSkipEmail() {
+		return skipEmail;
+	}
+
+	public void setSkipEmail(boolean skipEmail) {
+		this.skipEmail = skipEmail;
 	}
 }

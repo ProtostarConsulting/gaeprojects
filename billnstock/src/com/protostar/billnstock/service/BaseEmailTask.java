@@ -21,26 +21,26 @@ public class BaseEmailTask implements DeferredTask {
 
 	private static final long serialVersionUID = 1L;
 
+	private boolean skipEmail = false;
 	private String fromEmail;
 	private String emailDLList;
 	private String emailSubject;
 	private String messageBody;
 	private String sendGridAPIKey;
 
-	public BaseEmailTask(long bizID, String fromEmail, String emailSubject,
-			String messageBody) {
+	public BaseEmailTask(long bizID, String fromEmail, String emailSubject, String messageBody) {
 
-		StockSettingsEntity stockSettings = new StockManagementService()
-				.getStockSettingsByBiz(bizID);
+		StockSettingsEntity stockSettings = new StockManagementService().getStockSettingsByBiz(bizID);
 		if (stockSettings == null || !stockSettings.isEmailNotification()
 				|| stockSettings.getEmailNotificationDL().isEmpty()) {
+			this.skipEmail= true;
 			return;
 		}
 		UserService userService = new UserService();
-		BusinessSettingsEntity businessSettingsEntity = userService
-				.getBusinessSettingsEntity(bizID);
+		BusinessSettingsEntity businessSettingsEntity = userService.getBusinessSettingsEntity(bizID);
 		String sendgrid_API_KEY = businessSettingsEntity.getSendGridAPIKey();
 		if (sendgrid_API_KEY == null || sendgrid_API_KEY.isEmpty()) {
+			this.skipEmail= true;
 			return;
 		}
 
@@ -189,6 +189,14 @@ public class BaseEmailTask implements DeferredTask {
 
 	public void setSendGridAPIKey(String sendGridAPIKey) {
 		this.sendGridAPIKey = sendGridAPIKey;
+	}
+
+	public boolean isSkipEmail() {
+		return skipEmail;
+	}
+
+	public void setSkipEmail(boolean skipEmail) {
+		this.skipEmail = skipEmail;
 	}
 
 }

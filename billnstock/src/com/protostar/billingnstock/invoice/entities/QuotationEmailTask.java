@@ -3,13 +3,9 @@ package com.protostar.billingnstock.invoice.entities;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import com.google.appengine.api.taskqueue.DeferredTask;
 import com.google.common.io.BaseEncoding;
 import com.protostar.billingnstock.invoice.services.InvoiceService;
 import com.protostar.billingnstock.invoice.services.PrintPdfQuotation;
-import com.protostar.billingnstock.user.entities.BusinessSettingsEntity;
-import com.protostar.billingnstock.user.services.UserService;
-import com.protostar.billnstock.service.BaseEmailTask;
 import com.protostar.billnstock.until.data.Constants;
 import com.sendgrid.Attachments;
 import com.sendgrid.Content;
@@ -21,47 +17,22 @@ import com.sendgrid.Request;
 import com.sendgrid.Response;
 import com.sendgrid.SendGrid;
 
-public class QuotationEmailTask implements DeferredTask {
+public class QuotationEmailTask extends InvoiceEmailTask {
 
 	private static final long serialVersionUID = 1L;
-	private int itemNumber;
-	private String fromEmail;
-	private String emailDLList;
-	private String emailSubject;
-	private String messageBody;
-	private String SENDGRID_API_KEY;
 
-	public QuotationEmailTask(long bizId, String fromEmail,
-			String emailSubject, String messageBody, int itemNumber) {
-
-		InvoiceSettingsEntity invoiceSettings = new InvoiceService()
-				.getInvoiceSettingsByBiz(bizId);
-
-		if (invoiceSettings == null || !invoiceSettings.isEmailNotification()
-				|| invoiceSettings.getEmailNotificationDL().isEmpty()) {
-			return;
-		}
-		UserService userService = new UserService();
-		BusinessSettingsEntity businessSettingsEntity = userService
-
-		.getBusinessSettingsEntity(bizId);
-		String sendgrid_API_KEY = businessSettingsEntity.getSendGridAPIKey();
-		if (sendgrid_API_KEY == null || sendgrid_API_KEY.isEmpty()) {
-			return;
-		}
-		this.itemNumber = itemNumber;
-		this.fromEmail = fromEmail;
-		this.emailDLList = invoiceSettings.getEmailNotificationDL();
-		this.emailSubject = emailSubject;
-		this.messageBody = messageBody;
-		this.SENDGRID_API_KEY = sendgrid_API_KEY;
+	public QuotationEmailTask(long bizID, String fromEmail, String emailSubject, String messageBody, int itemNumber) {
+		super(bizID, fromEmail, emailSubject, messageBody, itemNumber);
 	}
 
 	@Override
 	public void run() {
 		// expensive operation to be in the background goes here
+		if (this.isSkipEmail())
+			return;
+
 		try {
-			SendGrid sg = new SendGrid(this.SENDGRID_API_KEY);
+			SendGrid sg = new SendGrid(this.getSENDGRID_API_KEY());
 			sg.addRequestHeader("X-Mock", "true");
 
 			Request request = new Request();
@@ -87,22 +58,22 @@ public class QuotationEmailTask implements DeferredTask {
 
 		Email fromEmail = new Email();
 		fromEmail.setName(Constants.SENDGRID_FROM_EMAIL_NAME);
-		fromEmail.setEmail(this.fromEmail);
+		fromEmail.setEmail(this.getFromEmail());
 		mail.setFrom(fromEmail);
 
 		Personalization personalization = new Personalization();
 
 		Email selfTo = new Email();
 		// cc.setName("Example User CC1");
-		selfTo.setEmail(this.fromEmail);
+		selfTo.setEmail(this.getFromEmail());
 		personalization.addTo(selfTo);
 
-		if (this.emailDLList != null && !this.emailDLList.isEmpty()) {
-			String[] emailIds = this.emailDLList.split(",");
+		if (this.getEmailDLList() != null && !this.getEmailDLList().isEmpty()) {
+			String[] emailIds = this.getEmailDLList().split(",");
 			for (String emailId : emailIds) {
 				// Can't have same email id in to, cc or bcc
 				String trimedTo = emailId.trim();
-				if (this.fromEmail.equalsIgnoreCase(trimedTo))
+				if (this.getFromEmail().equalsIgnoreCase(trimedTo))
 					continue;
 
 				Email cc = new Email();
@@ -117,7 +88,7 @@ public class QuotationEmailTask implements DeferredTask {
 		// bcc.setEmail("info@protostar.co.in");
 		// personalization.addBcc(bcc);
 
-		personalization.setSubject(this.emailSubject);
+		personalization.setSubject(this.getEmailSubject());
 		personalization.addHeader("X-Test", "test");
 		personalization.addHeader("X-Mock", "true");
 
@@ -125,76 +96,24 @@ public class QuotationEmailTask implements DeferredTask {
 
 		Content content = new Content();
 		content.setType("text/html");
-		content.setValue(this.messageBody);
+		content.setValue(this.getMessageBody());
 		mail.addContent(content);
 
 		InvoiceService invoiceService = new InvoiceService();
-		QuotationEntity quotationEntity = invoiceService
-				.getQuotationByItemNumber(this.itemNumber);
+		QuotationEntity quotationEntity = invoiceService.getQuotationByItemNumber(this.getItemNumber());
 
 		PrintPdfQuotation printPDFQuotation = new PrintPdfQuotation();
 
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream(
-				Constants.DOCUMENT_DEFAULT_MAX_SIZE);
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream(Constants.DOCUMENT_DEFAULT_MAX_SIZE);
 		printPDFQuotation.generatePdf(quotationEntity, outputStream);
-		String base64Content = BaseEncoding.base64().encode(
-				outputStream.toByteArray());
+		String base64Content = BaseEncoding.base64().encode(outputStream.toByteArray());
 
 		Attachments attachments = new Attachments();
 		attachments.setContent(base64Content);
 		attachments.setType("application/pdf");
-		attachments.setFilename("Quotation" + this.itemNumber + ".pdf");
+		attachments.setFilename("Quotation_" + this.getItemNumber() + ".pdf");
 		attachments.setDisposition("attachment");
 		mail.addAttachments(attachments);
 		return mail;
 	}
-
-	public int getItemNumber() {
-		return itemNumber;
-	}
-
-	public void setItemNumber(int itemNumber) {
-		this.itemNumber = itemNumber;
-	}
-
-	public String getFromEmail() {
-		return fromEmail;
-	}
-
-	public void setFromEmail(String fromEmail) {
-		this.fromEmail = fromEmail;
-	}
-
-	public String getEmailDLList() {
-		return emailDLList;
-	}
-
-	public void setEmailDLList(String emailDLList) {
-		this.emailDLList = emailDLList;
-	}
-
-	public String getEmailSubject() {
-		return emailSubject;
-	}
-
-	public void setEmailSubject(String emailSubject) {
-		this.emailSubject = emailSubject;
-	}
-
-	public String getMessageBody() {
-		return messageBody;
-	}
-
-	public void setMessageBody(String messageBody) {
-		this.messageBody = messageBody;
-	}
-
-	public String getSENDGRID_API_KEY() {
-		return SENDGRID_API_KEY;
-	}
-
-	public void setSENDGRID_API_KEY(String sENDGRID_API_KEY) {
-		SENDGRID_API_KEY = sENDGRID_API_KEY;
-	}
-
 }

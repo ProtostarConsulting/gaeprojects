@@ -191,12 +191,12 @@
 
 						<td><md-input-container flex> <label>Qty
 							</label> <input type="number" ng-model="item.qty"
-								ng-change="calProductSubTotal()" ng-required="true">
+								ng-change="reCalculateTotal()" ng-required="true">
 							<div>{{item.stockItem.stockItemType.unit}}</div>
 							</md-input-container></td>
 						<td><md-input-container flex> <label>Purchase
 								Price </label> <input type="number" ng-model="item.price"
-								ng-change="calProductSubTotal()" aria-label="iprice"
+								ng-change="reCalculateTotal()" aria-label="iprice"
 								ng-required="true"> </md-input-container></td>
 						<td><md-input-container flex> <b>{{item.qty
 								* item.price | currency:"":"2"}} </b></td>
@@ -225,10 +225,10 @@
 						<td><md-input-container flex
 								ng-hide="documentEntity.productLineItemList.length==0">
 							<md-select ng-model="documentEntity.selectedProductTax"
-								placeholder="Select Tax" ng-change="productTaxChanged()">
-							<md-option ng-value="taxValue"
-								ng-selected="documentEntity.selectedProductTax.id == taxValue.id"
-								ng-repeat="taxValue in taxforinvoice">{{taxValue.taxCodeName}}</md-option>
+								placeholder="Select Tax" ng-change="reCalculateTotal()">
+							<md-option ng-value="taxItem"
+								ng-selected="documentEntity.selectedProductTax.id == taxItem.id"
+								ng-repeat="taxItem in taxList">{{taxItem?taxItem.taxCodeName:'NA'}}</md-option>
 							</md-select> </md-input-container></td>
 						<td>{{documentEntity.selectedProductTax.taxPercenatge}}</td>
 						<td><b>{{documentEntity.productTaxTotal |
@@ -282,10 +282,10 @@
 
 						<td><md-input-container flex> <label>Quantity
 							</label> <input type="number" ng-model="serviceItem.qty"
-								ng-change="calServiceSubTotal()"> </md-input-container></td>
+								ng-change="reCalculateTotal()"> </md-input-container></td>
 						<td><md-input-container flex> <input
 								type="number" ng-model="serviceItem.cost"
-								ng-change="calServiceSubTotal()"></md-input-container></td>
+								ng-change="reCalculateTotal()"></md-input-container></td>
 						<td><md-input-container flex> <b>{{serviceItem.qty
 								* serviceItem.cost | currency:"":"2"}} </b></td>
 						<td><md-icon
@@ -312,10 +312,9 @@
 						<td><md-input-container flex
 								ng-hide="documentEntity.serviceLineItemList.length==0">
 							<md-select ng-model="documentEntity.selectedServiceTax"
-								placeholder="Select Tax" ng-change="serviceTaxChanged()">
-							<md-option ng-value="taxValue"
-								ng-repeat="taxValue in taxforinvoice"
-								ng-selected="documentEntity.selectedServiceTax.id == taxValue.id">{{taxValue.taxCodeName}}</md-option>
+								placeholder="Select Tax" ng-change="reCalculateTotal()">
+							<md-option ng-value="taxItem" ng-repeat="taxItem in taxList"
+								ng-selected="documentEntity.selectedServiceTax.id == taxItem.id">{{taxItem?taxItem.taxCodeName:'NA'}}</md-option>
 							</md-select> </md-input-container></td>
 						<td>{{documentEntity.selectedServiceTax.taxPercenatge}}</td>
 						<td><b>{{documentEntity.serviceTaxTotal |
