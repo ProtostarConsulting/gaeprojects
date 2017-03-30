@@ -8,7 +8,7 @@ app
 						objectFactory, appEndpointSF) {
 
 					$scope.purchaseOrderList = [];
-					
+
 					function reSetQuery() {
 						return {
 							order : '-itemNumber',
@@ -19,8 +19,8 @@ app
 						};
 					}
 					$scope.query = reSetQuery();
-					$scope.documentStatusList = [ 'ALL', 'DRAFT', 'SUBMITTED',
-							'FINALIZED', 'REJECTED' ];
+					$scope.documentStatusList = [ 'ALL', 'STARRED', 'DRAFT',
+							'SUBMITTED', 'FINALIZED', 'REJECTED' ];
 					$scope.selectedStatus = "";
 
 					$scope.fitlerListByStatus = function(status) {
@@ -29,7 +29,11 @@ app
 						$scope.purchaseOrderList = [];
 						$scope.query = reSetQuery();
 						$scope.pagingInfoReturned = null;
-						$scope.fetchEntityListByPaging();
+						if (status == 'STARRED') {
+							$scope.getStarredPOList();
+						} else {
+							$scope.fetchEntityListByPaging();
+						}
 					}
 
 					$scope.curUser = appEndpointSF.getLocalUserService()
@@ -83,7 +87,27 @@ app
 											$scope.loading = false;
 										});
 					}
-				
+
+					$scope.changeStarredValue = function(purchaseOrder) {
+
+						purchaseOrder.starred = !purchaseOrder.starred;
+
+						var stockService = appEndpointSF.getStockService();
+						purchaseOrder.modifiedBy = $scope.curUser.email_id;
+						stockService.addPurchaseOrder(purchaseOrder).then(
+								function() {
+								});
+					}
+
+					$scope.getStarredPOList = function() {
+
+						var stockService = appEndpointSF.getStockService();
+						stockService.getStarredPurchaseOrders().then(
+								function(starredPOs) {
+									$scope.purchaseOrderList = starredPOs;
+									$scope.loading = false;
+								})
+					}
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {

@@ -60,14 +60,16 @@
 						Edit</md-tooltip></ng-md-icon></md-button>
 						<md-button class="md-icon-button" ng-show="invoice.starred==false"
 							ng-hide="invoice.starred==true"
-							ng-click="changeStarredValue(invoice)"> <ng-md-icon
-							icon="star" style="fill: md-default" size="20"> <md-tooltip>
-						Star</md-tooltip></ng-md-icon></md-button>
+							ng-click="changeStarredValue(invoice)"> <md-icon
+							md-svg-src="/img/icons/ic_star_black_24px.svg"
+							style="fill: md-default" size="20"> <md-tooltip>
+						Star</md-tooltip></md-icon></md-button>
 						<md-button class="md-icon-button" ng-show="invoice.starred==true"
 							ng-hide="invoice.starred==false"
-							ng-click="changeStarredValue(invoice)"> <ng-md-icon
-							icon="star_half" style="fill: md-default" size="20">
-						<md-tooltip> Unstar </md-tooltip></ng-md-icon></md-button>
+							ng-click="changeStarredValue(invoice)"> <md-icon
+							md-svg-src="/img/icons/ic_star_border_black_24px.svg"
+							style="fill: md-default" size="20"> <md-tooltip>
+						Unstar </md-tooltip></md-icon></md-button>
 						<md-button class="md-icon-button"
 							ng-click="updatePaidStatus(invoice)"> <ng-md-icon
 							icon="done" style="fill: md-default" size="20"> <md-tooltip>

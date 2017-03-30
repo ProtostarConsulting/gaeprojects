@@ -1745,11 +1745,11 @@ function googleEndpointSF($q) {
 
 		return deferred.promise;
 	}
-	
+
 	AccountService.addCurrentFinancialYear = function(settings) {
 		var deferred = $q.defer();
-		gapi.client.accountService.addCurrentFinancialYear(settings)
-				.execute(function(resp) {
+		gapi.client.accountService.addCurrentFinancialYear(settings).execute(
+				function(resp) {
 					deferred.resolve(resp);
 				});
 		return deferred.promise;
@@ -1764,7 +1764,7 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	
+
 	AccountService.addAccountingSettingsEntity = function(settings) {
 		var deferred = $q.defer();
 		gapi.client.accountService.addAccountingSettingsEntity(settings)
@@ -2003,8 +2003,8 @@ function googleEndpointSF($q) {
 					deferred.resolve(resp);
 				});
 		return deferred.promise;
-	} 
-	
+	}
+
 	AccountEntryService.getAccountEntryByAccountId = function(accId) {
 		var deferred = $q.defer();
 		gapi.client.accountEntryService.getAccountEntryByAccountId({
@@ -2168,6 +2168,16 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
+
+	StockService.getStarredStockReceipts = function() {
+		var deferred = $q.defer();
+		gapi.client.stockService.getStarredStockReceipts().execute(
+				function(resp) {
+					deferred.resolve(resp.items);
+				});
+		return deferred.promise;
+	}
+
 	StockService.getStockShipmentList = function(id) {
 		var deferred = $q.defer();
 		gapi.client.stockService.getStockShipmentList({
@@ -2175,6 +2185,15 @@ function googleEndpointSF($q) {
 		}).execute(function(resp) {
 			deferred.resolve(resp.items);
 		});
+		return deferred.promise;
+	}
+
+	StockService.getStarredStockShipments = function() {
+		var deferred = $q.defer();
+		gapi.client.stockService.getStarredStockShipments().execute(
+				function(resp) {
+					deferred.resolve(resp.items);
+				});
 		return deferred.promise;
 	}
 
@@ -2248,6 +2267,15 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
+	StockService.getStarredRequisitions = function() {
+		var deferred = $q.defer();
+		gapi.client.stockService.getStarredRequisitions().execute(
+				function(resp) {
+					deferred.resolve(resp.items);
+				});
+		return deferred.promise;
+	}
+
 	StockService.fetchRequisitionListByPaging = function(busId, status,
 			pagingInfo) {
 		var deferred = $q.defer();
@@ -2310,6 +2338,14 @@ function googleEndpointSF($q) {
 		}).execute(function(resp) {
 			deferred.resolve(resp.items)
 		});
+		return deferred.promise;
+	}
+	StockService.getStarredPurchaseOrders = function() {
+		var deferred = $q.defer();
+		gapi.client.stockService.getStarredPurchaseOrders().execute(
+				function(resp) {
+					deferred.resolve(resp.items);
+				});
 		return deferred.promise;
 	}
 
@@ -2480,7 +2516,7 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	
+
 	InvoiceService.addInvoice = function(invoice) {
 		var deferred = $q.defer();
 
@@ -2512,6 +2548,15 @@ function googleEndpointSF($q) {
 		}, pagingInfo).execute(function(resp) {
 			deferred.resolve(resp);
 		});
+		return deferred.promise;
+	}
+
+	InvoiceService.getStarredQuotations = function() {
+		var deferred = $q.defer();
+		gapi.client.invoiceService.getStarredQuotations().execute(
+				function(resp) {
+					deferred.resolve(resp.items);
+				});
 		return deferred.promise;
 	}
 

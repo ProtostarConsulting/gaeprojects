@@ -58,6 +58,20 @@
 						<ng-md-icon icon="edit" style="fill: md-default" size="20">
 						<md-tooltip> Edit</md-tooltip></ng-md-icon></md-button>
 						<md-button class="md-icon-button"
+							ng-show="requisition.starred==false"
+							ng-hide="requisition.starred==true"
+							ng-click="changeStarredValue(requisition)"> <md-icon
+							md-svg-src="/img/icons/ic_star_black_24px.svg"
+							style="fill: md-default" size="20"> <md-tooltip>
+						Star</md-tooltip></md-icon></md-button>
+						<md-button class="md-icon-button"
+							ng-show="requisition.starred==true"
+							ng-hide="requisition.starred==false"
+							ng-click="changeStarredValue(requisition)"> <md-icon
+							md-svg-src="/img/icons/ic_star_border_black_24px.svg"
+							style="fill: md-default" size="20"> <md-tooltip>
+						Unstar </md-tooltip></md-icon></md-button>
+						<md-button class="md-icon-button"
 							ng-click="printAsPdf(requisition.id)"> <ng-md-icon
 							icon="print" style="fill: md-default" size="20"> <md-tooltip>
 						Print as PDF</md-tooltip></ng-md-icon></md-button>

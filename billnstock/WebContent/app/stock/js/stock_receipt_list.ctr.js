@@ -21,8 +21,8 @@ app
 							.getLoggedinUser();
 
 					$scope.selected = [];
-					$scope.documentStatusList = [ 'ALL', 'DRAFT', 'SUBMITTED',
-							'FINALIZED', 'REJECTED' ];
+					$scope.documentStatusList = [ 'ALL', 'STARRED', 'DRAFT',
+							'SUBMITTED', 'FINALIZED', 'REJECTED' ];
 					$scope.selectedStatus = "";
 
 					$scope.fitlerListByStatus = function(status) {
@@ -31,7 +31,11 @@ app
 						$scope.stockReceiptList = [];
 						$scope.query = reSetQuery();
 						$scope.pagingInfoReturned = null;
-						$scope.fetchEntityListByPaging();
+						if (status == 'STARRED') {
+							$scope.getStarredStockReceiptsList();
+						} else {
+							$scope.fetchEntityListByPaging();
+						}
 					}
 
 					$scope.onpagechange = function() {
@@ -61,8 +65,10 @@ app
 								.then(
 										function(pagingInfoReturned) {
 											$scope.pagingInfoReturned = pagingInfoReturned;
-											$scope.stockReceiptList = $scope.stockReceiptList
-													.concat(pagingInfoReturned.entityList);
+											if (pagingInfoReturned.entityList) {
+												$scope.stockReceiptList = $scope.stockReceiptList
+														.concat(pagingInfoReturned.entityList);
+											}
 											$scope.query.totalSize = pagingInfoReturned.totalEntities;
 											$scope.query.pagesLoaded++;
 											$scope.loading = false;
@@ -81,6 +87,28 @@ app
 					$scope.stockReceiptList = [];
 					$scope.selected = [];
 					$scope.waitForServiceLoad();
+
+					$scope.changeStarredValue = function(stockReceipt) {
+
+						stockReceipt.starred = !stockReceipt.starred;
+
+						var stockService = appEndpointSF.getStockService();
+						stockReceipt.modifiedBy = $scope.curUser.email_id;
+						stockService.addStockReceipt(stockReceipt).then(
+								function() {
+								});
+					}
+
+					$scope.getStarredStockReceiptsList = function() {
+
+						var stockService = appEndpointSF.getStockService();
+						stockService.getStarredStockReceipts().then(
+								function(starredReceipts) {
+									$scope.stockReceiptList = starredReceipts;
+									$scope.loading = false;
+								})
+
+					}
 
 					$scope.printstockReceipt = function(stRcptId) {
 						var bid = $scope.curUser.business.id;

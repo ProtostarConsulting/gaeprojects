@@ -20,8 +20,8 @@ app
 						};
 					}
 					$scope.query = reSetQuery();
-					$scope.documentStatusList = [ 'ALL', 'DRAFT', 'SUBMITTED',
-							'FINALIZED', 'REJECTED' ];
+					$scope.documentStatusList = [ 'ALL', 'STARRED', 'DRAFT',
+							'SUBMITTED', 'FINALIZED', 'REJECTED' ];
 					$scope.selectedStatus = "";
 
 					$scope.fitlerListByStatus = function(status) {
@@ -30,7 +30,11 @@ app
 						$scope.requisitionList = [];
 						$scope.query = reSetQuery();
 						$scope.pagingInfoReturned = null;
-						$scope.fetchEntityListByPaging();
+						if (status == 'STARRED') {
+							$scope.getStarredRequisitionList();
+						} else {
+							$scope.fetchEntityListByPaging();
+						}
 					}
 
 					$scope.requisitionList = [];
@@ -54,12 +58,38 @@ app
 								.then(
 										function(pagingInfoReturned) {
 											$scope.pagingInfoReturned = pagingInfoReturned;
-											$scope.requisitionList = $scope.requisitionList
-													.concat(pagingInfoReturned.entityList);
+											if (pagingInfoReturned.entityList) {
+												$scope.requisitionList = $scope.requisitionList
+														.concat(pagingInfoReturned.entityList);
+											}
 											$scope.query.totalSize = pagingInfoReturned.totalEntities;
 											$scope.query.pagesLoaded++;
 											$scope.loading = false;
 										});
+					}
+
+					$scope.changeStarredValue = function(requisition) {
+
+						requisition.starred = !requisition.starred;
+
+						var stockService = appEndpointSF.getStockService();
+						requisition.modifiedBy = $scope.curUser.email_id;
+						stockService.addRequisition(requisition).then(
+								function() {
+								});
+					}
+
+					$scope.getStarredRequisitionList = function() {
+
+						var stockService = appEndpointSF.getStockService();
+						stockService
+								.getStarredRequisitions()
+								.then(
+										function(starredRequisitions) {
+											$scope.requisitionList = starredRequisitions;
+											$scope.loading = false;
+										})
+
 					}
 
 					$scope.waitForServiceLoad = function() {
@@ -72,10 +102,10 @@ app
 					}
 
 					$scope.waitForServiceLoad();
-					
+
 					$scope.printAsPdf = function(id) {
 						var bid = $scope.curUser.business.id;
-						window.open("PrintPdfRequisition?bid=" + bid
-								+ "&id=" + id);
+						window.open("PrintPdfRequisition?bid=" + bid + "&id="
+								+ id);
 					}
 				});

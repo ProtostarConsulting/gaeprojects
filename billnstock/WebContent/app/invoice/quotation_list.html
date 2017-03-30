@@ -55,6 +55,20 @@
 						<ng-md-icon icon="edit" style="fill: md-default" size="20">
 						<md-tooltip> Edit</md-tooltip></ng-md-icon></md-button>
 						<md-button class="md-icon-button"
+							ng-show="quotation.starred==false"
+							ng-hide="quotation.starred==true"
+							ng-click="changeStarredValue(quotation)"> <md-icon
+							md-svg-src="/img/icons/ic_star_black_24px.svg"
+							style="fill: md-default" size="20"> <md-tooltip>
+						Star</md-tooltip></md-icon></md-button>
+						<md-button class="md-icon-button"
+							ng-show="quotation.starred==true"
+							ng-hide="quotation.starred==false"
+							ng-click="changeStarredValue(quotation)"> <md-icon
+							md-svg-src="/img/icons/ic_star_border_black_24px.svg"
+							style="fill: md-default" size="20"> <md-tooltip>
+						Unstar </md-tooltip></md-icon></md-button>
+						<md-button class="md-icon-button"
 							ng-click="printQuotation(quotation.id)"> <ng-md-icon
 							icon="print" style="fill: md-default" size="20"> <md-tooltip>
 						Print Quotation</md-tooltip></ng-md-icon></md-button>

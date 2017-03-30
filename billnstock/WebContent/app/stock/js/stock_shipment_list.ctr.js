@@ -16,8 +16,8 @@ app
 						};
 					}
 					$scope.query = reSetQuery();
-					$scope.documentStatusList = [ 'ALL', 'DRAFT', 'SUBMITTED',
-							'FINALIZED', 'REJECTED' ];
+					$scope.documentStatusList = [ 'ALL', 'STARRED', 'DRAFT',
+							'SUBMITTED', 'FINALIZED', 'REJECTED' ];
 					$scope.selectedStatus = "";
 
 					$scope.fitlerListByStatus = function(status) {
@@ -26,13 +26,17 @@ app
 						$scope.stockShipmentList = [];
 						$scope.query = reSetQuery();
 						$scope.pagingInfoReturned = null;
-						$scope.fetchEntityListByPaging();
+						if (status == 'STARRED') {
+							$scope.getStarredStockShipmentsList();
+						} else {
+							$scope.fetchEntityListByPaging();
+						}
 					}
 
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
 
-					$scope.selected = [];					
+					$scope.selected = [];
 
 					$scope.onpagechange = function() {
 						$location.hash('tp1');
@@ -60,14 +64,39 @@ app
 								.then(
 										function(pagingInfoReturned) {
 											$scope.pagingInfoReturned = pagingInfoReturned;
-											$scope.stockShipmentList = $scope.stockShipmentList
-													.concat(pagingInfoReturned.entityList);
+											if (pagingInfoReturned.entityList) {
+												$scope.stockShipmentList = $scope.stockShipmentList
+														.concat(pagingInfoReturned.entityList);
+											}
 											$scope.query.totalSize = pagingInfoReturned.totalEntities;
 											$scope.query.pagesLoaded++;
 											$scope.loading = false;
 										});
 					}
 
+					$scope.changeStarredValue = function(stockShipment) {
+
+						stockShipment.starred = !stockShipment.starred;
+
+						var stockService = appEndpointSF.getStockService();
+						stockShipment.modifiedBy = $scope.curUser.email_id;
+						stockService.addStockShipment(stockShipment).then(
+								function() {
+								});
+					}
+
+					$scope.getStarredStockShipmentsList = function() {
+
+						var stockService = appEndpointSF.getStockService();
+						stockService
+								.getStarredStockShipments()
+								.then(
+										function(starredStockShipments) {
+											$scope.stockShipmentList = starredStockShipments;
+											$scope.loading = false;
+										})
+
+					}
 					$scope.printstockShipment = function(stShipId) {
 						var bid = $scope.curUser.business.id;
 						window.open("PrintPdfstockShipment?bid=" + bid

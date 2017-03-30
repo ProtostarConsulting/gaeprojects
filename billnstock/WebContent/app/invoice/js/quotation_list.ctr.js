@@ -4,7 +4,8 @@ app
 				"quotationListCtr",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
 						$mdUtil, $log, $state, $http, $stateParams,
-						$routeParams, $filter, $location, $anchorScroll, objectFactory, appEndpointSF) {
+						$routeParams, $filter, $location, $anchorScroll,
+						objectFactory, appEndpointSF) {
 					function reSetQuery() {
 						return {
 							order : '-itemNumber',
@@ -15,8 +16,8 @@ app
 						};
 					}
 					$scope.query = reSetQuery();
-					$scope.documentStatusList = [ 'ALL', 'DRAFT', 'SUBMITTED',
-							'FINALIZED', 'SENT', 'PAID', 'UNPAID' ];
+					$scope.documentStatusList = [ 'ALL', 'STARRED', 'DRAFT',
+							'SUBMITTED', 'FINALIZED', 'SENT', 'PAID', 'UNPAID' ];
 					$scope.selectedStatus = "";
 
 					$scope.fitlerListByStatus = function(status) {
@@ -25,7 +26,11 @@ app
 						$scope.quotationList = [];
 						$scope.query = reSetQuery();
 						$scope.pagingInfoReturned = null;
-						$scope.fetchEntityListByPaging();
+						if (status == 'STARRED') {
+							$scope.getStarredQuotations();
+						} else {
+							$scope.fetchEntityListByPaging();
+						}
 					}
 
 					$scope.curUser = appEndpointSF.getLocalUserService()
@@ -59,7 +64,7 @@ app
 											$scope.loading = false;
 										});
 					}
-					
+
 					$scope.onpagechange = function() {
 						$location.hash('tp1');
 						$anchorScroll();
@@ -67,7 +72,6 @@ app
 							$scope.fetchEntityListByPaging();
 						}
 					}
-
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
@@ -82,17 +86,26 @@ app
 					$scope.quotationList = [];
 					$scope.waitForServiceLoad();
 
-					var printDivCSS = new String(
-							'<link href="/lib/base/css/angular-material.min.css"" rel="stylesheet" type="text/css">'
-									+ '<link href="/lib/base/css/bootstrap.min.css"" rel="stylesheet" type="text/css">')
-					$scope.printDiv = function(divId) {
-						// window.frames["print_frame"].document.body.innerHTML
-						// = printDivCSS
-						// + document.getElementById(divId).innerHTML;
-						window.frames["print_frame"].document.body.innerHTML = document
-								.getElementById(divId).innerHTML;
-						window.frames["print_frame"].window.focus();
-						window.frames["print_frame"].window.print();
+					$scope.changeStarredValue = function(quotation) {
+
+						quotation.starred = !quotation.starred;
+
+						var invoiceService = appEndpointSF.getInvoiceService();
+						quotation.modifiedBy = $scope.curUser.email_id;
+						invoiceService.addQuotation(quotation).then(function() {
+
+						});
+					}
+
+					$scope.getStarredQuotations = function() {
+
+						var invoiceService = appEndpointSF.getInvoiceService();
+
+						invoiceService.getStarredQuotations().then(
+								function(starredQuotations) {
+									$scope.quotationList = starredQuotations;
+									$scope.loading = false;
+								});
 					}
 
 					$scope.printQuotation = function(quotnId) {
