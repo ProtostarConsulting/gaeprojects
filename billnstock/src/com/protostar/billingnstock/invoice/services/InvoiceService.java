@@ -120,6 +120,13 @@ public class InvoiceService extends BaseService {
 		}
 	}
 
+	@ApiMethod(name = "getStarredQuotations", path = "getStarredQuotations")
+	public List<QuotationEntity> getStarredQuotations() {
+		List<QuotationEntity> starredQuotations = ofy().load()
+				.type(QuotationEntity.class).filter("starred", true).list();
+		return starredQuotations;
+	}
+
 	@ApiMethod(name = "getInvoiceByID", path = "getInvoiceByID")
 	public InvoiceEntity getInvoiceByID(@Named("busId") Long busId,
 			@Named("id") Long invoiceId) {

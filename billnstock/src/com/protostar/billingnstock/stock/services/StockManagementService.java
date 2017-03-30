@@ -376,6 +376,14 @@ public class StockManagementService extends BaseService {
 		return stockItemsShipmentList;
 	}
 
+	@ApiMethod(name = "getStarredStockReceipts", path = "getStarredStockReceipts")
+	public List<StockItemsReceiptEntity> getStarredStockReceipts() {
+		List<StockItemsReceiptEntity> starredStockReceipts = ofy().load()
+				.type(StockItemsReceiptEntity.class).filter("starred", true)
+				.list();
+		return starredStockReceipts;
+	}
+
 	@ApiMethod(name = "getStockReceiptByID", path = "getStockReceiptByID")
 	public StockItemsReceiptEntity getStockReceiptByID(
 			@Named("busId") Long busId, @Named("id") Long stRecptID) {
@@ -414,6 +422,14 @@ public class StockManagementService extends BaseService {
 				.ancestor(Key.create(BusinessEntity.class, busId)).list();
 
 		return stockItemsShipmentList;
+	}
+
+	@ApiMethod(name = "getStarredStockShipments", path = "getStarredStockShipments")
+	public List<StockItemsShipmentEntity> getStarredStockShipments() {
+		List<StockItemsShipmentEntity> starredStockShipments = ofy().load()
+				.type(StockItemsShipmentEntity.class).filter("starred", true)
+				.list();
+		return starredStockShipments;
 	}
 
 	@ApiMethod(name = "getStockShipmentByID", path = "getStockShipmentByID")
@@ -648,6 +664,13 @@ public class StockManagementService extends BaseService {
 		return purchaseOrderEntity;
 	}
 
+	@ApiMethod(name = "getStarredPurchaseOrders", path = "getStarredPurchaseOrders")
+	public List<PurchaseOrderEntity> getStarredPurchaseOrders() {
+		List<PurchaseOrderEntity> starredPOs = ofy().load()
+				.type(PurchaseOrderEntity.class).filter("starred", true).list();
+		return starredPOs;
+	}
+
 	@ApiMethod(name = "addRequisition", path = "addRequisition")
 	public RequisitionEntity addRequisition(RequisitionEntity requisitionEntity) {
 
@@ -664,6 +687,13 @@ public class StockManagementService extends BaseService {
 		}
 		return requisitionEntity;
 
+	}
+
+	@ApiMethod(name = "getStarredRequisitions", path = "getStarredRequisitions")
+	public List<RequisitionEntity> getStarredRequisitions() {
+		List<RequisitionEntity> starredRequisitions = ofy().load()
+				.type(RequisitionEntity.class).filter("starred", true).list();
+		return starredRequisitions;
 	}
 
 	@ApiMethod(name = "fetchRequisitionListByPaging", path = "fetchRequisitionListByPaging")
