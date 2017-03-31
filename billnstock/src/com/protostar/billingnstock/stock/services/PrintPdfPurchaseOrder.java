@@ -142,7 +142,7 @@ public class PrintPdfPurchaseOrder extends HttpServlet {
 
 			if (serviceLineItemListForPO != null && serviceLineItemListForPO.size() > 0) {
 				root.put("serviceItemList", serviceLineItemListForPO);
-				root.put("serviceTax", prodTax);
+				root.put("serviceTax", servTax);
 			}
 
 			double finalTotal = purchaseOrderEntity.getFinalTotal();

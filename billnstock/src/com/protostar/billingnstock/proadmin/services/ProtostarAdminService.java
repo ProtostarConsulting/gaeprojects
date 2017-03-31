@@ -161,7 +161,7 @@ public class ProtostarAdminService {
 		userService.addEmpDepartment(department);
 
 		department = new EmpDepartment();
-		department.setName("Workmen");
+		department.setName("Sales");
 		department.setBusiness(businessEntity);
 		userService.addEmpDepartment(department);
 	}
@@ -180,6 +180,7 @@ public class ProtostarAdminService {
 		freePlan.setDescription("Free life time, with upto 1000 Records.");
 		freePlan.setPlanType(PlanType.FREE);
 		freePlan.setMaxuser(20);
+		freePlan.setMaxRecords(1000l);
 		freePlan.setBaseCost(0f);
 		freePlan.setPaymentDesc("Free Plan");
 		ofy().save().entity(freePlan).now();
@@ -189,6 +190,7 @@ public class ProtostarAdminService {
 		basicPlan.setDescription("Rs. 12,000 Per Year + tax, upto 1 Lakh Records.");
 		basicPlan.setPlanType(PlanType.STANDARD);
 		basicPlan.setMaxuser(100);
+		basicPlan.setMaxRecords(100000l);
 		basicPlan.setBaseCost(12000f);
 		basicPlan.setPaymentDesc("Rs. 12000 Per Year + Tax");
 		ofy().save().entity(basicPlan).now();
@@ -198,6 +200,7 @@ public class ProtostarAdminService {
 		silverPlan.setDescription("24,000 Per Year + tax, upto 10 Lakh Records.");
 		silverPlan.setPlanType(PlanType.STANDARD);
 		silverPlan.setMaxuser(100);
+		silverPlan.setMaxRecords(1000000l);
 		silverPlan.setBaseCost(24000f);
 		silverPlan.setPaymentDesc("Rs. 24000 Per Year + Tax");
 		ofy().save().entity(silverPlan).now();
@@ -207,6 +210,7 @@ public class ProtostarAdminService {
 		goldPlan.setDescription("Rs. 36,000 Per Year + tax, upto 100 Lakh Records.");
 		goldPlan.setPlanType(PlanType.STANDARD);
 		goldPlan.setMaxuser(500);
+		goldPlan.setMaxRecords(10000000l);
 		goldPlan.setBaseCost(36000f);
 		goldPlan.setPaymentDesc("Rs. 36000 Per Year + Tax");
 		ofy().save().entity(goldPlan).now();
@@ -216,6 +220,7 @@ public class ProtostarAdminService {
 		platinumPlan.setDescription("1,00,000 Per Year + tax, umlimited Records.");
 		platinumPlan.setPlanType(PlanType.STANDARD);
 		platinumPlan.setMaxuser(10000);
+		platinumPlan.setMaxRecords(1000000000l);
 		platinumPlan.setBaseCost(100000f);
 		platinumPlan.setPaymentDesc("Rs. 100000 Per Year + Tax");
 		ofy().save().entity(platinumPlan).now();

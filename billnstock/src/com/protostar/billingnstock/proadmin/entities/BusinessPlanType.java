@@ -18,6 +18,8 @@ public class BusinessPlanType {
 
 	@Id
 	private Long id;
+	@Index
+	private int itemNumber;
 
 	@Index
 	private String planName;
@@ -27,12 +29,11 @@ public class BusinessPlanType {
 	private PlanType planType = PlanType.FREE;
 
 	private String description;
-	private int maxuser;
+	private long maxUser;
+	private long maxRecords;
 	private float baseCost;
 	private String paymentDesc;
 
-	@Index
-	private int itemNumber;
 	@Index
 	private Date createdDate;
 	private Date modifiedDate;
@@ -102,12 +103,12 @@ public class BusinessPlanType {
 		this.paymentDesc = paymentDesc;
 	}
 
-	public int getMaxuser() {
-		return maxuser;
+	public long getMaxuser() {
+		return maxUser;
 	}
 
-	public void setMaxuser(int maxuser) {
-		this.maxuser = maxuser;
+	public void setMaxuser(long maxuser) {
+		this.maxUser = maxuser;
 	}
 
 	public float getBaseCost() {
@@ -124,6 +125,14 @@ public class BusinessPlanType {
 
 	public void setPlanType(PlanType planType) {
 		this.planType = planType;
+	}
+
+	public long getMaxRecords() {
+		return maxRecords;
+	}
+
+	public void setMaxRecords(long maxRecords) {
+		this.maxRecords = maxRecords;
 	}
 
 }
