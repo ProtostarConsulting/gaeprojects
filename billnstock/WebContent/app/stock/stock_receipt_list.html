@@ -61,19 +61,19 @@
 						<ng-md-icon icon="edit" style="fill: md-default" size="20">
 						<md-tooltip> Edit</md-tooltip></ng-md-icon></md-button>
 						<md-button class="md-icon-button"
-							ng-show="stockReceipt.starred==false"
-							ng-hide="stockReceipt.starred==true"
-							ng-click="changeStarredValue(stockReceipt)"> <md-icon
-							md-svg-src="/img/icons/ic_star_black_24px.svg"
-							style="fill: md-default" size="20"> <md-tooltip>
-						Star</md-tooltip></md-icon></md-button>
-						<md-button class="md-icon-button"
 							ng-show="stockReceipt.starred==true"
 							ng-hide="stockReceipt.starred==false"
 							ng-click="changeStarredValue(stockReceipt)"> <md-icon
+							md-svg-src="/img/icons/ic_star_black_24px.svg"
+							style="fill: md-default" size="20"> <md-tooltip>
+						Unstar</md-tooltip></md-icon></md-button>
+						<md-button class="md-icon-button"
+							ng-show="stockReceipt.starred==false"
+							ng-hide="stockReceipt.starred==true"
+							ng-click="changeStarredValue(stockReceipt)"> <md-icon
 							md-svg-src="/img/icons/ic_star_border_black_24px.svg"
 							aria-label="starborder" style="fill: md-default" size="20">
-						<md-tooltip> Unstar </md-tooltip> <md-icon></md-button>
+						<md-tooltip> Star it </md-tooltip> <md-icon></md-button>
 						<!-- <md-button class="md-icon-button"
 							ng-click="updatePaidStatus(stockReceipt.id)"> <ng-md-icon
 							icon="done" style="fill: md-default" size="20"> <md-tooltip>

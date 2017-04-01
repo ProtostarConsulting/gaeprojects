@@ -114,8 +114,8 @@
 						<th name="Sr. No."></th>
 						<th name="Item Name" order-by="itemName"></th>
 						<th name="Quantity" order-by="qty"></th>
-						<th name="Price" order-by="price"></th>
-						<th name="Total" order-by="total"></th>
+						<th name="Price(&#x20b9)" order-by="price"></th>
+						<th name="Total(&#x20b9)" order-by="total"></th>
 						<th name="Actions" order-by="total"></th>
 					</tr>
 				</thead>
@@ -190,8 +190,8 @@
 						<th name="Sr_No" order-by="srNo"></th>
 						<th name="Service Name" order-by="serviceName"></th>
 						<th name="Quantity" order-by="qty"></th>
-						<th name="Price" order-by="price"></th>
-						<th name="Total" order-by="total"></th>
+						<th name="Price(&#x20b9)" order-by="price"></th>
+						<th name="Total(&#x20b9)" order-by="total"></th>
 						<th name="Actions"></th>
 					</tr>
 				</thead>
@@ -234,7 +234,7 @@
 						<td></td>
 						<td></td>
 						<td><label>Final Total</label></td>
-						<td><b> {{documentEntity.finalTotal |currency:"":"2"}}</b></td>
+						<td><b>&#x20b9 {{documentEntity.finalTotal |currency:"":"2"}}</b></td>
 					</tr>
 				</tbody>
 			</table>

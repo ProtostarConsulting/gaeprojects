@@ -55,18 +55,18 @@
 							ui-sref="stock.purchaseOrderAdd({purchaseOrderObj: pOItem})">
 						<ng-md-icon icon="edit" style="fill: md-default" size="20">
 						<md-tooltip> Edit</md-tooltip></ng-md-icon></md-button>
-						<md-button class="md-icon-button" ng-show="pOItem.starred==false"
-							ng-hide="pOItem.starred==true"
-							ng-click="changeStarredValue(pOItem)"> <md-icon
-							md-svg-src="/img/icons/ic_star_black_24px.svg"
-							style="fill: md-default" size="20"> <md-tooltip>
-						Star</md-tooltip></md-icon></md-button>
 						<md-button class="md-icon-button" ng-show="pOItem.starred==true"
 							ng-hide="pOItem.starred==false"
 							ng-click="changeStarredValue(pOItem)"> <md-icon
+							md-svg-src="/img/icons/ic_star_black_24px.svg"
+							style="fill: md-default" size="20"> <md-tooltip>
+						Unstar</md-tooltip></md-icon></md-button>
+						<md-button class="md-icon-button" ng-show="pOItem.starred==false"
+							ng-hide="pOItem.starred==true"
+							ng-click="changeStarredValue(pOItem)"> <md-icon
 							md-svg-src="/img/icons/ic_star_border_black_24px.svg"
 							style="fill: md-default" size="20"> <md-tooltip>
-						Unstar </md-tooltip></md-icon></md-button>
+						Star it </md-tooltip></md-icon></md-button>
 						<md-button class="md-icon-button" ng-click="printPO(pOItem.id)">
 						<ng-md-icon icon="print" style="fill: md-default" size="20">
 						<md-tooltip> Print PO</md-tooltip></ng-md-icon></md-button>

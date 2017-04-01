@@ -33,7 +33,7 @@
 				<th name="Created Date" order-by="createdDate"></th>
 				<th name="Status" order-by="status"></th>
 				<th name="Customer Name" order-by="customer.companyName"></th>
-				<th name="Final Total" order-by="finalTotal"></th>
+				<th name="Final Total(&#x20b9)" order-by="finalTotal"></th>
 				<th name="Actions"></th>
 			</tr>
 		</thead>
@@ -58,22 +58,26 @@
 							ui-sref="invoice.add({invoiceObj: invoice})"> <ng-md-icon
 							icon="edit" style="fill: md-default" size="20"> <md-tooltip>
 						Edit</md-tooltip></ng-md-icon></md-button>
-						<md-button class="md-icon-button" ng-show="invoice.starred==false"
-							ng-hide="invoice.starred==true"
-							ng-click="changeStarredValue(invoice)"> <md-icon
-							md-svg-src="/img/icons/ic_star_black_24px.svg"
-							style="fill: md-default" size="20"> <md-tooltip>
-						Star</md-tooltip></md-icon></md-button>
 						<md-button class="md-icon-button" ng-show="invoice.starred==true"
 							ng-hide="invoice.starred==false"
 							ng-click="changeStarredValue(invoice)"> <md-icon
+							md-svg-src="/img/icons/ic_star_black_24px.svg"
+							style="fill: md-default" size="20"> <md-tooltip>
+						Unstar</md-tooltip></md-icon></md-button>
+						<md-button class="md-icon-button" ng-show="invoice.starred==false"
+							ng-hide="invoice.starred==true"
+							ng-click="changeStarredValue(invoice)"> <md-icon
 							md-svg-src="/img/icons/ic_star_border_black_24px.svg"
 							style="fill: md-default" size="20"> <md-tooltip>
-						Unstar </md-tooltip></md-icon></md-button>
-						<md-button class="md-icon-button"
-							ng-click="updatePaidStatus(invoice)"> <ng-md-icon
-							icon="done" style="fill: md-default" size="20"> <md-tooltip>
-						Paid</md-tooltip></ng-md-icon></md-button>
+						Star it </md-tooltip></md-icon></md-button>
+						<md-button class="md-icon-button" ng-show="invoice.status=='PAID'"
+							ng-click="updateNotPaidStatus(invoice)"> <md-icon
+							md-svg-src="/img/icons/currency-usd.svg" style="fill: md-default"
+							size="20"> <md-tooltip> Mark as Unpaid</md-tooltip></md-icon></md-button>
+						<md-button class="md-icon-button" ng-show="invoice.status!='PAID'"
+							ng-click="updatePaidStatus(invoice)"> <md-icon
+							md-svg-src="/img/icons/currency-usd-off.svg" style="fill: md-default"
+							size="20"> <md-tooltip>Marke as Paid</md-tooltip></md-icon></md-button>
 						<md-button class="md-icon-button"
 							ng-click="printInvoice(invoice.id)"> <ng-md-icon
 							icon="print" style="fill: md-default" size="20"> <md-tooltip>

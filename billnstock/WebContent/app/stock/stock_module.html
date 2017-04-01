@@ -35,8 +35,8 @@
 			<md-button ng-show="hasUserAuthority(curUser, 'Stock.ModuleAdmin')"
 				layout-align="center end" class="md-icon-button md-accent"
 				ui-sref="stock.settings" aria-label="Favorite"> <md-icon
-				md-svg-icon="img/icons/ic_settings_black_24px.svg">
-			<md-tooltip>Stock Settings</md-tooltip></md-icon> </md-button>
+				md-svg-icon="img/icons/ic_settings_black_24px.svg"> <md-tooltip>Stock
+			Settings</md-tooltip></md-icon> </md-button>
 			<md-button class="md-icon-button" aria-label="More"
 				ng-click="toggleRight()"> <md-icon
 				md-svg-icon="img/icons/more_vert.svg"></md-icon> </md-button>
@@ -49,8 +49,7 @@
 		class="md-theme-light"> <!--<h1 class="md-toolbar-tools">More Actions...</h1>-->
 	</md-toolbar> <md-content layout-padding> <md-button
 		ui-sref="stock.supplierList" ng-click="close()" class="md-primary">
-	Suppliers </md-button>
-	<md-button ui-sref="stock.warehouseList" ng-click="close()"
+	Suppliers </md-button> <md-button ui-sref="stock.warehouseList" ng-click="close()"
 		class="md-primary"> Warehouses</md-button> <md-button
 		ui-sref="stock.budgetList" ng-click="close()" class="md-primary">Budget</md-button>
 	<md-button ui-sref="stock.taxlist" ng-click="close()"
@@ -86,7 +85,12 @@
 		md-svg-src="img/icons/ic_trending_flat_black_24px.svg"
 		ui-sref="warehouse.add" class="name"
 		style="color: Green; height: 15px; width: 15px"></md-icon> Stock By
-	Warehouse </md-button> <md-button ui-sref="stock.reportByTaxPaid"
+	Warehouse </md-button> <md-button ui-sref="stock.reportStockTransaction"
+		ng-click="close()" class="md-primary"> <md-icon
+		md-svg-src="img/icons/ic_trending_flat_black_24px.svg"
+		ui-sref="warehouse.add" class="name"
+		style="color: Green; height: 15px; width: 15px"></md-icon> Stock
+	Transaction Report </md-button> <md-button ui-sref="stock.reportByTaxPaid"
 		ng-click="close()" class="md-primary"> <md-icon
 		md-svg-src="img/icons/ic_trending_flat_black_24px.svg"
 		ui-sref="warehouse.add" class="name"

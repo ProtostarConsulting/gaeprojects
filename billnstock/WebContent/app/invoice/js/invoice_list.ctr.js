@@ -29,6 +29,8 @@ app
 						$scope.pagingInfoReturned = null;
 						if (status == 'STARRED') {
 							$scope.getStarredInvoices();
+						}else if (status == 'UNPAID') {
+							$scope.getUnpaidInvoicesList();
 						} else {
 							$scope.fetchEntityListByPaging();
 						}
@@ -113,23 +115,22 @@ app
 
 					$scope.selected = [];
 
-					$scope.updatePaidStatus = function() {
-						var paid = "Paid"
-						$scope.selected[0].status = paid;
+					$scope.updatePaidStatus = function(invoice) {
+						invoice.status = 'PAID';
+						invoice.modifiedBy = $scope.curUser.email_id;
 						var invoiceService = appEndpointSF.getInvoiceService();
-						invoiceService.updateInvoiceStatus($scope.selected[0])
+						invoiceService.addInvoice(invoice)
 								.then(function(msgBean) {
-									$scope.showSimpleToast(msgBean.msg);
 								});
 					}
 
-					$scope.updateNotPaidStatus = function() {
-						var notPaid = "NotPaid"
-						$scope.selected[0].status = notPaid;
+					$scope.updateNotPaidStatus = function(invoice) {
+						
+						invoice.status = 'UNPAID';
+						
 						var invoiceService = appEndpointSF.getInvoiceService();
-						invoiceService.updateInvoiceStatus($scope.selected[0])
+						invoiceService.addInvoice(invoice)
 								.then(function(msgBean) {
-									$scope.showSimpleToast(msgBean.msg);
 								});
 					}
 
@@ -140,8 +141,11 @@ app
 						var invoiceService = appEndpointSF.getInvoiceService();
 						invoice.modifiedBy = $scope.curUser.email_id;
 						invoiceService.addInvoice(invoice).then(
-								function(invoice) {
-
+								function(invoiceObj) {
+									if(invoiceObj && invoiceObj.id){										
+									}else{
+										invoice.starred = invoiceObj.starred;
+									}
 								});
 					}
 
@@ -155,6 +159,18 @@ app
 									$scope.loading = false;
 								});
 					}
+					
+					$scope.getUnpaidInvoicesList = function() {
+
+						var invoiceService = appEndpointSF.getInvoiceService();
+
+						invoiceService.getUnpaidInvoices().then(
+								function(list) {
+									$scope.invoiceData = list;
+									$scope.loading = false;
+								});
+					}
+					
 
 					$scope.printInvoice = function(invoiceId) {
 						var bid = $scope.curUser.business.id;
@@ -164,10 +180,11 @@ app
 
 					$scope.showSimpleToast = function() {
 						$mdToast.show($mdToast.simple().content(
-								'Invoice Satus Changed!').position("top")
+								'Invoice Status Changed!').position("top")
 								.hideDelay(3000));
 					};
-
+					
+					
 					$scope.back = function() {
 						window.history.back();
 					}

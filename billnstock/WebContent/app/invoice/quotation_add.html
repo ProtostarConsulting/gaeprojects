@@ -174,8 +174,8 @@
 							<th name="Sr.No." width="4%"></th>
 							<th name="Service Name" width="40%"></th>
 							<th name="Quantity"></th>
-							<th name="Price"></th>
-							<th name="Total"></th>
+							<th name="Price(&#x20b9)"></th>
+							<th name="Total(&#x20b9)"></th>
 							<th name="Actions"></th>
 						</tr>
 					</thead>
@@ -251,7 +251,7 @@
 									ng-repeat="taxItem in taxList"
 									ng-selected="documentEntity.selectedServiceTax.id == taxItem.id">{{taxItem?taxItem.taxCodeName:'NA'}}</md-option>
 								</md-select> </md-input-container></td>
-							<td>{{documentEntity.selectedServiceTax.taxPercenatge}}</td>
+							<td>{{documentEntity.selectedServiceTax.taxPercenatge}}&#37</td>
 							<td><b>{{documentEntity.serviceTaxTotal |
 									currency:"":"2"}}</b></td>
 							<td></td>
@@ -262,7 +262,7 @@
 							<td></td>
 							<td></td>
 							<td><label>Service Total</label></td>
-							<td><b>{{documentEntity.serviceTotal | currency:"":"2"}}</b></td>
+							<td><b>&#x20b9{{documentEntity.serviceTotal | currency:"":"2"}}</b></td>
 							<td></td>
 						</tr>
 
@@ -300,8 +300,8 @@
 							<th name="Sr. No."></th>
 							<th name="Item Name" order-by="itemName" width="40%"></th>
 							<th name="Quantity" order-by="qty"></th>
-							<th name="Price" order-by="price"></th>
-							<th name="Total" order-by="total"></th>
+							<th name="Price(&#x20b9)" order-by="price"></th>
+							<th name="Total(&#x20b9)" order-by="total"></th>
 							<th name="Actions" order-by="total"></th>
 						</tr>
 					</thead>
@@ -385,7 +385,7 @@
 									ng-selected="documentEntity.selectedProductTax.id == taxItem.id"
 									ng-repeat="taxItem in taxList">{{taxItem?taxItem.taxCodeName:'NA'}}</md-option>
 								</md-select> </md-input-container></td>
-							<td>{{documentEntity.selectedProductTax.taxPercenatge}}</td>
+							<td>{{documentEntity.selectedProductTax.taxPercenatge}}&#37</td>
 							<td><b>{{documentEntity.productTaxTotal |
 									currency:"":"2"}}</b></td>
 							<td></td>
@@ -396,7 +396,7 @@
 							<td></td>
 							<td></td>
 							<td><label>Product Total </label></td>
-							<td><b>{{documentEntity.productTotal | currency:"":"2"}}</b></td>
+							<td><b>&#x20b9{{documentEntity.productTotal | currency:"":"2"}}</b></td>
 							<td></td>
 						</tr>
 						<tr>
@@ -404,7 +404,7 @@
 							<td></td>
 							<td></td>
 							<td><label>Final Total</label></td>
-							<td><b> {{documentEntity.finalTotal | currency:"":"2"}}</b></td>
+							<td><b>&#x20b9 {{documentEntity.finalTotal | currency:"":"2"}}</b></td>
 							<td></td>
 						</tr>
 						<tr>

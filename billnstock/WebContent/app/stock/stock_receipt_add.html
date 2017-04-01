@@ -100,8 +100,8 @@
 						<th name="Sr. No."></th>
 						<th name="Item Name" order-by="itemName"></th>
 						<th name="Quantity" order-by="qty"></th>
-						<th name="Purchase Price" order-by="cost"></th>
-						<th name="Total" order-by="total"></th>
+						<th name="Purchase Price(&#x20b9)" order-by="cost"></th>
+						<th name="Total(&#x20b9)" order-by="total"></th>
 						<th name="Actions" order-by="total"></th>
 					</tr>
 				</thead>
@@ -151,7 +151,7 @@
 						<td></td>
 						<td></td>
 						<td><label>Product Total</label></td>
-						<td><b> {{documentEntity.productTotal | currency:"":"2"}}</b></td>
+						<td><b>&#x20b9 {{documentEntity.productTotal | currency:"":"2"}}</b></td>
 						<td></td>
 					</tr>
 				</tbody>
@@ -175,8 +175,8 @@
 						<th name="Sr_No" order-by="srNo"></th>
 						<th name="Service Name" order-by="serviceName"></th>
 						<th name="Quantity" order-by="qty"></th>
-						<th name="Cost Price" order-by="cost"></th>
-						<th name="Total" order-by="total"></th>
+						<th name="Cost Price(&#x20b9)" order-by="cost"></th>
+						<th name="Total(&#x20b9)" order-by="total"></th>
 						<th name="Actions"></th>
 					</tr>
 				</thead>
@@ -210,7 +210,7 @@
 						<td></td>
 						<td></td>
 						<td><label>Service Total</label></td>
-						<td><b> {{documentEntity.serviceTotal | currency:"":"2"}}</b></td>
+						<td><b>&#x20b9 {{documentEntity.serviceTotal | currency:"":"2"}}</b></td>
 						<td></td>
 					</tr>
 					<tr>
@@ -218,7 +218,7 @@
 						<td></td>
 						<td></td>
 						<td><label>Final Total</label></td>
-						<td><b> {{documentEntity.finalTotal | currency:"":"2"}}</b></td>
+						<td><b>&#x20b9 {{documentEntity.finalTotal | currency:"":"2"}}</b></td>
 						<td></td>
 					</tr>
 				</tbody>
