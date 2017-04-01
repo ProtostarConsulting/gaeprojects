@@ -82,6 +82,14 @@ public class InvoiceService extends BaseService {
 		return starredInvoices;
 	}
 
+	@ApiMethod(name = "getUnpaidInvoices", path = "getUnpaidInvoices")
+	public List<InvoiceEntity> getUnpaidInvoices() {
+		List<InvoiceEntity> starredInvoices = ofy().load()
+				.type(InvoiceEntity.class)
+				.filter("status !=", DocumentStatus.PAID).list();
+		return starredInvoices;
+	}
+
 	@ApiMethod(name = "getAllInvoice", path = "getAllInvoice")
 	public List<InvoiceEntity> getAllInvoice(@Named("id") Long busId) {
 
