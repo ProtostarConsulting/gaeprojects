@@ -58,7 +58,8 @@ public class InvoiceService extends BaseService {
 						if (documentEntity.getStatus() == DocumentStatus.FINALIZED) {
 							StockManagementService.adjustStockItems(
 									documentEntity.getBusiness(),
-									documentEntity.getProductLineItemList());
+									documentEntity.getProductLineItemList(), 0,
+									documentEntity.getItemNumber());
 						}
 						ofy().save().entity(documentEntity).now();
 						return documentEntity;

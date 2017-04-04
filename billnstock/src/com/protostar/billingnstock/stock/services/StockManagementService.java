@@ -31,6 +31,7 @@ import com.protostar.billingnstock.purchase.entities.SupplierEntity;
 import com.protostar.billingnstock.stock.entities.StockItemEntity;
 import com.protostar.billingnstock.stock.entities.StockItemInstanceEntity;
 import com.protostar.billingnstock.stock.entities.StockItemTxnEntity;
+import com.protostar.billingnstock.stock.entities.StockItemTxnEntity.StockTxnType;
 import com.protostar.billingnstock.stock.entities.StockItemTypeEntity;
 import com.protostar.billingnstock.stock.entities.StockItemsReceiptEntity;
 import com.protostar.billingnstock.stock.entities.StockItemsShipmentEntity;
@@ -138,6 +139,9 @@ public class StockManagementService extends BaseService {
 											.getStockItem());
 									txnEntity.setQty(Math.abs(qtyDiff));
 									txnEntity.setPrice(stockLineItem.getPrice());
+									txnEntity
+											.setStockReceiptNumber(documentEntity
+													.getItemNumber());
 
 									if (qtyDiff > 0) {
 										txnEntity
@@ -320,7 +324,8 @@ public class StockManagementService extends BaseService {
 							// Process stock items
 							StockManagementService.adjustStockItems(
 									documentEntity.getBusiness(),
-									stockLineItemsToProcess);
+									stockLineItemsToProcess,
+									documentEntity.getItemNumber(), 0);
 						} // enf of FINALIZED if
 
 						ofy().save().entity(documentEntity).now();
@@ -501,7 +506,8 @@ public class StockManagementService extends BaseService {
 	}
 
 	public static void adjustStockItems(BusinessEntity business,
-			List<StockLineItem> productLineItemList) {
+			List<StockLineItem> productLineItemList, int shipmentItemNumber,
+			int invoiceItemNumber) {
 		/* For Reduce the Stock Quantity */
 		List<StockItemTxnEntity> stockItemTxnList = new ArrayList<StockItemTxnEntity>();
 		List<StockItemInstanceEntity> stockItemInstanceToUpdateList = new ArrayList<StockItemInstanceEntity>();
@@ -516,6 +522,8 @@ public class StockManagementService extends BaseService {
 				txnEntity.setBusiness(business);
 				txnEntity.setStockItem(invoiceLineItem.getStockItem());
 				txnEntity.setQty(Math.abs(qtyDiff));
+				txnEntity.setStockShipmentNumber(shipmentItemNumber);
+				txnEntity.setInvoiceNumber(invoiceItemNumber);
 				if (qtyDiff > 0) {
 					txnEntity.setTxnType(StockItemTxnEntity.StockTxnType.DR);
 					txnEntity.setPrice(invoiceLineItem.getPrice());
@@ -585,6 +593,38 @@ public class StockManagementService extends BaseService {
 			filterQuery = filterQuery.filter("txnType", txnType);
 
 		return filterQuery.list();
+	}
+
+	@ApiMethod(name = "getCRStockTxnByStockItem", path = "getCRStockTxnByStockItem", httpMethod = HttpMethod.POST)
+	public List<StockItemTxnEntity> getCRStockTxnByStockItem(
+			StockItemEntity stockItem) {
+
+		List<StockItemTxnEntity> stockTxns = ofy()
+				.load()
+				.type(StockItemTxnEntity.class)
+				.ancestor(
+						Key.create(BusinessEntity.class, stockItem
+								.getBusiness().getId()))
+				.filter("stockItem", stockItem)
+				.filter("txnType ==", StockTxnType.CR).list();
+
+		return stockTxns;
+	}
+
+	@ApiMethod(name = "getDRStockTxnByStockItem", path = "getDRStockTxnByStockItem", httpMethod = HttpMethod.POST)
+	public List<StockItemTxnEntity> getDRStockTxnByStockItem(
+			StockItemEntity stockItem) {
+
+		List<StockItemTxnEntity> stockTxns = ofy()
+				.load()
+				.type(StockItemTxnEntity.class)
+				.ancestor(
+						Key.create(BusinessEntity.class, stockItem
+								.getBusiness().getId()))
+				.filter("stockItem", stockItem)
+				.filter("txnType ==", StockTxnType.DR).list();
+
+		return stockTxns;
 	}
 
 	@ApiMethod(name = "addSupplier", path = "addSupplier")
