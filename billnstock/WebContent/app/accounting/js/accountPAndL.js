@@ -102,29 +102,6 @@ app
 						}
 						return $scope.totalOverhead;
 					}
-					
-					/*function getOtherIncome() {
-						for (var count = 0; count < $scope.list.length; count++) {
-							var typeName = $scope.list[count].typeName;
-
-							if ((typeName == "OTHEREXPENCES")
-									&& ($scope.list[count].groupList != undefined)) {
-								
-								angular
-								.forEach(
-										$scope.list[count].groupList,
-										function(groupInfo) {
-											$scope.totalPaymentList
-													.push(groupInfo);													
-										});
-								$scope.totalOverhead = $scope.list[count].typeBalance;
-							}
-							
-						}
-						return $scope.totalOverhead;
-					}
-					*/
-					
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
 

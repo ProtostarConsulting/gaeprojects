@@ -1,5 +1,6 @@
 package com.protostar.billnstock.entity;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import com.googlecode.objectify.Ref;
@@ -46,9 +47,12 @@ public abstract class BaseEntity {
 					+ this.getClass().getSimpleName()
 					+ " This is required field. Aborting save operation...");
 		}
-
+		Calendar cal = Calendar.getInstance();
+		Date today = cal.getTime();
+		cal.add(Calendar.YEAR, -1); 
+		Date dummyDate = cal.getTime();
 		if (getId() == null) {
-			setCreatedDate(new Date());
+			setCreatedDate(dummyDate);
 			setModifiedDate(new Date());
 		} else {
 			setModifiedDate(new Date());

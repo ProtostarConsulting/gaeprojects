@@ -3,6 +3,7 @@ package com.protostar.billingnstock.account.services;
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -52,8 +53,9 @@ public class AccountEntryService {
 			return new ArrayList<AccountEntryEntity>();
 
 		AccountingService accountingService = new AccountingService();
+		System.out.println("getAccountEntryByAccountId--Bid"+bid);
 		CurrentFinancialYear currentFinancialYear = accountingService.getCurrentFinancialYear(bid);
-System.out.println("getAccountEntryByAccountId--id"+bid);
+
 		List<AccountEntryEntity> accountEntries = ofy().load().type(AccountEntryEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, bid))
 				.filter("accountEntity", Key.create(Key.create(BusinessEntity.class, bid), AccountEntity.class, AccId))
@@ -70,29 +72,34 @@ System.out.println("getAccountEntryByAccountId--id"+bid);
 	}
 	@ApiMethod(name = "addGeneralEntry")
 	public void addGeneralEntry(GeneralEntryEntity entryEntity) {
-
+		Calendar cal = Calendar.getInstance();
+		Date today = cal.getTime();
+		cal.add(Calendar.YEAR, -2); // to get previous year add -1
+		Date dummyDate = cal.getTime();
+		System.out.println("-----------"+dummyDate);
 		AccountEntryEntity debitAcc = new AccountEntryEntity();
-		debitAcc.setDate(new Date());
+		debitAcc.setDate(dummyDate);
 		debitAcc.setNarration(entryEntity.getNarration());
 		debitAcc.setDebit(entryEntity.getAmount());
 		debitAcc.setAccountEntity(entryEntity.getDebitAccount());
-		debitAcc.setCreatedDate(new Date());
+		debitAcc.setCreatedDate(dummyDate);
 		debitAcc.setModifiedBy(entryEntity.getModifiedBy());
 		debitAcc.setBusiness(entryEntity.getBusiness());
 		AccountEntryService aes = new AccountEntryService();
 		aes.addAccountEntry(debitAcc);
-
+		
 		AccountEntryEntity creditAcc = new AccountEntryEntity();
-		creditAcc.setDate(new Date());
+		creditAcc.setDate(dummyDate);
 		creditAcc.setNarration(entryEntity.getNarration());
 		creditAcc.setCredit(entryEntity.getAmount());
 		creditAcc.setAccountEntity(entryEntity.getCreditAccount());
-		creditAcc.setCreatedDate(new Date());
+		creditAcc.setCreatedDate(dummyDate);
 		creditAcc.setModifiedBy(entryEntity.getModifiedBy());
 		creditAcc.setBusiness(entryEntity.getBusiness());
 		aes.addAccountEntry(creditAcc);
-		entryEntity.setCreatedDate(new Date());
-		entryEntity.setModifiedDate(new Date());
+		entryEntity.setCreatedDate(dummyDate);
+		System.out.println("-----------entry"+dummyDate);
+		entryEntity.setModifiedDate(dummyDate);
 		ofy().save().entity(entryEntity).now();
 	}
 }

@@ -105,7 +105,7 @@ $scope.vouchers=blankSalesvouchers();
 						
 						var accountservice=appEndpointSF.getAccountService();
 						
-						accountservice.getAccountBalance(accId.id).then(function(balance){
+						accountservice.getAccountBalance(accId.id,$scope.curUser.business.id).then(function(balance){
 							
 							
 							if(fl==1)

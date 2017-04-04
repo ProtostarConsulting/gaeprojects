@@ -117,7 +117,7 @@ System.out.println("getAccountBalanceBID"+busId);
 				busId);
 
 		for (AccountEntryEntity entry : filteredEntries) {
-			if (entry.getCredit() != null) {
+			if (entry.getCredit() != null) { 
 				totalCredit = totalCredit + entry.getCredit();
 			} else if (entry.getDebit() != null) {
 				totalDebit = totalDebit + entry.getDebit();
@@ -295,8 +295,7 @@ System.out.println("getAccountBalanceBID"+busId);
 	@ApiMethod(name = "getCurrentFinancialYear", path = "getCurrentFinancialYear")
 	public CurrentFinancialYear getCurrentFinancialYear(@Named("id") Long busId) {
 		System.out.println("getCurrentFinancialYear--bid"+busId);
-		CurrentFinancialYear currentFY = ofy().load()
-				.key(CurrentFinancialYear.getKey(busId)).now();
+		CurrentFinancialYear currentFY = ofy().load().key(CurrentFinancialYear.getKey(busId)).now();
 		return currentFY;
 	}
 	@ApiMethod(name = "addAccountingSettingsEntity", path = "addAccountingSettingsEntity")

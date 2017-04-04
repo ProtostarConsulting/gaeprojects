@@ -124,7 +124,7 @@ app
 						if(fl==1)
 {
 						accountservice
-								.getAccountBalance(acc.paymentAccount.id)
+								.getAccountBalance(acc.paymentAccount.id,$scope.curUser.business.id)
 								.then(function(balance) {
 
 											if (acc.paymentAccount.accountGroup.groupName

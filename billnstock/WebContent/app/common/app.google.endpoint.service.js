@@ -1871,10 +1871,11 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
-	AccountService.getAccountBalance = function(id) {
+	AccountService.getAccountBalance = function(id,bid) {
 		var deferred = $q.defer();
 		gapi.client.accountService.getAccountBalance({
-			"id" : id
+			"id" : id,
+			"bid":bid
 		}).execute(function(resp) {
 			deferred.resolve(resp);
 		});

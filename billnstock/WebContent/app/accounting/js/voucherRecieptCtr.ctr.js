@@ -72,16 +72,8 @@ app.controller("voucherRecieptCtr", function($scope, $window, $mdToast, $timeout
 
 	$scope.cancle = function() {
 
-		 
-			$state.go('accounting', {});
-		
-
-	}
-	
-	
-	
-	
-	
+		 			$state.go('accounting', {});
+			}
 	var printDivCSS = new String(
 			'<link href="/lib/base/css/angular-material.min.css"" rel="stylesheet" type="text/css">'
 					+ '<link href="/lib/base/css/bootstrap.min.css"" rel="stylesheet" type="text/css">')
@@ -110,7 +102,7 @@ app.controller("voucherRecieptCtr", function($scope, $window, $mdToast, $timeout
 		
 		var accountservice=appEndpointSF.getAccountService();
 		
-		accountservice.getAccountBalance(accId.id).then(function(balance){
+		accountservice.getAccountBalance(accId.id,$scope.curUser.business.id).then(function(balance){
 			
 			
 			if(fl==2)

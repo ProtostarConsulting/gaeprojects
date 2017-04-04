@@ -47,8 +47,8 @@ public class AccountGroupService {
 		List<AccountGroupEntity> list = ofy().load()
 				.type(AccountGroupEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, busId))
-				.filter("date >=", currentFinancialYear.getFromDate())
-				.filter("date <=", currentFinancialYear.getToDate())
+				/*.filter("date >=", currentFinancialYear.getFromDate())
+				.filter("date <=", currentFinancialYear.getToDate())*/
 				.list();
 		    	return list;
 	}
@@ -73,8 +73,8 @@ public class AccountGroupService {
 				.type(AccountGroupEntity.class)
 				.filter("business",
 				Ref.create(Key.create(BusinessEntity.class, busId)))
-				.filter("date >=", currentFinancialYear.getFromDate())
-				.filter("date <=", currentFinancialYear.getToDate())
+				/*.filter("date >=", currentFinancialYear.getFromDate())
+				.filter("date <=", currentFinancialYear.getToDate())*/
 				.list();
 
 		return filteredAccounts;
@@ -105,8 +105,8 @@ public class AccountGroupService {
 		List<AccountGroupEntity> list = ofy().load()
 				.type(AccountGroupEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, bid))
-				.filter("date >=", currentFinancialYear.getFromDate())
-				.filter("date <=", currentFinancialYear.getToDate())
+				/*.filter("date >=", currentFinancialYear.getFromDate())
+				.filter("date <=", currentFinancialYear.getToDate())*/
 				.list();
 				/////////////////////////////////////////filter//////////
 		for (AccountGroupEntity ss : list) {

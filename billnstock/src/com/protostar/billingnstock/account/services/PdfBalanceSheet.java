@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.Writer;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +22,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
 import com.protostar.billingnstock.account.entities.AccountGroupEntity;
+import com.protostar.billingnstock.account.entities.CurrentFinancialYear;
 import com.protostar.billingnstock.account.services.AccountGroupService.TypeInfo;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billnstock.until.data.PDFHtmlTemplateService;
@@ -56,7 +59,10 @@ this.generatePdfBalanceSheet(balanceSheetList,
 	}
 	public void generatePdfBalanceSheet(List<TypeInfo> natureList,
 			ServletOutputStream outputStream, Long bid) {
-
+		DateFormat df = new SimpleDateFormat("dd-MMMM-yyyy");
+		AccountingService accountingService=new AccountingService();
+		CurrentFinancialYear currentFinancialYear = accountingService.getCurrentFinancialYear(bid);
+		
 		try {
 			AccountGroupEntity accG = new AccountGroupEntity();
 
@@ -66,7 +72,7 @@ this.generatePdfBalanceSheet(balanceSheetList,
 			Document document = new Document();
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 			document.open();
-			String date = "1-Apr-2016 to 15-Apr-2016";
+			String date =df.format(currentFinancialYear.getFromDate())+" to "+df.format(currentFinancialYear.getToDate());//+currentFinancialYear.getToDate().toString();// "1-Apr-2016 to 15-Apr-2016";
 			Date today = new Date();
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 			Map<String, Object> root = new HashMap<String, Object>();

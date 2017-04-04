@@ -3,6 +3,7 @@ package com.protostar.billingnstock.account.services;
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -11,33 +12,35 @@ import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
 import com.googlecode.objectify.Key;
-import com.protostar.billingnstock.account.entities.AccountEntity;
-import com.protostar.billingnstock.account.entities.AccountEntryEntity;
-import com.protostar.billingnstock.account.entities.AccountGroupEntity;
 import com.protostar.billingnstock.account.entities.CurrentFinancialYear;
 import com.protostar.billingnstock.account.entities.GeneralEntryEntity;
 import com.protostar.billingnstock.account.entities.PaymentVoucherEntity;
 import com.protostar.billingnstock.account.entities.PurchaseVoucherEntity;
 import com.protostar.billingnstock.account.entities.ReceiptVoucherEntity;
 import com.protostar.billingnstock.account.entities.SalesVoucherEntity;
-import com.protostar.billingnstock.stock.entities.StockItemsReceiptEntity;
-import com.protostar.billingnstock.stock.services.StockManagementService;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 @Api(name = "voucherService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.services", ownerName = "com.protostar.billingnstock.services", packagePath = ""))
-
 public class VoucherService {
+	
 	@ApiMethod(name = "addvoucher")
 	public void addvoucher(SalesVoucherEntity salesVoucherEntity) {
+		Calendar cal = Calendar.getInstance();
+		Date today = cal.getTime();
+		cal.add(Calendar.YEAR, -2); 
+		Date dummyDate = cal.getTime();
+		System.out.println("-----------++"+dummyDate);
+	
 		ofy().save().entity(salesVoucherEntity).now();
 		GeneralEntryEntity generalEntryEntity = new GeneralEntryEntity();
 		generalEntryEntity.setDebitAccount(salesVoucherEntity.getAccountType1());
 		generalEntryEntity.setAmount(salesVoucherEntity.getAmount());
 		generalEntryEntity.setCreditAccount(salesVoucherEntity.getAccountType2());
-		generalEntryEntity.setCreatedDate(new Date());
-		generalEntryEntity.setDate(new Date());
+		generalEntryEntity.setCreatedDate(dummyDate);
+		generalEntryEntity.setDate(dummyDate);
 		generalEntryEntity.setBusiness(salesVoucherEntity.getBusiness());
 		AccountEntryService AccountEntryService = new AccountEntryService();
 		AccountEntryService.addGeneralEntry(generalEntryEntity);
+		
 	}
 	@ApiMethod(name = "getlistSalesVoucher")
 	public List<SalesVoucherEntity> getlistSalesVoucher(@Named("id") Long busId) {
@@ -72,13 +75,16 @@ public class VoucherService {
 		.key(Key.create(Key.create(BusinessEntity.class, busId), ReceiptVoucherEntity.class, accountId)).now();
 		return relistByid;
 		}
+	@SuppressWarnings("deprecation")
 	@ApiMethod(name = "addvoucherReciept", path = "addvoucherReciept")
 	public void addvoucherReciept(ReceiptVoucherEntity ReceiptVoucherEntity) {
+			
 		ReceiptVoucherEntity.setDate(new Date());
 		ReceiptVoucherEntity.setCreatedDate(new Date());
 		ofy().save().entity(ReceiptVoucherEntity).now();
 		GeneralEntryEntity generalEntryEntity = new GeneralEntryEntity();
-		// Debit ac amt crd ac
+		
+	
 		generalEntryEntity.setDebitAccount(ReceiptVoucherEntity.getAccountType1());
 		generalEntryEntity.setAmount(ReceiptVoucherEntity.getAmount());
 		generalEntryEntity.setCreditAccount(ReceiptVoucherEntity.getAccountType2());
@@ -133,7 +139,8 @@ public class VoucherService {
 
 	@ApiMethod(name = "addvoucherPayment", path = "addvoucherPayment")
 	public void addvoucherPayment(PaymentVoucherEntity paymentVoucher) {
-		ofy().save().entity(paymentVoucher).now();
+		
+	   ofy().save().entity(paymentVoucher).now();
 		GeneralEntryEntity generalEntryEntity = new GeneralEntryEntity();
 		// Debit ac amt crd ac
 		generalEntryEntity.setDebitAccount(paymentVoucher.getPaymentAccount());

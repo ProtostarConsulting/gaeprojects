@@ -47,6 +47,7 @@ app.controller("accountingSettingsCtr", function($scope, $window, $mdToast,
 						currentFY.toDate = new Date(currentFY.toDate);
 						$scope.currentFY = currentFY;
 					}
+			//window.location.href ="PDFHtmlTemplateService?currentYear="+$scope.currentFY;
 				});
 		accountService.getAccountingSettingsEntity($scope.curUser.business.id)
 				.then(function(settingsObj) {

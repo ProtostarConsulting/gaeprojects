@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.Writer;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -21,6 +23,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
 import com.protostar.billingnstock.account.entities.AccountGroupEntity;
+import com.protostar.billingnstock.account.entities.CurrentFinancialYear;
 import com.protostar.billingnstock.account.services.AccountGroupService.GroupInfo;
 import com.protostar.billingnstock.account.services.AccountGroupService.TypeInfo;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
@@ -59,6 +62,9 @@ this.getProfitAndLossAcc(PandL,
 	}
 	public void getProfitAndLossAcc(List<TypeInfo> list,
 			ServletOutputStream outputStream, Long bid) {
+		DateFormat df = new SimpleDateFormat("dd-MMMM-yyyy");
+		AccountingService accountingService=new AccountingService();
+		CurrentFinancialYear currentFinancialYear = accountingService.getCurrentFinancialYear(bid);
 
 		try {
 			AccountGroupEntity accG = new AccountGroupEntity();
@@ -74,9 +80,6 @@ this.getProfitAndLossAcc(PandL,
 			Map<String, Object> root = new HashMap<String, Object>();
 			pdfHtmlTemplateService.addDocumentHeaderLogo(accG, document, root);
 			root.put("ProfitAndLossAcList", list);
-			root.put("date", "" + today);
-
-			// double accountGroupTypeGroupList[];
 			double operatingRevenue = 0;
 			double grossProfit = 0;
 			double otherExpense = 0;
@@ -116,7 +119,7 @@ this.getProfitAndLossAcc(PandL,
 			Template temp = pdfHtmlTemplateService.getConfiguration().getTemplate(
 					"pdf_templates/profitAndLossAcc_tmpl.ftlh");
 
-			String date = "1-Apr-2016 to 15-Apr-2016";
+			String date =df.format(currentFinancialYear.getFromDate())+" to "+df.format(currentFinancialYear.getToDate());//+currentFinancialYear.getToDate().toString();// "1-Apr-2016 to 15-Apr-2016";
 			// nettProfit = totalGrossProfit - totalIndirectExpences;
 			root.put("operatingExpense", operatingExpense);
 			root.put("totalPurchase", operatingExpense);

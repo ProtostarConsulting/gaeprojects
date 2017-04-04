@@ -133,7 +133,7 @@ app
 						
 						var accountservice=appEndpointSF.getAccountService();
 						
-						accountservice.getAccountBalance(acc.id).then(function(balance){
+						accountservice.getAccountBalance(acc.id,$scope.curUser.business.id).then(function(balance){
 							
 							
 							if(fl==1)
