@@ -1,0 +1,56 @@
+<md-content layout-padding>
+
+<section id="pagetoolbar" layout="row" layout-xs="column">
+	<md-subheader class="md-primary">
+	<h4 class="md-title">Stock Transaction Report</h4>
+	</md-subheader>
+	<span flex> </span>
+	<md-input-container flex> <label>Select
+		Warehouse</label> <md-select ng-model="selectedWarehouse"
+		placeholder="Select Warehouse"
+		ng-change="filterStockItemsByWarehouse(selectedWarehouse)">
+	<md-option ng-value="warehouse" ng-repeat="warehouse in warehouses">{{warehouse.warehouseName
+	}}</md-option> </md-select> </md-input-container>
+	<md-input-container flex> <label>Select
+		Stock Item</label> <md-select ng-model="selectedStockItem"> <md-option
+		ng-value="stockItem" ng-repeat="stockItem in stockItemList">{{stockItem.stockItemType.itemName
+	}}</md-option> </md-select> </md-input-container>
+	<md-input-container flex> <label>Select
+		Transaction Type</label> <md-select placeholder="Select Transaction Type"
+		ng-model="selctedTxnType"
+		ng-change="getStockTxnList(selectedStockItem,selctedTxnType)">
+	<md-option ng-value="txnType" ng-repeat="txnType in stockTxnTypes">
+	{{txnType}} </md-option> </md-select> </md-input-container>
+</section>
+<div>
+	<md-data-table-container>
+	<table md-data-table class="md-primary" md-progress="deferred">
+		<thead md-order="query.order" md-trigger="onorderchange">
+			<tr>
+				<th name="Tranasction Date"></th>
+				<th name="Transaction Type" order-by="txnType"></th>
+				<th name="Quantity" order-by="qty"></th>
+				<th name="Stock Shipment No" order-by="stockShipmentNumber"></th>
+				<th name="Stock Receipt No" order-by="stockReceiptNumber"></th>
+				<th name="Invoice No" order-by="invoiceNumber"></th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<tr
+				ng-repeat="txn in stockTxnList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+				<td>{{txn.createdDate |formatDate}}</td>
+				<td>{{txn.txnType}}</td>
+				<td>{{txn.qty}}</td>
+				<td>{{txn.stockShipmentNumber}}</td>
+				<td>{{txn.stockReceiptNumber}}</td>
+				<td>{{txn.invoiceNumber}}</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<md-data-table-pagination md-limit="query.limit" md-page="query.page"
+		md-total={{filteredWarehouseData.length}} md-trigger="onpagechange"></md-data-table-pagination>
+	</md-data-table-container>
+</div>
+</md-content>

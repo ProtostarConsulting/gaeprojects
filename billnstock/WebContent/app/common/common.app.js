@@ -340,6 +340,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/reportByWarehouse",
 		templateUrl : '/app/report/stock_reportByWarehouse.html',
 		controller : 'stockReportByWarehouseCtr'
+	}).state('stock.reportStockTransaction', {
+		url : "/StockTransactionReport",
+		templateUrl : '/app/report/stock_report_stocktxn.html',
+		controller : 'stockTxnReportCtr'
 	}).state('stock.reportByTaxPaid', {
 		url : "/reportByTaxPaid",
 		templateUrl : '/app/report/tax_reportByTaxPaid.html',

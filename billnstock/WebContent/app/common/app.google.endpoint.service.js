@@ -2159,6 +2159,24 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
+	StockService.getCRStockTxnByStockItem = function(stockItem) {
+		var deferred = $q.defer();
+		gapi.client.stockService.getCRStockTxnByStockItem(stockItem).execute(
+				function(resp) {
+					deferred.resolve(resp.items);
+				});
+		return deferred.promise;
+	}
+
+	StockService.getDRStockTxnByStockItem = function(stockItem) {
+		var deferred = $q.defer();
+		gapi.client.stockService.getDRStockTxnByStockItem(stockItem).execute(
+				function(resp) {
+					deferred.resolve(resp.items);
+				});
+		return deferred.promise;
+	}
+
 	StockService.getStockReceiptList = function(id) {
 		var deferred = $q.defer();
 		gapi.client.stockService.getStockReceiptList({
@@ -2524,7 +2542,7 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	
+
 	InvoiceService.addInvoice = function(invoice) {
 		var deferred = $q.defer();
 
