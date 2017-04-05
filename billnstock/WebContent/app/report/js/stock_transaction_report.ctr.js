@@ -39,22 +39,36 @@ angular.module("stockApp").controller(
 				});
 			}
 
-			$scope.getStockTxnList = function(stockItem, selctedTxnType) {
-				$scope.selectedStockItem = stockItem;
-				$scope.selctedTxnType = selctedTxnType;
+			$scope.getStockTxnList = function(stockItem, selectedTxnType,
+					selectedFromDate, selectedToDate) {
 
-				if ($scope.selctedTxnType == "CR") {
+				$scope.selectedStockItem = stockItem;
+				$scope.selectedTxnType = selectedTxnType;
+				$scope.selectedFromDate = new Date(selectedFromDate);
+				$scope.selectedToDate = new Date(selectedToDate);
+
+				if ($scope.selectedTxnType == "CR") {
 					var stockService = appEndpointSF.getStockService();
 					stockService.getCRStockTxnByStockItem(
-							$scope.selectedStockItem).then(function(list) {
-						$scope.stockTxnList = list;
-					});
-				} else if ($scope.selctedTxnType == "DR") {
+							$scope.selectedStockItem,
+							$scope.selectedStockItem.business.id,
+							$scope.selectedFromDate.getTime(),
+							$scope.selectedToDate.getTime()).then(
+							function(list) {
+								$scope.stockTxnList = list;
+
+							});
+				} else if ($scope.selectedTxnType == "DR") {
 					var stockService = appEndpointSF.getStockService();
 					stockService.getDRStockTxnByStockItem(
-							$scope.selectedStockItem).then(function(list) {
-						$scope.stockTxnList = list;
-					});
+							$scope.selectedStockItem,
+							$scope.selectedStockItem.business.id,
+							$scope.selectedFromDate.getTime(),
+							$scope.selectedToDate.getTime()).then(
+							function(list) {
+								$scope.stockTxnList = list;
+
+							});
 				}
 			}
 

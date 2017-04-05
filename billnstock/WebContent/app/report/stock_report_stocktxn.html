@@ -17,11 +17,23 @@
 	}}</md-option> </md-select> </md-input-container>
 	<md-input-container flex> <label>Select
 		Transaction Type</label> <md-select placeholder="Select Transaction Type"
-		ng-model="selctedTxnType"
-		ng-change="getStockTxnList(selectedStockItem,selctedTxnType)">
-	<md-option ng-value="txnType" ng-repeat="txnType in stockTxnTypes">
-	{{txnType}} </md-option> </md-select> </md-input-container>
+		ng-model="selectedTxnType"> <md-option ng-value="txnType"
+		ng-repeat="txnType in stockTxnTypes"> {{txnType}} </md-option> </md-select> </md-input-container>
 </section>
+<section layout-xs="row">
+	From:
+	<md-datepicker flex ng-model="selectedFromDate"
+		md-placeholder="Select Date" ng-required="true"></md-datepicker>
+
+	To:
+	<md-datepicker flex ng-model="selectedToDate"
+		md-placeholder="Select Date" ng-required="true"></md-datepicker>
+	<md-button class="md-raised md-primary"
+		ng-click="getStockTxnList(selectedStockItem,selectedTxnType,selectedFromDate,selectedToDate)">Show
+	Report</md-button>
+
+</section>
+
 <div>
 	<md-data-table-container>
 	<table md-data-table class="md-primary" md-progress="deferred">

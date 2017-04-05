@@ -1871,11 +1871,11 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
-	AccountService.getAccountBalance = function(id,bid) {
+	AccountService.getAccountBalance = function(id, bid) {
 		var deferred = $q.defer();
 		gapi.client.accountService.getAccountBalance({
 			"id" : id,
-			"bid":bid
+			"bid" : bid
 		}).execute(function(resp) {
 			deferred.resolve(resp);
 		});
@@ -2160,21 +2160,29 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
-	StockService.getCRStockTxnByStockItem = function(stockItem) {
+	StockService.getCRStockTxnByStockItem = function(stockItem, busId,
+			fromDate, toDate) {
 		var deferred = $q.defer();
-		gapi.client.stockService.getCRStockTxnByStockItem(stockItem).execute(
-				function(resp) {
-					deferred.resolve(resp.items);
-				});
+		gapi.client.stockService.getCRStockTxnByStockItem({
+			"busId" : busId,
+			"fromDate" : fromDate,
+			"toDate" : toDate
+		}, stockItem).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
 		return deferred.promise;
 	}
 
-	StockService.getDRStockTxnByStockItem = function(stockItem) {
+	StockService.getDRStockTxnByStockItem = function(stockItem, busId,
+			fromDate, toDate) {
 		var deferred = $q.defer();
-		gapi.client.stockService.getDRStockTxnByStockItem(stockItem).execute(
-				function(resp) {
-					deferred.resolve(resp.items);
-				});
+		gapi.client.stockService.getDRStockTxnByStockItem({
+			"busId" : busId,
+			"fromDate" : fromDate,
+			"toDate" : toDate
+		}, stockItem).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
 		return deferred.promise;
 	}
 
