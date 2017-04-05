@@ -597,23 +597,30 @@ public class StockManagementService extends BaseService {
 
 	@ApiMethod(name = "getCRStockTxnByStockItem", path = "getCRStockTxnByStockItem", httpMethod = HttpMethod.POST)
 	public List<StockItemTxnEntity> getCRStockTxnByStockItem(
-			StockItemEntity stockItem) {
+			StockItemEntity stockItem, @Named("busId") long busId,
+			@Named("fromDate") long fromDate, @Named("toDate") long toDate) {
 
-		List<StockItemTxnEntity> stockTxns = ofy()
-				.load()
+		Date date1 = new Date(fromDate);
+		Date date2 = new Date(toDate);
+
+		List<StockItemTxnEntity> stockTxns = ofy().load()
 				.type(StockItemTxnEntity.class)
-				.ancestor(
-						Key.create(BusinessEntity.class, stockItem
-								.getBusiness().getId()))
+				.ancestor(Key.create(BusinessEntity.class, busId))
 				.filter("stockItem", stockItem)
-				.filter("txnType ==", StockTxnType.CR).list();
+				.filter("txnType ==", StockTxnType.CR)
+				.filter("createdDate >=", date1)
+				.filter("createdDate <=", date2).list();
 
 		return stockTxns;
 	}
 
 	@ApiMethod(name = "getDRStockTxnByStockItem", path = "getDRStockTxnByStockItem", httpMethod = HttpMethod.POST)
 	public List<StockItemTxnEntity> getDRStockTxnByStockItem(
-			StockItemEntity stockItem) {
+			StockItemEntity stockItem, @Named("busId") long busId,
+			@Named("fromDate") long fromDate, @Named("toDate") long toDate) {
+
+		Date date1 = new Date(fromDate);
+		Date date2 = new Date(toDate);
 
 		List<StockItemTxnEntity> stockTxns = ofy()
 				.load()
@@ -622,7 +629,9 @@ public class StockManagementService extends BaseService {
 						Key.create(BusinessEntity.class, stockItem
 								.getBusiness().getId()))
 				.filter("stockItem", stockItem)
-				.filter("txnType ==", StockTxnType.DR).list();
+				.filter("txnType ==", StockTxnType.DR)
+				.filter("createdDate >=", date1)
+				.filter("createdDate <=", date2).list();
 
 		return stockTxns;
 	}
