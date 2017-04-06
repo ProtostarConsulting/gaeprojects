@@ -46,6 +46,7 @@ public class InvoiceEntity extends BaseEntity {
 	private boolean isPaid = false;
 	@Index
 	private boolean isDraft = false;
+	@Index
 	private Date paidDate;
 
 	private List<StockLineItem> productLineItemList = new ArrayList<StockLineItem>();

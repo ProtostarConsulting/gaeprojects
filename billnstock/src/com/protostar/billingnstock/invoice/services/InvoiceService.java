@@ -12,6 +12,7 @@ import javax.mail.MessagingException;
 
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
+import com.google.api.server.spi.config.ApiMethod.HttpMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
 import com.googlecode.objectify.Key;
@@ -77,16 +78,19 @@ public class InvoiceService extends BaseService {
 	}
 
 	@ApiMethod(name = "getStarredInvoices", path = "getStarredInvoices")
-	public List<InvoiceEntity> getStarredInvoices() {
+	public List<InvoiceEntity> getStarredInvoices(@Named("busId") Long busId) {
 		List<InvoiceEntity> starredInvoices = ofy().load()
-				.type(InvoiceEntity.class).filter("starred", true).list();
+				.type(InvoiceEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId))
+				.filter("starred", true).list();
 		return starredInvoices;
 	}
 
 	@ApiMethod(name = "getUnpaidInvoices", path = "getUnpaidInvoices")
-	public List<InvoiceEntity> getUnpaidInvoices() {
+	public List<InvoiceEntity> getUnpaidInvoices(@Named("busId") Long busId) {
 		List<InvoiceEntity> starredInvoices = ofy().load()
 				.type(InvoiceEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId))
 				.filter("status !=", DocumentStatus.PAID).list();
 		return starredInvoices;
 	}
@@ -98,6 +102,23 @@ public class InvoiceService extends BaseService {
 				.type(InvoiceEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, busId)).list();
 		return filteredinvoice;
+	}
+
+	@ApiMethod(name = "getInvoicesForTaxCollection", path = "getInvoicesForTaxCollection", httpMethod = HttpMethod.POST)
+	public List<InvoiceEntity> getInvoicesForTaxCollection(
+			@Named("busId") Long busId, @Named("fromDate") long fromDate,
+			@Named("toDate") long toDate) {
+
+		Date date1 = new Date(fromDate);
+		Date date2 = new Date(toDate);
+
+		List<InvoiceEntity> filteredinvoices = ofy().load()
+				.type(InvoiceEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId))
+				.filter("isPaid", true).filter("paidDate >=", date1)
+				.filter("paidDate <=", date2).list();
+
+		return filteredinvoices;
 	}
 
 	@ApiMethod(name = "fetchInvoiceListByPaging", path = "fetchInvoiceListByPaging")
@@ -130,9 +151,11 @@ public class InvoiceService extends BaseService {
 	}
 
 	@ApiMethod(name = "getStarredQuotations", path = "getStarredQuotations")
-	public List<QuotationEntity> getStarredQuotations() {
+	public List<QuotationEntity> getStarredQuotations(@Named("busId") Long busId) {
 		List<QuotationEntity> starredQuotations = ofy().load()
-				.type(QuotationEntity.class).filter("starred", true).list();
+				.type(QuotationEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId))
+				.filter("starred", true).list();
 		return starredQuotations;
 	}
 
