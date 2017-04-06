@@ -382,10 +382,12 @@ public class StockManagementService extends BaseService {
 	}
 
 	@ApiMethod(name = "getStarredStockReceipts", path = "getStarredStockReceipts")
-	public List<StockItemsReceiptEntity> getStarredStockReceipts() {
+	public List<StockItemsReceiptEntity> getStarredStockReceipts(
+			@Named("busId") Long busId) {
 		List<StockItemsReceiptEntity> starredStockReceipts = ofy().load()
-				.type(StockItemsReceiptEntity.class).filter("starred", true)
-				.list();
+				.type(StockItemsReceiptEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId))
+				.filter("starred", true).list();
 		return starredStockReceipts;
 	}
 
@@ -430,10 +432,12 @@ public class StockManagementService extends BaseService {
 	}
 
 	@ApiMethod(name = "getStarredStockShipments", path = "getStarredStockShipments")
-	public List<StockItemsShipmentEntity> getStarredStockShipments() {
+	public List<StockItemsShipmentEntity> getStarredStockShipments(
+			@Named("busId") Long busId) {
 		List<StockItemsShipmentEntity> starredStockShipments = ofy().load()
-				.type(StockItemsShipmentEntity.class).filter("starred", true)
-				.list();
+				.type(StockItemsShipmentEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId))
+				.filter("starred", true).list();
 		return starredStockShipments;
 	}
 
@@ -714,9 +718,12 @@ public class StockManagementService extends BaseService {
 	}
 
 	@ApiMethod(name = "getStarredPurchaseOrders", path = "getStarredPurchaseOrders")
-	public List<PurchaseOrderEntity> getStarredPurchaseOrders() {
+	public List<PurchaseOrderEntity> getStarredPurchaseOrders(
+			@Named("busId") Long busId) {
 		List<PurchaseOrderEntity> starredPOs = ofy().load()
-				.type(PurchaseOrderEntity.class).filter("starred", true).list();
+				.type(PurchaseOrderEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId))
+				.filter("starred", true).list();
 		return starredPOs;
 	}
 
@@ -739,9 +746,12 @@ public class StockManagementService extends BaseService {
 	}
 
 	@ApiMethod(name = "getStarredRequisitions", path = "getStarredRequisitions")
-	public List<RequisitionEntity> getStarredRequisitions() {
+	public List<RequisitionEntity> getStarredRequisitions(
+			@Named("busId") Long busId) {
 		List<RequisitionEntity> starredRequisitions = ofy().load()
-				.type(RequisitionEntity.class).filter("starred", true).list();
+				.type(RequisitionEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId))
+				.filter("starred", true).list();
 		return starredRequisitions;
 	}
 
