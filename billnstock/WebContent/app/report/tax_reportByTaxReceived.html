@@ -3,71 +3,58 @@
 <h3 class="md-headline">
 	<b>Tax Received Report</b>
 </h3>
-<div layout layout-sm="column">
+<section layout="row" layout-xs="column">
 	<md-input-container flex> <label>Search</label> <input
 		ng-model="searchText"> </md-input-container>
-</div>
-<div layout layout-xs="row">
+</section>
+<section layout-xs="row">
 	From:
-	<md-datepicker flex ng-model="fromDate" md-placeholder="Select Date"></md-datepicker>
+	<md-datepicker flex ng-model="selectedFromDate"
+		md-placeholder="Select Date"></md-datepicker>
 
 	To:
-	<md-datepicker flex ng-model="toDate" md-placeholder="Select Date"></md-datepicker>
-</div>
-<md-button class="md-raised md-primary" ng-click="showDetails(fromDate, toDate)">Show</md-button>
+	<md-datepicker flex ng-model="selectedToDate"
+		md-placeholder="Select Date"></md-datepicker>
+	<md-button class="md-raised md-primary"
+		ng-click="getReportByTaxReceived(selectedFromDate, selectedToDate)">Show</md-button>
+</section>
+
 
 <div>
 	<md-data-table-container>
-	<table md-data-table class="md-primary" md-row-select="selected"
-		md-progress="deferred">
+	<table md-data-table class="md-primary" md-progress="deferred">
 		<thead md-order="query.order" md-trigger="onorderchange">
 			<tr>
-				<th name="Invoice ID" order-by="id"></th>
+				<th name="Invoice No" order-by="itemNumber"></th>
 				<th name="Services Tax" order-by="taxCodeName"></th>
 				<th name="Products Tax" order-by="taxCodeName"></th>
-				<th name="Tax Rate" order-by="taxPercenatge"></th>
-				<th name="Date" order-by="invoiceDate"></th>
-				<th name="Services Tax" order-by="invoiceDate"></th>
-				<th name="Product Tax" order-by="invoiceDate"></th>
+				<th name="Tax Rate(&#37)" order-by="taxPercenatge"></th>
+				<th name="Invoice Paid Date" order-by="paidDate"></th>
+				<th name="Services Tax(&#x20b9)" order-by="serviceTaxTotal"></th>
+				<th name="Product Tax(&#x20b9)" order-by="productTaxTotal"></th>
 
 			</tr>
 		</thead>
 
 		<tbody>
-			<tr md-auto-select
-				ng-repeat="tax in taxReceived | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+			<tr
+				ng-repeat="tax in taxRcvData | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
 				<!-- <a ng-href="#/invoice.list/{{invoiceId.id}}">{{invoice.finalTotal}}</a> -->
 
-				<td>{{tax.id}}</td>
+				<td>{{tax.itemNumber}}</td>
 				<td>{{tax.selectedServiceTax.taxCodeName}}</td>
-				<td>{{tax.selectedTaxItem.taxCodeName}}</td>
+				<td>{{tax.selectedProductTax.taxCodeName}}</td>
 				<td>{{tax.selectedServiceTax.taxPercenatge}}</td>
-				<td>{{tax.invoiceDate | formatDate}}</td>
-				<td style="text-align: right">{{tax.serviceTaxTotal |
+				<td>{{tax.paidDate | formatDate}}</td>
+				<td>{{tax.serviceTaxTotal |
 					number:2}}</td>
-				<td style="text-align: right">{{tax.productTaxTotal |
-					number:2}}</td>
-			</tr>
-		</tbody>
-	</table>
-
-
-	<table>
-
-		<tbody>
-			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td style="text-align: right">{{serviceTaxTotalBtnRange |
-					number:2}}</td>
-				<td style="text-align: right">{{productTaxTotalBtnRange |
+				<td>{{tax.productTaxTotal |
 					number:2}}</td>
 			</tr>
 		</tbody>
 	</table>
+
+
 
 	<md-data-table-pagination md-limit="query.limit" md-page="query.page"
 		md-total={{taxRcvData.length}} md-trigger="onpagechange"></md-data-table-pagination>

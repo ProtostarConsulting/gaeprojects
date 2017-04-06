@@ -101,7 +101,8 @@ app
 
 						var invoiceService = appEndpointSF.getInvoiceService();
 
-						invoiceService.getStarredQuotations().then(
+						invoiceService.getStarredQuotations(
+								$scope.curUser.business.id).then(
 								function(starredQuotations) {
 									$scope.quotationList = starredQuotations;
 									$scope.loading = false;

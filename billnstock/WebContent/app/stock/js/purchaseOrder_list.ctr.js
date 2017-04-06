@@ -102,7 +102,8 @@ app
 					$scope.getStarredPOList = function() {
 
 						var stockService = appEndpointSF.getStockService();
-						stockService.getStarredPurchaseOrders().then(
+						stockService.getStarredPurchaseOrders(
+								$scope.curUser.business.id).then(
 								function(starredPOs) {
 									$scope.purchaseOrderList = starredPOs;
 									$scope.loading = false;

@@ -2196,12 +2196,13 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
-	StockService.getStarredStockReceipts = function() {
+	StockService.getStarredStockReceipts = function(busId) {
 		var deferred = $q.defer();
-		gapi.client.stockService.getStarredStockReceipts().execute(
-				function(resp) {
-					deferred.resolve(resp.items);
-				});
+		gapi.client.stockService.getStarredStockReceipts({
+			"busId" : busId
+		}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
 		return deferred.promise;
 	}
 
@@ -2215,12 +2216,13 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
-	StockService.getStarredStockShipments = function() {
+	StockService.getStarredStockShipments = function(busId) {
 		var deferred = $q.defer();
-		gapi.client.stockService.getStarredStockShipments().execute(
-				function(resp) {
-					deferred.resolve(resp.items);
-				});
+		gapi.client.stockService.getStarredStockShipments({
+			"busId" : busId
+		}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
 		return deferred.promise;
 	}
 
@@ -2294,12 +2296,13 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
-	StockService.getStarredRequisitions = function() {
+	StockService.getStarredRequisitions = function(busId) {
 		var deferred = $q.defer();
-		gapi.client.stockService.getStarredRequisitions().execute(
-				function(resp) {
-					deferred.resolve(resp.items);
-				});
+		gapi.client.stockService.getStarredRequisitions({
+			"busId" : busId
+		}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
 		return deferred.promise;
 	}
 
@@ -2367,12 +2370,13 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	StockService.getStarredPurchaseOrders = function() {
+	StockService.getStarredPurchaseOrders = function(busId) {
 		var deferred = $q.defer();
-		gapi.client.stockService.getStarredPurchaseOrders().execute(
-				function(resp) {
-					deferred.resolve(resp.items);
-				});
+		gapi.client.stockService.getStarredPurchaseOrders({
+			"busId" : busId
+		}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
 		return deferred.promise;
 	}
 
@@ -2536,17 +2540,21 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
-	InvoiceService.getStarredInvoices = function() {
+	InvoiceService.getStarredInvoices = function(busId) {
 		var deferred = $q.defer();
-		gapi.client.invoiceService.getStarredInvoices().execute(function(resp) {
+		gapi.client.invoiceService.getStarredInvoices({
+			"busId" : busId
+		}).execute(function(resp) {
 			deferred.resolve(resp.items);
 		});
 		return deferred.promise;
 	}
 
-	InvoiceService.getUnpaidInvoices = function() {
+	InvoiceService.getUnpaidInvoices = function(busId) {
 		var deferred = $q.defer();
-		gapi.client.invoiceService.getUnpaidInvoices().execute(function(resp) {
+		gapi.client.invoiceService.getUnpaidInvoices({
+			"busId" : busId
+		}).execute(function(resp) {
 			deferred.resolve(resp.items);
 		});
 		return deferred.promise;
@@ -2586,12 +2594,13 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
-	InvoiceService.getStarredQuotations = function() {
+	InvoiceService.getStarredQuotations = function(busId) {
 		var deferred = $q.defer();
-		gapi.client.invoiceService.getStarredQuotations().execute(
-				function(resp) {
-					deferred.resolve(resp.items);
-				});
+		gapi.client.invoiceService.getStarredQuotations({
+			"busId" : busId
+		}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
 		return deferred.promise;
 	}
 
@@ -2599,6 +2608,19 @@ function googleEndpointSF($q) {
 		var deferred = $q.defer();
 		gapi.client.invoiceService.getAllInvoice({
 			"id" : id
+		}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}
+
+	InvoiceService.getInvoicesForTaxCollection = function(busId, fromDate,
+			toDate) {
+		var deferred = $q.defer();
+		gapi.client.invoiceService.getInvoicesForTaxCollection({
+			"busId" : busId,
+			"fromDate" : fromDate,
+			"toDate" : toDate
 		}).execute(function(resp) {
 			deferred.resolve(resp.items);
 		});

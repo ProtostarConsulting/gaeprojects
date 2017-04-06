@@ -83,7 +83,8 @@ app
 
 						var stockService = appEndpointSF.getStockService();
 						stockService
-								.getStarredRequisitions()
+								.getStarredRequisitions(
+										$scope.curUser.business.id)
 								.then(
 										function(starredRequisitions) {
 											$scope.requisitionList = starredRequisitions;

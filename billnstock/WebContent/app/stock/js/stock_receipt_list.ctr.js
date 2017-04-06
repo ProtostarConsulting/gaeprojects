@@ -102,7 +102,8 @@ app
 					$scope.getStarredStockReceiptsList = function() {
 
 						var stockService = appEndpointSF.getStockService();
-						stockService.getStarredStockReceipts().then(
+						stockService.getStarredStockReceipts(
+								$scope.curUser.business.id).then(
 								function(starredReceipts) {
 									$scope.stockReceiptList = starredReceipts;
 									$scope.loading = false;
