@@ -1,0 +1,75 @@
+
+<style>
+table {
+	border: 1px solid black;
+	border-collapse: collapse; border : 1px solid black;
+	width: 90%;
+	border: 1px solid black;
+}
+
+td {
+	border: 1px solid black;
+}
+table tr td a {
+ 
+    margin-right: 100px;
+}
+ 
+</style>
+
+
+<md-content layout-padding>
+
+<section layout="row" layout-xs="column">
+			<md-subheader class="md-primary">
+			<h4 class="md-title">Day Book</h4>
+			</md-subheader>
+			<span flex></span>
+			</section>
+		<md-content ng-show="loading"> <md-progress-circular
+	class="md-accent md-accent" md-diameter="60"></md-progress-circular></md-content>
+<md-content layout-padding ng-show="!loading"> <md-content
+	layout-padding>
+
+ 	<form name="dayBookForm" >
+ 			<div layout layout-sm="column">
+
+ 			<label style="margin-top: 10px">Date</label>
+
+ 			<md-datepicker id="date" name="date" ng-change="getDayBookList()"
+ 				ng-model="blankDayBookEntry.date" md-placeholder="Enter date">
+ 			</md-datepicker>
+ 			<div ng-messages="dayBookForm.date.$error"
+ 				ng-if="dayBookForm.date.$submitted || dayBookForm.date.$touched">
+ 				<div ng-message="required">Please Select Date.</div>
+ 			</div>
+	</div>
+	<div ng-if="!loading">
+	<table style="width: 100%; height: 100%;">
+	<thead>
+		<tr  style="border: 1px solid black; background-color: #33BEFF">
+		<th style=" padding-left:5px;">Date</th>
+			<th style=" padding-left:30px;">Debit Account  </th>
+			<th style=" padding-left:30px;">Credit Account</th>
+			<th style=" padding-left:30px;">Amount</th>
+			<th style=" padding-left:30px;">Narration</th>
+		</tr>
+	</thead>
+		<tbody>
+			<tr	ng-repeat="item in dayBooklist">
+				<td style=" padding-left:5px;">{{item.createdDate| formatDateWithTime}}</td>
+				<td style=" padding-left:30px;">{{item.debitAccount.accountName}}</td>
+				<td style=" padding-left:30px;">{{item.creditAccount.accountName}}</td>
+				<td style=" padding-left:30px;">{{item.amount}}</td>
+			   <td style=" padding-left:30px;">{{item.	narration}}</td>
+			  </tr>
+		</tbody>
+	</table>
+</div>
+	
+	
+	
+	
+	
+	</form>
+	</md-content>

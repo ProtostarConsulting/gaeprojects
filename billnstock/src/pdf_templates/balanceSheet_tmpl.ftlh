@@ -139,8 +139,6 @@ border-right: 1px solid black;
 						
 						
 						<tr>
-						<td colspan="2"style="border: 0px;">Current Period</td>
-						<td colspan="1"style="border-bottom: medium; ">${nettProffitOrLoss}</td>
 						<th colspan="2" style="border: 0px;">Profit & Loss A/c</th>
 						<td colspan="1" ><b>${nettProffitOrLoss}</b></td>	
 						

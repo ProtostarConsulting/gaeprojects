@@ -438,6 +438,7 @@ public class AccountGroupService {
 	public class AccInfo implements Serializable {
 		String accName;
 		double accBalance;
+		boolean debitBalance;
 
 		public String getAccName() {
 			return accName;
@@ -453,6 +454,14 @@ public class AccountGroupService {
 
 		public void setAccBalance(double accBalance) {
 			this.accBalance = accBalance;
+		}
+
+		public boolean isDebitBalance() {
+			return debitBalance;
+		}
+
+		public void setDebitBalance(boolean debitBalance) {
+			this.debitBalance = debitBalance;
 		}
 
 	}

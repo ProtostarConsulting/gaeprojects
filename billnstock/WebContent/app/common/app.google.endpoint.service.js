@@ -2016,6 +2016,17 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
+	AccountEntryService.getDayBookList = function(busId,date) {
+		var deferred = $q.defer();
+		gapi.client.accountEntryService.getDayBookList({
+			"busId":busId,
+			"date":date
+			}).execute(
+				function(resp) {
+					deferred.resolve(resp.items);
+				});
+		return deferred.promise;
+	}
 	AccountEntryService.getAccountViewEntryByAccountId = function(
 			actualFromDate, actualtoDate, id, bid) {
 		var deferred = $q.defer();
@@ -2056,6 +2067,9 @@ function googleEndpointSF($q) {
 				});
 		return deferred.promise;
 	}
+	
+	
+	
 
 	/* =============================================================================================================================== */
 	var GeneralJournalService = {};

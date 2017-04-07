@@ -597,15 +597,19 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		templateUrl : '/app/accounting/voucherPurchesList.html',
 		controller : 'voucherPurchesListCtr'
 	})
-
-	.state('accounting.voucherPayment', {
+	.state('accounting.dayBook', {
+		url : "/dayBook",
+		templateUrl : '/app/accounting/dayBook.html',
+		controller : 'dayBook',
+		
+	})
+	 	.state('accounting.voucherPayment', {
 		url : "/PaymentVoucher",
 		templateUrl : '/app/accounting/voucherPayment.html',
 		controller : 'voucherPaymentCtr',
 		params : {
 			Account : "",
 			stockReceiptObj : null
-
 		}
 	}).state('accounting.voucherPaymentList', {
 		url : "/PaymentVoucherList",

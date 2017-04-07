@@ -38,7 +38,7 @@ app
 						$scope.loading = true;
 						$scope.wait = true;
 						var Ac = appEndpointSF.getAccountService();
-					Ac.getAccountBalance(accId).then(function(list1){
+					Ac.getAccountBalance(accId,$scope.curUser.business.id).then(function(list1){
 					var AccountEntryService = appEndpointSF.getAccountEntryService();
 					var fromDate=new Date($scope.fromDate).getTime();
 					var toDate=new Date($scope.toDate).getTime();
@@ -51,9 +51,6 @@ app
 											$scope.totalcredit = 0;
 											$log.debug("list:" + list);
 											entryList = [];
-											
-											
-											
 											for (var i = 0; i < list.length; i++) {
 												entryList.push(list[i]);
 													
@@ -66,8 +63,7 @@ app
 														$scope.totalcredit = $scope.totalcredit
 																+ parseFloat(list[i].credit);
 													}
-												
-											}
+													}
 											$scope.entries = [];
 											$scope.closingBalance = 0;
 											$scope.closingBalance=list1.returnBalance;

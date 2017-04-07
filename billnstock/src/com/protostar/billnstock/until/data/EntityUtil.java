@@ -1,5 +1,6 @@
 package com.protostar.billnstock.until.data;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -37,5 +38,25 @@ public class EntityUtil {
 
 	public static Key<BusinessEntity> getBusinessRawKey(BusinessEntity entityObj) {
 		return Key.create(BusinessEntity.class, entityObj.getId());
+	}
+
+	public static Date getBeginingOfDay(Date date) {
+		Calendar fromCalendar = Calendar.getInstance();
+		fromCalendar.setTime(date);
+		fromCalendar.set(Calendar.MILLISECOND, 0);
+		fromCalendar.set(Calendar.SECOND, 0);
+		fromCalendar.set(Calendar.MINUTE, 0);
+		fromCalendar.set(Calendar.HOUR_OF_DAY, 0);
+		return fromCalendar.getTime();
+	}
+
+	public static Date getEndOfDay(Date date) {
+		Calendar toCalendar = Calendar.getInstance();
+		toCalendar.setTime(date);
+		toCalendar.set(Calendar.MILLISECOND, 999);
+		toCalendar.set(Calendar.SECOND, 59);
+		toCalendar.set(Calendar.MINUTE, 59);
+		toCalendar.set(Calendar.HOUR_OF_DAY, 23);
+		return toCalendar.getTime();
 	}
 }

@@ -142,7 +142,7 @@ app
 						if(fl==2){
 
 							accountservice
-									.getAccountBalance(acc.creditAccount.id)
+									.getAccountBalance(acc.creditAccount.id,$scope.curUser.business.id)
 									.then(function(balance) {
 
 											$scope.creditCurrentBalance = balance;

@@ -15,8 +15,6 @@ $scope.loading=true;
 		displayOrderNo : "",
 		contra : "",
 		business: $scope.curUser.business
-			
-		
 	};
 	var blankTempGeneralEntry =function() {
 		return{
@@ -28,7 +26,6 @@ $scope.loading=true;
 			modifiedBy :$scope.curUser.email_id,
 			business: $scope.curUser.business
 		}
-
 	};
 	$scope.tempGeneralEntry = blankTempGeneralEntry();
 	var i, flag;

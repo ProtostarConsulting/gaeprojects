@@ -16,6 +16,7 @@ import com.protostar.billingnstock.account.entities.AccountEntryEntity;
 import com.protostar.billingnstock.account.entities.AccountGroupEntity;
 import com.protostar.billingnstock.account.entities.AccountingSettingsEntity;
 import com.protostar.billingnstock.account.entities.CurrentFinancialYear;
+import com.protostar.billingnstock.account.entities.GeneralEntryEntity;
 import com.protostar.billingnstock.account.entities.PayableEntity;
 import com.protostar.billingnstock.account.entities.ReceivableEntity;
 import com.protostar.billingnstock.cust.entities.Customer;
@@ -70,6 +71,8 @@ public class AccountingService {
 		System.out.println("inside update details now" + now);
 		return now;
 	}
+	
+	
 
 	@ApiMethod(name = "getGroupViewtByGroupId", path = "getGroupViewtByGroupId")
 	public List<AccountEntity> getGroupViewtByGroupId(
@@ -90,6 +93,7 @@ public class AccountingService {
 				.list();
 		return accountGroupList;
 	}
+	
 
 	private Long getTopGroupId(AccountGroupEntity accGrp) {
 		if (accGrp.getParent() != null) {

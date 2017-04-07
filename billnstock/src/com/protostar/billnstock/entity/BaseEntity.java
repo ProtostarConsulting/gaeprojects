@@ -52,7 +52,7 @@ public abstract class BaseEntity {
 		cal.add(Calendar.YEAR, -1); 
 		Date dummyDate = cal.getTime();
 		if (getId() == null) {
-			setCreatedDate(new Date());
+			setCreatedDate(dummyDate);
 			setModifiedDate(new Date());
 		} else {
 			setModifiedDate(new Date());
@@ -60,7 +60,7 @@ public abstract class BaseEntity {
 
 	}
 
-	public Date getCreatedDate() {
+	public Date getCreatedDate() { 
 		return createdDate;
 	}
 
