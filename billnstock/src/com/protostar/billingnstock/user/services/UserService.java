@@ -168,7 +168,9 @@ public class UserService {
 		} else {
 			if (forLogin) {
 				UserEntity foundUser = list.get(0);
-				foundUser.setLastLoginDate(new Date());
+				foundUser.setLastLoginDate(new Date());				
+				UserLoginService userLoginService = new UserLoginService();
+				userLoginService.recordUserLogin(foundUser);
 				ofy().save().entity(foundUser);
 				// This is save async.
 				return list;

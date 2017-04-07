@@ -44,25 +44,30 @@ public abstract class BaseEntity {
 	@OnSave
 	public void beforeSave() {
 		if (getBusiness() == null) {
-			throw new RuntimeException("Business entity is not set on: " + this.getClass().getSimpleName()
+			throw new RuntimeException("Business entity is not set on: "
+					+ this.getClass().getSimpleName()
 					+ " This is required field. Aborting save operation...");
 		}
-		Calendar cal = Calendar.getInstance();
-		Date today = cal.getTime();
-		cal.add(Calendar.YEAR, -1);
-		Date dummyDate = cal.getTime();
+		/*
+		 * Calendar cal = Calendar.getInstance(); Date today = cal.getTime();
+		 * cal.add(Calendar.YEAR, -1); Date dummyDate = cal.getTime();
+		 */
 		if (getId() == null) {
-			setCreatedDate(dummyDate);
+			setCreatedDate(new Date());
 			setModifiedDate(new Date());
-			System.out.println("WebUtil.getCurrentUser().getCreatedBy() : "
-					+ WebUtil.getCurrentUser().getCreatedBy().getEmail_id());
+			if (WebUtil.getCurrentUser() != null)
+				System.out.println("WebUtil.getCurrentUser(): "
+						+ WebUtil.getCurrentUser().getId());
 		} else {
 			setModifiedDate(new Date());
+			if (WebUtil.getCurrentUser() != null)
+				System.out.println("WebUtil.getCurrentUser(): "
+						+ WebUtil.getCurrentUser().getId());
 		}
 
 	}
 
-	public Date getCreatedDate() { 
+	public Date getCreatedDate() {
 		return createdDate;
 	}
 
