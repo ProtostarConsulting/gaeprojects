@@ -121,7 +121,7 @@ angular
 						$scope.bizLogoGCSURL = $scope.curUser.business.bizLogoGCSURL;
 
 						gapi.auth.setToken({
-						    access_token: 'a@b.com'
+						    access_token: $scope.curUser.accessToken
 						});
 						getUserAuthTree();
 						// finally go to home...
