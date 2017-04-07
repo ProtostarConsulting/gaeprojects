@@ -5,13 +5,14 @@ import java.util.Date;
 import java.util.List;
 
 import com.googlecode.objectify.Key;
+import com.googlecode.objectify.Ref;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
+import com.protostar.billingnstock.user.services.CurrentUserSession;
 import com.protostar.billnstock.entity.BaseEntity;
 
 public class EntityUtil {
 
-	public static List<?> updateCreatedModifiedDate(
-			@SuppressWarnings("rawtypes") List entityList) {
+	public static List<?> updateCreatedModifiedDate(@SuppressWarnings("rawtypes") List entityList) {
 		if (entityList != null && entityList.size() > 0) {
 			Date dateNow = new Date();
 			for (Object obj : entityList) {
@@ -38,6 +39,14 @@ public class EntityUtil {
 
 	public static Key<BusinessEntity> getBusinessRawKey(BusinessEntity entityObj) {
 		return Key.create(BusinessEntity.class, entityObj.getId());
+	}
+
+	public static String getWebSafeKey(BaseEntity entityObj) {
+		return Ref.create(entityObj).key().toWebSafeString();
+	}
+
+	public static String getUserWebSafeKey(CurrentUserSession userSession) {
+		return Ref.create(userSession).key().toWebSafeString();
 	}
 
 	public static Date getBeginingOfDay(Date date) {

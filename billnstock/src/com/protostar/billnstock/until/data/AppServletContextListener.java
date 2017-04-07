@@ -57,6 +57,8 @@ import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.user.entities.BusinessSettingsEntity;
 import com.protostar.billingnstock.user.entities.EmpDepartment;
 import com.protostar.billingnstock.user.entities.UserEntity;
+import com.protostar.billingnstock.user.services.CurrentUserSession;
+import com.protostar.billingnstock.user.services.UserLoginRecord;
 import com.protostar.billingnstock.warehouse.entities.WarehouseEntity;
 import com.protostar.billnstock.until.data.SequenceGeneratorShardedService.CounterEntity;
 import com.protostar.billnstock.until.data.SequenceGeneratorShardedService.CounterShard;
@@ -89,6 +91,9 @@ public class AppServletContextListener implements ServletContextListener {
 		ObjectifyService.register(Opportunity.class);
 		ObjectifyService.register(Contact.class);
 		ObjectifyService.register(UserEntity.class);
+		ObjectifyService.register(CurrentUserSession.class);
+		ObjectifyService.register(UserLoginRecord.class);
+		
 		ObjectifyService.register(EmpDepartment.class);
 		ObjectifyService.register(BusinessEntity.class);
 

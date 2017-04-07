@@ -120,6 +120,9 @@ angular
 						$scope.theme = $scope.curUser.business.theme;
 						$scope.bizLogoGCSURL = $scope.curUser.business.bizLogoGCSURL;
 
+						gapi.auth.setToken({
+						    access_token: 'a@b.com'
+						});
 						getUserAuthTree();
 						// finally go to home...
 						$log.debug("Forwarding to home page...");

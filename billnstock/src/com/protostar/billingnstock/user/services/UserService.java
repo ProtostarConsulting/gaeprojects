@@ -44,6 +44,7 @@ import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 import com.protostar.billnstock.until.data.SequenceGeneratorShardedService.CounterEntity;
 import com.protostar.billnstock.until.data.SequenceGeneratorShardedService.CounterShard;
 import com.protostar.billnstock.until.data.ServerMsg;
+import com.protostar.billnstock.until.data.UserAuthenticator;
 
 @Api(name = "userService", version = "v0.1", clientIds = { Constants.WEB_CLIENT_ID, Constants.ANDROID_CLIENT_ID,
 		Constants.API_EXPLORER_CLIENT_ID }, audiences = { Constants.ANDROID_AUDIENCE }, scopes = {
@@ -198,40 +199,14 @@ public class UserService {
 
 	@ApiMethod(name = "login")
 	public List<UserEntity> login(@Named("email_id") String email, @Named("password") String pass) {
-		List<UserEntity> list = null;
-		if (email.contains("@")) {
-			list = ofy().load().type(UserEntity.class).filter("email_id", email).order("createdDate").list();
-		} else if (email.length() == 10) {
-			list = ofy().load().type(UserEntity.class).filter("employeeDetail.phone1", email).list();
-		} else if (isInteger(email)) {
-			list = ofy().load().type(UserEntity.class).filter("employeeDetail.empId", Integer.parseInt(email)).list();
-		}
-
-		if (list != null & list.size() > 0) {
-			// Login will be checked against first/the created first. Notice
-			// order by clause above
-			UserEntity foundUser = list.get(0);
-			if (foundUser.getIsLoginAllowed() && foundUser.getPassword() != null
-					&& foundUser.getPassword().equalsIgnoreCase(pass)) {
-				foundUser.setLastLoginDate(new Date());
-				ofy().save().entity(foundUser);
-				// This is save async
-				return list;
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
+		UserLoginService userLoginService = new UserLoginService();
+		return userLoginService.login(email, pass);
 	}
 
-	private static boolean isInteger(String input) {
-		try {
-			Integer.parseInt(input);
-			return true;
-		} catch (NumberFormatException e) {
-			return false;
-		}
+	@ApiMethod(name = "logout")
+	public void logout(@Named("accessToken") String accessToken) {
+		UserLoginService userLoginService = new UserLoginService();
+		userLoginService.recordUserLogout(accessToken);
 	}
 
 	@ApiMethod(name = "addBusiness")
@@ -326,7 +301,8 @@ public class UserService {
 		return list;
 	}
 
-	@ApiMethod(name = "getUsersByBusinessId", path = "getUsersByBusinessId")
+	@ApiMethod(name = "getUsersByBusinessId", path = "getUsersByBusinessId", authenticators = {
+			UserAuthenticator.class })
 	public List<UserEntity> getUsersByBusinessId(@Named("id") Long id) {
 		List<UserEntity> list = ofy().transactionless().load().type(UserEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, id)).filter("isActive", true).list();

@@ -10,32 +10,34 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
-import com.google.appengine.api.users.User;
-import com.google.appengine.api.users.UserServiceFactory;
+import com.protostar.billingnstock.user.services.UserLoginService;
 
 public class BusinessNSFilter implements Filter {
 
-	public void doFilter(ServletRequest request, ServletResponse resp, FilterChain chain)
+	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
 			throws IOException, ServletException {
+
+		HttpServletRequest request = (HttpServletRequest) req;
 
 		// Move to namespace based datastore once moved to angular 2/4 +
 		// endpoint 2.0
-		//System.out.println("####BusinessNSFilter filter is invoked before");
-		String url = null;
-		String queryString = null;
-		if (request instanceof HttpServletRequest) {
-			url = ((HttpServletRequest) request).getRequestURL().toString();
-			queryString = ((HttpServletRequest) request).getQueryString();
-		}
-		//System.out.println(url + "?" + queryString);
-		User currentUser = UserServiceFactory.getUserService().getCurrentUser();
-		if (currentUser != null) {
-			//System.out.println("currentUser.getEmail():" + currentUser.getEmail());
-			//System.out.println("currentUser.getNickname():" + currentUser.getNickname());
+		// System.out.println("####BusinessNSFilter filter is invoked before");
+		String accessToken = WebUtil.getAccessToken(request);
+		UserLoginService userLoginService = new UserLoginService();
+		if (accessToken != null && userLoginService.getCurrentUser(accessToken) != null) {
+			//Temp disabling loign check
+			WebUtil.setCurrentUser(userLoginService.getCurrentUserSession(accessToken));
+		} else {
+			// throw new RuntimeException("User is not logged in. Please login
+			// first.");
+			System.out.println("ERROR: RuntimeException- User is not logged in. Please login first.");
 		}
 
-		chain.doFilter(request, resp);// sends request to next resource
-		//System.out.println("#####BusinessNSFilter filter is invoked after.....................");
+		
+
+		chain.doFilter(req, resp);// sends request to next resource
+		// System.out.println("#####BusinessNSFilter filter is invoked
+		// after.....................");
 	}
 
 	public void destroy() {

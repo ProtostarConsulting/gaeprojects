@@ -6,13 +6,13 @@ import java.util.List;
 
 import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Ignore;
 import com.googlecode.objectify.annotation.Index;
 import com.protostar.billnstock.entity.BaseEntity;
 import com.protostar.billnstock.until.data.Constants;
 import com.protostar.billnstock.until.data.EmployeeDetail;
 import com.protostar.billnstock.until.data.EntityUtil;
 import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
-import com.protostar.billnstock.until.data.Constants.DocumentStatus;
 
 @Cache
 @Entity
@@ -36,6 +36,9 @@ public class UserEntity extends BaseEntity {
 	String authorizations;
 	@Index
 	private EmployeeDetail employeeDetail = new EmployeeDetail();
+
+	@Ignore
+	private String accessToken;
 
 	@Override
 	public void beforeSave() {
@@ -158,6 +161,14 @@ public class UserEntity extends BaseEntity {
 
 	public void setIsActive(Boolean isActive) {
 		this.isActive = isActive;
+	}
+
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
 	}
 
 }

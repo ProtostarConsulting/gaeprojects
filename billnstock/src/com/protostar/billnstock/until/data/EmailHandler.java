@@ -9,10 +9,8 @@ import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.api.taskqueue.TaskOptions;
 import com.protostar.billingnstock.invoice.entities.InvoiceEmailTask;
 import com.protostar.billingnstock.invoice.entities.InvoiceEntity;
-import com.protostar.billingnstock.invoice.entities.InvoiceSettingsEntity;
 import com.protostar.billingnstock.invoice.entities.QuotationEmailTask;
 import com.protostar.billingnstock.invoice.entities.QuotationEntity;
-import com.protostar.billingnstock.invoice.services.InvoiceService;
 import com.protostar.billingnstock.purchase.entities.EmailPOTask;
 import com.protostar.billingnstock.purchase.entities.PurchaseOrderEntity;
 import com.protostar.billingnstock.purchase.entities.RequisitionEntity;
@@ -21,20 +19,9 @@ import com.protostar.billingnstock.stock.entities.EmailStockShipmentTask;
 import com.protostar.billingnstock.stock.entities.RequisitionEmailTask;
 import com.protostar.billingnstock.stock.entities.StockItemsReceiptEntity;
 import com.protostar.billingnstock.stock.entities.StockItemsShipmentEntity;
-import com.protostar.billingnstock.stock.entities.StockSettingsEntity;
-import com.protostar.billingnstock.stock.services.StockManagementService;
 import com.protostar.billingnstock.taskmangement.TaskAssignedEmail;
 import com.protostar.billingnstock.taskmangement.TaskEntity;
 import com.protostar.billingnstock.taskmangement.TaskEntity.TaskStatus;
-import com.protostar.billingnstock.taskmangement.TaskManagementService;
-import com.protostar.billingnstock.taskmangement.TaskSettingsEntity;
-import com.protostar.billingnstock.user.entities.BusinessSettingsEntity;
-import com.protostar.billingnstock.user.services.UserService;
-import com.sendgrid.Attachments;
-import com.sendgrid.Content;
-import com.sendgrid.Email;
-import com.sendgrid.Mail;
-import com.sendgrid.Personalization;
 
 public class EmailHandler {
 	public void sendPurchaseOrderEmail(PurchaseOrderEntity documentEntity)
@@ -65,7 +52,7 @@ public class EmailHandler {
 		Queue queue = QueueFactory.getDefaultQueue();
 		queue.add(TaskOptions.Builder.withPayload(new EmailStockShipmentTask(
 				documentEntity.getBusiness().getId(),
-				"ganesh.lawande@protostar.co.in", emailSubject, messageBody,
+				documentEntity.getCreatedBy().getEmail_id(), emailSubject, messageBody,
 				documentEntity.getItemNumber())));
 	}
 
@@ -80,7 +67,7 @@ public class EmailHandler {
 		Queue queue = QueueFactory.getDefaultQueue();
 		queue.add(TaskOptions.Builder.withPayload(new EmailStockReceiptTask(
 				documentEntity.getBusiness().getId(),
-				"ganesh.lawande@protostar.co.in", emailSubject, messageBody,
+				documentEntity.getCreatedBy().getEmail_id(), emailSubject, messageBody,
 				documentEntity.getItemNumber())));
 	}
 
@@ -96,7 +83,7 @@ public class EmailHandler {
 
 		queue.add(TaskOptions.Builder.withPayload(new RequisitionEmailTask(
 				documentEntity.getBusiness().getId(),
-				"ganesh.lawande@protostar.co.in", emailSubject, messageBody,
+				documentEntity.getCreatedBy().getEmail_id(), emailSubject, messageBody,
 				documentEntity.getItemNumber())));
 
 	}
@@ -114,14 +101,13 @@ public class EmailHandler {
 			emailSubject = "Task Completed, Task No: "
 					+ documentEntity.getItemNumber();
 		} else {
-			emailSubject = "Task Assigned,Task No: "
+			emailSubject = "Task Assigned/Updated,Task No: "
 					+ documentEntity.getItemNumber();
 		}
 
 		Queue queue = QueueFactory.getDefaultQueue();
 		queue.add(TaskOptions.Builder.withPayload(new TaskAssignedEmail(
-				documentEntity.getBusiness().getId(), documentEntity
-						.getAssignedBy().getEmail_id(), documentEntity
+				documentEntity.getBusiness().getId(), documentEntity.getAssignedBy().getEmail_id(), documentEntity
 						.getAssignedTo().getEmail_id(), emailSubject,
 				messageBody)));
 
@@ -139,7 +125,7 @@ public class EmailHandler {
 		Queue queue = QueueFactory.getDefaultQueue();
 		queue.add(TaskOptions.Builder.withPayload(new InvoiceEmailTask(
 				documentEntity.getBusiness().getId(),
-				"ganesh.lawande@protostar.co.in", emailSubject, messageBody,
+				documentEntity.getCreatedBy().getEmail_id(), emailSubject, messageBody,
 				documentEntity.getItemNumber())));
 	}
 
@@ -153,7 +139,7 @@ public class EmailHandler {
 		Queue queue = QueueFactory.getDefaultQueue();
 		queue.add(TaskOptions.Builder.withPayload(new QuotationEmailTask(
 				documentEntity.getBusiness().getId(),
-				"ganesh.lawande@protostar.co.in", emailSubject, messageBody,
+				documentEntity.getCreatedBy().getEmail_id(), emailSubject, messageBody,
 				documentEntity.getItemNumber())));
 	}
 

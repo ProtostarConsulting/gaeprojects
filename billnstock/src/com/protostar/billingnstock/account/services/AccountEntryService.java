@@ -138,13 +138,7 @@ public class AccountEntryService {
 	
 	@ApiMethod(name = "getTrialBalance")
 	public   List<AccInfo> getTrialBalance(@Named("bid") Long busId) {
-		
-		
-		return 0;
-		
-		
-		
-		
+		return null;				
 	}
 
 	

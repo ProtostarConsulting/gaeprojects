@@ -10,6 +10,7 @@ import com.googlecode.objectify.annotation.OnSave;
 import com.googlecode.objectify.annotation.Parent;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.user.entities.UserEntity;
+import com.protostar.billnstock.until.data.WebUtil;
 
 public abstract class BaseEntity {
 	@Id
@@ -43,17 +44,18 @@ public abstract class BaseEntity {
 	@OnSave
 	public void beforeSave() {
 		if (getBusiness() == null) {
-			throw new RuntimeException("Business entity is not set on: "
-					+ this.getClass().getSimpleName()
+			throw new RuntimeException("Business entity is not set on: " + this.getClass().getSimpleName()
 					+ " This is required field. Aborting save operation...");
 		}
 		Calendar cal = Calendar.getInstance();
 		Date today = cal.getTime();
-		cal.add(Calendar.YEAR, -1); 
+		cal.add(Calendar.YEAR, -1);
 		Date dummyDate = cal.getTime();
 		if (getId() == null) {
 			setCreatedDate(dummyDate);
 			setModifiedDate(new Date());
+			System.out.println("WebUtil.getCurrentUser().getCreatedBy() : "
+					+ WebUtil.getCurrentUser().getCreatedBy().getEmail_id());
 		} else {
 			setModifiedDate(new Date());
 		}
