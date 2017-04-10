@@ -8,6 +8,12 @@
 		ng-model="searchText"> </md-input-container>
 </section>
 <section layout-xs="row">
+
+	<md-input-container flex-gt-sm="30" flex> <label>Select
+		Tax</label> <md-select placeholder="Tax" ng-model="selectedTax"> <md-option
+		ng-repeat="tax in taxList" ng-value="tax">{{tax.taxCodeName}}
+	</md-option> </md-select> </md-input-container>
+	<span flex=10></span> 
 	From:
 	<md-datepicker flex ng-model="selectedFromDate"
 		md-placeholder="Select Date"></md-datepicker>
@@ -16,7 +22,8 @@
 	<md-datepicker flex ng-model="selectedToDate"
 		md-placeholder="Select Date"></md-datepicker>
 	<md-button class="md-raised md-primary"
-		ng-click="getReportByTaxReceived(selectedFromDate, selectedToDate)">Show</md-button>
+		ng-click="getTaxCollReport(selectedTax,selectedFromDate,selectedToDate)">Show</md-button>
+
 </section>
 
 
@@ -25,37 +32,27 @@
 	<table md-data-table class="md-primary" md-progress="deferred">
 		<thead md-order="query.order" md-trigger="onorderchange">
 			<tr>
-				<th name="Invoice No" order-by="itemNumber"></th>
-				<th name="Services Tax" order-by="taxCodeName"></th>
-				<th name="Products Tax" order-by="taxCodeName"></th>
-				<th name="Tax Rate(&#37)" order-by="taxPercenatge"></th>
-				<th name="Invoice Paid Date" order-by="paidDate"></th>
-				<th name="Services Tax(&#x20b9)" order-by="serviceTaxTotal"></th>
-				<th name="Product Tax(&#x20b9)" order-by="productTaxTotal"></th>
-
+				<th name="Invoice No" order-by="invoiceItemNumber"></th>
+				<th name="Invoice Paid Date" order-by="invoiceDate"></th>
+				<th name="Tax Collected(&#x20b9)" order-by="taxAmt"></th>
 			</tr>
 		</thead>
 
 		<tbody>
 			<tr
 				ng-repeat="tax in taxRcvData | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
-				<!-- <a ng-href="#/invoice.list/{{invoiceId.id}}">{{invoice.finalTotal}}</a> -->
 
-				<td>{{tax.itemNumber}}</td>
-				<td>{{tax.selectedServiceTax.taxCodeName}}</td>
-				<td>{{tax.selectedProductTax.taxCodeName}}</td>
-				<td>{{tax.selectedServiceTax.taxPercenatge}}</td>
-				<td>{{tax.paidDate | formatDate}}</td>
-				<td>{{tax.serviceTaxTotal |
-					number:2}}</td>
-				<td>{{tax.productTaxTotal |
-					number:2}}</td>
+				<td>{{tax.invoiceItemNumber}}</td>
+				<td>{{tax.invoiceDate | formatDate}}</td>
+				<td>{{tax.taxAmt | number:2}}</td>
+
 			</tr>
 		</tbody>
 	</table>
-
-
-
+	<section layout="row" layout-xs="column">
+		<span flex=65></span>
+		<div id="taxTotal">Total :{{taxTotal | number:2}}</div>
+	</section>
 	<md-data-table-pagination md-limit="query.limit" md-page="query.page"
 		md-total={{taxRcvData.length}} md-trigger="onpagechange"></md-data-table-pagination>
 	</md-data-table-container>

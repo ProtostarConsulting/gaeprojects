@@ -2016,15 +2016,14 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
-	AccountEntryService.getDayBookList = function(busId,date) {
+	AccountEntryService.getDayBookList = function(busId, date) {
 		var deferred = $q.defer();
 		gapi.client.accountEntryService.getDayBookList({
-			"busId":busId,
-			"date":date
-			}).execute(
-				function(resp) {
-					deferred.resolve(resp.items);
-				});
+			"busId" : busId,
+			"date" : date
+		}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
 		return deferred.promise;
 	}
 	AccountEntryService.getAccountViewEntryByAccountId = function(
@@ -2067,9 +2066,6 @@ function googleEndpointSF($q) {
 				});
 		return deferred.promise;
 	}
-	
-	
-	
 
 	/* =============================================================================================================================== */
 	var GeneralJournalService = {};
@@ -2637,6 +2633,18 @@ function googleEndpointSF($q) {
 			"toDate" : toDate
 		}).execute(function(resp) {
 			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}
+
+	InvoiceService.getTaxReport = function(taxEntity, busId, fromDate, toDate) {
+		var deferred = $q.defer();
+		gapi.client.invoiceService.getTaxReport({
+			"busId" : busId,
+			"fromDate" : fromDate,
+			"toDate" : toDate
+		}, taxEntity).execute(function(resp) {
+			deferred.resolve(resp);
 		});
 		return deferred.promise;
 	}
