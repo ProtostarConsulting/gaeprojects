@@ -44,6 +44,7 @@ import com.protostar.billnstock.service.BaseService;
 import com.protostar.billnstock.until.data.Constants.DocumentStatus;
 import com.protostar.billnstock.until.data.EmailHandler;
 import com.protostar.billnstock.until.data.EntityPagingInfo;
+import com.protostar.billnstock.until.data.EntityUtil;
 
 @Api(name = "stockService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.stock.services", ownerName = "com.protostar.billingnstock.stock.services", packagePath = ""))
 public class StockManagementService extends BaseService {
@@ -607,13 +608,16 @@ public class StockManagementService extends BaseService {
 		Date date1 = new Date(fromDate);
 		Date date2 = new Date(toDate);
 
+		Date beginningDate = EntityUtil.getBeginingOfDay(date1);
+		Date endDate = EntityUtil.getEndOfDay(date2);
+
 		List<StockItemTxnEntity> stockTxns = ofy().load()
 				.type(StockItemTxnEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, busId))
 				.filter("stockItem", stockItem)
 				.filter("txnType ==", StockTxnType.CR)
-				.filter("createdDate >=", date1)
-				.filter("createdDate <=", date2).list();
+				.filter("createdDate >=", beginningDate)
+				.filter("createdDate <=", endDate).list();
 
 		return stockTxns;
 	}
@@ -626,6 +630,9 @@ public class StockManagementService extends BaseService {
 		Date date1 = new Date(fromDate);
 		Date date2 = new Date(toDate);
 
+		Date beginningDate = EntityUtil.getBeginingOfDay(date1);
+		Date endDate = EntityUtil.getEndOfDay(date2);
+
 		List<StockItemTxnEntity> stockTxns = ofy()
 				.load()
 				.type(StockItemTxnEntity.class)
@@ -634,8 +641,8 @@ public class StockManagementService extends BaseService {
 								.getBusiness().getId()))
 				.filter("stockItem", stockItem)
 				.filter("txnType ==", StockTxnType.DR)
-				.filter("createdDate >=", date1)
-				.filter("createdDate <=", date2).list();
+				.filter("createdDate >=", beginningDate)
+				.filter("createdDate <=", endDate).list();
 
 		return stockTxns;
 	}

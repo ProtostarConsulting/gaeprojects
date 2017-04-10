@@ -23,12 +23,18 @@ import com.protostar.billingnstock.cust.entities.Customer;
 import com.protostar.billingnstock.invoice.entities.InvoiceEntity;
 import com.protostar.billingnstock.invoice.entities.InvoiceSettingsEntity;
 import com.protostar.billingnstock.invoice.entities.QuotationEntity;
+import com.protostar.billingnstock.stock.entities.StockItemEntity;
+import com.protostar.billingnstock.stock.entities.StockLineItem;
 import com.protostar.billingnstock.stock.services.StockManagementService;
+import com.protostar.billingnstock.tax.entities.TaxEntity;
+import com.protostar.billingnstock.tax.entities.TaxReport;
+import com.protostar.billingnstock.tax.entities.TaxReportItem;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billnstock.service.BaseService;
 import com.protostar.billnstock.until.data.Constants.DocumentStatus;
 import com.protostar.billnstock.until.data.EmailHandler;
 import com.protostar.billnstock.until.data.EntityPagingInfo;
+import com.protostar.billnstock.until.data.EntityUtil;
 import com.protostar.billnstock.until.data.TextLocalSMSHandler;
 
 @Api(name = "invoiceService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.stock.services", ownerName = "com.protostar.billingnstock.stock.services", packagePath = ""))
@@ -112,13 +118,137 @@ public class InvoiceService extends BaseService {
 		Date date1 = new Date(fromDate);
 		Date date2 = new Date(toDate);
 
-		List<InvoiceEntity> filteredinvoices = ofy().load()
+		List<InvoiceEntity> filteredInvoices = ofy().load()
 				.type(InvoiceEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, busId))
 				.filter("isPaid", true).filter("paidDate >=", date1)
 				.filter("paidDate <=", date2).list();
 
-		return filteredinvoices;
+		return filteredInvoices;
+	}
+
+	@ApiMethod(name = "getTaxReport", path = "getTaxReport", httpMethod = HttpMethod.POST)
+	public TaxReport getTaxReport(TaxEntity taxEntity,
+			@Named("busId") Long busId, @Named("fromDate") long fromDate,
+			@Named("toDate") long toDate) {
+
+		Date date1 = new Date(fromDate);
+		Date date2 = new Date(toDate);
+
+		Date beginningDate = EntityUtil.getBeginingOfDay(date1);
+		Date endDate = EntityUtil.getEndOfDay(date2);
+
+		TaxReport taxReport = new TaxReport();
+		taxReport.setTaxEntity(taxEntity);
+		taxReport.setFromDate(date1);
+		taxReport.setToDate(date2);
+		// fetch all invoices
+		// check if it contains given tax? if yes, get list of invoice items
+		// do the total of all invoice items
+		// if yes, add TaxReportItem
+		// else continue
+		List<TaxReportItem> taxReportItemList = new ArrayList<TaxReportItem>();
+
+		List<InvoiceEntity> filteredInvoices = ofy().load()
+				.type(InvoiceEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId))
+				.filter("isPaid", true).filter("paidDate >=", beginningDate)
+				.filter("paidDate <=", endDate).list();
+
+		for (int i = 0; i < filteredInvoices.size(); i++) {
+			double productSubTotal = 0;
+			double serviceSubTotal = 0;
+			double serviceTaxTotal = 0;
+			double productTaxTotal = 0;
+			TaxReportItem taxReportItem = new TaxReportItem();
+			InvoiceEntity invoiceEntity = filteredInvoices.get(i);
+			if (invoiceEntity.getSelectedProductTax().getId()
+					.equals(taxEntity.getId())
+					&& !invoiceEntity.getSelectedServiceTax().getId()
+							.equals(taxEntity.getId())) {
+				if (invoiceEntity.getProductLineItemList() != null
+						&& !invoiceEntity.getProductLineItemList().isEmpty()) {
+					List<StockLineItem> productItemList = invoiceEntity
+							.getProductLineItemList();
+					for (int j = 0; j < productItemList.size(); j++) {
+						productSubTotal += (productItemList.get(j).getQty())
+								* (productItemList.get(j).getPrice());
+					}
+				}
+
+				productTaxTotal = (taxEntity.getTaxPercenatge() / 100)
+						* (productSubTotal - invoiceEntity.getDiscAmount());
+				taxReportItem.setInvoiceItemNumber(invoiceEntity
+						.getItemNumber());
+				taxReportItem.setInvoiceDate(invoiceEntity.getPaidDate());
+				taxReportItem.setTaxAmt(productTaxTotal);
+				taxReportItemList.add(taxReportItem);
+			}
+			if (invoiceEntity.getSelectedServiceTax().getId()
+					.equals(taxEntity.getId())
+					&& !invoiceEntity.getSelectedProductTax().getId()
+							.equals(taxEntity.getId())) {
+				if (invoiceEntity.getServiceLineItemList() != null
+						&& !invoiceEntity.getServiceLineItemList().isEmpty()) {
+					List<StockLineItem> serviceLineItemList = invoiceEntity
+							.getServiceLineItemList();
+					for (int j = 0; j < serviceLineItemList.size(); j++) {
+						serviceSubTotal += (serviceLineItemList.get(j).getQty())
+								* (serviceLineItemList.get(j).getPrice());
+					}
+				}
+
+				serviceTaxTotal = (taxEntity.getTaxPercenatge() / 100)
+						* (serviceSubTotal - invoiceEntity.getDiscAmount());
+				taxReportItem.setInvoiceItemNumber(invoiceEntity
+						.getItemNumber());
+				taxReportItem.setInvoiceDate(invoiceEntity.getPaidDate());
+				taxReportItem.setTaxAmt(serviceTaxTotal);
+				taxReportItemList.add(taxReportItem);
+			}
+
+			if (invoiceEntity.getSelectedServiceTax().getId()
+					.equals(taxEntity.getId())
+					&& invoiceEntity.getSelectedProductTax().getId()
+							.equals(taxEntity.getId())) {
+
+				if (invoiceEntity.getProductLineItemList() != null
+						&& !invoiceEntity.getProductLineItemList().isEmpty()) {
+					List<StockLineItem> productItemList = invoiceEntity
+							.getProductLineItemList();
+					for (int j = 0; j < productItemList.size(); j++) {
+						productSubTotal += (productItemList.get(j).getQty())
+								* (productItemList.get(j).getPrice());
+					}
+				}
+				productTaxTotal = (taxEntity.getTaxPercenatge() / 100)
+						* (productSubTotal - invoiceEntity.getDiscAmount());
+
+				if (invoiceEntity.getServiceLineItemList() != null
+						&& !invoiceEntity.getServiceLineItemList().isEmpty()) {
+					List<StockLineItem> serviceLineItemList = invoiceEntity
+							.getServiceLineItemList();
+					for (int j = 0; j < serviceLineItemList.size(); j++) {
+						serviceSubTotal += (serviceLineItemList.get(j).getQty())
+								* (serviceLineItemList.get(j).getPrice());
+					}
+				}
+				serviceTaxTotal = (taxEntity.getTaxPercenatge() / 100)
+						* (serviceSubTotal - invoiceEntity.getDiscAmount());
+				taxReportItem.setInvoiceItemNumber(invoiceEntity
+						.getItemNumber());
+				taxReportItem.setInvoiceDate(invoiceEntity.getPaidDate());
+				taxReportItem.setTaxAmt(productTaxTotal + serviceTaxTotal);
+				taxReportItemList.add(taxReportItem);
+			}
+		}
+		taxReport.setItemList(taxReportItemList);
+		double taxTotal = 0;
+		for (int i = 0; i < taxReport.getItemList().size(); i++) {
+			taxTotal += taxReport.getItemList().get(i).getTaxAmt();
+		}
+		taxReport.setTaxTotal(taxTotal);
+		return taxReport;
 	}
 
 	@ApiMethod(name = "fetchInvoiceListByPaging", path = "fetchInvoiceListByPaging")
