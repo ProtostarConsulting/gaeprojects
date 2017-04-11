@@ -32,7 +32,10 @@ import com.protostar.billingnstock.stock.entities.StockItemEntity;
 import com.protostar.billingnstock.stock.entities.StockItemInstanceEntity;
 import com.protostar.billingnstock.stock.entities.StockItemTxnEntity;
 import com.protostar.billingnstock.stock.entities.StockItemTxnEntity.StockTxnType;
+import com.protostar.billingnstock.stock.entities.StockItemOrderType;
+import com.protostar.billingnstock.stock.entities.StockItemTypeCategory;
 import com.protostar.billingnstock.stock.entities.StockItemTypeEntity;
+import com.protostar.billingnstock.stock.entities.StockItemUnit;
 import com.protostar.billingnstock.stock.entities.StockItemsReceiptEntity;
 import com.protostar.billingnstock.stock.entities.StockItemsShipmentEntity;
 import com.protostar.billingnstock.stock.entities.StockItemsShipmentEntity.ShipmentType;
@@ -57,6 +60,55 @@ public class StockManagementService extends BaseService {
 			StockItemTypeEntity stockItemTypeEntity) {
 		ofy().save().entity(stockItemTypeEntity).now();
 		return stockItemTypeEntity;
+	}
+
+	@ApiMethod(name = "addStockItemUnit", path = "addStockItemUnit")
+	public StockItemUnit addStockItemUnit(StockItemUnit stockItemUnit) {
+		ofy().save().entity(stockItemUnit).now();
+		return stockItemUnit;
+	}
+
+	@ApiMethod(name = "getStockItemUnits", path = "getStockItemUnits")
+	public List<StockItemUnit> getStockItemUnits(@Named("busId") Long busId) {
+
+		List<StockItemUnit> stockItemUnits = ofy().load()
+				.type(StockItemUnit.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).list();
+		return stockItemUnits;
+	}
+
+	@ApiMethod(name = "addStockItemOrderType", path = "addStockItemOrderType")
+	public StockItemOrderType addStockItemOrderType(
+			StockItemOrderType stockItemOrderType) {
+		ofy().save().entity(stockItemOrderType).now();
+		return stockItemOrderType;
+	}
+
+	@ApiMethod(name = "getStockItemOrderTypes", path = "getStockItemOrderTypes")
+	public List<StockItemOrderType> getStockItemOrderTypes(
+			@Named("busId") Long busId) {
+
+		List<StockItemOrderType> stockItemOrderTypes = ofy().load()
+				.type(StockItemOrderType.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).list();
+		return stockItemOrderTypes;
+	}
+
+	@ApiMethod(name = "addStockItemTypeCategory", path = "addStockItemTypeCategory")
+	public StockItemTypeCategory addStockItemTypeCategory(
+			StockItemTypeCategory stockItemTypeCategory) {
+		ofy().save().entity(stockItemTypeCategory).now();
+		return stockItemTypeCategory;
+	}
+
+	@ApiMethod(name = "getStockItemTypeCategories", path = "getStockItemTypeCategories")
+	public List<StockItemTypeCategory> getStockItemTypeCategories(
+			@Named("busId") Long busId) {
+
+		List<StockItemTypeCategory> stockItemTypeCategories = ofy().load()
+				.type(StockItemTypeCategory.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).list();
+		return stockItemTypeCategories;
 	}
 
 	@ApiMethod(name = "addStockItem", path = "addStockItem")

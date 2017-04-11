@@ -36,6 +36,20 @@ public class TaxService {
 		Key<TaxEntity> now = ofy().save().entity(taxEntity).now();
 	}
 
+	@ApiMethod(name = "getTaxByID", path = "getTaxByID")
+	public TaxEntity getTaxByID(@Named("busId") Long busId,
+			@Named("id") Long taxId) {
+
+		List<TaxEntity> list = ofy()
+				.load()
+				.type(TaxEntity.class)
+				.filterKey(
+						Key.create(Key.create(BusinessEntity.class, busId),
+								TaxEntity.class, taxId)).list();
+		TaxEntity taxEntity = list.size() > 0 ? list.get(0) : null;
+		return taxEntity;
+	}
+
 	@ApiMethod(name = "getTaxesByVisibility", path = "getTaxesByVisibility")
 	public List<TaxEntity> getTaxesByVisibility(@Named("id") Long busId) {
 		List<TaxEntity> filteredTax = ofy().load().type(TaxEntity.class)

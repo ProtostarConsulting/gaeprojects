@@ -23,12 +23,13 @@ public class StockItemTypeEntity extends BaseEntity {
 
 	@Index
 	private Ref<StockItemTypeCategory> cat;
-	
+
 	@Index
 	private Ref<StockItemUnit> unitOfMeasure;
-	
-	/*@Index
-	private String unit;*/
+
+	/*
+	 * @Index private String unit;
+	 */
 	private boolean maintainStockBySerialNumber = false;
 	private Ref<TaxEntity> selectedTaxItem;
 
@@ -37,8 +38,35 @@ public class StockItemTypeEntity extends BaseEntity {
 		super.beforeSave();
 		if (getId() == null) {
 			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
-					EntityUtil.getBusinessRawKey(getBusiness()), Constants.STOCKITEMTYPE_NO_COUNTER);
+					EntityUtil.getBusinessRawKey(getBusiness()),
+					Constants.STOCKITEMTYPE_NO_COUNTER);
 			setItemNumber(sequenceGenService.getNextSequenceNumber());
+		}
+	}
+
+	public String getItemName() {
+		return itemName;
+	}
+
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
+
+	public String getTags() {
+		return tags;
+	}
+
+	public void setTags(String tags) {
+		this.tags = tags;
+	}
+
+	public StockItemUnit getUnitOfMeasure() {
+		return unitOfMeasure == null ? null : unitOfMeasure.get();
+	}
+
+	public void setUnitOfMeasure(StockItemUnit unitOfMeasure) {
+		if (unitOfMeasure != null) {
+			this.unitOfMeasure = Ref.create(unitOfMeasure);
 		}
 	}
 
@@ -51,28 +79,13 @@ public class StockItemTypeEntity extends BaseEntity {
 			this.selectedTaxItem = Ref.create(selectedTaxItem);
 	}
 
-	public String getItemName() {
-		return itemName;
-	}
-
-	public void setItemName(String itemName) {
-		this.itemName = itemName;
-	}
-
 	public boolean isMaintainStockBySerialNumber() {
 		return maintainStockBySerialNumber;
 	}
 
-	public void setMaintainStockBySerialNumber(boolean maintainStockBySerialNumber) {
+	public void setMaintainStockBySerialNumber(
+			boolean maintainStockBySerialNumber) {
 		this.maintainStockBySerialNumber = maintainStockBySerialNumber;
-	}
-
-	public String getUnit() {
-		return unit;
-	}
-
-	public void setUnit(String unit) {
-		this.unit = unit;
 	}
 
 	public StockItemTypeCategory getCat() {
