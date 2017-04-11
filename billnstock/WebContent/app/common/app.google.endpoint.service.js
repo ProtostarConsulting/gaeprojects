@@ -2109,6 +2109,65 @@ function googleEndpointSF($q) {
 				});
 		return deferred.promise;
 	}
+
+	StockService.addStockItemUnit = function(stockItemUnit) {
+		var deferred = $q.defer();
+		gapi.client.stockService.addStockItemUnit(stockItemUnit).execute(
+				function(resp) {
+					deferred.resolve(resp);
+				});
+		return deferred.promise;
+	}
+
+	StockService.getStockItemUnits = function(busId) {
+		var deferred = $q.defer();
+		gapi.client.stockService.getStockItemUnits({
+			"busId" : busId
+		}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}
+
+	StockService.addStockItemOrderType = function(stockItemOrder) {
+		var deferred = $q.defer();
+		gapi.client.stockService.addStockItemOrderType(stockItemOrder).execute(
+				function(resp) {
+					deferred.resolve(resp);
+				});
+		return deferred.promise;
+	}
+
+	StockService.getStockItemOrderTypes = function(busId) {
+		var deferred = $q.defer();
+		gapi.client.stockService.getStockItemOrderTypes({
+			"busId" : busId
+		}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}
+
+	StockService.addStockItemTypeCategory = function(stockItemTypeCategory) {
+		var deferred = $q.defer();
+		gapi.client.stockService
+				.addStockItemTypeCategory(stockItemTypeCategory).execute(
+						function(resp) {
+							deferred.resolve(resp);
+						});
+		return deferred.promise;
+	}
+
+	StockService.getStockItemTypeCategories = function(busId) {
+		var deferred = $q.defer();
+		gapi.client.stockService.getStockItemTypeCategories({
+			"busId" : busId
+		}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}
+
 	StockService.addStockItem = function(stock) {
 		var deferred = $q.defer();
 		gapi.client.stockService.addStockItem(stock).execute(function(resp) {
@@ -2516,6 +2575,17 @@ function googleEndpointSF($q) {
 	TaxService.updateTax = function(tax) {
 		var deferred = $q.defer();
 		gapi.client.taxService.updateTax(tax).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}
+
+	TaxService.getTaxByID = function(busId, id) {
+		var deferred = $q.defer();
+		gapi.client.taxService.getTaxByID({
+			'busId' : busId,
+			"id" : id
+		}).execute(function(resp) {
 			deferred.resolve(resp);
 		});
 		return deferred.promise;

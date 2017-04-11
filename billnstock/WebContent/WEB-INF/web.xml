@@ -353,4 +353,14 @@
     <servlet-name>PrintPdfstockShipment</servlet-name>
     <url-pattern>/PrintPdfstockShipment</url-pattern>
   </servlet-mapping>
+   <servlet>
+    <description/>
+    <display-name>PrintPdfTaxCollectionReport</display-name>
+    <servlet-name>PrintPdfTaxCollectionReport</servlet-name>
+    <servlet-class>com.protostar.billingnstock.tax.services.PrintPdfTaxCollectionReport</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PrintPdfTaxCollectionReport</servlet-name>
+    <url-pattern>/PrintPdfTaxCollectionReport</url-pattern>
+  </servlet-mapping>
 </web-app>

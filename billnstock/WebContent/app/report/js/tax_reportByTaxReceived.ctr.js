@@ -78,6 +78,20 @@ angular.module("stockApp")
 					}
 
 					$scope.waitForServiceLoad();
+
+					$scope.printTaxCollectionReport = function() {
+
+						var bid = $scope.curUser.business.id;
+						var taxId = $scope.selectedTax.id;
+
+						window.open("PrintPdfTaxCollectionReport?bid=" + bid
+								+ "&fromDate="
+								+ $scope.selectedFromDate.getTime()
+								+ "&toDate=" + $scope.selectedToDate.getTime()
+								+ "&taxId=" + taxId);
+
+					}
+
 					// Setup menu
 					$scope.toggleRight = buildToggler('right');
 

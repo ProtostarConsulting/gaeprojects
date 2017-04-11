@@ -13,8 +13,7 @@
 		Tax</label> <md-select placeholder="Tax" ng-model="selectedTax"> <md-option
 		ng-repeat="tax in taxList" ng-value="tax">{{tax.taxCodeName}}
 	</md-option> </md-select> </md-input-container>
-	<span flex=10></span> 
-	From:
+	<span flex=10></span> From:
 	<md-datepicker flex ng-model="selectedFromDate"
 		md-placeholder="Select Date"></md-datepicker>
 
@@ -23,6 +22,12 @@
 		md-placeholder="Select Date"></md-datepicker>
 	<md-button class="md-raised md-primary"
 		ng-click="getTaxCollReport(selectedTax,selectedFromDate,selectedToDate)">Show</md-button>
+
+
+	<md-button ng-if="!printBtnHide" class="md-icon-button"
+		ng-click="printTaxCollectionReport()"> <ng-md-icon
+		icon="print" style="fill: md-default" size="20"> <md-tooltip>
+	Print Report</md-tooltip></ng-md-icon></md-button>
 
 </section>
 
