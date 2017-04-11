@@ -139,7 +139,7 @@ public class ExcelStockUpload extends HttpServlet {
 					StockItemTypeEntity stockItemType = new StockItemTypeEntity();
 
 					stockItemType.setItemName(split[0]);
-					stockItemType.setCategory(split[1]);
+					stockItemType.setTags(split[1]);
 					/*
 					 * si.setQty(Integer.parseInt(split[2]));
 					 * si.setPrice(Double.parseDouble(split[3]));
