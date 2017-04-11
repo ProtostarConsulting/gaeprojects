@@ -16,10 +16,19 @@ public class StockItemTypeEntity extends BaseEntity {
 
 	@Index
 	private String itemName;
+
 	@Index
-	private String category;
+	private String tags;
+	// comma separated list of tags
+
 	@Index
-	private String unit;
+	private Ref<StockItemTypeCategory> cat;
+	
+	@Index
+	private Ref<StockItemUnit> unitOfMeasure;
+	
+	/*@Index
+	private String unit;*/
 	private boolean maintainStockBySerialNumber = false;
 	private Ref<TaxEntity> selectedTaxItem;
 
@@ -28,8 +37,7 @@ public class StockItemTypeEntity extends BaseEntity {
 		super.beforeSave();
 		if (getId() == null) {
 			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
-					EntityUtil.getBusinessRawKey(getBusiness()),
-					Constants.STOCKITEMTYPE_NO_COUNTER);
+					EntityUtil.getBusinessRawKey(getBusiness()), Constants.STOCKITEMTYPE_NO_COUNTER);
 			setItemNumber(sequenceGenService.getNextSequenceNumber());
 		}
 	}
@@ -51,20 +59,11 @@ public class StockItemTypeEntity extends BaseEntity {
 		this.itemName = itemName;
 	}
 
-	public String getCategory() {
-		return category;
-	}
-
-	public void setCategory(String category) {
-		this.category = category;
-	}
-
 	public boolean isMaintainStockBySerialNumber() {
 		return maintainStockBySerialNumber;
 	}
 
-	public void setMaintainStockBySerialNumber(
-			boolean maintainStockBySerialNumber) {
+	public void setMaintainStockBySerialNumber(boolean maintainStockBySerialNumber) {
 		this.maintainStockBySerialNumber = maintainStockBySerialNumber;
 	}
 
@@ -74,6 +73,15 @@ public class StockItemTypeEntity extends BaseEntity {
 
 	public void setUnit(String unit) {
 		this.unit = unit;
+	}
+
+	public StockItemTypeCategory getCat() {
+		return cat == null ? null : cat.get();
+	}
+
+	public void setCat(StockItemTypeCategory cat) {
+		if (cat != null)
+			this.cat = Ref.create(cat);
 	}
 
 }

@@ -1,6 +1,5 @@
 package com.protostar.billnstock.entity;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import com.googlecode.objectify.Ref;
