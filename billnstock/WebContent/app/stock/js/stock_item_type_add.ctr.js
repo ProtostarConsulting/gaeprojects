@@ -13,39 +13,65 @@ angular
 
 					function getEmptyStockItemType() {
 						return {
-							id : "",
 							itemName : "",
-							unit:"nos",
-							category : "",						
-							createdDate : new Date(),
-							modifiedDate : new Date(),
-							modifiedBy : $scope.curUser.email_id,
-							business : $scope.curUser.business
+							tags : "",
 						};
 					}
 					$scope.stock = getEmptyStockItemType();
 
 					$scope.stock = $scope.selectedStockItem ? $scope.selectedStockItem
 							: $scope.stock;
-					
+
+					$scope.stockUnitList = [];
+
+					$scope.stockItemCategories = [];
+
 					$scope.addStockItemType = function() {
-						var stockService = appEndpointSF.getStockService();
+
 						$scope.stock.modifiedBy = $scope.curUser.email_id;
+						$scope.stock.business = $scope.curUser.business;
+
+						var stockService = appEndpointSF.getStockService();
 						stockService.addStockItemType($scope.stock).then(
 								function(msgBean) {
 									if ($scope.selectedStockItem) {
-										$scope.showUpdateToast();										
+										$scope.showUpdateToast();
 									} else {
 										$scope.showAddToast();
 										$scope.stock = getEmptyStockItemType();
-										$scope.stockForm.$setPristine();
-										$scope.stockForm.$setValidity();
-										$scope.stockForm.$setUntouched();
 									}
 								});
 					}
-					
-					
+
+					$scope.getStockItemUnitsList = function() {
+
+						var stockService = appEndpointSF.getStockService();
+
+						stockService.getStockItemUnits(
+								$scope.curUser.business.id).then(
+								function(list) {
+									$scope.stockUnitList = list;
+								})
+					}
+
+					$scope.getStockItemCategoryTypeList = function() {
+
+						var stockService = appEndpointSF.getStockService();
+
+						stockService
+								.getStockItemTypeCategories(
+										$scope.curUser.business.id)
+								.then(
+										function(list) {
+											$scope.stockItemCategories = list;
+											if ($scope.stockItemCategories.length > 0
+													&& !$scope.stock.cat) {
+												$scope.stock.cat = $scope.stockItemCategories[0];
+											}
+
+										})
+					}
+
 					// ----------------------UPLODE EXCEL
 					// FILE-------------------------------
 
@@ -127,7 +153,8 @@ angular
 					// -------------------------------------------------------
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
-							
+							$scope.getStockItemUnitsList();
+							$scope.getStockItemCategoryTypeList();
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
 							$timeout($scope.waitForServiceLoad, 1000);

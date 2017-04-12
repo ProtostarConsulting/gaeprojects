@@ -51,6 +51,7 @@ app
 							+ $scope.curUser.lastName;
 					// list of `state` value/display objects
 					$scope.supplierList = [];
+					$scope.stockItemOrderTypes = [];
 					$scope.searchTextInput = null;
 
 					$scope.querySearch = function(query) {
@@ -412,6 +413,19 @@ app
 									$scope.warehouses = warehouseList;
 								});
 					}
+					
+					$scope.getStockItemOrderTypeList = function() {
+
+						var stockService = appEndpointSF.getStockService();
+
+						stockService.getStockItemOrderTypes($scope.curUser.business.id)
+								.then(function(stockItemOrderTypes) {
+									$scope.stockItemOrderTypes = stockItemOrderTypes;
+									if($scope.stockItemOrderTypes.length>0 && !$scope.documentEntity.stockItemOrderType){
+										$scope.documentEntity.stockItemOrderType = $scope.stockItemOrderTypes[0];
+									}
+								})
+					}
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
@@ -422,6 +436,7 @@ app
 							$scope.getTaxesByVisibility();
 							$scope.calProductSubTotal();
 							$scope.calServiceSubTotal();
+							$scope.getStockItemOrderTypeList();
 
 							if (!$scope.documentEntity.id) {
 								$scope.addProductLineItem();

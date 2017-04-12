@@ -31,9 +31,9 @@
 					ng-click="addStockType()" class="name"
 					style="color: Green; height: 18px; width: 18px"></md-icon>
 			</div>
-			<md-input-container flex> <label>Categories
-			</label> <input name="categories"
-				ng-value="stock.stockItemType?stock.stockItemType.category:''"
+			<md-input-container flex> <label>Tags </label> <input
+				name="categories"
+				ng-value="stock.stockItemType?stock.stockItemType.tags:''"
 				ng-disabled="true"></md-input-container>
 		</div>
 
@@ -80,7 +80,7 @@
 			</label> <input name="quantity" type="number" ng-model="stock.qty"
 				ng-disabled="true"> </md-input-container>
 		</div>
-		
+
 		<h3 class="md-subhead">
 			<b>Location Details</b>
 		</h3>

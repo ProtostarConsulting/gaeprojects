@@ -21,24 +21,34 @@
 				<div ng-message="required">This is required field.</div>
 			</div>
 			</md-input-container>
-			<md-input-container flex> <label>Categories
-				(comma separated values) </label> <input name="categories"
-				ng-model="stock.category" ng-required="false"> </md-input-container>
+			<md-input-container flex> <label>Tags
+				(comma separated values) </label> <input name="tags" ng-model="stock.tags"
+				ng-required="false"> </md-input-container>
 		</div>
-		<div layout="row" layout-xs="column">
-			<md-input-container flex> <label>Units
-				of Measure</label> <input name="unit" ng-model="stock.unit"
-				ng-required="true">
-			<div ng-messages="stockForm.unit.$error"
-				ng-if="stockForm.unit.$submitted || stockForm.unit.$touched">
-				<div ng-message="required">This is required field.</div>
-			</div>
-			<div>Use values like nos, ltr, kg, caret, etc.</div>
-			</md-input-container>
+		<section layout="row" layout-xs="column">
+			<md-input-container flex-gt-sm="30" flex> <label>Select
+				Category</label> <md-select placeholder="Category" ng-model="stock.cat">
+			<md-option ng-repeat="cat in stockItemCategories" ng-value="cat"
+				ng-selected="stock.cat.id==cat.id">{{cat.catName}} </md-option> </md-select> </md-input-container>
+			<span flex='15'> </span>
 			<md-input-container flex> <md-checkbox
-				ng-model="stock.maintainStockBySerialNumber" ng-true-value="true"
+				ng-model="stock.maintainStockBySerialNumber"
+				aria-label="maintainStockBySerialNumber" ng-true-value="true"
 				ng-false-value="false"></md-checkbox> Maintain By Serial Number </md-input-container>
-		</div>
+		</section>
+		<section layout="row" layout-xs="column">
+			<md-input-container>
+			<h5>Select Unit</h5>
+
+			<md-radio-group ng-model="stock.unitOfMeasure">
+			<div flex ng-repeat='unit in stockUnitList' class="row">
+				<div layout="row" layout-align="start center">
+					<md-radio-button flex-offset="15" ng-value="unit"
+						class="md-primary"> {{unit.unitName}} </md-radio-button>
+				</div>
+			</div>
+			</md-radio-group> </md-input-container>
+		</section>
 
 		<section layout="row" layout-xs="column" layout-align="left left">
 			<md-button class="md-raised md-primary"

@@ -17,12 +17,21 @@
 
 		<div flex layout="row" layout-xs="column">
 			<div layout="row" flex=40 flex-xs=100>
-				<md-input-container flex> <label>Purchase
-					Order No.</label> <input ng-model="documentEntity.itemNumber"
-					placeholder="Auto generated number" ng-disabled="true"></input> </md-input-container>
+				<md-input-container flex> <label>PO No.</label>
+				<input ng-model="documentEntity.itemNumber"
+					placeholder="Auto-generated No" ng-disabled="true"></input> </md-input-container>
+				<span flex="5"></span>
 				<md-input-container flex> <label>Document
 					Status </label> <input type="text" ng-disabled="true"
 					ng-model="documentEntity.status"> </md-input-container>
+				<span flex="5"></span>
+				<md-input-container flex> <label>Select
+					Order Type</label> <md-select placeholder="Order Type"
+					ng-model="documentEntity.stockItemOrderType"> <md-option
+					ng-repeat="stockItemOrderType in stockItemOrderTypes"
+					ng-value="stockItemOrderType"
+					ng-selected="documentEntity.stockItemOrderType.id == stockItemOrderType.id">{{stockItemOrderType.orderType}}
+				</md-option> </md-select> </md-input-container>
 			</div>
 			<div layout="row" flex=60 flex-xs=100>
 				<span flex></span>
@@ -241,7 +250,8 @@
 						<td></td>
 						<td></td>
 						<td><label>Product Total </label></td>
-						<td><b>&#x20b9{{documentEntity.productTotal | currency:"":"2"}}</b></td>
+						<td><b>&#x20b9{{documentEntity.productTotal |
+								currency:"":"2"}}</b></td>
 						<td></td>
 					</tr>
 
@@ -327,7 +337,8 @@
 						<td></td>
 						<td></td>
 						<td><label>Service Total</label></td>
-						<td><b>&#x20b9{{documentEntity.serviceTotal | currency:"":"2"}}</b></td>
+						<td><b>&#x20b9{{documentEntity.serviceTotal |
+								currency:"":"2"}}</b></td>
 						<td></td>
 					</tr>
 
@@ -345,7 +356,8 @@
 						<td></td>
 						<td></td>
 						<td><label>Final Total</label></td>
-						<td><b>&#x20b9 {{documentEntity.finalTotal | currency:"":"2"}}</b></td>
+						<td><b>&#x20b9 {{documentEntity.finalTotal |
+								currency:"":"2"}}</b></td>
 						<td></td>
 					</tr>
 					<tr>

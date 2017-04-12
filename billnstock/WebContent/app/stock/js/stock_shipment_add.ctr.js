@@ -13,6 +13,8 @@ app
 					$scope.shipmentTypes = [ 'TO_CUSTOMER',
 							'TO_OTHER_WAREHOUSE', 'TO_PARTNER' ];
 
+					$scope.stockItemOrderTypes = [];
+					
 					$scope.getEmptystockShipmentObj = function() {
 						return {
 							customer : null,
@@ -420,6 +422,20 @@ app
 								});
 					}
 
+					
+					$scope.getStockItemOrderTypeList = function() {
+
+						var stockService = appEndpointSF.getStockService();
+
+						stockService.getStockItemOrderTypes($scope.curUser.business.id)
+								.then(function(stockItemOrderTypes) {
+									$scope.stockItemOrderTypes = stockItemOrderTypes;
+									if($scope.stockItemOrderTypes.length>0 && !$scope.documentEntity.stockItemOrderType){
+										$scope.documentEntity.stockItemOrderType = $scope.stockItemOrderTypes[0];
+									}
+								})
+					}
+					
 					$scope.printstockShipment = function(stShipId) {
 						var bid = $scope.curUser.business.id;
 						window.open("PrintPdfstockShipment?bid=" + bid
@@ -434,6 +450,7 @@ app
 							$scope.getTaxesByVisibility();
 							$scope.getAllWarehouseByBusiness();
 							$scope.calProductSubTotal();
+							$scope.getStockItemOrderTypeList();
 							if ($scope.documentEntity.serviceLineItemList) {
 								$scope.calServiceSubTotal();
 							}

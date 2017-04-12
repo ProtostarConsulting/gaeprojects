@@ -21,17 +21,24 @@
 	<form ng-submit="$event.preventDefault()" name="documentForm">
 		<div layout="row" layout-xs="column">
 			<div layout="row" flex>
-				<md-input-container flex=40> <label>Stock
+				<md-input-container flex=20> <label>Stock
 					Shipment No.</label> <input ng-model="documentEntity.itemNumber"
 					placeholder="Auto generated number" ng-disabled="true"></input> </md-input-container>
-				<md-input-container flex> <label>Document
+				<md-input-container flex=15> <label>Document
 					Status </label> <input type="text" ng-disabled="true"
 					ng-model="documentEntity.status"> </md-input-container>
-				<md-input-container flex=10> <label>Created
+				<md-input-container flex=15> <label>Select
+					Order Type</label> <md-select placeholder="Order Type"
+					ng-model="documentEntity.stockItemOrderType"> <md-option
+					ng-repeat="stockItemOrderType in stockItemOrderTypes"
+					ng-value="stockItemOrderType"
+					ng-selected="documentEntity.stockItemOrderType.id == stockItemOrderType.id">{{stockItemOrderType.orderType}}
+				</md-option> </md-select> </md-input-container>
+				<md-input-container flex=25> <label>Created
 					By </label> <input ng-disabled="true" ng-model="createdBy"
 					ng-init="createdBy = documentEntity.createdBy? documentEntity.createdBy.firstName + ' ' + documentEntity.createdBy.lastName: ''"></input>
 				</md-input-container>
-				<md-input-container flex=10> <label>Created
+				<md-input-container flex=25> <label>Created
 					Date </label> <input ng-disabled="true"
 					ng-value="documentEntity.createdDate | formatDate"></input> </md-input-container>
 			</div>
