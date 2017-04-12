@@ -16,8 +16,36 @@ angular.module("stockApp")
 	    					$scope.getAccountListByGroup = function(groupObj) {
 	    						$scope.accountList = [];
 	    						$scope.noOfGroupTypesCallsDone += 1;
-	    						var AccountService = appEndpointSF.getAccountService();
-	    						AccountService.getAccountListByGroupId(groupObj.id)
+	    						
+	    						var accountEntryService = appEndpointSF.getAccountEntryService();
+	    						accountEntryService.getTrialBalance($scope.curUser.business.id)
+	    						.then(function(list) {
+	    							
+	 							
+	    							
+	    						});
+	   					}
+	    					
+	    					
+	    					
+	    					$scope.ddd=function(){
+	    						
+	    						
+	    						var accountEntryService = appEndpointSF.getAccountEntryService();
+	    						accountEntryService.getTrialBalance($scope.curUser.business.id)
+	    						.then(function(list) {
+	    							
+	    							 $scope.trialBalanceList=list;  
+	    							
+	    							
+	    						});
+	    						
+	    					}
+	    					
+	    						
+	    						/*var AccountService = appEndpointSF.getAccountService();
+	    						
+	    						AccountService.getAccountListByGroupId($scope.curUser.business.id,groupObj.id)
 	    								.then(function(list) {
 	    									$scope.fnReturnCount = 0;
 	    									var maxWaitTime = 1000 * 5;
@@ -73,7 +101,7 @@ angular.module("stockApp")
 	    								.getAccountGroupService();
 	    						AccountGroupService
 	    								.getAccountGroupListByType(
-	    										groupTypeObj.groupType)
+	    										groupTypeObj.groupType,$scope.curUser.business.id)
 	    								.then(
 	    										function(list) {
 	    											$scope.GroupList = list;
@@ -124,7 +152,7 @@ angular.module("stockApp")
 	    							}
 	    						}						
 	    					}
-
+*/
 	    					$scope.waitForServiceLoad = function() {
 	    						if (appEndpointSF.is_service_ready) {
 
@@ -132,6 +160,7 @@ angular.module("stockApp")
 	    								groupTypeObj = getGroupTypeObject($scope.accountGroupTypeList[i]);
 	    								$scope.accountGroupTypeGroupList.push(groupTypeObj);
 	    								$scope.getAccountGroupListByType(groupTypeObj);
+	    								$scope.getAccountListByGroup(groupTypeObj);
 	    							}
 
 	    						} else {
@@ -139,6 +168,6 @@ angular.module("stockApp")
 	    							$timeout($scope.waitForServiceLoad, 1000);
 	    						}
 	    					}
-	    					$scope.waitForServiceLoad();
-	    		
+	    				//	$scope.waitForServiceLoad();
+	    					$scope.ddd();
 })

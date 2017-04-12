@@ -2040,6 +2040,26 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
+	
+	
+	
+	
+	
+	AccountEntryService.getTrialBalance = function(bid) {
+		var deferred = $q.defer();
+		gapi.client.accountEntryService.getTrialBalance({
+			"bid":bid
+			}).execute(
+				function(resp) {
+					deferred.resolve(resp.items);
+				});
+		return deferred.promise;
+	}
+	
+	
+	
+	
+	
 
 	/* =============================================================================================================================== */
 	var GeneralEntryService = {};

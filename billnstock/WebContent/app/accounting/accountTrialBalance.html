@@ -1,12 +1,6 @@
-
-
-
-
 <md-content ng-show="loading && wait"> <md-progress-circular
 	layout-align="center center" class="md-accent md-accent"
 	md-diameter="60"></md-progress-circular></md-content>
-
-
 <section layout="row" layout-xs="column">
 			<md-subheader class="md-primary">
 			<h4 class="md-title">Trial Balance</h4>
@@ -49,13 +43,15 @@
 		<tr style="text-align: center;">
 
 		</tr>
-		 <tr ng-repeat="groupTypeObj in accountGroupTypeGroupList">
-    <td colspan="2">{{groupTypeObj.groupType}}</td>
-    <td style="text-align: right;">
-    <div  ng-repeat="grp in groupTypeObj.groupList">
-    <span ng-if="grp.totalBalance < 0">(</span>{{grp.totalBalance|number:2}}<span ng-if="grp.totalBalance < 0">)</span></div></td>
-   </tr>  
-
+		
+   <tr ng-repeat="groupTypeObj in trialBalanceList">
+   
+   <td  colspan="3">  {{groupTypeObj.accName}}</td>
+   <div  ng-show="!groupTypeObj.debitBalance"><td ng-show="!groupTypeObj.debitBalance" colspan="2" style="align:center">{{groupTypeObj.accBalance}}</td></div> 
+   <div ng-show="groupTypeObj.debitBalance"><td ng-show="groupTypeObj.debitBalance" colspan="2" style="align:center">{{groupTypeObj.accBalance}}</td></div>  
+   
+   </tr>
+   
 	<!-- 	<tr ng-repeat="acc in accountList">
 
 			<td style="border: 1px solid black;" colspan="3"
