@@ -28,6 +28,8 @@ public class BusinessNSFilter implements Filter {
 		publicURLList.add("/BackendService.getApiConfigs");
 		publicURLList.add("/userService/v0.1/getUserByEmailID");
 		publicURLList.add("/com.protostar.billingnstock.user.services.UserService.getUserByEmailID");
+		publicURLList.add("/encoded_gs_key");
+		
 		//publicURLList.add("");
 		
 		//This should be removed. Find better way

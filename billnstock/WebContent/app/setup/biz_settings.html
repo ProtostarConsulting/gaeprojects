@@ -13,7 +13,7 @@
 	<input type="text" ng-model="settingsObj.textLocalAPIKey"> </md-input-container>
 
 	<div layout="row" layout-xs="column">
-		<div flex-xs flex="20">
+		<div flex-xs flex="40">
 			<md-checkbox ng-model="settingsObj.emailNotification"
 				ng-true-value="true" ng-false-value="false"
 				aria-label="emailNotification"> Email Notification</md-checkbox>
@@ -23,7 +23,7 @@
 			system level email notification ON/OFF flag.</div>
 	</div>
 	<div layout="row" layout-xs="column">
-		<div flex-xs flex="20">
+		<div flex-xs flex="40">
 			<md-checkbox ng-model="settingsObj.smsNotification"
 				ng-true-value="true" ng-false-value="false"
 				aria-label="smsNotification"> SMS Notification</md-checkbox>
@@ -31,6 +31,16 @@
 
 		<div class="md-caption" style="padding-left: 20px;">This is a
 			system level SMS notification ON/OFF flag.</div>
+	</div>
+	<div layout="row" layout-xs="column">
+		<div flex-xs flex="40">
+			<md-checkbox ng-model="settingsObj.electronicallyGeneratedMsg"
+				ng-true-value="true" ng-false-value="false"
+				aria-label="electronicallyGeneratedMsg"> Display Electronically Generated Document Msg</md-checkbox>
+		</div>
+
+		<div class="md-caption" style="padding-left: 20px;">This is a
+			system level PDF Document Message ON/OFF flag.</div>
 	</div>
 </form>
 <section layout="row" layout-sm="column">

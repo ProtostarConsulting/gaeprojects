@@ -53,47 +53,48 @@
 					<thead md-order="reportQuery.order" md-trigger="onorderchange">
 						<tr>
 							<th name="Task No."
-								style="border: 1px solid black; text-align: left; padding: 2px;"></th>
+								style="border: 1px solid black; text-align: left; padding: 2px; font-size: 9pt;"></th>
 							<th name="Assigned To"
-								style="border: 1px solid black; text-align: left; padding: 2px;"></th>
+								style="border: 1px solid black; text-align: left; padding: 2px; font-size: 9pt;"></th>
 							<th name="Assigned By"
-								style="border: 1px solid black; text-align: left; padding: 2px;"></th>
+								style="border: 1px solid black; text-align: left; padding: 2px; font-size: 9pt;"></th>
 							<th name="Task Status"
-								style="border: 1px solid black; text-align: left; padding: 2px;"></th>
+								style="border: 1px solid black; text-align: left; padding: 2px; font-size: 9pt;"></th>
 							<th name="Assigned Date"
-								style="border: 1px solid black; text-align: left; padding: 2px;"></th>
-							<th name="Delayed(in Days)"
-								style="border: 1px solid black; text-align: left; padding: 2px;"></th>
+								style="border: 1px solid black; text-align: left; padding: 2px; font-size: 9pt;"></th>
+							<th name="Delayed (in-days)"
+								style="border: 1px solid black; text-align: left; padding: 2px; font-size: 9pt;"></th>
 							<th name="Task Title"
-								style="border: 1px solid black; text-align: left; padding: 2px;"></th>
+								style="border: 1px solid black; text-align: left; padding: 2px; font-size: 9pt;"></th>
 							<th name="Description"
-								style="border: 1px solid black; text-align: left; padding: 2px;"></th>
+								style="border: 1px solid black; text-align: left; padding: 2px; font-size: 9pt; width: 40%;"></th>
 
 						</tr>
 					</thead>
 					<tbody>
 						<!-- <tr
 						ng-repeat="task in taskEntityList | proOrderObjectByDateField: 'assignedDate'"> -->
-						<tr ng-repeat="task in taskEntityList | orderBy: reportQuery.order">
+						<tr
+							ng-repeat="task in taskEntityList | orderBy: reportQuery.order">
 							<td
-								style="border: 1px solid black; text-align: left; padding: 2px;">{{task.itemNumber}}</td>
+								style="border: 1px solid black; text-align: left; padding: 2px; font-size: 8pt;">{{task.itemNumber}}</td>
 							<td
-								style="border: 1px solid black; text-align: left; padding: 2px;">{{(task.assignedTo.firstName
+								style="border: 1px solid black; text-align: left; padding: 2px; font-size: 8pt;">{{(task.assignedTo.firstName
 								+ ' ' + task.assignedTo.lastName) | uppercase}}</td>
 							<td
-								style="border: 1px solid black; text-align: left; padding: 2px;">{{(task.assignedBy.firstName
+								style="border: 1px solid black; text-align: left; padding: 2px; font-size: 8pt;">{{(task.assignedBy.firstName
 								+ ' ' + task.assignedBy.lastName) | uppercase}}</td>
 							<td
-								style="border: 1px solid black; text-align: left; padding: 2px;">{{task.taskStatus}}</td>
+								style="border: 1px solid black; text-align: left; padding: 2px; font-size: 8pt;">{{task.taskStatus}}</td>
 							<td
-								style="border: 1px solid black; text-align: left; padding: 2px;">{{task.assignedDate
+								style="border: 1px solid black; text-align: left; padding: 2px; font-size: 8pt;">{{task.assignedDate
 								| date:"dd-MM-yyyy"}}</td>
 							<td
-								style="border: 1px solid black; text-align: left; padding: 2px;">{{getDelayInDays(task.assignedDate)}}</td>
+								style="border: 1px solid black; text-align: left; padding: 2px; font-size: 8pt;">{{getDelayInDays(task.assignedDate)}}</td>
 							<td
-								style="border: 1px solid black; text-align: left; padding: 2px;">{{task.taskTitle}}</td>
+								style="border: 1px solid black; text-align: left; padding: 2px; font-size: 8pt;">{{task.taskTitle}}</td>
 							<td
-								style="border: 1px solid black; text-align: left; padding: 2px;">{{task.taskDesc
+								style="border: 1px solid black; text-align: left; padding: 2px; font-size: 8pt;">{{task.taskDesc
 								| htmlToPlainText}}</td>
 
 						</tr>

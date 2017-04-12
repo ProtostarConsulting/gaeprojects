@@ -7,7 +7,6 @@ import java.io.StringReader;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +32,8 @@ import com.protostar.billingnstock.account.services.AccountGroupService.GroupInf
 import com.protostar.billingnstock.account.services.AccountGroupService.TypeInfo;
 import com.protostar.billingnstock.account.services.AccountingService;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
+import com.protostar.billingnstock.user.entities.BusinessSettingsEntity;
+import com.protostar.billingnstock.user.services.UserService;
 import com.protostar.billnstock.entity.Address;
 import com.protostar.billnstock.entity.BaseEntity;
 
@@ -42,6 +43,7 @@ import freemarker.template.TemplateExceptionHandler;
 
 public class PDFHtmlTemplateService {
 	static Configuration cfg = null;
+
 	public static Configuration getConfiguration() {
 		if (cfg != null) {
 			return cfg;
@@ -55,7 +57,7 @@ public class PDFHtmlTemplateService {
 	}
 
 	public void generatePdfAccountChart(List<TypeInfo> accountChart, ServletOutputStream outputStream, Long bid) {
-				try {
+		try {
 			BusinessEntity businessEntity = new BusinessEntity();
 			com.protostar.billingnstock.user.services.UserService user = new com.protostar.billingnstock.user.services.UserService();
 			businessEntity = user.getBusinessById(bid);
@@ -86,7 +88,7 @@ public class PDFHtmlTemplateService {
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(5000);
 			Writer out = new PrintWriter(byteArrayOutputStream);
 			temp.process(root, out);
- 			String pdfXMLContent = byteArrayOutputStream.toString();
+			String pdfXMLContent = byteArrayOutputStream.toString();
 			worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
 			document.close();
 		} catch (Exception e) {
@@ -94,8 +96,9 @@ public class PDFHtmlTemplateService {
 		}
 
 	}// --------------------------------------------------//
+
 	public void getProfitAndLossAcc(List<TypeInfo> list, ServletOutputStream outputStream, Long bid) {
-		AccountingService accountingService=new AccountingService();
+		AccountingService accountingService = new AccountingService();
 		CurrentFinancialYear currentFinancialYear = accountingService.getCurrentFinancialYear(bid);
 		try {
 			AccountGroupEntity accG = new AccountGroupEntity();
@@ -141,8 +144,11 @@ public class PDFHtmlTemplateService {
 				operatingIncome = grossProfit - otherExpense;
 			}
 			Template temp = getConfiguration().getTemplate("pdf_templates/profitAndLossAcc_tmpl.ftlh");
-			String date =currentFinancialYear.getFromDate().toString()+"To"+currentFinancialYear.getToDate().toString();// "1-Apr-2016 to 15-Apr-2016";
-			System.out.println("///////////DATE"+date);
+			String date = currentFinancialYear.getFromDate().toString() + "To"
+					+ currentFinancialYear.getToDate().toString();// "1-Apr-2016
+																	// to
+																	// 15-Apr-2016";
+			System.out.println("///////////DATE" + date);
 			root.put("operatingExpense", operatingExpense);
 			root.put("totalPurchase", operatingExpense);
 			root.put("totalOverhead", otherExpense);
@@ -172,7 +178,7 @@ public class PDFHtmlTemplateService {
 	// --------------------------------------------------
 
 	public void generatePdfBalanceSheet(List<TypeInfo> natureList, ServletOutputStream outputStream, Long bid) {
-		AccountingService accountingService=new AccountingService();
+		AccountingService accountingService = new AccountingService();
 		CurrentFinancialYear currentFinancialYear = accountingService.getCurrentFinancialYear(bid);
 
 		try {
@@ -183,7 +189,10 @@ public class PDFHtmlTemplateService {
 			Document document = new Document();
 			PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 			document.open();
-				String date =currentFinancialYear.getFromDate().toString()+"To"+currentFinancialYear.getToDate().toString();// "1-Apr-2016 to 15-Apr-2016";
+			String date = currentFinancialYear.getFromDate().toString() + "To"
+					+ currentFinancialYear.getToDate().toString();// "1-Apr-2016
+																	// to
+																	// 15-Apr-2016";
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 			Map<String, Object> root = new HashMap<String, Object>();
 			addDocumentHeaderLogo(accG, document, root);
@@ -200,7 +209,7 @@ public class PDFHtmlTemplateService {
 				String typeName = natureList.get(int2).getTypeName();
 				if ((typeName == "ASSETS") && (natureList.get(int2).getGroupList() != null)) {
 					for (int i = 0; i < natureList.get(int2).getGroupList().size(); i++) {
-							totalAsset = natureList.get(int2).getGroupList().get(i).getGroupBalance() + totalAsset;
+						totalAsset = natureList.get(int2).getGroupList().get(i).getGroupBalance() + totalAsset;
 					}
 					if (totalAsset < 0) {
 						totalAsset = totalAsset * (-1);
@@ -219,8 +228,8 @@ public class PDFHtmlTemplateService {
 					for (int i = 0; i < natureList.get(int2).getGroupList().size(); i++) {
 						totalEQUITY = natureList.get(int2).getGroupList().get(i).getGroupBalance() + totalEQUITY;
 					}
-				}	
 				}
+			}
 
 			totalLiabilities2 = totalLiabilities + totalEQUITY;
 			if (nettProffitOrLoss < 0) {
@@ -238,7 +247,7 @@ public class PDFHtmlTemplateService {
 			root.put("totalLiabilities", totalLiabilities);
 			root.put("totalAsset", totalAsset);
 			root.put("date", date);
-			System.out.println("-----------------------date====="+date);
+			System.out.println("-----------------------date=====" + date);
 
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(5000);
 			Writer out = new PrintWriter(byteArrayOutputStream);
@@ -488,16 +497,33 @@ public class PDFHtmlTemplateService {
 	public static void addDocumentFooter(BaseEntity enity, PdfWriter writer)
 			throws BadElementException, MalformedURLException, IOException, DocumentException {
 
-		PdfContentByte cb = writer.getDirectContent();
-		BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+		UserService userService = new UserService();
+		BusinessSettingsEntity businessSettingsEntity = userService
+				.getBusinessSettingsEntity(enity.getBusiness().getId());
+		if (businessSettingsEntity.isElectronicallyGeneratedMsg()) {
+			PdfContentByte cb1 = writer.getDirectContent();
+			BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
 
-		cb.saveState();
-		cb.beginText();
-		cb.moveText(20f, 20f);
-		cb.setFontAndSize(bf, 10);
-		cb.showText("This is electronically generated document. Needs no stamp or signature.");
-		cb.endText();
-		cb.restoreState();
+			cb1.saveState();
+			cb1.beginText();
+			cb1.moveText(130f, 30f);
+			cb1.setFontAndSize(bf, 10);
+			cb1.showText("This is an electronically generated document. Needs no stamp or signature.");
+			cb1.endText();
+			cb1.restoreState();
+		}
+		
+		PdfContentByte cb2 = writer.getDirectContent();
+		BaseFont bf2 = BaseFont.createFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+
+		cb2.saveState();
+		cb2.beginText();
+		cb2.moveText(110f, 5f);
+		cb2.setFontAndSize(bf2, 8);
+		cb2.showText(
+				"Powered by ProERP from Protostar Consulting Services | www.protostarcs.com | info@protostar.co.in");
+		cb2.endText();
+		cb2.restoreState();
 
 	}
 

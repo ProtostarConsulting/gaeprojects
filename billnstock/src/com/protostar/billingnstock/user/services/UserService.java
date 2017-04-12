@@ -40,11 +40,13 @@ import com.protostar.billingnstock.user.entities.UserEntity;
 import com.protostar.billingnstock.warehouse.entities.WarehouseEntity;
 import com.protostar.billingnstock.warehouse.services.WarehouseService;
 import com.protostar.billnstock.until.data.Constants;
+import com.protostar.billnstock.until.data.EntityUtil;
 import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 import com.protostar.billnstock.until.data.SequenceGeneratorShardedService.CounterEntity;
 import com.protostar.billnstock.until.data.SequenceGeneratorShardedService.CounterShard;
 import com.protostar.billnstock.until.data.ServerMsg;
 import com.protostar.billnstock.until.data.UserAuthenticator;
+import com.protostar.billnstock.until.data.WebUtil;
 
 @Api(name = "userService", version = "v0.1", clientIds = { Constants.WEB_CLIENT_ID, Constants.ANDROID_CLIENT_ID,
 		Constants.API_EXPLORER_CLIENT_ID }, audiences = { Constants.ANDROID_AUDIENCE }, scopes = {
@@ -168,7 +170,7 @@ public class UserService {
 		} else {
 			if (forLogin) {
 				UserEntity foundUser = list.get(0);
-				foundUser.setLastLoginDate(new Date());				
+				foundUser.setLastLoginDate(new Date());
 				UserLoginService userLoginService = new UserLoginService();
 				userLoginService.recordUserLogin(foundUser);
 				ofy().save().entity(foundUser);
@@ -199,16 +201,22 @@ public class UserService {
 		return (list == null || list.size() == 0) ? null : list.get(0);
 	}
 
-	@ApiMethod(name = "login")
+	@ApiMethod(name = "login", path = "login")
 	public List<UserEntity> login(@Named("email_id") String email, @Named("password") String pass) {
+		logger.info("Calling userLoginService.login...");
 		UserLoginService userLoginService = new UserLoginService();
 		return userLoginService.login(email, pass);
 	}
 
-	@ApiMethod(name = "logout")
-	public void logout(@Named("accessToken") String accessToken) {
-		UserLoginService userLoginService = new UserLoginService();
-		userLoginService.recordUserLogout(accessToken);
+	@ApiMethod(name = "logout", path = "logout")
+	public void logout() {
+		CurrentUserSession currentUserSession = WebUtil.getCurrentUser();
+		logger.info("Logging out... : " + currentUserSession);
+		if (currentUserSession != null) {
+			logger.info("Logging out... currentUserSession.getUser().getEmail_id(): " + currentUserSession.getUser().getEmail_id());
+			UserLoginService userLoginService = new UserLoginService();
+			userLoginService.recordUserLogout(EntityUtil.getUserWebSafeKey(currentUserSession));
+		}
 	}
 
 	@ApiMethod(name = "addBusiness")

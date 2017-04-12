@@ -133,6 +133,14 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
+	
+	UserService.logout = function() {
+		var deferred = $q.defer();
+		gapi.client.userService.logout().execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}	
 
 	UserService.getUser = function() {
 		var deferred = $q.defer();
@@ -259,19 +267,7 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-
-	UserService.getLoggedinUser = function() {
-		var user = $localStorage.loggedinUser;
-		if (user == 'undefined' || user == null)
-			return null;
-		else
-			return $localStorage.loggedinUser;
-	}
-
-	UserService.logout = function() {
-		$localStorage.loggedinUser = null;
-	} // End of UserService
-
+	
 	// start business
 
 	UserService.addBusiness = function(business) {

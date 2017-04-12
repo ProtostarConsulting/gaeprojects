@@ -45,12 +45,17 @@ public class Constants {
 	public static final String RV_NO_COUNTER = "RV_NO_COUNTER";
 
 	// Default Authorizations\
-	private static final String APP_ALL_AUTHS = "{\"authName\":\"Accounting\",\"authorizations\":[{\"authName\":\"accounting\",\"authorizations\":[]}]}, {\"authName\":\"Stock\",\"authorizations\":[{\"authName\":\"stock\",\"authorizations\":[]}]}, {\"authName\":\"CRM\",\"authorizations\":[{\"authName\":\"crm\",\"authorizations\":[]}]}, {\"authName\":\"Invoice\",\"authorizations\":[{\"authName\":\"invoice\",\"authorizations\":[]}]}, {\"authName\":\"taskmanagement\",\"authorizations\":[{\"authName\":\"taskmanagement.add\",\"authorizations\":[]}, {\"authName\":\"taskmanagement.mytasklist\",\"authorizations\":[]}, {\"authName\":\"taskmanagement.list\",\"authorizations\":[]},  {\"authName\":\"taskmanagement.tasklistreport\",\"authorizations\":[]}]}, {\"authName\":\"HRMS\",\"authorizations\":[{\"authName\":\"SalaryMaster\",\"authorizations\":[]},{\"authName\":\"LeaveDetail\",\"authorizations\":[]},{\"authName\":\"Monthly Salary\",\"authorizations\":[]},{\"authName\":\"PayrollReports\",\"authorizations\":[]}]},{\"authName\":\"More Actions\",\"authorizations\":[{\"authName\":\"setup\",\"authorizations\":[]},{\"authName\":\"updatemyprofile\",\"authorizations\":[]}]}";
-	public static final String PROTOSTAR_DEFAULT_AUTHS = "{\"authorizations\":["
-			+ APP_ALL_AUTHS
+	private static final String APP_ALL_AUTHS = ""
+			+ "{\"authName\":\"Accounting\",\"authorizations\":[{\"authName\":\"accounting\",\"authorizations\":[]},{\"authName\":\"Accounting.ModuleAdmin\",\"authorizations\":[]},{\"authName\":\"Accounting.ModuleApprover\",\"authorizations\":[]}]}, "
+			+ "{\"authName\":\"Stock\",\"authorizations\":[{\"authName\":\"stock\",\"authorizations\":[]},{\"authName\":\"Stock.ModuleAdmin\",\"authorizations\":[]},{\"authName\":\"Stock.ModuleApprover\",\"authorizations\":[]}]}, "
+			+ "{\"authName\":\"CRM\",\"authorizations\":[{\"authName\":\"crm\",\"authorizations\":[]},{\"authName\":\"CRM.ModuleAdmin\",\"authorizations\":[]},{\"authName\":\"CRM.ModuleApprover\",\"authorizations\":[]}]}, "
+			+ "{\"authName\":\"Invoice\",\"authorizations\":[{\"authName\":\"invoice\",\"authorizations\":[]},{\"authName\":\"Invoice.ModuleAdmin\",\"authorizations\":[]},{\"authName\":\"Invoice.ModuleApprover\",\"authorizations\":[]}]}, "
+			+ "{\"authName\":\"taskmanagement\",\"authorizations\":[{\"authName\":\"taskmanagement.add\",\"authorizations\":[]}, {\"authName\":\"taskmanagement.mytasklist\",\"authorizations\":[]}, {\"authName\":\"taskmanagement.list\",\"authorizations\":[]},  {\"authName\":\"taskmanagement.tasklistreport\",\"authorizations\":[]},{\"authName\":\"TaskManagement.ModuleAdmin\",\"authorizations\":[]},{\"authName\":\"TaskManagement.ModuleApprover\",\"authorizations\":[]}]}, "
+			+ "{\"authName\":\"HRMS\",\"authorizations\":[{\"authName\":\"SalaryMaster\",\"authorizations\":[]},{\"authName\":\"LeaveDetail\",\"authorizations\":[]},{\"authName\":\"Monthly Salary\",\"authorizations\":[]},{\"authName\":\"PayrollReports\",\"authorizations\":[]},{\"authName\":\"HRMS.ModuleAdmin\",\"authorizations\":[]},{\"authName\":\"HRMS.ModuleApprover\",\"authorizations\":[]}]},"
+			+ "{\"authName\":\"More Actions\",\"authorizations\":[{\"authName\":\"setup\",\"authorizations\":[]},{\"authName\":\"updatemyprofile\",\"authorizations\":[]}]}";
+	public static final String PROTOSTAR_DEFAULT_AUTHS = "{\"authorizations\":[" + APP_ALL_AUTHS
 			+ ", {\"authName\":\"Pro Admin\",\"authorizations\":[{\"authName\":\"proadmin\",\"authorizations\":[]}]}]}";
-	public static final String NEW_BIZ_DEFAULT_AUTHS = "{\"authorizations\":["
-			+ APP_ALL_AUTHS + "]}";
+	public static final String NEW_BIZ_DEFAULT_AUTHS = "{\"authorizations\":[" + APP_ALL_AUTHS + "]}";
 	public static final String NEW_BIZ_USER_DEFAULT_AUTHS = "{\"authorizations\":[{\"authName\":\"More Actions\",\"authorizations\":[{\"authName\":\"LeaveDetail\",\"authorizations\":[]},{\"authName\":\"Monthly Salary\",\"authorizations\":[]},{\"authName\":\"updatemyprofile\",\"authorizations\":[]}]}]}";
 
 	// Misc
@@ -59,7 +64,6 @@ public class Constants {
 	public static final long CURRENT_FINANCIAL_YEAR_ID = 1;
 
 	public static final int DOCUMENT_DEFAULT_MAX_SIZE = 5000000;
-
 	// MAX Document size is 5 MB
 
 	public enum DocumentStatus {
@@ -88,5 +92,9 @@ public class Constants {
 
 	public enum BusinessStatusType {
 		TRIAL, ACTIVE, SUSPENDED, DELETED
+	};
+
+	public enum EmployeeStatus {
+		ACTIVE, SUSPENDED, RESIGNED, TERMINATED, CONTRACT, INTERN, DELETED
 	};
 }

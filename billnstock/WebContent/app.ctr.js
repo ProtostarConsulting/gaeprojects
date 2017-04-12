@@ -121,7 +121,7 @@ angular
 						$scope.bizLogoGCSURL = $scope.curUser.business.bizLogoGCSURL;
 
 						gapi.auth.setToken({
-						    access_token: $scope.curUser.accessToken
+							access_token : $scope.curUser.accessToken
 						});
 						getUserAuthTree();
 						// finally go to home...
@@ -218,9 +218,21 @@ angular
 										// User successfully authorized the G+
 										// App!
 										$log.debug('Signed in!');
+										$scope.googleUser = appEndpointSF.getLocalUserService().getLoggedinUser()
+										if ($scope.googleUser) {
+											// call is comming here twice. Hence
+											// needed
+											$log
+													.debug("Outside: curUser is alrady init. Returning back....");
+											return;
+										}
+
 										var profile = authResult
 												.getBasicProfile();
 										$scope.googleUser = profile;
+										
+										appEndpointSF.getLocalUserService().saveLoggedInUser(
+												profile);
 
 										$log.debug('ID: ' + profile.getId());
 										// Do not send to your backend! Use an
@@ -235,14 +247,6 @@ angular
 										$scope.googleUserDetails = profile
 												.getName()
 												+ "<br>" + profile.getEmail()
-										if ($scope.curUser) {
-											// call is comming here twice. Hence
-											// needed
-											$scope.loading = false;
-											$log
-													.debug("Outside: curUser is alrady init. Returning back....");
-											return;
-										}
 
 										$log
 												.debug("Going ahead with call to getUserByEmailID....");
@@ -260,6 +264,7 @@ angular
 							}, 2000);
 							return;
 						}
+
 						appEndpointSF
 								.getUserService()
 								.getUserByEmailID(emailId, true)
@@ -335,16 +340,10 @@ angular
 
 						var hostBaseUrl = '//' + window.location.host
 								+ '/index.html';
-
-						if (gapi.auth2 == undefined) {
-							$scope.curUser = null;
-							$scope.curUser = appEndpointSF
-									.getLocalUserService().logout();
-
-							// $state.go("home");
-							$window.location.href = hostBaseUrl;
-							return;
-						}
+						appEndpointSF.getUserService().logout().then(
+								function(msg) {
+									$log.debug('User signed out:' + msg);
+								});
 						var auth2 = gapi.auth2.getAuthInstance();
 						// try logout 3 times.
 						for (var i = 1; i <= 3; i++) {
@@ -365,6 +364,16 @@ angular
 												// $state.go("home");
 												$window.location.href = hostBaseUrl;
 											});
+						}
+
+						if (gapi.auth2 == undefined) {
+							$scope.curUser = null;
+							$scope.curUser = appEndpointSF
+									.getLocalUserService().logout();
+
+							// $state.go("home");
+							$window.location.href = hostBaseUrl;
+							return;
 						}
 					}
 

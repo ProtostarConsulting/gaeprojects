@@ -10,6 +10,7 @@ public class BusinessSettingsEntity extends BaseEntity {
 
 	private boolean emailNotification = false;
 	private boolean smsNotification = false;
+	private boolean electronicallyGeneratedMsg = true;
 	private String sendGridAPIKey;
 	private String textLocalAPIKey;
 
@@ -43,6 +44,14 @@ public class BusinessSettingsEntity extends BaseEntity {
 
 	public void setTextLocalAPIKey(String textLocalAPIKey) {
 		this.textLocalAPIKey = textLocalAPIKey;
+	}
+
+	public boolean isElectronicallyGeneratedMsg() {
+		return electronicallyGeneratedMsg;
+	}
+
+	public void setElectronicallyGeneratedMsg(boolean electronicallyGeneratedMsg) {
+		this.electronicallyGeneratedMsg = electronicallyGeneratedMsg;
 	}
 
 }
