@@ -1,3 +1,4 @@
+
 package com.protostar.billingnstock.account.services;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
@@ -18,8 +19,10 @@ import com.protostar.billingnstock.account.entities.AccountEntryEntity;
 import com.protostar.billingnstock.account.entities.CurrentFinancialYear;
 import com.protostar.billingnstock.account.entities.GeneralEntryEntity;
 import com.protostar.billingnstock.account.services.AccountGroupService.AccInfo;
+import com.protostar.billingnstock.account.services.AccountGroupService.TypeInfo;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billnstock.until.data.EntityUtil;
+import com.protostar.billnstock.until.data.ServerMsg;
 
 @Api(name = "accountEntryService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.services", ownerName = "com.protostar.billingnstock.services", packagePath = ""))
 public class AccountEntryService {
@@ -66,7 +69,6 @@ public class AccountEntryService {
 		System.out.println("getAccountEntryByAccountId--Bid" + bid);
 		CurrentFinancialYear currentFinancialYear = accountingService
 				.getCurrentFinancialYear(bid);
-
 		List<AccountEntryEntity> accountEntries = ofy()
 				.load()
 				.type(AccountEntryEntity.class)
@@ -79,7 +81,6 @@ public class AccountEntryService {
 				.list();
 		return accountEntries;
 	}
-
 	@ApiMethod(name = "getDayBookList", path = "getDayBookList")
 	public List<GeneralEntryEntity> getDayBookList(@Named("busId") Long busId,
 			@Named("date") Long date) {
@@ -106,7 +107,6 @@ public class AccountEntryService {
 						AccountEntryEntity.class, accountId)).now();
 		return getAccountById1;
 	}
-
 	@ApiMethod(name = "addGeneralEntry")
 	public void addGeneralEntry(GeneralEntryEntity entryEntity) {
 
@@ -136,15 +136,32 @@ public class AccountEntryService {
 		ofy().save().entity(entryEntity).now();
 	}
 	
-	@ApiMethod(name = "getTrialBalance")
+	@ApiMethod(name = "getTrialBalance",path = "getTrialBalance")
 	public   List<AccInfo> getTrialBalance(@Named("bid") Long busId) {
-		return null;				
-	}
-
-	
-	
-	
-	
-	
-	
+		  List<AccInfo> accinfoList = new ArrayList<AccInfo>(); 
+			    List<AccountEntryEntity> entryEntityList = ofy()
+				.load()
+				.type(AccountEntryEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId))
+				.list();
+			    
+			  for (int i = 0; i < entryEntityList.size(); i++)
+			    {
+			    	AccInfo accInfo= new AccInfo();
+			    	System.out.println("entryEntityList.get(i).getCredit()"+entryEntityList.get(i).getCredit());
+			    	if(entryEntityList.get(i).getDebit()==null)
+			    	{
+			    		accInfo.accBalance=entryEntityList.get(i).getCredit();
+			    		accInfo.debitBalance=false;
+			    		accInfo.accName=entryEntityList.get(i).getAccountEntity().getAccountName().toString();
+			       	}
+			   	else{
+			    		accInfo.accBalance=entryEntityList.get(i).getDebit();
+			    		accInfo.debitBalance=true;
+			    		accInfo.accName=entryEntityList.get(i).getAccountEntity().getAccountName().toString();
+			   	   	}   accinfoList.add(accInfo);
+			  	}
+			  System.out.println("-----size"+accinfoList.size());
+			  return accinfoList;
+	   }	
 }

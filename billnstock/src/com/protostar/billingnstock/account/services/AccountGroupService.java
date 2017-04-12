@@ -375,7 +375,7 @@ public class AccountGroupService {
 		return typeList;
 	}
 
-	public class TypeInfo implements Serializable {
+	public static class TypeInfo implements Serializable {
 		String typeName;
 		double typeBalance;
 		List<GroupInfo> groupList;
@@ -405,7 +405,7 @@ public class AccountGroupService {
 		}
 	}
 
-	public class GroupInfo implements Serializable {
+	public static class GroupInfo implements Serializable {
 		String groupName;
 		double groupBalance;
 		List<AccInfo> AccInfoList;
@@ -435,7 +435,7 @@ public class AccountGroupService {
 		}
 	}
 
-	public class AccInfo implements Serializable {
+	public static  class AccInfo implements Serializable {
 		String accName;
 		double accBalance;
 		boolean debitBalance;
