@@ -43,6 +43,8 @@ public class StockItemsShipmentEntity extends BaseEntity {
 	private Ref<Customer> customer;
 	@Index
 	private long poNumber;
+	@Index
+	private Ref<StockItemOrderType> stockItemOrderType;
 
 	@Override
 	public void beforeSave() {
@@ -68,7 +70,17 @@ public class StockItemsShipmentEntity extends BaseEntity {
 		if (customer != null)
 			this.customer = Ref.create(customer);
 	}
-	
+
+	public StockItemOrderType getStockItemOrderType() {
+		return stockItemOrderType == null ? null : stockItemOrderType.get();
+	}
+
+	public void setStockItemOrderType(StockItemOrderType stockItemOrderType) {
+		if (stockItemOrderType != null) {
+			this.stockItemOrderType = Ref.create(stockItemOrderType);
+		}
+	}
+
 	public List<StockLineItem> getProductLineItemList() {
 		return productLineItemList;
 	}

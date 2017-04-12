@@ -7,6 +7,7 @@ import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
 import com.protostar.billingnstock.invoice.entities.InvoiceEntity;
+import com.protostar.billingnstock.stock.entities.StockItemOrderType;
 import com.protostar.billingnstock.warehouse.entities.WarehouseEntity;
 import com.protostar.billnstock.until.data.Constants;
 import com.protostar.billnstock.until.data.Constants.DocumentStatus;
@@ -31,7 +32,9 @@ public class PurchaseOrderEntity extends InvoiceEntity {
 	private Ref<WarehouseEntity> warehouse;
 	@Index
 	private Ref<BudgetEntity> budget;
-	
+	@Index
+	private Ref<StockItemOrderType> stockItemOrderType;
+
 	private LineItemCategory budgetLineItemCategory;
 	private LineItemEntity budgetLineItem;
 
@@ -42,12 +45,14 @@ public class PurchaseOrderEntity extends InvoiceEntity {
 		// here....
 
 		if (getBusiness() == null) {
-			throw new RuntimeException("Business entity is not set on: " + this.getClass().getSimpleName()
+			throw new RuntimeException("Business entity is not set on: "
+					+ this.getClass().getSimpleName()
 					+ " This is required field. Aborting save operation...");
 		}
 
 		if (getWarehouse() == null) {
-			throw new RuntimeException("Warehouse entity is not set on: " + this.getClass().getSimpleName()
+			throw new RuntimeException("Warehouse entity is not set on: "
+					+ this.getClass().getSimpleName()
 					+ " This is required field. Aborting save operation...");
 		}
 
@@ -64,7 +69,8 @@ public class PurchaseOrderEntity extends InvoiceEntity {
 
 		if (getId() == null) {
 			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
-					EntityUtil.getBusinessRawKey(getBusiness()), Constants.PURCHASE_ORDER_NO_COUNTER);
+					EntityUtil.getBusinessRawKey(getBusiness()),
+					Constants.PURCHASE_ORDER_NO_COUNTER);
 			setItemNumber(sequenceGenService.getNextSequenceNumber());
 		}
 	}
@@ -93,6 +99,16 @@ public class PurchaseOrderEntity extends InvoiceEntity {
 	public void setBudget(BudgetEntity budget) {
 		if (budget != null)
 			this.budget = Ref.create(budget);
+	}
+
+	public StockItemOrderType getStockItemOrderType() {
+		return stockItemOrderType == null ? null : stockItemOrderType.get();
+	}
+
+	public void setStockItemOrderType(StockItemOrderType stockItemOrderType) {
+		if (stockItemOrderType != null) {
+			this.stockItemOrderType = Ref.create(stockItemOrderType);
+		}
 	}
 
 	public String getShipTo() {
@@ -163,7 +179,8 @@ public class PurchaseOrderEntity extends InvoiceEntity {
 		return budgetLineItemCategory;
 	}
 
-	public void setBudgetLineItemCategory(LineItemCategory budgetLineItemCategory) {
+	public void setBudgetLineItemCategory(
+			LineItemCategory budgetLineItemCategory) {
 		this.budgetLineItemCategory = budgetLineItemCategory;
 	}
 
@@ -173,5 +190,5 @@ public class PurchaseOrderEntity extends InvoiceEntity {
 
 	public void setBudgetLineItem(LineItemEntity budgetLineItem) {
 		this.budgetLineItem = budgetLineItem;
-	}	
+	}
 }
