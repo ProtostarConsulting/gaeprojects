@@ -59,6 +59,7 @@ public class Constants {
 	public static final String NEW_BIZ_USER_DEFAULT_AUTHS = "{\"authorizations\":[{\"authName\":\"More Actions\",\"authorizations\":[{\"authName\":\"LeaveDetail\",\"authorizations\":[]},{\"authName\":\"Monthly Salary\",\"authorizations\":[]},{\"authName\":\"updatemyprofile\",\"authorizations\":[]}]}]}";
 
 	// Misc
+	public static final String INIT_SETUP_AUTH = "InitSetup";
 	public static final String DEFAULT_EMP_DEPT = "Default";
 	public static final String DEFAULT_STOCK_WAREHOUSE = "Default";
 	public static final long CURRENT_FINANCIAL_YEAR_ID = 1;

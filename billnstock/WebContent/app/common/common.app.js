@@ -172,6 +172,24 @@ app.directive("proBeforeDateCheck",
 				}
 			};
 		});
+
+app.directive('scrollPosition', function($window, $rootScope) {
+	return {
+		scope : {
+			scroll : '=scrollPosition'
+		},
+		link : function(scope, element, attrs) {
+			var windowEl = angular.element(element);
+			var handler = function() {
+				scope.scroll = windowEl[0].scrollTop;
+				$rootScope.scroll = windowEl[0].scrollTop;
+			}
+			windowEl.on('scroll', scope.$apply.bind(scope, handler));
+			handler();
+		}
+	};
+});
+
 /*
  * app.filter('formatDate1', function($filter) { return function(inputDate) {
  * return $filter('date')(inputDate, 'dd-MM-yyyy'); }; });
@@ -596,23 +614,21 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/PurchesVoucherList",
 		templateUrl : '/app/accounting/voucherPurchesList.html',
 		controller : 'voucherPurchesListCtr'
-	})
-	.state('accounting.dayBook', {
+	}).state('accounting.dayBook', {
 		url : "/dayBook",
 		templateUrl : '/app/accounting/dayBook.html',
 		controller : 'dayBook',
-		
+
 	})
-	
+
 	.state('accounting.addProduction', {
 		url : "/addProduction",
 		templateUrl : '/app/accounting/addProduction.html',
 		controller : 'addProduction',
-		
+
 	})
-	
-	
-	 	.state('accounting.voucherPayment', {
+
+	.state('accounting.voucherPayment', {
 		url : "/PaymentVoucher",
 		templateUrl : '/app/accounting/voucherPayment.html',
 		controller : 'voucherPaymentCtr',

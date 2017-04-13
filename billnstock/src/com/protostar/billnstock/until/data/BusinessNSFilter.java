@@ -17,24 +17,25 @@ import com.protostar.billingnstock.user.services.UserLoginService;
 
 public class BusinessNSFilter implements Filter {
 
-	public void doFilter(ServletRequest req, ServletResponse resp,
-			FilterChain chain) throws IOException, ServletException {
+	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
+			throws IOException, ServletException {
 
 		HttpServletRequest request = (HttpServletRequest) req;
 		List<String> publicURLList = new ArrayList<String>();
 		publicURLList.add("/proxy.html");
-		publicURLList.add("/discovery/v1/apis");		
+		publicURLList.add("/discovery/v1/apis");
 		publicURLList.add("/_ah/api/discovery");
 		publicURLList.add("/BackendService.getApiConfigs");
 		publicURLList.add("/userService/v0.1/getUserByEmailID");
 		publicURLList.add("/com.protostar.billingnstock.user.services.UserService.getUserByEmailID");
+		publicURLList.add("/userService/v0.1/login");
 		publicURLList.add("/encoded_gs_key");
 		
-		//publicURLList.add("");
-		
-		//This should be removed. Find better way
-		
-		
+
+		// publicURLList.add("");
+
+		// This should be removed. Find better way
+
 		// Move to namespace based datastore once moved to angular 2/4 +
 		// endpoint 2.0
 		// System.out.println("####BusinessNSFilter filter is invoked before");
@@ -50,25 +51,23 @@ public class BusinessNSFilter implements Filter {
 				break;
 			}
 		}
+		if (accessToken != null && !accessToken.isEmpty() && Constants.INIT_SETUP_AUTH.equals(accessToken)) {
+			skipLoginChk = true;
+		}
 
 		if (skipLoginChk) {
 			// This is public API/Page
 			System.out.println("Skipping Login Check...");
 		} else {
 			UserLoginService userLoginService = new UserLoginService();
-			if (accessToken != null
-					&& userLoginService.getCurrentUser(accessToken) != null) {
+			if (accessToken != null && userLoginService.getCurrentUser(accessToken) != null) {
 				// Temp disabling loign check
-				CurrentUserSession currentUserSession = userLoginService
-								.getCurrentUserSession(accessToken);
-				System.out.println("currentUserSession.getId(): "+ currentUserSession.getId());
+				CurrentUserSession currentUserSession = userLoginService.getCurrentUserSession(accessToken);
+				System.out.println("currentUserSession.getId(): " + currentUserSession.getId());
 				WebUtil.setCurrentUser(currentUserSession);
 			} else {
-				// throw new RuntimeException("User is not logged in. Please
-				// login
-				// first.");
-				System.out
-						.println("ERROR: RuntimeException- User is not logged in. Please login first.");
+				System.out.println("ERROR: RuntimeException- User is not logged in. Please login first.");
+				throw new RuntimeException("ErrorCode:403: User is not logged in. Please login first.");
 			}
 		}
 

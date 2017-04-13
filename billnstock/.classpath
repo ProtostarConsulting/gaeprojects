@@ -6,8 +6,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="lib" path="WebContent/WEB-INF/lib/appengine-api-1.0-sdk-1.9.42.jar"/>
 	<classpathentry exported="true" kind="lib" path="WebContent/WEB-INF/lib/appengine-api-labs-1.9.42.jar"/>
-	<classpathentry exported="true" kind="lib" path="WebContent/WEB-INF/lib/appengine-endpoints-1.9.42.jar"/>
-	<classpathentry exported="true" kind="lib" path="WebContent/WEB-INF/lib/appengine-endpoints-deps-1.9.42.jar"/>
 	<classpathentry exported="true" kind="lib" path="WebContent/WEB-INF/lib/appengine-gcs-client-0.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="WebContent/WEB-INF/lib/appengine-jsr107cache-1.9.42.jar"/>
 	<classpathentry exported="true" kind="lib" path="WebContent/WEB-INF/lib/asm-4.0.jar"/>
@@ -82,5 +80,13 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/sendgrid-java-3.1.0.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/java-http-client-2.3.4.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/endpoints-framework-2.0.0.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/endpoints-framework-auth-1.0.0.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/endpoints-management-api-client-1.0.0.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/endpoints-management-auth-1.0.0.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/endpoints-management-config-1.0.0.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/endpoints-management-control-1.0.0.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/endpoints-management-control-appengine-1.0.0.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/endpoints-management-protos-1.0.0.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

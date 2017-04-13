@@ -117,11 +117,16 @@
 	</span></md-sidenav> <md-content layout="column" layout-align="top stretch" layout-fill
 		style="height: 100%;"> <md-content layout="column"
 		style="height: 100%;"> <md-content id="tp1" ui-view flex
-		layout="column" layout-align="top stretch" style="height: 100%;">
+		layout="column" layout-align="top stretch" style="height: 100%;" scroll-position="scroll">
 	<!--This is the center page of all main modules for the index module. -->
 	</md-content> </md-content><!-- <span flex>©2017-2018 ProERP Google Cloud Platform, a product
 		of Protostar Consulting Services, Pune. All rights reserved. </span> -->
-	</md-content> <!-- </md-card>  --></md-content> <!--This is a botton section of the app--> </md-content> </md-content>
+	</md-content> <!-- </md-card>  --></md-content> <!--This is a botton section of the app--> <md-button
+		class="md-fab md-fab-bottom-right docs-scroll-fab"
+		ng-click="gotoPart('viewToolbar')" aria-label="Back to Top" ng-show="scroll > 100"> <md-tooltip
+		md-direction="top">Back to Top</md-tooltip> <md-icon
+		md-svg-src="img/icons/ic_keyboard_arrow_up_black_24px.svg"></md-icon>
+	</md-button> </md-content> </md-content>
 
 
 	<!-- All JS Dependencies -->
@@ -161,7 +166,7 @@
 	<!-- <script src="/lib/base/ui-grid.js"></script> -->
 
 	<script src="https://apis.google.com/js/client.js"></script>
-	<script src="https://apis.google.com/js/api.js"></script>
+	<!-- <script src="https://apis.google.com/js/api.js"></script> -->
 	<!-- App JS Dependencies -->
 	<script src="/app/common/common.app.js"></script>
 	<script src="/app/common/commonServices.js"></script>

@@ -55,10 +55,10 @@ app
 						$window.location.href = hostBaseUrl;
 					}
 					var hostBaseUrl = '//' + window.location.host
-					+ '/app.html#/login#tp1';
+							+ '/app.html#/login#tp1';
 					// Directly go to page as before for suruchidairy
-					if(hostBaseUrl.includes('suruchidairy-prod')){
-						$scope.loginClick();						
+					if (hostBaseUrl.includes('suruchidairy-prod')) {
+						$scope.loginClick();
 					}
 
 					$scope.user = {
@@ -118,10 +118,9 @@ app
 					}
 
 					$scope.initGAPI = function() {
-						$log.debug("Came to initGAPI");
-						// This will load all server side end points
-						// $scope.loadAppGoogleServices();
-						$timeout(function() {
+						$log.debug("Loading Google client.js...");
+
+						if (gapi && gapi.client && gapi.client.load) {
 							var apiRoot = '//' + window.location.host
 									+ '/_ah/api';
 							var apisToLoad = 1; // must match number of calls to
@@ -130,28 +129,12 @@ app
 								$log.debug("userService Loaded......");
 								$scope.loading = false;
 							}, apiRoot);
-						}, 2000);
-
+						} else {
+							$timeout($scope.initGAPI, 2000);
+						}
 					}
 
-					$timeout(function() {
-						$scope.initGAPI();
-					}, 2000);
-
-					var saveLoggedInUser = function(user) {
-						$localStorage.loggedinUser = user;
-					}
-
-					var getLoggedinUser = function() {
-						var user = $localStorage.loggedinUser;
-						if (user == 'undefined' || user == null)
-							return null;
-						else
-							return $localStorage.loggedinUser;
-					}
-
-					// on page load first see if user is already logged. if yes
-					$scope.curUser = getLoggedinUser();
+					$scope.initGAPI();
 
 				});
 

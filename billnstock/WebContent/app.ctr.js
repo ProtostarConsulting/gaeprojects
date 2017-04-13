@@ -6,7 +6,6 @@ angular
 						$mdToast, $mdBottomSheet, $state, $http, $location,
 						$anchorScroll, $mdMedia, ajsCache, appEndpointSF) {
 
-					$log.log("Inside indexCtr");
 					$scope.loading = true;
 					$scope.angular = angular;
 
@@ -218,7 +217,9 @@ angular
 										// User successfully authorized the G+
 										// App!
 										$log.debug('Signed in!');
-										$scope.googleUser = appEndpointSF.getLocalUserService().getLoggedinUser()
+										$scope.googleUser = appEndpointSF
+												.getLocalUserService()
+												.getLoggedinUser()
 										if ($scope.googleUser) {
 											// call is comming here twice. Hence
 											// needed
@@ -230,9 +231,9 @@ angular
 										var profile = authResult
 												.getBasicProfile();
 										$scope.googleUser = profile;
-										
-										appEndpointSF.getLocalUserService().saveLoggedInUser(
-												profile);
+
+										appEndpointSF.getLocalUserService()
+												.saveLoggedInUser(profile);
 
 										$log.debug('ID: ' + profile.getId());
 										// Do not send to your backend! Use an
@@ -383,6 +384,7 @@ angular
 						$log.debug('Not signed into Google Plus.');
 						$scope.googleUser = null;
 					});
+
 					$rootScope.$on('$stateChangeSuccess', function(event,
 							toState, toParams, fromState, fromParams) {
 						// On any state change go the the top
@@ -392,28 +394,30 @@ angular
 						}, 10);
 
 					});
-					$rootScope.$on('$stateChangeStart', function(e, toState,
-							toParams, fromState, fromParams) {
+
+					$rootScope.$on('$stateChangeStart', function(event,
+							toState, toParams, fromState, fromParams) {
 						// check access permission here.
+						// $log.debug('toState: ' + toState);
+
+						if (toState.name == 'initsetup'
+								|| toState.name == 'login'
+								|| toState.name == 'home') {
+							return;
+						}
+						$scope.curUser = appEndpointSF.getLocalUserService()
+								.getLoggedinUser();
+						if (toState.name != 'login' && !$scope.curUser) {
+							event.preventDefault();
+							$state.go('login');
+						}
+						/*
+						 * else if ($scope.curUser &&
+						 * !$scope.hasUserAuthority($scope.curUser,
+						 * toState.name)) { event.preventDefault();
+						 * $state.go('login'); }
+						 */
 					});
-
-					$scope.initGAPI = function() {
-						$log.debug("Came to initGAPI");
-						// This will load all server side end points
-						// $scope.loadAppGoogleServices();
-						$timeout(
-								function() {
-									appEndpointSF
-											.loadAppGoogleServices($q.defer())
-											.then(
-													function() {
-														$log
-																.debug("##########Loaded All Google Endpoint Services....#########");
-														$scope.loading = false;
-													});
-								}, 2000);
-
-					};
 
 					$scope.openBottomSheet = function() {
 						$mdBottomSheet
@@ -456,8 +460,25 @@ angular
 						}
 					}
 
+					$scope.initGAPI = function() {
+						$log.debug("Loading Google client.js...");
+
+						if (gapi && gapi.client && gapi.client.load) {
+							appEndpointSF
+									.loadAppGoogleServices($q.defer())
+									.then(
+											function() {
+												$log
+														.debug("##########Loaded All Google Endpoint Services....#########");
+												$scope.loading = false;
+											});
+							$scope.waitForServiceLoad();
+						} else {
+							$timeout($scope.initGAPI, 2000);
+						}
+					}
+
 					$scope.initGAPI();
-					$scope.waitForServiceLoad();
 
 					$scope.theme = 'default';
 
@@ -477,6 +498,9 @@ angular
 					};
 
 					$scope.hasUserAuthority = function(user, authorityToCheck) {
+						if (!user || !authorityToCheck)
+							return false;
+
 						return appEndpointSF.getAuthorizationService()
 								.containsInAuthTree(authorityToCheck,
 										angular.fromJson(user.authorizations));
@@ -490,11 +514,23 @@ angular
 						return true;
 					}
 
+					$scope.gotoPart = function(partId) {
+						// $location.hash(partId);
+						$anchorScroll(partId);
+					}
+					$rootScope.scroll = 0;
 				})
 		.controller(
 				'AppCtrl',
-				function($scope, $timeout, $mdSidenav, $mdUtil, $log, $mdMedia) {
+				function($scope, $timeout, $mdSidenav, $mdUtil, $log, $mdMedia,
+						$rootScope) {
 
+					$rootScope.scroll = 10;
+
+					$scope.$watch('scroll', function() {
+						console.log("$scope.scroll: " + $scope.scroll);
+						$rootScope.scroll = $scope.scroll;
+					});
 					$scope.toggleMainMenuSwitch = $mdMedia('gt-md');
 
 					$scope.toggleMainMenu = function() {

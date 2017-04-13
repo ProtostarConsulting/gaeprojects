@@ -4,7 +4,7 @@
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file>
   </welcome-file-list>
-  <servlet>
+  <!-- <servlet>
     <servlet-name>SystemServiceServlet</servlet-name>
     <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
     <init-param>
@@ -15,13 +15,13 @@
   <servlet-mapping>
     <servlet-name>SystemServiceServlet</servlet-name>
     <url-pattern>/_ah/spi/*</url-pattern>
-  </servlet-mapping>
- <!--  <servlet>
+  </servlet-mapping> -->
+ <servlet>
   <servlet-name>EndpointsServlet</servlet-name>
   <servlet-class>com.google.api.server.spi.EndpointsServlet</servlet-class>
   <init-param>
     <param-name>services</param-name>
-    <param-value>com.protostar.billingnstock.account.services.AccountEntityService,com.protostar.billingnstock.account.services.AccountEntryService,com.protostar.billingnstock.account.services.AccountGroupService,com.protostar.billingnstock.account.services.AccountingService,com.protostar.billingnstock.account.services.GeneralJournalService,com.protostar.billingnstock.account.services.VoucherService,com.protostar.billingnstock.assetmanagement.services.AssetService,com.protostar.billingnstock.crm.services.CrmService,com.protostar.billingnstock.crm.services.OpportunityService,com.protostar.billingnstock.cust.services.CustomerService,com.protostar.billingnstock.hr.services.HrService,com.protostar.billingnstock.invoice.services.InvoiceService,com.protostar.billingnstock.proadmin.services.ProtostarAdminService,com.protostar.billingnstock.purchase.services.SupplierService,com.protostar.billingnstock.sales.services.SalesOrderService,com.protostar.billingnstock.setup.services.UploadURLService,com.protostar.billingnstock.stock.services.StockManagementService,com.protostar.billingnstock.taskmangement.TaskManagementService,com.protostar.billingnstock.tax.services.TaxService,com.protostar.billingnstock.user.services.UserService,com.protostar.billingnstock.warehouse.services.WarehouseService,com.protostar.billnstock.service.AuthorizationService,com.protostar.billnstock.service.TestService,com.protostar.billingnstock.production.services.ProductionService</param-value>
+    <param-value>com.protostar.billingnstock.account.services.AccountEntityService,com.protostar.billingnstock.account.services.AccountEntryService,com.protostar.billingnstock.account.services.AccountGroupService,com.protostar.billingnstock.account.services.AccountingService,com.protostar.billingnstock.account.services.GeneralJournalService,com.protostar.billingnstock.account.services.VoucherService,com.protostar.billingnstock.assetmanagement.services.AssetService,com.protostar.billingnstock.crm.services.CrmService,com.protostar.billingnstock.crm.services.OpportunityService,com.protostar.billingnstock.cust.services.CustomerService,com.protostar.billingnstock.hr.services.HrService,com.protostar.billingnstock.invoice.services.InvoiceService,com.protostar.billingnstock.proadmin.services.ProtostarAdminService,com.protostar.billingnstock.purchase.services.SupplierService,com.protostar.billingnstock.sales.services.SalesOrderService,com.protostar.billingnstock.setup.services.UploadURLService,com.protostar.billingnstock.stock.services.StockManagementService,com.protostar.billingnstock.taskmangement.TaskManagementService,com.protostar.billingnstock.tax.services.TaxService,com.protostar.billingnstock.user.services.UserService,com.protostar.billingnstock.warehouse.services.WarehouseService,com.protostar.billnstock.service.AuthorizationService,com.protostar.billingnstock.production.services.ProductionService,com.protostar.billnstock.service.TestService</param-value>
   </init-param>
   <init-param>
     <param-name>restricted</param-name>
@@ -31,7 +31,7 @@
 <servlet-mapping>
   <servlet-name>EndpointsServlet</servlet-name>
   <url-pattern>/_ah/api/*</url-pattern>
-</servlet-mapping>  --> 
+</servlet-mapping> 
   
   <filter>
     <filter-name>ObjectifyFilter</filter-name>
@@ -362,5 +362,15 @@
   <servlet-mapping>
     <servlet-name>PrintPdfTaxCollectionReport</servlet-name>
     <url-pattern>/PrintPdfTaxCollectionReport</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>FlushUserLoginCacheHandler</display-name>
+    <servlet-name>FlushUserLoginCacheHandler</servlet-name>
+    <servlet-class>com.protostar.billnstock.until.async.FlushUserLoginCacheHandler</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FlushUserLoginCacheHandler</servlet-name>
+    <url-pattern>/proerp/cron/flushuserlogincache</url-pattern>
   </servlet-mapping>
 </web-app>
