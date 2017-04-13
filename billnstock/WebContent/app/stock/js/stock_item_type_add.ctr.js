@@ -47,11 +47,18 @@ angular
 
 						var stockService = appEndpointSF.getStockService();
 
-						stockService.getStockItemUnits(
-								$scope.curUser.business.id).then(
-								function(list) {
-									$scope.stockUnitList = list;
-								})
+						stockService
+								.getStockItemUnits($scope.curUser.business.id)
+								.then(
+										function(stockUnitList) {
+											$scope.stockUnitList = stockUnitList;
+											for (var i = 0; i < $scope.stockUnitList.length; i++) {
+												if ($scope.stock.unitOfMeasure
+														&& $scope.stock.unitOfMeasure.id == $scope.stockUnitList[i].id) {
+													$scope.stock.unitOfMeasure = $scope.stockUnitList[i];
+												}
+											}
+										})
 					}
 
 					$scope.getStockItemCategoryTypeList = function() {
@@ -62,8 +69,8 @@ angular
 								.getStockItemTypeCategories(
 										$scope.curUser.business.id)
 								.then(
-										function(list) {
-											$scope.stockItemCategories = list;
+										function(stockItemCategories) {
+											$scope.stockItemCategories = stockItemCategories;
 											if ($scope.stockItemCategories.length > 0
 													&& !$scope.stock.cat) {
 												$scope.stock.cat = $scope.stockItemCategories[0];

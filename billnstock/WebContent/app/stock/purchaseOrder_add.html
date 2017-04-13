@@ -27,10 +27,10 @@
 				<span flex="5"></span>
 				<md-input-container flex> <label>Select
 					Order Type</label> <md-select placeholder="Order Type"
-					ng-model="documentEntity.stockItemOrderType"> <md-option
-					ng-repeat="stockItemOrderType in stockItemOrderTypes"
-					ng-value="stockItemOrderType"
-					ng-selected="documentEntity.stockItemOrderType.id == stockItemOrderType.id">{{stockItemOrderType.orderType}}
+					ng-model="documentEntity.orderType"> <md-option
+					ng-repeat="orderType in stockItemOrderTypes"
+					ng-value="orderType"
+					ng-selected="documentEntity.orderType.id == orderType.id">{{orderType.typeName}}
 				</md-option> </md-select> </md-input-container>
 			</div>
 			<div layout="row" flex=60 flex-xs=100>

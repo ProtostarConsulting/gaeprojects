@@ -203,15 +203,15 @@ app
 					};
 
 					$scope.reCalculateTotal = function() {
-						//There is no discount in PO. 
+						// There is no discount in PO.
 						$scope.documentEntity.serviceDiscAmount = 0;
 						$scope.documentEntity.productDiscAmount = 0
-						
+
 						$scope.serviceTaxChanged();
 						$scope.productTaxChanged();
 						$scope.calServiceSubTotal();
 						$scope.calProductSubTotal();
-						//calculateDiscountAmount();
+						// calculateDiscountAmount();
 						// This is needed as tax and sub-totals depend on each
 						// other
 						$scope.serviceTaxChanged();
@@ -317,7 +317,7 @@ app
 							$scope.documentEntity.selectedProductTax = null;
 						}
 						$scope.reCalculateTotal();
-					};				
+					};
 
 					$scope.printPO = function(poId) {
 						var bid = $scope.curUser.business.id;
@@ -413,18 +413,22 @@ app
 									$scope.warehouses = warehouseList;
 								});
 					}
-					
+
 					$scope.getStockItemOrderTypeList = function() {
 
 						var stockService = appEndpointSF.getStockService();
 
-						stockService.getStockItemOrderTypes($scope.curUser.business.id)
-								.then(function(stockItemOrderTypes) {
-									$scope.stockItemOrderTypes = stockItemOrderTypes;
-									if($scope.stockItemOrderTypes.length>0 && !$scope.documentEntity.stockItemOrderType){
-										$scope.documentEntity.stockItemOrderType = $scope.stockItemOrderTypes[0];
-									}
-								})
+						stockService
+								.getStockItemOrderTypes(
+										$scope.curUser.business.id)
+								.then(
+										function(stockItemOrderTypes) {
+											$scope.stockItemOrderTypes = stockItemOrderTypes;
+											if ($scope.stockItemOrderTypes.length > 0
+													&& !$scope.documentEntity.orderType) {
+												$scope.documentEntity.orderType = $scope.stockItemOrderTypes[0];
+											}
+										})
 					}
 
 					$scope.waitForServiceLoad = function() {
@@ -567,7 +571,7 @@ app
 							supplierService.addSupplier($scope.supplier).then(
 									function(supplierObj) {
 										supplierList.push(supplierObj);
-										documentEntity.supplier = supplierObj;										
+										documentEntity.supplier = supplierObj;
 									});
 							$scope.cancel();
 							// window.history.back();

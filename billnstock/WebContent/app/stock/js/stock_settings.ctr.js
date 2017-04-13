@@ -1,165 +1,314 @@
 app = angular.module("stockApp");
-app.controller("stockSettingsCtr", function($scope, $window, $mdToast,
-		$timeout, $mdSidenav, $mdUtil, $log, $state, $http, $stateParams,
-		$routeParams, $filter, $mdMedia, $mdDialog, $q, objectFactory,
-		appEndpointSF) {
+app
+		.controller(
+				"stockSettingsCtr",
+				function($scope, $window, $mdToast, $timeout, $mdSidenav,
+						$mdUtil, $log, $state, $http, $stateParams,
+						$routeParams, $filter, $mdMedia, $mdDialog, $q,
+						objectFactory, appEndpointSF) {
 
-	$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
+					$scope.curUser = appEndpointSF.getLocalUserService()
+							.getLoggedinUser();
 
-	$scope.settingsObj = {}
+					$scope.settingsObj = {}
 
-	$scope.stockItemUnit = {
-		unitName : ""
-	}
+					$scope.stockItemUnit = {
+						unitName : ""
+					}
 
-	$scope.stockItemTypeCategory = {
-		catName : ""
-	}
+					$scope.stockItemTypeCategory = {
+						catName : ""
+					}
 
-	$scope.stockItemOrderType = {
-		orderType : ""
-	}
+					$scope.stockItemOrderType = {
+						typeName : ""
+					}
 
-	$scope.stockItemUnitList = [];
+					$scope.stockItemUnitList = [];
 
-	$scope.stockItemCategories = [];
+					$scope.stockItemCategories = [];
 
-	$scope.stockItemOrderTypes = [];
+					$scope.stockItemOrderTypes = [];
 
-	$scope.addSettings = function() {
+					$scope.editMode = false;
 
-		var StockService = appEndpointSF.getStockService();
-		$scope.settingsObj.business = $scope.curUser.business;
-		$scope.settingsObj.modifiedBy = $scope.curUser.email_id;
+					$scope.addSettings = function() {
 
-		StockService.addStockSettings($scope.settingsObj).then(
-				function(savedRecoed) {
-					$scope.settingsObj = savedRecoed;
-					$scope.showUpdateToast();
-				});
-	}
+						var StockService = appEndpointSF.getStockService();
+						$scope.settingsObj.business = $scope.curUser.business;
+						$scope.settingsObj.modifiedBy = $scope.curUser.email_id;
 
-	$scope.getStockSettingsByBiz = function() {
+						StockService.addStockSettings($scope.settingsObj).then(
+								function(savedRecoed) {
+									$scope.settingsObj = savedRecoed;
+									$scope.showUpdateToast();
+								});
+					}
 
-		var invoiceService = appEndpointSF.getStockService();
+					$scope.getStockSettingsByBiz = function() {
 
-		invoiceService.getStockSettingsByBiz($scope.curUser.business.id).then(
-				function(settingsList) {
+						var invoiceService = appEndpointSF.getStockService();
 
-					$scope.settingsObj = settingsList;
-					$log.debug("Inside Ctr $scope.settingsObj:"
-							+ $scope.settingsObj);
-					return $scope.settingsObj;
-				});
-	}
+						invoiceService.getStockSettingsByBiz(
+								$scope.curUser.business.id).then(
+								function(settingsList) {
 
-	$scope.addStockItemUnit = function() {
+									$scope.settingsObj = settingsList;
+									$log.debug("Inside Ctr $scope.settingsObj:"
+											+ $scope.settingsObj);
+									return $scope.settingsObj;
+								});
+					}
 
-		$scope.stockItemUnit.business = $scope.curUser.business;
-		$scope.stockItemUnit.modifiedBy = $scope.curUser.email_id;
-		var stockService = appEndpointSF.getStockService();
+					$scope.addStockItemUnit = function() {
 
-		stockService.addStockItemUnit($scope.stockItemUnit).then(
-				function() {
-					$scope.showUpdateToast();
-					$scope.stockItemUnit = {};
-					stockService.getStockItemUnits($scope.curUser.business.id)
-							.then(function(list) {
-								$scope.stockUnitList = list;
-							})
-				})
-	}
+						$scope.stockItemUnit.business = $scope.curUser.business;
+						$scope.stockItemUnit.modifiedBy = $scope.curUser.email_id;
+						var stockService = appEndpointSF.getStockService();
 
-	$scope.editStockUnit = function(stockItemUnit) {
-		$scope.stockItemUnit = stockItemUnit;
-	}
+						stockService.addStockItemUnit($scope.stockItemUnit)
+								.then(function() {
+									$scope.stockItemUnit = {};
+									$scope.getStockItemUnitsList();
+								})
+					}
 
-	$scope.addStockItemTypeCategory = function() {
+					$scope.editStockItemUnit = function(ev, stockItemUnit) {
+						var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))
+								&& $scope.customFullscreen;
+						$mdDialog
+								.show(
+										{
+											controller : editStockItemUnitDialogCtr,
+											templateUrl : '/app/stock/stock_item_unit_edit_dialog.html',
+											parent : angular
+													.element(document.body),
+											targetEvent : ev,
+											clickOutsideToClose : true,
+											fullscreen : useFullScreen,
+											locals : {
+												curBusi : $scope.curUser.business,
+												curUser : $scope.curUser,
+												curStockItemUnit : stockItemUnit,
+											}
+										})
+								.then(
+										function(answer) {
+											$scope.status = 'You said the information was "'
+													+ answer + '".';
+										},
+										function() {
+											$scope.status = 'You cancelled the dialog.';
+										});
 
-		$scope.stockItemTypeCategory.business = $scope.curUser.business;
-		$scope.stockItemTypeCategory.modifiedBy = $scope.curUser.email_id;
+					};
 
-		var stockService = appEndpointSF.getStockService();
+					function editStockItemUnitDialogCtr($scope, $mdDialog,
+							curBusi, curUser, curStockItemUnit) {
 
-		stockService.addStockItemTypeCategory($scope.stockItemTypeCategory)
-				.then(
-						function() {
-							$scope.showUpdateToast();
-							$scope.stockItemTypeCategory = {};
-							stockService.getStockItemTypeCategories(
-									$scope.curUser.business.id).then(
-									function(list) {
-										$scope.stockItemCategories = list;
+						$scope.stockItemUnit = curStockItemUnit;
+						$scope.stockItemUnit.modifiedBy = curUser.email_id;
+
+						$scope.addStockItemUnit = function() {
+
+							var stockService = appEndpointSF.getStockService();
+
+							stockService.addStockItemUnit($scope.stockItemUnit)
+									.then(function() {
 									})
+
+							$scope.cancel();
+						}
+
+						$scope.cancel = function() {
+							$mdDialog.cancel();
+						};
+					}
+
+					$scope.getStockItemUnitsList = function() {
+
+						var stockService = appEndpointSF.getStockService();
+
+						stockService
+								.getStockItemUnits($scope.curUser.business.id)
+								.then(
+										function(stockItemUnitList) {
+											$scope.stockItemUnitList = stockItemUnitList;
+										})
+					}
+
+					$scope.addStockItemTypeCategory = function() {
+
+						$scope.stockItemTypeCategory.business = $scope.curUser.business;
+						$scope.stockItemTypeCategory.modifiedBy = $scope.curUser.email_id;
+
+						var stockService = appEndpointSF.getStockService();
+
+						stockService.addStockItemTypeCategory(
+								$scope.stockItemTypeCategory).then(function() {
+							$scope.stockItemTypeCategory = {};
+							$scope.getStockItemCategoryTypeList();
 						})
-	}
+					}
 
-	$scope.editStockItemCategory = function(stockItemTypeCategory) {
-		$scope.stockItemTypeCategory = stockItemTypeCategory;
-	}
+					$scope.editStockItemCategory = function(ev,
+							stockItemTypeCategory) {
+						var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))
+								&& $scope.customFullscreen;
+						$mdDialog
+								.show(
+										{
+											controller : editStockItemTypeCategoryDialogCtr,
+											templateUrl : '/app/stock/stock_item_type_category_edit_dialog.html',
+											parent : angular
+													.element(document.body),
+											targetEvent : ev,
+											clickOutsideToClose : true,
+											fullscreen : useFullScreen,
+											locals : {
+												curBusi : $scope.curUser.business,
+												curUser : $scope.curUser,
+												curStockItemTypeCategory : stockItemTypeCategory,
+											}
+										})
+								.then(
+										function(answer) {
+											$scope.status = 'You said the information was "'
+													+ answer + '".';
+										},
+										function() {
+											$scope.status = 'You cancelled the dialog.';
+										});
 
-	$scope.addStockItemOrderType = function() {
+					};
 
-		$scope.stockItemOrderType.business = $scope.curUser.business;
-		$scope.stockItemOrderType.modifiedBy = $scope.curUser.email_id;
-		var stockService = appEndpointSF.getStockService();
+					function editStockItemTypeCategoryDialogCtr($scope,
+							$mdDialog, curBusi, curUser,
+							curStockItemTypeCategory) {
 
-		stockService.addStockItemOrderType($scope.stockItemOrderType).then(
-				function() {
-					$scope.showUpdateToast();
-					$scope.stockItemOrderType = {};
-					stockService.getStockItemOrderTypes(
-							$scope.curUser.business.id).then(function(list) {
-						$scope.stockItemOrderTypes = list;
-					})
-				})
-	}
+						$scope.stockItemTypeCategory = curStockItemTypeCategory;
+						$scope.stockItemTypeCategory.modifiedBy = curUser.email_id;
 
-	$scope.editStockItemOrderType = function(stockItemOrderType) {
-		$scope.stockItemOrderType = stockItemOrderType;
-	}
+						$scope.addStockItemTypeCategory = function() {
 
-	$scope.getStockItemUnitsList = function() {
+							var stockService = appEndpointSF.getStockService();
 
-		var stockService = appEndpointSF.getStockService();
+							stockService.addStockItemUnit(
+									$scope.stockItemTypeCategory).then(
+									function() {
+									})
 
-		stockService.getStockItemUnits($scope.curUser.business.id).then(
-				function(stockItemUnitList) {
-					$scope.stockItemUnitList = stockItemUnitList;
-				})
-	}
+							$scope.cancel();
+						}
 
-	$scope.getStockItemCategoryTypeList = function() {
+						$scope.cancel = function() {
+							$mdDialog.cancel();
+						};
+					}
 
-		var stockService = appEndpointSF.getStockService();
+					$scope.getStockItemCategoryTypeList = function() {
 
-		stockService.getStockItemTypeCategories($scope.curUser.business.id)
-				.then(function(stockItemCategories) {
-					$scope.stockItemCategories = stockItemCategories;
-				})
-	}
+						var stockService = appEndpointSF.getStockService();
 
-	$scope.getStockItemOrderTypeList = function() {
+						stockService
+								.getStockItemTypeCategories(
+										$scope.curUser.business.id)
+								.then(
+										function(stockItemCategories) {
+											$scope.stockItemCategories = stockItemCategories;
+										})
+					}
 
-		var stockService = appEndpointSF.getStockService();
+					$scope.addStockItemOrderType = function() {
 
-		stockService.getStockItemOrderTypes($scope.curUser.business.id).then(
-				function(stockItemOrderTypes) {
-					$scope.stockItemOrderTypes = stockItemOrderTypes;
-				})
-	}
+						$scope.stockItemOrderType.business = $scope.curUser.business;
+						$scope.stockItemOrderType.modifiedBy = $scope.curUser.email_id;
+						var stockService = appEndpointSF.getStockService();
 
-	$scope.waitForServiceLoad = function() {
-		if (appEndpointSF.is_service_ready) {
-			$scope.getStockSettingsByBiz();
-			$scope.getStockItemUnitsList();
-			$scope.getStockItemCategoryTypeList();
-			$scope.getStockItemOrderTypeList();
-		} else {
-			$log.debug("Services Not Loaded, watiting...");
-			$timeout($scope.waitForServiceLoad, 1000);
-		}
-	}
-	$scope.waitForServiceLoad();
+						stockService.addStockItemOrderType(
+								$scope.stockItemOrderType).then(function() {
+							$scope.stockItemOrderType = {};
+							$scope.getStockItemOrderTypeList();
+						})
+					}
 
-});
+					$scope.editStockItemOrderType = function(ev,
+							stockItemOrderType) {
+						var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))
+								&& $scope.customFullscreen;
+						$mdDialog
+								.show(
+										{
+											controller : editStockItemOrderTypeDialogCtr,
+											templateUrl : '/app/stock/stock_item_order_type_edit_dialog.html',
+											parent : angular
+													.element(document.body),
+											targetEvent : ev,
+											clickOutsideToClose : true,
+											fullscreen : useFullScreen,
+											locals : {
+												curBusi : $scope.curUser.business,
+												curUser : $scope.curUser,
+												curStockItemOrderType : stockItemOrderType,
+											}
+										})
+								.then(
+										function(answer) {
+											$scope.status = 'You said the information was "'
+													+ answer + '".';
+										},
+										function() {
+											$scope.status = 'You cancelled the dialog.';
+										});
+
+					};
+
+					function editStockItemOrderTypeDialogCtr($scope, $mdDialog,
+							curBusi, curUser, curStockItemOrderType) {
+
+						$scope.stockItemOrderType = curStockItemOrderType;
+						$scope.stockItemOrderType.modifiedBy = curUser.email_id;
+
+						$scope.addStockItemOrderType = function() {
+
+							var stockService = appEndpointSF.getStockService();
+
+							stockService.addStockItemOrderType(
+									$scope.stockItemOrderType).then(function() {
+							})
+
+							$scope.cancel();
+						}
+
+						$scope.cancel = function() {
+							$mdDialog.cancel();
+						};
+					}
+
+					$scope.getStockItemOrderTypeList = function() {
+
+						var stockService = appEndpointSF.getStockService();
+
+						stockService
+								.getStockItemOrderTypes(
+										$scope.curUser.business.id)
+								.then(
+										function(stockItemOrderTypes) {
+											$scope.stockItemOrderTypes = stockItemOrderTypes;
+										})
+					}
+
+					$scope.waitForServiceLoad = function() {
+						if (appEndpointSF.is_service_ready) {
+							$scope.getStockSettingsByBiz();
+							$scope.getStockItemUnitsList();
+							$scope.getStockItemCategoryTypeList();
+							$scope.getStockItemOrderTypeList();
+						} else {
+							$log.debug("Services Not Loaded, waiting...");
+							$timeout($scope.waitForServiceLoad, 1000);
+						}
+					}
+					$scope.waitForServiceLoad();
+
+				});

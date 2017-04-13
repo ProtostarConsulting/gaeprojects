@@ -72,7 +72,7 @@
 			<tr ng-repeat="unit in stockItemUnitList">
 				<td>{{unit.unitName}}</td>
 				<td><md-button class="md-icon-button"
-						ng-click="editStockUnit(unit)"> <ng-md-icon
+						ng-click="editStockItemUnit($event,unit)"> <ng-md-icon
 						icon="edit" style="fill: md-default" size="20"> <md-tooltip>
 					Edit</md-tooltip></ng-md-icon></md-button></td>
 			</tr>
@@ -105,7 +105,7 @@
 			<tr ng-repeat="cat in stockItemCategories">
 				<td>{{cat.catName}}</td>
 				<td><md-button class="md-icon-button"
-						ng-click="editStockItemCategory(cat)"> <ng-md-icon
+						ng-click="editStockItemCategory($event,cat)"> <ng-md-icon
 						icon="edit" style="fill: md-default" size="20"> <md-tooltip>
 					Edit</md-tooltip></ng-md-icon></md-button></td>
 			</tr>
@@ -120,7 +120,7 @@
 </div>
 <div id="stockItemOrderType">
 	<md-input-container> <label>Enter Order
-		Type </label> <input type="text" ng-model="stockItemOrderType.orderType">
+		Type </label> <input type="text" ng-model="stockItemOrderType.typeName">
 	</md-input-container>
 	<md-button class="md-icon-button" ng-click="addStockItemOrderType()">
 	<ng-md-icon icon="add_circle" style="fill: md-default" size="20">
@@ -135,10 +135,10 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="order in stockItemOrderTypes">
-				<td>{{order.orderType}}</td>
+			<tr ng-repeat="orderType in stockItemOrderTypes">
+				<td>{{orderType.typeName}}</td>
 				<td><md-button class="md-icon-button"
-						ng-click="editStockItemOrderType(order)"> <ng-md-icon
+						ng-click="editStockItemOrderType($event,orderType)"> <ng-md-icon
 						icon="edit" style="fill: md-default" size="20"> <md-tooltip>
 					Edit</md-tooltip></ng-md-icon></md-button></td>
 			</tr>

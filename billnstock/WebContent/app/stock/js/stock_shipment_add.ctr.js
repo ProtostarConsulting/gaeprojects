@@ -430,8 +430,8 @@ app
 						stockService.getStockItemOrderTypes($scope.curUser.business.id)
 								.then(function(stockItemOrderTypes) {
 									$scope.stockItemOrderTypes = stockItemOrderTypes;
-									if($scope.stockItemOrderTypes.length>0 && !$scope.documentEntity.stockItemOrderType){
-										$scope.documentEntity.stockItemOrderType = $scope.stockItemOrderTypes[0];
+									if($scope.stockItemOrderTypes.length>0 && !$scope.documentEntity.orderType){
+										$scope.documentEntity.orderType = $scope.stockItemOrderTypes[0];
 									}
 								})
 					}
