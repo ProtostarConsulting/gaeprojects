@@ -2988,6 +2988,20 @@ function googleEndpointSF($q) {
 	}
 
 	/* =============================================================================================================================== */
+	var ProductionService = {};
 
+	serviceFactory.getProductionService= function() {
+		return ProductionService;
+	}
+
+	ProductionService.addProduction = function(production) {
+		var deferred = $q.defer();
+		gapi.client.productionService.addProduction(production).execute(
+				function(resp) {
+					deferred.resolve(resp);
+				});
+		return deferred.promise;
+	}
+	//====================================================
 	return serviceFactory;
 }

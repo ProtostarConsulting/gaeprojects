@@ -212,6 +212,16 @@ function appEndpointSFFn($log, localDBServiceFactory, googleEndpointSF,
 	};
 	// ----------------------------------------------------
 
+	
+	
+	endpointFactory.getProductionService = function() {
+		if (isTestMode)
+			return localDBServiceFactory.getProductionService();
+		else
+			return googleEndpointSF.getProductionService();
+	};
+	//--------------------------------------
+	
 	endpointFactory.loadAppGoogleServices = function(deferred) {
 		$log.debug("###Inside Google appEndpointSF.loadAppGoogleServices###");
 
@@ -313,6 +323,10 @@ function appEndpointSFFn($log, localDBServiceFactory, googleEndpointSF,
 
 		gapi.client.load('taskService', 'v0.1', function() {
 			$log.debug("taskService Loaded......");
+		}, apiRoot);
+		
+		gapi.client.load('productionService', 'v0.1', function() {
+			$log.debug("productionService Loaded......");
 		}, apiRoot);
 
 		gapi.client.load('proadminService', 'v0.1', function() {

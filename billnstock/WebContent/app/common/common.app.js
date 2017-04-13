@@ -603,6 +603,15 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		controller : 'dayBook',
 		
 	})
+	
+	.state('accounting.addProduction', {
+		url : "/addProduction",
+		templateUrl : '/app/accounting/addProduction.html',
+		controller : 'addProduction',
+		
+	})
+	
+	
 	 	.state('accounting.voucherPayment', {
 		url : "/PaymentVoucher",
 		templateUrl : '/app/accounting/voucherPayment.html',
