@@ -7,13 +7,14 @@ import com.protostar.billnstock.entity.BaseEntity;
 @Cache
 @Entity
 public class StockItemOrderType extends BaseEntity {
-	private String orderType;
+	private String typeName;
 
-	public String getOrderType() {
-		return orderType;
+	public String getTypeName() {
+		return typeName;
 	}
 
-	public void setOrderType(String orderType) {
-		this.orderType = orderType;
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
 	}
+
 }

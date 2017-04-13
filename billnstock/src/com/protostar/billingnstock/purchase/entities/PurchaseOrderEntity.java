@@ -33,7 +33,7 @@ public class PurchaseOrderEntity extends InvoiceEntity {
 	@Index
 	private Ref<BudgetEntity> budget;
 	@Index
-	private Ref<StockItemOrderType> stockItemOrderType;
+	private Ref<StockItemOrderType> orderType;
 
 	private LineItemCategory budgetLineItemCategory;
 	private LineItemEntity budgetLineItem;
@@ -101,13 +101,13 @@ public class PurchaseOrderEntity extends InvoiceEntity {
 			this.budget = Ref.create(budget);
 	}
 
-	public StockItemOrderType getStockItemOrderType() {
-		return stockItemOrderType == null ? null : stockItemOrderType.get();
+	public StockItemOrderType getOrderType() {
+		return orderType == null ? null : orderType.get();
 	}
 
-	public void setStockItemOrderType(StockItemOrderType stockItemOrderType) {
-		if (stockItemOrderType != null) {
-			this.stockItemOrderType = Ref.create(stockItemOrderType);
+	public void setOrderType(StockItemOrderType orderType) {
+		if (orderType != null) {
+			this.orderType = Ref.create(orderType);
 		}
 	}
 
