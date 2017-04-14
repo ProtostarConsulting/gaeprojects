@@ -33,6 +33,13 @@ import com.protostar.billingnstock.hr.entities.HRSettingsEntity;
 import com.protostar.billingnstock.hr.services.HrService;
 import com.protostar.billingnstock.proadmin.entities.BusinessPlanType;
 import com.protostar.billingnstock.proadmin.services.ProtostarAdminService;
+import com.protostar.billingnstock.purchase.entities.SupplierEntity;
+import com.protostar.billingnstock.stock.entities.StockItemProductTypeEntity;
+import com.protostar.billingnstock.stock.entities.StockItemTypeCategory;
+import com.protostar.billingnstock.stock.entities.StockItemUnit;
+import com.protostar.billingnstock.stock.services.StockManagementService;
+import com.protostar.billingnstock.tax.entities.TaxEntity;
+import com.protostar.billingnstock.tax.services.TaxService;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.user.entities.BusinessSettingsEntity;
 import com.protostar.billingnstock.user.entities.EmpDepartment;
@@ -213,7 +220,8 @@ public class UserService {
 		CurrentUserSession currentUserSession = WebUtil.getCurrentUser();
 		logger.info("Logging out... : " + currentUserSession);
 		if (currentUserSession != null) {
-			logger.info("Logging out... currentUserSession.getUser().getEmail_id(): " + currentUserSession.getUser().getEmail_id());
+			logger.info("Logging out... currentUserSession.getUser().getEmail_id(): "
+					+ currentUserSession.getUser().getEmail_id());
 			UserLoginService userLoginService = new UserLoginService();
 			userLoginService.recordUserLogout(EntityUtil.getUserWebSafeKey(currentUserSession));
 		}
@@ -236,7 +244,9 @@ public class UserService {
 				Date date = new Date();
 				String DATE_FORMAT = "dd/MM/yyyy";
 				SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+				boolean newBusiness = false;
 				if (business.getId() == null) {
+					newBusiness = true;
 					// Seth Basic Auths
 					if (business.getAuthorizations() == null || business.getAuthorizations().isEmpty())
 						business.setAuthorizations(Constants.NEW_BIZ_DEFAULT_AUTHS);
@@ -245,12 +255,88 @@ public class UserService {
 					ProtostarAdminService protostarAdminService = new ProtostarAdminService();
 					BusinessPlanType freeBusinessPlan = protostarAdminService.getFreeBusinessPlan();
 					business.setBusinessPlan(freeBusinessPlan);
-
 				} else {
 					business.setModifiedDate(new Date());
 				}
 
 				ofy().save().entity(business).now();
+
+				if (newBusiness) {
+					
+					//Add default Taxes
+					TaxService taxService = new TaxService();
+
+					TaxEntity serviceTax = new TaxEntity();
+					serviceTax.setBusiness(business);
+					serviceTax.setTaxCodeName("Service Tax");
+					serviceTax.setTaxPercenatge(15.00f);
+					taxService.addTax(serviceTax);
+
+					TaxEntity gst18PerTax = new TaxEntity();
+					gst18PerTax.setBusiness(business);
+					gst18PerTax.setTaxCodeName("GST-18.00%");
+					gst18PerTax.setTaxPercenatge(18.00f);
+					taxService.addTax(gst18PerTax);
+
+					StockManagementService stockManagementService = new StockManagementService();
+
+					//Add default Suppliers
+					SupplierEntity supplierEntity = new SupplierEntity();
+					supplierEntity.setBusiness(business);
+					supplierEntity.setSupplierName("Protostar Consulting Services");
+					supplierEntity.setContactFName("Ganesh");
+					supplierEntity.setContactLName("Lawande");
+					supplierEntity.getAddress().setLine1("E101, Manimangal Apt, Kasarwadi");
+					supplierEntity.getAddress().setCity("Pune");
+					supplierEntity.getAddress().setPin("311034");
+					supplierEntity.setPhone1("9922923988");
+					supplierEntity.setPhone1("9922923988");
+					supplierEntity.setPhone1("9922923988");
+					supplierEntity.setEmail("info@protostar.co.in");					
+					stockManagementService.addSupplier(supplierEntity);
+					
+					//Add default Stock Units of Measure
+					StockItemUnit stockItemUnitNos = new StockItemUnit();
+					stockItemUnitNos.setBusiness(business);
+					stockItemUnitNos.setUnitName("nos");
+					stockItemUnitNos.setNote("Used where items are count by numbers.");
+					stockManagementService.addStockItemUnit(stockItemUnitNos);
+					
+					StockItemUnit stockItemUnitLiters = new StockItemUnit();
+					stockItemUnitLiters.setBusiness(business);
+					stockItemUnitLiters.setUnitName("liters");
+					stockItemUnitLiters.setNote("Used where liquid items are count by liters.");					
+					stockManagementService.addStockItemUnit(stockItemUnitLiters);
+					
+					//Add default Product Types
+					StockItemProductTypeEntity productTypeEntityRM = new StockItemProductTypeEntity();
+					productTypeEntityRM.setBusiness(business);
+					productTypeEntityRM.setType("Raw Material");
+					stockManagementService.addStockItemProductType(productTypeEntityRM);
+					
+					StockItemProductTypeEntity productTypeEntityFP = new StockItemProductTypeEntity();
+					productTypeEntityFP.setBusiness(business);
+					productTypeEntityFP.setType("Finished Product");
+					stockManagementService.addStockItemProductType(productTypeEntityFP);
+					
+					StockItemProductTypeEntity productTypeEntitySP = new StockItemProductTypeEntity();
+					productTypeEntitySP.setBusiness(business);
+					productTypeEntitySP.setType("Spare Part");
+					stockManagementService.addStockItemProductType(productTypeEntitySP);
+					
+					//Add default Stock Item Categories
+					StockItemTypeCategory stockItemTypeCategoryEG = new StockItemTypeCategory();
+					stockItemTypeCategoryEG.setBusiness(business);
+					stockItemTypeCategoryEG.setCatName("Electronic Goods");;
+					stockManagementService.addStockItemTypeCategory(stockItemTypeCategoryEG);
+					
+					StockItemTypeCategory stockItemTypeCategoryFG = new StockItemTypeCategory();
+					stockItemTypeCategoryFG.setBusiness(business);
+					stockItemTypeCategoryFG.setCatName("Furniture");;
+					stockManagementService.addStockItemTypeCategory(stockItemTypeCategoryFG);
+					
+					
+				}
 
 				return business;
 			}

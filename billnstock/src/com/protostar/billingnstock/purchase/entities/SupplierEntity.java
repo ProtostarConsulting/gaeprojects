@@ -15,7 +15,7 @@ public class SupplierEntity extends BaseEntity{
 	private String email;
 	private String phone1 ;
 	private String mobile;
-	private Address address;
+	private Address address = new Address();
 	
 	public String getSupplierName() {
 		return supplierName;

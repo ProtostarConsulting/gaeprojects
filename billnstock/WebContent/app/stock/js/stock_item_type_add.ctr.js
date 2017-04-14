@@ -6,6 +6,27 @@ angular
 						$mdUtil, $log, $http, $stateParams, $mdMedia,
 						$mdDialog, objectFactory, appEndpointSF) {
 
+					$scope.toggle = function(item, list) {
+						var idList = [];
+						angular.forEach(list, function(item) {
+							idList.push(item.id);
+						});
+						var idx = idList.indexOf(item.id);
+						if (idx > -1) {
+							list.splice(idx, 1);
+						} else {
+							list.push(item);
+						}
+					};
+
+					$scope.exists = function(item, list) {
+						var idList = [];
+						angular.forEach(list, function(item) {
+							idList.push(item.id);
+						});
+						return idList.indexOf(item.id) > -1;
+					};
+
 					$scope.selectedStockItem = $stateParams.selectedStockItem;
 
 					$scope.curUser = appEndpointSF.getLocalUserService()
@@ -15,12 +36,18 @@ angular
 						return {
 							itemName : "",
 							tags : "",
+							productType : null,
+							brand : null,
+							categoryList : []
 						};
 					}
 					$scope.stock = getEmptyStockItemType();
 
 					$scope.stock = $scope.selectedStockItem ? $scope.selectedStockItem
 							: $scope.stock;
+
+					if (!$scope.stock.categoryList)
+						$scope.stock.categoryList = [];
 
 					$scope.stockUnitList = [];
 

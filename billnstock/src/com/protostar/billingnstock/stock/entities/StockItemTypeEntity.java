@@ -1,5 +1,8 @@
 package com.protostar.billingnstock.stock.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
@@ -13,7 +16,6 @@ import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 @Cache
 @Entity
 public class StockItemTypeEntity extends BaseEntity {
-
 	@Index
 	private String itemName;
 
@@ -22,8 +24,15 @@ public class StockItemTypeEntity extends BaseEntity {
 	// comma separated list of tags
 
 	@Index
-	private Ref<StockItemTypeCategory> cat;
+	private Ref<StockItemBrand> brand;
+	@Index
+	private Ref<StockItemProductTypeEntity> productType;
 
+	// cat is Obsolete remove it.
+	@Index
+	private Ref<StockItemTypeCategory> cat;
+	@Index
+	private List<Ref<StockItemTypeCategory>> categoryList;
 	@Index
 	private Ref<StockItemUnit> unitOfMeasure;
 
@@ -38,8 +47,7 @@ public class StockItemTypeEntity extends BaseEntity {
 		super.beforeSave();
 		if (getId() == null) {
 			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
-					EntityUtil.getBusinessRawKey(getBusiness()),
-					Constants.STOCKITEMTYPE_NO_COUNTER);
+					EntityUtil.getBusinessRawKey(getBusiness()), Constants.STOCKITEMTYPE_NO_COUNTER);
 			setItemNumber(sequenceGenService.getNextSequenceNumber());
 		}
 	}
@@ -83,9 +91,26 @@ public class StockItemTypeEntity extends BaseEntity {
 		return maintainStockBySerialNumber;
 	}
 
-	public void setMaintainStockBySerialNumber(
-			boolean maintainStockBySerialNumber) {
+	public void setMaintainStockBySerialNumber(boolean maintainStockBySerialNumber) {
 		this.maintainStockBySerialNumber = maintainStockBySerialNumber;
+	}
+
+	public StockItemBrand getBrand() {
+		return brand == null ? null : brand.get();
+	}
+
+	public void setBrand(StockItemBrand brand) {
+		if (brand != null)
+			this.brand = Ref.create(brand);
+	}
+
+	public StockItemProductTypeEntity getProductType() {
+		return productType == null ? null : productType.get();
+	}
+
+	public void setProductType(StockItemProductTypeEntity productType) {
+		if (productType != null)
+			this.productType = Ref.create(productType);
 	}
 
 	public StockItemTypeCategory getCat() {
@@ -97,4 +122,27 @@ public class StockItemTypeEntity extends BaseEntity {
 			this.cat = Ref.create(cat);
 	}
 
+	public List<StockItemTypeCategory> getCategoryList() {
+		if (categoryList == null || categoryList.isEmpty()) {
+			return null;
+		}
+
+		List<StockItemTypeCategory> tempList = new ArrayList<StockItemTypeCategory>(categoryList.size());
+		for (Ref<StockItemTypeCategory> catRef : categoryList) {
+			tempList.add(catRef.get());
+		}
+		return tempList;
+	}
+
+	public void setCategoryList(List<StockItemTypeCategory> categoryList) {
+		if (categoryList == null || categoryList.isEmpty()) {
+			this.categoryList = null;
+			return;
+		}
+
+		this.categoryList = new ArrayList<Ref<StockItemTypeCategory>>(categoryList.size());
+		for (StockItemTypeCategory cat : categoryList) {
+			this.categoryList.add(Ref.create(cat));
+		}
+	}
 }

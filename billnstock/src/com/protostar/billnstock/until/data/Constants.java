@@ -98,4 +98,7 @@ public class Constants {
 	public enum EmployeeStatus {
 		ACTIVE, SUSPENDED, RESIGNED, TERMINATED, CONTRACT, INTERN, DELETED
 	};
+	public enum QCParameterType {
+		NUMBER, NUMBERRANGE, YESNO, TEXT
+	};
 }
