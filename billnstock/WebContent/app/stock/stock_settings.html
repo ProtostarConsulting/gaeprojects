@@ -7,7 +7,7 @@
 </section>
 <form name="invoiceSettings" layout="column">
 	<div layout="row" layout-xs="column">
-		<md-checkbox flex-offset="15"
+		<md-checkbox flex-offset="15" flex="30"
 			ng-model="settingsObj.needModuleDocumentApproval"
 			ng-true-value="true" ng-false-value="false"
 			aria-label="needModuleDocumentApproval"> Need Module
@@ -27,7 +27,7 @@
 	</md-input-container>
 
 	<div layout="row" layout-xs="column">
-		<div flex-xs flex="20">
+		<div flex-xs flex="30">
 			<md-checkbox flex-offset="15"
 				ng-model="settingsObj.emailNotification" ng-true-value="true"
 				ng-false-value="false" aria-label="isGoogleUser">
@@ -40,7 +40,7 @@
 		</md-input-container>
 	</div>
 	<div layout="row" layout-xs="column">
-		<div flex-xs flex="20">
+		<div flex-xs flex="30">
 			<md-checkbox flex-offset="15" ng-model="settingsObj.linkPOToBudget"
 				ng-true-value="true" ng-false-value="false"
 				aria-label="isGoogleUser"> Link PO to Budget</md-checkbox>
@@ -48,29 +48,39 @@
 	</div>
 
 </form>
-<div flex-xs flex="20">
-	<md-checkbox flex-offset="15" md-indeterminate
-		aria-label="Checkbox Indeterminate" class="md-primary">
-	Stock Item Units </md-checkbox>
+<div flex-xs flex="30">
+	<md-checkbox flex-offset="15" ng-disabled="true"
+		aria-label="Checkbox Disabled" class="md-primary"> </md-checkbox>
+	Stock Item Units
+	<!--Heading is placed outside the check-box,if inside it appears as faded on the UI because the check-box is disabled.  -->
 </div>
 <div id="stockItemUnit">
-	<md-input-container> <label>Enter Unit
-		Name</label> <input type="text" ng-model="stockItemUnit.unitName"> </md-input-container>
-	<md-button class="md-icon-button" ng-click="addStockItemUnit()">
-	<ng-md-icon icon="add_circle" style="fill: md-default" size="20">
-	<md-tooltip> Add Stock Item Unit</md-tooltip></ng-md-icon> </md-button>
+	<div layout="row" layout-xs="column">
+		<md-input-container flex="30"> <label>Enter
+			Unit Name</label> <input type="text" ng-model="stockItemUnit.unitName"
+			ng-required="true"> </md-input-container>
+		<md-input-container flex> <label>Enter
+			Description </label> <input type="text" ng-model="stockItemUnit.note">
+		</md-input-container>
+		<md-input-container flex> <md-button
+			class="md-icon-button" ng-click="addStockItemUnit()"> <ng-md-icon
+			icon="add_circle" style="fill: md-default" size="20"> <md-tooltip>
+		Add Stock Item Unit</md-tooltip></ng-md-icon> </md-button></md-input-container>
+	</div>
 	<md-data-table-container>
-	<table style="width: 20%" md-data-table class="md-primary"
+	<table style="width: 80%" md-data-table class="md-primary"
 		md-progress="deferred">
 		<thead md-order="query.order" md-trigger="onorderchange">
 			<tr>
 				<th name="Unit Name"></th>
+				<th name="Description"></th>
 				<th name="Actions"></th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr ng-repeat="unit in stockItemUnitList">
 				<td>{{unit.unitName}}</td>
+				<td>{{unit.note}}</td>
 				<td><md-button class="md-icon-button"
 						ng-click="editStockItemUnit($event,unit)"> <ng-md-icon
 						icon="edit" style="fill: md-default" size="20"> <md-tooltip>
@@ -80,30 +90,42 @@
 	</table>
 	</md-data-table-container>
 </div>
+<p></p>
+<!-- paragraph added to keep some space between units and category section -->
 <div flex-xs flex="30">
-	<md-checkbox flex-offset="15" md-indeterminate
+	<md-checkbox flex-offset="15" ng-disabled="true"
 		aria-label="Checkbox Indeterminate" class="md-primary">
-	Stock Item Categories </md-checkbox>
+	</md-checkbox>
+	Stock Item Categories
 </div>
 <div id="stockItemTypeCategory">
-	<md-input-container> <label>Enter Category
-		Type</label> <input type="text" ng-model="stockItemTypeCategory.catName">
-	</md-input-container>
-	<md-button class="md-icon-button" ng-click="addStockItemTypeCategory()">
-	<ng-md-icon icon="add_circle" style="fill: md-default" size="20">
-	<md-tooltip> Add Stock Item Category</md-tooltip></ng-md-icon> </md-button>
+	<div layout="row" layout-xs="column">
+		<md-input-container flex="30"> <label>Enter
+			Category Type</label> <input type="text"
+			ng-model="stockItemTypeCategory.catName" ng-required="true">
+		</md-input-container>
+		<md-input-container flex> <label>Enter
+			Description </label> <input type="text" ng-model="stockItemTypeCategory.note">
+		</md-input-container>
+		<md-input-container flex> <md-button
+			class="md-icon-button" ng-click="addStockItemTypeCategory()">
+		<ng-md-icon icon="add_circle" style="fill: md-default" size="20">
+		<md-tooltip> Add Stock Item Category</md-tooltip></ng-md-icon> </md-button></md-input-container>
+	</div>
 	<md-data-table-container>
-	<table style="width: 20%" md-data-table class="md-primary"
+	<table style="width: 80%" md-data-table class="md-primary"
 		md-progress="deferred">
 		<thead md-order="query.order" md-trigger="onorderchange">
 			<tr>
 				<th name="Category Type"></th>
+				<th name="Description"></th>
 				<th name="Actions"></th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr ng-repeat="cat in stockItemCategories">
 				<td>{{cat.catName}}</td>
+				<td>{{cat.note}}</td>
 				<td><md-button class="md-icon-button"
 						ng-click="editStockItemCategory($event,cat)"> <ng-md-icon
 						icon="edit" style="fill: md-default" size="20"> <md-tooltip>
@@ -113,30 +135,40 @@
 	</table>
 	</md-data-table-container>
 </div>
+<p></p>
 <div flex-xs flex="30">
-	<md-checkbox flex-offset="15" md-indeterminate
+	<md-checkbox flex-offset="15" ng-disabled="true"
 		aria-label="Checkbox Indeterminate" class="md-primary">
-	Stock Item Order Types </md-checkbox>
+	</md-checkbox>
+	Stock Item Order Types
 </div>
 <div id="stockItemOrderType">
-	<md-input-container> <label>Enter Order
-		Type </label> <input type="text" ng-model="stockItemOrderType.typeName">
-	</md-input-container>
-	<md-button class="md-icon-button" ng-click="addStockItemOrderType()">
-	<ng-md-icon icon="add_circle" style="fill: md-default" size="20">
-	<md-tooltip> Add Stock Item Order Type</md-tooltip></ng-md-icon> </md-button>
+	<div layout="row" layout-xs="column">
+		<md-input-container flex="30"> <label>Enter
+			Order Type </label> <input type="text" ng-model="stockItemOrderType.typeName"
+			ng-required="true"> </md-input-container>
+		<md-input-container flex> <label>Enter
+			Description </label> <input type="text" ng-model="stockItemOrderType.note">
+		</md-input-container>
+		<md-input-container flex> <md-button
+			class="md-icon-button" ng-click="addStockItemOrderType()">
+		<ng-md-icon icon="add_circle" style="fill: md-default" size="20">
+		<md-tooltip> Add Stock Item Order Type</md-tooltip></ng-md-icon> </md-button></md-input-container>
+	</div>
 	<md-data-table-container>
-	<table style="width: 20%" md-data-table class="md-primary"
+	<table style="width: 80%" md-data-table class="md-primary"
 		md-progress="deferred">
 		<thead md-order="query.order" md-trigger="onorderchange">
 			<tr>
 				<th name="Order Type"></th>
+				<th name="Description"></th>
 				<th name="Actions"></th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr ng-repeat="orderType in stockItemOrderTypes">
 				<td>{{orderType.typeName}}</td>
+				<td>{{orderType.note}}</td>
 				<td><md-button class="md-icon-button"
 						ng-click="editStockItemOrderType($event,orderType)"> <ng-md-icon
 						icon="edit" style="fill: md-default" size="20"> <md-tooltip>

@@ -1,6 +1,6 @@
-<md-dialog aria-label="Add New" style="min-width:400px;"> <md-toolbar>
+<md-dialog aria-label="Add New" style="min-width:500px;"> <md-toolbar>
 <div class="md-toolbar-tools">
-	<h2>Stock Item Unit</h2>
+	<h2>Edit Stock Item Unit</h2>
 	<span flex></span>
 	<md-button class="md-icon-button" ng-click="cancel()"> <md-icon
 		md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
@@ -9,20 +9,16 @@
 </md-toolbar> <md-dialog-content
 	style="min-width:200px; max-width:800px; max-height:600px;">
 <md-content layout-padding>
-<section layout="row" layout-xs="column">
-	<md-subheader class="md-primary">
-	<h4>Edit Stock Item Unit</h4>
-	</md-subheader>
-	<span flex></span>
-</section>
 <form name="stockItemUnitForm">
 	<div layout="row" layout-xs="column">
 		<md-input-container flex> <label>Unit
 			Name </label> <input type="text" ng-model="stockItemUnit.unitName"
 			ng-required="true"> </md-input-container>
+		<md-input-container flex> <label>Description</label>
+		<input type="text" ng-model="stockItemUnit.note"> </md-input-container>
 	</div>
 </form>
 </md-content> </md-dialog-content> <md-dialog-actions layout="row"> <md-button
 	ng-disabled="stockItemUnitForm.$invalid" class="md-raised md-primary"
-	ng-click="addStockItemUnit()">Save</md-button> <md-button class="md-raised"
-	ng-click="cancel()">Cancel</md-button> </md-dialog-actions> </md-dialog>
+	ng-click="addStockItemUnit()">Save</md-button> <md-button
+	class="md-raised" ng-click="cancel()">Cancel</md-button> </md-dialog-actions> </md-dialog>

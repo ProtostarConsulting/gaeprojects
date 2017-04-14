@@ -106,16 +106,20 @@ app
 					function editStockItemUnitDialogCtr($scope, $mdDialog,
 							curBusi, curUser, curStockItemUnit) {
 
-						$scope.stockItemUnit = curStockItemUnit;
+						$scope.stockItemUnit = angular.copy(curStockItemUnit);
 						$scope.stockItemUnit.modifiedBy = curUser.email_id;
 
 						$scope.addStockItemUnit = function() {
 
 							var stockService = appEndpointSF.getStockService();
 
-							stockService.addStockItemUnit($scope.stockItemUnit)
-									.then(function() {
-									})
+							stockService
+									.addStockItemUnit($scope.stockItemUnit)
+									.then(
+											function() {
+												curStockItemUnit.unitName = $scope.stockItemUnit.unitName;
+												curStockItemUnit.note = $scope.stockItemUnit.note;
+											})
 
 							$scope.cancel();
 						}
@@ -186,17 +190,22 @@ app
 							$mdDialog, curBusi, curUser,
 							curStockItemTypeCategory) {
 
-						$scope.stockItemTypeCategory = curStockItemTypeCategory;
+						$scope.stockItemTypeCategory = angular
+								.copy(curStockItemTypeCategory);
 						$scope.stockItemTypeCategory.modifiedBy = curUser.email_id;
 
 						$scope.addStockItemTypeCategory = function() {
 
 							var stockService = appEndpointSF.getStockService();
 
-							stockService.addStockItemTypeCategory(
-									$scope.stockItemTypeCategory).then(
-									function() {
-									})
+							stockService
+									.addStockItemTypeCategory(
+											$scope.stockItemTypeCategory)
+									.then(
+											function() {
+												curStockItemTypeCategory.catName = $scope.stockItemTypeCategory.catName;
+												curStockItemTypeCategory.note = $scope.stockItemTypeCategory.note;
+											})
 
 							$scope.cancel();
 						}
@@ -266,16 +275,22 @@ app
 					function editStockItemOrderTypeDialogCtr($scope, $mdDialog,
 							curBusi, curUser, curStockItemOrderType) {
 
-						$scope.stockItemOrderType = curStockItemOrderType;
+						$scope.stockItemOrderType = angular
+								.copy(curStockItemOrderType);
 						$scope.stockItemOrderType.modifiedBy = curUser.email_id;
 
 						$scope.addStockItemOrderType = function() {
 
 							var stockService = appEndpointSF.getStockService();
 
-							stockService.addStockItemOrderType(
-									$scope.stockItemOrderType).then(function() {
-							})
+							stockService
+									.addStockItemOrderType(
+											$scope.stockItemOrderType)
+									.then(
+											function() {
+												curStockItemOrderType.typeName = $scope.stockItemOrderType.typeName;
+												curStockItemOrderType.note = $scope.stockItemOrderType.note;
+											})
 
 							$scope.cancel();
 						}

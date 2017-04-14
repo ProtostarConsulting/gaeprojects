@@ -26,12 +26,13 @@
 				ng-required="false"> </md-input-container>
 		</div>
 		<section layout="row" layout-xs="column">
-			<md-input-container flex-gt-sm="30" flex> <label>Select
+			<md-input-container flex> <label>Select
 				Category</label> <md-select placeholder="Category" ng-model="stock.cat">
 			<md-option ng-repeat="cat in stockItemCategories" ng-value="cat"
 				ng-selected="stock.cat.id==cat.id">{{cat.catName}} </md-option> </md-select> </md-input-container>
-			<span flex='15'> </span>
-			<md-input-container flex> <md-checkbox
+			<span flex> </span>
+
+			<md-input-container flex="50"> <md-checkbox
 				ng-model="stock.maintainStockBySerialNumber"
 				aria-label="maintainStockBySerialNumber" ng-true-value="true"
 				ng-false-value="false"></md-checkbox> Maintain By Serial Number </md-input-container>
