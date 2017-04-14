@@ -193,7 +193,7 @@ app
 
 							var stockService = appEndpointSF.getStockService();
 
-							stockService.addStockItemUnit(
+							stockService.addStockItemTypeCategory(
 									$scope.stockItemTypeCategory).then(
 									function() {
 									})
