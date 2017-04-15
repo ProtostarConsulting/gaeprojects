@@ -26,25 +26,45 @@
 				ng-required="false"> </md-input-container>
 		</div>
 		<section layout="row" layout-xs="column">
-			<div flex>				
-					<h4>Select Category</h4>
-					<div layout="row" layout-wrap flex>
-						<div flex="50" ng-repeat="cat in stockItemCategories">
-							<md-checkbox ng-checked="exists(cat, stock.categoryList)"
-								ng-click="toggle(cat, stock.categoryList)"> {{ cat.catName }} </md-checkbox>
-						</div>
-					</div>				
+			<md-input-container flex> <label>Select
+				Brand</label> <md-select placeholder="Brand" ng-model="stock.brand">
+			<md-option ng-repeat="brand in stockItemBrands" ng-value="brand"
+				ng-selected="stock.brand.id == brand.id">{{brand.brandName}}
+			</md-option> </md-select> </md-input-container>
+
+			<span flex="20"></span>
+			<md-input-container flex> <label>Select
+				Product Type</label> <md-select placeholder="Product Type"
+				ng-model="stock.productType"> <md-option
+				ng-repeat="productType in stockItemProductTypes"
+				ng-value="productType"
+				ng-selected="stock.productType.id == productType.id">{{productType.typeName}}
+			</md-option> </md-select> </md-input-container>
+
+
+		</section>
+		<p></p>
+		<section layout="row" layout-xs="column">
+			<div flex>
+				<h4>Select Category</h4>
+				<div layout="row" layout-wrap flex>
+					<div flex="50" ng-repeat="cat in stockItemCategories">
+						<md-checkbox ng-checked="exists(cat, stock.categoryList)"
+							ng-click="toggle(cat, stock.categoryList)"> {{
+						cat.catName }} </md-checkbox>
+					</div>
+				</div>
 			</div>
 
 			<!-- <md-input-container flex> <label>Select
 				Category</label> <md-select placeholder="Category" ng-model="stock.cat">
 			<md-option ng-repeat="cat in stockItemCategories" ng-value="cat"
 				ng-selected="stock.cat.id==cat.id">{{cat.catName}} </md-option> </md-select> </md-input-container> -->
-
+			<div flex>
 			<md-input-container flex> <md-checkbox
 				ng-model="stock.maintainStockBySerialNumber"
 				aria-label="maintainStockBySerialNumber" ng-true-value="true"
-				ng-false-value="false"></md-checkbox> Maintain By Serial Number </md-input-container>
+				ng-false-value="false"></md-checkbox> Maintain By Serial Number </md-input-container></div>
 		</section>
 		<section layout="row" layout-xs="column">
 			<md-input-container>

@@ -24,11 +24,22 @@ app
 						typeName : ""
 					}
 
+					$scope.stockItemBrand = {
+						brandName : ""
+					}
+
+					$scope.stockItemProductType = {
+						typeName : ""
+					}
 					$scope.stockItemUnitList = [];
 
 					$scope.stockItemCategories = [];
 
 					$scope.stockItemOrderTypes = [];
+
+					$scope.stockItemBrands = [];
+
+					$scope.stockItemProductTypes = [];
 
 					$scope.editMode = false;
 
@@ -62,6 +73,10 @@ app
 
 					$scope.addStockItemUnit = function() {
 
+						if (!$scope.stockItemUnit.unitName) {
+							return;
+						}
+
 						$scope.stockItemUnit.business = $scope.curUser.business;
 						$scope.stockItemUnit.modifiedBy = $scope.curUser.email_id;
 						var stockService = appEndpointSF.getStockService();
@@ -71,6 +86,7 @@ app
 									$scope.stockItemUnit = {};
 									$scope.getStockItemUnitsList();
 								})
+
 					}
 
 					$scope.editStockItemUnit = function(ev, stockItemUnit) {
@@ -143,6 +159,10 @@ app
 
 					$scope.addStockItemTypeCategory = function() {
 
+						if (!$scope.stockItemTypeCategory.catName) {
+							return;
+						}
+
 						$scope.stockItemTypeCategory.business = $scope.curUser.business;
 						$scope.stockItemTypeCategory.modifiedBy = $scope.curUser.email_id;
 
@@ -153,6 +173,7 @@ app
 							$scope.stockItemTypeCategory = {};
 							$scope.getStockItemCategoryTypeList();
 						})
+
 					}
 
 					$scope.editStockItemCategory = function(ev,
@@ -230,6 +251,10 @@ app
 
 					$scope.addStockItemOrderType = function() {
 
+						if (!$scope.stockItemOrderType.typeName) {
+							return;
+						}
+
 						$scope.stockItemOrderType.business = $scope.curUser.business;
 						$scope.stockItemOrderType.modifiedBy = $scope.curUser.email_id;
 						var stockService = appEndpointSF.getStockService();
@@ -239,6 +264,7 @@ app
 							$scope.stockItemOrderType = {};
 							$scope.getStockItemOrderTypeList();
 						})
+
 					}
 
 					$scope.editStockItemOrderType = function(ev,
@@ -313,12 +339,191 @@ app
 										})
 					}
 
+					$scope.addStockItemBrand = function() {
+
+						if (!$scope.stockItemBrand.brandName) {
+							return;
+						}
+
+						$scope.stockItemBrand.business = $scope.curUser.business;
+						$scope.stockItemBrand.modifiedBy = $scope.curUser.email_id;
+						var stockService = appEndpointSF.getStockService();
+
+						stockService.addStockItemProductBrand(
+								$scope.stockItemBrand).then(function() {
+							$scope.stockItemBrand = {};
+							$scope.getStockItemBrands();
+						})
+
+					}
+
+					$scope.editStockItemBrand = function(ev, stockItemBrand) {
+						var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))
+								&& $scope.customFullscreen;
+						$mdDialog
+								.show(
+										{
+											controller : editStockItemBrandDialogCtr,
+											templateUrl : '/app/stock/stock_item_brand_edit_dialog.html',
+											parent : angular
+													.element(document.body),
+											targetEvent : ev,
+											clickOutsideToClose : true,
+											fullscreen : useFullScreen,
+											locals : {
+												curBusi : $scope.curUser.business,
+												curUser : $scope.curUser,
+												curStockItemBrand : stockItemBrand,
+											}
+										})
+								.then(
+										function(answer) {
+											$scope.status = 'You said the information was "'
+													+ answer + '".';
+										},
+										function() {
+											$scope.status = 'You cancelled the dialog.';
+										});
+
+					};
+
+					function editStockItemBrandDialogCtr($scope, $mdDialog,
+							curBusi, curUser, curStockItemBrand) {
+
+						$scope.stockItemBrand = angular.copy(curStockItemBrand);
+						$scope.stockItemBrand.modifiedBy = curUser.email_id;
+
+						$scope.addStockItemBrand = function() {
+
+							var stockService = appEndpointSF.getStockService();
+
+							stockService
+									.addStockItemProductBrand(
+											$scope.stockItemBrand)
+									.then(
+											function() {
+												curStockItemBrand.brandName = $scope.stockItemBrand.brandName;
+												curStockItemBrand.note = $scope.stockItemBrand.note;
+											})
+
+							$scope.cancel();
+						}
+
+						$scope.cancel = function() {
+							$mdDialog.cancel();
+						};
+					}
+
+					$scope.getStockItemBrands = function() {
+
+						var stockService = appEndpointSF.getStockService();
+
+						stockService.getStockItemBrands(
+								$scope.curUser.business.id).then(
+								function(stockItemBrands) {
+									$scope.stockItemBrands = stockItemBrands;
+								})
+					}
+
+					$scope.addStockItemProductType = function() {
+
+						if (!$scope.stockItemProductType.typeName) {
+							return;
+						}
+
+						$scope.stockItemProductType.business = $scope.curUser.business;
+						$scope.stockItemProductType.modifiedBy = $scope.curUser.email_id;
+						var stockService = appEndpointSF.getStockService();
+
+						stockService.addStockItemProductType(
+								$scope.stockItemProductType).then(function() {
+							$scope.stockItemProductType = {};
+							$scope.getStockItemProductTypes();
+						})
+
+					}
+
+					$scope.editStockItemProductType = function(ev,
+							stockItemProductType) {
+						var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))
+								&& $scope.customFullscreen;
+						$mdDialog
+								.show(
+										{
+											controller : editStockItemProductTypeDialogCtr,
+											templateUrl : '/app/stock/stock_item_product_type_edit_dialog.html',
+											parent : angular
+													.element(document.body),
+											targetEvent : ev,
+											clickOutsideToClose : true,
+											fullscreen : useFullScreen,
+											locals : {
+												curBusi : $scope.curUser.business,
+												curUser : $scope.curUser,
+												curStockItemProductType : stockItemProductType,
+											}
+										})
+								.then(
+										function(answer) {
+											$scope.status = 'You said the information was "'
+													+ answer + '".';
+										},
+										function() {
+											$scope.status = 'You cancelled the dialog.';
+										});
+
+					};
+
+					function editStockItemProductTypeDialogCtr($scope,
+							$mdDialog, curBusi, curUser,
+							curStockItemProductType) {
+
+						$scope.stockItemProductType = angular
+								.copy(curStockItemProductType);
+						$scope.stockItemProductType.modifiedBy = curUser.email_id;
+
+						$scope.addStockItemProductType = function() {
+
+							var stockService = appEndpointSF.getStockService();
+
+							stockService
+									.addStockItemProductType(
+											$scope.stockItemProductType)
+									.then(
+											function() {
+												curStockItemProductType.typeName = $scope.stockItemProductType.typeName;
+												curStockItemProductType.note = $scope.stockItemProductType.note;
+											})
+
+							$scope.cancel();
+						}
+
+						$scope.cancel = function() {
+							$mdDialog.cancel();
+						};
+					}
+
+					$scope.getStockItemProductTypes = function() {
+
+						var stockService = appEndpointSF.getStockService();
+
+						stockService
+								.getStockItemProductTypes(
+										$scope.curUser.business.id)
+								.then(
+										function(stockItemProductTypes) {
+											$scope.stockItemProductTypes = stockItemProductTypes;
+										})
+					}
+
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
 							$scope.getStockSettingsByBiz();
 							$scope.getStockItemUnitsList();
 							$scope.getStockItemCategoryTypeList();
 							$scope.getStockItemOrderTypeList();
+							$scope.getStockItemBrands();
+							$scope.getStockItemProductTypes();
 						} else {
 							$log.debug("Services Not Loaded, waiting...");
 							$timeout($scope.waitForServiceLoad, 1000);

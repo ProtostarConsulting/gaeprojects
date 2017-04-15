@@ -54,11 +54,11 @@
 	Stock Item Units
 	<!--Heading is placed outside the check-box,if inside it appears as faded on the UI because the check-box is disabled.  -->
 </div>
-<div id="stockItemUnit">
+<form name="stockItemUnitForm">
 	<div layout="row" layout-xs="column">
 		<md-input-container flex="30"> <label>Enter
-			Unit Name</label> <input type="text" ng-model="stockItemUnit.unitName"
-			ng-required="true"> </md-input-container>
+			Unit Name</label> <input name="unitName" type="text"
+			ng-model="stockItemUnit.unitName" ng-required="true"> </md-input-container>
 		<md-input-container flex> <label>Enter
 			Description </label> <input type="text" ng-model="stockItemUnit.note">
 		</md-input-container>
@@ -89,7 +89,7 @@
 		</tbody>
 	</table>
 	</md-data-table-container>
-</div>
+</form>
 <p></p>
 <!-- paragraph added to keep some space between units and category section -->
 <div flex-xs flex="30">
@@ -98,10 +98,10 @@
 	</md-checkbox>
 	Stock Item Categories
 </div>
-<div id="stockItemTypeCategory">
+<form name="stockItemTypeCategoryForm">
 	<div layout="row" layout-xs="column">
 		<md-input-container flex="30"> <label>Enter
-			Category Type</label> <input type="text"
+			Category Type</label> <input name="catName" type="text"
 			ng-model="stockItemTypeCategory.catName" ng-required="true">
 		</md-input-container>
 		<md-input-container flex> <label>Enter
@@ -134,7 +134,7 @@
 		</tbody>
 	</table>
 	</md-data-table-container>
-</div>
+</form>
 <p></p>
 <div flex-xs flex="30">
 	<md-checkbox flex-offset="15" ng-disabled="true"
@@ -142,11 +142,11 @@
 	</md-checkbox>
 	Stock Item Order Types
 </div>
-<div id="stockItemOrderType">
+<form name="stockItemOrderTypeForm">
 	<div layout="row" layout-xs="column">
 		<md-input-container flex="30"> <label>Enter
-			Order Type </label> <input type="text" ng-model="stockItemOrderType.typeName"
-			ng-required="true"> </md-input-container>
+			Order Type </label> <input name="typeName" type="text"
+			ng-model="stockItemOrderType.typeName" ng-required="true"> </md-input-container>
 		<md-input-container flex> <label>Enter
 			Description </label> <input type="text" ng-model="stockItemOrderType.note">
 		</md-input-container>
@@ -177,7 +177,94 @@
 		</tbody>
 	</table>
 	</md-data-table-container>
+</form>
+<p></p>
+<div flex-xs flex="30">
+	<md-checkbox flex-offset="15" ng-disabled="true"
+		aria-label="Checkbox Indeterminate" class="md-primary">
+	</md-checkbox>
+	Stock Item Product Brands
 </div>
+<form name="stockItemBrandsForm">
+	<div layout="row" layout-xs="column">
+		<md-input-container flex="30"> <label>Enter
+			Brand Name </label> <input name="brandName" type="text"
+			ng-model="stockItemBrand.brandName" ng-required="true"> </md-input-container>
+		<md-input-container flex> <label>Enter
+			Description </label> <input type="text" ng-model="stockItemBrand.note">
+		</md-input-container>
+		<md-input-container flex> <md-button
+			class="md-icon-button" ng-click="addStockItemBrand()"> <ng-md-icon
+			icon="add_circle" style="fill: md-default" size="20"> <md-tooltip>
+		Add Stock Item Brand</md-tooltip></ng-md-icon> </md-button></md-input-container>
+	</div>
+	<md-data-table-container>
+	<table style="width: 80%" md-data-table class="md-primary"
+		md-progress="deferred">
+		<thead md-order="query.order" md-trigger="onorderchange">
+			<tr>
+				<th name="Brand Name"></th>
+				<th name="Description"></th>
+				<th name="Actions"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="brand in stockItemBrands">
+				<td>{{brand.brandName}}</td>
+				<td>{{brand.note}}</td>
+				<td><md-button class="md-icon-button"
+						ng-click="editStockItemBrand($event,brand)"> <ng-md-icon
+						icon="edit" style="fill: md-default" size="20"> <md-tooltip>
+					Edit</md-tooltip></ng-md-icon></md-button></td>
+			</tr>
+		</tbody>
+	</table>
+	</md-data-table-container>
+</form>
+<p></p>
+<div flex-xs flex="30">
+	<md-checkbox flex-offset="15" ng-disabled="true"
+		aria-label="Checkbox Indeterminate" class="md-primary">
+	</md-checkbox>
+	Stock Item Product Types
+</div>
+<form name="stockItemProductTypesForm">
+	<div layout="row" layout-xs="column">
+		<md-input-container flex="30"> <label>Enter
+			Product Type </label> <input name="typeName" type="text"
+			ng-model="stockItemProductType.typeName" ng-required="true">
+		</md-input-container>
+		<md-input-container flex> <label>Enter
+			Description </label> <input type="text" ng-model="stockItemProductType.note">
+		</md-input-container>
+		<md-input-container flex> <md-button
+			class="md-icon-button" ng-click="addStockItemProductType()">
+		<ng-md-icon icon="add_circle" style="fill: md-default" size="20">
+		<md-tooltip> Add Stock Item Product Type</md-tooltip></ng-md-icon> </md-button></md-input-container>
+	</div>
+	<md-data-table-container>
+	<table style="width: 80%" md-data-table class="md-primary"
+		md-progress="deferred">
+		<thead md-order="query.order" md-trigger="onorderchange">
+			<tr>
+				<th name="Product Type"></th>
+				<th name="Description"></th>
+				<th name="Actions"></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="productType in stockItemProductTypes">
+				<td>{{productType.typeName}}</td>
+				<td>{{productType.note}}</td>
+				<td><md-button class="md-icon-button"
+						ng-click="editStockItemProductType($event,productType)">
+					<ng-md-icon icon="edit" style="fill: md-default" size="20">
+					<md-tooltip> Edit</md-tooltip></ng-md-icon></md-button></td>
+			</tr>
+		</tbody>
+	</table>
+	</md-data-table-container>
+</form>
 <section layout="row" layout-sm="column">
 	<md-button class="md-raised md-primary" ng-click="addSettings()">Save
 	Changes </md-button>

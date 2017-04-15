@@ -133,14 +133,14 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	
+
 	UserService.logout = function() {
 		var deferred = $q.defer();
 		gapi.client.userService.logout().execute(function(resp) {
 			deferred.resolve(resp);
 		});
 		return deferred.promise;
-	}	
+	}
 
 	UserService.getUser = function() {
 		var deferred = $q.defer();
@@ -267,7 +267,7 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	
+
 	// start business
 
 	UserService.addBusiness = function(business) {
@@ -2036,26 +2036,16 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	
-	
-	
-	
-	
+
 	AccountEntryService.getTrialBalance = function(bid) {
 		var deferred = $q.defer();
 		gapi.client.accountEntryService.getTrialBalance({
-			"bid":bid
-			}).execute(
-				function(resp) {
-					deferred.resolve(resp.items);
-				});
+			"bid" : bid
+		}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
 		return deferred.promise;
 	}
-	
-	
-	
-	
-	
 
 	/* =============================================================================================================================== */
 	var GeneralEntryService = {};
@@ -2177,6 +2167,44 @@ function googleEndpointSF($q) {
 	StockService.getStockItemTypeCategories = function(busId) {
 		var deferred = $q.defer();
 		gapi.client.stockService.getStockItemTypeCategories({
+			"busId" : busId
+		}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}
+
+	StockService.addStockItemProductBrand = function(stockItemBrand) {
+		var deferred = $q.defer();
+		gapi.client.stockService.addStockItemProductBrand(stockItemBrand)
+				.execute(function(resp) {
+					deferred.resolve(resp);
+				});
+		return deferred.promise;
+	}
+
+	StockService.getStockItemBrands = function(busId) {
+		var deferred = $q.defer();
+		gapi.client.stockService.getStockItemBrands({
+			"busId" : busId
+		}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}
+
+	StockService.addStockItemProductType = function(stockItemProductType) {
+		var deferred = $q.defer();
+		gapi.client.stockService.addStockItemProductType(stockItemProductType)
+				.execute(function(resp) {
+					deferred.resolve(resp);
+				});
+		return deferred.promise;
+	}
+
+	StockService.getStockItemProductTypes = function(busId) {
+		var deferred = $q.defer();
+		gapi.client.stockService.getStockItemProductTypes({
 			"busId" : busId
 		}).execute(function(resp) {
 			deferred.resolve(resp.items);
@@ -2990,7 +3018,7 @@ function googleEndpointSF($q) {
 	/* =============================================================================================================================== */
 	var ProductionService = {};
 
-	serviceFactory.getProductionService= function() {
+	serviceFactory.getProductionService = function() {
 		return ProductionService;
 	}
 
@@ -3002,6 +3030,6 @@ function googleEndpointSF($q) {
 				});
 		return deferred.promise;
 	}
-	//====================================================
+	// ====================================================
 	return serviceFactory;
 }

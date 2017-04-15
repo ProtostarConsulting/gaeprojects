@@ -23,7 +23,9 @@
 			<tr>
 				<th name="Item No" order-by="itemNumber"></th>
 				<th name="Item Name" order-by="itemName"></th>
-				<th name="Units of Measure" order-by="unit"></th>
+				<th name="Unit" order-by="unit"></th>
+				<th name="Brand" order-by="unit"></th>
+				<th name="Product Type" order-by="unit"></th>
 				<th name="Category" order-by="category"></th>
 				<th name="Actions"></th>
 			</tr>
@@ -35,7 +37,9 @@
 				<td>{{stockItem.itemNumber}}</td>
 				<td>{{stockItem.itemName}}</td>
 				<td>{{stockItem.unitOfMeasure.unitName}}</td>
-				<td>{{stockItem.cat.catName}}</td>
+				<td>{{stockItem.brand.brandName}}</td>
+				<td>{{stockItem.productType.typeName}}</td>
+				<td>{{stockItem.catNames}}</td>
 				<td><md-button class="md-icon-button"
 						ui-sref="stock.stockItemTypeAdd({selectedStockItem: stockItem})">
 					<ng-md-icon icon="edit" style="fill: md-default" size="18">

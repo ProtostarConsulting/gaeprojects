@@ -1,5 +1,5 @@
-angular
-		.module("stockApp")
+app = angular.module("stockApp");
+app
 		.controller(
 				"stockItemTypeAddCtr",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
@@ -53,6 +53,10 @@ angular
 
 					$scope.stockItemCategories = [];
 
+					$scope.stockItemBrands = [];
+
+					$scope.stockItemProductTypes = [];
+
 					$scope.addStockItemType = function() {
 
 						$scope.stock.modifiedBy = $scope.curUser.email_id;
@@ -98,11 +102,31 @@ angular
 								.then(
 										function(stockItemCategories) {
 											$scope.stockItemCategories = stockItemCategories;
-											if ($scope.stockItemCategories.length > 0
-													&& !$scope.stock.cat) {
-												$scope.stock.cat = $scope.stockItemCategories[0];
-											}
 
+										})
+					}
+
+					$scope.getStockItemBrands = function() {
+
+						var stockService = appEndpointSF.getStockService();
+
+						stockService.getStockItemBrands(
+								$scope.curUser.business.id).then(
+								function(stockItemBrands) {
+									$scope.stockItemBrands = stockItemBrands;
+								})
+					}
+
+					$scope.getStockItemProductTypes = function() {
+
+						var stockService = appEndpointSF.getStockService();
+
+						stockService
+								.getStockItemProductTypes(
+										$scope.curUser.business.id)
+								.then(
+										function(stockItemProductTypes) {
+											$scope.stockItemProductTypes = stockItemProductTypes;
 										})
 					}
 
@@ -189,6 +213,8 @@ angular
 						if (appEndpointSF.is_service_ready) {
 							$scope.getStockItemUnitsList();
 							$scope.getStockItemCategoryTypeList();
+							$scope.getStockItemBrands();
+							$scope.getStockItemProductTypes();
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
 							$timeout($scope.waitForServiceLoad, 1000);
