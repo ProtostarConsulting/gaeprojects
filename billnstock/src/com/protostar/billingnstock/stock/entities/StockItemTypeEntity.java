@@ -30,8 +30,6 @@ public class StockItemTypeEntity extends BaseEntity {
 
 	// cat is Obsolete remove it.
 	@Index
-	private Ref<StockItemTypeCategory> cat;
-	@Index
 	private List<Ref<StockItemTypeCategory>> categoryList;
 	@Index
 	private Ref<StockItemUnit> unitOfMeasure;
@@ -47,7 +45,8 @@ public class StockItemTypeEntity extends BaseEntity {
 		super.beforeSave();
 		if (getId() == null) {
 			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
-					EntityUtil.getBusinessRawKey(getBusiness()), Constants.STOCKITEMTYPE_NO_COUNTER);
+					EntityUtil.getBusinessRawKey(getBusiness()),
+					Constants.STOCKITEMTYPE_NO_COUNTER);
 			setItemNumber(sequenceGenService.getNextSequenceNumber());
 		}
 	}
@@ -91,7 +90,8 @@ public class StockItemTypeEntity extends BaseEntity {
 		return maintainStockBySerialNumber;
 	}
 
-	public void setMaintainStockBySerialNumber(boolean maintainStockBySerialNumber) {
+	public void setMaintainStockBySerialNumber(
+			boolean maintainStockBySerialNumber) {
 		this.maintainStockBySerialNumber = maintainStockBySerialNumber;
 	}
 
@@ -113,21 +113,13 @@ public class StockItemTypeEntity extends BaseEntity {
 			this.productType = Ref.create(productType);
 	}
 
-	public StockItemTypeCategory getCat() {
-		return cat == null ? null : cat.get();
-	}
-
-	public void setCat(StockItemTypeCategory cat) {
-		if (cat != null)
-			this.cat = Ref.create(cat);
-	}
-
 	public List<StockItemTypeCategory> getCategoryList() {
 		if (categoryList == null || categoryList.isEmpty()) {
 			return null;
 		}
 
-		List<StockItemTypeCategory> tempList = new ArrayList<StockItemTypeCategory>(categoryList.size());
+		List<StockItemTypeCategory> tempList = new ArrayList<StockItemTypeCategory>(
+				categoryList.size());
 		for (Ref<StockItemTypeCategory> catRef : categoryList) {
 			tempList.add(catRef.get());
 		}
@@ -140,7 +132,8 @@ public class StockItemTypeEntity extends BaseEntity {
 			return;
 		}
 
-		this.categoryList = new ArrayList<Ref<StockItemTypeCategory>>(categoryList.size());
+		this.categoryList = new ArrayList<Ref<StockItemTypeCategory>>(
+				categoryList.size());
 		for (StockItemTypeCategory cat : categoryList) {
 			this.categoryList.add(Ref.create(cat));
 		}

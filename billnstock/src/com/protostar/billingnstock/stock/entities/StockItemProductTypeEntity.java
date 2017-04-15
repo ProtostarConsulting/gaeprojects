@@ -9,13 +9,14 @@ import com.protostar.billnstock.entity.BaseEntity;
 @Entity
 public class StockItemProductTypeEntity extends BaseEntity {
 	@Index
-	private String type;
+	private String typeName;
 
-	public String getType() {
-		return type;
+	public String getTypeName() {
+		return typeName;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
 	}
+
 }
