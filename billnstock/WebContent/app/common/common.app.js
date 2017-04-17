@@ -626,12 +626,17 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/add_Bill_Of_material",
 		templateUrl : '/app/production/add_bom.html',
 		controller : 'add_bom',
+		params : {
+			
+			bomCategory : null
+		}
 	})
 	
 	.state('production.list_bom', {
 		url : "/list_Bill_of_material",
 		templateUrl : '/app/production/list_bom.html',
-		controller : 'list_bom'
+		controller : 'list_bom',
+			
 
 	})
 	

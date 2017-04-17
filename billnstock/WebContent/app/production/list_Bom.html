@@ -32,9 +32,6 @@
 				<tr>
 					<th name="Production No." order-by="itemNumber"></th>
 					<th name="Product Name" order-by="type"></th>
-					<th name="Category Name" order-by="itemNumber"></th>
-					<th name="Item Name" order-by="itemNumber"></th>
-					<th name="Qty" order-by="itemNumber"></th>
 					
 					<th name="Action" order-by="type"></th>
 					
@@ -44,18 +41,12 @@
 				<tr	ng-repeat="productCategory in product.catList" >
 				<td>{{$index+1}}</td> 
 				<td>{{product.productName}}</td>
-				<td>{{productCategory.cat.catName}}</td>
-				<td >{{productCategory.itemNames}}
-				<td >{{items.qty}}</td>
 			
-				
-				
-				
 				</td>
 				
 				</div>	
 					<td><md-button class="md-icon-button"
-							ui-sref="accounting.addProduction">
+							ui-sref="production.add_bom({bomCategory:product})">
 						<ng-md-icon icon="edit" style="fill: md-default" size="20">
 						<md-tooltip> Edit</md-tooltip></ng-md-icon></md-button></td>
 				</tr>

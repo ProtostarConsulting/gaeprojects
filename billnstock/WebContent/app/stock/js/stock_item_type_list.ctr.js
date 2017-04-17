@@ -28,14 +28,16 @@ angular
 
 											for (var i = 0; i < $scope.stockItemList.length; i++) {
 												$scope.stockItemList[i].catNames = "";
-												for (var j = 0; j < $scope.stockItemList[i].categoryList.length; j++) {
-													$scope.stockItemList[i].catNames += $scope.stockItemList[i].categoryList[j].catName;
-													if (j != $scope.stockItemList[i].categoryList.length - 1) {
-														$scope.stockItemList[i].catNames += ",";
+												if ($scope.stockItemList[i].categoryList
+														&& $scope.stockItemList[i].categoryList.length > 0) {
+													for (var j = 0; j < $scope.stockItemList[i].categoryList.length; j++) {
+														$scope.stockItemList[i].catNames += $scope.stockItemList[i].categoryList[j].catName;
+														if (j != $scope.stockItemList[i].categoryList.length - 1) {
+															$scope.stockItemList[i].catNames += ",";
 
+														}
 													}
 												}
-
 											}
 											$scope.loading = false;
 										});

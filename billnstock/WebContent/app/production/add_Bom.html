@@ -36,15 +36,9 @@
 									ng-required="true"> <md-option
 									ng-value="category"
 									ng-repeat="category in stockItemCategories"
-									ng-selected="bomCategory.id == category.id">{{category.catName}}
+									ng-selected="bomCategory.cat.id == category.id">{{category.catName}}
 									</md-option> </md-select> 
-							</div></td>
-
-						<!-- 	<td><span flex>Total: {{category.itemSubTotal|
-						currency:"":"2"}} </span> <span flex>,   Balance:
-						{{category.itemBalanceSubTotal| currency:"":"2"}} </span></td> -->
-
-				<td><md-icon
+							</div></td><td><md-icon
 						md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
 						ng-click="removeCategoryItem($index)" class="name"
 						style="color: Green; height: 18px; width: 18px"> <md-tooltip>Remove
@@ -60,7 +54,7 @@
 									ng-model="itemObj.itemName" placeholder="Item Name"
 									ng-required="true"> <md-option
 									ng-value="stockItemType.itemName"
-									ng-selected="bomCategory.id == stockItemType.id"
+									ng-selected="itemObj.itemName == stockItemType.itemName"
 									ng-repeat="stockItemType in stockTypeList">{{stockItemType.itemName
 								}}</md-option> </md-select> </md-input-container>
 								
@@ -71,7 +65,7 @@
 				<td>
 					<div layout="row">
 				<md-input-container> <input
-						type="number" placeholder="Product qty."
+						placeholder="Product qty."
 						ng-change="calItemSubTotal(bomCategory,itemObj)"
 						ng-model="itemObj.qty" ng-required="true"></md-input-container>
 				<md-input-container> <input

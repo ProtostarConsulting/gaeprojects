@@ -18,33 +18,6 @@ app
 						.then(function(list) {
 						$scope.productList=list;
 				
-						
-			for (var i = 0; i < $scope.productList.length; i++) 
-				
-			{
-				for (var j = 0; j < $scope.productList[i].catList.length; j++) 
-					
-				{
-					$scope.productList[i].catList[j].itemNames="";		
-
-					for (var k = 0; k < $scope.productList[i].catList[j].items.length; k++) 
-						
-					{
-						$scope.productList[i].catList[j].itemNames += $scope.productList[i].catList[j].items[k].itemName;
-								
-							if(k !=$scope.productList[i].catList[j].items.length-1)	{
-								$scope.productList[i].catList[j].itemNames +=","
-							}	
-									
-					}		
-								
-								
-				}
-								
-						
-							
-							
-			}
 						});
 					}
 					

@@ -11,10 +11,15 @@ app.controller("add_bom", function($scope, $window, $mdToast, $timeout,
 			business : $scope.curUser.business,
 			modifiedBy :$scope.curUser.email_id
 		}
+		$scope.addCatogory();
 	};
 	$scope.dummyCatList=[];
 	$scope.stockItemCategories =[];
-	$scope.addBom = $scope.getEmptyBomObjadd();
+	
+	$scope.addBom = $stateParams.bomCategory ? $stateParams.bomCategory
+			: $scope.getEmptyBomObjadd();
+	
+	
 
 	$scope.addCatogory = function() {
 		var category = {
@@ -33,7 +38,7 @@ app.controller("add_bom", function($scope, $window, $mdToast, $timeout,
 		return item = {
 			itemName : "",
 			price : "",
-			qty : 1
+			qty : ""
 		
 		};
 		if (!$scope.addBom.items) {
@@ -106,6 +111,6 @@ app.controller("add_bom", function($scope, $window, $mdToast, $timeout,
 	$scope.fetchCatogoryList();
 	$scope.getStockItemTypes();
 	$scope.getStockItemTypes();
-	$scope.addCatogory();
+	
 
 });
