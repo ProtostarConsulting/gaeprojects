@@ -1,0 +1,116 @@
+<md-content layout-padding>
+<div>
+	<form name="addProduction">
+
+		<div layout="row" layout-xs="column">
+			<div layout="row" flex=70>
+				<md-input-container flex> <input type="text"
+					ng-required="true" aria-label="period" placeholder="productName"
+					ng-model="addBom.productName"> </md-input-container>
+			</div>
+		</div>
+	</form>
+</div>
+ <table md-data-table md-progress="deferred">
+		<thead md-order="query.order" md-trigger="onOrderChange">
+			<tr>
+			    <th name="Category" order-by="srNo"></th>
+				<th name="Catogory Name" order-by="srNo"></th>
+				<th></th>
+				<th name="Actions"></th>
+			</tr>
+		</thead>
+		 <tbody>
+			<tr ng-init="itemToggle=true"
+				ng-repeat-start="bomCategory in addBom.catList track by $index" >
+
+				<td>Category {{ $index +1 }}<md-button class="md-icon-button"
+						ng-show="!itemToggle" ng-click="itemToggle=true"> <ng-md-icon
+						icon="keyboard_arrow_down" style="fill: md-default" size="24">
+					<md-tooltip> Expand</md-tooltip></ng-md-icon></md-button> <md-button class="md-icon-button"
+						ng-show="itemToggle" ng-click="itemToggle=false"> <ng-md-icon
+						icon="keyboard_arrow_up" style="fill: md-default" size="24">
+					<md-tooltip> Compress</md-tooltip></ng-md-icon></md-button></td>
+				<td><div layout="row">
+								<md-select
+								    name="category"
+									ng-model="bomCategory.cat"
+								    placeholder="Category Name"
+									ng-required="true"> <md-option
+									ng-value="category"
+									ng-repeat="category in stockItemCategories"
+									ng-selected="bomCategory.cat.id == category.id">{{category.catName}}
+									</md-option> </md-select> 
+							</div></td><td><md-icon
+						md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
+						ng-click="removeCategoryItem($index)" class="name"
+						style="color: Green; height: 18px; width: 18px"> <md-tooltip>Remove
+					Category</md-tooltip></md-icon>
+				</td>
+
+			</tr>
+			<tr ng-repeat="itemObj in  bomCategory.items" ng-show="itemToggle">
+				<td></td>
+				<td>
+					<div layout="row">
+								<md-input-container flex> <md-select
+									ng-model="itemObj.itemName" placeholder="Item Name"
+									ng-required="true"> <md-option
+									ng-value="stockItemType.itemName"
+									ng-selected="itemObj.itemName == stockItemType.itemName"
+									ng-repeat="stockItemType in stockTypeList">{{stockItemType.itemName
+								}}</md-option> </md-select> </md-input-container>
+								
+				    	</div>	
+					
+				</td>
+						
+				<td>
+					<div layout="row">
+				<md-input-container> <input
+						placeholder="Product qty."
+						ng-model="itemObj.qty" ng-required="true"></md-input-container>
+			
+					</div></td>
+				<td><md-icon
+						md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
+						ng-click="removeLineItem(bomCategory,$index)" class="name"
+						style="color: Green; height: 18px; width: 18px"> <md-tooltip>Remove
+					Item</md-tooltip></md-icon></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><md-button class="md-icon-button"
+						ng-click="addLineItem(bomCategory)"> <ng-md-icon
+						icon="add_circle" style="fill: md-default" size="24">
+					<md-tooltip> Add New Item</md-tooltip></ng-md-icon> </md-button></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr ng-repeat-end></tr>
+			<tr>
+				<td><md-button class="md-icon-button" ng-click="addCatogory()">
+					<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
+					<md-tooltip> Add New Category </md-tooltip></ng-md-icon> </md-button>
+				</td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>Final Total</td>
+				<td>{{budgetObj.finalTotal| currency:"":"2"}}</td>
+				<td></td>
+			</tr>
+		</tbody>
+	</table> 
+	<div layout layout-xs="column" ng-hide="budgetObj.status == 'FINALIZED'">
+	<section layout="row" layout-xs="column">
+		
+		<md-button class="md-raised md-primary"
+			ng-disabled="requisitionForm.$invalid"
+			ng-click="submitProduction()">Submit</md-button>
+	</section>
+</div>
+</md-content>
