@@ -1,0 +1,116 @@
+<md-subheader class="md-primary">
+<h4 class="md-title" ng-bind="machine.id?'Edit Machine':'Add Machine'"></h4>
+</md-subheader>
+
+<form name="addMachieForm">
+	<div layout="column" layout-xs="column">
+
+		<div layout="row" layout-xs="column" flex>
+			<md-input-container flex> <label>Machine
+				Name</label> <input name="machineName" ng-model="machine.machineName"
+				ng-required="true">
+			<div ng-messages="addMachieForm.machineName.$error"
+				ng-if="addMachieForm.machineName.$submitted || addMachieForm.machineName.$touched">
+				<div ng-message="required">Please Enter Machine Name.</div>
+			</div>
+			</md-input-container>
+
+			<md-input-container flex> <label>Machine
+				Number</label> <input name="machineNo" ng-model="machine.machineNo"
+				ng-required="true">
+			<div ng-messages="addMachieForm.machineNo.$error"
+				ng-if="addMachieForm.machineNo.$submitted || addMachieForm.machineNo.$touched">
+				<div ng-message="required">Please Enter Machine Number.</div>
+			</div>
+			</md-input-container>
+		</div>
+
+		<div layout="row" layout-xs="column" flex>
+			<!-- <span flex="10"></span> -->
+			<h3 class="md-subhead">Manifacturer Details</h3>
+		</div>
+		<div layout="row" layout-xs="column">
+			<md-input-container flex> <label>Manifacturer
+				Name</label> <input name="manifacturerName" id="manifacturerName"
+				ng-model="machine.manifacturerName" ng-required="true">
+			<div ng-messages="addMachieForm.manifacturerName.$error"
+				ng-if="addMachieForm.manifacturerName.$submitted || addMachieForm.manifacturerName.$touched">
+				<div ng-message="required">Please Enter Manifacturer Name.</div>
+			</div>
+			</md-input-container>
+			
+			<md-input-container flex> <label>At
+				Post/City</label> <input name="city" id="city"
+				ng-model="machine.manifacturerDetail.city" ng-required="true">
+			<div ng-messages="addMachieForm.city.$error"
+				ng-if="addMachieForm.city.$submitted || addMachieForm.city.$touched">
+				<div ng-message="required">Please Enter City Name.</div>
+			</div>
+			</md-input-container>
+		</div>
+
+		<div layout="row" layout-xs="column">
+			<md-input-container flex> <label>Line1 </label>
+			<input name="line1" id="line1"
+				ng-model="machine.manifacturerDetail.line1" ng-required="true">
+			<div ng-messages="addMachieForm.line1.$error"
+				ng-if="addMachieForm.line1.$submitted || addMachieForm.line1.$touched">
+				<div ng-message="required">Please Enter address line.</div>
+			</div>
+			</md-input-container>
+			<md-input-container flex> <label>Line2 </label>
+			<input name="line2" id="line2"
+				ng-model="machine.manifacturerDetail.line2"></md-input-container>
+		</div>
+
+		<div layout="row" layout-xs="column">
+			<md-input-container flex> <label>Phone 1</label>
+			<input name="phone1" id="phone1"
+				ng-model="machine.manifacturerDetail.phone1" ng-required="true">
+			<div ng-messages="addMachieForm.phone1.$error"
+				ng-if="addMachieForm.phone1.$submitted || addMachieForm.phone1.$touched">
+				<div ng-message="required">Please Enter Phone1.</div>
+			</div>
+			</md-input-container>
+
+			<md-input-container flex> <label>Phone 2
+			</label> <input name="phone2" id="phone2"
+				ng-model="machine.manifacturerDetail.phone2" ng-required="true">
+			<div ng-messages="addMachieForm.phone2.$error"
+				ng-if="addMachieForm.phone2.$submitted || addMachieForm.phone2.$touched">
+				<div ng-message="required">Please Enter Phone2.</div>
+			</div>
+			</md-input-container>
+
+		</div>
+
+		<div layout="row" layout-xs="column">
+			<md-input-container flex> <label>State </label>
+			<input name="state" id="state"
+				ng-model="machine.manifacturerDetail.state" ng-required="true">
+			<div ng-messages="addMachieForm.state.$error"
+				ng-if="addMachieForm.state.$submitted || addMachieForm.state.$touched">
+				<div ng-message="required">Please Enter State Name.</div>
+			</div>
+			</md-input-container>
+
+			<md-input-container flex="50"> <label>Pin
+			</label> <input name="pin" id="pin" ng-model="machine.manifacturerDetail.pin"
+				ng-required="true">
+			<div ng-messages="addMachieForm.pin.$error"
+				ng-if="addMachieForm.pin.$submitted || addMachieForm.pin.$touched">
+				<div ng-message="required">Please Enter PIN Code.</div>
+			</div>
+			</md-input-container>
+
+		</div>
+	</div>
+	<div layout layout-xs="column">
+		<section layout="row" layout-xs="column">
+			<md-button class="md-raised md-primary" ng-if="!machine.id"
+				ng-disabled="addMachieForm.$invalid" ng-click="addMachine()">Save</md-button>
+			<md-button class="md-raised md-primary" ng-if="machine.id"
+				ng-disabled="addMachieForm.$invalid" ng-click="addMachine()">Update</md-button>
+		</section>
+	</div>
+</form>

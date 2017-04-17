@@ -645,8 +645,24 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		templateUrl : '/app/production/prod_module.html',
 		controller : 'prodModuleCtr'
 	})
+	
+	.state('production.add_machine', {
+		url : "/add_machine",
+		templateUrl : '/app/production/add_machine.html',
+		controller : 'machineAddCtr',
+			params : {
+				machineObj : null
+			}	
+	})
+	
+	.state('production.list_machine', {
+		url : "/list_machine",
+		templateUrl : '/app/production/list_machine.html',
+		controller : 'machineListCtr'
 
-	////////////////////////
+	})
+
+	// //////////////////////
 	
 	
 

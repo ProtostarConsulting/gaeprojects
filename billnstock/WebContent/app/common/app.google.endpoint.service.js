@@ -3043,9 +3043,24 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 	
+	ProductionService.addMachine = function(machine) {
+		var deferred = $q.defer();
+		gapi.client.productionService.addMachine(machine).execute(
+				function(resp) {
+					deferred.resolve(resp);
+				});
+		return deferred.promise;
+	}
 	
-	
-	
+	ProductionService.getMachineList = function(busId) {
+		var deferred = $q.defer();
+		gapi.client.productionService.getMachineList({
+			"busId" : busId
+		}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}	
 	
 	//====================================================
 

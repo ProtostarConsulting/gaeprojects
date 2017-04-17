@@ -1,0 +1,37 @@
+<md-subheader class="md-primary">
+<h4 class="md-title"> Add QCMachine </h4>
+<!-- <h4 class="md-title" ng-bind="machine.id?'Edit Machine':'Add Machine'"></h4> -->
+</md-subheader>
+
+<form name="addQCMachineForm">
+	<div layout="row" layout-xs="column" flex>
+			<md-input-container flex> <label>Machine
+				Name</label> <input name="qcName" ng-model="qcmachine.qcName"
+				ng-required="true">
+			<div ng-messages="addQCMachineForm.qcName.$error"
+				ng-if="addQCMachineForm.qcName.$submitted || addQCMachineForm.qcName.$touched">
+				<div ng-message="required">Please Enter QC Parameter Name.</div>
+			</div>
+			</md-input-container>
+
+			<md-input-container flex> <label>Machine
+				Number</label> <input name="machineNo" ng-model="machine.machineNo"
+				ng-required="true">
+			<div ng-messages="addQCMachineForm.machineNo.$error"
+				ng-if="addQCMachineForm.machineNo.$submitted || addQCMachineForm.machineNo.$touched">
+				<div ng-message="required">Please Enter Machine Number.</div>
+			</div>
+			</md-input-container>
+		</div>
+		
+		<div layout="row" layout-xs="column" flex>
+			<md-input-container flex> <label>Machine
+				Name</label> <input name="note" ng-model="qcmachine.note"
+				ng-required="true">
+			<div ng-messages="addQCMachineForm.note.$error"
+				ng-if="addQCMachineForm.note.$submitted || addQCMachineForm.note.$touched">
+				<div ng-message="required">Please Enter QC Parameter Name.</div>
+			</div>
+			</md-input-container>
+		</div>
+</form>
