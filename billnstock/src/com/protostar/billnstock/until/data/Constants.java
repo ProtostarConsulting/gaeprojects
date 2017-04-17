@@ -102,4 +102,12 @@ public class Constants {
 	public enum QCParameterType {
 		NUMBER, NUMBERRANGE, YESNO, TEXT
 	};
+	
+	public enum SchedulingFrequecyType {
+		DAILY, WEEKLY, MONTHLY, YEARLY
+	};
+	
+	public enum SchedulingTimeFrequecyType {
+		HOURS, MINTUES
+	};
 }

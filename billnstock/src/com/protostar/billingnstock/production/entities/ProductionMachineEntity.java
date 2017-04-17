@@ -12,6 +12,7 @@ public class ProductionMachineEntity extends BaseEntity {
 	@Index
 	private String machineName;
 	private long machineNo;
+	private String manifacturerName;
 	private Address manifacturerDetail = new Address();
 
 	public String getMachineName() {
@@ -28,6 +29,14 @@ public class ProductionMachineEntity extends BaseEntity {
 
 	public void setMachineNo(long machineNo) {
 		this.machineNo = machineNo;
+	}
+	
+	public String getManifacturerName() {
+		return manifacturerName;
+	}
+
+	public void setManifacturerName(String manifacturerName) {
+		this.manifacturerName = manifacturerName;
 	}
 
 	public Address getManifacturerDetail() {
