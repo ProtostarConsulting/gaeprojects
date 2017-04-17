@@ -1,23 +1,24 @@
-<md-content layout="column" layout-align="top stretch" layout-fill>
-<div>
-	<div layout-fill>
-		<section layout="row" layout-fill style="margin: 0; padding: 0" id="viewToolbar">
-			<md-content layout="row" layout-align="center start"> <md-button
-				class="md-icon-button" aria-label="prev" ng-click="back()">
-			<md-tooltip> go back</md-tooltip> <md-icon
-				md-svg-icon="img/icons/ic_reply_black_24px.svg" aria-label="go back"></md-icon>
-			</md-button> <md-button ui-sref="stock.stockItemList" ng-click="close()"
-				class="md-primary"> Current Stock</md-button> <md-button
-				ui-sref="stock.requisitionList" ng-click="close()"
-				class="md-primary"> Requisitions</md-button> <md-button
-				ui-sref="stock.purchaseOrderList" ng-click="close()"
-				class="md-primary"> Purchase Orders</md-button> <md-button
-				ui-sref="stock.stockReceiptList" ng-click="close()"
-				class="md-primary"> Stock Receipts</md-button> <md-button
-				ui-sref="stock.stockShipmentList" ng-click="close()"
-				class="md-primary"> Stock Shipments</md-button> <md-button
-				ui-sref="stock.stockItemTypeList" ng-click="close()"
-				class="md-primary"> Stock Items</md-button> <!-- <md-button
+<div layout="column">
+	<div>
+		<div layout-fill>
+			<section layout="row" layout-fill style="margin: 0; padding: 0"
+				id="viewToolbar">
+				<md-content layout="row" layout-align="center start"> <md-button
+					class="md-icon-button" aria-label="prev" ng-click="back()">
+				<md-tooltip> go back</md-tooltip> <md-icon
+					md-svg-icon="img/icons/ic_reply_black_24px.svg"
+					aria-label="go back"></md-icon> </md-button> <md-button
+					ui-sref="stock.stockItemList" ng-click="close()" class="md-primary">
+				Current Stock</md-button> <md-button ui-sref="stock.requisitionList"
+					ng-click="close()" class="md-primary"> Requisitions</md-button> <md-button
+					ui-sref="stock.purchaseOrderList" ng-click="close()"
+					class="md-primary"> Purchase Orders</md-button> <md-button
+					ui-sref="stock.stockReceiptList" ng-click="close()"
+					class="md-primary"> Stock Receipts</md-button> <md-button
+					ui-sref="stock.stockShipmentList" ng-click="close()"
+					class="md-primary"> Stock Shipments</md-button> <md-button
+					ui-sref="stock.stockItemTypeList" ng-click="close()"
+					class="md-primary"> Stock Items</md-button> <!-- <md-button
 				ui-sref="stock.supplierList" ng-click="close()" class="md-primary">
 			Suppliers </md-button> <md-button ui-sref="stock.reportByTaxPaid" ng-click="close()"
 					class="md-primary">
@@ -31,29 +32,29 @@
 				<md-icon md-svg-src="img/icons/ic_trending_flat_black_24px.svg"
 					class="name" style="color: Green; height: 15px; width: 15px"></md-icon>
 				Tax Collection </md-button> --> </md-content>
-			<span flex></span>
-			<md-button ng-show="hasUserAuthority(curUser, 'Stock.ModuleAdmin')"
-				layout-align="center end" class="md-icon-button md-accent"
-				ui-sref="stock.settings" aria-label="Favorite"> <md-icon
-				md-svg-icon="img/icons/ic_settings_black_24px.svg"> <md-tooltip>Stock
-			Settings</md-tooltip></md-icon> </md-button>
-			<md-button class="md-icon-button" aria-label="More"
-				ng-click="toggleRight()"> <md-icon
-				md-svg-icon="img/icons/more_vert.svg"></md-icon> </md-button>
+				<span flex></span>
+				<md-button ng-show="hasUserAuthority(curUser, 'Stock.ModuleAdmin')"
+					layout-align="center end" class="md-icon-button md-accent"
+					ui-sref="stock.settings" aria-label="Favorite"> <md-icon
+					md-svg-icon="img/icons/ic_settings_black_24px.svg"> <md-tooltip>Stock
+				Settings</md-tooltip></md-icon> </md-button>
+				<md-button class="md-icon-button" aria-label="More"
+					ng-click="toggleRight()"> <md-icon
+					md-svg-icon="img/icons/more_vert.svg"></md-icon> </md-button>
 
-		</section>
-	</div>
+			</section>
+		</div>
 
-	<md-sidenav class="md-sidenav-right md-whiteframe-z2"
-		md-component-id="right"> <md-toolbar
-		class="md-theme-light"> <!--<h1 class="md-toolbar-tools">More Actions...</h1>-->
-	</md-toolbar> <md-content layout-padding> <md-button
-		ui-sref="stock.supplierList" ng-click="close()" class="md-primary">
-	Suppliers </md-button> <md-button ui-sref="stock.warehouseList" ng-click="close()"
-		class="md-primary"> Warehouses</md-button> <md-button
-		ui-sref="stock.budgetList" ng-click="close()" class="md-primary">Budget</md-button>
-	<md-button ui-sref="stock.taxlist" ng-click="close()"
-		class="md-primary"> Tax List </md-button> <!-- <md-button
+		<md-sidenav class="md-sidenav-right md-whiteframe-z2"
+			md-component-id="right"> <md-toolbar
+			class="md-theme-light"> <!--<h1 class="md-toolbar-tools">More Actions...</h1>-->
+		</md-toolbar> <md-content layout-padding> <md-button
+			ui-sref="stock.supplierList" ng-click="close()" class="md-primary">
+		Suppliers </md-button> <md-button ui-sref="stock.warehouseList" ng-click="close()"
+			class="md-primary"> Warehouses</md-button> <md-button
+			ui-sref="stock.budgetList" ng-click="close()" class="md-primary">Budget</md-button>
+		<md-button ui-sref="stock.taxlist" ng-click="close()"
+			class="md-primary"> Tax List </md-button> <!-- <md-button
 		ui-sref="stock.taxadd" ng-click="close()" class="md-primary">
 	<md-icon md-svg-src="img/icons/ic_queue_black_24px.svg"
 		ui-sref="warehouse.add" class="name"
@@ -69,38 +70,39 @@
 		ui-sref="purchaseOrder" ng-click="close()" class="md-primary">
 	Purchase Module</md-button> -->
 
-	<h3>
-		<md-icon md-svg-src="img/icons/ic_receipt_black_24px.svg"
+		<h3>
+			<md-icon md-svg-src="img/icons/ic_receipt_black_24px.svg"
+				ui-sref="warehouse.add" class="name"
+				style="color: Green; height: 20px; width: 20px"></md-icon>
+			<u>Reports</u>
+		</h3>
+		<md-button ui-sref="stock.reportByThreshold" ng-click="close()"
+			class="md-primary"> <md-icon
+			md-svg-src="img/icons/ic_trending_flat_black_24px.svg"
 			ui-sref="warehouse.add" class="name"
-			style="color: Green; height: 20px; width: 20px"></md-icon>
-		<u>Reports</u>
-	</h3>
-	<md-button ui-sref="stock.reportByThreshold" ng-click="close()"
-		class="md-primary"> <md-icon
-		md-svg-src="img/icons/ic_trending_flat_black_24px.svg"
-		ui-sref="warehouse.add" class="name"
-		style="color: Green; height: 15px; width: 15px"></md-icon> Stock By
-	Threshold </md-button> <md-button ui-sref="stock.reportByWarehouse"
-		ng-click="close()" class="md-primary"> <md-icon
-		md-svg-src="img/icons/ic_trending_flat_black_24px.svg"
-		ui-sref="warehouse.add" class="name"
-		style="color: Green; height: 15px; width: 15px"></md-icon> Stock By
-	Warehouse </md-button> <md-button ui-sref="stock.reportStockTransaction"
-		ng-click="close()" class="md-primary"> <md-icon
-		md-svg-src="img/icons/ic_trending_flat_black_24px.svg"
-		ui-sref="warehouse.add" class="name"
-		style="color: Green; height: 15px; width: 15px"></md-icon> Stock
-	Transaction Report </md-button> <md-button ui-sref="stock.reportByTaxPaid"
-		ng-click="close()" class="md-primary"> <md-icon
-		md-svg-src="img/icons/ic_trending_flat_black_24px.svg"
-		ui-sref="warehouse.add" class="name"
-		style="color: Green; height: 15px; width: 15px"></md-icon> Tax Paid </md-button> <md-button
-		ui-sref="stock.reportByTaxRecived" ng-click="close()"
-		class="md-primary"> <md-icon
-		md-svg-src="img/icons/ic_trending_flat_black_24px.svg"
-		ui-sref="warehouse.add" class="name"
-		style="color: Green; height: 15px; width: 15px"></md-icon> Tax
-	Collection </md-button> </md-content> </md-sidenav>
-</div>
+			style="color: Green; height: 15px; width: 15px"></md-icon> Stock By
+		Threshold </md-button> <md-button ui-sref="stock.reportByWarehouse"
+			ng-click="close()" class="md-primary"> <md-icon
+			md-svg-src="img/icons/ic_trending_flat_black_24px.svg"
+			ui-sref="warehouse.add" class="name"
+			style="color: Green; height: 15px; width: 15px"></md-icon> Stock By
+		Warehouse </md-button> <md-button ui-sref="stock.reportStockTransaction"
+			ng-click="close()" class="md-primary"> <md-icon
+			md-svg-src="img/icons/ic_trending_flat_black_24px.svg"
+			ui-sref="warehouse.add" class="name"
+			style="color: Green; height: 15px; width: 15px"></md-icon> Stock
+		Transaction Report </md-button> <md-button ui-sref="stock.reportByTaxPaid"
+			ng-click="close()" class="md-primary"> <md-icon
+			md-svg-src="img/icons/ic_trending_flat_black_24px.svg"
+			ui-sref="warehouse.add" class="name"
+			style="color: Green; height: 15px; width: 15px"></md-icon> Tax Paid </md-button>
+		<md-button ui-sref="stock.reportByTaxRecived" ng-click="close()"
+			class="md-primary"> <md-icon
+			md-svg-src="img/icons/ic_trending_flat_black_24px.svg"
+			ui-sref="warehouse.add" class="name"
+			style="color: Green; height: 15px; width: 15px"></md-icon> Tax
+		Collection </md-button> </md-content> </md-sidenav>
+	</div>
 
-<md-content flex ui-view layout-fill></md-content> </md-content>
+	<div ui-view layout-padding></div>
+</div>

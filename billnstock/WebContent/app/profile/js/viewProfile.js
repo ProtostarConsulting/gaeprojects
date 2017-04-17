@@ -3,7 +3,7 @@ angular
 		.controller(
 				"viewProfile",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
-						$mdUtil, $stateParams, $log, objectFactory,
+						$mdUtil, $stateParams, $filter, $log, objectFactory,
 						appEndpointSF) {
 
 					function defaultActionProcessing() {

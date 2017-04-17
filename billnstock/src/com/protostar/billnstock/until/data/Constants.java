@@ -68,8 +68,12 @@ public class Constants {
 	public static final int DOCUMENT_DEFAULT_MAX_SIZE = 5000000;
 	// MAX Document size is 5 MB
 
+	public enum DueDateTypes {
+		IMMEDIATE, NET15, NET30, NET60, NET90, CUSTOM
+	};
+
 	public enum DocumentStatus {
-		DRAFT, SUBMITTED, FINALIZED, REJECTED, APPROVED, SENT, PAID, UNPAID
+		DRAFT, SUBMITTED, FINALIZED, REJECTED, APPROVED, SENT, PAID, UNPAID, OPEN, CLOSED
 	};
 
 	public static enum DiscountType {
@@ -99,6 +103,7 @@ public class Constants {
 	public enum EmployeeStatus {
 		ACTIVE, SUSPENDED, RESIGNED, TERMINATED, CONTRACT, INTERN, DELETED
 	};
+
 	public enum QCParameterType {
 		NUMBER, NUMBERRANGE, YESNO, TEXT
 	};

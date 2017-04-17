@@ -3,6 +3,7 @@ package com.protostar.billnstock.until.data;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -17,6 +18,8 @@ import com.protostar.billingnstock.user.services.UserLoginService;
 
 public class BusinessNSFilter implements Filter {
 
+	private final Logger logger = Logger.getLogger(BusinessNSFilter.class.getName());
+
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
 			throws IOException, ServletException {
 
@@ -30,7 +33,6 @@ public class BusinessNSFilter implements Filter {
 		publicURLList.add("/com.protostar.billingnstock.user.services.UserService.getUserByEmailID");
 		publicURLList.add("/userService/v0.1/login");
 		publicURLList.add("/encoded_gs_key");
-		
 
 		// publicURLList.add("");
 
@@ -38,11 +40,11 @@ public class BusinessNSFilter implements Filter {
 
 		// Move to namespace based datastore once moved to angular 2/4 +
 		// endpoint 2.0
-		// System.out.println("####BusinessNSFilter filter is invoked before");
+		// logger.info("####BusinessNSFilter filter is invoked before");
 		String accessToken = WebUtil.getAccessToken(request);
-		System.out.println("accessToken: " + accessToken);
+		// logger.info("accessToken: " + accessToken);
 		String url = request.getPathInfo();
-		System.out.println("Url: " + url);
+		// logger.info("Url: " + url);
 		boolean skipLoginChk = false;
 
 		for (String skipUrl : publicURLList) {
@@ -57,22 +59,22 @@ public class BusinessNSFilter implements Filter {
 
 		if (skipLoginChk) {
 			// This is public API/Page
-			System.out.println("Skipping Login Check...");
+			//logger.info("Skipping Login Check...");
 		} else {
 			UserLoginService userLoginService = new UserLoginService();
 			if (accessToken != null && userLoginService.getCurrentUser(accessToken) != null) {
 				// Temp disabling loign check
 				CurrentUserSession currentUserSession = userLoginService.getCurrentUserSession(accessToken);
-				System.out.println("currentUserSession.getId(): " + currentUserSession.getId());
+				logger.info("currentUserSession.getId(): " + currentUserSession.getId());
 				WebUtil.setCurrentUser(currentUserSession);
 			} else {
-				System.out.println("ERROR: RuntimeException- User is not logged in. Please login first.");
+				logger.warning("ERROR: RuntimeException- User is not logged in. Please login first.");
 				throw new RuntimeException("ErrorCode:403: User is not logged in. Please login first.");
 			}
 		}
 
 		chain.doFilter(req, resp);// sends request to next resource
-		// System.out.println("#####BusinessNSFilter filter is invoked
+		// logger.info("#####BusinessNSFilter filter is invoked
 		// after.....................");
 	}
 
@@ -82,6 +84,6 @@ public class BusinessNSFilter implements Filter {
 	@Override
 	public void init(FilterConfig arg0) throws ServletException {
 		// TODO Auto-generated method stub
-		System.out.println("####BusinessNSFilter init......");
+		logger.info("####BusinessNSFilter init......");
 	}
 }

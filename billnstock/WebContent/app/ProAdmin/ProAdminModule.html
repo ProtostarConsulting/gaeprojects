@@ -1,38 +1,26 @@
 <div layout="column">
-
-
-	<div>
-
-		<section layout="row">
+	<div layout-fill>
+		<section layout="row" layout-fill style="margin: 0; padding: 0"
+			id="viewToolbar">
 			<div class="md-toolbar-tools">
-				<!-- <md-content layout="row" layout-align="center start"> <md-button
-					ui-sref="proAdmin.addAccount" ng-click="close()" class="md-primary">
-				Add Account</md-button> </md-content> -->
-
+				<md-button class="md-icon-button" aria-label="prev"
+					ng-click="back()"> <md-tooltip> go back</md-tooltip> <md-icon
+					md-svg-icon="img/icons/ic_reply_black_24px.svg"
+					aria-label="go back"></md-icon> </md-button>
 				<md-content layout="row" layout-align="center start"> <md-button
 					ui-sref="proAdmin.listAccount" ng-click="close()"
-					class="md-primary"> Business Plan List</md-button>
-			 </md-content>
-					
+					class="md-primary"> Business Plan List</md-button> </md-content>
 				<md-content layout="row" layout-align="center start"> <md-button
 					ui-sref="proAdmin.probusiness" ng-click="close()"
 					class="md-primary"> Business List</md-button> </md-content>
-					
-			<md-button ui-sref="proAdmin.manageauthmaster" ng-click="close()"
-					class="md-primary">Manage Authorizations </md-button>		
-
+				<md-button ui-sref="proAdmin.manageauthmaster" ng-click="close()"
+					class="md-primary">Manage Authorizations </md-button>
 			</div>
 
-			<div class="md-toolbar-tools">
-				<span flex></span>
-				<section layout="row">
-					<md-button class="md-icon-button" aria-label="More"
-						ng-click="toggleRight()"> <md-icon
-						md-svg-icon="img/icons/more_vert.svg"></md-icon> </md-button>
-
-				</section>
-			</div>
-
+			<span flex></span>
+			<md-button class="md-icon-button" aria-label="More"
+				ng-click="toggleRight()"> <md-icon
+				md-svg-icon="img/icons/more_vert.svg"></md-icon> </md-button>
 
 			<md-sidenav class="md-sidenav-right md-whiteframe-z2"
 				md-component-id="right"> <md-toolbar
@@ -44,13 +32,10 @@
 				ui-sref="proAdmin.addAccount" ng-click="close()" class="md-primary">
 			Add Account </md-button></md-content> <md-content layout="row" layout-align="center start">
 			<md-button ui-sref="proAdmin.listAccount" ng-click="close()"
-				class="md-primary"> Business Plan List</md-button> </md-content> --> </md-sidenav>
+				class="md-primary"> Business Plan List</md-button> </md-content> -->
+			</md-sidenav>
 		</section>
-
 	</div>
-
-
-
 
 	<div ui-view layout-padding></div>
 </div>

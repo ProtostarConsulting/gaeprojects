@@ -29,9 +29,8 @@ public class InvoiceSMSTask implements DeferredTask {
 	private long phoneNum;
 	private String data;
 
-	public InvoiceSMSTask(long bizId, int itemNumber, Date invoiceDueDate,
-			double finalTotal, String custName, long phoneNum)
-			throws UnsupportedEncodingException {
+	public InvoiceSMSTask(long bizId, int itemNumber, Date invoiceDueDate, double finalTotal, String custName,
+			long phoneNum) throws UnsupportedEncodingException {
 
 		this.bizId = bizId;
 		this.itemNumber = itemNumber;
@@ -48,17 +47,16 @@ public class InvoiceSMSTask implements DeferredTask {
 		}
 
 		UserService userService = new UserService();
-		BusinessSettingsEntity businessSettings = userService
-				.getBusinessSettingsEntity(bizId);
+		BusinessSettingsEntity businessSettings = userService.getBusinessSettingsEntity(bizId);
 
 		if (businessSettings == null || !businessSettings.isSmsNotification()) {
 			this.skipTxtMsg = true;
 			return;
 		}
 
-		String TxtLocalApiKey = businessSettings.getTextLocalAPIKey();
+		String txtLocalApiKey = businessSettings.getTextLocalAPIKey();
 
-		if (TxtLocalApiKey == null || TxtLocalApiKey.isEmpty()) {
+		if (txtLocalApiKey == null || txtLocalApiKey.isEmpty()) {
 			this.skipTxtMsg = true;
 			return;
 		}
@@ -71,12 +69,11 @@ public class InvoiceSMSTask implements DeferredTask {
 
 		String invoiceFinalTotalStr = decimalFormat2.format(this.finalTotal);
 
-		String msg = "Dear" + " " + this.custName + ",invoice no" + " "
-				+ this.itemNumber + " " + "with final total Rs."
-				+ invoiceFinalTotalStr + " " + "is due on" + " "
-				+ invoiceDueDateStr + ".";
+		String msg = "Invoice No:" + this.itemNumber + " of total Rs." + invoiceFinalTotalStr + " due on" + " "
+				+ invoiceDueDateStr + ". Please ignore already if paid. ~"
+				+ businessSettings.getBusiness().getBusinessName();
 
-		String apiKey = "&apiKey=" + URLEncoder.encode(TxtLocalApiKey, "UTF-8");
+		String apiKey = "&apiKey=" + URLEncoder.encode(txtLocalApiKey, "UTF-8");
 		String sender = "&sender=" + URLEncoder.encode(SMS_SENDERNAME, "UTF-8");
 		String numbers = "&numbers=" + URLEncoder.encode(phoneNumStr, "UTF-8");
 		String message = "&message=" + URLEncoder.encode(msg, "UTF-8");
@@ -93,25 +90,19 @@ public class InvoiceSMSTask implements DeferredTask {
 				return;
 			}
 			System.out.println("Sending SMS Async--------");
-			HttpURLConnection conn = (HttpURLConnection) new URL(
-					InvoiceSMSTask.TEXTLOCAL_API_URL).openConnection();
+			HttpURLConnection conn = (HttpURLConnection) new URL(InvoiceSMSTask.TEXTLOCAL_API_URL).openConnection();
 			conn.setDoOutput(true);
 			conn.setRequestMethod("POST");
-			conn.setRequestProperty("Content-Length",
-					Integer.toString(this.getData().length()));
+			conn.setRequestProperty("Content-Length", Integer.toString(this.getData().length()));
 			conn.getOutputStream().write(this.getData().getBytes("UTF-8"));
-			final BufferedReader rd = new BufferedReader(new InputStreamReader(
-					conn.getInputStream()));
+			final BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 			final StringBuffer stringBuffer = new StringBuffer();
 			String line;
 			while ((line = rd.readLine()) != null) {
 				stringBuffer.append(line);
 			}
 			rd.close();
-			System.out.println("data:" + this.getData());
-			System.out.println("stringBuffer.toString():"
-					+ stringBuffer.toString());
-			System.out.println("DoneSending SMS Async------");
+			System.out.println("Done-Sending SMS Async------");
 		} catch (Exception e) {
 			System.out.println("Error SMS: " + e);
 		}

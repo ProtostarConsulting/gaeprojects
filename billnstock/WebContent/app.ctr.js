@@ -528,7 +528,7 @@ angular
 					$rootScope.scroll = 10;
 
 					$scope.$watch('scroll', function() {
-						console.log("$scope.scroll: " + $scope.scroll);
+						//console.log("$scope.scroll: " + $scope.scroll);
 						$rootScope.scroll = $scope.scroll;
 					});
 					$scope.toggleMainMenuSwitch = $mdMedia('gt-md');
