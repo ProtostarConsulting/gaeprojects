@@ -52,7 +52,8 @@ public class Constants {
 			+ "{\"authName\":\"Invoice\",\"authorizations\":[{\"authName\":\"invoice\",\"authorizations\":[]},{\"authName\":\"Invoice.ModuleAdmin\",\"authorizations\":[]},{\"authName\":\"Invoice.ModuleApprover\",\"authorizations\":[]}]}, "
 			+ "{\"authName\":\"taskmanagement\",\"authorizations\":[{\"authName\":\"taskmanagement.add\",\"authorizations\":[]}, {\"authName\":\"taskmanagement.mytasklist\",\"authorizations\":[]}, {\"authName\":\"taskmanagement.list\",\"authorizations\":[]},  {\"authName\":\"taskmanagement.tasklistreport\",\"authorizations\":[]},{\"authName\":\"TaskManagement.ModuleAdmin\",\"authorizations\":[]},{\"authName\":\"TaskManagement.ModuleApprover\",\"authorizations\":[]}]}, "
 			+ "{\"authName\":\"HRMS\",\"authorizations\":[{\"authName\":\"SalaryMaster\",\"authorizations\":[]},{\"authName\":\"LeaveDetail\",\"authorizations\":[]},{\"authName\":\"Monthly Salary\",\"authorizations\":[]},{\"authName\":\"PayrollReports\",\"authorizations\":[]},{\"authName\":\"HRMS.ModuleAdmin\",\"authorizations\":[]},{\"authName\":\"HRMS.ModuleApprover\",\"authorizations\":[]}]},"
-			+ "{\"authName\":\"More Actions\",\"authorizations\":[{\"authName\":\"setup\",\"authorizations\":[]},{\"authName\":\"updatemyprofile\",\"authorizations\":[]}]}";
+			+ "{\"authName\":\"More Actions\",\"authorizations\":[{\"authName\":\"setup\",\"authorizations\":[]},{\"authName\":\"updatemyprofile\",\"authorizations\":[]}]}"
+			+"{\"authName\":\"Production\",\"authorizations\":[{\"authName\":\"production\",\"authorizations\":[]}";
 	public static final String PROTOSTAR_DEFAULT_AUTHS = "{\"authorizations\":[" + APP_ALL_AUTHS
 			+ ", {\"authName\":\"Pro Admin\",\"authorizations\":[{\"authName\":\"proadmin\",\"authorizations\":[]}]}]}";
 	public static final String NEW_BIZ_DEFAULT_AUTHS = "{\"authorizations\":[" + APP_ALL_AUTHS + "]}";
