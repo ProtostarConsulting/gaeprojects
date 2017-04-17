@@ -1,6 +1,6 @@
 var app = angular.module("stockApp");
 
-app.controller("addBOM", function($scope, $window, $mdToast, $timeout,
+app.controller("add_bom", function($scope, $window, $mdToast, $timeout,
 		$mdSidenav, $mdUtil, $log, $stateParams, objectFactory, appEndpointSF,
 		$mdDialog, $mdMedia) {
 
@@ -60,7 +60,7 @@ app.controller("addBOM", function($scope, $window, $mdToast, $timeout,
 	$scope.submitProduction = function() {
 
 		var productService = appEndpointSF.getProductionService();
-		productService.addProduction($scope.addBom).then(function() {
+		productService.addBomEntity($scope.addBom).then(function() {
 			$scope.showAddToast();
 		});
 

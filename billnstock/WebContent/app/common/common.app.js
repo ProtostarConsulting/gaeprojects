@@ -622,17 +622,23 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
 	})
 
-	.state('accounting.addBOM', {
-		url : "/addBill_Of_Material",
-		templateUrl : '/app/accounting/addBOM.html',
-		controller : 'addBOM',
+	.state('production.add_bom', {
+		url : "/add_Bill_Of_material",
+		templateUrl : '/app/production/add_bom.html',
+		controller : 'add_bom',
 	})
 	
-	.state('accounting.listBOM', {
+	.state('production.list_bom', {
 		url : "/list_Bill_of_material",
-		templateUrl : '/app/accounting/listBOM.html',
-		controller : 'listBOM'
+		templateUrl : '/app/production/list_bom.html',
+		controller : 'list_bom'
 
+	})
+	
+	.state('production', {
+		url : "/production",
+		templateUrl : '/app/production/prod_module.html',
+		controller : 'prodModuleCtr'
 	})
 
 	////////////////////////

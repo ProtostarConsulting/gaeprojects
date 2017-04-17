@@ -1,7 +1,7 @@
 app = angular.module("stockApp");
 app
 		.controller(
-				"listBOM",
+				"list_bom",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
 						$mdUtil, $log, $state, $http, $stateParams,
 						$routeParams, $filter, $q, $mdMedia, $mdDialog,
@@ -14,7 +14,7 @@ app
 						var productService = appEndpointSF
 						.getProductionService();
 						
-						productService.getProductionList($scope.curUser.business.id)
+						productService.getlistBomEntity($scope.curUser.business.id)
 						.then(function(list) {
 						$scope.productList=list;
 				

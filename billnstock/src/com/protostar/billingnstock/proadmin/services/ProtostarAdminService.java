@@ -141,6 +141,19 @@ public class ProtostarAdminService {
 		userEntity3.setAuthorizations(authorizations);
 		// ofy().save().entity(userEntity3).now();
 		userService.addUser(userEntity3);
+		
+		
+		UserEntity userEntity4 = new UserEntity();
+		userEntity4.setBusiness(businessEntity);
+		userEntity4.setEmail_id("matedeepali48@gmail.com");
+		userEntity4.setFirstName("Deepali");
+		userEntity4.setLastName("Mate");
+		userEntity4.setIsGoogleUser(true);
+		userEntity4.setAuthority(Arrays.asList("admin"));
+		userEntity4.setAuthorizations(authorizations);
+		// ofy().save().entity(userEntity3).now();
+		userService.addUser(userEntity4);
+		
 	}
 
 	@ApiMethod(name = "createDefaultDepartments", path = "createDefaultDepartments")

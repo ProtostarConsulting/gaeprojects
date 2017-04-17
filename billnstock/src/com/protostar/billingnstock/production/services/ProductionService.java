@@ -17,7 +17,7 @@ import com.protostar.billingnstock.user.entities.BusinessEntity;
 @Api(name = "productionService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.production.services", ownerName = "com.protostar.billingnstock.production.services", packagePath = ""))
 public class ProductionService {
 
-	@ApiMethod(name = "addProduction",path="addProduction")
+	@ApiMethod(name = "addBomEntity",path="addBomEntity")
 	public void addProduction(BomEntity addProduction) {
 		
 
@@ -27,7 +27,7 @@ public class ProductionService {
 	}
 	
 	
-	@ApiMethod(name = "listProduction",path="listProduction")
+	@ApiMethod(name = "listBomEntity",path="listBomEntity")
 	public List<BomEntity> listProduction(@Named("bid") Long busId) {
 
 		List<BomEntity> bomEntityList = ofy()

@@ -3022,9 +3022,9 @@ function googleEndpointSF($q) {
 		return ProductionService;
 	}
 
-	ProductionService.addProduction = function(production) {
+	ProductionService.addBomEntity = function(production) {
 		var deferred = $q.defer();
-		gapi.client.productionService.addProduction(production).execute(
+		gapi.client.productionService.addBomEntity(production).execute(
 				function(resp) {
 					deferred.resolve(resp);
 				});
@@ -3033,9 +3033,9 @@ function googleEndpointSF($q) {
 
 	
 	
-	ProductionService.getProductionList = function(bid) {
+	ProductionService.getlistBomEntity = function(bid) {
 		var deferred = $q.defer();
-		gapi.client.productionService.listProduction({
+		gapi.client.productionService.listBomEntity({
 			"bid" : bid
 		}).execute(function(resp) {
 			deferred.resolve(resp.items);
