@@ -37,19 +37,17 @@
 					
 				</tr>
 			</thead>
-			<tbody ng-repeat="product in productList ">
-				<tr	ng-repeat="productCategory in product.catList" >
+			<tbody >
+				<tr ng-repeat="product in productList ">
 				<td>{{$index+1}}</td> 
 				<td>{{product.productName}}</td>
-			
-				</td>
-				
-				</div>	
-					<td><md-button class="md-icon-button"
+				<td><md-button class="md-icon-button"
 							ui-sref="production.add_bom({bomCategory:product})">
 						<ng-md-icon icon="edit" style="fill: md-default" size="20">
 						<md-tooltip> Edit</md-tooltip></ng-md-icon></md-button></td>
-				</tr>
+				
+			</tr>
+					
 		</tbody>
 		</table>
 		</md-data-table-container>

@@ -27,7 +27,10 @@
 				<td>Category {{ $index +1 }}<md-button class="md-icon-button"
 						ng-show="!itemToggle" ng-click="itemToggle=true"> <ng-md-icon
 						icon="keyboard_arrow_down" style="fill: md-default" size="24">
-					</td>
+					<md-tooltip> Expand</md-tooltip></ng-md-icon></md-button> <md-button class="md-icon-button"
+						ng-show="itemToggle" ng-click="itemToggle=false"> <ng-md-icon
+						icon="keyboard_arrow_up" style="fill: md-default" size="24">
+					<md-tooltip> Compress</md-tooltip></ng-md-icon></md-button></td>
 				<td><div layout="row">
 								<md-select
 								    name="category"
@@ -46,7 +49,7 @@
 				</td>
 
 			</tr>
-			<tr ng-repeat="itemObj in  bomCategory.items">
+			<tr ng-repeat="itemObj in  bomCategory.items" ng-show="itemToggle">
 				<td></td>
 				<td>
 					<div layout="row">
@@ -66,17 +69,9 @@
 					<div layout="row">
 				<md-input-container> <input
 						placeholder="Product qty."
-						ng-change="calItemSubTotal(bomCategory,itemObj)"
 						ng-model="itemObj.qty" ng-required="true"></md-input-container>
-				<md-input-container> <input
-						type="number" placeholder="Budget Amt."
-						ng-change="calItemSubTotal(category,itemObj)"
-						ng-model="itemObj.price" ng-required="true"></md-input-container> 
-												
-						<md-input-container>
-					<input type="number" placeholder="Current Balance."
-						ng-change="calItemSubTotal(bomCategory,itemObj)"
-						ng-model="itemObj.currentBudgetBalance" ng-disabled="true"></md-input-container></div></td>
+			
+					</div></td>
 				<td><md-icon
 						md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
 						ng-click="removeLineItem(bomCategory,$index)" class="name"

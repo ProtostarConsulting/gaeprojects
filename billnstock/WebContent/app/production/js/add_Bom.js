@@ -99,13 +99,7 @@ app.controller("add_bom", function($scope, $window, $mdToast, $timeout,
 	};
 	
 	
-	$scope.calItemSubTotal = function(category, item) {
-		
-		item.currentBudgetBalance=item.price*item.qty;
-		
-		
-		
-	};
+
 
 	var productService = appEndpointSF.getProductionService();
 	$scope.fetchCatogoryList();
