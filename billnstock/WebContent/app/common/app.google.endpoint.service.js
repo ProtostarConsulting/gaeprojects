@@ -3030,6 +3030,25 @@ function googleEndpointSF($q) {
 				});
 		return deferred.promise;
 	}
-	// ====================================================
+
+	
+	
+	ProductionService.getProductionList = function(bid) {
+		var deferred = $q.defer();
+		gapi.client.productionService.listProduction({
+			"bid" : bid
+		}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}
+	
+	
+	
+	
+	
+	//====================================================
+
+	
 	return serviceFactory;
 }

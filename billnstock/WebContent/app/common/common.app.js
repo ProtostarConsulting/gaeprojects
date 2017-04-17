@@ -619,16 +619,29 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		templateUrl : '/app/accounting/dayBook.html',
 		controller : 'dayBook',
 
-	})
-
-	.state('accounting.addProduction', {
-		url : "/addProduction",
-		templateUrl : '/app/accounting/addProduction.html',
-		controller : 'addProduction',
 
 	})
+
+	.state('accounting.addBOM', {
+		url : "/addBill_Of_Material",
+		templateUrl : '/app/accounting/addBOM.html',
+		controller : 'addBOM',
+	})
+	
+	.state('accounting.listBOM', {
+		url : "/list_Bill_of_material",
+		templateUrl : '/app/accounting/listBOM.html',
+		controller : 'listBOM'
+
+	})
+
+	////////////////////////
+	
+	
+
 
 	.state('accounting.voucherPayment', {
+
 		url : "/PaymentVoucher",
 		templateUrl : '/app/accounting/voucherPayment.html',
 		controller : 'voucherPaymentCtr',

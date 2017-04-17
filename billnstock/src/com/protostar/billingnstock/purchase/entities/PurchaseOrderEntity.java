@@ -40,10 +40,6 @@ public class PurchaseOrderEntity extends InvoiceEntity {
 
 	@Override
 	public void beforeSave() {
-		// super.beforeSave(); No call to supper Before save as it will increase
-		// invoice itemNumber counter. Copying content of supper class method
-		// here....
-
 		if (getBusiness() == null) {
 			throw new RuntimeException("Business entity is not set on: "
 					+ this.getClass().getSimpleName()

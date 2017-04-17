@@ -79,6 +79,7 @@ app
 						var itemObj = {
 							itemName : "",
 							price : 0,
+							qty:0,
 							currentBudgetBalance : 0
 						};
 

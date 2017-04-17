@@ -64,7 +64,6 @@ app
 					function loadAllSuppliers() {
 						var supplierService = appEndpointSF
 								.getSupplierService();
-
 						supplierService.getAllSuppliersByBusiness(
 								$scope.curUser.business.id).then(
 								function(supplierList) {
@@ -78,7 +77,6 @@ app
 					$scope.documentEntity.poDueDate = $scope.documentEntity.poDueDate ? new Date(
 							$scope.documentEntity.poDueDate)
 							: new Date();
-
 					$scope.saveDocument = function() {
 						if (!$scope.documentEntity.serviceLineItemList
 								&& !$scope.documentEntity.productLineItemList) {
@@ -106,12 +104,10 @@ app
 						$scope.documentEntity.status = 'DRAFT';
 						$scope.saveDocument();
 					}
-
 					$scope.submitDocumnent = function(ev) {
 						$scope.documentEntity.status = 'SUBMITTED';
 						$scope.saveDocument();
 					}
-
 					$scope.finalizeDocumnent = function(ev) {
 						var confirm = $mdDialog
 								.confirm()
@@ -129,7 +125,6 @@ app
 							$log.debug("Cancelled...");
 						});
 					}
-
 					$scope.rejectDocumnent = function(ev) {
 						var confirm = $mdDialog
 								.confirm()
@@ -211,6 +206,7 @@ app
 						$scope.productTaxChanged();
 						$scope.calServiceSubTotal();
 						$scope.calProductSubTotal();
+						
 						// calculateDiscountAmount();
 						// This is needed as tax and sub-totals depend on each
 						// other
