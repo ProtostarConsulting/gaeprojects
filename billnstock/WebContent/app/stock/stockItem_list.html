@@ -8,18 +8,30 @@
 	<md-subheader class="md-primary">
 	<h4 class="md-title">Current Stock Items</h4>
 	</md-subheader>
-	<span flex> </span>
+
 	<md-input-container flex> <label>Select
-		Warehouse</label> <md-select ng-model="selectedWarehouse"
-		ng-change="filterStockItemsByWarehouse(selectedWarehouse)">
-	<md-option ng-value="warehouse" ng-repeat="warehouse in warehouses"
-		ng-selected="selectedWarehouse.id == warehouse.id">{{warehouse.warehouseName
+		Warehouse</label> <md-select ng-model="stockItemTypeFilterWrapper.warehouse"
+		ng-change="filterByWarehouse()"> <md-option
+		ng-value="warehouse" ng-repeat="warehouse in warehouses">{{warehouse.warehouseName
 	}}</md-option> </md-select> </md-input-container>
-	<md-input-container flex-gt-xs="25"> <label>Search</label>
-	<input ng-model="searchText"> </md-input-container>
+	<md-input-container flex> <label>Select
+		Product Type</label> <md-select
+		ng-model="stockItemTypeFilterWrapper.productType"
+		ng-change="filterByProductType()"> <md-option
+		ng-value="productType"
+		ng-repeat="productType in stockItemProductTypes">{{productType.typeName
+	}}</md-option> </md-select> </md-input-container>
+	<md-input-container flex> <label>Select
+		Brand</label> <md-select ng-model="stockItemTypeFilterWrapper.brand"
+		ng-change="filterByBrand()"> <md-option
+		ng-value="stockItemBrand"
+		ng-repeat="stockItemBrand in stockItemBrands">{{stockItemBrand.brandName
+	}}</md-option> </md-select> </md-input-container>
+	<md-input-container flex> <label>Search</label> <input
+		ng-model="searchText"> </md-input-container>
 	<md-button class="md-icon-button" ui-sref="stock.stockItemAdd">
 	<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
-	<md-tooltip> Add New </md-tooltip></ng-md-icon> </md-button> 
+	<md-tooltip> Add New </md-tooltip></ng-md-icon> </md-button>
 </section>
 
 <div id="stockTable">
@@ -43,7 +55,7 @@
 				ng-repeat="stockItem in stockItemList | orderBy: query.order| filter: searchText | limitTo: query.limit: (query.page - 1) * query.limit"">
 				<td>{{stockItem.stockItemType.itemNumber}}</td>
 				<td>{{stockItem.stockItemType.itemName}}</td>
-				<td>{{stockItem.stockItemType.category}}</td>
+				<td>{{stockItem.stockItemType.catNames}}</td>
 				<td>{{stockItem.qty}}</td>
 				<td>{{stockItem.cost}}</td>
 				<td>{{stockItem.movingAvgCost}}</td>

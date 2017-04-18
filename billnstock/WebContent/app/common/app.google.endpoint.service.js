@@ -2273,6 +2273,53 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
+	StockService.filterStockItemsByBrand = function(stockItemBrand) {
+		var deferred = $q.defer();
+		gapi.client.stockService.filterStockItemsByBrand(stockItemBrand)
+				.execute(function(resp) {
+					deferred.resolve(resp.items);
+				});
+		return deferred.promise;
+	}
+	
+	StockService.filterStockItemsByBrandAndWH = function(stockItemFilterWrappper) {
+		var deferred = $q.defer();
+		gapi.client.stockService.filterStockItemsByBrandAndWH(stockItemFilterWrappper)
+				.execute(function(resp) {
+					deferred.resolve(resp.items);
+				});
+		return deferred.promise;
+	}
+	
+	StockService.filterStockItemsByProductType = function(stockItemProductTypeEntity) {
+		var deferred = $q.defer();
+		gapi.client.stockService.filterStockItemsByProductType(stockItemProductTypeEntity)
+				.execute(function(resp) {
+					deferred.resolve(resp.items);
+				});
+		return deferred.promise;
+	}
+	
+	StockService.filterStockItemsByProductTypeAndWH = function(stockItemFilterWrappper) {
+		var deferred = $q.defer();
+		gapi.client.stockService.filterStockItemsByProductTypeAndWH(stockItemFilterWrappper)
+				.execute(function(resp) {
+					deferred.resolve(resp.items);
+				});
+		return deferred.promise;
+	}
+	
+	StockService.filterStockItemsByBrandAndProductTypeAndWH = function(busId,stockItemFilterWrappper) {
+		var deferred = $q.defer();
+		gapi.client.stockService.filterStockItemsByBrandAndProductTypeAndWH({
+			"busId":busId
+		},stockItemFilterWrappper)
+				.execute(function(resp) {
+					deferred.resolve(resp.items);
+				});
+		return deferred.promise;
+	}
+	
 	StockService.getCRStockTxnByStockItem = function(stockItem, busId,
 			fromDate, toDate) {
 		var deferred = $q.defer();
