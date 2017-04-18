@@ -13,6 +13,7 @@ import com.protostar.billingnstock.account.entities.AccountEntity;
 import com.protostar.billingnstock.account.entities.AccountEntryEntity;
 import com.protostar.billingnstock.production.entities.BomEntity;
 import com.protostar.billingnstock.production.entities.ProductionMachineEntity;
+import com.protostar.billingnstock.production.entities.QCMachineEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 
 @Api(name = "productionService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.production.services", ownerName = "com.protostar.billingnstock.production.services", packagePath = ""))
@@ -48,5 +49,18 @@ public class ProductionService {
 		
 		return machineList;
 	}
+	
+	@ApiMethod(name = "addQCMachine", path = "addQCMachine")
+	public QCMachineEntity addQCMachine(QCMachineEntity machine) {
+		ofy().save().entity(machine).now();		
+		return machine;
+	}
 
+	@ApiMethod(name = "getQCMachineList", path = "getQCMachineList")
+	public List<QCMachineEntity> getQCMachineList(@Named("busId") Long busId) {
+		List<QCMachineEntity> machineList =  ofy().load().type(QCMachineEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).list();
+		
+		return machineList;
+	}
 }

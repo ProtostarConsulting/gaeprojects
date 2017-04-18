@@ -13,11 +13,11 @@ public class QCMachineEntity extends QCEntity {
 	private Ref<ProductionMachineEntity> machine;
 
 	public ProductionMachineEntity getMachine() {
-		return machine.get();
+		return machine == null ? null : machine.get();
 	}
 
-	public void setMachine(Ref<ProductionMachineEntity> machine) {
-		this.machine = machine;
+	public void setMachine(ProductionMachineEntity machine) {
+		this.machine = Ref.create(machine);
 	}
 
 }
