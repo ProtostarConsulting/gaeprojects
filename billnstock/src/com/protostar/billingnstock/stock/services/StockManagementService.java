@@ -45,6 +45,7 @@ import com.protostar.billingnstock.stock.entities.StockItemsShipmentEntity.Shipm
 import com.protostar.billingnstock.stock.entities.StockLineItem;
 import com.protostar.billingnstock.stock.entities.StockSettingsEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
+import com.protostar.billingnstock.user.services.UserService;
 import com.protostar.billingnstock.warehouse.entities.WarehouseEntity;
 import com.protostar.billnstock.service.BaseService;
 import com.protostar.billnstock.until.data.Constants.DocumentStatus;
@@ -380,9 +381,11 @@ public class StockManagementService extends BaseService {
 		List<StockItemTypeEntity> filteredStockItemTypes = ofy().load().type(StockItemTypeEntity.class)
 				.ancestor(fitlerWrapper.getBrand().getBusiness()).filter("brand", fitlerWrapper.getBrand()).list();
 
-		List<StockItemEntity> filteredStocks = ofy().load().type(StockItemEntity.class).ancestor(fitlerWrapper.getBrand().getBusiness())
+		List<StockItemEntity> filteredStocks = new ArrayList<StockItemEntity>();
+		if(filteredStockItemTypes.size()>0){
+		filteredStocks = ofy().load().type(StockItemEntity.class).ancestor(fitlerWrapper.getBrand().getBusiness())
 				.filter("warehouse", fitlerWrapper.getWarehouse()).filter("stockItemType IN", filteredStockItemTypes).list();
-
+		}
 		return filteredStocks;
 	}
 
@@ -391,9 +394,12 @@ public class StockManagementService extends BaseService {
 		List<StockItemTypeEntity> filteredStockItemTypes = ofy().load().type(StockItemTypeEntity.class)
 				.ancestor(productType.getBusiness()).filter("productType", productType).list();
 
-		List<StockItemEntity> filteredStocks = ofy().load().type(StockItemEntity.class)
+		List<StockItemEntity> filteredStocks = new ArrayList<StockItemEntity>();
+		if(filteredStockItemTypes.size()>0){
+		
+			filteredStocks = ofy().load().type(StockItemEntity.class)
 				.ancestor(productType.getBusiness()).filter("stockItemType IN", filteredStockItemTypes).list();
-
+		}
 		return filteredStocks;
 	}
 
@@ -402,13 +408,55 @@ public class StockManagementService extends BaseService {
 		List<StockItemTypeEntity> filteredStockItemTypes = ofy().load().type(StockItemTypeEntity.class)
 				.ancestor(fitlerWrapper.getProductType().getBusiness()).filter("productType", fitlerWrapper.getProductType()).list();
 
-		List<StockItemEntity> filteredStocks = ofy().load().type(StockItemEntity.class)
+		List<StockItemEntity> filteredStocks = new ArrayList<StockItemEntity>();
+		if(filteredStockItemTypes.size()>0){
+		filteredStocks = ofy().load().type(StockItemEntity.class)
 				.ancestor(fitlerWrapper.getProductType().getBusiness()).filter("warehouse", fitlerWrapper.getWarehouse())
 				.filter("stockItemType IN", filteredStockItemTypes).list();
-
+		}
 		return filteredStocks;
 	}
 
+	@ApiMethod(name = "filterStockItemsByBrandAndProductTypeAndWH", path = "filterStockItemsByBrandAndProductTypeAndWH")
+	public List<StockItemEntity> filterStockItemsByBrandAndProductTypeAndWH(@Named("busId") Long busId,StockItemTypeFilterWrapper fitlerWrapper) {
+		
+		
+		UserService userService = new UserService();
+		BusinessEntity business = userService.getBusinessById(busId);
+		
+		Query<StockItemTypeEntity> ancestorQuery=ofy().load().type(StockItemTypeEntity.class)
+				.ancestor(Key.create(BusinessEntity.class,
+								busId));
+		
+		List<StockItemEntity> stockItems  = new ArrayList<StockItemEntity>();
+		
+		List<StockItemTypeEntity> filteredStockItemTypes  = new ArrayList<StockItemTypeEntity>();
+		
+		if(fitlerWrapper.getProductType() != null)
+			
+			ancestorQuery= ancestorQuery.filter("productType", fitlerWrapper.getProductType());
+			filteredStockItemTypes = ancestorQuery.list();
+		
+			
+		if(fitlerWrapper.getBrand() != null)
+			ancestorQuery= ancestorQuery.filter("brand", fitlerWrapper.getBrand());
+			filteredStockItemTypes = ancestorQuery.list();
+		
+		
+		if(fitlerWrapper.getWarehouse() != null){
+			ancestorQuery = ancestorQuery.filter("warehouse", fitlerWrapper.getWarehouse());
+			filteredStockItemTypes = ancestorQuery.list();
+		}
+
+		
+		if(filteredStockItemTypes.size()>0){
+			stockItems = ofy().load().type(StockItemEntity.class)
+				.ancestor(business)
+				.filter("stockItemType IN", filteredStockItemTypes).list();
+		}
+		return stockItems;
+	}
+	
 	@ApiMethod(name = "filterStockItemsByCategory", path = "filterStockItemsByCategory")
 	public List<StockItemEntity> filterStockItemsByCategory(StockItemTypeCategory category) {
 		List<StockItemTypeEntity> filteredStockItemTypes = ofy().load().type(StockItemTypeEntity.class)
