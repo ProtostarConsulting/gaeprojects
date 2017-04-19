@@ -10,7 +10,7 @@
 	"authName": "Accounting",
 	"authDisplayName": "Accounting",
 	"uiStateName": "accounting",
-	"orderNumber":4,
+	"orderNumber":1,
 	"authorizations":[	    
 	     {
 		 "authName":"accounting",
@@ -37,7 +37,7 @@
 	"authName": "Stock",
 	"authDisplayName": "Stock",
 	"uiStateName": "stock",
-	"orderNumber":4,
+	"orderNumber":2,
 	"authorizations":[	    
 	     {
 		 "authName":"stock",
@@ -48,6 +48,33 @@
 		 },
 		 {
 		 "authName":"Stock.ModuleAdmin",
+		 "authDisplayName":"Module Admin",
+		 "uiStateName":"",		 
+		 "orderNumber":"1"
+		 },
+		 {
+		 "authName":"Stock.ModuleApprover",
+		 "authDisplayName":"Module Approver",
+		 "uiStateName":"",		 
+		 "orderNumber":"1"
+		 }
+		 ]
+	},
+	{
+	"authName": "Production",
+	"authDisplayName": "Production",
+	"uiStateName": "production",
+	"orderNumber":3,
+	"authorizations":[	    
+	     {
+		 "authName":"Production",
+		 "authDisplayName":"Production",
+		 "uiStateName":"production",
+		 "orderNumber":"1",
+		 "authorizations":[]
+		 },
+		 {
+		 "authName":"Production.ModuleAdmin",
 		 "authDisplayName":"Module Admin",
 		 "uiStateName":"",		 
 		 "orderNumber":"1"

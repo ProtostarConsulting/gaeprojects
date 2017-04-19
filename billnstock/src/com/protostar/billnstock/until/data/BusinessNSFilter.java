@@ -29,9 +29,10 @@ public class BusinessNSFilter implements Filter {
 		publicURLList.add("/discovery/v1/apis");
 		publicURLList.add("/_ah/api/discovery");
 		publicURLList.add("/BackendService.getApiConfigs");
+		publicURLList.add("/userService/v0.1/login");
+		publicURLList.add("/com.protostar.billingnstock.user.services.UserService.login");
 		publicURLList.add("/userService/v0.1/getUserByEmailID");
 		publicURLList.add("/com.protostar.billingnstock.user.services.UserService.getUserByEmailID");
-		publicURLList.add("/userService/v0.1/login");
 		publicURLList.add("/encoded_gs_key");
 
 		// publicURLList.add("");

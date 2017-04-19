@@ -23,32 +23,36 @@
 		<span style="padding-right: 8px;">Filter By Status: </span><span
 			md-colors="{color:'default-primary-700'}"
 			ng-repeat="status in documentStatusList"
-			ng-click="fitlerListByStatus(status)">{{status + " "}}</span>
+			ng-click="fitlerListByStatus(status)"> <span
+			style="text-decoration: underline;"
+			ng-if="(selectedStatus == status) || ((selectedStatus == '' || selectedStatus == 'ALL') && status == 'ALL')">{{status + " "}}</span> <span
+			ng-if="!((selectedStatus == status) || ((selectedStatus == '' || selectedStatus == 'ALL') && status == 'ALL'))">{{status + " "}}</span></span>
 	</div>
-	<md-data-table-container>
-	<table md-data-table class="md-primary" md-progress="deferred">
-		<thead md-order="query.order" md-trigger="onorderchange">
-			<tr>
-				<th name="Invoice No." order-by="itemNumber"></th>
-				<th name="Created Date" order-by="createdDate"></th>
-				<th name="Status" order-by="status"></th>
-				<th name="Customer Name" order-by="customer.companyName"></th>
-				<th name="Final Total(&#x20b9)" order-by="finalTotal"></th>
-				<th name="Actions"></th>
+	<md-table-container>
+	<table md-table md-progress="promise">
+		<thead ng-if="!dataTableOptions.decapitate" md-head
+			md-order="query.order" md-on-reorder="logOrder">
+			<tr md-row>
+				<th md-column md-order-by="itemNumber" width="4%">Invoice No.</th>
+				<th md-column md-order-by="createdDate">Created Date</th>
+				<th md-column md-order-by="status">Status</th>
+				<th md-column md-order-by="customer.companyName">Customer Name</th>
+				<th md-column md-numeric md-order-by="finalTotal">Final Total(&#x20b9)</th>
+				<th md-column>Actions</th>
 			</tr>
 		</thead>
 
-		<tbody>
-			<tr md-auto-select
+		<tbody md-body>
+			<tr md-row
 				ng-repeat="invoice in invoiceData | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
 
-				<td>{{invoice.itemNumber}}</td>
-				<td>{{invoice.createdDate | formatDateWithTime}}</td>
-				<td>{{invoice.status}}</td>
-				<td>{{invoice.customer.isCompany?invoice.customer.companyName:(invoice.customer.firstName
+				<td md-cell>{{invoice.itemNumber}}</td>
+				<td md-cell>{{invoice.createdDate | formatDateWithTime}}</td>
+				<td md-cell>{{invoice.status}}</td>
+				<td md-cell>{{invoice.customer.isCompany?invoice.customer.companyName:(invoice.customer.firstName
 					+' '+ invoice.customer.lastName)}}</td>
-				<td>{{invoice.finalTotal | currency:"":"2"}}</td>
-				<td>
+				<td md-cell>{{invoice.finalTotal | currency:"":"2"}}</td>
+				<td md-cell>
 					<section layout="row">
 						<!-- <md-button class="md-icon-button"
 							ui-sref="invoice.view({selectedInvoiceNo: invoice.id})">
@@ -76,8 +80,9 @@
 							size="20"> <md-tooltip> Mark as Unpaid</md-tooltip></md-icon></md-button>
 						<md-button class="md-icon-button" ng-show="invoice.status!='PAID'"
 							ng-click="updatePaidStatus(invoice)"> <md-icon
-							md-svg-src="/img/icons/currency-usd-off.svg" style="fill: md-default"
-							size="20"> <md-tooltip>Marke as Paid</md-tooltip></md-icon></md-button>
+							md-svg-src="/img/icons/currency-usd-off.svg"
+							style="fill: md-default" size="20"> <md-tooltip>Marke
+						as Paid</md-tooltip></md-icon></md-button>
 						<md-button class="md-icon-button"
 							ng-click="printInvoice(invoice.id)"> <ng-md-icon
 							icon="print" style="fill: md-default" size="20"> <md-tooltip>
@@ -91,8 +96,12 @@
 			</tr>
 		</tbody>
 	</table>
-	<md-data-table-pagination md-limit="query.limit" md-page="query.page"
-		md-total={{query.totalSize}} md-trigger="onpagechange"></md-data-table-pagination>
-	</md-data-table-container>
+	</md-table-container>
+	<md-table-pagination md-limit="query.limit"
+		md-limit-options="dataTableOptions.limitOptions" md-page="query.page"
+		md-total={{query.totalSize}}
+		md-page-select="dataTableOptions.pageSelect"
+		md-boundary-links="dataTableOptions.boundaryLinks"
+		md-on-paginate="logPagination"></md-table-pagination>
 </div>
 </md-content>

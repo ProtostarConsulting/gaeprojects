@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="stockAppLogout" ng-controller="logoutCtr">
+<head>
+<title>ProERP</title>
+<meta name="viewport" content="initial-scale=1" />
+</head>
+<body layout="column" ng-cloak md-theme="default" md-theme-watch="true"
+	layout="column">
+	<md-content flex-gt-xs style="padding-left: 18px; padding-right: 18px;">
+	</md-content>
+
+	<!-- All JS Dependencies -->
+	<script src="https://apis.google.com/js/client.js"></script>
+	<!-- <script src="https://apis.google.com/js/api.js"></script> -->
+	<script src="/lib/base/angular.min.js"></script>
+	<script src="/lib/base/angular-animate.min.js"></script>
+	<script src="/lib/base/angular-route.min.js"></script>
+	<script src="/lib/base/angular-aria.min.js"></script>
+	<script src="/lib/base/angular-messages.min.js"></script>
+	<script src="/lib/base/angular-resource.min.js"></script>
+	<script src="/lib/base/angular-material-icons.min.js"></script>
+	<script src="/lib/base/angular-material.min.js"></script>
+	<script src="/lib/base/ngStorage.min.js"></script>
+	<script>
+		var app = angular.module("stockAppLogout", [ 'ngResource', 'ngAnimate',
+				'ngStorage', 'ngRoute', 'ngAria', 'ngMessages',  'ngMdIcons' ]);
+
+		app.controller("logoutCtr", function($scope, $rootScope, $window, $log,
+				$localStorage) {
+			$localStorage.loggedinUser = null;
+			$log.debug('###User signed out###');
+			var hostBaseUrl = '//' + window.location.host + '/index.html';
+			$window.location.href = hostBaseUrl;
+			return;
+		});
+	</script>
+</body>
+</html>

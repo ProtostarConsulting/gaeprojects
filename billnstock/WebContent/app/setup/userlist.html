@@ -29,33 +29,31 @@
 					style="padding-right: 8px;"
 					md-colors="{color:'default-primary-700'}"
 					ng-repeat="dept in departmentList"
-					ng-click="fitlerUserListByDept(dept.name)">{{dept.name + " "}}</span>
+					ng-click="fitlerUserListByDept(dept.name)">{{dept.name + "
+					"}}</span>
 			</div>
-			<md-data-table-container>
-			<table md-data-table md-progress="deferred">
-				<thead md-order="query.order" md-trigger="onOrderChange">
-					<tr>
-						<th name="First Name" order-by="firstName"></th>
-						<th name="Last Name" order-by="lastName"></th>
-						<th name="Login Allowed" order-by="isLoginAllowed" hide-xs></th>
-						<!-- 	<th name="Department" order-by="department" hide-xs></th>
-						<th name="Designation" order-by="designation" hide-xs></th>
-						<th name="Email" order-by="email_id" hide-xs></th> -->
-						<th name="Last Login" order-by="lastLoginDate" hide-xs></th>
-						<th name="Edit | Actions"></th>
+			<md-table-container>
+			<table md-table md-progress="promise">
+				<thead ng-if="!dataTableOptions.decapitate" md-head
+					md-order="query.order" md-on-reorder="logOrder">
+					<tr md-row>
+						<th md-column md-order-by="firstName">First Name</th>
+						<th md-column md-order-by="lastName">Last Name</th>
+						<th md-column md-order-by="isLoginAllowed" hide-xs>Login
+							Allowed</th>
+						<th md-column md-order-by="lastLoginDate" hide-xs>Last Login</th>
+						<th md-column>Edit | Actions</th>
 					</tr>
 				</thead>
-				<tbody>
-					<tr
+				<tbody md-body>
+					<tr md-row
 						ng-repeat="user in activeUsers | filter: searchTextActiveUsers | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
-						<td>{{user.firstName}}</td>
-						<td>{{user.lastName}}</td>
-						<td hide-xs>{{user.isLoginAllowed?'Yes':'No'}}</td>
-						<!-- <td hide-xs>{{user.department?user.department.name:'Default'}}</td>
-						<td hide-xs>{{user.designation}}</td>						
-						<td hide-xs>{{user.email_id}}</td> -->
-						<td hide-xs>{{user.lastLoginDate | formatDateWithTime}}</td>
-						<td>
+						<td md-cell>{{user.firstName}}</td>
+						<td md-cell>{{user.lastName}}</td>
+						<td md-cell hide-xs>{{user.isLoginAllowed?'Yes':'No'}}</td>
+						<td md-cell hide-xs>{{user.lastLoginDate |
+							formatDateWithTime}}</td>
+						<td md-cell>
 							<section layout="row">
 								<md-button class="md-icon-button"
 									ng-show="currentStateName == 'setup.userlist'"
@@ -87,10 +85,14 @@
 					</tr>
 				</tbody>
 			</table>
+			</md-table-container>
+			<md-table-pagination md-limit="query.limit"
+				md-limit-options="dataTableOptions.limitOptions"
+				md-page="query.page" md-total={{activeUsers.length}}
+				md-page-select="dataTableOptions.pageSelect"
+				md-boundary-links="dataTableOptions.boundaryLinks"
+				md-on-paginate="logPagination"></md-table-pagination>
 
-			<md-data-table-pagination md-limit="query.limit" md-page="query.page"
-				md-total={{activeUsers.length}} md-trigger="onpagechange"></md-data-table-pagination>
-			</md-data-table-container>
 		</div>
 
 		</md-content> </md-tab> <md-tab label="Suspended"> <md-content class="md-padding">
@@ -102,25 +104,25 @@
 		</div>
 
 		<div>
-			<md-data-table-container>
-
-			<table md-data-table md-progress="deferred">
-				<thead md-order="query.order" md-trigger="onOrderChange">
-					<tr>
-						<th name="First Name" order-by="firstName"></th>
-						<th name="Last Name" order-by="lastName"></th>
-						<th name="Email" order-by="email_id" hide-xs></th>
-						<th name="Edit | Actions"></th>
+			<md-table-container>
+			<table md-table md-progress="promise">
+				<thead ng-if="!dataTableOptions.decapitate" md-head
+					md-order="query.order" md-on-reorder="logOrder">
+					<tr md-row>
+						<th md-column md-order-by="firstName">First Name</th>
+						<th md-column md-order-by="lastName">Last Name</th>
+						<th md-column md-order-by="email_id" hide-xs>Email</th>
+						<th md-column name="Edit | Actions"></th>
 					</tr>
 				</thead>
 
-				<tbody>
-					<tr
+				<tbody md-body>
+					<tr md-row
 						ng-repeat="user in suspendedUsers | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit"">
-						<td>{{user.firstName}}</td>
-						<td>{{user.lastName}}</td>
-						<td hide-xs>{{user.email_id}}</td>
-						<td>
+						<td md-cell>{{user.firstName}}</td>
+						<td md-cell>{{user.lastName}}</td>
+						<td md-cell hide-xs>{{user.email_id}}</td>
+						<td md-cell>
 							<section layout="row">
 								<md-button class="md-icon-button"
 									ng-show="currentStateName == 'setup.userlist'"
@@ -153,12 +155,14 @@
 					</tr>
 				</tbody>
 			</table>
-
-			<md-data-table-pagination md-limit="query.limit" md-page="query.page"
-				md-total={{suspendedUsers.length}} md-trigger="onpagechange"></md-data-table-pagination>
-			</md-data-table-container>
+			</md-table-container>
+			<md-table-pagination md-limit="query2.limit"
+				md-limit-options="dataTableOptions.limitOptions"
+				md-page="query.page" md-total={{suspendedUsers.length}}
+				md-page-select="dataTableOptions.pageSelect"
+				md-boundary-links="dataTableOptions.boundaryLinks"
+				md-on-paginate="logPagination"></md-table-pagination>
 		</div>
-
 		</md-content> </md-tab>
 	</div>
 </div>

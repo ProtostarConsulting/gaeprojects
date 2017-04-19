@@ -4,8 +4,8 @@ angular
 				"taskModuleCtr",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
 						$mdUtil, $log, $q, $location, $anchorScroll, $state,
-						$stateParams, $filter, objectFactory, appEndpointSF,
-						ajsCache) {
+						$stateParams, $filter, $mdDialog, $mdMedia,
+						objectFactory, appEndpointSF, ajsCache) {
 
 					$log.debug("Inside taskModuleCtr");
 					$scope.loading = true;
@@ -61,6 +61,7 @@ angular
 						};
 					}
 					$scope.taskEntityList = [];
+					$scope.taskAssignedByMeList = [];
 					$scope.userList = [];
 
 					$scope.changeEditView = function(params) {
@@ -151,12 +152,26 @@ angular
 								});
 					}
 
-					$scope.getMyAllTask = function() {
-						taskService.getMyAllTask($scope.curUser.business.id,
-								$scope.curUser.id).then(function(resp) {
-							$scope.taskEntityList = resp.items;
-							$scope.loading = false;
-						});
+					$scope.getTaskAssignedByMeList = function() {
+						$scope.loading = true;
+						var taskEntityFilterData = {
+							businessId : $scope.curUser.business.id,
+							sinceAssignedDate : $scope.selectFilterData.assignedDate,
+							assignedBy : $scope.curUser,
+							assignedTo : null,
+							taskStatus : null
+						}
+
+						taskService.filterTasksByFitlerData(
+								taskEntityFilterData).then(
+								function(resp) {
+									$scope.taskAssignedByMeList = resp.items;
+									$scope.taskAssignedByMeList = $filter(
+											'proOrderObjectBySubTextField')(
+											$scope.taskAssignedByMeList,
+											"assignedTo", "firstName");
+									$scope.loading = false;
+								});
 					}
 
 					$scope.getUserList = function() {
@@ -227,19 +242,19 @@ angular
 
 					}
 
-					$scope.getTaskSettings= function() {
-					
-						taskService.getTaskSettingsByBiz($scope.curUser.business.id)
-								.then(
-										function(settingsList) {
+					$scope.getTaskSettings = function() {
 
-											$scope.settingsObj = settingsList;
-											$log.debug("Inside Ctr $scope.settingsObj:"
-													+ $scope.settingsObj);
-											return $scope.settingsObj;
-										});
+						taskService.getTaskSettingsByBiz(
+								$scope.curUser.business.id).then(
+								function(settingsList) {
+
+									$scope.settingsObj = settingsList;
+									$log.debug("Inside Ctr $scope.settingsObj:"
+											+ $scope.settingsObj);
+									return $scope.settingsObj;
+								});
 					}
-					
+
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
 							$scope.getUserList();
@@ -247,7 +262,8 @@ angular
 							if ($scope.action == 'listmytask') {
 								// $scope.getMyAllTask();
 								$scope.selectFilterData.assignedTo = $scope.curUser;
-								$scope.filterTasksByFitlerData();	
+								$scope.filterTasksByFitlerData();
+								$scope.getTaskAssignedByMeList();
 							} else if ($scope.action == 'listall') {
 								$scope.filterTasksByFitlerData();
 							} else if ($scope.action == 'tasklistreport') {
@@ -260,10 +276,87 @@ angular
 					}
 					$scope.waitForServiceLoad();
 
-					$scope.selected = [];
+					$scope.addDocumentComment = function(ev, taskEntity,
+							editComment) {
+
+						function addDocumentCommentCtr($scope, $mdDialog,
+								curUser, taskEntity, taskService) {
+
+							if (!taskEntity.documentComments) {
+								taskEntity.documentComments = [];
+							}
+
+							$scope.documentComment = {
+								addedBy : curUser,
+								date : new Date(),
+								commentText : ''
+							};
+
+							if (editComment) {
+								$scope.documentComment = angular
+										.copy(editComment);
+							}
+
+							$scope.addComment = function() {
+								if (!editComment)
+									taskEntity.documentComments
+											.push($scope.documentComment);
+
+								taskService
+										.saveTask(taskEntity)
+										.then(
+												function(data) {
+													if (editComment)
+														editComment.commentText = $scope.documentComment.commentText;
+
+													$mdDialog.cancel();
+												});
+
+							}
+
+							$scope.cancel = function() {
+								$mdDialog.cancel();
+							};
+						}
+
+						var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))
+								&& $scope.customFullscreen;
+						$mdDialog
+								.show(
+										{
+											controller : addDocumentCommentCtr,
+											templateUrl : '/app/taskmanagement/add_comment_dialog.html',
+											parent : angular
+													.element(document.body),
+											targetEvent : ev,
+											clickOutsideToClose : true,
+											fullscreen : useFullScreen,
+											locals : {
+												curUser : $scope.curUser,
+												taskEntity : $scope.taskEntity,
+												taskService : taskService
+											}
+										})
+								.then(
+										function(answer) {
+											$scope.status = 'You said the information was "'
+													+ answer + '".';
+										},
+										function() {
+											$scope.status = 'You cancelled the dialog.';
+										});
+
+					};
+
+					
 					$scope.query = {
 						order : '-taskStatus',
-						limit : 10,
+						limit : 50,
+						page : 1
+					};
+					$scope.query2 = {
+						order : '-taskStatus',
+						limit : 50,
 						page : 1
 					};
 					$scope.reportQuery = {
@@ -271,24 +364,21 @@ angular
 						limit : 100,
 						page : 1
 					};
-					$scope.onpagechange = function(page, limit) {
-						var deferred = $q.defer();
+					
 
-						$timeout(function() {
-							deferred.resolve();
+					$scope.loadStuff = function() {
+						$scope.promise = $timeout(function() {
+							// loading
 						}, 2000);
+					}
 
-						return deferred.promise;
+					$scope.logOrder = function(order) {
+						console.log('order: ', order);
 					};
 
-					$scope.onorderchange = function(order) {
-						var deferred = $q.defer();
-
-						$timeout(function() {
-							deferred.resolve();
-						}, 2000);
-
-						return deferred.promise;
-					};
+					$scope.logPagination = function(page, limit) {
+						console.log('page: ', page);
+						console.log('limit: ', limit);
+					}
 
 				});

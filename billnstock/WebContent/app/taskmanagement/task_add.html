@@ -1,3 +1,17 @@
+<style>
+.md-table-pagination .label {
+	display: inline;
+	padding: .2em .6em .3em;
+	font-size: 75%;
+	font-weight: 700;
+	line-height: 1;
+	color: gray;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: baseline;
+	border-radius: .25em;
+}
+</style>
 <div ng-if="loading">
 	<div layout="row" layout-xs="column" layout-align="space-around">
 		<md-progress-circular md-diameter="60" md-mode="indeterminate"></md-progress-circular>
@@ -12,7 +26,7 @@
 				class="md-headline" ng-show="taskObj">Edit Task</span>
 		</h4>
 		</md-subheader>
-		<span flex></span>		
+		<span flex></span>
 	</section>
 	<form name="taskAddForm">
 		<div layout="column">
@@ -114,6 +128,32 @@
 			ng-disabled="taskAddForm.taskTitle.$invalid || taskAddForm.assignedTo.$invalid || taskAddForm.assignedDate.$invalid
 			|| taskAddForm.completionDate.$invalid || taskAddForm.taskDesc.$invalid || taskAddForm.estCompletionDate.$invalid || taskAddForm.completionDate.$invalid"
 			ng-click="saveTask()"> Save </md-button>
+	</section>
+	<br>
+	<section ng-if="taskEntity.id" layout="column" flex
+		layout-align="start start">
+		<md-divider></md-divider>
+		<div layout="row">
+			<h4>User Comments</h4>
+			<md-button class="md-icon-button"
+				ng-click="addDocumentComment($event, taskEntity)"> <ng-md-icon
+				icon="add_circle" style="fill: md-default" size="20"> <md-tooltip>
+			Add New Comment</md-tooltip></ng-md-icon> </md-button>
+		</div>
+
+		<md-content> <md-list> <md-list-item
+			class="md-3-line" ng-repeat="comment in taskEntity.documentComments">
+		<div class="md-list-item-text">
+			<h4>{{$index+1}}] By User: {{comment.addedBy.firstName + ' ' +
+				comment.addedBy.lastName}} on {{comment.date | formatDateWithTime}}</h4>
+			<p>
+				<code ng-bind="comment.commentText"></code>
+			</p>
+		</div>
+		<md-button ng-if="comment.addedBy.id == curUser.id"
+			class="md-secondary"
+			ng-click="addDocumentComment($event, taskEntity, comment)">Edit</md-button>
+		<md-divider ng-if="!$last"></md-divider> </md-list-item> </md-list> </md-content>
 	</section>
 	</md-content>
 </div>

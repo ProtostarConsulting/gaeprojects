@@ -42,69 +42,75 @@
 					ng-click="fitlerUserListByDept(dept.name)">{{dept.name + "
 					"}}</span>
 			</div>
-			<table md-data-table md-progress="deferred">
-				<thead md-order="query.order" md-trigger="onOrderChange">
-					<tr>
-						<th ng-style="getFormRowStyle()" name="Emp. No."
-							order-by="user.employeeDetail.empId"></th>
-						<th ng-style="getFormRowStyle()" name="Employee Name"></th>
-						<th ng-style="getFormRowStyle()" name="Department"></th>
-						<th ng-style="getFormRowStyle()" name="Opening Balance"></th>
-						<th ng-style="getFormRowStyle()" name="This Month Add"></th>
-						<th ng-style="getFormRowStyle()" name="Leave Laken"></th>
-						<th ng-style="getFormRowStyle()" name="Overtime in Days"></th>
-						<th ng-style="getFormRowStyle()" name="Without Pay"></th>
-						<th ng-style="getFormRowStyle()" name="Month Leave Balance"></th>
+
+			<md-table-container>
+			<table md-table md-progress="promise">
+				<thead ng-if="!dataTableOptions.decapitate" md-head
+					md-order="query.order" md-on-reorder="logOrder">
+					<tr md-row>
+						<th md-column ng-style="getFormRowStyle()"
+							md-order-by="user.employeeDetail.empId">Emp. No.</th>
+						<th md-column ng-style="getFormRowStyle()">Employee Name</th>
+						<th md-column ng-style="getFormRowStyle()">Department</th>
+						<th md-column ng-style="getFormRowStyle()">Opening Balance</th>
+						<th md-column ng-style="getFormRowStyle()">This Month Add</th>
+						<th md-column ng-style="getFormRowStyle()">Leave Laken</th>
+						<th md-column ng-style="getFormRowStyle()">Overtime in Days</th>
+						<th md-column ng-style="getFormRowStyle()">Without Pay</th>
+						<th md-column ng-style="getFormRowStyle()">Month Leave
+							Balance</th>
 					</tr>
 				</thead>
-				<tbody>
-					<tr ng-style="getFormRowStyle()"
-						ng-repeat="empLeaveDetailObj in employeeLeaveDetailsList | filter:searchText | limitTo: query.limit: (query.page - 1) * query.limit">
-
-						<td style="margin: 0; padding-left: 5px; padding-right: 5px;">
-							<b ng-bind="empLeaveDetailObj.user.employeeDetail.empId"> </b>
-						</td>
-						<td ng-style="getFormRowStyle()"><span
+				<tbody md-body>
+					<tr md-row
+						ng-repeat="empLeaveDetailObj in employeeLeaveDetailsList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+						<td md-cell
+							style="margin: 0; padding-left: 5px; padding-right: 5px;"><b
+							ng-bind="empLeaveDetailObj.user.employeeDetail.empId"> </b></td>
+						<td md-cell ng-style="getFormRowStyle()"><span
 							ng-bind="empLeaveDetailObj.user.firstName + ' ' +empLeaveDetailObj.user.lastName"
 							ng-style="highlightRed(monthlyPayObj.payableDays)"> </span></td>
-						<td ng-style="getFormRowStyle()"><span
+						<td md-cell ng-style="getFormRowStyle()"><span
 							ng-bind="empLeaveDetailObj.user.department.name"> </span></td>
 
-						<td ng-style="getFormRowStyle()"><span
+						<td md-cell ng-style="getFormRowStyle()"><span
 							ng-bind="empLeaveDetailObj.openingBalance"> </span></td>
-						<!-- <td ng-style="getFormRowStyle()"><md-input-container
+						<!-- <td md-cell ng-style="getFormRowStyle()"><md-input-container
 							ng-style="getFormRowStyle()"> <input
 							ng-model="empLeaveDetailObj.openingBalance" type="number"
 							ng-change="calculation (empLeaveDetailObj)" aria-label = "openingBalance"> </md-input-container></td> -->
-						<td ng-style="getFormRowStyle()"><md-input-container
+						<td md-cell ng-style="getFormRowStyle()"><md-input-container
 								ng-style="getFormRowStyle()"> <input
 								ng-model="empLeaveDetailObj.mothLeave" type="number"
 								ng-change="calculation (empLeaveDetailObj)"
 								aria-label="mothLeave"> </md-input-container></td>
-						<td ng-style="getFormRowStyle()"><md-input-container
+						<td md-cell ng-style="getFormRowStyle()"><md-input-container
 								ng-style="getFormRowStyle()"> <input
 								ng-model="empLeaveDetailObj.takenmothLeave" type="number"
 								ng-change="calculation (empLeaveDetailObj)"
 								aria-label="takenmothLeave"> </md-input-container></td>
-						<td ng-style="getFormRowStyle()"><md-input-container
+						<td md-cell ng-style="getFormRowStyle()"><md-input-container
 								ng-style="getFormRowStyle()"> <input
 								ng-model="empLeaveDetailObj.overtimeDays" type="number"
 								ng-change="calculation (empLeaveDetailObj)"
 								aria-label="takenmothLeave"> </md-input-container></td>
-						<td ng-style="getFormRowStyle()"><span
+						<td md-cell ng-style="getFormRowStyle()"><span
 							ng-bind="empLeaveDetailObj.withoutpay"
 							ng-style="getHighlightRedStyle(empLeaveDetailObj.withoutpay)">
 						</span></td>
-						<td ng-style="getFormRowStyle()"><span
+						<td md-cell ng-style="getFormRowStyle()"><span
 							ng-bind="empLeaveDetailObj.nextOpeningBalance"> </span></td>
 					</tr>
 				</tbody>
 			</table>
+
+			<md-table-pagination md-limit="query.limit"
+				md-limit-options="dataTableOptions.limitOptions"
+				md-page="query.page" md-total={{employeeLeaveDetailsList.length}}
+				md-page-select="dataTableOptions.pageSelect"
+				md-boundary-links="dataTableOptions.boundaryLinks"
+				md-on-paginate="logPagination"></md-table-pagination>
 		</div>
-		<md-data-table-pagination md-limit="query.limit" md-page="query.page"
-			md-total={{employeeLeaveDetailsList.length}}
-			md-trigger="onpagechange"></md-data-table-pagination>
-		</md-data-table-container>
 		<div>
 			<md-button class="md-raised md-primary"
 				ng-disabled="employeeForm.$invalid || employeeForm.$pristine || employeeForm.$touched"

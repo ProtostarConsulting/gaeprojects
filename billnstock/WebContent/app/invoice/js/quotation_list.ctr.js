@@ -17,8 +17,22 @@ app
 					}
 					$scope.query = reSetQuery();
 					$scope.documentStatusList = [ 'ALL', 'STARRED', 'DRAFT',
-							'SUBMITTED', 'FINALIZED', 'SENT', 'PAID', 'UNPAID' ];
+							'SUBMITTED', 'FINALIZED', 'SENT'];
 					$scope.selectedStatus = "";
+					
+					$scope.logOrder = function(order) {
+						console.log('order: ', order);
+					};
+
+					$scope.logPagination = function(page, limit) {
+						console.log('page: ', page);						
+						console.log('limit: ', limit);
+						$location.hash('tp1');
+						$anchorScroll();
+						if ($scope.query.page > $scope.query.pagesLoaded) {
+							$scope.fetchEntityListByPaging();
+						}
+					}
 
 					$scope.fitlerListByStatus = function(status) {
 						status = (status == 'ALL') ? '' : status;

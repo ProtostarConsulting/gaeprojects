@@ -142,6 +142,15 @@ angular
 						document.location.href = "DownloadSalaryMaster?id="
 								+ $scope.curUser.business.id;
 					}
+					
+					$scope.getFormRowStyle = function() {
+						return {
+							'margin' : '0px',
+							'padding-left' : '0',
+							'padding-right' : '5px'
+						};
+
+					}
 					$log.debug("id" + $scope.curUser.business);
 
 					$scope.UplodeExcel = function(ev) {

@@ -1,6 +1,6 @@
-var app = angular.module("stockApp", [ 'ngMaterial', 'ngMessages',
-		"ui.bootstrap", "ui.router", 'md.data.table', 'ngResource',
-		'ngStorage', 'ngRoute', 'ngFileUpload', 'ngAnimate',
+var app = angular.module("stockApp", [ 'ngResource', 'ngAnimate', 'ngStorage',
+		'ngRoute', 'ngAria', 'mdPickers', 'ngMaterial', 'ngMessages',
+		"ui.bootstrap", "ui.router", 'md.data.table', 'ngFileUpload',
 		'directive.g+signin', 'ui.bootstrap', 'textAngular', 'ngMdIcons' ]);
 
 app.factory('ajsCache', function($cacheFactory) {
@@ -619,7 +619,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		templateUrl : '/app/accounting/dayBook.html',
 		controller : 'dayBook',
 
-
 	})
 
 	.state('production.add_bom', {
@@ -627,34 +626,33 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		templateUrl : '/app/production/add_bom.html',
 		controller : 'add_bom',
 		params : {
-			
+
 			bomCategory : null
 		}
 	})
-	
+
 	.state('production.list_bom', {
 		url : "/list_Bill_of_material",
 		templateUrl : '/app/production/list_bom.html',
 		controller : 'list_bom',
-			
 
 	})
-	
+
 	.state('production', {
 		url : "/production",
 		templateUrl : '/app/production/prod_module.html',
 		controller : 'prodModuleCtr'
 	})
-	
+
 	.state('production.add_machine', {
 		url : "/add_machine",
 		templateUrl : '/app/production/add_machine.html',
 		controller : 'machineAddCtr',
-			params : {
-				machineObj : null
-			}	
+		params : {
+			machineObj : null
+		}
 	})
-	
+
 	.state('production.list_machine', {
 		url : "/list_machine",
 		templateUrl : '/app/production/list_machine.html',
@@ -678,9 +676,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	})
 
 	// //////////////////////
-	
-	
-
 
 	.state('accounting.voucherPayment', {
 

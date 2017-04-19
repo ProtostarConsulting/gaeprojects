@@ -6,24 +6,16 @@
 
 <!--end send mail  -->
 <link rel="stylesheet" href="/lib/base/css/angular-material.min.css">
+<link rel="stylesheet" href="/lib/base/css/md-data-table.min.css">
+<link rel="stylesheet" href="/lib/base/css/mdPickers.min.css">
 <link rel="stylesheet" href="/lib/base/css/googleapi.roboto.css">
 <link rel="stylesheet" href="/lib/base/css/font-awesome.css">
 <link rel="stylesheet" href="/lib/base/css/bootstrap.min.css">
-<link rel="stylesheet" href="/lib/base/css/md-data-table.min.css">
 <link rel="stylesheet" href="/lib/base/css/textAngular.css">
 <link rel="stylesheet" href="/css/accordianPane.css">
-<link href="/app/AssetMangement/css/style.css" rel="stylesheet"
-	type="text/css">
 <link rel="stylesheet" href="/app/setup/css/checkbox.css">
-<link href="app/invoice/css/style.css" rel="stylesheet" type="text/css" />
-<link href="css/header.css" rel="stylesheet" type="text/css" />
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet">
-<style>
-.popover {
-	float: left !important;
-}
-</style>
 </head>
 <body layout="column" ng-cloak md-theme="{{theme}}"
 	md-theme-watch="true" layout="column" layout-fill>
@@ -117,14 +109,18 @@
 	</span></md-sidenav> <md-content layout="column" layout-align="top stretch" layout-fill
 		style="height: 100%;"> <md-content layout="column"
 		style="height: 100%;"> <md-content id="tp1" ui-view flex
-		layout="column" layout-align="top stretch" style="height: 100%;" scroll-position="scroll">
-	<!--This is the center page of all main modules for the index module. -->
+		layout="column" layout-align="top stretch" style="height: 100%;"
+		scroll-position="scroll"> <!--This is the center page of all main modules for the index module. -->
 	</md-content> </md-content><!-- <span flex>©2017-2018 ProERP Google Cloud Platform, a product
 		of Protostar Consulting Services, Pune. All rights reserved. </span> -->
-	</md-content> <!-- </md-card>  --></md-content> <!--This is a botton section of the app--> <md-button
-		class="md-fab md-fab-bottom-right docs-scroll-fab"
-		ng-click="gotoPart('viewToolbar')" aria-label="Back to Top" ng-show="scroll > 100"> <md-tooltip
-		md-direction="top">Back to Top</md-tooltip> <md-icon
+	</md-content> <!-- </md-card>  --></md-content> <!--This is a botton section of the app--> <!-- need 3 br so that Back to top button doesn't hide anything. -->
+	<br>
+	<br>
+	<br>
+	<md-button class="md-fab md-fab-bottom-right docs-scroll-fab"
+		ng-click="gotoPart('viewToolbar')" aria-label="Back to Top"
+		ng-show="scroll > 100"> <md-tooltip md-direction="top">Back
+	to Top</md-tooltip> <md-icon
 		md-svg-src="img/icons/ic_keyboard_arrow_up_black_24px.svg"></md-icon>
 	</md-button> </md-content> </md-content>
 
@@ -145,6 +141,8 @@
 
 
 	<script src="/lib/base/angular-material.min.js"></script>
+	<script src="/lib/base/moment.min.js"></script>
+	<script src="/lib/base/mdPickers.min.js"></script>
 	<script src="/lib/base/md-data-table.min.js"></script>
 
 	<script src="/lib/base/ui-bootstrap-tpls.min.js"></script>
@@ -215,7 +213,7 @@
 	<script src="/app/accounting/js/accountChart.ctr.js"></script>
 	<script src="/app/accounting/js/accountGroupView.ctr.js"></script>
 	<script src="/app/accounting/js/dayBook.js"></script>
-	
+
 	<script src="/app/production/js/prod_module.ctr.js"></script>
 	<script src="/app/production/js/add_bom.js"></script>
 	<script src="/app/production/js/list_bom.js"></script>

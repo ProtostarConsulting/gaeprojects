@@ -211,6 +211,15 @@ angular
 						}
 					}
 					$scope.waitForServiceLoad();
+					
+					$scope.getFormRowStyle = function() {
+						return {
+							'margin' : '0px',
+							'padding-left' : '0',
+							'padding-right' : '5px'
+						};
+
+					}
 
 					$scope.openDialog = function($event, monthlyPayObj,
 							allowanceOrDeductionFlag) {

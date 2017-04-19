@@ -1,12 +1,14 @@
 package com.protostar.billnstock.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.OnSave;
 import com.googlecode.objectify.annotation.Parent;
+import com.protostar.billingnstock.taskmangement.Comment;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.user.entities.UserEntity;
 import com.protostar.billnstock.until.data.WebUtil;
@@ -29,10 +31,10 @@ public abstract class BaseEntity {
 	private Ref<UserEntity> createdBy;
 	@Index
 	private Ref<UserEntity> approvedBy;
+	private List<Comment> documentComments;
 
 	@Index
 	private boolean isDeleted = false;
-
 	@Index
 	private boolean starred = false;
 
@@ -43,8 +45,7 @@ public abstract class BaseEntity {
 	@OnSave
 	public void beforeSave() {
 		if (getBusiness() == null) {
-			throw new RuntimeException("Business entity is not set on: "
-					+ this.getClass().getSimpleName()
+			throw new RuntimeException("Business entity is not set on: " + this.getClass().getSimpleName()
 					+ " This is required field. Aborting save operation...");
 		}
 		/*
@@ -55,13 +56,11 @@ public abstract class BaseEntity {
 			setCreatedDate(new Date());
 			setModifiedDate(new Date());
 			if (WebUtil.getCurrentUser() != null)
-				System.out.println("WebUtil.getCurrentUser(): "
-						+ WebUtil.getCurrentUser().getId());
+				System.out.println("WebUtil.getCurrentUser(): " + WebUtil.getCurrentUser().getId());
 		} else {
 			setModifiedDate(new Date());
 			if (WebUtil.getCurrentUser() != null)
-				System.out.println("WebUtil.getCurrentUser(): "
-						+ WebUtil.getCurrentUser().getId());
+				System.out.println("WebUtil.getCurrentUser(): " + WebUtil.getCurrentUser().getId());
 		}
 
 	}
@@ -156,4 +155,12 @@ public abstract class BaseEntity {
 	public void setStarred(boolean starred) {
 		this.starred = starred;
 	}
+
+	public List<Comment> getDocumentComments() {
+		return documentComments;
+	}
+
+	public void setDocumentComments(List<Comment> documentComments) {
+		this.documentComments = documentComments;
+	}	
 }

@@ -4,6 +4,12 @@ angular.module("stockApp").controller(
 				$stateParams, $log, objectFactory, $mdMedia, $mdDialog, Upload,
 				appEndpointSF) {
 			$scope.newDept = false;
+			
+			$scope.query = {
+					order : 'name',
+					limit : 50,
+					page : 1
+				};
 
 			function getEmptyDepartment() {
 				return {

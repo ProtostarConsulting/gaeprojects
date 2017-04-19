@@ -22,6 +22,27 @@ angular
 						page : 1
 					};
 
+					$scope.query2 = {
+						order : 'id',
+						limit : 50,
+						page : 1
+					};
+					
+					$scope.loadStuff = function() {
+						$scope.promise = $timeout(function() {
+							// loading
+						}, 2000);
+					}
+
+					$scope.logOrder = function(order) {
+						console.log('order: ', order);
+					};
+
+					$scope.logPagination = function(page, limit) {
+						console.log('page: ', page);
+						console.log('limit: ', limit);
+					}
+
 					$scope.fabMenuData = {
 						activeUsersIsOpen : [],
 						inActiveUsersIsOpen : [],

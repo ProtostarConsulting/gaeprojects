@@ -37,98 +37,103 @@
 				ng-click="fitlerUserListByDept(dept.name)">{{dept.name + "
 				"}}</span>
 		</div>
-		<table md-data-table md-progress="deferred">
-			<thead md-order="query.order" md-trigger="onOrderChange">
-				<tr>
-					<th name="Emp. No."
-						style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
-					<th name="Employee Name"
-						style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
-					<th name="Department"
-						style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
-					<th name="Monthly Gross"
-						style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
-					<th name="Basic"
-						style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
-					<th name="HRA"
-						style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
-					<th name="Convence"
-						style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
-					<th name="Medical"
-						style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
-					<th name="Education"
-						style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
-					<th name="Adhoc Allow"
-						style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
-					<th name="Special Allow"
-						style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
-					<!-- <th name="Calculated Gross" style="margin: 0; padding-left: 0; padding-right: 5px;"></th> -->
+		<md-table-container>
+		<table md-table md-progress="promise">
+			<thead ng-if="!dataTableOptions.decapitate" md-head
+				md-order="query.order" md-on-reorder="logOrder">
+				<tr md-row>
+					<th md-column ng-style="getFormRowStyle()">Emp. No.</th>
+
+					<th md-column
+						ng-style="getFormRowStyle()">Employee
+						Name</th>
+					<th md-column
+						ng-style="getFormRowStyle()">Department</th>
+					<th md-column
+						ng-style="getFormRowStyle()">Monthly
+						Gross</th>
+					<th md-column
+						ng-style="getFormRowStyle()">Basic</th>
+					<th md-column
+						ng-style="getFormRowStyle()">HRA</th>
+					<th md-column
+						ng-style="getFormRowStyle()">Convence</th>
+					<th md-column
+						ng-style="getFormRowStyle()">Medical</th>
+					<th md-column
+						ng-style="getFormRowStyle()">Education</th>
+					<th md-column
+						ng-style="getFormRowStyle()">Adhoc
+						Allow</th>
+					<th md-column
+						ng-style="getFormRowStyle()">Special
+						Allow</th>
 				</tr>
 			</thead>
 
-			<tbody>
+			<tbody md-body>
 
-				<tr
+				<tr md-row
 					ng-repeat="empSalaryMasterObj in empSalaryMasterList | filter: searchText | limitTo: query.limit: (query.page - 1) * query.limit">
 
-					<td style="margin: 0; padding-left: 5px; padding-right: 5px;">
-						<b ng-bind="empSalaryMasterObj.empAccount.employeeDetail.empId">
-					</b>
-					</td>
-					<td
+					<td md-cell
+						style="margin: 0; padding-left: 5px; padding-right: 5px;"><b
+						ng-bind="empSalaryMasterObj.empAccount.employeeDetail.empId">
+					</b></td>
+					<td md-cell
 						style="min-width: 220px; margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
 							style="margin: 0; padding: 0; padding-left: 0; padding-right: 5px;">
 						<b
 							ng-bind="empSalaryMasterObj.empAccount.firstName + ' ' +empSalaryMasterObj.empAccount.lastName">
 						</b></md-input-container></td>
 
-					<td
+					<td md-cell
 						style="min-width: 100px; margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
 							style="margin: 0; padding: 0; padding-left: 0; padding-right: 5px;">
 						<b ng-bind="empSalaryMasterObj.empAccount.department.name"> </b></md-input-container></td>
 
-					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
+					<td md-cell ng-style="getFormRowStyle()"><md-input-container
 							style="margin: 0; padding: 0;"> <input
 							ng-model="empSalaryMasterObj.monthlyGrossSal" type="number"
 							ng-change="grossSalaryChanged(empSalaryMasterObj)"
 							aria-label="monthlyGrossSal" ng-model-options="{ debounce: 100 }">
 						</md-input-container></td>
-					<td
+					<td md-cell
 						style="min-width: 100px; margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
-							style="margin: 0; padding-left: 0; padding-right: 5px;">
+							ng-style="getFormRowStyle()">
 						<input ng-model="empSalaryMasterObj.monthlyBasic" type="number"
 							ng-change="calSpecialAllow(empSalaryMasterObj)"
 							aria-label="monthlyBasic"> </md-input-container></td>
-					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
+					<td md-cell ng-style="getFormRowStyle()"><md-input-container
 							style="margin: 0; padding: 0;"> <input
 							ng-model="empSalaryMasterObj.monthlyHra" type="number"
 							ng-change="calSpecialAllow(empSalaryMasterObj)"
 							aria-label="monthlyHra"> </md-input-container></td>
-					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
+					<td md-cell ng-style="getFormRowStyle()"><md-input-container
 							style="margin: 0; padding: 0;"> <input
 							ng-model="empSalaryMasterObj.monthlyConvence" type="number"
 							ng-change="calSpecialAllow(empSalaryMasterObj)"
 							aria-label="monthlyConvence"> </md-input-container></td>
-					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
+					<td md-cell ng-style="getFormRowStyle()"><md-input-container
 							style="margin: 0; padding: 0;"> <input
 							ng-model="empSalaryMasterObj.monthlyMedical" type="number"
 							ng-change="calSpecialAllow(empSalaryMasterObj)"
 							aria-label="monthlyMedical"> </md-input-container></td>
-					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
+					<td md-cell ng-style="getFormRowStyle()"><md-input-container
 							style="margin: 0; padding: 0;"> <input
 							ng-model="empSalaryMasterObj.monthlyEducation"
 							ng-change="calSpecialAllow(empSalaryMasterObj)"
 							aria-label="monthlyEducation"> </md-input-container></td>
 
 
-					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
+					<td md-cell ng-style="getFormRowStyle()"><md-input-container
 							style="margin: 0; padding: 0;"> <input
 							type="number" ng-model="empSalaryMasterObj.monthlyAdhocAllow"
 							ng-change="calSpecialAllow(empSalaryMasterObj)"
 							aria-label="monthlyAdhocAllow"> </md-input-container></td>
 
 
-					<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-input-container
+					<td md-cell ng-style="getFormRowStyle()"><md-input-container
 							style="margin: 0; padding: 0;"> <input
 							type="number" ng-model="empSalaryMasterObj.monthlySpecialAllow"
 							id="no" value="empSalaryMasterObj.monthlySpecialAllow" readonly
@@ -137,11 +142,14 @@
 				</tr>
 			</tbody>
 		</table>
+		</md-table-container>
+		<md-table-pagination md-limit="query.limit"
+			md-limit-options="dataTableOptions.limitOptions" md-page="query.page"
+			md-total={{empSalaryMasterList.length}}
+			md-page-select="dataTableOptions.pageSelect"
+			md-boundary-links="dataTableOptions.boundaryLinks"
+			md-on-paginate="logPagination"></md-table-pagination>
 	</div>
-
-	<md-data-table-pagination md-limit="query.limit" md-page="query.page"
-		md-total={{empSalaryMasterList.length}} md-trigger="onpagechange"></md-data-table-pagination>
-	</md-data-table-container>
 
 	<div>
 		<md-button class="md-raised md-primary"

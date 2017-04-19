@@ -34,7 +34,7 @@ public class TaskEntity extends BaseEntity {
 	private Date completionDate;
 	private String taskTitle;
 	private String taskDesc;
-	private List<Comment> taskComments;
+	
 
 	@Override
 	public void beforeSave() {
@@ -108,15 +108,7 @@ public class TaskEntity extends BaseEntity {
 
 	public void setTaskStatus(TaskStatus taskStatus) {
 		this.taskStatus = taskStatus;
-	}
-
-	public List<Comment> getTaskComments() {
-		return taskComments;
-	}
-
-	public void setTaskComments(List<Comment> taskComments) {
-		this.taskComments = taskComments;
-	}
+	}	
 
 	public Date getCompletionDate() {
 		return completionDate;
