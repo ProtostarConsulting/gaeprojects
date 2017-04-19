@@ -20,8 +20,10 @@ app
 					}
 					$scope.query = reSetQuery();
 					$scope.documentStatusList = [ 'ALL', 'STARRED', 'DRAFT',
-							'SUBMITTED', 'FINALIZED', 'REJECTED' ];
+							'SUBMITTED', 'FINALIZED', 'REJECTED', 'CLOSED' ];
 					$scope.selectedStatus = "";
+
+					$scope.purchaseOrderList = [];
 
 					$scope.fitlerListByStatus = function(status) {
 						status = (status == 'ALL') ? '' : status;
@@ -114,6 +116,7 @@ app
 						if (appEndpointSF.is_service_ready) {
 							// $scope.getAllPurchaseOrder();
 							$scope.fetchEntityListByPaging();
+
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
 							$timeout($scope.waitForServiceLoad, 1000);

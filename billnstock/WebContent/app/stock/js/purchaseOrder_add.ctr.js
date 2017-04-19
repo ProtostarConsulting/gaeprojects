@@ -20,7 +20,7 @@ app
 							to : '',
 							shipTo : '',
 							poDate : new Date(),
-							poDueDate : "",
+							poDueDate : new Date(),
 							requisitioner : '',
 							shippedVia : '',
 							fOBPoint : '',
@@ -74,9 +74,11 @@ app
 					$scope.documentEntity = $stateParams.purchaseOrderObj ? $stateParams.purchaseOrderObj
 							: $scope.getEmptyPurchaseOrderObj();
 
-					$scope.documentEntity.poDueDate = $scope.documentEntity.poDueDate ? new Date(
-							$scope.documentEntity.poDueDate)
-							: new Date();
+					/*
+					 * $scope.documentEntity.poDueDate =
+					 * $scope.documentEntity.poDueDate ? new Date(
+					 * $scope.documentEntity.poDueDate) : new Date();
+					 */
 					$scope.saveDocument = function() {
 						if (!$scope.documentEntity.serviceLineItemList
 								&& !$scope.documentEntity.productLineItemList) {
@@ -143,6 +145,28 @@ app
 						});
 					}
 
+					$scope.today = new Date();
+
+					$scope.toggleCloseBtn = function() {
+
+						if ($scope.documentEntity.poDueDate.getTime() === $scope.today
+								.getTime()
+								|| $scope.documentEntity.poDueDate.getTime() > $scope.today
+										.getTime()) {
+							$scope.closeBtnHide = true;
+						} else if ($scope.documentEntity.poDueDate.getTime() < $scope.today
+								.getTime()) {
+							$scope.closeBtnHide = false;
+						}
+
+					}
+					$scope.closeDocument = function(ev) {
+
+						$scope.documentEntity.status = 'CLOSED';
+						$scope.saveDocument();
+
+					}
+
 					$scope.addServiceLineItem = function() {
 						var item = {
 							isProduct : false,
@@ -206,7 +230,7 @@ app
 						$scope.productTaxChanged();
 						$scope.calServiceSubTotal();
 						$scope.calProductSubTotal();
-						
+
 						// calculateDiscountAmount();
 						// This is needed as tax and sub-totals depend on each
 						// other
@@ -441,7 +465,7 @@ app
 							if (!$scope.documentEntity.id) {
 								$scope.addProductLineItem();
 							}
-
+							$scope.toggleCloseBtn();
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
 							$timeout($scope.waitForServiceLoad, 1000);

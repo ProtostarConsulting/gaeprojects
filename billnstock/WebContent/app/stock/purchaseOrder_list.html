@@ -1,3 +1,8 @@
+<style>
+.red-background {
+	background-color: #FFA07A;
+}
+</style>
 <div ng-if="loading">
 	<div layout="row" layout-sm="column" layout-align="space-around">
 		<md-progress-circular md-diameter="60" md-mode="indeterminate"></md-progress-circular>
@@ -34,6 +39,7 @@
 			<tr>
 				<th name="PO No." order-by="itemNumber"></th>
 				<th name="Created Date" order-by="createdBy"></th>
+				<th name="Due Date" order-by="poDueDate"></th>
 				<th name="Created By" order-by="createdBy.firstName"></th>
 				<th name="Status" order-by="status"></th>
 				<th name="Supplier Name" order-by="supplier.supplierName"></th>
@@ -42,9 +48,11 @@
 		</thead>
 		<tbody>
 			<tr
-				ng-repeat="pOItem in purchaseOrderList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
-				<td>{{pOItem.itemNumber}}</td>
+				ng-repeat="pOItem in purchaseOrderList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit"
+				ng-class="{'red-background' : pOItem.status=='CLOSED'}">
+				<td>{{pOItem.itemNumber}}</span></td>
 				<td>{{pOItem.createdDate|formatDateWithTime}}</td>
+				<td>{{pOItem.poDueDate|formatDate}}</td>
 				<td>{{pOItem.createdBy.firstName+" "+pOItem.createdBy.lastName
 					}}</td>
 				<td>{{pOItem.status}}</td>

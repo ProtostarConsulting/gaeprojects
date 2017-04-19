@@ -28,8 +28,7 @@
 				<md-input-container flex> <label>Select
 					Order Type</label> <md-select placeholder="Order Type"
 					ng-model="documentEntity.orderType"> <md-option
-					ng-repeat="orderType in stockItemOrderTypes"
-					ng-value="orderType"
+					ng-repeat="orderType in stockItemOrderTypes" ng-value="orderType"
 					ng-selected="documentEntity.orderType.id == orderType.id">{{orderType.typeName}}
 				</md-option> </md-select> </md-input-container>
 			</div>
@@ -77,7 +76,8 @@
 			<div layout="row" layout-xs="column" flex=60 flex-xs=100>
 				<md-input-container flex> <label>Select
 					Due Date</label> <md-datepicker flex ng-model="documentEntity.poDueDate"
-					md-placeholder="Select Date"></md-datepicker> </md-input-container>
+					ng-change="toggleCloseBtn()" md-placeholder="Select Date"></md-datepicker>
+				</md-input-container>
 				<div layout="row" flex=50 flex-xs=100>
 					<md-input-container flex> <label>Approved
 						By </label> <input ng-disabled="true" ng-model="approvedBy"
@@ -375,7 +375,8 @@
 
 		</div>
 		<div layout layout-xs="column"
-			ng-if="isDocumentEditAllowed(documentEntity)">
+			ng-hide="documentEntity.status=='CLOSED'"
+			ng-show="isDocumentEditAllowed(documentEntity)">
 			<section layout="row" layout-xs="column">
 				<md-button class="md-raised md-primary"
 					ng-disabled="documentForm.$invalid" ng-click="draftDocumnent()">Save
@@ -389,6 +390,9 @@
 						ng-click="finalizeDocumnent($event)">Approve/Finalize</md-button>
 					<md-button class="md-raised md-primary"
 						ng-disabled="documentForm.$invalid" ng-click="rejectDocumnent()">Reject</md-button>
+					<md-button class="md-raised md-primary" ng-show="!closeBtnHide"
+						ng-hide="closeBtnHide" ng-disabled="documentForm.$invalid"
+						ng-click="closeDocument()">Close</md-button>
 				</section>
 			</section>
 		</div>

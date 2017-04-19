@@ -92,10 +92,10 @@ angular
 						if ($scope.stockItemTypeFilterWrapper.warehouse.warehouseName != "ALL") {
 							$scope.stockItemTypeFilterWrapper.productType = null;
 							$scope.stockItemTypeFilterWrapper.brand = null;
-
+							$scope
+									.filterStockItems($scope.stockItemTypeFilterWrapper);
 						}
-						$scope
-								.filterStockItems($scope.stockItemTypeFilterWrapper);
+
 					}
 
 					$scope.filterByProductType = function() {
@@ -103,20 +103,20 @@ angular
 
 							$scope.stockItemTypeFilterWrapper.brand = null;
 							$scope.stockItemTypeFilterWrapper.warehouse = null;
-
+							$scope
+									.filterStockItems($scope.stockItemTypeFilterWrapper);
 						}
-						$scope
-								.filterStockItems($scope.stockItemTypeFilterWrapper);
+
 					}
 
 					$scope.filterByBrand = function() {
 						if ($scope.stockItemTypeFilterWrapper.brand.brandName != "ALL") {
 							$scope.stockItemTypeFilterWrapper.productType = null;
 							$scope.stockItemTypeFilterWrapper.warehouse = null;
-
+							$scope
+									.filterStockItems($scope.stockItemTypeFilterWrapper);
 						}
-						$scope
-								.filterStockItems($scope.stockItemTypeFilterWrapper);
+
 					}
 
 					$scope.getAllWarehouseByBusiness = function() {
