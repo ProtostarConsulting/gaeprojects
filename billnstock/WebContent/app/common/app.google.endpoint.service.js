@@ -3099,6 +3099,15 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 	
+	ProductionService.addQCMachine = function(machine) {
+		var deferred = $q.defer();
+		gapi.client.productionService.addQCMachine(machine).execute(
+				function(resp) {
+					deferred.resolve(resp);
+				});
+		return deferred.promise;
+	}
+	
 	ProductionService.getMachineList = function(busId) {
 		var deferred = $q.defer();
 		gapi.client.productionService.getMachineList({
@@ -3107,7 +3116,17 @@ function googleEndpointSF($q) {
 			deferred.resolve(resp.items);
 		});
 		return deferred.promise;
-	}	
+	}
+	
+	ProductionService.getQCMachineList = function(busId) {
+		var deferred = $q.defer();
+		gapi.client.productionService.getQCMachineList({
+			"busId" : busId
+		}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}
 	
 	//====================================================
 

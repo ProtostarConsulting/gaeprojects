@@ -5,21 +5,28 @@ app.controller("qcmachineAddCtr", function($scope, $window, $mdToast, $timeout,
 		$mdDialog, $mdMedia) {
 
 	$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
-
+	
 	$scope.qcmachine = {
 			qcName : "",
 			validFrom : new Date(),
 			validTill : new Date(),
+			parameterList : [],
+			note : "",
+			machine : "",
 			schedule : "",
 			scheduleTime : "",
-			startFromTime : new Date(),
-			tillTime : new Date(),
-			parameterList : [],
-			note : ""
+			startFromTime : "",
+			tillTime : "",
 	};
 	
-	$scope.machine = $stateParams.machineObj ? $stateParams.machineObj : null;
-
+	$scope.qcmachine = $stateParams.qcmachineObj ? $stateParams.qcmachineObj : $scope.qcmachine ;
+		
+	$scope.machineList = [];
+	
+	$scope.qcparameterType = ["NUMBER", "NUMBERRANGE", "YESNO", "TEXT"];
+	$scope.tempScheduler = ["DAILY", "WEEKLY", "MONTHLY", "YEARLY"];
+	$scope.tempSchedulerTime = ["HOURS", "MINTUES"];
+			
 	$scope.qcparameter = {
 			name : "",
 			parameterType : "",
@@ -27,8 +34,6 @@ app.controller("qcmachineAddCtr", function($scope, $window, $mdToast, $timeout,
 			numberIdealValueValidDeviationPerc : ""
 	}
 	
-	$scope.qcmachine.parameterList.push($scope.qcparameter);
-
 	$scope.getEmptyMachineObj = function() {
 		return {
 			manifacturerDetail : $scope.manifacturerDetail,
@@ -37,13 +42,13 @@ app.controller("qcmachineAddCtr", function($scope, $window, $mdToast, $timeout,
 		}
 	};
 
-	$scope.addMachine = function() {
+	$scope.addQCMachine = function() {
 
-		$scope.machine.business = $scope.curUser.business;
-		$scope.machine.modifiedBy = $scope.curUser.email_id;
+		$scope.qcmachine.business = $scope.curUser.business;
+		$scope.qcmachine.modifiedBy = $scope.curUser.email_id;
 
 		var productService = appEndpointSF.getProductionService();
-		productService.addMachine($scope.machine).then(function(machineObj) {
+		productService.addQCMachine($scope.qcmachine).then(function(machineObj) {
 			if(machineObj.id != undefined){
 				$scope.showAddToast();
 			}
@@ -51,4 +56,37 @@ app.controller("qcmachineAddCtr", function($scope, $window, $mdToast, $timeout,
 		
 		$scope.getEmptyMachineObj();
 	}
+	
+	$scope.addNewQcParameter = function() {
+			$scope.qcparameter = {
+					name : "",
+					parameterType : "",
+					numberIdealValue : "",
+					numberIdealValueValidDeviationPerc : ""
+			}
+		$scope.qcmachine.parameterList.push($scope.qcparameter);
+	};
+	
+	$scope.removeParamterType = function(index) {
+		$scope.qcmachine.parameterList.splice(index, 1);
+	}
+	
+	$scope.fetchMachineList = function() {
+		
+		var productService = appEndpointSF.getProductionService();
+		productService.getMachineList($scope.curUser.business.id).then(function(list) {
+			$scope.machineList = list;
+		});
+	}
+	
+	$scope.waitForServiceLoad = function() {
+		if (appEndpointSF.is_service_ready) {
+			$scope.fetchMachineList();
+		} else {
+			$log.debug("Services Not Loaded, watiting...");
+			$timeout($scope.waitForServiceLoad, 1000);
+		}
+	}
+	
+	$scope.waitForServiceLoad();
 });
