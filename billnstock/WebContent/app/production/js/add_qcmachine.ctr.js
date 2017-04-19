@@ -26,10 +26,12 @@ app.controller("qcmachineAddCtr", function($scope, $window, $mdToast, $timeout,
 	$scope.qcparameterType = ["NUMBER", "NUMBERRANGE", "YESNO", "TEXT"];
 	$scope.tempScheduler = ["DAILY", "WEEKLY", "MONTHLY", "YEARLY"];
 	$scope.tempSchedulerTime = ["HOURS", "MINTUES"];
+	$scope.unitMeasure = ["dB","joule","fahrenheit","celsius"];
 			
 	$scope.qcparameter = {
 			name : "",
 			parameterType : "",
+			measureUnit : "",
 			numberIdealValue : "",
 			numberIdealValueValidDeviationPerc : ""
 	}

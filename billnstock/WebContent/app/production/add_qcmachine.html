@@ -13,7 +13,7 @@
 		</md-select>
 		<div ng-messages="addQCMachineForm.machineNo.$error"
 			ng-if="addQCMachineForm.machineNo.$submitted || addQCMachineForm.machineNo.$touched">
-			<div ng-message="required">Please Select School Category.</div>
+			<div ng-message="required">Please Select Machine.</div>
 		</div>
 		</md-input-container>
 
@@ -52,6 +52,7 @@
 					<th name="Sr.No." width="4%"></th>
 					<th name="QC Parameter Name" width="40%"></th>
 					<th name="Parameter Type"></th>
+					<th name="Unit of Measure"></th>
 					<th name="Ideal Value"></th>
 					<th name="Ideal Value Deviation Perc"></th>
 					<th name="Actions"></th>
@@ -74,6 +75,12 @@
 							ng-required="true"> <md-option
 							ng-repeat="paramType in qcparameterType" ng-value="paramType">{{paramType}}</md-option>
 						</md-select></md-input-container></td>
+					<td><md-input-container flex
+							style="padding-left:2px; padding-right:0px;">
+						<md-select name="measureUnit" ng-model="parameter.measureUnit"
+							ng-required="true"> <md-option
+							ng-repeat="unit in unitMeasure" ng-value="unit">{{unit}}</md-option>
+						</md-select></md-input-container></td>	
 					<td><md-input-container flex
 							style="padding-left:2px; padding-right:0px;">
 						<input ng-model="parameter.numberIdealValue">
