@@ -5,6 +5,7 @@ import com.protostar.billnstock.until.data.Constants.QCParameterType;
 public class QCParameter {
 	private String name;
 	private QCParameterType parameterType = QCParameterType.NUMBER;
+	private String measureUnit;
 	private float numberIdealValue = 25f;
 	private float numberIdealValueValidDeviationPerc = 2.5f;
 	private float numberValidRangeFrom = 0f;
@@ -23,6 +24,14 @@ public class QCParameter {
 
 	public float getNumberIdealValue() {
 		return numberIdealValue;
+	}
+	
+	public String getMeasureUnit() {
+		return measureUnit;
+	}
+
+	public void setMeasureUnit(String measureUnit) {
+		this.measureUnit = measureUnit;
 	}
 
 	public void setNumberIdealValue(float numberIdealValue) {

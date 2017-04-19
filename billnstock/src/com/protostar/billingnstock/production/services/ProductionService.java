@@ -9,8 +9,6 @@ import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
 import com.googlecode.objectify.Key;
-import com.protostar.billingnstock.account.entities.AccountEntity;
-import com.protostar.billingnstock.account.entities.AccountEntryEntity;
 import com.protostar.billingnstock.production.entities.BomEntity;
 import com.protostar.billingnstock.production.entities.ProductionMachineEntity;
 import com.protostar.billingnstock.production.entities.QCMachineEntity;
@@ -62,5 +60,19 @@ public class ProductionService {
 				.ancestor(Key.create(BusinessEntity.class, busId)).list();
 		
 		return machineList;
+	}
+	
+	@ApiMethod(name = "getMachineById", path = "getMachineById")
+	public QCMachineEntity getMachineById(@Named("busId") Long busId,
+			@Named("id") Long id) {
+
+		List<QCMachineEntity> list = ofy()
+				.load()
+				.type(QCMachineEntity.class)
+				.filterKey(
+						Key.create(Key.create(BusinessEntity.class, busId),
+								QCMachineEntity.class, id)).list();
+		QCMachineEntity foundMachine = list.size() > 0 ? list.get(0) : null;
+		return foundMachine;
 	}
 }
