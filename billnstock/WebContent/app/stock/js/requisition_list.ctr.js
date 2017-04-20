@@ -39,6 +39,20 @@ app
 
 					$scope.requisitionList = [];
 
+					$scope.logOrder = function(order) {
+						console.log('order: ', order);
+					};
+
+					$scope.logPagination = function(page, limit) {
+						console.log('page: ', page);
+						console.log('limit: ', limit);
+						$location.hash('tp1');
+						$anchorScroll();
+						if ($scope.query.page > $scope.query.pagesLoaded) {
+							$scope.fetchEntityListByPaging();
+						}
+					}
+
 					$scope.fetchEntityListByPaging = function() {
 						$scope.loading = true;
 						var pagingInfoTemp = {

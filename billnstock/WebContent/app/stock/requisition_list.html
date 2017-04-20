@@ -25,33 +25,39 @@
 		<span style="padding-right: 8px;">Filter By Status: </span><span
 			md-colors="{color:'default-primary-700'}"
 			ng-repeat="status in documentStatusList"
-			ng-click="fitlerListByStatus(status)">{{status + " "}}</span>
+			ng-click="fitlerListByStatus(status)"> <span
+			style="text-decoration: underline;"
+			ng-if="(selectedStatus == status) || ((selectedStatus == '' || selectedStatus == 'ALL') && status == 'ALL')">{{status
+				+ " "}}</span> <span
+			ng-if="!((selectedStatus == status) || ((selectedStatus == '' || selectedStatus == 'ALL') && status == 'ALL'))">{{status
+				+ " "}}</span></span>
 	</div>
 	<md-data-table-container>
-	<table md-data-table class="md-primary" md-progress="deferred">
-		<thead md-order="query.order" md-trigger="onorderchange">
-			<tr>
-				<th name="Req. No." order-by="itemNumber"></th>
-				<th name="Created Date" order-by="createdBy"></th>
-				<th name="Created By" order-by="createdBy.firstName"></th>
-				<th name="Status" order-by="status"></th>
-				<th name="Expected Date" order-by="expectedDate"></th>
+	<table md-table md-progress="promise">
+		<thead ng-if="!dataTableOptions.decapitate" md-head
+			md-order="query.order" md-on-reorder="logOrder">
+			<tr md-row>
+				<th md-column md-order-by="itemNumber">Req. No</th>
+				<th md-column md-order-by="createdDate">Created Date</th>
+				<th md-column md-order-by="createdBy.firstName">Created By</th>
+				<th md-column md-order-by="status">Status</th>
+				<th md-column md-order-by="expectedDate">Expected Date</th>
 				<!-- <th name="On Behalf Of" order-by="onBehalfOf"></th> -->
-				<th name="Actions"></th>
+				<th md-column>Actions</th>
 			</tr>
 		</thead>
-		<tbody>
-			<tr
+		<tbody md-body>
+			<tr md-row
 				ng-repeat="requisition in requisitionList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
 
-				<td>{{requisition.itemNumber}}</td>
-				<td>{{requisition.createdDate|formatDateWithTime}}</td>
-				<td>{{requisition.createdBy.firstName+"
+				<td md-cell>{{requisition.itemNumber}}</td>
+				<td md-cell>{{requisition.createdDate|formatDateWithTime}}</td>
+				<td md-cell>{{requisition.createdBy.firstName+"
 					"+requisition.createdBy.lastName }}</td>
-				<td>{{requisition.status}}</td>
-				<td>{{requisition.expectedDate|formatDate}}</td>
+				<td md-cell>{{requisition.status}}</td>
+				<td md-cell>{{requisition.expectedDate|formatDate}}</td>
 				<!-- <td>{{requisition.onBehalfOf}}</td> -->
-				<td>
+				<td md-cell>
 					<section layout="row">
 						<md-button class="md-icon-button"
 							ui-sref="stock.requisitionAdd({selectedRequisition: requisition})">
@@ -80,5 +86,11 @@
 			</tr>
 		</tbody>
 	</table>
-	</md-data-table-container>
+	<md-table-pagination md-limit="query.limit"
+		md-limit-options="dataTableOptions.limitOptions" md-page="query.page"
+		md-total={{query.totalSize}}
+		md-page-select="dataTableOptions.pageSelect"
+		md-boundary-links="dataTableOptions.boundaryLinks"
+		md-on-paginate="logPagination"></md-table-pagination> </md-data-table-container>
 </div>
+</md-content>

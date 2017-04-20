@@ -11,8 +11,11 @@ angular
 					$scope.query = {
 						order : '-itemNumber',
 						limit : 50,
-						page : 1
+						page : 1,
+						totalSize : 0,
+						pagesLoaded : 0
 					};
+
 					$scope.dummyWarehouse = {
 						warehouseName : "ALL",
 					}
@@ -52,6 +55,22 @@ angular
 					 * $scope.stockItemList = stockList; $scope.loading = false;
 					 * }); }
 					 */
+
+					$scope.logOrder = function(order) {
+						console.log('order: ', order);
+					};
+
+					$scope.logPagination = function(page, limit) {
+						console.log('page: ', page);
+						console.log('limit: ', limit);
+						$location.hash('tp1');
+						$anchorScroll();
+						if ($scope.query.page > $scope.query.pagesLoaded) {
+							$scope
+									.filterStockItems($scope.stockItemTypeFilterWrapper);
+						}
+					}
+
 					$scope.filterStockItems = function(
 							stockItemTypeFilterWrapper) {
 
@@ -90,8 +109,8 @@ angular
 
 					$scope.filterByWarehouse = function() {
 						if ($scope.stockItemTypeFilterWrapper.warehouse.warehouseName != "ALL") {
-							$scope.stockItemTypeFilterWrapper.productType = null;
-							$scope.stockItemTypeFilterWrapper.brand = null;
+						//	$scope.stockItemTypeFilterWrapper.productType = null;
+						//	$scope.stockItemTypeFilterWrapper.brand = null;
 							$scope
 									.filterStockItems($scope.stockItemTypeFilterWrapper);
 						}

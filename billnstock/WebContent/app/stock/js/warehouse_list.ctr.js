@@ -8,11 +8,27 @@ app.controller("warehouseListCtr", function($scope, $window, $mdToast,
 
 	$scope.query = {
 		order : 'warehouseName',
-		limit : 15,
-		page : 1
+		limit : 50,
+		page : 1,
+		totalSize : 0,
+		pagesLoaded : 0
 	};
 
 	$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
+
+	$scope.logOrder = function(order) {
+		console.log('order: ', order);
+	};
+
+	$scope.logPagination = function(page, limit) {
+		console.log('page: ', page);
+		console.log('limit: ', limit);
+		$location.hash('tp1');
+		$anchorScroll();
+		if ($scope.query.page > $scope.query.pagesLoaded) {
+			$scope.getAllWarehouseByBusiness();
+		}
+	}
 
 	$scope.getAllWarehouseByBusiness = function() {
 		var warehouseService = appEndpointSF.getWarehouseManagementService();

@@ -20,10 +20,32 @@ app
 
 					$scope.budgetList = [];
 
-					$scope.documentStatusList = [ 'DRAFT', 'SUBMITTED',
+					$scope.documentStatusList = [ 'ALL', 'DRAFT', 'SUBMITTED',
 							'FINALIZED', 'REJECTED' ];
 
 					$scope.selectedStatus = "";
+
+					$scope.logOrder = function(order) {
+						console.log('order: ', order);
+					};
+
+					$scope.logPagination = function(page, limit) {
+						console.log('page: ', page);
+						console.log('limit: ', limit);
+						$location.hash('tp1');
+						$anchorScroll();
+						if ($scope.query.page > $scope.query.pagesLoaded) {
+							$scope.fetchEntityListByPaging();
+						}
+					}
+
+					$scope.fitlerListByStatus = function(status) {
+						status = (status == 'ALL') ? '' : status;
+						$scope.selectedStatus = status;
+						$scope.budgetList = [];
+						$scope.pagingInfoReturned = null;
+						$scope.fetchEntityListByPaging();
+					};
 
 					$scope.fetchEntityListByPaging = function() {
 						$scope.loading = true;
@@ -53,13 +75,6 @@ app
 											$scope.loading = false;
 										});
 					}
-
-					$scope.fitlerListByStatus = function(status) {
-						$scope.selectedStatus = status;
-						$scope.budgetList = [];
-						$scope.pagingInfoReturned = null;
-						$scope.fetchEntityListByPaging();
-					};
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {

@@ -68,20 +68,19 @@
 		Add Stock Item Unit</md-tooltip></ng-md-icon> </md-button></md-input-container>
 	</div>
 	<md-data-table-container>
-	<table style="width: 80%" md-data-table class="md-primary"
-		md-progress="deferred">
-		<thead md-order="query.order" md-trigger="onorderchange">
-			<tr>
-				<th name="Unit Name"></th>
-				<th name="Description"></th>
-				<th name="Actions"></th>
+	<table style="width: 80%" md-table>
+		<thead md-head>
+			<tr md-row>
+				<th md-column>Unit Name</th>
+				<th md-column>Description</th>
+				<th md-column>Actions</th>
 			</tr>
 		</thead>
-		<tbody>
-			<tr ng-repeat="unit in stockItemUnitList">
-				<td>{{unit.unitName}}</td>
-				<td>{{unit.note}}</td>
-				<td><md-button class="md-icon-button"
+		<tbody md-body>
+			<tr md-row ng-repeat="unit in stockItemUnitList">
+				<td md-cell>{{unit.unitName}}</td>
+				<td md-cell>{{unit.note}}</td>
+				<td md-cell><md-button class="md-icon-button"
 						ng-click="editStockItemUnit($event,unit)"> <ng-md-icon
 						icon="edit" style="fill: md-default" size="20"> <md-tooltip>
 					Edit</md-tooltip></ng-md-icon></md-button></td>
@@ -113,20 +112,19 @@
 		<md-tooltip> Add Stock Item Category</md-tooltip></ng-md-icon> </md-button></md-input-container>
 	</div>
 	<md-data-table-container>
-	<table style="width: 80%" md-data-table class="md-primary"
-		md-progress="deferred">
-		<thead md-order="query.order" md-trigger="onorderchange">
-			<tr>
-				<th name="Category Type"></th>
-				<th name="Description"></th>
-				<th name="Actions"></th>
+	<table style="width: 80%" md-table>
+		<thead md-head>
+			<tr md-row>
+				<th md-column>Category Type</th>
+				<th md-column>Description</th>
+				<th md-column>Actions</th>
 			</tr>
 		</thead>
-		<tbody>
-			<tr ng-repeat="cat in stockItemCategories">
-				<td>{{cat.catName}}</td>
-				<td>{{cat.note}}</td>
-				<td><md-button class="md-icon-button"
+		<tbody md-body>
+			<tr md-row ng-repeat="cat in stockItemCategories">
+				<td md-cell>{{cat.catName}}</td>
+				<td md-cell>{{cat.note}}</td>
+				<td md-cell><md-button class="md-icon-button"
 						ng-click="editStockItemCategory($event,cat)"> <ng-md-icon
 						icon="edit" style="fill: md-default" size="20"> <md-tooltip>
 					Edit</md-tooltip></ng-md-icon></md-button></td>
@@ -156,20 +154,19 @@
 		<md-tooltip> Add Stock Item Order Type</md-tooltip></ng-md-icon> </md-button></md-input-container>
 	</div>
 	<md-data-table-container>
-	<table style="width: 80%" md-data-table class="md-primary"
-		md-progress="deferred">
-		<thead md-order="query.order" md-trigger="onorderchange">
-			<tr>
-				<th name="Order Type"></th>
-				<th name="Description"></th>
-				<th name="Actions"></th>
+	<table style="width: 80%" md-table>
+		<thead md-head>
+			<tr md-row>
+				<th md-column>Order Type</th>
+				<th md-column>Description</th>
+				<th md-column>Actions</th>
 			</tr>
 		</thead>
-		<tbody>
-			<tr ng-repeat="orderType in stockItemOrderTypes">
-				<td>{{orderType.typeName}}</td>
-				<td>{{orderType.note}}</td>
-				<td><md-button class="md-icon-button"
+		<tbody md-body>
+			<tr md-row ng-repeat="orderType in stockItemOrderTypes">
+				<td md-cell>{{orderType.typeName}}</td>
+				<td md-cell>{{orderType.note}}</td>
+				<td md-cell><md-button class="md-icon-button"
 						ng-click="editStockItemOrderType($event,orderType)"> <ng-md-icon
 						icon="edit" style="fill: md-default" size="20"> <md-tooltip>
 					Edit</md-tooltip></ng-md-icon></md-button></td>
@@ -199,20 +196,19 @@
 		Add Stock Item Brand</md-tooltip></ng-md-icon> </md-button></md-input-container>
 	</div>
 	<md-data-table-container>
-	<table style="width: 80%" md-data-table class="md-primary"
-		md-progress="deferred">
-		<thead md-order="query.order" md-trigger="onorderchange">
-			<tr>
-				<th name="Brand Name"></th>
-				<th name="Description"></th>
-				<th name="Actions"></th>
+	<table style="width: 80%" md-table>
+		<thead md-head>
+			<tr md-row>
+				<th md-column>Brand Name</th>
+				<th md-column>Description</th>
+				<th md-column>Actions</th>
 			</tr>
 		</thead>
-		<tbody>
-			<tr ng-repeat="brand in stockItemBrands">
-				<td>{{brand.brandName}}</td>
-				<td>{{brand.note}}</td>
-				<td><md-button class="md-icon-button"
+		<tbody md-body>
+			<tr md-row ng-repeat="brand in stockItemBrands">
+				<td md-cell>{{brand.brandName}}</td>
+				<td md-cell>{{brand.note}}</td>
+				<td md-cell><md-button class="md-icon-button"
 						ng-click="editStockItemBrand($event,brand)"> <ng-md-icon
 						icon="edit" style="fill: md-default" size="20"> <md-tooltip>
 					Edit</md-tooltip></ng-md-icon></md-button></td>
@@ -243,20 +239,19 @@
 		<md-tooltip> Add Stock Item Product Type</md-tooltip></ng-md-icon> </md-button></md-input-container>
 	</div>
 	<md-data-table-container>
-	<table style="width: 80%" md-data-table class="md-primary"
-		md-progress="deferred">
-		<thead md-order="query.order" md-trigger="onorderchange">
-			<tr>
-				<th name="Product Type"></th>
-				<th name="Description"></th>
-				<th name="Actions"></th>
+	<table style="width: 80%" md-table>
+		<thead md-head>
+			<tr md-row>
+				<th md-column>Product Type</th>
+				<th md-column>Description</th>
+				<th md-column>Actions</th>
 			</tr>
 		</thead>
-		<tbody>
-			<tr ng-repeat="productType in stockItemProductTypes">
-				<td>{{productType.typeName}}</td>
-				<td>{{productType.note}}</td>
-				<td><md-button class="md-icon-button"
+		<tbody md-body>
+			<tr md-row ng-repeat="productType in stockItemProductTypes">
+				<td md-cell>{{productType.typeName}}</td>
+				<td md-cell>{{productType.note}}</td>
+				<td md-cell><md-button class="md-icon-button"
 						ng-click="editStockItemProductType($event,productType)">
 					<ng-md-icon icon="edit" style="fill: md-default" size="20">
 					<md-tooltip> Edit</md-tooltip></ng-md-icon></md-button></td>

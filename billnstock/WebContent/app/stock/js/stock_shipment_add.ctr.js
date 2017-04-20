@@ -14,7 +14,7 @@ app
 							'TO_OTHER_WAREHOUSE', 'TO_PARTNER' ];
 
 					$scope.stockItemOrderTypes = [];
-					
+
 					$scope.getEmptystockShipmentObj = function() {
 						return {
 							customer : null,
@@ -66,7 +66,7 @@ app
 										});
 
 					}
-					
+
 					$scope.draftDocumnent = function(ev) {
 						$scope.documentEntity.status = 'DRAFT';
 						$scope.saveDocument();
@@ -151,13 +151,15 @@ app
 					$scope.calProductSubTotal = function() {
 						$log.debug("##Came to calSubTotal...");
 						$scope.documentEntity.productSubTotal = 0;
-
-						for (var i = 0; i < $scope.documentEntity.productLineItemList.length; i++) {
-							var lineItem = $scope.documentEntity.productLineItemList[i];
-							$scope.documentEntity.productSubTotal += (lineItem.qty * lineItem.price);
+						if ($scope.documentEntity.productLineItemList) {
+							for (var i = 0; i < $scope.documentEntity.productLineItemList.length; i++) {
+								var lineItem = $scope.documentEntity.productLineItemList[i];
+								$scope.documentEntity.productSubTotal += (lineItem.qty * lineItem.price);
+							}
 						}
 
 						$scope.productTaxChanged();
+
 					}
 
 					$scope.serviceLineItemChanged = function(selectedLineItem) {
@@ -167,13 +169,14 @@ app
 
 					$scope.calServiceSubTotal = function() {
 						$scope.documentEntity.serviceSubTotal = 0;
-
-						for (var i = 0; i < $scope.documentEntity.serviceLineItemList.length; i++) {
-							var lineItem = $scope.documentEntity.serviceLineItemList[i];
-							$scope.documentEntity.serviceSubTotal += (lineItem.qty * lineItem.price);
+						if ($scope.documentEntity.serviceLineItemList) {
+							for (var i = 0; i < $scope.documentEntity.serviceLineItemList.length; i++) {
+								var lineItem = $scope.documentEntity.serviceLineItemList[i];
+								$scope.documentEntity.serviceSubTotal += (lineItem.qty * lineItem.price);
+							}
 						}
-
 						$scope.serviceTaxChanged();
+
 					}
 
 					$scope.serviceTaxChanged = function() {
@@ -411,7 +414,6 @@ app
 								});
 
 					}
-					
 
 					function getStockSettingsByBiz() {
 						var stockService = appEndpointSF.getStockService();
@@ -422,20 +424,23 @@ app
 								});
 					}
 
-					
 					$scope.getStockItemOrderTypeList = function() {
 
 						var stockService = appEndpointSF.getStockService();
 
-						stockService.getStockItemOrderTypes($scope.curUser.business.id)
-								.then(function(stockItemOrderTypes) {
-									$scope.stockItemOrderTypes = stockItemOrderTypes;
-									if($scope.stockItemOrderTypes.length>0 && !$scope.documentEntity.orderType){
-										$scope.documentEntity.orderType = $scope.stockItemOrderTypes[0];
-									}
-								})
+						stockService
+								.getStockItemOrderTypes(
+										$scope.curUser.business.id)
+								.then(
+										function(stockItemOrderTypes) {
+											$scope.stockItemOrderTypes = stockItemOrderTypes;
+											if ($scope.stockItemOrderTypes.length > 0
+													&& !$scope.documentEntity.orderType) {
+												$scope.documentEntity.orderType = $scope.stockItemOrderTypes[0];
+											}
+										})
 					}
-					
+
 					$scope.printstockShipment = function(stShipId) {
 						var bid = $scope.curUser.business.id;
 						window.open("PrintPdfstockShipment?bid=" + bid

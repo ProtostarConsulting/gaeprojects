@@ -21,25 +21,26 @@
 
 <div>
 	<md-data-table-container>
-	<table md-data-table class="md-primary" md-progress="deferred">
-		<thead md-order="query.order" md-trigger="onorderchange">
-			<tr>
-				<th name="Supplier" order-by="supplierName"></th>
-				<th name="Name" order-by="contactFName"></th>
-				<th name="Contact No" order-by="mobile"></th>
-				<th name="Address" order-by="address"></th>
+	<table md-table md-progress="promise">
+		<thead ng-if="!dataTableOptions.decapitate" md-head
+			md-order="query.order" md-on-reorder="logOrder">
+			<tr md-row>
+				<th md-column md-order-by="supplierName">Supplier</th>
+				<th md-column md-order-by="contactFName">Name</th>
+				<th md-column md-order-by="mobile">Contact No</th>
+				<th md-column md-order-by="address">Address</th>
 
 			</tr>
 		</thead>
 
-		<tbody>
-			<tr
+		<tbody md-body>
+			<tr md-row
 				ng-repeat="supplier in supplierList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
-				<td>{{supplier.supplierName}}</td>
-				<td>{{supplier.contactFName}}</td>
-				<td>{{supplier.mobile}}</td>
-				<td>{{supplier.address.city}}</td>
-				<td>
+				<td md-cell>{{supplier.supplierName}}</td>
+				<td md-cell>{{supplier.contactFName}}</td>
+				<td md-cell>{{supplier.mobile}}</td>
+				<td md-cell>{{supplier.address.city}}</td>
+				<td md-cell>
 					<section layout="row">
 						<md-button class="md-icon-button"
 							ui-sref="stock.supplierAdd({selectedSupplier: supplier})">
@@ -50,8 +51,11 @@
 			</tr>
 		</tbody>
 	</table>
-	<md-data-table-pagination md-limit="query.limit" md-page="query.page"
-		md-total={{invoiceData.length}} md-trigger="onpagechange"></md-data-table-pagination>
-	</md-data-table-container>
+	<md-table-pagination md-limit="query.limit"
+		md-limit-options="dataTableOptions.limitOptions" md-page="query.page"
+		md-total={{supplierList.length}}
+		md-page-select="dataTableOptions.pageSelect"
+		md-boundary-links="dataTableOptions.boundaryLinks"
+		md-on-paginate="logPagination"></md-table-pagination> </md-data-table-container>
 </div>
 </md-content>

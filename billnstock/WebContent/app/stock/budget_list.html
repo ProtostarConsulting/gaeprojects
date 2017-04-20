@@ -20,37 +20,48 @@
 
 <div>
 	<div>
-		<div>
-			<span style="padding-right: 8px;">Filter By Status: </span><span
-				md-colors="{color:'default-primary-700'}"
-				ng-repeat="status in documentStatusList"
-				ng-click="fitlerListByStatus(status)">{{status + " "}}</span>
-		</div>
-		<md-data-table-container>
-		<table md-data-table class="md-primary" md-progress="deferred">
-			<thead md-order="query.order" md-trigger="onorderchange">
-				<tr>
-					<th name="Budget No." order-by="itemNumber"></th>
-					<th name="Budget Type" order-by="type"></th>
-					<th name="Period" order-by="period"></th>
-					<th name="Status" order-by="status"></th>
-					<th name="Actions"></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr
-					ng-repeat="budget in budgetList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
-
-					<td>{{budget.itemNumber}}</td>
-					<td>{{budget.type}}</td>
-					<td>{{budget.period}}</td>
-					<td>{{budget.status}}</td>
-					<td><md-button class="md-icon-button"
-							ui-sref="stock.addBudget({selectedBudgetObj: budget})">
-						<ng-md-icon icon="edit" style="fill: md-default" size="20">
-						<md-tooltip> Edit</md-tooltip></ng-md-icon></md-button></td>
-				</tr>
-			</tbody>
-		</table>
-		</md-data-table-container>
+		<span style="padding-right: 8px;">Filter By Status: </span><span
+			md-colors="{color:'default-primary-700'}"
+			ng-repeat="status in documentStatusList"
+			ng-click="fitlerListByStatus(status)"> <span
+			style="text-decoration: underline;"
+			ng-if="(selectedStatus == status) || ((selectedStatus == '' || selectedStatus == 'ALL') && status == 'ALL')">{{status
+				+ " "}}</span> <span
+			ng-if="!((selectedStatus == status) || ((selectedStatus == '' || selectedStatus == 'ALL') && status == 'ALL'))">{{status
+				+ " "}}</span></span>
 	</div>
+	<md-data-table-container>
+	<table md-table md-progress="promise">
+		<thead ng-if="!dataTableOptions.decapitate" md-head
+			md-order="query.order" md-on-reorder="logOrder">
+			<tr md-row>
+				<th md-column md-order-by="itemNumber" width="4%">Budget No.</th>
+				<th md-column md-order-by="type">Budget Type</th>
+				<th md-column md-order-by="period">Period</th>
+				<th md-column md-order-by="status">Status</th>
+				<th md-column>Actions</th>
+			</tr>
+		</thead>
+		<tbody md-body>
+			<tr md-row
+				ng-repeat="budget in budgetList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+
+				<td md-cell>{{budget.itemNumber}}</td>
+				<td md-cell>{{budget.type}}</td>
+				<td md-cell>{{budget.period}}</td>
+				<td md-cell>{{budget.status}}</td>
+				<td md-cell><md-button class="md-icon-button"
+						ui-sref="stock.addBudget({selectedBudgetObj: budget})">
+					<ng-md-icon icon="edit" style="fill: md-default" size="20">
+					<md-tooltip> Edit</md-tooltip></ng-md-icon></md-button></td>
+			</tr>
+		</tbody>
+	</table>
+	<md-table-pagination md-limit="query.limit"
+		md-limit-options="dataTableOptions.limitOptions" md-page="query.page"
+		md-total={{query.totalSize}}
+		md-page-select="dataTableOptions.pageSelect"
+		md-boundary-links="dataTableOptions.boundaryLinks"
+		md-on-paginate="logPagination"></md-table-pagination> </md-data-table-container>
+</div>
+</md-content>

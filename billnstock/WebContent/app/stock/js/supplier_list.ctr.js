@@ -6,10 +6,26 @@ app.controller("supplierListCtr", function($scope, $window, $mdToast, $timeout,
 	$scope.query = {
 		order : 'supplierName',
 		limit : 50,
-		page : 1
+		page : 1,
+		totalSize : 0,
+		pagesLoaded : 0
 	};
 
 	$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
+
+	$scope.logOrder = function(order) {
+		console.log('order: ', order);
+	};
+
+	$scope.logPagination = function(page, limit) {
+		console.log('page: ', page);
+		console.log('limit: ', limit);
+		$location.hash('tp1');
+		$anchorScroll();
+		if ($scope.query.page > $scope.query.pagesLoaded) {
+			$scope.getAllSuppliersByBusiness();
+		}
+	}
 
 	$scope.getAllSuppliersByBusiness = function() {
 		$scope.loading = true;
@@ -33,5 +49,5 @@ app.controller("supplierListCtr", function($scope, $window, $mdToast, $timeout,
 
 	$scope.supplierList = [];
 	// $scope.temppurchaseOrder;
-	$scope.waitForServiceLoad();	
+	$scope.waitForServiceLoad();
 });

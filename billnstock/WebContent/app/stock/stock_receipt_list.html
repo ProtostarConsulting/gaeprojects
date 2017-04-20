@@ -23,34 +23,40 @@
 		<span style="padding-right: 8px;">Filter By Status: </span><span
 			md-colors="{color:'default-primary-700'}"
 			ng-repeat="status in documentStatusList"
-			ng-click="fitlerListByStatus(status)">{{status + " "}}</span>
+			ng-click="fitlerListByStatus(status)"> <span
+			style="text-decoration: underline;"
+			ng-if="(selectedStatus == status) || ((selectedStatus == '' || selectedStatus == 'ALL') && status == 'ALL')">{{status
+				+ " "}}</span> <span
+			ng-if="!((selectedStatus == status) || ((selectedStatus == '' || selectedStatus == 'ALL') && status == 'ALL'))">{{status
+				+ " "}}</span></span>
 	</div>
 	<md-data-table-container>
-	<table md-data-table class="md-primary" md-progress="deferred">
-		<thead md-order="query.order" md-trigger="onorderchange">
-			<tr>
-				<th name="Receipt No." order-by="itemNumber"></th>
-				<th name="Created Date" order-by="createdBy"></th>
-				<th name="Created By" order-by="createdBy.firstName"></th>
-				<th name="Receipt Date" order-by="receiptDate"></th>
-				<th name="Status" order-by="status"></th>
-				<th name="Supplier Name" order-by="supplier.supplierName"></th>
-				<th name="Actions"></th>
+	<table md-table md-progress="promise">
+		<thead ng-if="!dataTableOptions.decapitate" md-head
+			md-order="query.order" md-on-reorder="logOrder">
+			<tr md-row>
+				<th md-column md-order-by="itemNumber" width="4%">Receipt No.</th>
+				<th md-column md-order-by="createdBy">Created Date</th>
+				<th md-column md-order-by="createdBy.firstName">Created By</th>
+				<th md-column md-order-by="receiptDate">Receipt Date</th>
+				<th md-column md-order-by="status">Status</th>
+				<th md-column md-order-by="supplier.supplierName">Supplier Name</th>
+				<th md-column>Actions</th>
 			</tr>
 		</thead>
 
-		<tbody>
-			<tr md-auto-select
+		<tbody md-body>
+			<tr md-row
 				ng-repeat="stockReceipt in stockReceiptList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
 
-				<td>{{stockReceipt.itemNumber}}</td>
-				<td>{{stockReceipt.createdDate|formatDate}}</td>
-				<td>{{stockReceipt.createdBy.firstName+"
+				<td md-cell>{{stockReceipt.itemNumber}}</td>
+				<td md-cell>{{stockReceipt.createdDate|formatDate}}</td>
+				<td md-cell>{{stockReceipt.createdBy.firstName+"
 					"+stockReceipt.createdBy.lastName }}</td>
-				<td>{{stockReceipt.receiptDate | formatDate}}</td>
-				<td>{{stockReceipt.status}}</td>
-				<td>{{stockReceipt.supplier.supplierName}}</td>
-				<td>
+				<td md-cell>{{stockReceipt.receiptDate | formatDate}}</td>
+				<td md-cell>{{stockReceipt.status}}</td>
+				<td md-cell>{{stockReceipt.supplier.supplierName}}</td>
+				<td md-cell>
 					<section layout="row">
 						<!-- <md-button class="md-icon-button"
 							ui-sref="stockReceipt.view({selectedstockReceiptNo: stockReceipt.id})">
@@ -92,8 +98,11 @@
 		</tbody>
 	</table>
 
-	<md-data-table-pagination md-limit="query.limit" md-page="query.page"
-		md-total={{stockReceiptList.length}} md-trigger="onpagechange"></md-data-table-pagination>
-	</md-data-table-container>
+	<md-table-pagination md-limit="query.limit"
+		md-limit-options="dataTableOptions.limitOptions" md-page="query.page"
+		md-total={{query.totalSize}}
+		md-page-select="dataTableOptions.pageSelect"
+		md-boundary-links="dataTableOptions.boundaryLinks"
+		md-on-paginate="logPagination"></md-table-pagination> </md-data-table-container>
 </div>
 </md-content>
