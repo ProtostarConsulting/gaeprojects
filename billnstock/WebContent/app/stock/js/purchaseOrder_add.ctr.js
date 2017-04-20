@@ -74,11 +74,10 @@ app
 					$scope.documentEntity = $stateParams.purchaseOrderObj ? $stateParams.purchaseOrderObj
 							: $scope.getEmptyPurchaseOrderObj();
 
-					/*
-					 * $scope.documentEntity.poDueDate =
-					 * $scope.documentEntity.poDueDate ? new Date(
-					 * $scope.documentEntity.poDueDate) : new Date();
-					 */
+					$scope.documentEntity.poDueDate = $scope.documentEntity.poDueDate ? new Date(
+							$scope.documentEntity.poDueDate)
+							: new Date();
+
 					$scope.saveDocument = function() {
 						if (!$scope.documentEntity.serviceLineItemList
 								&& !$scope.documentEntity.productLineItemList) {
