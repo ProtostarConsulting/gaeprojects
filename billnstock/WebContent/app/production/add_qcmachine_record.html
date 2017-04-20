@@ -1,0 +1,55 @@
+<md-subheader class="md-primary">
+<h4>Add QCMachine Record</h4>
+<!-- <h4 class="md-title"
+	ng-bind="qcmachine.id?'Edit QCMachine':'QCAdd Machine'"></h4> --> </md-subheader>
+
+<form name="addQCMachineRecordForm">
+	<div layout="row" layout-xs="column" flex>
+		<md-input-container flex> <label>Machine
+			no. </label> <md-select name="machine" ng-model="qcmachineRecord.machine"
+			ng-change="getMachineParamList(qcmachineRecord.machine)"
+			ng-required="true"> <md-option
+			ng-repeat="qcmachine in machineList" ng-value="qcmachine">{{qcmachine.machine.machineNo}}</md-option>
+		</md-select>
+		<div ng-messages="addQCMachineRecordForm.machine.$error"
+			ng-if="addQCMachineRecordForm.machine.$submitted || addQCMachineRecordForm.machine.$touched">
+			<div ng-message="required">Please Select Machine.</div>
+		</div>
+		</md-input-container>
+
+		<h4>QCMachine Record Date</h4>
+		<md-datepicker ng-model="qcmachineRecord.recordDate"
+			md-placeholder="Enter date" flex></md-datepicker>
+		</md-input-container>
+	</div>
+
+	<div>
+		<md-table-container ng-if="isTableShow">
+		<table md-table md-progress="promise">
+			<tbody md-body>
+				<tr md-row>
+					<td md-cell>Time/QC Parameter Name
+					</th>
+					<td md-cell ng-repeat="machineParam in machineParamList">{{machineParam.name}}</td>
+				</tr>
+				<tr md-row ng-repeat="tempTime in timeArray track by $index">
+					<td md-cell>{{ tempTime }}</td>
+					<td md-cell ng-repeat="machineParam in machineParamList"><md-input-container
+							flex style="padding-left:2px; padding-right:0px;">
+						<label>Enter Value</label> <input type="number" ng-model="parameter.name">
+						</md-input-container></td>
+				</tr>
+			</tbody>
+		</table>
+		</md-table-container>
+	</div>
+	<div ng-if="isTableShow">
+		<section layout="row" layout-xs="column">
+			<md-button class="md-raised md-primary" ng-click="addQCMachine()">Save</md-button>
+		</section>
+	</div>
+	<!-- <div>
+		<md-input-container> <label>Time</label> <input
+			type="time" mdp-time-picker ng-model="currentDate" /> </md-input-container>
+	</div> -->
+</form>

@@ -3153,6 +3153,17 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 	
+	ProductionService.getMachineById = function(busId,id) {
+		var deferred = $q.defer();
+		gapi.client.productionService.getMachineById({
+			"busId" : busId,
+			"id" : id
+		}).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}
+	
 	//====================================================
 
 	

@@ -18,8 +18,24 @@ public abstract class QCEntity extends BaseEntity {
 	private SchedulingFrequecyType schedule;
 	private SchedulingTimeFrequecyType scheduleTime;
 
-	private float startFromTime;
-	private float tillTime;
+	private Date startFromTime;
+	public Date getStartFromTime() {
+		return startFromTime;
+	}
+
+	public void setStartFromTime(Date startFromTime) {
+		this.startFromTime = startFromTime;
+	}
+
+	public Date getTillTime() {
+		return tillTime;
+	}
+
+	public void setTillTime(Date tillTime) {
+		this.tillTime = tillTime;
+	}
+
+	private Date tillTime;
 
 	public SchedulingFrequecyType getSchedule() {
 		return schedule;
@@ -35,22 +51,6 @@ public abstract class QCEntity extends BaseEntity {
 
 	public void setScheduleTime(SchedulingTimeFrequecyType scheduleTime) {
 		this.scheduleTime = scheduleTime;
-	}
-
-	public float getStartFromTime() {
-		return startFromTime;
-	}
-
-	public void setStartFromTime(float startFromTime) {
-		this.startFromTime = startFromTime;
-	}
-
-	public float getTillTime() {
-		return tillTime;
-	}
-
-	public void setTillTime(float tillTime) {
-		this.tillTime = tillTime;
 	}
 
 	public String getQcName() {

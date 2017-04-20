@@ -19,34 +19,31 @@
 </section>
 
 <div>
-	<md-data-table-container>
-	<table md-data-table class="md-primary" md-progress="deferred">
-		<thead md-order="query.order" md-trigger="onorderchange">
-			<tr>
-				<th name="Machine No." order-by="itemNumber"></th>
-				<th name="QC Name" order-by="createdDate"></th>
-				<th name="Note"></th>
-				<th name="Valid From"></th>
-				<th name="Valid Till"></th>
-				<th name="Actions"></th>
+	<md-table-container>
+	<table md-table md-progress="promise">
+		<thead ng-if="!dataTableOptions.decapitate" md-head
+			md-order="query.order" md-on-reorder="logOrder">
+			<tr md-row>
+				<th md-column md-order-by="machine.machineNo" width="4%">Machine No.</th>
+				<th md-column md-order-by="qcName">QC Name</th>
+				<th md-column md-order-by="note">Note</th>
+				<th md-column md-order-by="validFrom">Valid From</th>
+				<th md-column md-numeric md-order-by="validTill">Valid Till</th>
+				<th md-column>Actions</th>
 			</tr>
 		</thead>
 
-		<tbody>
-			<tr md-auto-select
+		<tbody md-body>
+			<tr md-row
 				ng-repeat="qcmachine in qcmachineList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
 
-				<td>{{qcmachine.machine.machineNo}}</td>
-				<td>{{qcmachine.qcName}}</td>
-				<td>{{qcmachine.note}}</td>
-				<td>{{qcmachine.validFrom | formatDateWithTime}}</td>
-				<td>{{qcmachine.validTill | formatDateWithTime}}</td>
-				<td>
+				<td md-cell>{{qcmachine.machine.machineNo}}</td>
+				<td md-cell>{{qcmachine.qcName}}</td>
+				<td md-cell>{{qcmachine.note}}</td>
+				<td md-cell>{{qcmachine.validFrom | formatDateWithTime}}</td>
+				<td md-cell>{{qcmachine.validTill | formatDateWithTime}}</td>
+				<td md-cell>
 					<section layout="row">
-						<!-- <md-button class="md-icon-button"
-							ui-sref="invoice.view({selectedInvoiceNo: invoice.id})">
-						<ng-md-icon icon="receipt" style="fill: md-default" size="20">
-						<md-tooltip> View Invoice</md-tooltip></ng-md-icon></md-button> -->
 						<md-button class="md-icon-button"
 							ui-sref="production.add_qcmachine({qcmachineObj: qcmachine})"> <ng-md-icon
 							icon="edit" style="fill: md-default" size="20"> <md-tooltip>
@@ -56,8 +53,12 @@
 			</tr>
 		</tbody>
 	</table>
-	<md-data-table-pagination md-limit="query.limit" md-page="query.page"
-		md-total={{query.totalSize}} md-trigger="onpagechange"></md-data-table-pagination>
-	</md-data-table-container>
+	</md-table-container>
+	<md-table-pagination md-limit="query.limit"
+		md-limit-options="dataTableOptions.limitOptions" md-page="query.page"
+		md-total={{query.totalSize}}
+		md-page-select="dataTableOptions.pageSelect"
+		md-boundary-links="dataTableOptions.boundaryLinks"
+		md-on-paginate="logPagination"></md-table-pagination>
 </div>
 </md-content>

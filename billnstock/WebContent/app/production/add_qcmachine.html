@@ -46,66 +46,69 @@
 	</div>
 	<div>
 		<h3>QC Parameter</h3>
-		<table md-data-table md-progress="deferred">
-			<thead md-order="query.order" md-trigger="onOrderChange">
-				<tr>
-					<th name="Sr.No." width="4%"></th>
-					<th name="QC Parameter Name" width="40%"></th>
-					<th name="Parameter Type"></th>
-					<th name="Unit of Measure"></th>
-					<th name="Ideal Value"></th>
-					<th name="Ideal Value Deviation Perc"></th>
-					<th name="Actions"></th>
+		<md-table-container>
+		<table md-table md-progress="promise">
+			<thead ng-if="!dataTableOptions.decapitate" md-head
+				md-order="query.order" md-on-reorder="logOrder">
+				<tr md-row>
+					<th md-column width="4%">Sr.No.</th>
+					<th md-column>QC Parameter Name</th>
+					<th md-column>Parameter Type</th>
+					<th md-column>Unit of Measure</th>
+					<th md-column>Ideal Value</th>
+					<th md-column>Ideal Value Deviation Perc</th>
+					<th md-column>Actions</th>
 				</tr>
 			</thead>
 
-			<tbody>
-				<tr ng-repeat="parameter in qcmachine.parameterList">
+			<tbody md-body>
+				<tr md-row ng-repeat="parameter in qcmachine.parameterList">
 
-					<td width="4%">{{ $index +1 }}</td>
-					<td width="40%"><div layout="row">
+					<td md-cell width="4%">{{$index + 1}}</td>
+					<td md-cell width="40%"><div layout="row">
 							<md-input-container flex
 								style="padding-left:2px; padding-right:0px;">
 							<input ng-model="parameter.name"> </md-input-container>
 						</div></td>
-
-					<td><md-input-container flex
+					<td md-cell><md-input-container flex
 							style="padding-left:2px; padding-right:0px;">
 						<md-select name="parameterType" ng-model="parameter.parameterType"
 							ng-required="true"> <md-option
 							ng-repeat="paramType in qcparameterType" ng-value="paramType">{{paramType}}</md-option>
 						</md-select></md-input-container></td>
-					<td><md-input-container flex
+					<td md-cell><md-input-container flex
 							style="padding-left:2px; padding-right:0px;">
 						<md-select name="measureUnit" ng-model="parameter.measureUnit"
 							ng-required="true"> <md-option
 							ng-repeat="unit in unitMeasure" ng-value="unit">{{unit}}</md-option>
-						</md-select></md-input-container></td>	
-					<td><md-input-container flex
+						</md-select></md-input-container></td>
+					<td md-cell><md-input-container flex
 							style="padding-left:2px; padding-right:0px;">
-						<input ng-model="parameter.numberIdealValue">
+						<input ng-model="parameter.numberIdealValue"> </md-input-container></td>
+					<td md-cell><md-input-container flex
+							style="padding-left:2px; padding-right:0px;">
+						<input ng-model="parameter.numberIdealValueValidDeviationPerc">
 						</md-input-container></td>
-					<td><md-input-container flex
-							style="padding-left:2px; padding-right:0px;">
-						<input ng-model="parameter.numberIdealValueValidDeviationPerc"> </md-input-container></td>
-					<td><md-icon
+					<td md-cell>
+						<md-icon
 							md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
 							ng-click="removeParamterType($index)" class="name"
-							style="color: Green; height: 18px; width: 18px"></md-icon></td>
+							style="color: Green; height: 18px; width: 18px">
+					</td>
 				</tr>
-
-				<tr>
-					<td><md-button class="md-icon-button"
+				<tr md-row>
+					<td md-cell><md-button class="md-icon-button"
 							ng-click="addNewQcParameter()"> <ng-md-icon
 							icon="add_circle" style="fill: md-default" size="24">
 						<md-tooltip> Add New </md-tooltip></ng-md-icon> </md-button></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<td md-cell></td>
+					<td md-cell></td>
+					<td md-cell></td>
+					<td md-cell></td>
 				</tr>
 			</tbody>
 		</table>
+		</md-table-container>
 	</div>
 	<div>
 		<h3>Repeat Schedular</h3>
@@ -123,23 +126,29 @@
 				ng-value="schedulerTime">{{schedulerTime}}</md-option> </md-select></md-input-container>
 		</div>
 		<div layout="row" layout-xs="column" flex>
-			<md-input-container flex> <label>From
+			<!-- <md-input-container flex> <label>From
 				time</label> <input name="startFromTime" ng-model="qcmachine.startFromTime"
 				ng-required="true">
 			<div ng-messages="addQCMachineForm.startFromTime.$error"
 				ng-if="addQCMachineForm.startFromTime.$submitted || addQCMachineForm.startFromTime.$touched">
 				<div ng-message="required">Please Enter Start Time.</div>
 			</div>
-			</md-input-container>
+			</md-input-container> -->
+			<h4>From Time</h4>
+			<mdp-time-picker mdp-format="hh:mm A"
+				ng-model="qcmachine.startFromTime"></mdp-time-picker>
 
-			<md-input-container flex> <label>Till
+			<!-- <md-input-container flex> <label>Till
 				time</label> <input name="tillTime" ng-model="qcmachine.tillTime"
 				ng-required="true">
 			<div ng-messages="addQCMachineForm.tillTime.$error"
 				ng-if="addQCMachineForm.tillTime.$submitted || addQCMachineForm.tillTime.$touched">
 				<div ng-message="required">Please Enter Till Time.</div>
 			</div>
-			</md-input-container>
+			</md-input-container> -->
+			<h4>From Time</h4>
+			<mdp-time-picker mdp-format="hh:mm A"
+				ng-model="qcmachine.tillTime"></mdp-time-picker>
 		</div>
 	</div>
 
