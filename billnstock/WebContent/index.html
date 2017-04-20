@@ -13,7 +13,8 @@
 </head>
 <body layout="column" ng-cloak md-theme="default" md-theme-watch="true"
 	layout="column">
-	<md-content flex-gt-xs style="padding-left: 18px; padding-right: 18px;">
+	<!-- <md-content flex-gt-xs style="padding-left: 18px; padding-right: 18px;"> -->
+	<md-content flex-gt-xs style="padding-left: 0px; padding-right: 0px;">
 	<md-subheader>
 	<section layout="row" style="margin-top: 15px;" flex-gt-xs>
 		<div class="md-toolbar-tools">
@@ -21,17 +22,24 @@
 				<img ng-src="/img/images/protostar_logo_pix_308_124.png"
 					class="md-card-image" height="60px" width="120px" />
 			</div>
-			<h3 hide-xs style="margin-left: 12px;">ProERP by ProDigital
-				Systems Pvt. Ltd</h3>
-			<h3 hide-gt-xs>ProERP</h3>
+			<h4 hide-xs style="margin-left: 12px;">ProERP by ProDigital
+				Systems Pvt. Ltd</h4>
+			<h4 hide-gt-xs>ProERP</h4>
 			<span flex></span>
-			<section layout="row" layout-padding hide-xs>
+			<!-- <section layout="row" layout-padding hide-xs>
 				<md-button class="md-accent" ng-click="gotoPart('part1')">Sign-up
 				for Trial</md-button>
 				<md-button class="md-accent" ng-click="gotoPart('part2')">Pricing</md-button>
 				<md-button class="md-accent" ng-click="gotoPart('part3')">Help</md-button>
 				<md-button class="md-accent" ng-click="gotoPart('part4')">Contact
 				Us</md-button>
+			</section> -->
+			<md-nav-bar md-selected-nav-item="currentNavItem"> <md-nav-item
+				md-nav-click="gotoPart('part1')" name="part1"> Sign-up
+			for Trial </md-nav-item> <md-nav-item md-nav-click="gotoPart('part2')" name="part2">
+			Pricing </md-nav-item> <md-nav-item md-nav-click="gotoPart('part3')" name="part3">
+			Help </md-nav-item> <md-nav-item md-nav-click="gotoPart('part4')" name="part4">
+			Contact Us </md-nav-item> </md-nav-bar>
 		</div>
 		<span flex></span>
 		<md-button class="md-accent" ng-click="loginClick()">
@@ -61,460 +69,360 @@
 	<md-content id="part1" flex-gt-xs layout="column"
 		style="padding-top: 10%;"> <md-toolbar class="md-hue-2">
 	<div class="md-toolbar-tools">
-		<h3 class="md-display-1">Let's get started</h3>
+		<h4 class="md-display-1">Try ProERP for free</h4>
 	</div>
 	</md-toolbar>
 	<hr>
-	<!-- <h3 class="md-display-1">Welcome to the {{institute.name}}</h3> -->
-	<p class="md-body-3">Register your firm with three simple steps and
-		get started on your own.
-	<ul>
-		<li>Enter your business basic details</li>
-		<li>Choose your admin details</li>
-		<li>Once in, go to 'More Actions -> Setup' tab, and update
-			details like business address, logo, add users, choose your theme, etc.</li>
-		<li>product planning, purchase</li>
-		<li>manufacturing or service delivery</li>
-		<li>marketing and sales</li>
-		<li>Human Resources</li>
+	<div style="padding-left: 18px; padding-right: 18px;">
+		<p class="md-body-3">Register your firm with three simple steps
+			and get started on your own.
+		<ul>
+			<li>Enter your business basic details</li>
+			<li>Choose your admin details</li>
+			<li>Once in, go to 'More Actions -> Setup' tab, and update
+				details like business address, logo, add users, choose your theme,
+				etc.</li>
+			<li>product planning, purchase</li>
+			<li>manufacturing or service delivery</li>
+			<li>marketing and sales</li>
+			<li>Human Resources</li>
 
-	</ul>
+		</ul>
 
-	<h3 class="md-display-1">Functional Areas</h3>
-	<p>
-		An ERP system covers the following common functional areas. In many
-		ERP systems these are called and grouped together as <i>ERP
-			modules</i>:
-	</p>
-	<ul>
-		<li><a target="#"
-			href="https://en.wikipedia.org/wiki/Financial_accounting"
-			title="Financial accounting">Financial accounting</a>: <a target="#"
-			href="https://en.wikipedia.org/wiki/General_ledger"
-			title="General ledger">General ledger</a>, <a target="#"
-			href="https://en.wikipedia.org/wiki/Fixed_asset" title="Fixed asset">fixed
-				asset</a>, <a target="#"
-			href="https://en.wikipedia.org/wiki/Accounts_payable"
-			title="Accounts payable">payables</a> including vouchering, matching
-			and payment, <a target="#"
-			href="https://en.wikipedia.org/wiki/Accounts_receivable"
-			title="Accounts receivable">receivables</a> cash application and
-			collections, <a target="#"
-			href="https://en.wikipedia.org/wiki/Cash_management"
-			title="Cash management">cash management</a>, <a target="#"
-			href="https://en.wikipedia.org/wiki/Consolidation_(business)"
-			title="Consolidation (business)">financial consolidation</a></li>
-		<li><a target="#"
-			href="https://en.wikipedia.org/wiki/Management_accounting"
-			title="Management accounting">Management accounting</a>: <a
-			target="#" href="https://en.wikipedia.org/wiki/Budgeting"
-			class="mw-redirect" title="Budgeting">Budgeting</a>, costing, <a
-			target="#" href="https://en.wikipedia.org/wiki/Cost_management"
-			class="mw-redirect" title="Cost management">cost management</a>, <a
-			target="#"
-			href="https://en.wikipedia.org/wiki/Activity_based_costing"
-			class="mw-redirect" title="Activity based costing">activity based
-				costing</a></li>
-		<li><a target="#"
-			href="https://en.wikipedia.org/wiki/Human_resources"
-			title="Human resources">Human resources</a>: <a target="#"
-			href="https://en.wikipedia.org/wiki/Recruitment" title="Recruitment">Recruiting</a>,
-			<a target="#" href="https://en.wikipedia.org/wiki/Training"
-			title="Training">training</a>, <a target="#"
-			href="https://en.wikipedia.org/wiki/Schedule_(workplace)"
-			title="Schedule (workplace)">rostering</a>, <a target="#"
-			href="https://en.wikipedia.org/wiki/Payroll" title="Payroll">payroll</a>,
-			<a target="#" href="https://en.wikipedia.org/wiki/Employee_benefit"
-			class="mw-redirect" title="Employee benefit">benefits</a>, <a
-			target="#" href="https://en.wikipedia.org/wiki/Pensions"
-			class="mw-redirect" title="Pensions">retirement and pension plans</a>,
-			<a target="#"
-			href="https://en.wikipedia.org/wiki/md-contentersity_(business)"
-			title="md-contentersity (business)">md-contentersity management</a>,
-			<a target="#" href="https://en.wikipedia.org/wiki/Retirement"
-			title="Retirement">retirement</a>, <a target="#"
-			href="https://en.wikipedia.org/wiki/Employee_exit_management"
-			title="Employee exit management">separation</a></li>
-		<li>Manufacturing: <a target="#"
-			href="https://en.wikipedia.org/wiki/Engineering" title="Engineering">Engineering</a>,
-			<a target="#" href="https://en.wikipedia.org/wiki/Bill_of_materials"
-			title="Bill of materials">bill of materials</a>, work orders, <a
-			target="#" href="https://en.wikipedia.org/wiki/Scheduling"
-			class="mw-redirect" title="Scheduling">scheduling</a>, <a target="#"
-			href="https://en.wikipedia.org/wiki/Capacity_utilization"
-			title="Capacity utilization">capacity</a>, <a target="#"
-			href="https://en.wikipedia.org/wiki/Workflow_management_system"
-			title="Workflow management system">workflow management</a>, <a
-			target="#" href="https://en.wikipedia.org/wiki/Quality_control"
-			title="Quality control">quality control</a>, manufacturing process,
-			manufacturing projects, manufacturing flow, <a target="#"
-			href="https://en.wikipedia.org/wiki/Product_life_cycle_management"
-			class="mw-redirect" title="Product life cycle management">product
-				life cycle management</a></li>
-		<li>Order Processing: <a target="#"
-			href="https://en.wikipedia.org/wiki/Order_to_cash"
-			title="Order to cash">Order to cash</a>, order entry, credit
-			checking, <a target="#" href="https://en.wikipedia.org/wiki/Pricing"
-			title="Pricing">pricing</a>, available to promise, <a target="#"
-			href="https://en.wikipedia.org/wiki/Inventory" title="Inventory">inventory</a>,
-			<a target="#" href="https://en.wikipedia.org/wiki/Shipping"
-			class="mw-redirect" title="Shipping">shipping</a>, sales analysis and
-			reporting, sales commissioning.
-		</li>
-		<li><a target="#"
-			href="https://en.wikipedia.org/wiki/Supply_chain_management"
-			title="Supply chain management">Supply chain management</a>: Supply
-			chain planning, supplier scheduling, <a target="#"
-			href="https://en.wikipedia.org/wiki/Product_configurator"
-			class="mw-redirect" title="Product configurator">product
-				configurator</a>, <a target="#"
-			href="https://en.wikipedia.org/wiki/Order_to_cash"
-			title="Order to cash">order to cash</a>, <a target="#"
-			href="https://en.wikipedia.org/wiki/Purchasing" title="Purchasing">purchasing</a>,
-			<a target="#" href="https://en.wikipedia.org/wiki/Inventory"
-			title="Inventory">inventory</a>, claim processing, <a target="#"
-			href="https://en.wikipedia.org/wiki/Warehousing" class="mw-redirect"
-			title="Warehousing">warehousing</a> (receiving, putaway, <a
-			target="#" href="https://en.wikipedia.org/wiki/Order_picking"
-			title="Order picking">picking</a> and <a target="#"
-			href="https://en.wikipedia.org/wiki/Packaging_and_labeling"
-			title="Packaging and labeling">packing</a>).</li>
-		<li><a target="#"
-			href="https://en.wikipedia.org/wiki/Project_management"
-			title="Project management">Project management</a>: Project planning,
-			resource planning, project costing, <a target="#"
-			href="https://en.wikipedia.org/wiki/Work_breakdown_structure"
-			title="Work breakdown structure">work breakdown structure</a>, <a
-			target="#" href="https://en.wikipedia.org/wiki/Invoice"
-			title="Invoice">billing</a>, time and expense, performance units,
-			activity management</li>
-		<li>Customer relationship management: Sales and marketing,
-			commissions, service, customer contact, <a target="#" target="#"
-			href="https://en.wikipedia.org/wiki/Call_center" class="mw-redirect"
-			title="Call center">call center</a> support. CRM systems are not
-			always considered part of ERP systems but rather Business Support
-			systems (BSS).
-		</li>
-		<li>Data services: Various self service interfaces for customers,
-			suppliers and/or employees</li>
-	</ul>
+		<h4 class="md-headline">Functional Areas</h4>
+		<p style="padding-left: 18px; padding-right: 18px;">
+			An ERP system covers the following common functional areas. In many
+			ERP systems these are called and grouped together as <i>ERP
+				modules</i>:
+
+		</p>
+	</div>
 	</md-content> <md-content id="part2" flex-gt-xs layout="column"
 		style="padding-top: 10%;"> <md-toolbar class="md-hue-2">
 	<div class="md-toolbar-tools">
-		<h3 class="md-display-1">Pricing</h3>
+		<h4 class="md-display-1">Pricing</h4>
 	</div>
 	</md-toolbar>
 	<hr>
-	<!-- <h3 class="md-display-1">Welcome to the {{institute.name}}</h3> -->
-	<p class="md-body-3">ProERP is a category of business-management
-		software--typically a suite of integrated applications--that an
-		organization can use to collect, store, manage and interpret data from
-		many business activities, including:
-	<ul>
-		<li>inventory management</li>
-		<li>shipping and payment</li>
-		<li>finance</li>
-		<li>product planning, purchase</li>
-		<li>manufacturing or service delivery</li>
-		<li>marketing and sales</li>
-		<li>Human Resources</li>
+	<div style="padding-left: 18px; padding-right: 18px;">
+		<p class="md-body-3" style="padding-left: 18px; padding-right: 18px;">ProERP
+			is a category of business-management software--typically a suite of
+			integrated applications--that an organization can use to collect,
+			store, manage and interpret data from many business activities,
+			including:
+		<ul>
+			<li>inventory management</li>
+			<li>shipping and payment</li>
+			<li>finance</li>
+			<li>product planning, purchase</li>
+			<li>manufacturing or service delivery</li>
+			<li>marketing and sales</li>
+			<li>Human Resources</li>
 
-	</ul>
+		</ul>
 
-	<h3 class="md-display-1">Functional Areas</h3>
-	<p>
-		An ERP system covers the following common functional areas. In many
-		ERP systems these are called and grouped together as <i>ERP
-			modules</i>:
-	</p>
-	<ul>
-		<li><a target="#"
-			href="https://en.wikipedia.org/wiki/Financial_accounting"
-			title="Financial accounting">Financial accounting</a>: <a target="#"
-			href="https://en.wikipedia.org/wiki/General_ledger"
-			title="General ledger">General ledger</a>, <a target="#"
-			href="https://en.wikipedia.org/wiki/Fixed_asset" title="Fixed asset">fixed
-				asset</a>, <a target="#"
-			href="https://en.wikipedia.org/wiki/Accounts_payable"
-			title="Accounts payable">payables</a> including vouchering, matching
-			and payment, <a target="#"
-			href="https://en.wikipedia.org/wiki/Accounts_receivable"
-			title="Accounts receivable">receivables</a> cash application and
-			collections, <a target="#"
-			href="https://en.wikipedia.org/wiki/Cash_management"
-			title="Cash management">cash management</a>, <a target="#"
-			href="https://en.wikipedia.org/wiki/Consolidation_(business)"
-			title="Consolidation (business)">financial consolidation</a></li>
-		<li><a target="#"
-			href="https://en.wikipedia.org/wiki/Management_accounting"
-			title="Management accounting">Management accounting</a>: <a
-			target="#" href="https://en.wikipedia.org/wiki/Budgeting"
-			class="mw-redirect" title="Budgeting">Budgeting</a>, costing, <a
-			target="#" href="https://en.wikipedia.org/wiki/Cost_management"
-			class="mw-redirect" title="Cost management">cost management</a>, <a
-			target="#"
-			href="https://en.wikipedia.org/wiki/Activity_based_costing"
-			class="mw-redirect" title="Activity based costing">activity based
-				costing</a></li>
-		<li><a target="#"
-			href="https://en.wikipedia.org/wiki/Human_resources"
-			title="Human resources">Human resources</a>: <a target="#"
-			href="https://en.wikipedia.org/wiki/Recruitment" title="Recruitment">Recruiting</a>,
-			<a target="#" href="https://en.wikipedia.org/wiki/Training"
-			title="Training">training</a>, <a target="#"
-			href="https://en.wikipedia.org/wiki/Schedule_(workplace)"
-			title="Schedule (workplace)">rostering</a>, <a target="#"
-			href="https://en.wikipedia.org/wiki/Payroll" title="Payroll">payroll</a>,
-			<a target="#" href="https://en.wikipedia.org/wiki/Employee_benefit"
-			class="mw-redirect" title="Employee benefit">benefits</a>, <a
-			target="#" href="https://en.wikipedia.org/wiki/Pensions"
-			class="mw-redirect" title="Pensions">retirement and pension plans</a>,
-			<a target="#"
-			href="https://en.wikipedia.org/wiki/md-contentersity_(business)"
-			title="md-contentersity (business)">md-contentersity management</a>,
-			<a target="#" href="https://en.wikipedia.org/wiki/Retirement"
-			title="Retirement">retirement</a>, <a target="#"
-			href="https://en.wikipedia.org/wiki/Employee_exit_management"
-			title="Employee exit management">separation</a></li>
-		<li>Manufacturing: <a target="#"
-			href="https://en.wikipedia.org/wiki/Engineering" title="Engineering">Engineering</a>,
-			<a target="#" href="https://en.wikipedia.org/wiki/Bill_of_materials"
-			title="Bill of materials">bill of materials</a>, work orders, <a
-			target="#" href="https://en.wikipedia.org/wiki/Scheduling"
-			class="mw-redirect" title="Scheduling">scheduling</a>, <a target="#"
-			href="https://en.wikipedia.org/wiki/Capacity_utilization"
-			title="Capacity utilization">capacity</a>, <a target="#"
-			href="https://en.wikipedia.org/wiki/Workflow_management_system"
-			title="Workflow management system">workflow management</a>, <a
-			target="#" href="https://en.wikipedia.org/wiki/Quality_control"
-			title="Quality control">quality control</a>, manufacturing process,
-			manufacturing projects, manufacturing flow, <a target="#"
-			href="https://en.wikipedia.org/wiki/Product_life_cycle_management"
-			class="mw-redirect" title="Product life cycle management">product
-				life cycle management</a></li>
-		<li>Order Processing: <a target="#"
-			href="https://en.wikipedia.org/wiki/Order_to_cash"
-			title="Order to cash">Order to cash</a>, order entry, credit
-			checking, <a target="#" href="https://en.wikipedia.org/wiki/Pricing"
-			title="Pricing">pricing</a>, available to promise, <a target="#"
-			href="https://en.wikipedia.org/wiki/Inventory" title="Inventory">inventory</a>,
-			<a target="#" href="https://en.wikipedia.org/wiki/Shipping"
-			class="mw-redirect" title="Shipping">shipping</a>, sales analysis and
-			reporting, sales commissioning.
-		</li>
-		<li><a target="#"
-			href="https://en.wikipedia.org/wiki/Supply_chain_management"
-			title="Supply chain management">Supply chain management</a>: Supply
-			chain planning, supplier scheduling, <a target="#"
-			href="https://en.wikipedia.org/wiki/Product_configurator"
-			class="mw-redirect" title="Product configurator">product
-				configurator</a>, <a target="#"
-			href="https://en.wikipedia.org/wiki/Order_to_cash"
-			title="Order to cash">order to cash</a>, <a target="#"
-			href="https://en.wikipedia.org/wiki/Purchasing" title="Purchasing">purchasing</a>,
-			<a target="#" href="https://en.wikipedia.org/wiki/Inventory"
-			title="Inventory">inventory</a>, claim processing, <a target="#"
-			href="https://en.wikipedia.org/wiki/Warehousing" class="mw-redirect"
-			title="Warehousing">warehousing</a> (receiving, putaway, <a
-			target="#" href="https://en.wikipedia.org/wiki/Order_picking"
-			title="Order picking">picking</a> and <a target="#"
-			href="https://en.wikipedia.org/wiki/Packaging_and_labeling"
-			title="Packaging and labeling">packing</a>).</li>
-		<li><a target="#"
-			href="https://en.wikipedia.org/wiki/Project_management"
-			title="Project management">Project management</a>: Project planning,
-			resource planning, project costing, <a target="#"
-			href="https://en.wikipedia.org/wiki/Work_breakdown_structure"
-			title="Work breakdown structure">work breakdown structure</a>, <a
-			target="#" href="https://en.wikipedia.org/wiki/Invoice"
-			title="Invoice">billing</a>, time and expense, performance units,
-			activity management</li>
-		<li>Customer relationship management: Sales and marketing,
-			commissions, service, customer contact, <a target="#" target="#"
-			href="https://en.wikipedia.org/wiki/Call_center" class="mw-redirect"
-			title="Call center">call center</a> support. CRM systems are not
-			always considered part of ERP systems but rather Business Support
-			systems (BSS).
-		</li>
-		<li>Data services: Various self service interfaces for customers,
-			suppliers and/or employees</li>
-	</ul>
+		<h4 class="md-display-2">Functional Areas</h4>
+		<p style="padding-left: 18px; padding-right: 18px;">
+			An ERP system covers the following common functional areas. In many
+			ERP systems these are called and grouped together as <i>ERP
+				modules</i>:
+		</p>
+		<ul>
+			<li><a target="#"
+				href="https://en.wikipedia.org/wiki/Financial_accounting"
+				title="Financial accounting">Financial accounting</a>: <a target="#"
+				href="https://en.wikipedia.org/wiki/General_ledger"
+				title="General ledger">General ledger</a>, <a target="#"
+				href="https://en.wikipedia.org/wiki/Fixed_asset" title="Fixed asset">fixed
+					asset</a>, <a target="#"
+				href="https://en.wikipedia.org/wiki/Accounts_payable"
+				title="Accounts payable">payables</a> including vouchering, matching
+				and payment, <a target="#"
+				href="https://en.wikipedia.org/wiki/Accounts_receivable"
+				title="Accounts receivable">receivables</a> cash application and
+				collections, <a target="#"
+				href="https://en.wikipedia.org/wiki/Cash_management"
+				title="Cash management">cash management</a>, <a target="#"
+				href="https://en.wikipedia.org/wiki/Consolidation_(business)"
+				title="Consolidation (business)">financial consolidation</a></li>
+			<li><a target="#"
+				href="https://en.wikipedia.org/wiki/Management_accounting"
+				title="Management accounting">Management accounting</a>: <a
+				target="#" href="https://en.wikipedia.org/wiki/Budgeting"
+				class="mw-redirect" title="Budgeting">Budgeting</a>, costing, <a
+				target="#" href="https://en.wikipedia.org/wiki/Cost_management"
+				class="mw-redirect" title="Cost management">cost management</a>, <a
+				target="#"
+				href="https://en.wikipedia.org/wiki/Activity_based_costing"
+				class="mw-redirect" title="Activity based costing">activity
+					based costing</a></li>
+			<li><a target="#"
+				href="https://en.wikipedia.org/wiki/Human_resources"
+				title="Human resources">Human resources</a>: <a target="#"
+				href="https://en.wikipedia.org/wiki/Recruitment" title="Recruitment">Recruiting</a>,
+				<a target="#" href="https://en.wikipedia.org/wiki/Training"
+				title="Training">training</a>, <a target="#"
+				href="https://en.wikipedia.org/wiki/Schedule_(workplace)"
+				title="Schedule (workplace)">rostering</a>, <a target="#"
+				href="https://en.wikipedia.org/wiki/Payroll" title="Payroll">payroll</a>,
+				<a target="#" href="https://en.wikipedia.org/wiki/Employee_benefit"
+				class="mw-redirect" title="Employee benefit">benefits</a>, <a
+				target="#" href="https://en.wikipedia.org/wiki/Pensions"
+				class="mw-redirect" title="Pensions">retirement and pension
+					plans</a>, <a target="#"
+				href="https://en.wikipedia.org/wiki/md-contentersity_(business)"
+				title="md-contentersity (business)">md-contentersity management</a>,
+				<a target="#" href="https://en.wikipedia.org/wiki/Retirement"
+				title="Retirement">retirement</a>, <a target="#"
+				href="https://en.wikipedia.org/wiki/Employee_exit_management"
+				title="Employee exit management">separation</a></li>
+			<li>Manufacturing: <a target="#"
+				href="https://en.wikipedia.org/wiki/Engineering" title="Engineering">Engineering</a>,
+				<a target="#" href="https://en.wikipedia.org/wiki/Bill_of_materials"
+				title="Bill of materials">bill of materials</a>, work orders, <a
+				target="#" href="https://en.wikipedia.org/wiki/Scheduling"
+				class="mw-redirect" title="Scheduling">scheduling</a>, <a target="#"
+				href="https://en.wikipedia.org/wiki/Capacity_utilization"
+				title="Capacity utilization">capacity</a>, <a target="#"
+				href="https://en.wikipedia.org/wiki/Workflow_management_system"
+				title="Workflow management system">workflow management</a>, <a
+				target="#" href="https://en.wikipedia.org/wiki/Quality_control"
+				title="Quality control">quality control</a>, manufacturing process,
+				manufacturing projects, manufacturing flow, <a target="#"
+				href="https://en.wikipedia.org/wiki/Product_life_cycle_management"
+				class="mw-redirect" title="Product life cycle management">product
+					life cycle management</a></li>
+			<li>Order Processing: <a target="#"
+				href="https://en.wikipedia.org/wiki/Order_to_cash"
+				title="Order to cash">Order to cash</a>, order entry, credit
+				checking, <a target="#" href="https://en.wikipedia.org/wiki/Pricing"
+				title="Pricing">pricing</a>, available to promise, <a target="#"
+				href="https://en.wikipedia.org/wiki/Inventory" title="Inventory">inventory</a>,
+				<a target="#" href="https://en.wikipedia.org/wiki/Shipping"
+				class="mw-redirect" title="Shipping">shipping</a>, sales analysis
+				and reporting, sales commissioning.
+			</li>
+			<li><a target="#"
+				href="https://en.wikipedia.org/wiki/Supply_chain_management"
+				title="Supply chain management">Supply chain management</a>: Supply
+				chain planning, supplier scheduling, <a target="#"
+				href="https://en.wikipedia.org/wiki/Product_configurator"
+				class="mw-redirect" title="Product configurator">product
+					configurator</a>, <a target="#"
+				href="https://en.wikipedia.org/wiki/Order_to_cash"
+				title="Order to cash">order to cash</a>, <a target="#"
+				href="https://en.wikipedia.org/wiki/Purchasing" title="Purchasing">purchasing</a>,
+				<a target="#" href="https://en.wikipedia.org/wiki/Inventory"
+				title="Inventory">inventory</a>, claim processing, <a target="#"
+				href="https://en.wikipedia.org/wiki/Warehousing" class="mw-redirect"
+				title="Warehousing">warehousing</a> (receiving, putaway, <a
+				target="#" href="https://en.wikipedia.org/wiki/Order_picking"
+				title="Order picking">picking</a> and <a target="#"
+				href="https://en.wikipedia.org/wiki/Packaging_and_labeling"
+				title="Packaging and labeling">packing</a>).</li>
+			<li><a target="#"
+				href="https://en.wikipedia.org/wiki/Project_management"
+				title="Project management">Project management</a>: Project planning,
+				resource planning, project costing, <a target="#"
+				href="https://en.wikipedia.org/wiki/Work_breakdown_structure"
+				title="Work breakdown structure">work breakdown structure</a>, <a
+				target="#" href="https://en.wikipedia.org/wiki/Invoice"
+				title="Invoice">billing</a>, time and expense, performance units,
+				activity management</li>
+			<li>Customer relationship management: Sales and marketing,
+				commissions, service, customer contact, <a target="#" target="#"
+				href="https://en.wikipedia.org/wiki/Call_center" class="mw-redirect"
+				title="Call center">call center</a> support. CRM systems are not
+				always considered part of ERP systems but rather Business Support
+				systems (BSS).
+			</li>
+			<li>Data services: Various self service interfaces for
+				customers, suppliers and/or employees</li>
+		</ul>
+	</div>
 	</md-content> <md-content id="part3" flex-gt-xs layout="column"
 		style="padding-top: 10%;"> <md-toolbar class="md-hue-2">
 	<div class="md-toolbar-tools">
-		<h3 class="md-display-1">Product Help</h3>
+		<h4 class="md-display-1">Product Help</h4>
 	</div>
 	</md-toolbar>
 	<hr>
-	<!-- <h3 class="md-display-1">Welcome to the {{institute.name}}</h3> -->
-	<p class="md-body-3">ProERP is a category of business-management
-		software--typically a suite of integrated applications--that an
-		organization can use to collect, store, manage and interpret data from
-		many business activities, including:
-	<ul>
-		<li>inventory management</li>
-		<li>shipping and payment</li>
-		<li>finance</li>
-		<li>product planning, purchase</li>
-		<li>manufacturing or service delivery</li>
-		<li>marketing and sales</li>
-		<li>Human Resources</li>
+	<div style="padding-left: 18px; padding-right: 18px;">
+		<p class="md-body-3">ProERP is a category of business-management
+			software--typically a suite of integrated applications--that an
+			organization can use to collect, store, manage and interpret data
+			from many business activities, including:
+		<ul>
+			<li>inventory management</li>
+			<li>shipping and payment</li>
+			<li>finance</li>
+			<li>product planning, purchase</li>
+			<li>manufacturing or service delivery</li>
+			<li>marketing and sales</li>
+			<li>Human Resources</li>
 
-	</ul>
+		</ul>
 
-	<h3 class="md-display-1">Functional Areas</h3>
-	<p>
-		An ERP system covers the following common functional areas. In many
-		ERP systems these are called and grouped together as <i>ERP
-			modules</i>:
-	</p>
-	<ul>
-		<li><a target="#"
-			href="https://en.wikipedia.org/wiki/Financial_accounting"
-			title="Financial accounting">Financial accounting</a>: <a target="#"
-			href="https://en.wikipedia.org/wiki/General_ledger"
-			title="General ledger">General ledger</a>, <a target="#"
-			href="https://en.wikipedia.org/wiki/Fixed_asset" title="Fixed asset">fixed
-				asset</a>, <a target="#"
-			href="https://en.wikipedia.org/wiki/Accounts_payable"
-			title="Accounts payable">payables</a> including vouchering, matching
-			and payment, <a target="#"
-			href="https://en.wikipedia.org/wiki/Accounts_receivable"
-			title="Accounts receivable">receivables</a> cash application and
-			collections, <a target="#"
-			href="https://en.wikipedia.org/wiki/Cash_management"
-			title="Cash management">cash management</a>, <a target="#"
-			href="https://en.wikipedia.org/wiki/Consolidation_(business)"
-			title="Consolidation (business)">financial consolidation</a></li>
-		<li><a target="#"
-			href="https://en.wikipedia.org/wiki/Management_accounting"
-			title="Management accounting">Management accounting</a>: <a
-			target="#" href="https://en.wikipedia.org/wiki/Budgeting"
-			class="mw-redirect" title="Budgeting">Budgeting</a>, costing, <a
-			target="#" href="https://en.wikipedia.org/wiki/Cost_management"
-			class="mw-redirect" title="Cost management">cost management</a>, <a
-			target="#"
-			href="https://en.wikipedia.org/wiki/Activity_based_costing"
-			class="mw-redirect" title="Activity based costing">activity based
-				costing</a></li>
-		<li><a target="#"
-			href="https://en.wikipedia.org/wiki/Human_resources"
-			title="Human resources">Human resources</a>: <a target="#"
-			href="https://en.wikipedia.org/wiki/Recruitment" title="Recruitment">Recruiting</a>,
-			<a target="#" href="https://en.wikipedia.org/wiki/Training"
-			title="Training">training</a>, <a target="#"
-			href="https://en.wikipedia.org/wiki/Schedule_(workplace)"
-			title="Schedule (workplace)">rostering</a>, <a target="#"
-			href="https://en.wikipedia.org/wiki/Payroll" title="Payroll">payroll</a>,
-			<a target="#" href="https://en.wikipedia.org/wiki/Employee_benefit"
-			class="mw-redirect" title="Employee benefit">benefits</a>, <a
-			target="#" href="https://en.wikipedia.org/wiki/Pensions"
-			class="mw-redirect" title="Pensions">retirement and pension plans</a>,
-			<a target="#"
-			href="https://en.wikipedia.org/wiki/md-contentersity_(business)"
-			title="md-contentersity (business)">md-contentersity management</a>,
-			<a target="#" href="https://en.wikipedia.org/wiki/Retirement"
-			title="Retirement">retirement</a>, <a target="#"
-			href="https://en.wikipedia.org/wiki/Employee_exit_management"
-			title="Employee exit management">separation</a></li>
-		<li>Manufacturing: <a target="#"
-			href="https://en.wikipedia.org/wiki/Engineering" title="Engineering">Engineering</a>,
-			<a target="#" href="https://en.wikipedia.org/wiki/Bill_of_materials"
-			title="Bill of materials">bill of materials</a>, work orders, <a
-			target="#" href="https://en.wikipedia.org/wiki/Scheduling"
-			class="mw-redirect" title="Scheduling">scheduling</a>, <a target="#"
-			href="https://en.wikipedia.org/wiki/Capacity_utilization"
-			title="Capacity utilization">capacity</a>, <a target="#"
-			href="https://en.wikipedia.org/wiki/Workflow_management_system"
-			title="Workflow management system">workflow management</a>, <a
-			target="#" href="https://en.wikipedia.org/wiki/Quality_control"
-			title="Quality control">quality control</a>, manufacturing process,
-			manufacturing projects, manufacturing flow, <a target="#"
-			href="https://en.wikipedia.org/wiki/Product_life_cycle_management"
-			class="mw-redirect" title="Product life cycle management">product
-				life cycle management</a></li>
-		<li>Order Processing: <a target="#"
-			href="https://en.wikipedia.org/wiki/Order_to_cash"
-			title="Order to cash">Order to cash</a>, order entry, credit
-			checking, <a target="#" href="https://en.wikipedia.org/wiki/Pricing"
-			title="Pricing">pricing</a>, available to promise, <a target="#"
-			href="https://en.wikipedia.org/wiki/Inventory" title="Inventory">inventory</a>,
-			<a target="#" href="https://en.wikipedia.org/wiki/Shipping"
-			class="mw-redirect" title="Shipping">shipping</a>, sales analysis and
-			reporting, sales commissioning.
-		</li>
-		<li><a target="#"
-			href="https://en.wikipedia.org/wiki/Supply_chain_management"
-			title="Supply chain management">Supply chain management</a>: Supply
-			chain planning, supplier scheduling, <a target="#"
-			href="https://en.wikipedia.org/wiki/Product_configurator"
-			class="mw-redirect" title="Product configurator">product
-				configurator</a>, <a target="#"
-			href="https://en.wikipedia.org/wiki/Order_to_cash"
-			title="Order to cash">order to cash</a>, <a target="#"
-			href="https://en.wikipedia.org/wiki/Purchasing" title="Purchasing">purchasing</a>,
-			<a target="#" href="https://en.wikipedia.org/wiki/Inventory"
-			title="Inventory">inventory</a>, claim processing, <a target="#"
-			href="https://en.wikipedia.org/wiki/Warehousing" class="mw-redirect"
-			title="Warehousing">warehousing</a> (receiving, putaway, <a
-			target="#" href="https://en.wikipedia.org/wiki/Order_picking"
-			title="Order picking">picking</a> and <a target="#"
-			href="https://en.wikipedia.org/wiki/Packaging_and_labeling"
-			title="Packaging and labeling">packing</a>).</li>
-		<li><a target="#"
-			href="https://en.wikipedia.org/wiki/Project_management"
-			title="Project management">Project management</a>: Project planning,
-			resource planning, project costing, <a target="#"
-			href="https://en.wikipedia.org/wiki/Work_breakdown_structure"
-			title="Work breakdown structure">work breakdown structure</a>, <a
-			target="#" href="https://en.wikipedia.org/wiki/Invoice"
-			title="Invoice">billing</a>, time and expense, performance units,
-			activity management</li>
-		<li>Customer relationship management: Sales and marketing,
-			commissions, service, customer contact, <a target="#" target="#"
-			href="https://en.wikipedia.org/wiki/Call_center" class="mw-redirect"
-			title="Call center">call center</a> support. CRM systems are not
-			always considered part of ERP systems but rather Business Support
-			systems (BSS).
-		</li>
-		<li>Data services: Various self service interfaces for customers,
-			suppliers and/or employees</li>
-	</ul>
-	</md-content>
-	<md-content id="part4" flex-gt-xs layout="column"
+		<h4 class="md-headline">Functional Areas</h4>
+		<p>
+			An ERP system covers the following common functional areas. In many
+			ERP systems these are called and grouped together as <i>ERP
+				modules</i>:
+		</p>
+		<ul>
+			<li><a target="#"
+				href="https://en.wikipedia.org/wiki/Financial_accounting"
+				title="Financial accounting">Financial accounting</a>: <a target="#"
+				href="https://en.wikipedia.org/wiki/General_ledger"
+				title="General ledger">General ledger</a>, <a target="#"
+				href="https://en.wikipedia.org/wiki/Fixed_asset" title="Fixed asset">fixed
+					asset</a>, <a target="#"
+				href="https://en.wikipedia.org/wiki/Accounts_payable"
+				title="Accounts payable">payables</a> including vouchering, matching
+				and payment, <a target="#"
+				href="https://en.wikipedia.org/wiki/Accounts_receivable"
+				title="Accounts receivable">receivables</a> cash application and
+				collections, <a target="#"
+				href="https://en.wikipedia.org/wiki/Cash_management"
+				title="Cash management">cash management</a>, <a target="#"
+				href="https://en.wikipedia.org/wiki/Consolidation_(business)"
+				title="Consolidation (business)">financial consolidation</a></li>
+			<li><a target="#"
+				href="https://en.wikipedia.org/wiki/Management_accounting"
+				title="Management accounting">Management accounting</a>: <a
+				target="#" href="https://en.wikipedia.org/wiki/Budgeting"
+				class="mw-redirect" title="Budgeting">Budgeting</a>, costing, <a
+				target="#" href="https://en.wikipedia.org/wiki/Cost_management"
+				class="mw-redirect" title="Cost management">cost management</a>, <a
+				target="#"
+				href="https://en.wikipedia.org/wiki/Activity_based_costing"
+				class="mw-redirect" title="Activity based costing">activity
+					based costing</a></li>
+			<li><a target="#"
+				href="https://en.wikipedia.org/wiki/Human_resources"
+				title="Human resources">Human resources</a>: <a target="#"
+				href="https://en.wikipedia.org/wiki/Recruitment" title="Recruitment">Recruiting</a>,
+				<a target="#" href="https://en.wikipedia.org/wiki/Training"
+				title="Training">training</a>, <a target="#"
+				href="https://en.wikipedia.org/wiki/Schedule_(workplace)"
+				title="Schedule (workplace)">rostering</a>, <a target="#"
+				href="https://en.wikipedia.org/wiki/Payroll" title="Payroll">payroll</a>,
+				<a target="#" href="https://en.wikipedia.org/wiki/Employee_benefit"
+				class="mw-redirect" title="Employee benefit">benefits</a>, <a
+				target="#" href="https://en.wikipedia.org/wiki/Pensions"
+				class="mw-redirect" title="Pensions">retirement and pension
+					plans</a>, <a target="#"
+				href="https://en.wikipedia.org/wiki/md-contentersity_(business)"
+				title="md-contentersity (business)">md-contentersity management</a>,
+				<a target="#" href="https://en.wikipedia.org/wiki/Retirement"
+				title="Retirement">retirement</a>, <a target="#"
+				href="https://en.wikipedia.org/wiki/Employee_exit_management"
+				title="Employee exit management">separation</a></li>
+			<li>Manufacturing: <a target="#"
+				href="https://en.wikipedia.org/wiki/Engineering" title="Engineering">Engineering</a>,
+				<a target="#" href="https://en.wikipedia.org/wiki/Bill_of_materials"
+				title="Bill of materials">bill of materials</a>, work orders, <a
+				target="#" href="https://en.wikipedia.org/wiki/Scheduling"
+				class="mw-redirect" title="Scheduling">scheduling</a>, <a target="#"
+				href="https://en.wikipedia.org/wiki/Capacity_utilization"
+				title="Capacity utilization">capacity</a>, <a target="#"
+				href="https://en.wikipedia.org/wiki/Workflow_management_system"
+				title="Workflow management system">workflow management</a>, <a
+				target="#" href="https://en.wikipedia.org/wiki/Quality_control"
+				title="Quality control">quality control</a>, manufacturing process,
+				manufacturing projects, manufacturing flow, <a target="#"
+				href="https://en.wikipedia.org/wiki/Product_life_cycle_management"
+				class="mw-redirect" title="Product life cycle management">product
+					life cycle management</a></li>
+			<li>Order Processing: <a target="#"
+				href="https://en.wikipedia.org/wiki/Order_to_cash"
+				title="Order to cash">Order to cash</a>, order entry, credit
+				checking, <a target="#" href="https://en.wikipedia.org/wiki/Pricing"
+				title="Pricing">pricing</a>, available to promise, <a target="#"
+				href="https://en.wikipedia.org/wiki/Inventory" title="Inventory">inventory</a>,
+				<a target="#" href="https://en.wikipedia.org/wiki/Shipping"
+				class="mw-redirect" title="Shipping">shipping</a>, sales analysis
+				and reporting, sales commissioning.
+			</li>
+			<li><a target="#"
+				href="https://en.wikipedia.org/wiki/Supply_chain_management"
+				title="Supply chain management">Supply chain management</a>: Supply
+				chain planning, supplier scheduling, <a target="#"
+				href="https://en.wikipedia.org/wiki/Product_configurator"
+				class="mw-redirect" title="Product configurator">product
+					configurator</a>, <a target="#"
+				href="https://en.wikipedia.org/wiki/Order_to_cash"
+				title="Order to cash">order to cash</a>, <a target="#"
+				href="https://en.wikipedia.org/wiki/Purchasing" title="Purchasing">purchasing</a>,
+				<a target="#" href="https://en.wikipedia.org/wiki/Inventory"
+				title="Inventory">inventory</a>, claim processing, <a target="#"
+				href="https://en.wikipedia.org/wiki/Warehousing" class="mw-redirect"
+				title="Warehousing">warehousing</a> (receiving, putaway, <a
+				target="#" href="https://en.wikipedia.org/wiki/Order_picking"
+				title="Order picking">picking</a> and <a target="#"
+				href="https://en.wikipedia.org/wiki/Packaging_and_labeling"
+				title="Packaging and labeling">packing</a>).</li>
+			<li><a target="#"
+				href="https://en.wikipedia.org/wiki/Project_management"
+				title="Project management">Project management</a>: Project planning,
+				resource planning, project costing, <a target="#"
+				href="https://en.wikipedia.org/wiki/Work_breakdown_structure"
+				title="Work breakdown structure">work breakdown structure</a>, <a
+				target="#" href="https://en.wikipedia.org/wiki/Invoice"
+				title="Invoice">billing</a>, time and expense, performance units,
+				activity management</li>
+			<li>Customer relationship management: Sales and marketing,
+				commissions, service, customer contact, <a target="#" target="#"
+				href="https://en.wikipedia.org/wiki/Call_center" class="mw-redirect"
+				title="Call center">call center</a> support. CRM systems are not
+				always considered part of ERP systems but rather Business Support
+				systems (BSS).
+			</li>
+			<li>Data services: Various self service interfaces for
+				customers, suppliers and/or employees</li>
+		</ul>
+	</div>
+	</md-content> <md-content id="part4" flex-gt-xs layout="column"
 		style="padding-top: 10%;"> <md-toolbar class="md-hue-2">
 	<div class="md-toolbar-tools">
-		<h3 class="md-display-1">Contact Sales</h3>
+		<h4 class="md-display-1">Contact Sales</h4>
 	</div>
 	</md-toolbar>
 	<hr>
-	<!-- <h3 class="md-display-1">Welcome to the {{institute.name}}</h3> -->
-	<p class="md-body-3">ProERP is a category of business-management
-		software--typically a suite of integrated applications--that an
-		organization can use to collect, store, manage and interpret data from
-		many business activities, including:
-	<ul>
-		<li>inventory management</li>
-		<li>shipping and payment</li>
-		<li>finance</li>
-		<li>product planning, purchase</li>
-		<li>manufacturing or service delivery</li>
-		<li>marketing and sales</li>
-		<li>Human Resources</li>
+	<div style="padding-left: 18px; padding-right: 18px;">
+		<p class="md-body-3">ProERP is a category of business-management
+			software--typically a suite of integrated applications--that an
+			organization can use to collect, store, manage and interpret data
+			from many business activities, including:
+		<ul>
+			<li>inventory management</li>
+			<li>shipping and payment</li>
+			<li>finance</li>
+			<li>product planning, purchase</li>
+			<li>manufacturing or service delivery</li>
+			<li>marketing and sales</li>
+			<li>Human Resources</li>
 
-	</ul>
+		</ul>
 
-	<h3 class="md-display-1">Functional Areas</h3>
-	<p>
-		An ERP system covers the following common functional areas. In many
-		ERP systems these are called and grouped together as <i>ERP
-			modules</i>:
-	</p>
-	
+		<h4 class="md-headline">Functional Areas</h4>
+		<p>
+			An ERP system covers the following common functional areas. In many
+			ERP systems these are called and grouped together as <i>ERP
+				modules</i>:
+
+			<md-nav-bar md-selected-nav-item="currentNavItem"> <md-nav-item
+				md-nav-click="goto('page1')" name="page1"> Page One </md-nav-item> <md-nav-item
+				md-nav-href="#page2" name="page3">Page Two</md-nav-item> <md-nav-item
+				md-nav-sref="page3" name="page2">Page Three</md-nav-item> <md-nav-item
+				md-nav-sref="app.page4" sref-opts="{reload: true, notify: true}"
+				name="page4"> Page Four </md-nav-item> </md-nav-bar>
+		</p>
+	</div>
 	</md-content>
 	<hr>
-	<md-content id="bottom-links" flex-gt-xs layout="row"
-		layout-xs="column" style="padding-top: 2%;">
+	<md-content md-theme="docs-dark" id="bottom-links" flex-gt-xs
+		layout="row" layout-xs="column" style="padding-top: 2%;">
 	<div flex layout="column" style="margin: 8px;">
 		<p>More about us</p>
 		<p>
@@ -550,11 +458,16 @@
 		<p>activity management1</p>
 	</div>
 	<div flex layout="column" style="margin: 8px;">
-		<p>activity management1</p>
-		<p>activity management1</p>
-		<p>activity management1</p>
-		<p>activity management1</p>
-		<p>activity management1</p>
+		<md-button class="md-primary" ng-href="{{googleUrl}}" target="_blank">activity
+		management1</md-button>
+		<md-button class="md-primary" ng-href="{{googleUrl}}" target="_blank">activity
+		management1</md-button>
+		<md-button class="md-primary" ng-href="{{googleUrl}}" target="_blank">activity
+		management1</md-button>
+		<md-button class="md-primary" ng-href="{{googleUrl}}" target="_blank">activity
+		management1</md-button>
+		<md-button class="md-primary" ng-href="{{googleUrl}}" target="_blank">activity
+		management1</md-button>
 	</div>
 	</md-content> </md-content>
 	<md-button class="md-fab md-fab-bottom-right docs-scroll-fab"

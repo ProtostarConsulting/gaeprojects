@@ -185,6 +185,8 @@ app.config(function($mdThemingProvider) {
 			'grey').warnPalette('blue');
 	$mdThemingProvider.theme('blue-grey').primaryPalette('blue-grey')
 			.accentPalette('grey').warnPalette('blue');
+	$mdThemingProvider.theme('docs-dark', 'default').primaryPalette('yellow')
+			.dark();
 
 	// This is the absolutely vital part, without this, changes will not cascade
 	// down through the DOM.

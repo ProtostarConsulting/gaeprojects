@@ -1,0 +1,34 @@
+#logo{
+	
+	background: url(img/images/protostar_logo_pix_313_132.jpg) no-repeat 0 0
+}
+
+.circular {
+	width: 60px;
+	height: 60px;
+	border-radius: 150px;
+	-webkit-border-radius: 150px;
+	-moz-border-radius: 150px;
+
+	}
+#topRight {
+  height: 1000px;
+}
+
+.date-picker-row {
+    margin-left: -15px;
+    position: relative;
+    min-height: 60px;
+}
+
+.date-picker-row label {
+    position: absolute;
+    top: -10px;
+    left: 50px;
+    color: rgba(0, 0, 0, 0.541176);
+    font-size: 12px;
+}
+
+.date-picker-row .md-datepicker-input-container {
+    margin-left: 0;
+}
