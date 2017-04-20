@@ -10,13 +10,14 @@ angular
 							.getLoggedinUser();
 
 					$scope.selectedUser = $stateParams.selectedUser;
-					
-					$scope.query = {
-							order : 'leaveApp.startDate',
-							limit : 50,
-							page : 1
-						};
 
+					$scope.query = {
+						order : 'leaveApp.startDate',
+						limit : 50,
+						page : 1,
+						totalSize : 0,
+						pagesLoaded : 0
+					};
 
 					$scope.leaveAppTemp = {
 						startDate : new Date(),
@@ -64,12 +65,16 @@ angular
 					$scope.getLeaveBalanceFn = function() {
 
 						var hrService = appEndpointSF.gethrService();
-						hrService.getLeaveMasterListByUser(
-								$scope.curuser.business.id, $scope.curuser.id)
-								.then(function(list) {
-									$scope.empLeaveBalance = list.length > 0? list[0].balance:'0';
-								});
-						
+						hrService
+								.getLeaveMasterListByUser(
+										$scope.curuser.business.id,
+										$scope.curuser.id)
+								.then(
+										function(list) {
+											$scope.empLeaveBalance = list.length > 0 ? list[0].balance
+													: '0';
+										});
+
 					};
 					$scope.showLeaveAddToast = function() {
 						$mdToast.show($mdToast.simple().content(
@@ -87,7 +92,7 @@ angular
 										$scope.showLeaveAddToast();
 
 									});
-						} 
+						}
 						$scope.loading = false;
 					}
 
@@ -111,7 +116,21 @@ angular
 						$scope.loading = false;
 					}
 
-					$scope.empLeaveAppListFn = function() {
+					$scope.logOrder = function(order) {
+						console.log('order: ', order);
+					};
+
+					$scope.logPagination = function(page, limit) {
+						console.log('page: ', page);
+						console.log('limit: ', limit);
+						$location.hash('tp1');
+						$anchorScroll();
+						if ($scope.query.page > $scope.query.pagesLoaded) {
+							$scope.getEmployeeLeaveAppsByManager();
+						}
+					}
+
+					$scope.getEmployeeLeaveAppsByManager = function() {
 						var hrService = appEndpointSF.gethrService();
 						hrService
 								.getLeaveAppListByManager(
@@ -151,7 +170,7 @@ angular
 							$scope.getUsersList();
 							$scope.getLeaveBalanceFn();
 							$scope.leaveAppListFilterFunc();
-							$scope.empLeaveAppListFn();
+							$scope.getEmployeeLeaveAppsByManager();
 
 						} else {
 							$log.debug("Services Not Loaded, waiting...");

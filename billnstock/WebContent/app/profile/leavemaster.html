@@ -1,4 +1,9 @@
-
+<div ng-if="loading">
+	<div layout="row" layout-sm="column" layout-align="space-around">
+		<md-progress-circular md-diameter="60" md-mode="indeterminate"></md-progress-circular>
+	</div>
+</div>
+<md-content ng-if="!loading" layout-padding>
 
 <div layout="column" ng-cloak>
 	<section layout="row" layout-xs="column">
@@ -19,27 +24,29 @@
 
 <div>
 	<md-data-table-container>
-	<table md-data-table md-progress="deferred">
-		<thead>
-			<tr>
-				<th name="Emp.No"
-					style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
-				<th name="Employee Name"
-					style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
-				<th name="Balance"
-					style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
-				<th name="Edit"
-					style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
+	<table md-table md-progress="promise">
+		<thead ng-if="!dataTableOptions.decapitate" md-head
+			md-order="query.order" md-on-reorder="logOrder">
+			<tr md-row>
+				<th md-column
+					style="margin: 0; padding-left: 0; padding-right: 5px;">Emp.No</th>
+				<th md-column
+					style="margin: 0; padding-left: 0; padding-right: 5px;">Employee
+					Name</th>
+				<th md-column
+					style="margin: 0; padding-left: 0; padding-right: 5px;">Balance</th>
+				<th md-column
+					style="margin: 0; padding-left: 0; padding-right: 5px;">Edit</th>
 
 			</tr>
 
-			<tr ng-repeat="leaveMasterObj in leaveMasterList">
-				<td style="margin: 0; padding-left: 0; padding-right: 5px;">{{leaveMasterObj.user.employeeDetail.empId}}
+			<tr md-row ng-repeat="leaveMasterObj in leaveMasterList">
+				<td md-cell style="margin: 0; padding-left: 0; padding-right: 5px;">{{leaveMasterObj.user.employeeDetail.empId}}
 				</td>
-				<td style="margin: 0; padding-left: 0; padding-right: 5px;">{{(leaveMasterObj.user.firstName
+				<td md-cell style="margin: 0; padding-left: 0; padding-right: 5px;">{{(leaveMasterObj.user.firstName
 					+ ' ' + leaveMasterObj.user.lastName)}}</td>
-				<td style="margin: 0; padding-left: 0; padding-right: 5px;">{{leaveMasterObj.balance}}</td>
-				<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-button
+				<td md-cell style="margin: 0; padding-left: 0; padding-right: 5px;">{{leaveMasterObj.balance}}</td>
+				<td md-cell style="margin: 0; padding-left: 0; padding-right: 5px;"><md-button
 						class="md-icon-button"
 						ui-sref="user_prof_detail.addLeaveMaster({selectedLeaveMasterObj: leaveMasterObj})">
 					<ng-md-icon icon="edit" style="fill: md-default" size="24">
@@ -48,4 +55,11 @@
 
 			</tr>
 	</table>
+	<md-table-pagination md-limit="query.limit"
+		md-limit-options="dataTableOptions.limitOptions" md-page="query.page"
+		md-total={{leaveMasterList.length}}
+		md-page-select="dataTableOptions.pageSelect"
+		md-boundary-links="dataTableOptions.boundaryLinks"
+		md-on-paginate="logPagination"></md-table-pagination></md-data-table-container>
 </div>
+</md-content>

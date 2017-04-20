@@ -8,50 +8,60 @@
 </div>
 <div>
 	<md-data-table-container>
-	<table md-data-table md-progress="deferred">
-		<thead md-order="query.order">
-			<tr>
-				<th name="Applied On"
-					style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
-				<th name="From"
+	<table md-table md-progress="promise">
+		<thead ng-if="!dataTableOptions.decapitate" md-head
+			md-order="query.order" md-on-reorder="logOrder">
+			<tr md-row>
+				<th md-column
+					style="margin: 0; padding-left: 0; padding-right: 5px;">Applied
+					On</th>
+				<th md-column
 					style="margin: 0; padding-left: 0; padding-right: 5px;"
-					order-by="startDate"></th>
-				<th name="To"
-					style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
-				<th name="No of Days"
-					style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
-				<th name="Emp.No"
-					style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
-				<th name="Employee"
-					style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
-				<th name="Status"
+					md-order-by="startDate">From</th>
+				<th md-column
+					style="margin: 0; padding-left: 0; padding-right: 5px;">To</th>
+				<th md-column
+					style="margin: 0; padding-left: 0; padding-right: 5px;">No of
+					Days</th>
+				<th md-column
+					style="margin: 0; padding-left: 0; padding-right: 5px;">Emp.No</th>
+				<th md-column
+					style="margin: 0; padding-left: 0; padding-right: 5px;">Employee</th>
+				<th md-column
 					style="margin: 0; padding-left: 0; padding-right: 5px;"
-					order-by="approved"></th>
-				<th name="Note"
-					style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
-				<th name="Edit"
-					style="margin: 0; padding-left: 0; padding-right: 5px;"></th>
+					md-order-by="approved">Status</th>
+				<th md-column
+					style="margin: 0; padding-left: 0; padding-right: 5px;">Note</th>
+				<th md-column
+					style="margin: 0; padding-left: 0; padding-right: 5px;">Edit</th>
 
 			</tr>
-
-			<tr
+		<tbody md-body>
+			<tr md-row
 				ng-repeat="empLeaveAppObj in employeeLeaveAppList | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
-				<td style="margin: 0; padding-left: 0; padding-right: 5px;">{{empLeaveAppObj.createdDate|formatDate}}</td>
-				<td style="margin: 0; padding-left: 0; padding-right: 5px;">{{empLeaveAppObj.startDate|formatDate}}</td>
-				<td style="margin: 0; padding-left: 0; padding-right: 5px;">{{empLeaveAppObj.endDate
+				<td md-cell style="margin: 0; padding-left: 0; padding-right: 5px;">{{empLeaveAppObj.createdDate|formatDate}}</td>
+				<td md-cell style="margin: 0; padding-left: 0; padding-right: 5px;">{{empLeaveAppObj.startDate|formatDate}}</td>
+				<td md-cell style="margin: 0; padding-left: 0; padding-right: 5px;">{{empLeaveAppObj.endDate
 					|formatDate}}</td>
-				<td style="margin: 0; padding-left: 0; padding-right: 5px;">{{empLeaveAppObj.totalDays}}</td>
-				<td style="margin: 0; padding-left: 0; padding-right: 5px;">{{empLeaveAppObj.user.employeeDetail.empId}}</td>
-				<td style="margin: 0; padding-left: 0; padding-right: 5px;">{{(empLeaveAppObj.user.firstName
+				<td md-cell style="margin: 0; padding-left: 0; padding-right: 5px;">{{empLeaveAppObj.totalDays}}</td>
+				<td md-cell style="margin: 0; padding-left: 0; padding-right: 5px;">{{empLeaveAppObj.user.employeeDetail.empId}}</td>
+				<td md-cell style="margin: 0; padding-left: 0; padding-right: 5px;">{{(empLeaveAppObj.user.firstName
 					+ ' ' + empLeaveAppObj.user.lastName) | uppercase}}</td>
-				<td style="margin: 0; padding-left: 0; padding-right: 5px;">{{empLeaveAppObj.approved?'Approved':'Applied'}}</td>
-				<td style="margin: 0; padding-left: 0; padding-right: 5px;">{{empLeaveAppObj.note}}</td>
-				<td style="margin: 0; padding-left: 0; padding-right: 5px;"><md-button
+				<td md-cell style="margin: 0; padding-left: 0; padding-right: 5px;">{{empLeaveAppObj.approved?'Approved':'Applied'}}</td>
+				<td md-cell style="margin: 0; padding-left: 0; padding-right: 5px;">{{empLeaveAppObj.note}}</td>
+				<td md-cell style="margin: 0; padding-left: 0; padding-right: 5px;"><md-button
 						class="md-icon-button" ng-if="empLeaveAppObj.approved==false"
 						ui-sref="user_prof_detail.editLeaves({selectedLeaveAppObj: empLeaveAppObj})">
 
 					<ng-md-icon icon="edit" style="fill: md-default" size="24">
 					<md-tooltip> Edit Leave</md-tooltip></ng-md-icon></md-button></td>
 			</tr>
+		</tbody>
 	</table>
+	<md-table-pagination md-limit="query.limit"
+		md-limit-options="dataTableOptions.limitOptions" md-page="query.page"
+		md-total={{employeeLeaveAppList.length}}
+		md-page-select="dataTableOptions.pageSelect"
+		md-boundary-links="dataTableOptions.boundaryLinks"
+		md-on-paginate="logPagination"></md-table-pagination></md-data-table-container>
 </div>

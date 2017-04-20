@@ -10,27 +10,47 @@ angular.module("stockApp").controller(
 			$scope.selectedUser = $stateParams.selectedUser;
 
 			$scope.myLeaveAppList = [];
-			
+
 			$scope.query = {
-					order : 'leaveApp.startDate',
-					limit : 50,
-					page : 1
-				};
+				order : 'leaveApp.startDate',
+				limit : 50,
+				page : 1,
+				totalSize : 0,
+				pagesLoaded : 0
+			};
 
 			$scope.empLeaveBalance;
-			
+
+			$scope.logOrder = function(order) {
+				console.log('order: ', order);
+			};
+
+			$scope.logPagination = function(page, limit) {
+				console.log('page: ', page);
+				console.log('limit: ', limit);
+				$location.hash('tp1');
+				$anchorScroll();
+				if ($scope.query.page > $scope.query.pagesLoaded) {
+					$scope.getLeaveAppsByUser();
+				}
+			}
+
 			$scope.getLeaveBalanceFn = function() {
 
 				var hrService = appEndpointSF.gethrService();
-				hrService.getLeaveMasterListByUser(
-						$scope.curuser.business.id, $scope.curuser.id)
-						.then(function(list) {
-							$scope.empLeaveBalance = list.length > 0? list[0].balance:'0';
-						});
-				
+				hrService.getLeaveMasterListByUser($scope.curuser.business.id,
+						$scope.curuser.id).then(function(leaveMastersList) {
+					if (leaveMastersList && leaveMastersList.length > 0) {
+						$scope.empLeaveBalance = leaveMastersList[0].balance;
+					} else {
+						$scope.empLeaveBalance = 0;
+					}
+
+				});
+
 			}
-			
-			$scope.leaveAppListFilterFunc = function() {
+
+			$scope.getLeaveAppsByUser = function() {
 				var hrService = appEndpointSF.gethrService();
 				hrService.getLeaveAppListByUser($scope.curuser.business.id,
 						$scope.curuser.id).then(function(list) {
@@ -60,7 +80,7 @@ angular.module("stockApp").controller(
 			$scope.waitForServiceLoad = function() {
 				if (appEndpointSF.is_service_ready) {
 					$scope.getLeaveBalanceFn();
-					$scope.leaveAppListFilterFunc();
+					$scope.getLeaveAppsByUser();
 
 				} else {
 					$log.debug("Services Not Loaded, waiting...");
