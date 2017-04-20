@@ -15,6 +15,21 @@ var app = angular.module("stockApp")
 							pagesLoaded : 0
 						};
 					}
+					
+					
+					$scope.logOrder = function(order) {
+						console.log('order: ', order);
+					};
+
+					$scope.logPagination = function(page, limit) {
+						console.log('page: ', page);						
+						console.log('limit: ', limit);
+						$location.hash('tp1');
+						$anchorScroll();
+						if ($scope.query.page > $scope.query.pagesLoaded) {
+							$scope.fetchMachineList();
+						}
+					}	
 					$scope.query = reSetQuery();
 					
 					$scope.machineList = [];

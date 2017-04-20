@@ -6,6 +6,16 @@ app
 						$mdUtil, $log, $state, $http, $stateParams,
 						$routeParams, $filter, $q, $mdMedia, $mdDialog,
 						objectFactory, appEndpointSF, $mdColors) {
+					$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
+					$scope.query = {
+							order : 'firstName',
+							limit : 5,
+							page : 1,
+							totalSize : 0,
+							pagesLoaded : 0
+						};
+					
+					
 					
 					
 					$scope.logOrder = function(order) {
@@ -18,9 +28,10 @@ app
 						$location.hash('tp1');
 						$anchorScroll();
 						if ($scope.query.page > $scope.query.pagesLoaded) {
-							$scope.fetchEntityListByPaging();
+							$scope.fetchProductionList();
 						}
-					}
+					}	
+					
 					
 					$scope.fetchProductionList=function(){
 						var productService = appEndpointSF

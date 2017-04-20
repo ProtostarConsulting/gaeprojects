@@ -12,10 +12,7 @@
 	<table md-table md-progress="promise">
 		<thead ng-if="!dataTableOptions.decapitate" md-head
 			md-order="query.order" md-on-reorder="logOrder">
-			
-		<thead md-order="query.order" md-trigger="onOrderChange">
-		<thead md-order="query.order" md-trigger="onorderchange">
-			<tr md-row >
+				<tr md-row >
 				<th md-column md-order-by="sr_No">Sr.no</th>
 				<th md-column  md-order-by="firstName">Customer Name</th>
 				<th md-column md-order-by="finalTotal">Final Total</th>
@@ -24,7 +21,7 @@
 		</thead>
 
 		<tbody>
-			<tr md-row md-auto-select
+			<tr md-row 
 				ng-repeat="invoice in invoiceListByID | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
 				<td md-cell>{{$index+1}}</td>
 				<td md-cell>{{invoice.customer.firstName}}</td>

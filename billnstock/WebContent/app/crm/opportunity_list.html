@@ -24,22 +24,20 @@
 	<table md-table md-progress="promise">
 		<thead ng-if="!dataTableOptions.decapitate" md-head
 			md-order="query.order" md-on-reorder="logOrder">
-		<thead md-order="query.order" md-trigger="onOrderChange">
-		<tr md-row>
-			<th md-column md-order-by="id">id</th>
+				<tr md-row>
+			<th md-column md-order-by="id">Id</th>
 			<th md-column md-order-by="from">Form</th>
-			<th md-coloumn md-order-by="name">Name</th>
+			<th md-column md-order-by="name">Name</th>
 			<th md-column md-order-by="view">View</th>
 		</tr>
 	</thead>
 
 	<tbody>
-		<tr md-row md-auto-select
+		<tr md-row 
 			ng-repeat="opportunity in opportunitys | orderBy: query.order | filter : searchText | limitTo: query.limit: (query.page - 1) * query.limit"">
 			<td md-cell>{{opportunity.oid}}</td>
 			<td md-cell>{{opportunity.from}}</td>
 			<td md-cell>{{opportunity.opName}}</td>
-
 			<td md-cell>
 				<section layout="row" layout-sm="column">
 					<md-button class="md-icon-button"

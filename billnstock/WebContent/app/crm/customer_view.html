@@ -25,8 +25,7 @@
 		<table md-table md-progress="promise">
 		<thead ng-if="!dataTableOptions.decapitate" md-head
 			md-order="query.order" md-on-reorder="logOrder">
-	<thead md-order="query.order" md-trigger="onOrderChange">
-				<tr md-row>
+					<tr md-row>
 					<th md-column>Sr.No</th>
 					<th md-column  md-order-by="customerName">Invoice Id</th>
 					<th md-column  md-order-by="mobile">Invoice Date</th>
@@ -36,7 +35,7 @@
 			</thead>
 
 			<tbody>
-				<tr md-row md-auto-select
+				<tr md-row
 					ng-repeat="invoice in custInvoiceData | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit"">
 
 					<td md-cell>{{$index+1}}</td>

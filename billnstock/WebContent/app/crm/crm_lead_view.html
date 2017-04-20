@@ -124,8 +124,7 @@
 			<table md-table md-progress="promise">
 		<thead ng-if="!dataTableOptions.decapitate" md-head
 			md-order="query.order" md-on-reorder="logOrder">
-				<thead md-order="query.order" md-trigger="onOrderChange">
-					<tr md-row>
+									<tr md-row>
 						<th md-column  md-order-by="discussion Date">Due Date</th>
 						<th md-column  md-order-by="description Type">Type</th>
 						<th md-column  md-order-by="previous discussion">Previous Discussion</th>
@@ -134,7 +133,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr md-row md-auto-select
+					<tr md-row 
 						ng-repeat="t in lead.tasks track by $index | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit"">
 						<td md-cell width="20%" align="left">{{t.date | formatDate}}</td>
 						<td  md-cell width="20%" align="left">{{t.type}}</td>
@@ -148,8 +147,12 @@
 				</tbody>
 
 			</table>
-			<md-data-table-pagination md-limit="query.limit" md-page="query.page"
-				md-total={{lead.tasks.length}} md-trigger="onpagechange"></md-data-table-pagination>
+			<md-table-pagination md-limit="query.limit"
+		md-limit-options="dataTableOptions.limitOptions" md-page="query.page"
+		md-total={{leads.length}}
+		md-page-select="dataTableOptions.pageSelect"
+		md-boundary-links="dataTableOptions.boundaryLinks"
+		md-on-paginate="logPagination"></md-table-pagination>
 			</md-data-table-container>
 		</div>
 		<br> <br>
