@@ -19,27 +19,29 @@
 		</div>
 	</section>
 </div>
-<table md-data-table md-progress="deferred">
+<table md-table md-progress="promise">
+		<thead ng-if="!dataTableOptions.decapitate" md-head
+			md-order="query.order" md-on-reorder="logOrder">
 	<thead md-order="query.order" md-trigger="onOrderChange">
-		<tr>
+		<tr md-row>
 
-			<th name="First Name" order-by="fName"></th>
-			<th name="Last Name" order-by="lName"></th>
-			<th name="Phone No." order-by="Phone"></th>
-			<th name="Email" order-by="Email"></th>
-			<th name="View" order-by="view"></th>
+			<th md-column  md-order-by="fName">First Name</th>
+			<th md-column md-order-by="lName">Last Name</th>
+			<th md-column md-order-by="Phone">Phone No.</th>
+			<th md-column md-order-by="Email">Email</th>
+			<th md-column md-order-by="view">View</th>
 		</tr>
 	</thead>
 
 	<tbody>
-		<tr md-auto-select
+		<tr md-row md-auto-select
 			ng-repeat="contact in contacts | orderBy: query.order| filter : searchText | limitTo: query.limit: (query.page - 1) * query.limit"">
 
-			<td>{{contact.fName}}</td>
-			<td>{{contact.lName}}</td>
-			<td>{{contact.phone}}</td>
-			<td>{{contact.email}}</td>
-			<td>
+			<td md-cell>{{contact.fName}}</td>
+			<td md-cell>{{contact.lName}}</td>
+			<td md-cell>{{contact.phone}}</td>
+			<td md-cell>{{contact.email}}</td>
+			<td md-cell>
 				<section layout="row" layout-sm="column">
 					<md-button class="md-icon-button"
 						ui-sref="crm.viewContact({selectedContactNo: contact.id})">
@@ -51,6 +53,10 @@
 	</tbody>
 </table>
 
-<md-data-table-pagination md-limit="query.limit" md-page="query.page"
-	md-total={{contacts.length}} md-trigger="onpagechange"></md-data-table-pagination>
+<md-table-pagination md-limit="query.limit"
+		md-limit-options="dataTableOptions.limitOptions" md-page="query.page"
+		md-total={{contacts.length}}
+		md-page-select="dataTableOptions.pageSelect"
+		md-boundary-links="dataTableOptions.boundaryLinks"
+		md-on-paginate="logPagination"></md-table-pagination>
 </md-data-table-container> </md-content>

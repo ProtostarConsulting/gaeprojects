@@ -12,11 +12,26 @@ angular.module("stockApp").controller(
 			$scope.curUser = appEndpointSF.getLocalUserService()
 					.getLoggedinUser();
 
+			$scope.logOrder = function(order) {
+				console.log('order: ', order);
+			};
+
+			$scope.logPagination = function(page, limit) {
+				console.log('page: ', page);						
+				console.log('limit: ', limit);
+				$location.hash('tp1');
+				$anchorScroll();
+				if ($scope.query.page > $scope.query.pagesLoaded) {
+					$scope.getContactByCustomerId();
+				}
+			}
+
 			$scope.query = {
 				order : 'name',
 				limit : 5,
 				page : 1
 			};
+
 
 			$scope.getContactByCustomerId = function() {
 				$log.debug("Inside Ctr $scope.getAlllead");

@@ -20,24 +20,27 @@
 	</section>
 </div>
 
-<table md-data-table md-progress="deferred">
-	<thead md-order="query.order" md-trigger="onOrderChange">
-		<tr>
-			<th name="id" order-by="id"></th>
-			<th name="From" order-by="from"></th>
-			<th name="Name" order-by="name"></th>
-			<th name="View" order-by="view"></th>
+
+	<table md-table md-progress="promise">
+		<thead ng-if="!dataTableOptions.decapitate" md-head
+			md-order="query.order" md-on-reorder="logOrder">
+		<thead md-order="query.order" md-trigger="onOrderChange">
+		<tr md-row>
+			<th md-column md-order-by="id">id</th>
+			<th md-column md-order-by="from">Form</th>
+			<th md-coloumn md-order-by="name">Name</th>
+			<th md-column md-order-by="view">View</th>
 		</tr>
 	</thead>
 
 	<tbody>
-		<tr md-auto-select
+		<tr md-row md-auto-select
 			ng-repeat="opportunity in opportunitys | orderBy: query.order | filter : searchText | limitTo: query.limit: (query.page - 1) * query.limit"">
-			<td>{{opportunity.oid}}</td>
-			<td>{{opportunity.from}}</td>
-			<td>{{opportunity.opName}}</td>
+			<td md-cell>{{opportunity.oid}}</td>
+			<td md-cell>{{opportunity.from}}</td>
+			<td md-cell>{{opportunity.opName}}</td>
 
-			<td>
+			<td md-cell>
 				<section layout="row" layout-sm="column">
 					<md-button class="md-icon-button"
 						ui-sref="crm.opportunityView({selectedopportunityNo: opportunity.id})">
@@ -49,6 +52,10 @@
 	</tbody>
 </table>
 
-<md-data-table-pagination md-limit="query.limit" md-page="query.page"
-	md-total={{opportunitys.length}} md-trigger="onpagechange"></md-data-table-pagination>
+<md-table-pagination md-limit="query.limit"
+		md-limit-options="dataTableOptions.limitOptions" md-page="query.page"
+		md-total={{opportunitys.length}}
+		md-page-select="dataTableOptions.pageSelect"
+		md-boundary-links="dataTableOptions.boundaryLinks"
+		md-on-paginate="logPagination"></md-table-pagination>
 </md-data-table-container></md-content>

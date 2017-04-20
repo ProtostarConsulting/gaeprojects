@@ -22,15 +22,6 @@
 				ng-model="opportunity.from" disabled> </md-input-container>
 			<md-input-container flex> <label>Name</label> <input
 				ng-model="opportunity.opName" disabled> </md-input-container>
-
-			<!-- <md-input-container flex> <md-select
-				placeholder="Select Lead/C ustomer" id="selectedfrom" ng-model="f" ng-change="getleadcust(f)" >
-			<md-option ng-repeat="f in from" > {{f}} </md-option> </md-select></md-input-container>
-		
-	<md-input-container flex> <md-select
-				placeholder="Lead/Customer" id="selectedfrom" ng-model="opportunityL.name"  >
-			<md-option ng-repeat="list in leadorcustlist" > {{list.customerName}}{{list.name}} </md-option> </md-select></md-input-container>
-		-->
 		</div>
 		<div layout layout-sm="column">
 			<md-input-container flex> <label>Description
@@ -52,23 +43,25 @@
 		</div>
 		<div ng-hide="IsHidden">
 			<md-data-table-container>
-			<table md-data-table md-progress="deferred">
+			<table md-table md-progress="promise">
+		<thead ng-if="!dataTableOptions.decapitate" md-head
+			md-order="query.order" md-on-reorder="logOrder">
 				<thead md-order="query.order" md-trigger="onOrderChange">
-					<tr>
-						<th name="Date" order-by="discussion Date"></th>
-						<th name="Type" order-by="description Type"></th>
-						<th name="Previous Discussion" order-by="previous discussion"></th>
-						<th name="Edit"></th>
+					<tr md-row>
+						<th md-column md-order-by="discussion Date">Date</th>
+						<th  md-column md-order-by="description Type">Type</th>
+						<th  md-column md-order-by="previous discussion">Previous Discussion</th>
+						<th  md-column >Edit</th>
 
 					</tr>
 				</thead>
 				<tbody>
-					<tr md-auto-select
+					<tr md-row md-auto-select
 						ng-repeat="t in opportunity.tasks | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit"">
-						<td width="20%" align="left">{{t.date | formatDate}}</td>
-						<td width="20%" align="left">{{t.type}}</td>
-						<td width="40%" align="left">{{t.description}}</td>
-						<td width="20%" align="left"><md-button
+						<td md-cell  width="20%" align="left">{{t.date | formatDate}}</td>
+						<td md-cell  width="20%" align="left">{{t.type}}</td>
+						<td md-cell  width="40%" align="left">{{t.description}}</td>
+						<td md-cell  width="20%" align="left"><md-button
 								ng-click="editTask(t)" class="md-icon-button"> <ng-md-icon
 								icon="edit" style="fill: md-default" size="20"> <md-tooltip>Edit</md-tooltip>
 							</ng-md-icon> </md-button></td>
@@ -76,18 +69,15 @@
 				</tbody>
 
 			</table>
-			<md-data-table-pagination md-limit="query.limit" md-page="query.page"
-				md-total={{opportunity.tasks.length}} md-trigger="onpagechange"></md-data-table-pagination>
+			<md-table-pagination md-limit="query.limit"
+		md-limit-options="dataTableOptions.limitOptions" md-page="query.page"
+		md-total={{opportunity.length}}
+		md-page-select="dataTableOptions.pageSelect"
+		md-boundary-links="dataTableOptions.boundaryLinks"
+		md-on-paginate="logPagination"></md-table-pagination>
 			</md-data-table-container>
 		</div>
 		<br> <br>
-
-		<!-- 	<div layout layout-sm="column">
-			<md-input-container flex> <label>Previous
-				task </label> <textarea ng-model="leads.task.description" rows="4" cols="1"> </textarea></md-input-container>
-		</div> -->
-
-
 		<div layout layout-sm="column">
 			<md-input-container flex> <label>Task
 				Id:-</label> <input ng-model="taskobj.tid" disabled> </md-input-container>

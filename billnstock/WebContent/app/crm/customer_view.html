@@ -22,47 +22,44 @@
 
 	<div>
 		<md-data-table-container>
-		<table md-data-table md-row-select="selected" md-progress="deferred">
-			<thead md-order="query.order" md-trigger="onOrderChange">
-				<tr>
-					<th name="Sr.No"></th>
-					<th name="Invoice Id" order-by="customerName"></th>
-					<th name="Invoice Date" order-by="mobile"></th>
-					<th name="Amount" order-by="email"></th>
-					<th name="Action"></th>
+		<table md-table md-progress="promise">
+		<thead ng-if="!dataTableOptions.decapitate" md-head
+			md-order="query.order" md-on-reorder="logOrder">
+	<thead md-order="query.order" md-trigger="onOrderChange">
+				<tr md-row>
+					<th md-column>Sr.No</th>
+					<th md-column  md-order-by="customerName">Invoice Id</th>
+					<th md-column  md-order-by="mobile">Invoice Date</th>
+					<th md-column  md-order-by="email">Amount</th>
+					<th md-column >Action</th>
 				</tr>
 			</thead>
 
 			<tbody>
-				<tr md-auto-select
+				<tr md-row md-auto-select
 					ng-repeat="invoice in custInvoiceData | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit"">
 
-					<td>{{$index+1}}</td>
-					<td>{{invoice.id}}</td>
-					<td>{{invoice.invoiceDate}}</td>
-					<td>{{invoice.finalTotal}}</td>
+					<td md-cell>{{$index+1}}</td>
+					<td md-cell>{{invoice.id}}</td>
+					<td md-cell>{{invoice.invoiceDate}}</td>
+					<td md-cell>{{invoice.finalTotal}}</td>
 
 
-					<td><section layout="row" layout-sm="column">
+					<td md-cell><section layout="row" layout-sm="column">
 							<md-button class="md-raised md-primary"
 								ui-sref="invoice.view({selectedInvoiceNo: invoice.id})">View
 							Invoice</md-button>
 						</section></td>
-					<td>
+					<td md-cell>
 				</tr>
 			</tbody>
 		</table>
-		<!-- 		<md-data-table-toolbar class="alternate" ng-show="selected.length">
-			<div>
-				{{selected.length}} {{selected.length > 1 ? 'stockData' : 'stock'}} selected
-			</div>
-			<div>
-				{{selected}}
-			</div>
-		</md-data-table-toolbar>
- --> <md-data-table-pagination md-limit="query.limit"
-			md-page="query.page" md-total={{customers.length}}
-			md-trigger="onpagechange"></md-data-table-pagination> </md-data-table-container>
+		<md-table-pagination md-limit="query.limit"
+		md-limit-options="dataTableOptions.limitOptions" md-page="query.page"
+		md-total={{custInvoiceData.length}}
+		md-page-select="dataTableOptions.pageSelect"
+		md-boundary-links="dataTableOptions.boundaryLinks"
+		md-on-paginate="logPagination"></md-table-pagination> </md-data-table-container>
 	</div>
 
 </div>

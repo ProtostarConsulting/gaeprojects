@@ -26,26 +26,7 @@
 				ng-if="leadform.name.$submitted || leadform.name.$touched">
 				<div ng-message="required">Please Enter Employee Name.</div>
 			</div>
-			<!-- <span class="help-block"  style="color: red"
-				ng-show="((leadform.name.$error.pattern) && leadform.name.$dirty) ">
-				Enter should be text only.(Example.:abc)</span> --> </md-input-container>
-		</div>
-		<!-- <div layout layout-xs="column">
-			<md-input-container flex> <label>Company
-			</label> <input ng-model="leads.company"> </md-input-container>
-			<md-input-container flex> <label>Phone </label>
-			<input ng-model="leads.phone"> </md-input-container>
-		</div>
-		<div layout layout-xs="column">
-			<md-input-container flex> <label>Email </label>
-			<input ng-model="leads.email"> </md-input-container>
-			<md-input-container flex> <label>Designation</label>
-			<input ng-model="leads.designation"> </md-input-container>
-		</div>
-		<div>
-			<md-input-container flex> <label>Address
-			</label> <textarea ng-model="leads.address" rows="2" cols="1"></textarea></md-input-container>
-		</div> -->
+			
 		<div layout layout-xs="column">
 			<md-input-container flex> <label>Company
 
@@ -83,20 +64,6 @@
 
 			</label> <input name="designation" ng-model="lead.designation"> </md-input-container>
 		</div>
-		<!-- 	<div>
-			<md-input-container flex> <label>Address
-				
-			</label> <textarea name="address" ng-model="leads.address" rows="4" cols="50"
-				ng-required="true">
-			</textarea>
-			<div ng-messages="leadform.address.$error"
-				ng-if="leadform.address.$submitted || leadform.address.$touched">
-				<div ng-message="required">Please Enter Address.</div>
-			</div>
-			</md-input-container>
-		</div> -->
-
-
 		<h3 class="md-subhead">Address</h3>
 		<br>
 		<div layout="row">
@@ -154,23 +121,25 @@
 		</div>
 		<div ng-hide="IsHidden">
 			<md-data-table-container>
-			<table md-data-table md-progress="deferred">
+			<table md-table md-progress="promise">
+		<thead ng-if="!dataTableOptions.decapitate" md-head
+			md-order="query.order" md-on-reorder="logOrder">
 				<thead md-order="query.order" md-trigger="onOrderChange">
-					<tr>
-						<th name="Due Date" order-by="discussion Date"></th>
-						<th name="Type" order-by="description Type"></th>
-						<th name="Previous Discussion" order-by="previous discussion"></th>
-						<th name="Actions"></th>
+					<tr md-row>
+						<th md-column  md-order-by="discussion Date">Due Date</th>
+						<th md-column  md-order-by="description Type">Type</th>
+						<th md-column  md-order-by="previous discussion">Previous Discussion</th>
+						<th md-column >Actions</th>
 
 					</tr>
 				</thead>
 				<tbody>
-					<tr md-auto-select
+					<tr md-row md-auto-select
 						ng-repeat="t in lead.tasks track by $index | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit"">
-						<td width="20%" align="left">{{t.date | formatDate}}</td>
-						<td width="20%" align="left">{{t.type}}</td>
-						<td width="40%" align="left">{{t.description}}</td>
-						<td width="20%" align="left"><md-button
+						<td md-cell width="20%" align="left">{{t.date | formatDate}}</td>
+						<td  md-cell width="20%" align="left">{{t.type}}</td>
+						<td md-cell width="40%" align="left">{{t.description}}</td>
+						<td md-cell width="20%" align="left"><md-button
 								ng-click="editTask(t)" class="md-icon-button"> <ng-md-icon
 								icon="edit" style="fill: md-default" size="20"> <md-tooltip>Edit</md-tooltip>
 							</ng-md-icon> </md-button></td>
@@ -184,12 +153,6 @@
 			</md-data-table-container>
 		</div>
 		<br> <br>
-
-		<!-- 	<div layout layout-xs="column">
-			<md-input-container flex> <label>Previous
-				task </label> <textarea ng-model="leads.task.description" rows="4" cols="1"> </textarea></md-input-container>
-		</div> -->
-
 
 		<div layout layout-xs="column">
 			<md-input-container flex> <label>Task

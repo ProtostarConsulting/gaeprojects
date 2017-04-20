@@ -9,6 +9,20 @@ app.controller("customerViewCtr", function($scope, $window, $mdToast, $timeout,
 		$mdToast.show($mdToast.simple().content('Customer Data Saved!')
 				.position("top").hideDelay(3000));
 	};
+	$scope.logOrder = function(order) {
+		console.log('order: ', order);
+	};
+
+	$scope.logPagination = function(page, limit) {
+		console.log('page: ', page);						
+		console.log('limit: ', limit);
+		$location.hash('tp1');
+		$anchorScroll();
+		if ($scope.query.page > $scope.query.pagesLoaded) {
+			$scope.getAllInvoiceByCustId();
+		}
+	}
+	
 
 	$log.debug("$stateParams:", $stateParams);
 	$log.debug("$stateParams.selectedCustomerId:",

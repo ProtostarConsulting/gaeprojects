@@ -10,8 +10,19 @@ app.controller("customerListCtr", function($scope, $window, $mdToast, $timeout,
 		page : 1
 	};
 	$scope.selected = [];
+	$scope.logOrder = function(order) {
+		console.log('order: ', order);
+	};
 
-	$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
+	$scope.logPagination = function(page, limit) {
+		console.log('page: ', page);						
+		console.log('limit: ', limit);
+		$location.hash('tp1');
+		$anchorScroll();
+		if ($scope.query.page > $scope.query.pagesLoaded) {
+			$scope.getAllCustomersByBusiness();
+		}
+	}	$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
 
 	$scope.getAllCustomersByBusiness = function() {
 		$scope.loading = true;

@@ -10,47 +10,43 @@
 
 <div>
 	<md-data-table-container>
-	<table md-data-table md-row-select="selected" md-progress="deferred">
+	<table md-table md-progress="promise">
+		<thead ng-if="!dataTableOptions.decapitate" md-head
+			md-order="query.order" md-on-reorder="logOrder">
+	<thead md-order="query.order" md-trigger="onOrderChange">
 		<thead md-order="query.order" md-trigger="onOrderChange">
-			<tr>
+			<tr md-row>
 				
-				<th name="Customer Name" order-by="customerName"></th>
-				<th name="Quotation Date" order-by="quotationDate"></th>
-				<th name="Sales Order Date" order-by="salesOrderDate"></th>
-				<th name="Amount" order-by="finalTotal"></th>
+				<th md-column  md-order-by="customerName">Customer Name</th>
+				<th md-column  md-order-by="quotationDate">Quotation Date</th>
+				<th md-column  md-order-by="salesOrderDate">Sales Order Date</th>
+				<th md-column  md-order-by="finalTotal">Amount</th>
 			</tr>
 		</thead>
 
 		<tbody>
-			<tr md-auto-select
+			<tr md-auto-select md-row
 				ng-repeat="sOList in sOListByID | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit"">
 
 				
-				<td>{{sOList.customer.firstName}}</td>
-				<td>{{sOList.quotationDate | formatDate}}</td>
-				<td>{{sOList.salesOrderDate | formatDate}}</td>
-				<td>{{sOList.finalTotal}}</td>
-				<td><section layout="row" layout-sm="column">
+				<td md-cell>{{sOList.customer.firstName}}</td>
+				<td md-cell>{{sOList.quotationDate | formatDate}}</td>
+				<td md-cell>{{sOList.salesOrderDate | formatDate}}</td>
+				<td md-cell>{{sOList.finalTotal}}</td>
+				<td md-cell><section layout="row" layout-sm="column">
 						<md-button class="md-raised md-primary"
 							ui-sref="salesOrder.view({selectedSOId: sOList.id})">
 						View SO</md-button>
 					</section></td>
-				<td>
+				<td md-cell>
 			</tr>
 		</tbody>
 	</table>
-	<!-- 		<md-data-table-toolbar class="alternate" ng-show="selected.length">
-			<div>
-				{{selected.length}} {{selected.length > 1 ? 'stockData' : 'stock'}} selected
-			</div>
-			<div>
-				{{selected}}
-			</div>
-		</md-data-table-toolbar>
- --> <md-data-table-pagination md-limit="query.limit"
-		md-page="query.page" md-total={{salesOrder.length}}
-		md-trigger="onpagechange"></md-data-table-pagination> </md-data-table-container>
+	 <md-table-pagination md-limit="query.limit"
+		md-limit-options="dataTableOptions.limitOptions" md-page="query.page"
+		md-total={{sOListByID.length}}
+		md-page-select="dataTableOptions.pageSelect"
+		md-boundary-links="dataTableOptions.boundaryLinks"
+		md-on-paginate="logPagination"></md-table-pagination> </md-data-table-container>
 </div>
-<!-- vals: {{customers}}
-<md-button ui-sref="customer.list" ng-click="getAllCustomers()" class="md-primary">
-		Customer List in side List view --> </md-button> </md-content>
+ </md-button> </md-content>
