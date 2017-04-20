@@ -21,13 +21,12 @@ angular
 								"top").hideDelay(3000));
 					};
 
-					$scope.showShowCustomToast = function(msg) {
+					$scope.showCustomToast = function(msg) {
 						$mdToast.show($mdToast.simple().content(msg).position(
 								"top").hideDelay(3000));
 					};
 
 					$scope.curUser = null;
-					$scope.googleUserDetails = "";
 					$scope.googleUser = null;
 					$scope.businessName = "";
 					$scope.eid = null;
@@ -214,41 +213,12 @@ angular
 									'event:google-plus-signin-success',
 									function(event, authResult) {
 										$scope.loading = true;
-										// User successfully authorized the G+
-										// App!
-										$log.debug('Signed in!');
-										$scope.googleUser = appEndpointSF
-												.getLocalUserService()
-												.getLoggedinUser()
-										if ($scope.googleUser) {
-											// call is comming here twice. Hence
-											// needed
-											$log
-													.debug("Outside: curUser is alrady init. Returning back....");
-											return;
-										}
 
 										var profile = authResult
 												.getBasicProfile();
 										$scope.googleUser = profile;
 
-										appEndpointSF.getLocalUserService()
-												.saveLoggedInUser(profile);
-
 										$log.debug('ID: ' + profile.getId());
-										// Do not send to your backend! Use an
-										// ID token instead.
-										/*
-										 * $log .debug('Name: ' +
-										 * profile.getName()); $log.debug('Image
-										 * URL: ' + profile.getImageUrl());
-										 * $log.debug('email_id: ' +
-										 * profile.getEmail());
-										 */
-										$scope.googleUserDetails = profile
-												.getName()
-												+ "<br>" + profile.getEmail()
-
 										$log
 												.debug("Going ahead with call to getUserByEmailID....");
 										getUserDetailsFn(profile.getEmail());
@@ -271,18 +241,20 @@ angular
 								.getUserByEmailID(emailId, true)
 								.then(
 										function(loggedInUserList) {
-											if ($scope.curUser) {
-												// call is
-												// comming here
-												// twice. Hence
-												// needed
+											$log.debug("loggedInUserList:"
+													+ loggedInUserList);
+
+											if (!loggedInUserList
+													|| !loggedInUserList.items) {
+												$log.debug("User Not logged  "
+														+ $scope.user.email_id);
+												$scope.loginMsg = "Authontication failed. Username/Password did not match.";
 												$scope.loading = false;
-												$log
-														.debug("Inside: curUser is alrady init. Returning back....");
 												return;
 											}
-											$log.debug("Going ahead....");
+
 											$scope.loading = false;
+
 											if (loggedInUserList.items.length > 1) {
 												$scope.multiUsers = loggedInUserList.items;
 												angular
@@ -340,52 +312,43 @@ angular
 					$scope.signOut = function() {
 
 						var hostBaseUrl = '//' + window.location.host
-								+ '/index.html';
+								+ '/logout.html';
 						appEndpointSF.getUserService().logout().then(
 								function(msg) {
 									$log.debug('User signed out:' + msg);
+									// $state.go("home");
+									$window.location.href = hostBaseUrl;
 								});
 						$scope.googleUser = null;
 						$scope.curUser = null;
 						$scope.curUser = appEndpointSF.getLocalUserService()
 								.logout();
 
-						// $state.go("home");
-						$window.location.href = hostBaseUrl;
-						return;
 						// Returning from here as below code has no effect to
 						// signout the google user.
 
-						var auth2 = gapi.auth2.getAuthInstance();
-						// try logout 3 times.
-						for (var i = 1; i <= 3; i++) {
-							auth2
-									.signOut()
-									.then(
-											function() {
-												// also remove login details
-												// from chrome
-												// browser
+						if (gapi && gapi.auth2 && gapi.auth2.getAuthInstance()) {
+							var auth2 = gapi.auth2.getAuthInstance();
+							// try logout 3 times.
+							for (var i = 1; i <= 3; i++) {
+								auth2
+										.signOut()
+										.then(
+												function() {
+													// also remove login details
+													// from chrome
+													// browser
 
-												$scope.googleUser = null;
-												$scope.curUser = null;
-												$scope.curUser = appEndpointSF
-														.getLocalUserService()
-														.logout();
+													$scope.googleUser = null;
+													$scope.curUser = null;
+													$scope.curUser = appEndpointSF
+															.getLocalUserService()
+															.logout();
 
-												// $state.go("home");
-												$window.location.href = hostBaseUrl;
-											});
-						}
-
-						if (gapi.auth2 == undefined) {
-							$scope.curUser = null;
-							$scope.curUser = appEndpointSF
-									.getLocalUserService().logout();
-
-							// $state.go("home");
-							$window.location.href = hostBaseUrl;
-							return;
+													// $state.go("home");
+													$window.location.href = hostBaseUrl;
+												});
+							}
 						}
 					}
 

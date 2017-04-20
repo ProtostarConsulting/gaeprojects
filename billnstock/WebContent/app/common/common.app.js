@@ -1032,7 +1032,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	}).state('login', {
 		url : "/login",
 		templateUrl : '/app/login/login_module.html',
-		controller : 'indexCtr'
+		controller : 'loginModuleCtr'
 	}).state('needbusiness', {
 		url : "/NeedBusinessAccount",
 		templateUrl : '/app/login/needBusinessAccount.html',
