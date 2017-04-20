@@ -253,9 +253,8 @@ angular
 												return;
 											}
 
-											$scope.loading = false;
-
 											if (loggedInUserList.items.length > 1) {
+												$scope.loading = false;
 												$scope.multiUsers = loggedInUserList.items;
 												angular
 														.forEach(
@@ -376,13 +375,17 @@ angular
 
 						if (toState.name == 'initsetup'
 								|| toState.name == 'login'
-								|| toState.name == 'home') {
+								|| toState.name == 'home'
+								|| toState.name == 'selectmultibiz') {
+
 							return;
 						}
+						
 						$scope.curUser = appEndpointSF.getLocalUserService()
 								.getLoggedinUser();
 						if (toState.name != 'login' && !$scope.curUser) {
 							event.preventDefault();
+							$log.debug('prevented going to without login to: ' + toState.name);
 							$state.go('login');
 						}
 						/*
