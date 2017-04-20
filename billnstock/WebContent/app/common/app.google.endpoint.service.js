@@ -2115,6 +2115,31 @@ function googleEndpointSF($q) {
 				});
 		return deferred.promise;
 	}
+	
+	StockService.filterStockItemsByCategory = function(stockItemProductTypeCategory) {
+		  var deferred = $q.defer();
+		  gapi.client.stockService.filterStockItemsByCategory(stockItemProductTypeCategory)
+		    .execute(function(resp) {
+		     deferred.resolve(resp.items);
+		    });
+		  return deferred.promise;
+		 }
+	
+	
+	
+	
+	
+	
+	StockService.filterStockItemsByCategoryForProduct = function(stockItemProductTypeCategory) {
+		  var deferred = $q.defer();
+		  gapi.client.stockService.filterStockItemsByCategoryForProduct(stockItemProductTypeCategory)
+		    .execute(function(resp) {
+		     deferred.resolve(resp.items);
+		    });
+		  return deferred.promise;
+		 }
+	
+	
 
 	StockService.addStockItemUnit = function(stockItemUnit) {
 		var deferred = $q.defer();
