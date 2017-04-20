@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="/lib/base/css/bootstrap.min.css">
 <link rel="stylesheet" href="/lib/base/css/textAngular.css">
 <link rel="stylesheet" href="/css/accordianPane.css">
-<link rel="stylesheet" href="/app/setup/css/checkbox.css">
+<link rel="stylesheet" href="/css/common.style.css">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet">
 </head>
@@ -67,7 +67,7 @@
 				<ng-md-icon icon="logout" style="fill: md-default" size="24">
 				<md-tooltip> Logout</md-tooltip></ng-md-icon></md-button>
 				<md-button> <md-tooltip> {{
-				curUser.firstName + " " + curUser.lastName + "|" +
+				curUser.firstName + " " + curUser.lastName + " | " +
 				curUser.email_id}} </md-tooltip> <img
 					ngf-src="curUser.imageURl?curUser.imageURl: 'img/images/ic_person_black_24px.svg'"
 					class=circular> </md-button>
@@ -220,7 +220,6 @@
 	<script src="/app/production/js/list_machine.ctr.js"></script>
 	<script src="/app/production/js/add_qcmachine.ctr.js"></script>
 	<script src="/app/production/js/list_qcmachine.ctr.js"></script>
-	<script src="/app/production/js/add_qcmachine_record.ctr.js"></script>
 
 	<script src="/app/accounting/js/voucherSalesCtr.ctr.js"></script>
 	<script src="/app/accounting/js/voucherSalesListCtr.ctr.js"></script>

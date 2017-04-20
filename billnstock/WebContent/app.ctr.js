@@ -67,9 +67,9 @@ angular
 										$scope.user.password)
 								.then(
 										function(result) {
-											if (result.items) {
-												$scope.loading = false;
+											if (result.items) {												
 												if (result.items.length > 1) {
+													$scope.loading = false;
 													$scope.multiUsers = result.items;
 													$state
 															.go(
@@ -109,6 +109,7 @@ angular
 
 					$scope.$on('customLoginEvent', function(event, args) {
 						$log.debug("In side customLogin");
+						$scope.loading = true;
 						$scope.curUser = args.curUser;
 						$scope.initCommonSetting();
 					});
@@ -141,9 +142,9 @@ angular
 						$scope.$emit('customLoginEvent', {
 							curUser : multiBizSelectedUser
 						});
-						$scope.$broadcast('customLoginEvent', {
+						/*$scope.$broadcast('customLoginEvent', {
 							curUser : multiBizSelectedUser
-						});
+						});*/
 						$state.go("home");
 
 					}

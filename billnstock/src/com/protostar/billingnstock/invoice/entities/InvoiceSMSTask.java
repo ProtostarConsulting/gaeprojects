@@ -41,7 +41,7 @@ public class InvoiceSMSTask implements DeferredTask {
 
 		DecimalFormat decimalFormat = new DecimalFormat("#");
 		String phoneNumStr = decimalFormat.format(this.phoneNum);
-		if (phoneNumStr.length() < 10) {
+		if (phoneNumStr.length() == 10) {
 			this.skipTxtMsg = true;
 			return;
 		}

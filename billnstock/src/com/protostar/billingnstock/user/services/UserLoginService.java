@@ -98,6 +98,11 @@ public class UserLoginService {
 				foundUser.setLastLoginDate(new Date());
 				recordUserLogin(foundUser);
 				ofy().save().entity(foundUser);
+				if (list.size() > 1) {
+					for (UserEntity user : list) {
+						user.setAccessToken(foundUser.getAccessToken());
+					}
+				}
 				return list;
 			} else {
 				return null;
