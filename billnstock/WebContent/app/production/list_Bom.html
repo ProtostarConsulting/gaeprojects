@@ -6,7 +6,7 @@
 <md-content ng-if="!loading" layout-padding>
 <section layout="row" layout-xs="column">
 	<md-subheader class="md-primary">
-	<h4 class="md-title">Production List</h4>
+	<h4 class="md-title">BOM List</h4>
 	</md-subheader>
 	<span flex></span>
 	<div layout="row" flex="33" flex-sm="50" flex-xs="100">
@@ -20,19 +20,13 @@
 
 <div>
 	<div>
-		<div>
-			<span style="padding-right: 8px;">Filter By Status: </span><span
-				md-colors="{color:'default-primary-700'}"
-				ng-repeat="status in documentStatusList"
-				ng-click="fitlerListByStatus(status)">{{status + " "}}</span>
-		</div>
+		
 		<md-data-table-container>
 		<table md-data-table class="md-primary" md-progress="deferred">
 			<thead md-order="query.order" md-trigger="onorderchange">
 				<tr>
 					<th name="Production No." order-by="itemNumber"></th>
 					<th name="Product Name" order-by="type"></th>
-					
 					<th name="Action" order-by="type"></th>
 					
 				</tr>
@@ -45,6 +39,9 @@
 							ui-sref="production.add_bom({bomCategory:product})">
 						<ng-md-icon icon="edit" style="fill: md-default" size="20">
 						<md-tooltip> Edit</md-tooltip></ng-md-icon></md-button></td>
+						<td>	<md-button class="md-icon-button" ng-click="printBOM(product.id)">
+						<ng-md-icon icon="print" style="fill: md-default" size="20">
+						<md-tooltip> Print BOM</md-tooltip></ng-md-icon></md-button></td>
 				
 			</tr>
 					

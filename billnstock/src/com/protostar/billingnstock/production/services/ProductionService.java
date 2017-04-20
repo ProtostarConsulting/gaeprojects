@@ -12,6 +12,7 @@ import com.googlecode.objectify.Key;
 import com.protostar.billingnstock.production.entities.BomEntity;
 import com.protostar.billingnstock.production.entities.ProductionMachineEntity;
 import com.protostar.billingnstock.production.entities.QCMachineEntity;
+import com.protostar.billingnstock.purchase.entities.PurchaseOrderEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 
 @Api(name = "productionService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.production.services", ownerName = "com.protostar.billingnstock.production.services", packagePath = ""))
@@ -33,7 +34,19 @@ public class ProductionService {
 		return bomEntityList;
 
 	}
+	
+	
+	@ApiMethod(name = "listBomEntityByID", path = "listBomEntityByID")
+	public BomEntity listBomEntityByID(@Named("bid") Long busId,@Named("id") Long bomId) {
 
+		BomEntity bomEntity =ofy()
+				.load()
+				.key(Key.create(Key.create(BusinessEntity.class, busId), BomEntity.class, bomId))
+				.now();
+				
+		return bomEntity;
+
+	}
 	@ApiMethod(name = "addMachine", path = "addMachine")
 	public ProductionMachineEntity addMachine(ProductionMachineEntity machine) {
 		ofy().save().entity(machine).now();		
@@ -61,6 +74,7 @@ public class ProductionService {
 		
 		return machineList;
 	}
+
 	
 	@ApiMethod(name = "getMachineById", path = "getMachineById")
 	public QCMachineEntity getMachineById(@Named("busId") Long busId,
@@ -75,4 +89,5 @@ public class ProductionService {
 		QCMachineEntity foundMachine = list.size() > 0 ? list.get(0) : null;
 		return foundMachine;
 	}
+
 }

@@ -9,12 +9,14 @@ app.controller("add_bom", function($scope, $window, $mdToast, $timeout,
 			productName :"",
 			catList : [],
 			business : $scope.curUser.business,
+			createdBy : $scope.curUser,
 			modifiedBy :$scope.curUser.email_id
 		}
 		$scope.addCatogory();
 	};
 	$scope.dummyCatList=[];
 	$scope.stockItemCategories =[];
+	$scope.stockTypeList =[];
 	
 	$scope.addBom = $stateParams.bomCategory ? $stateParams.bomCategory
 			: $scope.getEmptyBomObjadd();
@@ -48,6 +50,7 @@ app.controller("add_bom", function($scope, $window, $mdToast, $timeout,
 	}
 
 	$scope.addLineItem = function(category) {
+		//$scope.getStockItemTypes (category)
 		
 		var itemObj = {
 			itemName : "",
@@ -79,12 +82,11 @@ app.controller("add_bom", function($scope, $window, $mdToast, $timeout,
 				})
 	};
 
-	$scope.getStockItemTypes = function() {
+	$scope.getStockItemTypes = function(category,index) {
 		$log.debug("Inside Ctr $scope.getStockItemTypes");
 		var stockService = appEndpointSF.getStockService();
 
-		stockService.getStockItemTypes(
-				$scope.curUser.business.id).then(
+		stockService.filterStockItemsByCategoryForProduct(category.cat).then(
 				function(list) {
 					$scope.stockTypeList = list;
 				});
@@ -103,8 +105,8 @@ app.controller("add_bom", function($scope, $window, $mdToast, $timeout,
 
 	var productService = appEndpointSF.getProductionService();
 	$scope.fetchCatogoryList();
-	$scope.getStockItemTypes();
-	$scope.getStockItemTypes();
+
+
 	
 
 });

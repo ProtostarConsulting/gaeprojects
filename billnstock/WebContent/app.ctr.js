@@ -345,17 +345,6 @@ angular
 								function(msg) {
 									$log.debug('User signed out:' + msg);
 								});
-						$scope.googleUser = null;
-						$scope.curUser = null;
-						$scope.curUser = appEndpointSF.getLocalUserService()
-								.logout();
-
-						// $state.go("home");
-						$window.location.href = hostBaseUrl;
-						return;
-						// Returning from here as below code has no effect to
-						// signout the google user.
-
 						var auth2 = gapi.auth2.getAuthInstance();
 						// try logout 3 times.
 						for (var i = 1; i <= 3; i++) {
@@ -430,6 +419,12 @@ angular
 						 */
 					});
 
+					$scope.openBottomSheet = function() {
+						$mdBottomSheet
+								.show({
+									template : '<md-bottom-sheet>Hello!</md-bottom-sheet>'
+								});
+					};
 					$scope.getDaysInMonth = function(month, year) {
 						// Here January is 1 based
 						// Day 0 is the last day in the previous month
@@ -502,18 +497,6 @@ angular
 						window.history.back(); // to actual view
 					};
 
-					$scope.dataTableOptions = {
-						rowSelection : true,
-						multiSelect : true,
-						autoSelect : true,
-						decapitate : false,
-						largeEditDialog : true,
-						boundaryLinks : true,
-						limitSelect : true,
-						pageSelect : false,
-						limitOptions : [ 10, 25, 50, 100 ]
-					};
-
 					$scope.hasUserAuthority = function(user, authorityToCheck) {
 						if (!user || !authorityToCheck)
 							return false;
@@ -545,7 +528,7 @@ angular
 					$rootScope.scroll = 10;
 
 					$scope.$watch('scroll', function() {
-						// console.log("$scope.scroll: " + $scope.scroll);
+						//console.log("$scope.scroll: " + $scope.scroll);
 						$rootScope.scroll = $scope.scroll;
 					});
 					$scope.toggleMainMenuSwitch = $mdMedia('gt-md');

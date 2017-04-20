@@ -20,7 +20,11 @@ app
 				
 						});
 					}
-					
+					$scope.printBOM = function(bomId) {
+						var bid = $scope.curUser.business.id;
+						window.open("PrintPdfBOM?bid=" + bid
+								+ "&bomId=" + bomId);
+					}
 					
 					
 					$scope.waitForServiceLoad = function() {
@@ -33,31 +37,4 @@ app
 						}
 					}
 					$scope.waitForServiceLoad();
-
-					
-					/*
-
-					$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
-					
-					
-					
-					$scope.fetchProductionList=function(){
-						var productService = appEndpointSF
-						.getProductionService();
-						
-						productService.getProductionList($scope.curUser.business.id)
-						.then(function(list) {
-						$scope.productList=list;
-						
-						});
-					}
-						$scope.waitForServiceLoad = function() {
-						if (appEndpointSF.is_service_ready) {
-							$scope.fetchProductionList();
-						} else {
-							$log.debug("Services Not Loaded, watiting...");
-							$timeout($scope.waitForServiceLoad, 1000);
-						}
-					}$scope.waitForServiceLoad();
-
-				*/});
+});

@@ -7,10 +7,13 @@
 				<md-input-container flex> <input type="text"
 					ng-required="true" aria-label="period" placeholder="productName"
 					ng-model="addBom.productName"> </md-input-container>
+					
+					<md-input-container flex> <input type="text"
+					 aria-label="period" placeholder="Discription"
+					ng-model="addBom.note"> </md-input-container>
 			</div>
 		</div>
-	</form>
-</div>
+	
  <table md-data-table md-progress="deferred">
 		<thead md-order="query.order" md-trigger="onOrderChange">
 			<tr>
@@ -35,6 +38,7 @@
 								<md-select
 								    name="category"
 									ng-model="bomCategory.cat"
+									ng-change="getStockItemTypes(bomCategory,$index)"
 								    placeholder="Category Name"
 									ng-required="true"> <md-option
 									ng-value="category"
@@ -98,18 +102,17 @@
 				<td></td>
 			</tr>
 			<tr>
-				<td></td>
-				<td>Final Total</td>
-				<td>{{budgetObj.finalTotal| currency:"":"2"}}</td>
-				<td></td>
+				
 			</tr>
 		</tbody>
 	</table> 
+	</form>
+</div>
 	<div layout layout-xs="column" ng-hide="budgetObj.status == 'FINALIZED'">
 	<section layout="row" layout-xs="column">
 		
 		<md-button class="md-raised md-primary"
-			ng-disabled="requisitionForm.$invalid"
+			ng-disabled="addProduction.$invalid" 
 			ng-click="submitProduction()">Submit</md-button>
 	</section>
 </div>

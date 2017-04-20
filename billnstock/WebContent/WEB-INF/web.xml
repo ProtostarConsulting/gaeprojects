@@ -333,6 +333,22 @@
     <servlet-name>PrintPdfPurchaseOrder</servlet-name>
     <url-pattern>/PrintPdfPurchaseOrder</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+    <description/>
+    <display-name>PrintPdfBOM</display-name>
+    <servlet-name>PrintPdfBOM</servlet-name>
+    <servlet-class>com.protostar.billingnstock.production.services.PrintPdfBOM</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PrintPdfBOM</servlet-name>
+    <url-pattern>/PrintPdfBOM</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+  
+  
   <servlet>
     <description/>
     <display-name>PrintPdfstockReceipt</display-name>
