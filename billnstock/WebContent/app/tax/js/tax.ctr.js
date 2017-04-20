@@ -9,7 +9,9 @@ angular
 					$scope.query = {
 						order : 'taxCodeName',
 						limit : 50,
-						page : 1
+						page : 1,
+						totalSize : 0,
+						pagesLoaded : 0
 					};
 
 					$scope.curUser = appEndpointSF.getLocalUserService()
@@ -34,7 +36,7 @@ angular
 						taxService.addTax($scope.selectedTax).then(
 								function(msgBean) {
 									if ($scope.selectedTax.id) {
-										$scope.showUpdateToast();										
+										$scope.showUpdateToast();
 									} else {
 										$scope.showAddToast();
 										$scope.selectedTax = newTax();
@@ -42,6 +44,20 @@ angular
 									}
 								});
 
+					}
+
+					$scope.logOrder = function(order) {
+						console.log('order: ', order);
+					};
+
+					$scope.logPagination = function(page, limit) {
+						console.log('page: ', page);
+						console.log('limit: ', limit);
+						$location.hash('tp1');
+						$anchorScroll();
+						if ($scope.query.page > $scope.query.pagesLoaded) {
+							$scope.getAllTaxes();
+						}
 					}
 
 					$scope.getAllTaxes = function() {
