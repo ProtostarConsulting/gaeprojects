@@ -15,8 +15,11 @@ public class TaxEntity extends BaseEntity {
 	private double taxPercenatge;
 	@Index
 	private boolean active = true;
-	private boolean withSubHeads = true;
+	private boolean withSubHeads = false;
 	private List<TaxLineItem> subHeads = new ArrayList<TaxLineItem>();
+
+	private boolean withAdditionalExciseTax = false;
+	private double exciseTaxPercenatge;
 
 	public boolean isActive() {
 		return active;
@@ -56,6 +59,22 @@ public class TaxEntity extends BaseEntity {
 
 	public void setSubHeads(List<TaxLineItem> subHeads) {
 		this.subHeads = subHeads;
+	}
+
+	public boolean isWithAdditionalExciseTax() {
+		return withAdditionalExciseTax;
+	}
+
+	public void setWithAdditionalExciseTax(boolean withAdditionalExciseTax) {
+		this.withAdditionalExciseTax = withAdditionalExciseTax;
+	}
+
+	public double getExciseTaxPercenatge() {
+		return exciseTaxPercenatge;
+	}
+
+	public void setExciseTaxPercenatge(double exciseTaxPercenatge) {
+		this.exciseTaxPercenatge = exciseTaxPercenatge;
 	}
 
 }// end of TaxEntity
