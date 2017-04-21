@@ -21,24 +21,25 @@
 		</section>
 	</div>
 
-	<table md-data-table md-row-select="selected" md-progress="deferred">
-		<thead md-order="query.order" md-trigger="onOrderChange">
+	<table md-table md-progress="promise">
+		<thead ng-if="!dataTableOptions.decapitate" md-head
+			md-order="query.order" md-on-reorder="logOrder">
 			<tr>
-				<th name="First Name" order-by="fName"></th>
-				<th name="Last Name" order-by="lName"></th>
-				<th name="Email" order-by="email"></th>
-				<th name="Edit" order-by="Edit"></th>
+				<th md-column md-order-by= "fName">First Name</th>
+				<th md-column md-order-by= "lName">Last Name</th>
+				<th md-column md-order-by= "email">Email</th>
+				<th md-column md-order-by= "Edit">Edit</th>
 			</tr>
 		</thead>
 
-		<tbody>
-			<tr md-auto-select
+		<tbody md-body>
+			<tr md-row
 				ng-repeat="user in userlist | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit"">
-				<td>{{user.firstName}}</td>
-				<td>{{user.lastName}}</td>
-				<td>{{user.email_id}}</td>
+				<td md-cell>{{user.firstName}}</td>
+				<td md-cell>{{user.lastName}}</td>
+				<td md-cell>{{user.email_id}}</td>
 
-				<td>
+				<td md-cell>
 					<section layout="row" layout-sm="column">
 						<md-button class="md-raised md-primary"
 							ui-sref="probusiness.userview({selecteduserNo:user.id})">View
@@ -49,8 +50,12 @@
 		</tbody>
 	</table>
 
-	<md-data-table-pagination md-limit="query.limit" md-page="query.page"
-		md-total={{userlist.length}} md-trigger="onpagechange"></md-data-table-pagination>
+	<md-table-pagination md-limit="query.limit"
+		md-limit-options="dataTableOptions.limitOptions" md-page="query.page"
+		md-total={{userlist.length}}
+		md-page-select="dataTableOptions.pageSelect"
+		md-boundary-links="dataTableOptions.boundaryLinks"
+		md-on-paginate="logPagination"></md-table-pagination>
 	</md-data-table-container>
 </div>
 

@@ -20,25 +20,26 @@
 	<div>
 		<md-data-table-container>
 
-		<table md-data-table md-progress="deferred">
-			<thead md-order="query.order" md-trigger="onOrderChange">
-				<tr>
-					<th name="Business Plan" order-by="planName"></th>
-					<th name="Description" order-by="desciption"></th>
-					<th name="Maxuser" order-by="maxuser"></th>
-					<th name="Payment Description""></th>
-					<th name="Edit"></th>
+		<table md-table md-progress="promise">
+		<thead ng-if="!dataTableOptions.decapitate" md-head
+			md-order="query.order" md-on-reorder="logOrder">
+				<tr md-row>
+					<th md-column md-order-by="planName">Business Plan</th>
+					<th md-column md-order-by="desciption">Description</th>
+					<th md-column md-order-by="maxuser">Maxuser</th>
+					<th md-column >Payment Description</th>
+					<th md-column >Edit</th>
 				</tr>
 			</thead>
 
-			<tbody>
-				<tr md-auto-select
+			<tbody md-body>
+				<tr md-row
 					ng-repeat="account in accountlist | orderBy: 'maxuser' | filter: searchText | limitTo: query.limit: (query.page - 1) * query.limit"">
-					<td>{{account.planName}}</td>
-					<td>{{account.description}}</td>
-					<td>{{account.maxuser}}</td>
-					<td>{{account.paymentDesc}}</td>
-					<td><section layout="row" layout-sm="column">
+					<td md-cell>{{account.planName}}</td>
+					<td md-cell>{{account.description}}</td>
+					<td md-cell>{{account.maxuser}}</td>
+					<td md-cell>{{account.paymentDesc}}</td>
+					<td md-cell><section layout="row" layout-sm="column">
 							<md-button class="md-icon-button"
 								ui-sref="proAdmin.editAccoutType({selectedAccountType:account})">
 							<ng-md-icon icon="edit" style="fill: md-default" size="20">
@@ -48,8 +49,12 @@
 			</tbody>
 		</table>
 
-		<md-data-table-pagination md-limit="query.limit" md-page="query.page"
-			md-total={{accountlist.length}} md-trigger="onpagechange"></md-data-table-pagination>
+		<md-table-pagination md-limit="query.limit"
+		md-limit-options="dataTableOptions.limitOptions" md-page="query.page"
+		md-total={{accountlist.length}}
+		md-page-select="dataTableOptions.pageSelect"
+		md-boundary-links="dataTableOptions.boundaryLinks"
+		md-on-paginate="logPagination"></md-table-pagination>
 		</md-data-table-container>
 	</div>
 </div>

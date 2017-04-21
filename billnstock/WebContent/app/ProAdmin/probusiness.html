@@ -19,23 +19,24 @@
 
 
 
-		<table md-data-table md-progress="deferred">
-			<thead md-order="query.order" md-trigger="onOrderChange">
-				<tr>
-					<th name="Business Name" order-by="BusinessName"></th>
-					<th name="Date Registered" order-by="registerDate"></th>
-					<th name="Number of Users" order-by="noofuser"></th>
-					<th name="Actions"></th>
+		<table md-table md-progress="promise">
+		<thead ng-if="!dataTableOptions.decapitate" md-head
+			md-order="query.order" md-on-reorder="logOrder">
+				<tr md-row>
+					<th md-column md-order-by= "BusinessName">Business Name</th>
+					<th md-column md-order-by= "registerDate">Date Registered</th>
+					<th md-column md-order-by= "noofuser">Number of Users</th>
+					<th md-column >Actions</th>
 				</tr>
 			</thead>
 
-			<tbody>
-				<tr
+			<tbody md-body>
+				<tr md-row
 					ng-repeat="business in businesslist | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
-					<td>{{business.businessName}}</td>
-					<td>{{business.registerDate}}</td>
-					<td>{{business.totalUser}}</td>
-					<td>
+					<td md-cell>{{business.businessName}}</td>
+					<td md-cell>{{business.registerDate}}</td>
+					<td md-cell>{{business.totalUser}}</td>
+					<td md-cell>
 						<section layout="row">
 							<md-button class="md-icon-button"
 								ui-sref="proAdmin.editBusiness({selectedBusiness: business})">
@@ -52,9 +53,12 @@
 			</tbody>
 		</table>
 
-		<md-data-table-pagination md-limit="query.limit" md-page="query.page"
-			md-total={{businesslist.length}} md-trigger="onpagechange"></md-data-table-pagination>
-		</md-data-table-container>
+		<md-table-pagination md-limit="query.limit"
+		md-limit-options="dataTableOptions.limitOptions" md-page="query.page"
+		md-total={{businesslist.length}}
+		md-page-select="dataTableOptions.pageSelect"
+		md-boundary-links="dataTableOptions.boundaryLinks"
+		md-on-paginate="logPagination"></md-table-pagination>
 
 		<div ng-show="selected.length == 1">
 

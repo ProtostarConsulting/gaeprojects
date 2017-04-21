@@ -76,38 +76,34 @@
 			ng-show="!(selectedAuth.authorizations && selectedAuth.authorizations.length > 0)">No
 			Child Authorization</p>
 		<p>&nbsp;</p>
-		<!--<p>&nbsp;</p>
-	 <md-input-container flex> <label>Search b
-		Auth</label> <input ng-model="filterAuthName"> </md-input-container> -->
-
 		<div
 			ng-show="selectedAuth.authorizations && selectedAuth.authorizations.length > 0 ">
 			<md-data-table-container>
-			<table md-data-table md-row-select="selected" md-progress="deferred"
-				ng-click="disable()">
-				<thead md-order="query.order" md-trigger="onorderchange">
-					<tr>
-						<th name="Auth Name" order-by="authName"></th>
-						<th name="Auth Display Name" order-by="authDisplayName"></th>
-						<th name="UI State Name" order-by="uiStateName"></th>
-						<th name="Order Number" order-by="orderNumber"></th>
-						<th name="Actions"></th>
+			<table md-table md-progress="promise">
+		<thead ng-if="!dataTableOptions.decapitate" md-head
+			md-order="query.order" md-on-reorder="logOrder">
+					<tr md-row>
+						<th  md-column md-order-by="authName">Auth Name</th>
+						<th md-column md-order-by="authDisplayName">Auth Display Name</th>
+						<th md-column md-order-by="uiStateName">UI State Name</th>
+						<th md-column md-order-by="orderNumber">Order Number</th>
+						<th md-column >Actions</th>
 					</tr>
 				</thead>
-				<tbody>
-					<tr md-auto-select
+				<tbody md-body>
+					<tr md-row 
 						ng-repeat="auth in selectedAuth.authorizations  | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
-						<td>{{auth.authName}}</td>
-						<td>{{auth.authDisplayName}}</td>
-						<td>{{auth.uiStateName}}</td>
-						<td>{{auth.orderNumber | number}}</td>
-						<td>
+						<td md-cell>{{auth.authName}}</td>
+						<td md-cell>{{auth.authDisplayName}}</td>
+						<td md-cell>{{auth.uiStateName}}</td>
+						<td md-cell>{{auth.orderNumber | number}}</td>
+						<td md-cell>
 							<div layout="row" flex>
 								<md-button class="md-icon-button" id="editAuth"
 									ng-click="editAuthorization(auth)"> <ng-md-icon
 									icon="edit" style="fill: md-default" size="24"> <md-tooltip>Edit
 								Auth</md-tooltip></ng-md-icon></md-button>
-								<md-button class="md-icon-button" id="delAuth"
+		 						<md-button class="md-icon-button" id="delAuth"
 									ng-click="deleteAuthorization(auth)"> <ng-md-icon
 									icon="delete" style="fill: md-default" size="24">
 								<md-tooltip>Delete Auth</md-tooltip></ng-md-icon></md-button>
@@ -117,9 +113,12 @@
 				</tbody>
 			</table>
 
-			<md-data-table-pagination md-limit="query.limit" md-page="query.page"
-				md-total={{selectedAuth.authorizations.length}}
-				md-trigger="onpagechange"></md-data-table-pagination> </md-data-table-container>
+			<md-table-pagination md-limit="query.limit"
+		md-limit-options="dataTableOptions.limitOptions" md-page="query.page"
+		md-total={{selectedAuth.authorizations.length}}
+		md-page-select="dataTableOptions.pageSelect"
+		md-boundary-links="dataTableOptions.boundaryLinks"
+		md-on-paginate="logPagination"></md-table-pagination>
 		</div>
 	</form>
 
@@ -129,8 +128,7 @@
 		<md-button ng-click="showAddAuthorization()"
 			class="md-primary md-raised" hide-xs>{{selectedAuth.authName==undefined?'New
 		Authorization':'New Child Authorization'}}</md-button>
-		<!-- <md-button ng-click="editAuthorization()" class="md-primary md-raised"
-			ng-show="selected.length==1">View Selected Authorization</md-button> -->
+		
 		<md-button ng-click="saveAuthorization()" class="md-primary md-raised">Save
 		Authorization</md-button>
 	</div>
