@@ -54,7 +54,7 @@
 		<tbody md-body>
 			<tr md-row
 				ng-repeat="pOItem in purchaseOrderList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit"
-				ng-class="{'red-background' : pOItem.status=='CLOSED'}">
+				ng-class="{'red-background' : pOItem.highLight==true}">
 				<td md-cell>{{pOItem.itemNumber}}</span></td>
 				<td md-cell>{{pOItem.createdDate|formatDateWithTime}}</td>
 				<td md-cell>{{pOItem.poDueDate|formatDate}}</td>

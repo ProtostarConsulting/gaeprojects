@@ -601,4 +601,78 @@ app
 						};
 					}
 
+					$scope.addDocumentComment = function(ev, documentEntity,
+							editComment) {
+
+						var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))
+								&& $scope.customFullscreen;
+						$mdDialog
+								.show(
+										{
+											controller : addDocumentCommentCtr,
+											templateUrl : '/app/stock/purchase_order_add_comment_dialog.html',
+											parent : angular
+													.element(document.body),
+											targetEvent : ev,
+											clickOutsideToClose : true,
+											fullscreen : useFullScreen,
+											locals : {
+												curUser : $scope.curUser,
+												documentEntity : $scope.documentEntity,
+											// taskService : taskService
+											}
+										})
+								.then(
+										function(answer) {
+											$scope.status = 'You said the information was "'
+													+ answer + '".';
+										},
+										function() {
+											$scope.status = 'You cancelled the dialog.';
+										});
+
+						function addDocumentCommentCtr($scope, $mdDialog,
+								curUser, documentEntity) {
+
+							if (!documentEntity.documentComments) {
+								documentEntity.documentComments = [];
+							}
+
+							$scope.documentComment = {
+								addedBy : curUser,
+								date : new Date(),
+								commentText : ''
+							};
+
+							if (editComment) {
+								$scope.documentComment = angular
+										.copy(editComment);
+							}
+
+							$scope.addComment = function() {
+								if (!editComment)
+									documentEntity.documentComments
+											.push($scope.documentComment);
+
+								var stockService = appEndpointSF
+										.getStockService();
+								stockService
+										.addPurchaseOrder(documentEntity)
+										.then(
+												function(data) {
+													if (editComment)
+														editComment.commentText = $scope.documentComment.commentText;
+
+													$mdDialog.cancel();
+												});
+
+							}
+
+							$scope.cancel = function() {
+								$mdDialog.cancel();
+							};
+						}
+
+					};
+
 				});

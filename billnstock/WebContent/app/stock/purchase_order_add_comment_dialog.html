@@ -1,0 +1,22 @@
+<md-dialog aria-label="Add New" style="max-width:800px"> <md-toolbar>
+<div class="md-toolbar-tools">
+	<h2>Add Comment</h2>
+	<span flex></span>
+	<md-button class="md-icon-button" ng-click="cancel()"> <md-icon
+		md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+	</md-button>
+</div>
+</md-toolbar> <md-dialog-content
+	style="min-width:400px; max-width:800px; max-height:810px;">
+<md-content layout-padding>
+<form name="commentForm">
+	<div layout="row" layout-xs="column">
+		<md-input-container flex> <label>Enter
+			Comment</label> <textarea ng-model="documentComment.commentText"
+			ng-required="true" rows="4" cols="1"></textarea> </md-input-container>
+	</div>
+</form>
+</md-content> </md-dialog-content> <md-dialog-actions layout="row"> <md-button
+	ng-disabled="commentForm.$invalid" class="md-raised md-primary"
+	ng-click="addComment()">Save</md-button> <md-button class="md-raised"
+	ng-click="cancel()">Cancel</md-button> </md-dialog-actions> </md-dialog>

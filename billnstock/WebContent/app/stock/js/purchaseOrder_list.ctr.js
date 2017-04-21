@@ -19,6 +19,7 @@ app
 						};
 					}
 					$scope.query = reSetQuery();
+
 					$scope.documentStatusList = [ 'ALL', 'STARRED', 'DRAFT',
 							'SUBMITTED', 'FINALIZED', 'REJECTED', 'CLOSED' ];
 					$scope.selectedStatus = "";
@@ -75,6 +76,8 @@ app
 						}
 					}
 
+					$scope.today = new Date();
+
 					$scope.fetchEntityListByPaging = function() {
 						$scope.loading = true;
 						var pagingInfoTemp = {
@@ -97,6 +100,15 @@ app
 											if (pagingInfoReturned.entityList) {
 												$scope.purchaseOrderList = $scope.purchaseOrderList
 														.concat(pagingInfoReturned.entityList);
+												for (var i = 0; i < $scope.purchaseOrderList.length; i++) {
+													var poDueDate = new Date(
+															$scope.purchaseOrderList[i].poDueDate);
+													if (poDueDate < $scope.today
+															&& $scope.purchaseOrderList[i].status != "CLOSED") {
+														$scope.purchaseOrderList[i].highLight = true;
+													}
+												}
+
 											}
 											$scope.query.totalSize = pagingInfoReturned.totalEntities;
 											$scope.query.pagesLoaded++;
