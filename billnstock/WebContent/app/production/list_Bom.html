@@ -11,7 +11,7 @@
 	<span flex></span>
 	<div layout="row" flex="33" flex-sm="50" flex-xs="100">
 		<md-input-container flex> <label>Search</label> <input
-	ng-model="searchText"> </md-input-container>
+			ng-model="searchText"> </md-input-container>
 	</div>
 	<md-button class="md-icon-button" ui-sref="stock.addBudget">
 	<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
@@ -20,39 +20,38 @@
 
 <div>
 	<div>
-		
 		<md-data-table-container>
 		<table md-table md-progress="promise">
-		<thead ng-if="!dataTableOptions.decapitate" md-head
-			md-order="query.order" md-on-reorder="logOrder">
+			<thead ng-if="!dataTableOptions.decapitate" md-head
+				md-order="query.order" md-on-reorder="logOrder">
 				<tr md-row>
 					<th md-column md-order-by="itemNumber">Production No.</th>
 					<th md-column md-order-by="type">Product Name</th>
 					<th md-column md-order-by="type">Action</th>
-					
+
 				</tr>
 			</thead>
 			<tbody md-body>
 				<tr md-row ng-repeat="product in productList ">
-				<td md-cell>{{$index+1}}</td> 
-				<td md-cell>{{product.productName}}</td>
-				<td md-cell><md-button class="md-icon-button"
+					<td md-cell>{{$index+1}}</td>
+					<td md-cell>{{product.productName}}</td>
+					<td md-cell><md-button class="md-icon-button"
 							ui-sref="production.add_bom({bomCategory:product})">
 						<ng-md-icon icon="edit" style="fill: md-default" size="20">
 						<md-tooltip> Edit</md-tooltip></ng-md-icon></md-button></td>
-						<td md-cell><md-button class="md-icon-button" ng-click="printBOM(product.id)">
-						<ng-md-icon icon="print" style="fill: md-default" size="20">
-						<md-tooltip> Print BOM</md-tooltip></ng-md-icon></md-button></td>
-				
-			</tr>
-					
-		</tbody>
+					<td md-cell><md-button class="md-icon-button"
+							ng-click="printBOM(product.id)"> <ng-md-icon
+							icon="print" style="fill: md-default" size="20"> <md-tooltip>
+						Print BOM</md-tooltip></ng-md-icon></md-button></td>
+
+				</tr>
+
+			</tbody>
 		</table>
 		<md-table-pagination md-limit="query.limit"
-		md-limit-options="dataTableOptions.limitOptions" md-page="query.page"
-		md-total={{productList.length}}
-		md-page-select="dataTableOptions.pageSelect"
-		md-boundary-links="dataTableOptions.boundaryLinks"
-		md-on-paginate="logPagination"></md-table-pagination>
-		</md-data-table-container>
+			md-limit-options="dataTableOptions.limitOptions" md-page="query.page"
+			md-total={{productList.length}}
+			md-page-select="dataTableOptions.pageSelect"
+			md-boundary-links="dataTableOptions.boundaryLinks"
+			md-on-paginate="logPagination"></md-table-pagination> </md-data-table-container>
 	</div>

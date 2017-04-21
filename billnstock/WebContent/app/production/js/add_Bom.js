@@ -23,25 +23,25 @@ app.controller("add_bom", function($scope, $window, $mdToast, $timeout,
 	
 	
 
-	$scope.addCatogory = function() {
+
+		$scope.addCatogory = function() {
 		var category = {
 			cat : null,
 			items : []
 		};
 		$scope.addServiceLineItem()
-		if (!$scope.addBom.catList)
-		{
+		if (!$scope.addBom.catList) {
 			$scope.addBom.catList = [];
 		}
 		$scope.addBom.catList.push(category);
 	}
-			
+
 	$scope.addServiceLineItem = function() {
 		return item = {
 			itemName : "",
 			price : "",
 			qty : ""
-		
+
 		};
 		if (!$scope.addBom.items) {
 			$scope.addBom.items = [];
@@ -50,13 +50,13 @@ app.controller("add_bom", function($scope, $window, $mdToast, $timeout,
 	}
 
 	$scope.addLineItem = function(category) {
-		//$scope.getStockItemTypes (category)
-		
+		// $scope.getStockItemTypes (category)
+
 		var itemObj = {
 			itemName : "",
 			price : 0,
-			qty:"",
-			currentBudgetBalance : 0				
+			qty : "",
+			currentBudgetBalance : 0
 		};
 
 		if (!category.items) {
@@ -98,15 +98,7 @@ app.controller("add_bom", function($scope, $window, $mdToast, $timeout,
 	$scope.removeLineItem = function(category, index) {
 		category.items.splice(index, 1);
 		/*$scope.calItemSubTotal();*/
-	};
-	
-	
-
-
-	var productService = appEndpointSF.getProductionService();
+	};var productService = appEndpointSF.getProductionService();
 	$scope.fetchCatogoryList();
-
-
-	
 
 });
