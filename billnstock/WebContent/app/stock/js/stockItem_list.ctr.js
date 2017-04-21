@@ -8,12 +8,29 @@ angular
 
 					$log.debug("Inside stockListCtr");
 
+					$scope.curUser = appEndpointSF.getLocalUserService()
+							.getLoggedinUser();
+
 					$scope.query = {
 						order : '-itemNumber',
 						limit : 50,
 						page : 1,
 						totalSize : 0,
 						pagesLoaded : 0
+					};
+
+					$scope.logOrder = function(order) {
+						console.log('order: ', order);
+					};
+
+					$scope.logPagination = function(page, limit) {
+						console.log('page: ', page);
+						console.log('limit: ', limit);
+						$location.hash('tp1');
+						$anchorScroll();
+						if ($scope.query.page > $scope.query.pagesLoaded) {
+							$scope.filterStockItems();
+						}
 					};
 
 					$scope.dummyWarehouse = {
@@ -36,57 +53,30 @@ angular
 					$scope.stockItemProductTypes = [];
 
 					$scope.stockItemTypeFilterWrapper = {
-						productType : null,
-						brand : null,
-						warehouse : null
+						warehouse : $scope.dummyWarehouse,
+						brand : $scope.dummyStockItemBrand,
+						productType : $scope.dummyStockItemProductType
 					};
 
-					$scope.curUser = appEndpointSF.getLocalUserService()
-							.getLoggedinUser();
-
-					/*
-					 * $scope.filterStockItemsByWarehouse = function(
-					 * selectedWarehouse) { $scope.loading = true;
-					 * $scope.selectedWarehouse = selectedWarehouse; var
-					 * stockService = appEndpointSF.getStockService();
-					 * 
-					 * stockService.filterStockItemsByWarehouse(
-					 * $scope.selectedWarehouse).then( function(stockList) {
-					 * $scope.stockItemList = stockList; $scope.loading = false;
-					 * }); }
-					 */
-
-					$scope.logOrder = function(order) {
-						console.log('order: ', order);
-					};
-
-					$scope.logPagination = function(page, limit) {
-						console.log('page: ', page);
-						console.log('limit: ', limit);
-						$location.hash('tp1');
-						$anchorScroll();
-						if ($scope.query.page > $scope.query.pagesLoaded) {
-							$scope
-									.filterStockItems($scope.stockItemTypeFilterWrapper);
-						}
-					}
-
-					$scope.filterStockItems = function(
-							stockItemTypeFilterWrapper) {
-
+					$scope.filterStockItems = function() {
 						$scope.loading = true;
-
-						$scope.stockItemTypeFilterWrapper = stockItemTypeFilterWrapper;
-
+						var stockItemsFilterData = {
+							warehouse : $scope.stockItemTypeFilterWrapper.warehouse.warehouseName == 'ALL' ? null
+									: $scope.stockItemTypeFilterWrapper.warehouse,
+							brand : $scope.stockItemTypeFilterWrapper.brand.brandName == 'ALL' ? null
+									: $scope.stockItemTypeFilterWrapper.brand,
+							productType : $scope.stockItemTypeFilterWrapper.productType.typeName == 'ALL' ? null
+									: $scope.stockItemTypeFilterWrapper.productType
+						}
 						var stockService = appEndpointSF.getStockService();
 
 						stockService
 								.filterStockItemsByBrandAndProductTypeAndWH(
 										$scope.curUser.business.id,
-										$scope.stockItemTypeFilterWrapper)
+										stockItemsFilterData)
 								.then(
-										function(stockList) {
-											$scope.stockItemList = stockList;
+										function(resp) {
+											$scope.stockItemList = resp;
 											if ($scope.stockItemList
 													&& $scope.stockItemList.length > 0) {
 												for (var i = 0; i < $scope.stockItemList.length; i++) {
@@ -104,38 +94,6 @@ angular
 											}
 											$scope.loading = false;
 										});
-
-					}
-
-					$scope.filterByWarehouse = function() {
-						if ($scope.stockItemTypeFilterWrapper.warehouse.warehouseName != "ALL") {
-						//	$scope.stockItemTypeFilterWrapper.productType = null;
-						//	$scope.stockItemTypeFilterWrapper.brand = null;
-							$scope
-									.filterStockItems($scope.stockItemTypeFilterWrapper);
-						}
-
-					}
-
-					$scope.filterByProductType = function() {
-						if ($scope.stockItemTypeFilterWrapper.productType.typeName != "ALL") {
-
-							$scope.stockItemTypeFilterWrapper.brand = null;
-							$scope.stockItemTypeFilterWrapper.warehouse = null;
-							$scope
-									.filterStockItems($scope.stockItemTypeFilterWrapper);
-						}
-
-					}
-
-					$scope.filterByBrand = function() {
-						if ($scope.stockItemTypeFilterWrapper.brand.brandName != "ALL") {
-							$scope.stockItemTypeFilterWrapper.productType = null;
-							$scope.stockItemTypeFilterWrapper.warehouse = null;
-							$scope
-									.filterStockItems($scope.stockItemTypeFilterWrapper);
-						}
-
 					}
 
 					$scope.getAllWarehouseByBusiness = function() {
@@ -203,8 +161,7 @@ angular
 							$scope.getAllWarehouseByBusiness();
 							$scope.getStockItemProductTypes();
 							$scope.getStockItemBrands();
-							$scope
-									.filterStockItems($scope.stockItemTypeFilterWrapper);
+							$scope.filterStockItems();
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
 							$timeout($scope.waitForServiceLoad, 1000);
