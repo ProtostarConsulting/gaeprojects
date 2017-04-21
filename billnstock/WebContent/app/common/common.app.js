@@ -621,8 +621,14 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
 	})
 
+	.state('production.bom_requisition', {
+		url : "/bom requisition",
+		templateUrl : '/app/production/bom_requisition.html',
+		controller : 'bom_requisition',
+		
+	})
 	.state('production.add_bom', {
-		url : "/add_Bill_Of_material",
+		url : "/addBillOfMaterial",
 		templateUrl : '/app/production/add_bom.html',
 		controller : 'add_bom',
 		params : {
@@ -630,9 +636,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			bomCategory : null
 		}
 	})
-
 	.state('production.list_bom', {
-		url : "/list_Bill_of_material",
+		url : "/list Bill of material",
 		templateUrl : '/app/production/list_bom.html',
 		controller : 'list_bom',
 
