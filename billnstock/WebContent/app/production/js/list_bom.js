@@ -31,7 +31,7 @@ app.controller("list_bom", function($scope, $window, $mdToast, $timeout,
 
 		productService.getlistBomEntity($scope.curUser.business.id).then(
 				function(list) {
-					$scope.productList = list;
+					$scope.bomList = list;
 
 				});
 	}

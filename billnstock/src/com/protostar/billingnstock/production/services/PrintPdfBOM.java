@@ -45,8 +45,8 @@ public class PrintPdfBOM extends HttpServlet {
 		Long bomId = Long.parseLong(request.getParameter("bomId"));
 		Long bid = Long.parseLong(request.getParameter("bid"));
 
-		ProductionService productionService=new ProductionService();
-		BomEntity bomEntityById=  productionService.listBomEntityByID(bid,bomId);
+		ProductionService productionService = new ProductionService();
+		BomEntity bomEntityById = productionService.listBomEntityByID(bid, bomId);
 		response.setContentType("application/PDF");
 
 		ServletOutputStream outputStream = response.getOutputStream();
@@ -70,10 +70,10 @@ public class PrintPdfBOM extends HttpServlet {
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 			Map<String, Object> root = new HashMap<String, Object>();
 			PDFHtmlTemplateService.addDocumentHeaderLogo(bomEntity, document, root);
-			
-			List<BomLineItemCategory> productItemList=bomEntity.getCatList();
+
+			List<BomLineItemCategory> productItemList = bomEntity.getCatList();
 			root.put("productItemList", productItemList);
-			
+
 			DecimalFormat df = new DecimalFormat("#0.00");
 
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
@@ -85,9 +85,9 @@ public class PrintPdfBOM extends HttpServlet {
 			root.put("modifiedDateStr", modifiedDateStr);
 			UserEntity createdBy = bomEntity.getCreatedBy();
 			root.put("createdBy", createdBy == null ? "" : createdBy.getFirstName() + " " + createdBy.getLastName());
-			root.put("productName", ""+bomEntity.getProductName().toString());
+			root.put("productName", "" + bomEntity.getStockItemType().getItemName().toString());
 			Template temp = PDFHtmlTemplateService.getConfiguration()
-			.getTemplate("pdf_templates/production_bom_tmpl.ftlh");
+					.getTemplate("pdf_templates/production_bom_tmpl.ftlh");
 
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(
 					Constants.DOCUMENT_DEFAULT_MAX_SIZE);
@@ -95,7 +95,7 @@ public class PrintPdfBOM extends HttpServlet {
 			temp.process(root, out);
 			String pdfXMLContent = byteArrayOutputStream.toString();
 			worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
-			
+
 			document.close();
 
 		} catch (Exception e) {

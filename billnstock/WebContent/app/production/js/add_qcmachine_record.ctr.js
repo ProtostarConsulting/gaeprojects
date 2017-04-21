@@ -12,7 +12,7 @@ app
 
 					$scope.qcmachineRecord = {
 						machine : "",
-						recordDate : new Date(),
+						recordDate : null,
 						parameterValueList : [],
 					};
 

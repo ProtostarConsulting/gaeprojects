@@ -1,104 +1,143 @@
 var app = angular.module("stockApp");
 
-app.controller("add_bom", function($scope, $window, $mdToast, $timeout,
-		$mdSidenav, $mdUtil, $log, $stateParams, objectFactory, appEndpointSF,
-		$mdDialog, $mdMedia) {
+app
+		.controller(
+				"add_bom",
+				function($scope, $window, $mdToast, $q, $timeout, $mdSidenav,
+						$mdUtil, $log, $stateParams, objectFactory,
+						appEndpointSF, $mdDialog, $mdMedia) {
 
-	$scope.getEmptyBomObjadd = function() {
-		return {
-			productName :"",
-			catList : [],
-			business : $scope.curUser.business,
-			createdBy : $scope.curUser,
-			modifiedBy :$scope.curUser.email_id
-		}
-		$scope.addCatogory();
-	};
-	$scope.dummyCatList=[];
-	$scope.stockItemCategories =[];
-	$scope.stockTypeList =[];
-	
-	$scope.addBom = $stateParams.bomCategory ? $stateParams.bomCategory
-			: $scope.getEmptyBomObjadd();
-	
-	
+					$scope.getEmptyBomObjadd = function() {
+						return {
+							productName : "",
+							catList : [],
+							business : $scope.curUser.business,
+							createdBy : $scope.curUser,
+							modifiedBy : null
+						}
+					};
 
+					$scope.dummyCatList = [];
+					$scope.stockItemCategories = [];
 
-		$scope.addCatogory = function() {
-		var category = {
-			cat : null,
-			items : []
-		};
-		$scope.addServiceLineItem()
-		if (!$scope.addBom.catList) {
-			$scope.addBom.catList = [];
-		}
-		$scope.addBom.catList.push(category);
-	}
+					$scope.documentEntity = $stateParams.bomCategory ? $stateParams.bomCategory
+							: $scope.getEmptyBomObjadd();
 
-	$scope.addServiceLineItem = function() {
-		return item = {
-			itemName : "",
-			price : "",
-			qty : ""
+					$scope.addCatogory = function() {
+						var category = {
+							cat : null,
+							items : [],
+							categoryStockTypeList : []
+						};
 
-		};
-		if (!$scope.addBom.items) {
-			$scope.addBom.items = [];
-		}
-		$scope.addBom.items.push(item);
-	}
+						if (!$scope.documentEntity.catList) {
+							$scope.documentEntity.catList = [];
+						}
+						$scope.documentEntity.catList.push(category);
+						$scope.addLineItem(category);
+					}
 
-	$scope.addLineItem = function(category) {
-		// $scope.getStockItemTypes (category)
+					$scope.addLineItem = function(category) {
+						// $scope.getStockItemTypes (category)
 
-		var itemObj = {
-			itemName : "",
-			price : 0,
-			qty : "",
-			currentBudgetBalance : 0
-		};
+						var itemObj = {
+							itemName : "",
+							price : 0,
+							qty : "",
+							currentBudgetBalance : 0
+						};
 
-		if (!category.items) {
-			category.items = [];
-		}
-		category.items.push(itemObj);
-	};
-	
-	$scope.submitProduction = function() {
+						if (!category.items) {
+							category.items = [];
+						}
+						category.items.push(itemObj);
+					};
 
-		var productService = appEndpointSF.getProductionService();
-		productService.addBomEntity($scope.addBom).then(function() {
-			$scope.showAddToast();
-		});
+					$scope.submitBom = function() {
 
-	}
-	$scope.fetchCatogoryList = function() {
-		var stockService = appEndpointSF.getStockService();
+						var productService = appEndpointSF
+								.getProductionService();
+						productService.addBomEntity(
+								$scope.documentEntity).then(function(bom) {
+							if (bom.id)
+								$scope.documentEntity.id = bom.id;
 
-		stockService.getStockItemTypeCategories($scope.curUser.business.id)
-				.then(function(list) {
-					$scope.stockItemCategories = list;
-				})
-	};
+							$scope.showAddToast();
+						});
 
-	$scope.getStockItemTypes = function(category,index) {
-		$log.debug("Inside Ctr $scope.getStockItemTypes");
-		var stockService = appEndpointSF.getStockService();
+					}
+					$scope.fetchCatogoryList = function() {
+						var stockService = appEndpointSF.getStockService();
 
-		stockService.filterStockItemsByCategoryForProduct(category.cat).then(
-				function(list) {
-					$scope.stockTypeList = list;
+						stockService.getStockItemTypeCategories(
+								$scope.curUser.business.id).then(
+								function(list) {
+									$scope.stockItemCategories = list;
+								})
+					};
+
+					$scope.getStockItemTypes = function(category, index) {
+						$log.debug("Inside Ctr $scope.getStockItemTypes");
+						var stockService = appEndpointSF.getStockService();
+
+						stockService.filterStockItemsByCategoryForProduct(
+								category.cat).then(function(list) {
+							category.categoryStockTypeList = list;
+						});
+					}
+
+					$scope.removeCategoryItem = function(index) {
+						$scope.documentEntity.catList.splice(index, 1);
+					};
+					$scope.removeLineItem = function(category, index) {
+						category.items.splice(index, 1);
+						/* $scope.calItemSubTotal(); */
+					};
+
+					// Select Stock Type
+					$scope.stockItemTypeList = [];
+					$scope.searchTextInput = null;
+
+					$scope.querySearch = function(query) {
+						var results = query ? $scope.stockItemTypeList
+								.filter(createFilterFor(query)) : [];
+						var deferred = $q.defer();
+						$timeout(function() {
+							deferred.resolve(results);
+						}, Math.random() * 1000, false);
+						return deferred.promise;
+					}
+
+					function createFilterFor(query) {
+						var lowercaseQuery = angular.lowercase(query);
+						return function filterFn(item) {
+							return (angular.lowercase(item.itemName).indexOf(
+									lowercaseQuery) >= 0);
+						};
+					}
+					function getStockItemTypes() {
+						var stockService = appEndpointSF.getStockService();
+						stockService.getStockItemTypes(
+								$scope.curUser.business.id).then(
+								function(list) {
+									$scope.stockItemTypeList = list;
+								});
+					}
+					// End Stock Type
+
+					$scope.waitForServiceLoad = function() {
+						if (appEndpointSF.is_service_ready) {
+							getStockItemTypes();
+							$scope.fetchCatogoryList();
+							if (!$scope.documentEntity.id) {
+								$scope.addCatogory();
+							}
+
+						} else {
+							$log.debug("Services Not Loaded, watiting...");
+							$timeout($scope.waitForServiceLoad, 1000);
+						}
+					}
+					$scope.waitForServiceLoad();
+
 				});
-	}
-	
-	$scope.removeCategoryItem = function(index) {
-		$scope.addBom.catList.splice(index, 1);
-	};
-	$scope.removeLineItem = function(category, index) {
-		category.items.splice(index, 1);
-		/*$scope.calItemSubTotal();*/
-	};var productService = appEndpointSF.getProductionService();
-	$scope.fetchCatogoryList();
-
-});

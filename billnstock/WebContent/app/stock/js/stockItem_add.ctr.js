@@ -69,7 +69,7 @@ angular
 					// Select Stock Type
 					$scope.stockItemTypeList = [];					
 					$scope.searchTextInput = null;
-
+					
 					$scope.querySearch = function(query) {
 						var results = query ? $scope.stockItemTypeList
 								.filter(createFilterFor(query)) : [];
@@ -80,20 +80,19 @@ angular
 						return deferred.promise;
 					}
 
-					function getStockItemTypes() {
-						var stockService = appEndpointSF.getStockService();
-						stockService.getStockItemTypes($scope.curUser.business.id).then(
-								function(list) {
-									$scope.stockItemTypeList = list;
-								});
-					}
-
 					function createFilterFor(query) {
 						var lowercaseQuery = angular.lowercase(query);
 						return function filterFn(item) {
 							return (angular.lowercase(item.itemName)
 									.indexOf(lowercaseQuery) >= 0);
 						};
+					}
+					function getStockItemTypes() {
+						var stockService = appEndpointSF.getStockService();
+						stockService.getStockItemTypes($scope.curUser.business.id).then(
+								function(list) {
+									$scope.stockItemTypeList = list;
+								});
 					}
 					// End Stock Type
 

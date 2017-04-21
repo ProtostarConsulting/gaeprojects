@@ -1,12 +1,12 @@
 <md-subheader class="md-primary">
-<h4>Add QCMachine Record</h4>
+<h4>Add Machine QC Record</h4>
 <!-- <h4 class="md-title"
 	ng-bind="qcmachine.id?'Edit QCMachine':'QCAdd Machine'"></h4> --> </md-subheader>
 
 <form name="addQCMachineRecordForm">
-	<div layout="row" layout-xs="column" flex>
+	<div layout="row" layout-xs="column" flex="65" flex-xs>
 		<md-input-container flex> <label>Machine
-			no. </label> <md-select name="machine" ng-model="qcmachineRecord.machine"
+			QC Name</label> <md-select name="machine" ng-model="qcmachineRecord.machine"
 			ng-change="getMachineParamList(qcmachineRecord.machine)"
 			ng-required="true"> <md-option
 			ng-repeat="qcmachine in machineList" ng-value="qcmachine">{{qcmachine.qcName}}</md-option>
@@ -17,10 +17,9 @@
 		</div>
 		</md-input-container>
 
-		<h4>QCMachine Record Date</h4>
-		<md-datepicker ng-model="qcmachineRecord.recordDate" ng-change = getQCMachineDailyRecord(qcmachineRecord.recordDate)
-			md-placeholder="Enter date" flex></md-datepicker>
-		</md-input-container>
+		<mdp-date-picker mdp-placeholder="QC Record Date"
+			ng-model="qcmachineRecord.recordDate"
+			ng-change="getQCMachineDailyRecord(qcmachineRecord.recordDate)"></mdp-date-picker>
 	</div>
 
 	<div>
@@ -28,15 +27,15 @@
 		<table md-table md-progress="promise">
 			<tbody md-body>
 				<tr md-row>
-					<td md-cell>Time/QC Parameter Name</td>
+					<td md-cell  width="20%">Time/QC Parameter Name</td>
 					<td md-cell ng-repeat="machineParam in machineParamList">{{machineParam}}</td>
 				</tr>
 				<tr md-row ng-repeat="tempTime in timeArray track by $index">
 					<td md-cell>{{ tempTime }}</td>
 					<td md-cell ng-repeat="machineParam in machineParamList"><md-input-container
 							flex style="padding-left:2px; padding-right:0px;">
-						<label>Enter Value</label> <input type="number" ng-model="machineParam.recordedValue">
-						</md-input-container></td>
+						<label>Enter Value</label> <input type="number"
+							ng-model="temp"> </md-input-container></td>
 				</tr>
 			</tbody>
 		</table>
@@ -44,7 +43,8 @@
 	</div>
 	<div ng-if="isTableShow">
 		<section layout="row" layout-xs="column">
-			<md-button class="md-raised md-primary" ng-click="addQCMachineRecord()">Save</md-button>
+			<md-button class="md-raised md-primary"
+				ng-click="addQCMachineRecord()">Save</md-button>
 		</section>
 	</div>
 	<!-- <div>
