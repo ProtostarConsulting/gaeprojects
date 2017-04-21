@@ -6,16 +6,32 @@ angular.module("stockApp")
 						$routeParams, $filter, $q, $mdMedia, $mdDialog,
 						objectFactory, appEndpointSF, $mdColors) {
 
-					$scope.query = {
-						order : 'name',
-						limit : 5,
-						page : 1
-					};
-
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
 
 					$scope.printBtnHide = true;
+
+					$scope.query = {
+						order : 'name',
+						limit : 50,
+						page : 1,
+						totalSize : 0,
+						pagesLoaded : 0
+					};
+
+					$scope.logOrder = function(order) {
+						console.log('order: ', order);
+					};
+
+					$scope.logPagination = function(page, limit) {
+						console.log('page: ', page);
+						console.log('limit: ', limit);
+						$location.hash('tp1');
+						$anchorScroll();
+						if ($scope.query.page > $scope.query.pagesLoaded) {
+							$scope.getTaxCollReport();
+						}
+					};
 
 					$scope.taxRcvData = [];
 

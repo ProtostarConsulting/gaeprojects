@@ -6,9 +6,9 @@
 	</md-subheader>
 	<span flex> </span>
 	<md-input-container flex> <label>Select
-		Warehouse</label><md-select
-		ng-model="selectedWarehouse" placeholder="Select Warehouse"
-		ng-change="warehouseDDLChange($index, selectedWarehouse)">
+		Warehouse</label> <md-select ng-model="selectedWarehouse"
+		placeholder="Select Warehouse"
+		ng-change="filterStockItemsByWarehouse(selectedWarehouse)">
 	<md-option ng-value="warehouse" ng-repeat="warehouse in warehouses">{{warehouse.warehouseName
 	}}</md-option> </md-select> </md-input-container>
 	<md-input-container flex-gt-xs="25"> <label>Search</label>
@@ -16,30 +16,34 @@
 </section>
 <div>
 	<md-data-table-container>
-	<table md-data-table class="md-primary" md-progress="deferred">
-		<thead md-order="query.order" md-trigger="onorderchange">
-			<tr>
-				<th name="Item No." order-by="stockItemType.itemNumber"></th>
-				<th name="Item Name" order-by="stockItemType.itemName"></th>
-				<th name="Quantity" order-by="qty"></th>
-				<th name="Threshold Value" order-by="thresholdValue"></th>
+	<table md-table md-progress="promise">
+		<thead ng-if="!dataTableOptions.decapitate" md-head
+			md-order="query.order" md-on-reorder="logOrder">
+			<tr md-row>
+				<th md-column md-order-by="stockItemType.itemNumber">Item No.</th>
+				<th md-column md-order-by="stockItemType.itemName">Item Name</th>
+				<th md-column md-order-by="qty">Quantity</th>
+				<th md-column md-order-by="thresholdValue">Threshold Value</th>
 			</tr>
 		</thead>
 
-		<tbody>
-			<tr
-				ng-repeat="stock in filteredWarehouseData | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+		<tbody md-body>
+			<tr md-row
+				ng-repeat="stock in stockItemsByWHList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
 				<!-- <a ng-href="#/invoice.list/{{invoiceId.id}}">{{invoice.finalTotal}}</a> -->
-				<td>{{stock.stockItemType.itemNumber}}</td>
-				<td>{{stock.stockItemType.itemName}}</td>
-				<td>{{stock.qty}}</td>
-				<td style="color: red">{{stock.thresholdValue}}</td>
+				<td md-cell>{{stock.stockItemType.itemNumber}}</td>
+				<td md-cell>{{stock.stockItemType.itemName}}</td>
+				<td md-cell>{{stock.qty}}</td>
+				<td md-cell style="color: red">{{stock.thresholdValue}}</td>
 			</tr>
 		</tbody>
 	</table>
 
-	<md-data-table-pagination md-limit="query.limit" md-page="query.page"
-		md-total={{filteredWarehouseData.length}} md-trigger="onpagechange"></md-data-table-pagination>
-	</md-data-table-container>
+	<md-table-pagination md-limit="query.limit"
+		md-limit-options="dataTableOptions.limitOptions" md-page="query.page"
+		md-total={{stockItemsByWHList.length}}
+		md-page-select="dataTableOptions.pageSelect"
+		md-boundary-links="dataTableOptions.boundaryLinks"
+		md-on-paginate="logPagination"></md-table-pagination> </md-data-table-container>
 </div>
 </md-content>

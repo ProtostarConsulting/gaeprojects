@@ -31,25 +31,26 @@
 
 </section>
 
-
 <div>
 	<md-data-table-container>
-	<table md-data-table class="md-primary" md-progress="deferred">
-		<thead md-order="query.order" md-trigger="onorderchange">
-			<tr>
-				<th name="Invoice No" order-by="invoiceItemNumber"></th>
-				<th name="Invoice Paid Date" order-by="invoiceDate"></th>
-				<th name="Tax Collected(&#x20b9)" order-by="taxAmt"></th>
+	<table md-table md-progress="promise">
+		<thead ng-if="!dataTableOptions.decapitate" md-head
+			md-order="query.order" md-on-reorder="logOrder">
+			<tr md-row>
+				<th md-column md-order-by="invoiceItemNumber">Invoice No</th>
+				<th md-column md-order-by="invoiceDate">Invoice Paid Date</th>
+				<th md-column md-order-by="taxAmt">Tax
+					Collected(&#x20b9)</th>
 			</tr>
 		</thead>
 
-		<tbody>
-			<tr
+		<tbody md-body>
+			<tr md-row
 				ng-repeat="tax in taxRcvData | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
 
-				<td>{{tax.invoiceItemNumber}}</td>
-				<td>{{tax.invoiceDate | formatDate}}</td>
-				<td>{{tax.taxAmt | number:2}}</td>
+				<td md-cell>{{tax.invoiceItemNumber}}</td>
+				<td md-cell>{{tax.invoiceDate | formatDate}}</td>
+				<td md-cell>{{tax.taxAmt | number:2}}</td>
 
 			</tr>
 		</tbody>
@@ -58,8 +59,11 @@
 		<span flex=65></span>
 		<div id="taxTotal">Total :{{taxTotal | number:2}}</div>
 	</section>
-	<md-data-table-pagination md-limit="query.limit" md-page="query.page"
-		md-total={{taxRcvData.length}} md-trigger="onpagechange"></md-data-table-pagination>
-	</md-data-table-container>
+	<md-table-pagination md-limit="query.limit"
+		md-limit-options="dataTableOptions.limitOptions" md-page="query.page"
+		md-total={{taxRcvData.length}}
+		md-page-select="dataTableOptions.pageSelect"
+		md-boundary-links="dataTableOptions.boundaryLinks"
+		md-on-paginate="logPagination"></md-table-pagination> </md-data-table-container>
 </div>
 </md-content>

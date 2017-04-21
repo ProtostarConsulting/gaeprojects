@@ -36,33 +36,38 @@
 
 <div>
 	<md-data-table-container>
-	<table md-data-table class="md-primary" md-progress="deferred">
-		<thead md-order="query.order" md-trigger="onorderchange">
-			<tr>
-				<th name="Tranasction Date"></th>
-				<th name="Transaction Type" order-by="txnType"></th>
-				<th name="Quantity" order-by="qty"></th>
-				<th name="Stock Shipment No" order-by="stockShipmentNumber"></th>
-				<th name="Stock Receipt No" order-by="stockReceiptNumber"></th>
-				<th name="Invoice No" order-by="invoiceNumber"></th>
+	<table md-table md-progress="promise">
+		<thead ng-if="!dataTableOptions.decapitate" md-head
+			md-order="query.order" md-on-reorder="logOrder">
+			<tr md-row>
+				<th md-column>Transaction Date</th>
+				<th md-column md-order-by="txnType">Transaction Type</th>
+				<th md-column md-order-by="qty">Quantity</th>
+				<th md-column md-order-by="stockShipmentNumber">Stock Shipment
+					No</th>
+				<th md-column md-order-by="stockReceiptNumber">Stock Receipt No</th>
+				<th md-column md-order-by="invoiceNumber">Invoice No</th>
 			</tr>
 		</thead>
 
-		<tbody>
-			<tr
+		<tbody md-body>
+			<tr md-row
 				ng-repeat="txn in stockTxnList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
-				<td>{{txn.createdDate |formatDate}}</td>
-				<td>{{txn.txnType}}</td>
-				<td>{{txn.qty}}</td>
-				<td>{{txn.stockShipmentNumber}}</td>
-				<td>{{txn.stockReceiptNumber}}</td>
-				<td>{{txn.invoiceNumber}}</td>
+				<td md-cell>{{txn.createdDate |formatDate}}</td>
+				<td md-cell>{{txn.txnType}}</td>
+				<td md-cell>{{txn.qty}}</td>
+				<td md-cell>{{txn.stockShipmentNumber}}</td>
+				<td md-cell>{{txn.stockReceiptNumber}}</td>
+				<td md-cell>{{txn.invoiceNumber}}</td>
 			</tr>
 		</tbody>
 	</table>
 
-	<md-data-table-pagination md-limit="query.limit" md-page="query.page"
-		md-total={{filteredWarehouseData.length}} md-trigger="onpagechange"></md-data-table-pagination>
-	</md-data-table-container>
+	<md-table-pagination md-limit="query.limit"
+		md-limit-options="dataTableOptions.limitOptions" md-page="query.page"
+		md-total={{stockTxnList.length}}
+		md-page-select="dataTableOptions.pageSelect"
+		md-boundary-links="dataTableOptions.boundaryLinks"
+		md-on-paginate="logPagination"></md-table-pagination> </md-data-table-container>
 </div>
 </md-content>

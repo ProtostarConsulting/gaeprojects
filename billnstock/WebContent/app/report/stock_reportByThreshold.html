@@ -9,33 +9,37 @@
 </section>
 <div>
 	<md-data-table-container>
-	<table md-data-table class="md-primary" md-progress="deferred">
-		<thead md-order="query.order" md-trigger="onorderchange">
-			<tr>
-				<th name="Warehouse" order-by="warehouse.warehouseName"></th>
-				<th name="Item No" order-by="stockItemType.itemNumber"></th>				
-				<th name="Item Name" order-by="stockItemType.itemName"></th>
-				<th name="Category" order-by="stockItemType.category"></th>
-				<th name="Qty" order-by="qty"></th>
-				<th name="Threshold Qty" order-by="thresholdValue"></th>
+	<table md-table md-progress="promise">
+		<thead ng-if="!dataTableOptions.decapitate" md-head
+			md-order="query.order" md-on-reorder="logOrder">
+			<tr md-row>
+				<th md-column md-order-by="warehouse.warehouseName">Warehouse</th>
+				<th md-column md-order-by="stockItemType.itemNumber">Item No</th>
+				<th md-column md-order-by="stockItemType.itemName">Item Name</th>
+				<th md-column md-order-by="stockItemType.category">Category</th>
+				<th md-column md-order-by="qty">Qty</th>
+				<th md-column md-order-by="thresholdValue">Threshold Qty</th>
 			</tr>
 		</thead>
-		<tbody>
-			<tr 
-				ng-repeat="stockItem in thresholdStock | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
-				<td>{{stockItem.warehouse.warehouseName}}</td>
-				<td>{{stockItem.stockItemType.itemNumber}}</td>
-				<td>{{stockItem.stockItemType.itemName}}</td>
-				<td>{{stockItem.stockItemType.category}}</td>
-				<td>{{stockItem.qty}}</td>
-				<td style="color: red">{{stockItem.thresholdValue}}</td>
-				<td></td>
+		<tbody md-body>
+			<tr md-row
+				ng-repeat="stockItem in stockByThresholdList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+				<td md-cell>{{stockItem.warehouse.warehouseName}}</td>
+				<td md-cell>{{stockItem.stockItemType.itemNumber}}</td>
+				<td md-cell>{{stockItem.stockItemType.itemName}}</td>
+				<td md-cell>{{stockItem.stockItemType.catNames}}</td>
+				<td md-cell>{{stockItem.qty}}</td>
+				<td md-cell style="color: red">{{stockItem.thresholdValue}}</td>
+				<td md-cell></td>
 			</tr>
 		</tbody>
 	</table>
 
-	<md-data-table-pagination md-limit="query.limit" md-page="query.page"
-		md-total={{thresholdStock.length}} md-trigger="onpagechange"></md-data-table-pagination>
-	</md-data-table-container>
+	<md-table-pagination md-limit="query.limit"
+		md-limit-options="dataTableOptions.limitOptions" md-page="query.page"
+		md-total={{stockByThresholdList.length}}
+		md-page-select="dataTableOptions.pageSelect"
+		md-boundary-links="dataTableOptions.boundaryLinks"
+		md-on-paginate="logPagination"></md-table-pagination> </md-data-table-container>
 </div>
 </md-content>

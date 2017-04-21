@@ -6,10 +6,9 @@ angular
 						$mdUtil, $log, $http, objectFactory, appEndpointSF) {
 
 					$scope.getReportByTaxPaid = function() {
-						var purchaseService = appEndpointSF
-								.getPurchaseOrderService();
+						var stockService = appEndpointSF.getStockService();
 
-						purchaseService.getAllPurchaseOrder(
+						stockService.getAllPurchaseOrder(
 								$scope.curUser.business.id).then(
 								function(purchaseOrderList) {
 									$scope.pOFortaxPaid = purchaseOrderList;
