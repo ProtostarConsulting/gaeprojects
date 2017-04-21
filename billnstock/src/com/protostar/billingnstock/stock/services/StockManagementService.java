@@ -545,16 +545,27 @@ public class StockManagementService extends BaseService {
 					fitlerWrapper.getBrand());
 		filteredStockItemTypes = ancestorQuery.list();
 
-		if (fitlerWrapper.getWarehouse() != null) {
+		if (fitlerWrapper.getWarehouse() != null
+				&& fitlerWrapper.getProductType() == null
+				&& fitlerWrapper.getBrand() == null) {
 			ancestorQuery2 = ancestorQuery2.filter("warehouse",
 					fitlerWrapper.getWarehouse());
 			stockItems = ancestorQuery2.list();
 			return stockItems;
 		}
 
-		if (filteredStockItemTypes != null && filteredStockItemTypes.size() > 0) {
+		if (filteredStockItemTypes != null && filteredStockItemTypes.size() > 0
+				&& fitlerWrapper.getWarehouse() == null) {
 			stockItems = ofy().load().type(StockItemEntity.class)
 					.ancestor(business)
+					.filter("stockItemType IN", filteredStockItemTypes).list();
+		}
+
+		if (filteredStockItemTypes != null && filteredStockItemTypes.size() > 0
+				&& fitlerWrapper.getWarehouse() != null) {
+			stockItems = ofy().load().type(StockItemEntity.class)
+					.ancestor(business)
+					.filter("warehouse", fitlerWrapper.getWarehouse())
 					.filter("stockItemType IN", filteredStockItemTypes).list();
 		}
 		return stockItems;
@@ -591,16 +602,18 @@ public class StockManagementService extends BaseService {
 
 		return filteredStocks;
 	}
-	
+
 	@ApiMethod(name = "filterStockItemsByCategoryForProduct", path = "filterStockItemsByCategoryForProduct")
-	public List<StockItemTypeEntity> filterStockItemsByCategoryForproduct(StockItemTypeCategory category) {
-		
-		List<StockItemTypeEntity> filteredStocks = ofy().load().type(StockItemTypeEntity.class)
-				.ancestor(category.getBusiness()).filter("categoryList", category).list();
-System.out.println("filteredStocks.size"+filteredStocks.size());
+	public List<StockItemTypeEntity> filterStockItemsByCategoryForproduct(
+			StockItemTypeCategory category) {
+
+		List<StockItemTypeEntity> filteredStocks = ofy().load()
+				.type(StockItemTypeEntity.class)
+				.ancestor(category.getBusiness())
+				.filter("categoryList", category).list();
+		System.out.println("filteredStocks.size" + filteredStocks.size());
 		return filteredStocks;
 	}
-	
 
 	@ApiMethod(name = "filterStockItemsByCategories", path = "filterStockItemsByCategories")
 	public List<StockItemEntity> filterStockItemsByCategories(
