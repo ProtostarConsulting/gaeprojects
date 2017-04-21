@@ -3133,6 +3133,15 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 	
+	ProductionService.addQCMachineRecord = function(machine) {
+		var deferred = $q.defer();
+		gapi.client.productionService.addQCMachineRecord(machine).execute(
+				function(resp) {
+					deferred.resolve(resp);
+				});
+		return deferred.promise;
+	}
+	
 	ProductionService.getMachineList = function(busId) {
 		var deferred = $q.defer();
 		gapi.client.productionService.getMachineList({
@@ -3153,11 +3162,23 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 	
-	ProductionService.getMachineById = function(busId,id) {
+	ProductionService.getQCMachineById = function(busId,id) {
 		var deferred = $q.defer();
-		gapi.client.productionService.getMachineById({
+		gapi.client.productionService.getQCMachineById({
 			"busId" : busId,
 			"id" : id
+		}).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}
+	
+	ProductionService.getQCMachineDailyRecordEntity = function(qcMachineId,busId,date) {
+		var deferred = $q.defer();
+		gapi.client.productionService.getQCMachineDailyRecordEntity({
+			"qcmachineId" : qcMachineId,
+			"busId" : busId,
+			 "date" : date
 		}).execute(function(resp) {
 			deferred.resolve(resp);
 		});

@@ -2,6 +2,7 @@ package com.protostar.billingnstock.production.services;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
+import java.util.Date;
 import java.util.List;
 
 import com.google.api.server.spi.config.Api;
@@ -11,8 +12,8 @@ import com.google.api.server.spi.config.Named;
 import com.googlecode.objectify.Key;
 import com.protostar.billingnstock.production.entities.BomEntity;
 import com.protostar.billingnstock.production.entities.ProductionMachineEntity;
+import com.protostar.billingnstock.production.entities.QCMachineDailyRecordEntity;
 import com.protostar.billingnstock.production.entities.QCMachineEntity;
-import com.protostar.billingnstock.purchase.entities.PurchaseOrderEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 
 @Api(name = "productionService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.production.services", ownerName = "com.protostar.billingnstock.production.services", packagePath = ""))
@@ -66,6 +67,12 @@ public class ProductionService {
 		ofy().save().entity(machine).now();		
 		return machine;
 	}
+	
+	@ApiMethod(name = "addQCMachineRecord", path = "addQCMachineRecord")
+	public QCMachineDailyRecordEntity addQCMachineRecord(QCMachineDailyRecordEntity qcMachineRecord) {
+		ofy().save().entity(qcMachineRecord).now();		
+		return qcMachineRecord;
+	}
 
 	@ApiMethod(name = "getQCMachineList", path = "getQCMachineList")
 	public List<QCMachineEntity> getQCMachineList(@Named("busId") Long busId) {
@@ -76,8 +83,8 @@ public class ProductionService {
 	}
 
 	
-	@ApiMethod(name = "getMachineById", path = "getMachineById")
-	public QCMachineEntity getMachineById(@Named("busId") Long busId,
+	@ApiMethod(name = "getQCMachineById", path = "getQCMachineById")
+	public QCMachineEntity getQCMachineById(@Named("busId") Long busId,
 			@Named("id") Long id) {
 
 		List<QCMachineEntity> list = ofy()
@@ -88,6 +95,33 @@ public class ProductionService {
 								QCMachineEntity.class, id)).list();
 		QCMachineEntity foundMachine = list.size() > 0 ? list.get(0) : null;
 		return foundMachine;
+	}
+	
+	@ApiMethod(name = "getQCMachineDailyRecordEntity", path = "getQCMachineDailyRecordEntity")
+	public QCMachineDailyRecordEntity getQCMachineDailyRecordEntity(@Named("qcmachineId") Long qcmachineId, @Named("busId") Long busId,
+			@Named("date") Long recordDate) {
+		
+		QCMachineEntity machineQc = getQCMachineById(busId, qcmachineId);
+		Date tempRecordDateObj = new Date(recordDate);
+		//quer in DS by fiter
+		List<QCMachineDailyRecordEntity> foundedDailyRecord = ofy().load()
+				.type(QCMachineDailyRecordEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).filter("recordDate", tempRecordDateObj).filter("machineQc", machineQc).list();
+		
+		QCMachineDailyRecordEntity qcMachineDailyRecord = null;
+		
+		if(foundedDailyRecord.size() > 0){
+			qcMachineDailyRecord =  foundedDailyRecord.get(0);
+		}
+		else {
+			ProductionUtil prodUtill = new ProductionUtil();
+			qcMachineDailyRecord = prodUtill.createNewQCMachineDailyRecordEntity(machineQc, tempRecordDateObj);
+		}
+		
+		//if(found) return 
+		//else temp v = ProductionUtil.createNewQCMachineDailyRecordEntity()
+		
+		return qcMachineDailyRecord;
 	}
 
 }

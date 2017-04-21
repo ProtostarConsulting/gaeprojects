@@ -9,7 +9,7 @@
 			no. </label> <md-select name="machine" ng-model="qcmachineRecord.machine"
 			ng-change="getMachineParamList(qcmachineRecord.machine)"
 			ng-required="true"> <md-option
-			ng-repeat="qcmachine in machineList" ng-value="qcmachine">{{qcmachine.machine.machineNo}}</md-option>
+			ng-repeat="qcmachine in machineList" ng-value="qcmachine">{{qcmachine.qcName}}</md-option>
 		</md-select>
 		<div ng-messages="addQCMachineRecordForm.machine.$error"
 			ng-if="addQCMachineRecordForm.machine.$submitted || addQCMachineRecordForm.machine.$touched">
@@ -18,7 +18,7 @@
 		</md-input-container>
 
 		<h4>QCMachine Record Date</h4>
-		<md-datepicker ng-model="qcmachineRecord.recordDate"
+		<md-datepicker ng-model="qcmachineRecord.recordDate" ng-change = getQCMachineDailyRecord(qcmachineRecord.recordDate)
 			md-placeholder="Enter date" flex></md-datepicker>
 		</md-input-container>
 	</div>
@@ -28,15 +28,14 @@
 		<table md-table md-progress="promise">
 			<tbody md-body>
 				<tr md-row>
-					<td md-cell>Time/QC Parameter Name
-					</th>
-					<td md-cell ng-repeat="machineParam in machineParamList">{{machineParam.name}}</td>
+					<td md-cell>Time/QC Parameter Name</td>
+					<td md-cell ng-repeat="machineParam in machineParamList">{{machineParam}}</td>
 				</tr>
 				<tr md-row ng-repeat="tempTime in timeArray track by $index">
 					<td md-cell>{{ tempTime }}</td>
 					<td md-cell ng-repeat="machineParam in machineParamList"><md-input-container
 							flex style="padding-left:2px; padding-right:0px;">
-						<label>Enter Value</label> <input type="number" ng-model="parameter.name">
+						<label>Enter Value</label> <input type="number" ng-model="machineParam.recordedValue">
 						</md-input-container></td>
 				</tr>
 			</tbody>
@@ -45,7 +44,7 @@
 	</div>
 	<div ng-if="isTableShow">
 		<section layout="row" layout-xs="column">
-			<md-button class="md-raised md-primary" ng-click="addQCMachine()">Save</md-button>
+			<md-button class="md-raised md-primary" ng-click="addQCMachineRecord()">Save</md-button>
 		</section>
 	</div>
 	<!-- <div>

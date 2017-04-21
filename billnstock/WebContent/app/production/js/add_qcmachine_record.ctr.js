@@ -1,74 +1,126 @@
 var app = angular.module("stockApp");
 
-app.controller("qcmachineAddRecordCtr", function($scope, $window, $mdToast,
-		$timeout, $mdSidenav, $mdUtil, $log, $stateParams, objectFactory,
-		appEndpointSF, $mdDialog, $mdMedia) {
+app
+		.controller(
+				"qcmachineAddRecordCtr",
+				function($scope, $window, $mdToast, $timeout, $mdSidenav,
+						$mdUtil, $log, $stateParams, objectFactory,
+						appEndpointSF, $mdDialog, $mdMedia) {
 
-	$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
+					$scope.curUser = appEndpointSF.getLocalUserService()
+							.getLoggedinUser();
 
-	$scope.qcmachineRecord = {
-		machine : "",
-		recordDate : new Date()
-	};
+					$scope.qcmachineRecord = {
+						machine : "",
+						recordDate : new Date(),
+						parameterValueList : [],
+					};
 
-	$scope.isTableShow = false;
+					$scope.parameterValueObj = {
+						paramRecordedValues : [],
+						time : new Date()
+					}
 
-	$scope.machineList = [];
-	$scope.machineParamList = [];
-	$scope.tempMachine = null;
-	$scope.timeArray = [ "00:00 AM", "1:00 AM", "2:00 AM", "3:00 AM",
-			"4:00 AM", "5:00 AM", "6:00 AM", "7:00 AM", "8:00 AM", "9:00 AM",
-			"10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM",
-			"3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM",
-			"9:00 PM", "10:00 PM", "11:00 PM" ];
+					$scope.paramRecordedValuesObj = {
+						parameterName : "",
+						recordedValue : ""
+					}
 
-	$scope.getMachineParamList = function(machine) {
+					$scope.isTableShow = false;
 
-		$scope.isTableShow = true;
-		var productService = appEndpointSF.getProductionService();
-		productService.getMachineById($scope.curUser.business.id, machine.id)
-				.then(
-						function(machineObj) {
-							$scope.tempMachine = machineObj;
-							$scope.scheduleFromTime = new Date(
-									machineObj.startFromTime)
-									.toLocaleTimeString('en-US', {
-										hour12 : true,
-										hour : "numeric",
-										minute : "numeric"
-									}).toString();
-							$scope.scheduleTillTime = new Date(
-									machineObj.tillTime).toLocaleTimeString(
-									'en-US', {
-										hour12 : true,
-										hour : "numeric",
-										minute : "numeric"
-									}).toString();
-							$scope.machineParamList = machineObj.parameterList;
-							console.log("schedule FromTime ----"
-									+ $scope.scheduleFromTime);
-							console.log("schedule TillTime ----"
-									+ $scope.scheduleTillTime);
-						});
-	}
+					$scope.timeArray = [];
+					$scope.machineList = [];
+					$scope.machineParamList = [];
+					$scope.tempMachine = null;
 
-	$scope.fetchMachineList = function() {
+					$scope.parameterValueObj.paramRecordedValues
+							.push($scope.paramRecordedValuesObj);
+					$scope.qcmachineRecord.parameterValueList
+							.push($scope.parameterValueObj);
 
-		var productService = appEndpointSF.getProductionService();
-		productService.getQCMachineList($scope.curUser.business.id).then(
-				function(list) {
-					$scope.machineList = list;
+					$scope.getMachineParamList = function(machine) {
+
+						var productService = appEndpointSF
+								.getProductionService();
+						productService
+								.getQCMachineById($scope.curUser.business.id,
+										machine.id)
+								.then(
+										function(machineObj) {
+											$scope.tempMachine = machineObj;
+											//$scope.machineParamList = machineObj.parameterList;
+										});
+					}
+
+					$scope.getQCMachineDailyRecord = function(recordDate) {
+						$scope.isTableShow = true;
+						var tempDate = new Date(recordDate);
+						var productService = appEndpointSF
+								.getProductionService();
+						productService
+								.getQCMachineDailyRecordEntity(
+										$scope.tempMachine.id,
+										$scope.curUser.business.id,
+										tempDate.getTime())
+								.then(
+										function(qcMachineDailyRecordObj) {
+											if (qcMachineDailyRecordObj != null) {
+												$scope.tempQCMachineDailyRecordObj = qcMachineDailyRecordObj;
+												for (var i = 0; i < $scope.tempQCMachineDailyRecordObj.parameterValueList.length; i++) {
+													$scope.timeArray
+															.push(new Date(
+																	$scope.tempQCMachineDailyRecordObj.parameterValueList[i].time)
+																	.toLocaleTimeString(
+																			'en-US',
+																			{
+																				hour12 : true,
+																				hour : "numeric",
+																				minute : "numeric"
+																			})
+																	.toString());
+												}
+												for(var j = 0; j < $scope.tempQCMachineDailyRecordObj.parameterValueList[0].paramRecordedValues.length; j++){
+													$scope.machineParamList.push($scope.tempQCMachineDailyRecordObj.parameterValueList[0].paramRecordedValues[j].parameterName);
+												}
+											}
+										});
+					}
+
+					$scope.addQCMachineRecord = function() {
+
+						$scope.qcmachineRecord.business = $scope.curUser.business;
+						$scope.qcmachineRecord.modifiedBy = $scope.curUser.email_id;
+
+						var productService = appEndpointSF
+								.getProductionService();
+						productService.addQCMachineRecord(
+								$scope.qcmachineRecord).then(
+								function(machineObj) {
+									if (machineObj.id != undefined) {
+										$scope.showAddToast();
+									}
+								});
+					}
+
+					$scope.fetchMachineList = function() {
+
+						var productService = appEndpointSF
+								.getProductionService();
+						productService.getQCMachineList(
+								$scope.curUser.business.id).then(
+								function(list) {
+									$scope.machineList = list;
+								});
+					}
+
+					$scope.waitForServiceLoad = function() {
+						if (appEndpointSF.is_service_ready) {
+							$scope.fetchMachineList();
+						} else {
+							$log.debug("Services Not Loaded, watiting...");
+							$timeout($scope.waitForServiceLoad, 1000);
+						}
+					}
+
+					$scope.waitForServiceLoad();
 				});
-	}
-
-	$scope.waitForServiceLoad = function() {
-		if (appEndpointSF.is_service_ready) {
-			$scope.fetchMachineList();
-		} else {
-			$log.debug("Services Not Loaded, watiting...");
-			$timeout($scope.waitForServiceLoad, 1000);
-		}
-	}
-
-	$scope.waitForServiceLoad();
-});
