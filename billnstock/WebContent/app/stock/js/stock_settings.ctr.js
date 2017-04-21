@@ -194,6 +194,7 @@ app
 												curBusi : $scope.curUser.business,
 												curUser : $scope.curUser,
 												curStockItemTypeCategory : stockItemTypeCategory,
+												stockItemCategories : $scope.stockItemCategories
 											}
 										})
 								.then(
@@ -209,10 +210,11 @@ app
 
 					function editStockItemTypeCategoryDialogCtr($scope,
 							$mdDialog, curBusi, curUser,
-							curStockItemTypeCategory) {
+							curStockItemTypeCategory, stockItemCategories) {
 
 						$scope.stockItemTypeCategory = angular
 								.copy(curStockItemTypeCategory);
+						$scope.stockItemCategories = stockItemCategories;
 						$scope.stockItemTypeCategory.modifiedBy = curUser.email_id;
 
 						$scope.addStockItemTypeCategory = function() {
@@ -226,6 +228,7 @@ app
 											function() {
 												curStockItemTypeCategory.catName = $scope.stockItemTypeCategory.catName;
 												curStockItemTypeCategory.note = $scope.stockItemTypeCategory.note;
+												curStockItemTypeCategory.parent = $scope.stockItemTypeCategory.parent;
 											})
 
 							$scope.cancel();
