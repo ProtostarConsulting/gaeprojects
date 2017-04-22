@@ -19,20 +19,6 @@ public class Contact extends BaseEntity {
 	private Ref<UserEntity> loggedInUser;
 	@Index
 	private Ref<Customer> customer;
-	/*
-	 * @Id private Long id;
-	 * 
-	 * public Long getId() { return id; }
-	 * 
-	 * public void setId(Long id) { this.id = id; }
-	 * 
-	 * @Index private Ref<BusinessEntity> business;
-	 * 
-	 * 
-	 * public BusinessEntity getBusiness() { return business.get(); } public
-	 * void setBusiness(BusinessEntity business) { this.business =
-	 * Ref.create(business); }
-	 */
 
 	private String fName;
 	private String lName;
@@ -52,8 +38,7 @@ public class Contact extends BaseEntity {
 		super.beforeSave();
 		if (getId() == null) {
 			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
-					EntityUtil.getBusinessRawKey(getBusiness()),
-					Constants.CONTACT_NO_COUNTER);
+					EntityUtil.getBusinessRawKey(getBusiness()), Constants.CONTACT_NO_COUNTER);
 			setItemNumber(sequenceGenService.getNextSequenceNumber());
 		}
 	}

@@ -32,7 +32,6 @@
 				ng-selected="stock.brand.id == brand.id">{{brand.brandName}}
 			</md-option> </md-select> </md-input-container>
 
-			<span flex="20"></span>
 			<md-input-container flex> <label>Select
 				Product Type</label> <md-select placeholder="Product Type"
 				ng-model="stock.productType"> <md-option
@@ -41,11 +40,53 @@
 				ng-selected="stock.productType.id == productType.id">{{productType.typeName}}
 			</md-option> </md-select> </md-input-container>
 
-
 		</section>
 		<p></p>
 		<section layout="row" layout-xs="column">
 			<div flex>
+				<md-input-container>
+				<h4>Select Unit of Measure</h4>
+				<md-radio-group ng-model="stock.unitOfMeasure">
+				<div flex ng-repeat='unit in stockUnitList' class="row">
+					<div layout="row" flex>
+						<md-radio-button flex-offset="15" ng-value="unit"
+							class="md-primary"> {{unit.unitName}} </md-radio-button>
+					</div>
+				</div>
+				</md-radio-group> </md-input-container>
+			</div>
+
+			<!-- <md-input-container flex> <label>Select
+				Category</label> <md-select placeholder="Category" ng-model="stock.cat">
+			<md-option ng-repeat="cat in stockItemCategories" ng-value="cat"
+				ng-selected="stock.cat.id==cat.id">{{cat.catName}} </md-option> </md-select> </md-input-container> -->
+			<div flex layout="column">
+				<md-input-container flex> <md-checkbox
+					ng-model="stock.maintainAsProductionItem" aria-label="isProductionItem"
+					ng-true-value="true" ng-false-value="false"></md-checkbox> Is
+				Production Product
+				<div>
+					<p style="font-size: .8em; width: 100%; text-align: left;">
+						Mark this if the product item is being produced in your company
+						and want to see in BOM.</p>
+				</div>
+				</md-input-container>
+
+				<md-input-container flex> <md-checkbox
+					ng-model="stock.maintainStockBySerialNumber"
+					aria-label="maintainStockBySerialNumber" ng-true-value="true"
+					ng-false-value="false"></md-checkbox> Maintain By Serial Number
+				<div>
+					<p style="font-size: .8em; width: 100%; text-align: left;">
+						Mark this if you want to maintain the product item stock by serial
+						number. Note that you will have to use serial numbers for each
+						item in Stock Receipts, Shipments, Invoices etc.</p>
+				</div>
+				</md-input-container>
+			</div>
+		</section>
+		<section layout="row" layout-xs="column">
+			<div flex="50">
 				<h4>Select Category</h4>
 				<div layout="row" layout-wrap flex>
 					<div flex="50" ng-repeat="cat in stockItemCategories">
@@ -55,29 +96,6 @@
 					</div>
 				</div>
 			</div>
-
-			<!-- <md-input-container flex> <label>Select
-				Category</label> <md-select placeholder="Category" ng-model="stock.cat">
-			<md-option ng-repeat="cat in stockItemCategories" ng-value="cat"
-				ng-selected="stock.cat.id==cat.id">{{cat.catName}} </md-option> </md-select> </md-input-container> -->
-			<div flex>
-			<md-input-container flex> <md-checkbox
-				ng-model="stock.maintainStockBySerialNumber"
-				aria-label="maintainStockBySerialNumber" ng-true-value="true"
-				ng-false-value="false"></md-checkbox> Maintain By Serial Number </md-input-container></div>
-		</section>
-		<section layout="row" layout-xs="column">
-			<md-input-container>
-			<h4>Select Unit</h4>
-
-			<md-radio-group ng-model="stock.unitOfMeasure">
-			<div flex ng-repeat='unit in stockUnitList' class="row">
-				<div layout="row" flex="50">
-					<md-radio-button flex-offset="15" ng-value="unit"
-						class="md-primary"> {{unit.unitName}} </md-radio-button>
-				</div>
-			</div>
-			</md-radio-group> </md-input-container>
 		</section>
 
 		<section layout="row" layout-xs="column" layout-align="left left">

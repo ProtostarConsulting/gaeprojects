@@ -104,7 +104,7 @@ app
 													var poDueDate = new Date(
 															$scope.purchaseOrderList[i].poDueDate);
 													if (poDueDate < $scope.today
-															&& $scope.purchaseOrderList[i].status != "CLOSED") {
+															&& $scope.purchaseOrderList[i].status == "FINALIZED") {
 														$scope.purchaseOrderList[i].highLight = true;
 													}
 												}

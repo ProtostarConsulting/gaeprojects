@@ -28,7 +28,6 @@ public class StockItemTypeEntity extends BaseEntity {
 	@Index
 	private Ref<StockItemProductTypeEntity> productType;
 
-	// cat is Obsolete remove it.
 	@Index
 	private List<Ref<StockItemTypeCategory>> categoryList;
 	@Index
@@ -37,6 +36,7 @@ public class StockItemTypeEntity extends BaseEntity {
 	/*
 	 * @Index private String unit;
 	 */
+	private boolean maintainAsProductionItem = false;
 	private boolean maintainStockBySerialNumber = false;
 	private Ref<TaxEntity> selectedTaxItem;
 
@@ -137,5 +137,13 @@ public class StockItemTypeEntity extends BaseEntity {
 		for (StockItemTypeCategory cat : categoryList) {
 			this.categoryList.add(Ref.create(cat));
 		}
+	}
+
+	public boolean isMaintainAsProductionItem() {
+		return maintainAsProductionItem;
+	}
+
+	public void setMaintainAsProductionItem(boolean maintainAsProductionItem) {
+		this.maintainAsProductionItem = maintainAsProductionItem;
 	}
 }
