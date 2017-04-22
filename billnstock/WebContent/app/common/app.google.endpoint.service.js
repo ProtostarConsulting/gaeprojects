@@ -2146,6 +2146,16 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
+	StockService.filterStockItemTypesByProductionProducts = function(busId) {
+		var deferred = $q.defer();
+		gapi.client.stockService.filterStockItemTypesByProductionProducts({
+			"busId" : busId
+		}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}
+
 	StockService.addStockItemUnit = function(stockItemUnit) {
 		var deferred = $q.defer();
 		gapi.client.stockService.addStockItemUnit(stockItemUnit).execute(
@@ -3130,15 +3140,13 @@ function googleEndpointSF($q) {
 
 	ProductionService.getEmptyProductionRequisition = function(BomEntity) {
 		var deferred = $q.defer();
-		gapi.client.productionService.getEmptyProductionRequisition(BomEntity).execute(
-				function(resp) {
+		gapi.client.productionService.getEmptyProductionRequisition(BomEntity)
+				.execute(function(resp) {
 					deferred.resolve(resp);
 				});
 		return deferred.promise;
 	}
-	
-	
-	
+
 	ProductionService.addMachine = function(machine) {
 		var deferred = $q.defer();
 		gapi.client.productionService.addMachine(machine).execute(

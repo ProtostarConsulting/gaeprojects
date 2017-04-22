@@ -4,11 +4,21 @@
 	</div>
 </div>
 <md-content ng-if="!loading" layout-padding>
-<section id="pagetoolbar" layout="row" layout-xs="column">
+<section id="pagetoolbar" layout="row" layout-xs="column"
+	ng-init="catFilterToggle=false">
 	<md-subheader class="md-primary">
 	<h4 class="md-title">Stock Item Type List</h4>
 	</md-subheader>
-	<span flex> </span>
+	<span flex="10"></span>
+	<md-input-container flex> Filter By Category <md-button
+		class="md-icon-button" ng-show="catFilterToggle"
+		ng-click="catFilterToggle=!catFilterToggle"> <ng-md-icon
+		icon="keyboard_arrow_up" style="fill: md-default" size="24">
+	<md-tooltip> Collpase</md-tooltip></ng-md-icon></md-button> <md-button class="md-icon-button"
+		ng-show="!catFilterToggle" ng-click="catFilterToggle=!catFilterToggle">
+	<ng-md-icon icon="keyboard_arrow_down" style="fill: md-default"
+		size="24"> <md-tooltip> Expand</md-tooltip></ng-md-icon></md-button> </md-input-container>
+	<span flex="20"></span>
 	<md-input-container flex-gt-xs="25"> <label>Search</label>
 	<input ng-model="searchText"> </md-input-container>
 	<md-button class="md-icon-button" ui-sref="stock.stockItemTypeAdd">
@@ -16,6 +26,14 @@
 	<md-tooltip> Add New </md-tooltip></ng-md-icon> </md-button>
 </section>
 
+<section layout="row" layout-xs="column">
+	<div layout="row" ng-show="catFilterToggle" class="md-caption"
+		ng-repeat="cat in stockItemCategories" flex>
+		<md-checkbox
+			ng-click="toggle(cat, stockItemFilterWrapper.categoryList)">
+		{{ cat.catName }} </md-checkbox>
+	</div>
+</section>
 <div id="stockTable">
 	<md-data-table-container>
 	<table md-table md-progress="promise">
