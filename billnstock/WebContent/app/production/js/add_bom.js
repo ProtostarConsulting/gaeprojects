@@ -57,13 +57,13 @@ app
 
 						var productService = appEndpointSF
 								.getProductionService();
-						productService.addBomEntity(
-								$scope.documentEntity).then(function(bom) {
-							if (bom.id)
-								$scope.documentEntity.id = bom.id;
+						productService.addBomEntity($scope.documentEntity)
+								.then(function(bom) {
+									if (bom.id)
+										$scope.documentEntity.id = bom.id;
 
-							$scope.showAddToast();
-						});
+									$scope.showAddToast();
+								});
 
 					}
 					$scope.fetchCatogoryList = function() {
@@ -80,7 +80,7 @@ app
 						$log.debug("Inside Ctr $scope.getStockItemTypes");
 						var stockService = appEndpointSF.getStockService();
 
-						stockService.filterStockItemsByCategoryForProduct(
+						stockService.filterStockItemTypesByCategory(
 								category.cat).then(function(list) {
 							category.categoryStockTypeList = list;
 						});

@@ -2115,31 +2115,36 @@ function googleEndpointSF($q) {
 				});
 		return deferred.promise;
 	}
-	
-	StockService.filterStockItemsByCategory = function(stockItemProductTypeCategory) {
-		  var deferred = $q.defer();
-		  gapi.client.stockService.filterStockItemsByCategory(stockItemProductTypeCategory)
-		    .execute(function(resp) {
-		     deferred.resolve(resp.items);
-		    });
-		  return deferred.promise;
-		 }
-	
-	
-	
-	
-	
-	
-	StockService.filterStockItemsByCategoryForProduct = function(stockItemProductTypeCategory) {
-		  var deferred = $q.defer();
-		  gapi.client.stockService.filterStockItemsByCategoryForProduct(stockItemProductTypeCategory)
-		    .execute(function(resp) {
-		     deferred.resolve(resp.items);
-		    });
-		  return deferred.promise;
-		 }
-	
-	
+
+	StockService.filterStockItemsByCategory = function(
+			stockItemProductTypeCategory) {
+		var deferred = $q.defer();
+		gapi.client.stockService.filterStockItemsByCategory(
+				stockItemProductTypeCategory).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}
+
+	StockService.filterStockItemTypesByCategory = function(
+			stockItemTypeCategory) {
+		var deferred = $q.defer();
+		gapi.client.stockService.filterStockItemTypesByCategory(
+				stockItemTypeCategory).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}
+
+	StockService.filterStockItemTypesByCategories = function(
+			stockItemTypeFilterWrapper) {
+		var deferred = $q.defer();
+		gapi.client.stockService.filterStockItemTypesByCategories(
+				stockItemTypeFilterWrapper).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}
 
 	StockService.addStockItemUnit = function(stockItemUnit) {
 		var deferred = $q.defer();
@@ -2306,45 +2311,48 @@ function googleEndpointSF($q) {
 				});
 		return deferred.promise;
 	}
-	
-	StockService.filterStockItemsByBrandAndWH = function(stockItemFilterWrappper) {
+
+	StockService.filterStockItemsByBrandAndWH = function(
+			stockItemFilterWrappper) {
 		var deferred = $q.defer();
-		gapi.client.stockService.filterStockItemsByBrandAndWH(stockItemFilterWrappper)
-				.execute(function(resp) {
-					deferred.resolve(resp.items);
-				});
+		gapi.client.stockService.filterStockItemsByBrandAndWH(
+				stockItemFilterWrappper).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
 		return deferred.promise;
 	}
-	
-	StockService.filterStockItemsByProductType = function(stockItemProductTypeEntity) {
+
+	StockService.filterStockItemsByProductType = function(
+			stockItemProductTypeEntity) {
 		var deferred = $q.defer();
-		gapi.client.stockService.filterStockItemsByProductType(stockItemProductTypeEntity)
-				.execute(function(resp) {
-					deferred.resolve(resp.items);
-				});
+		gapi.client.stockService.filterStockItemsByProductType(
+				stockItemProductTypeEntity).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
 		return deferred.promise;
 	}
-	
-	StockService.filterStockItemsByProductTypeAndWH = function(stockItemFilterWrappper) {
+
+	StockService.filterStockItemsByProductTypeAndWH = function(
+			stockItemFilterWrappper) {
 		var deferred = $q.defer();
-		gapi.client.stockService.filterStockItemsByProductTypeAndWH(stockItemFilterWrappper)
-				.execute(function(resp) {
-					deferred.resolve(resp.items);
-				});
+		gapi.client.stockService.filterStockItemsByProductTypeAndWH(
+				stockItemFilterWrappper).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
 		return deferred.promise;
 	}
-	
-	StockService.filterStockItemsByBrandAndProductTypeAndWH = function(busId,stockItemFilterWrappper) {
+
+	StockService.filterStockItemsByBrandAndProductTypeAndWH = function(busId,
+			stockItemFilterWrappper) {
 		var deferred = $q.defer();
 		gapi.client.stockService.filterStockItemsByBrandAndProductTypeAndWH({
-			"busId":busId
-		},stockItemFilterWrappper)
-				.execute(function(resp) {
-					deferred.resolve(resp.items);
-				});
+			"busId" : busId
+		}, stockItemFilterWrappper).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
 		return deferred.promise;
 	}
-	
+
 	StockService.getCRStockTxnByStockItem = function(stockItem, busId,
 			fromDate, toDate) {
 		var deferred = $q.defer();
@@ -3110,8 +3118,6 @@ function googleEndpointSF($q) {
 				});
 		return deferred.promise;
 	}
-	
-	
 	ProductionService.getlistBomEntity = function(bid) {
 		var deferred = $q.defer();
 		gapi.client.productionService.listBomEntity({
@@ -3121,7 +3127,7 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	
+
 	ProductionService.getEmptyProductionRequisition = function(BomEntity) {
 		var deferred = $q.defer();
 		gapi.client.productionService.getEmptyProductionRequisition(BomEntity).execute(
@@ -3141,7 +3147,7 @@ function googleEndpointSF($q) {
 				});
 		return deferred.promise;
 	}
-	
+
 	ProductionService.addQCMachine = function(machine) {
 		var deferred = $q.defer();
 		gapi.client.productionService.addQCMachine(machine).execute(
@@ -3150,7 +3156,7 @@ function googleEndpointSF($q) {
 				});
 		return deferred.promise;
 	}
-	
+
 	ProductionService.addQCMachineRecord = function(machine) {
 		var deferred = $q.defer();
 		gapi.client.productionService.addQCMachineRecord(machine).execute(
@@ -3159,7 +3165,7 @@ function googleEndpointSF($q) {
 				});
 		return deferred.promise;
 	}
-	
+
 	ProductionService.getMachineList = function(busId) {
 		var deferred = $q.defer();
 		gapi.client.productionService.getMachineList({
@@ -3169,7 +3175,7 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	
+
 	ProductionService.getQCMachineList = function(busId) {
 		var deferred = $q.defer();
 		gapi.client.productionService.getQCMachineList({
@@ -3179,8 +3185,8 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	
-	ProductionService.getQCMachineById = function(busId,id) {
+
+	ProductionService.getQCMachineById = function(busId, id) {
 		var deferred = $q.defer();
 		gapi.client.productionService.getQCMachineById({
 			"busId" : busId,
@@ -3190,21 +3196,21 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	
-	ProductionService.getQCMachineDailyRecordEntity = function(qcMachineId,busId,date) {
+
+	ProductionService.getQCMachineDailyRecordEntity = function(qcMachineId,
+			busId, date) {
 		var deferred = $q.defer();
 		gapi.client.productionService.getQCMachineDailyRecordEntity({
 			"qcmachineId" : qcMachineId,
 			"busId" : busId,
-			 "date" : date
+			"date" : date
 		}).execute(function(resp) {
 			deferred.resolve(resp);
 		});
 		return deferred.promise;
 	}
-	
-	//====================================================
 
-	
+	// ====================================================
+
 	return serviceFactory;
 }
