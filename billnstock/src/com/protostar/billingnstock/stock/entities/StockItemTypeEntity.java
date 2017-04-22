@@ -36,8 +36,11 @@ public class StockItemTypeEntity extends BaseEntity {
 	/*
 	 * @Index private String unit;
 	 */
+	@Index
 	private boolean maintainAsProductionItem = false;
 	private boolean maintainStockBySerialNumber = false;
+
+	@Index
 	private Ref<TaxEntity> selectedTaxItem;
 
 	@Override

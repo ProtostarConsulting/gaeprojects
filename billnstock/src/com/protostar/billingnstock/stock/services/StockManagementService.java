@@ -498,6 +498,17 @@ public class StockManagementService extends BaseService {
 		return filteredStocks;
 	}
 
+	@ApiMethod(name = "filterStockItemTypesByProductionProducts", path = "filterStockItemTypesByProductionProducts")
+	public List<StockItemTypeEntity> filterStockItemTypesByProductionProducts(
+			@Named("busId") Long busId) {
+		List<StockItemTypeEntity> filteredStockItemTypes = ofy().load()
+				.type(StockItemTypeEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId))
+				.filter("maintainAsProductionItem", true).list();
+
+		return filteredStockItemTypes;
+	}
+
 	@ApiMethod(name = "filterStockItemsByProductTypeAndWH", path = "filterStockItemsByProductTypeAndWH")
 	public List<StockItemEntity> filterStockItemsByProductTypeAndWH(
 			StockItemTypeFilterWrapper fitlerWrapper) {
