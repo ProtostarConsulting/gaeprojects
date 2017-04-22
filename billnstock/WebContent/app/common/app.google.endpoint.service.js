@@ -3204,6 +3204,16 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
+	
+	ProductionService.getQCMachineRecordList = function(busId) {
+		var deferred = $q.defer();
+		gapi.client.productionService.getQCMachineRecordList({
+			"busId" : busId
+		}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}
 
 	ProductionService.getQCMachineDailyRecordEntity = function(qcMachineId,
 			busId, date) {

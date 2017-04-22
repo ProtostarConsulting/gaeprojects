@@ -147,7 +147,7 @@ public class ProductionService {
 		
 		QCMachineEntity machineQc = getQCMachineById(busId, qcmachineId);
 		Date tempRecordDateObj = new Date(recordDate);
-		//quer in DS by fiter
+		
 		List<QCMachineDailyRecordEntity> foundedDailyRecord = ofy().load()
 				.type(QCMachineDailyRecordEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, busId)).filter("recordDate", tempRecordDateObj).filter("machineQc", machineQc).list();
@@ -161,11 +161,15 @@ public class ProductionService {
 			ProductionUtil prodUtill = new ProductionUtil();
 			qcMachineDailyRecord = prodUtill.createNewQCMachineDailyRecordEntity(machineQc, tempRecordDateObj);
 		}
-		
-		//if(found) return 
-		//else temp v = ProductionUtil.createNewQCMachineDailyRecordEntity()
-		
 		return qcMachineDailyRecord;
+	}
+	
+	@ApiMethod(name = "getQCMachineRecordList", path = "getQCMachineRecordList")
+	public List<QCMachineDailyRecordEntity> getQCMachineRecordList(@Named("busId") Long busId) {
+		List<QCMachineDailyRecordEntity> qcMachineRecordList =  ofy().load().type(QCMachineDailyRecordEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).list();
+		
+		return qcMachineRecordList;
 	}
 
 }

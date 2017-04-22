@@ -10,96 +10,80 @@ app
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
 
-					$scope.qcmachineRecord = {
-						machine : "",
-						recordDate : null,
-						parameterValueList : [],
-					};
-
-					$scope.parameterValueObj = {
-						paramRecordedValues : [],
-						time : new Date()
-					}
-
-					$scope.paramRecordedValuesObj = {
-						parameterName : "",
-						recordedValue : ""
-					}
-
 					$scope.isTableShow = false;
-
 					$scope.timeArray = [];
 					$scope.machineList = [];
-					$scope.machineParamList = [];
 					$scope.tempMachine = null;
 
-					$scope.parameterValueObj.paramRecordedValues
-							.push($scope.paramRecordedValuesObj);
-					$scope.qcmachineRecord.parameterValueList
-							.push($scope.parameterValueObj);
+					$scope.tempQCMachineDailyRecordObj = $stateParams.qcmachineRecordObj ? $stateParams.qcmachineRecordObj
+							: null;
 
 					$scope.getMachineParamList = function(machine) {
-
 						var productService = appEndpointSF
 								.getProductionService();
-						productService
-								.getQCMachineById($scope.curUser.business.id,
-										machine.id)
-								.then(
-										function(machineObj) {
-											$scope.tempMachine = machineObj;
-											//$scope.machineParamList = machineObj.parameterList;
-										});
+						productService.getQCMachineById(
+								$scope.curUser.business.id, machine.id).then(
+								function(machineObj) {
+									$scope.tempMachine = machineObj;
+								});
 					}
 
 					$scope.getQCMachineDailyRecord = function(recordDate) {
 						$scope.isTableShow = true;
-						var tempDate = new Date(recordDate);
+						$scope.tempDate = new Date(recordDate);
 						var productService = appEndpointSF
 								.getProductionService();
 						productService
 								.getQCMachineDailyRecordEntity(
 										$scope.tempMachine.id,
 										$scope.curUser.business.id,
-										tempDate.getTime())
+										$scope.tempDate.getTime())
 								.then(
 										function(qcMachineDailyRecordObj) {
-											if (qcMachineDailyRecordObj != null) {
 												$scope.tempQCMachineDailyRecordObj = qcMachineDailyRecordObj;
-												for (var i = 0; i < $scope.tempQCMachineDailyRecordObj.parameterValueList.length; i++) {
-													$scope.timeArray
-															.push(new Date(
-																	$scope.tempQCMachineDailyRecordObj.parameterValueList[i].time)
-																	.toLocaleTimeString(
-																			'en-US',
-																			{
-																				hour12 : true,
-																				hour : "numeric",
-																				minute : "numeric"
-																			})
-																	.toString());
-												}
-												for(var j = 0; j < $scope.tempQCMachineDailyRecordObj.parameterValueList[0].paramRecordedValues.length; j++){
-													$scope.machineParamList.push($scope.tempQCMachineDailyRecordObj.parameterValueList[0].paramRecordedValues[j].parameterName);
-												}
-											}
+												$scope
+														.getTimeArrayFromRecordObj($scope.tempQCMachineDailyRecordObj);
+											
 										});
 					}
 
 					$scope.addQCMachineRecord = function() {
 
-						$scope.qcmachineRecord.business = $scope.curUser.business;
-						$scope.qcmachineRecord.modifiedBy = $scope.curUser.email_id;
+						$scope.tempQCMachineDailyRecordObj.createdBy = $scope.curUser;
+						$scope.tempQCMachineDailyRecordObj.business = $scope.curUser.business;
+						$scope.tempQCMachineDailyRecordObj.modifiedBy = $scope.curUser.email_id;
+
+						$scope.tempQCMachineDailyRecordObj.machineQc = $scope.tempMachine;
+						$scope.tempQCMachineDailyRecordObj.recordDate = $scope.recordDate;
 
 						var productService = appEndpointSF
 								.getProductionService();
 						productService.addQCMachineRecord(
-								$scope.qcmachineRecord).then(
+								$scope.tempQCMachineDailyRecordObj).then(
 								function(machineObj) {
 									if (machineObj.id != undefined) {
 										$scope.showAddToast();
 									}
 								});
+					}
+
+					$scope.getTimeArrayFromRecordObj = function(recordObj) {
+						for (var i = 0; i < recordObj.parameterValueList.length; i++) {
+							$scope.timeArray.push(new Date(
+									recordObj.parameterValueList[i].time)
+									.toLocaleTimeString('en-US', {
+										hour12 : true,
+										hour : "numeric",
+										minute : "numeric"
+									}));
+						}
+					}
+
+					$scope.initLoad = function(qcmachine_record) {
+						$scope.machineQc = qcmachine_record.machineQc;
+						$scope.recordDate = new Date(
+								qcmachine_record.recordDate);
+						$scope.isTableShow = true;
 					}
 
 					$scope.fetchMachineList = function() {
@@ -116,6 +100,12 @@ app
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
 							$scope.fetchMachineList();
+							if ($scope.tempQCMachineDailyRecordObj) {
+								$scope
+										.initLoad($scope.tempQCMachineDailyRecordObj);
+								$scope
+										.getTimeArrayFromRecordObj($scope.tempQCMachineDailyRecordObj);
+							}
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
 							$timeout($scope.waitForServiceLoad, 1000);
