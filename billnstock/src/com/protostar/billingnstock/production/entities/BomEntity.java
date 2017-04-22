@@ -36,16 +36,5 @@ public class BomEntity extends BaseEntity {
 		this.catList = catList;
 	}
 
-	public StockItemTypeEntity getStockItemType() {
-		if (stockItemType != null)
-			return stockItemType.get();
-		else
-			return null;
-	}
-
-	public void setStockItemType(StockItemTypeEntity stockItemType) {
-		if (stockItemType != null)
-			this.stockItemType = Ref.create(stockItemType);
-	}
-
+	
 }
