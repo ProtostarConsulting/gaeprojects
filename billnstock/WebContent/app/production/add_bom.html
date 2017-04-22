@@ -51,12 +51,13 @@
 							icon="keyboard_arrow_up" style="fill: md-default" size="24">
 						<md-tooltip> Collapse</md-tooltip></ng-md-icon></md-button></td>
 					<td md-cell><div layout="row" flex>
-							<md-select name="category" ng-model="bomCategory.cat"
+							<md-input-container flex> <md-select
+								name="category" ng-model="bomCategory.cat"
 								ng-change="getStockItemTypes(bomCategory,$index)"
 								placeholder="Category Name" ng-required="true"> <md-option
 								ng-value="category" ng-repeat="category in stockItemCategories"
 								ng-selected="bomCategory.cat.id == category.id">{{category.catName}}
-							</md-option> </md-select>
+							</md-option> </md-select> </md-input-container>
 						</div></td>
 					<td md-cell></td>
 					<td md-cell></td>
@@ -69,7 +70,8 @@
 				</tr>
 				<tr ng-repeat="itemObj in  bomCategory.items" ng-show="itemToggle">
 					<td md-cell></td>
-					<td md-cell></td>
+					<td md-cell align="right"><p
+							style="width: 100%; text-align: right;">{{$index + 1 }}</p></td>
 					<td md-cell>
 						<div layout="row" flex>
 							<md-input-container flex> <md-select

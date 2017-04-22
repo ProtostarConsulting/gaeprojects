@@ -117,7 +117,8 @@ app
 									lowercaseQuery) >= 0);
 						};
 					}
-					function getStockItemTypes() {
+					
+					function getAllStockItemTypes() {
 						var stockService = appEndpointSF.getStockService();
 						stockService.getStockItemTypes(
 								$scope.curUser.business.id).then(
@@ -129,7 +130,7 @@ app
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
-							getStockItemTypes();
+							getAllStockItemTypes();
 							$scope.fetchCatogoryList();
 							if (!$scope.documentEntity.id) {
 								$scope.addCatogory();
