@@ -66,6 +66,61 @@
 							style="color: Green; height: 18px; width: 18px"> <md-tooltip>Remove
 						Category</md-tooltip></md-icon></td>
 
+			</tr>
+			<tr md-row ng-repeat="itemObj in  bomCategory.items" ng-show="itemToggle">
+				<td md-cell></td>
+				<td md-cell>
+					<div layout="row">
+								<md-input-container flex> <md-select
+									ng-model="itemObj.itemName" placeholder="Item Name"
+									ng-required="true"> <md-option
+									ng-value="stockItemType.itemName"
+									ng-selected="itemObj.itemName == stockItemType.itemName"
+									ng-repeat="stockItemType in stockTypeList">{{stockItemType.itemName
+								}}</md-option> </md-select> </md-input-container>
+								
+				    	</div>	
+					
+				</td>
+						
+				<td md-cell>
+				<div layout="row">
+				<md-input-container> <input
+						placeholder="Product qty."
+						ng-model="itemObj.qty" ng-required="true"></md-input-container>
+			
+					</div></td>
+				<td md-cell><md-icon
+						md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
+						ng-click="removeLineItem(bomCategory,$index)" class="name"
+						style="color: Green; height: 18px; width: 18px"> <md-tooltip>Remove
+					Item</md-tooltip></md-icon></td>
+			</tr>
+			<tr md-row>
+				<td md-cell></td>
+				<td md-cell><md-button class="md-icon-button"
+						ng-click="addLineItem(bomCategory)"> <ng-md-icon
+						icon="add_circle" style="fill: md-default" size="24">
+					<md-tooltip> Add New Item</md-tooltip></ng-md-icon> </md-button></td>
+				<td md-cell></td>
+				<td md-cell></td>
+			</tr>
+			<tr ng-repeat-end></tr>
+			<tr md-row>
+				<td md-cell><md-button class="md-icon-button" ng-click="addCatogory()">
+					<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
+					<md-tooltip> Add New Category </md-tooltip></ng-md-icon> </md-button>
+				</td>
+				<td md-cell></td>
+				<td md-cell></td>
+				<td md-cell></td>
+			</tr>
+			<tr md-row>
+				
+			</tr>
+		</tbody>
+	</table> 
+
 				</tr>
 				<tr ng-repeat="itemObj in  bomCategory.items" ng-show="itemToggle">
 					<td md-cell></td>
@@ -122,6 +177,7 @@
 				</tr>
 			</tbody>
 		</table>
+
 	</form>
 </div>
 <div layout layout-xs="column">

@@ -16,6 +16,16 @@ import com.protostar.billnstock.entity.BaseEntity;
 public class BomEntity extends BaseEntity {
 	@Index
 	private Ref<StockItemTypeEntity> stockItemType;
+	
+	public StockItemTypeEntity getStockItemType() {
+		
+		return stockItemType == null ? null : stockItemType.get();
+			}
+	public void setStockItemType(StockItemTypeEntity stockItemType) {
+		if (stockItemType != null)
+			this.stockItemType = Ref.create(stockItemType);
+		
+	}
 	private List<BomLineItemCategory> catList = new ArrayList<BomLineItemCategory>();
 
 	public List<BomLineItemCategory> getCatList() {

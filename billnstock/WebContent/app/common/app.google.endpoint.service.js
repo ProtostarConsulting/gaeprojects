@@ -3102,7 +3102,14 @@ function googleEndpointSF($q) {
 				});
 		return deferred.promise;
 	}
-
+	ProductionService.addRequisition = function(production) {
+		var deferred = $q.defer();
+		gapi.client.productionService.addRequisition(production).execute(
+				function(resp) {
+					deferred.resolve(resp);
+				});
+		return deferred.promise;
+	}
 	
 	
 	ProductionService.getlistBomEntity = function(bid) {
@@ -3114,6 +3121,17 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
+	
+	ProductionService.getEmptyProductionRequisition = function(BomEntity) {
+		var deferred = $q.defer();
+		gapi.client.productionService.getEmptyProductionRequisition(BomEntity).execute(
+				function(resp) {
+					deferred.resolve(resp);
+				});
+		return deferred.promise;
+	}
+	
+	
 	
 	ProductionService.addMachine = function(machine) {
 		var deferred = $q.defer();

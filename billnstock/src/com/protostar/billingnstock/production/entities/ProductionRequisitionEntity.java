@@ -22,6 +22,20 @@ public class ProductionRequisitionEntity extends BaseEntity {
 	public List<BomLineItemCategory> getCatList() {
 		return catList;
 	}
+	public BomEntity getBomEntity() {
+		return bomEntity == null ? null : bomEntity.get();
+	}
+	public void setBomEntity(BomEntity bomEntity) {
+		if (bomEntity != null)
+			this.bomEntity = Ref.create(bomEntity);
+		
+	}
+	public int getProductQty() {
+		return productQty;
+	}
+	public void setProductQty(int productQty) {
+		this.productQty = productQty;
+	}
 	public void setCatList(List<BomLineItemCategory> catList) {
 		this.catList = catList;
 	}	
