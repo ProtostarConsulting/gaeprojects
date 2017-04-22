@@ -6,7 +6,9 @@ app
 				function($scope, $window, $mdToast, $q, $timeout, $mdSidenav,
 						$mdUtil, $log, $stateParams, objectFactory,
 						appEndpointSF, $mdDialog, $mdMedia) {
-
+					
+					$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
+					
 					$scope.getEmptyBomObjadd = function() {
 						return {
 							productName : "",
