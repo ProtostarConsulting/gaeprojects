@@ -47,6 +47,7 @@ import com.protostar.billingnstock.stock.entities.StockSettingsEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.user.services.UserService;
 import com.protostar.billingnstock.warehouse.entities.WarehouseEntity;
+import com.protostar.billnstock.entity.BaseEntity;
 import com.protostar.billnstock.service.BaseService;
 import com.protostar.billnstock.until.data.Constants.DocumentStatus;
 import com.protostar.billnstock.until.data.EmailHandler;
@@ -603,8 +604,8 @@ public class StockManagementService extends BaseService {
 		return filteredStocks;
 	}
 
-	@ApiMethod(name = "filterStockItemsByCategoryForProduct", path = "filterStockItemsByCategoryForProduct")
-	public List<StockItemTypeEntity> filterStockItemsByCategoryForproduct(
+	@ApiMethod(name = "filterStockItemTypesByCategory", path = "filterStockItemTypesByCategory")
+	public List<StockItemTypeEntity> filterStockItemTypesByCategory(
 			StockItemTypeCategory category) {
 
 		List<StockItemTypeEntity> filteredStocks = ofy().load()
@@ -613,6 +614,32 @@ public class StockManagementService extends BaseService {
 				.filter("categoryList", category).list();
 		System.out.println("filteredStocks.size" + filteredStocks.size());
 		return filteredStocks;
+	}
+
+	@ApiMethod(name = "filterStockItemTypesByCategories", path = "filterStockItemTypesByCategories")
+	public List<StockItemTypeEntity> filterStockItemTypesByCategories(
+			StockItemTypeFilterWrapper fitlerWrapper) {
+
+		if (fitlerWrapper == null)
+			return new ArrayList<StockItemTypeEntity>();
+
+		List<StockItemTypeCategory> categoryList = fitlerWrapper
+				.getCategoryList();
+
+		if (categoryList == null || categoryList.isEmpty())
+			return new ArrayList<StockItemTypeEntity>();
+
+		Query<StockItemTypeEntity> baseQuery = ofy().load()
+				.type(StockItemTypeEntity.class)
+				.ancestor(categoryList.get(0).getBusiness());
+
+		for (StockItemTypeCategory category : categoryList) {
+
+			baseQuery = baseQuery.filter("categoryList", category);
+
+		}
+		List<StockItemTypeEntity> filteredStockItemTypes = baseQuery.list();
+		return filteredStockItemTypes;
 	}
 
 	@ApiMethod(name = "filterStockItemsByCategories", path = "filterStockItemsByCategories")
@@ -627,24 +654,12 @@ public class StockManagementService extends BaseService {
 		if (categoryList == null || categoryList.isEmpty())
 			return new ArrayList<StockItemEntity>();
 
-		List<StockItemTypeEntity> allTypesList = new ArrayList<StockItemTypeEntity>();
-
-		for (StockItemTypeCategory category : categoryList) {
-			List<StockItemTypeEntity> filteredStockItemTypes = ofy().load()
-					.type(StockItemTypeEntity.class)
-					.ancestor(category.getBusiness())
-					.filter("categoryList IN", category).list();
-
-			if (filteredStockItemTypes != null
-					&& !filteredStockItemTypes.isEmpty()) {
-				allTypesList.addAll(filteredStockItemTypes);
-			}
-		}
+		List<StockItemTypeEntity> filteredTypes = filterStockItemTypesByCategories(fitlerWrapper);
 
 		List<StockItemEntity> filteredStocks = ofy().load()
 				.type(StockItemEntity.class)
 				.ancestor(categoryList.get(0).getBusiness())
-				.filter("stockItemType IN", allTypesList).list();
+				.filter("stockItemType IN", filteredTypes).list();
 
 		return filteredStocks;
 	}
