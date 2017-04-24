@@ -15,9 +15,11 @@ import com.protostar.billingnstock.production.entities.MachineQCUnitMeasure;
 import com.protostar.billingnstock.production.entities.ProductionMachineEntity;
 import com.protostar.billingnstock.production.entities.ProductionRequisitionEntity;
 import com.protostar.billingnstock.production.entities.ProductionSetting;
+import com.protostar.billingnstock.production.entities.ProductionShipmentEntity;
 import com.protostar.billingnstock.production.entities.QCMachineDailyRecordEntity;
 import com.protostar.billingnstock.production.entities.QCMachineEntity;
 import com.protostar.billingnstock.stock.entities.BomLineItemCategory;
+import com.protostar.billingnstock.stock.services.StockManagementService;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 
 @Api(name = "productionService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.production.services", ownerName = "com.protostar.billingnstock.production.services", packagePath = ""))
@@ -47,6 +49,12 @@ public class ProductionService {
 	public ProductionRequisitionEntity addRequisition(ProductionRequisitionEntity requisitionEntity) {
 		ofy().save().entity(requisitionEntity).now();
 		return requisitionEntity;
+	}
+
+	@ApiMethod(name = "addProductionShipmentEntity", path = "addProductionShipmentEntity")
+	public ProductionShipmentEntity addProductionShipmentEntity(ProductionShipmentEntity documentEntity) {
+		StockManagementService stockManagementService = new StockManagementService();
+		return stockManagementService.addProductionShipmentEntity(documentEntity);
 	}
 
 	@ApiMethod(name = "listBomEntity", path = "listBomEntity")

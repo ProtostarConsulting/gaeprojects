@@ -22,6 +22,7 @@ import com.googlecode.objectify.TxnType;
 import com.googlecode.objectify.Work;
 import com.googlecode.objectify.cmd.Query;
 import com.protostar.billingnstock.invoice.entities.InvoiceEntity;
+import com.protostar.billingnstock.production.entities.ProductionShipmentEntity;
 import com.protostar.billingnstock.purchase.entities.BudgetEntity;
 import com.protostar.billingnstock.purchase.entities.LineItemCategory;
 import com.protostar.billingnstock.purchase.entities.LineItemEntity;
@@ -49,7 +50,6 @@ import com.protostar.billingnstock.stock.entities.StockSettingsEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.user.services.UserService;
 import com.protostar.billingnstock.warehouse.entities.WarehouseEntity;
-import com.protostar.billnstock.entity.BaseEntity;
 import com.protostar.billnstock.service.BaseService;
 import com.protostar.billnstock.until.data.Constants.DocumentStatus;
 import com.protostar.billnstock.until.data.EmailHandler;
@@ -349,6 +349,48 @@ public class StockManagementService extends BaseService {
 			new EmailHandler().sendStockShipmentEmail(documentEntity);
 		}
 
+		return documentEntity;
+	}
+
+	public ProductionShipmentEntity addProductionShipmentEntity(ProductionShipmentEntity documentEntity) {
+		ofy().save().entity(documentEntity).now();
+		List<StockLineItem> productLineItemList = documentEntity.getProductLineItemList();
+
+		if (documentEntity.getStatus() == DocumentStatus.FINALIZED) {
+			List<StockLineItem> stockLineItemsToProcess = new ArrayList<StockLineItem>();
+			if (documentEntity.getShipmentType() != null
+					&& documentEntity.getShipmentType() == ShipmentType.TO_OTHER_WAREHOUSE
+					&& documentEntity.getToWH() != null) {
+
+				for (StockLineItem stockLineItem : productLineItemList) {
+					stockLineItemsToProcess.add(stockLineItem);
+					StockLineItem copy = StockLineItem.getCopy(stockLineItem);
+					StockItemEntity stockItem = getOrCreateWarehouseStockItem(documentEntity.getToWH(), copy);
+					copy.setStockItem(stockItem);
+					// So that credits in adjustStockItems fn
+					copy.setStockMaintainedQty(copy.getQty() * 2);
+					stockLineItemsToProcess.add(copy);
+
+					if (stockLineItem.getStockItem().getStockItemType().isMaintainStockBySerialNumber()) {
+						List<StockItemInstanceEntity> stockItemInstanceList = stockLineItem.getStockItemInstanceList();
+						for (StockItemInstanceEntity stockItemInstanceEntity : stockItemInstanceList) {
+							stockItemInstanceEntity.setBusiness(stockItem.getBusiness());
+							stockItemInstanceEntity.setStockItemId(stockItem.getId().toString());
+							stockItemInstanceEntity.setStockShipmentNumber(documentEntity.getItemNumber());
+						}
+					}
+					// So that credits in adjustStockItems fn
+					copy.setStockMaintainedQty(stockLineItem.getQty() * 2);
+					stockLineItemsToProcess.add(copy);
+				}
+			} else {
+				stockLineItemsToProcess = documentEntity.getProductLineItemList();
+			}
+
+			// Process stock items
+			StockManagementService.adjustStockItems(documentEntity.getBusiness(), stockLineItemsToProcess,
+					documentEntity.getItemNumber(), 0);
+		} // enf of FINALIZED if
 		return documentEntity;
 	}
 
