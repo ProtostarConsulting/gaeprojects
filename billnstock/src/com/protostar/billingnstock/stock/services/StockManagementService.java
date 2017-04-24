@@ -26,6 +26,8 @@ import com.protostar.billingnstock.purchase.entities.BudgetEntity;
 import com.protostar.billingnstock.purchase.entities.LineItemCategory;
 import com.protostar.billingnstock.purchase.entities.LineItemEntity;
 import com.protostar.billingnstock.purchase.entities.PurchaseOrderEntity;
+import com.protostar.billingnstock.purchase.entities.PurchaseOrderReport;
+import com.protostar.billingnstock.purchase.entities.PurchaseOrderReportItem;
 import com.protostar.billingnstock.purchase.entities.RequisitionEntity;
 import com.protostar.billingnstock.purchase.entities.SupplierEntity;
 import com.protostar.billingnstock.stock.entities.StockItemBrand;
@@ -735,6 +737,18 @@ public class StockManagementService extends BaseService {
 			return null;
 	}
 
+	@ApiMethod(name = "getStockReceiptsAgainstPO", path = "getStockReceiptsAgainstPO")
+	public List<StockItemsReceiptEntity> getStockReceiptsAgainstPO(
+			PurchaseOrderEntity purchaseOrder) {
+
+		List<StockItemsReceiptEntity> stockReceipts = ofy().load()
+				.type(StockItemsReceiptEntity.class)
+				.ancestor(purchaseOrder.getBusiness())
+				.filter("poNumber ==", purchaseOrder.getItemNumber()).list();
+
+		return stockReceipts;
+	}
+
 	@ApiMethod(name = "getStockShipmentList", path = "getStockShipmentList")
 	public List<StockItemsShipmentEntity> getStockShipmentList(
 			@Named("busId") Long busId) {
@@ -1216,6 +1230,64 @@ public class StockManagementService extends BaseService {
 					"PurchaseOrderEntity with not found with id:" + poId);
 		else
 			return now;
+	}
+
+	@ApiMethod(name = "getPOReport", path = "getPOReport")
+	public PurchaseOrderReport getPOReport(PurchaseOrderEntity purchaseOrder) {
+
+		PurchaseOrderReport purchaseOrderReport = new PurchaseOrderReport();
+
+		List<PurchaseOrderReportItem> pOReportItems = new ArrayList<PurchaseOrderReportItem>();
+
+		List<StockLineItem> productLineItems = purchaseOrder
+				.getProductLineItemList();
+
+		for (int i = 0; i < productLineItems.size(); i++) {
+
+			PurchaseOrderReportItem reportItem = new PurchaseOrderReportItem();
+
+			reportItem.setItemName(productLineItems.get(i).getStockItem()
+					.getStockItemType().getItemName());
+			reportItem.setPurchaseOrderQty(productLineItems.get(i).getQty());
+
+			List<StockItemsReceiptEntity> stockReceipts = this
+					.getStockReceiptsAgainstPO(purchaseOrder);
+
+			if (stockReceipts != null && !stockReceipts.isEmpty()) {
+				List<Integer> stockReceiptQts = new ArrayList<Integer>();
+				for (int j = 0; j < stockReceipts.size(); j++) {
+					if (stockReceipts.get(j).getStatus() == DocumentStatus.FINALIZED) {
+						List<StockLineItem> receiptProductLineItems = stockReceipts
+								.get(j).getProductLineItemList();
+
+						for (int k = 0; k < receiptProductLineItems.size(); k++) {
+							if (reportItem.getItemName() == receiptProductLineItems
+									.get(k).getStockItem().getStockItemType()
+									.getItemName()) {
+								int stockProductLineQty = receiptProductLineItems
+										.get(k).getQty();
+								stockReceiptQts.add(stockProductLineQty);
+							}
+						}
+
+					}
+				}
+				reportItem.setStockReceiptQts(stockReceiptQts);
+				int qtyDiff = reportItem.getPurchaseOrderQty();
+				for (int l = 0; l < reportItem.getStockReceiptQts().size(); l++) {
+					qtyDiff -= reportItem.getStockReceiptQts().get(l);
+					if (qtyDiff == 0) {
+						break;
+					}
+				}
+				reportItem.setQtyDiff(qtyDiff);
+			}
+
+			pOReportItems.add(reportItem);
+		}
+		purchaseOrderReport.setpOReportItems(pOReportItems);
+
+		return purchaseOrderReport;
 	}
 
 	@ApiMethod(name = "addStockSettings", path = "addStockSettings")
