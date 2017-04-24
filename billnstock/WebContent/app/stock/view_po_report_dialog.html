@@ -1,0 +1,32 @@
+<md-dialog aria-label="Add New" style="min-width:800px;"> <md-toolbar>
+<div class="md-toolbar-tools">
+	<h2>PO No.{{pOItemNo}} Report</h2>
+	<span flex></span>
+	<md-button class="md-icon-button" ng-click="cancel()"> <md-icon
+		md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+	</md-button>
+</div>
+</md-toolbar> <md-dialog-content style="min-width:200px; max-width:800px">
+<md-content layout-padding>
+<section id="pagetoolbar" layout="row" layout-xs="column">
+	<md-subheader class="md-primary">
+	<h4 class="md-title">Status:{{pOStatus}}</h4>
+	</md-subheader>
+	<span flex> </span>
+</section>
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>Item Name</th>
+			<th>PO Qty.</th>
+		</tr>
+	</thead>
+	<tbody ng-repeat="reportItem in purchaseOrderReport">
+		<tr>
+			<td>{{reportItem.itemName}}</td>
+			<td>{{reportItem.purchaseOrderQty}}</td>
+		</tr>
+
+	</tbody>
+</table>
+</md-content> </md-dialog-content> </md-dialog>

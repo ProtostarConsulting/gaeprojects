@@ -65,11 +65,11 @@ app
 					$rootScope.$on("CallParentMethod", function() {
 						$scope.parentmethod();
 					});
-					
+
 					$scope.draftDocumnent = function(ev) {
 						$scope.documentEntity.status = 'DRAFT';
 						$scope.saveDocument();
-					}					
+					}
 
 					$scope.submitDocumnent = function(ev) {
 						$scope.documentEntity.status = 'SUBMITTED';
@@ -393,7 +393,6 @@ app
 								});
 					}
 
-					
 					// End Select supplier
 					function getStockSettingsByBiz() {
 						var stockService = appEndpointSF.getStockService();
@@ -417,7 +416,9 @@ app
 							$scope.getStockItemTypes();
 							$scope.getTaxesByVisibility();
 							$scope.getAllWarehouseByBusiness();
-							$scope.calProductSubTotal();
+							if ($scope.documentEntity.productLineItemList) {
+								$scope.calProductSubTotal();
+							}
 							if ($scope.documentEntity.serviceLineItemList) {
 								$scope.calServiceSubTotal();
 							}
@@ -545,7 +546,7 @@ app
 							supplierService.addSupplier($scope.supplier).then(
 									function(supplierObj) {
 										supplierList.push(supplierObj);
-										documentEntity.supplier = supplierObj;										
+										documentEntity.supplier = supplierObj;
 									});
 							$scope.cancel();
 							// window.history.back();

@@ -2409,6 +2409,15 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
+	StockService.getStockReceiptsAgainstPO = function(purchaseOrder) {
+		var deferred = $q.defer();
+		gapi.client.stockService.getStockReceiptsAgainstPO(purchaseOrder)
+				.execute(function(resp) {
+					deferred.resolve(resp.items);
+				});
+		return deferred.promise;
+	}
+
 	StockService.getStockShipmentList = function(id) {
 		var deferred = $q.defer();
 		gapi.client.stockService.getStockShipmentList({
@@ -2603,6 +2612,15 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 
+	}
+
+	StockService.getPOReport = function(purchaseOrder) {
+		var deferred = $q.defer();
+		gapi.client.stockService.getPOReport(purchaseOrder).execute(
+				function(resp) {
+					deferred.resolve(resp);
+				});
+		return deferred.promise;
 	}
 
 	StockService.fetchPOListByPaging = function(busId, status, pagingInfo) {
@@ -3204,7 +3222,7 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	
+
 	ProductionService.getQCMachineRecordList = function(busId) {
 		var deferred = $q.defer();
 		gapi.client.productionService.getQCMachineRecordList({

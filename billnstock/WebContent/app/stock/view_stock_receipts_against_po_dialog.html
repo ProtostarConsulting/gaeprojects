@@ -1,0 +1,32 @@
+<md-dialog aria-label="Add New" style="min-width:800px;"> <md-toolbar>
+<div class="md-toolbar-tools">
+	<h2>Stock Item Receipts Against PO No.{{pOItemNo}}</h2>
+	<span flex></span>
+	<md-button class="md-icon-button" ng-click="cancel()"> <md-icon
+		md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+	</md-button>
+</div>
+</md-toolbar> <md-dialog-content
+	style="min-width:200px; max-width:800px; max-height:800px;">
+<md-content layout-padding>
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>Receipt No.</th>
+			<th>Created Date</th>
+			<th>Created By</th>
+			<th>Supplier</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="stockReceipt in stockReceipts">
+			<td>{{stockReceipt.itemNumber}}</td>
+			<td>{{stockReceipt.createdDate|formatDate}}</td>
+			<td>{{stockReceipt.createdBy.firstName+"
+				"+stockReceipt.createdBy.lastName}}</td>
+			<td>{{stockReceipt.supplier.supplierName}}</td>
+		</tr>
+
+	</tbody>
+</table>
+</md-content> </md-dialog-content> </md-dialog>
