@@ -2276,10 +2276,13 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
-	StockService.getStockItemTypes = function(busId) {
+	StockService.getStockItemTypes = function(busId, productionItemFilterBool) {
 		var deferred = $q.defer();
+		if (productionItemFilterBool == undefined)
+			productionItemFilterBool = false
 		gapi.client.stockService.getStockItemTypes({
-			"busId" : busId
+			"busId" : busId,
+			"productionItemFilter" : productionItemFilterBool
 		}).execute(function(resp) {
 			deferred.resolve(resp.items);
 		});
@@ -3245,16 +3248,16 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	
+
 	ProductionService.addProductionSettings = function(settingObj) {
 		var deferred = $q.defer();
-		gapi.client.productionService.addProductionSettings(settingObj).execute(
-				function(resp) {
+		gapi.client.productionService.addProductionSettings(settingObj)
+				.execute(function(resp) {
 					deferred.resolve(resp);
 				});
 		return deferred.promise;
 	}
-	
+
 	ProductionService.getProductionSettingsByBiz = function(busId) {
 		var deferred = $q.defer();
 		gapi.client.productionService.getProductionSettingsByBiz({
@@ -3264,7 +3267,7 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	
+
 	ProductionService.addQCMachineUnitMeasure = function(qcUnit) {
 		var deferred = $q.defer();
 		gapi.client.productionService.addQCMachineUnitMeasure(qcUnit).execute(
@@ -3273,7 +3276,7 @@ function googleEndpointSF($q) {
 				});
 		return deferred.promise;
 	}
-	
+
 	ProductionService.getMachineQCUnitsMeasureList = function(busId) {
 		var deferred = $q.defer();
 		gapi.client.productionService.getMachineQCUnitsMeasureList({

@@ -619,15 +619,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		templateUrl : '/app/accounting/dayBook.html',
 		controller : 'dayBook',
 
-	})
-
-	.state('production.bom_requisition', {
-		url : "/bom requisition",
+	}).state('production.bom_requisition', {
+		url : "/bom_requisition",
 		templateUrl : '/app/production/bom_requisition.html',
 		controller : 'bom_requisition',
-		
-	})
-	.state('production.add_bom', {
+
+	}).state('production.add_bom', {
 		url : "/addBillOfMaterial",
 		templateUrl : '/app/production/add_bom.html',
 		controller : 'add_bom',
@@ -635,67 +632,50 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
 			bomCategory : null
 		}
-	})
-	.state('production.list_bom', {
-		url : "/list Bill of material",
+	}).state('production.list_bom', {
+		url : "/list_bom",
 		templateUrl : '/app/production/list_bom.html',
 		controller : 'list_bom',
 
-	})
-
-	.state('production', {
+	}).state('production', {
 		url : "/production",
 		templateUrl : '/app/production/prod_module.html',
 		controller : 'prodModuleCtr'
-	})
-
-	.state('production.add_machine', {
+	}).state('production.add_machine', {
 		url : "/add_machine",
 		templateUrl : '/app/production/add_machine.html',
 		controller : 'machineAddCtr',
 		params : {
 			machineObj : null
 		}
-	})
-
-	.state('production.list_machine', {
+	}).state('production.list_machine', {
 		url : "/list_machine",
 		templateUrl : '/app/production/list_machine.html',
 		controller : 'machineListCtr'
 
-	})
-	
-	.state('production.add_qcmachine', {
+	}).state('production.add_qcmachine', {
 		url : "/add_qcmachine",
 		templateUrl : '/app/production/add_qcmachine.html',
 		controller : 'qcmachineAddCtr',
-			params : {
-				qcmachineObj : null
-			}
-	})
-	
-	.state('production.list_qcmachine', {
+		params : {
+			qcmachineObj : null
+		}
+	}).state('production.list_qcmachine', {
 		url : "/list_qcmachine",
 		templateUrl : '/app/production/list_qcmachine.html',
 		controller : 'qcmachineListCtr'
-	})
-	
-	.state('production.add_qcmachine_record', {
+	}).state('production.add_qcmachine_record', {
 		url : "/add_qcmachine_record",
 		templateUrl : '/app/production/add_qcmachine_record.html',
 		controller : 'qcmachineAddRecordCtr',
-			params : {
-				qcmachineRecordObj : null
-			}
-	})
-	
-	.state('production.list_qcmachine_record', {
+		params : {
+			qcmachineRecordObj : null
+		}
+	}).state('production.list_qcmachine_record', {
 		url : "/list_qcmachine_record",
 		templateUrl : '/app/production/list_qcmachine_record.html',
 		controller : 'qcmachineRecordListCtr'
-	})
-	
-	.state('production.setting', {
+	}).state('production.setting', {
 		url : "/production_setting",
 		templateUrl : '/app/production/production_setting.html',
 		controller : 'productionSettingsCtr'

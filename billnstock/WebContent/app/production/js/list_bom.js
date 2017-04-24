@@ -3,10 +3,12 @@ app.controller("list_bom", function($scope, $window, $mdToast, $timeout,
 		$mdSidenav, $mdUtil, $log, $state, $http, $stateParams, $routeParams,
 		$filter, $q, $mdMedia, $mdDialog, objectFactory, appEndpointSF,
 		$mdColors) {
+
+	$scope.loading = true;
 	$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
 	$scope.query = {
 		order : 'firstName',
-		limit : 5,
+		limit : $scope.dataTableOptions.limit,
 		page : 1,
 		totalSize : 0,
 		pagesLoaded : 0
@@ -28,11 +30,11 @@ app.controller("list_bom", function($scope, $window, $mdToast, $timeout,
 
 	$scope.fetchProductionList = function() {
 		var productService = appEndpointSF.getProductionService();
-
+		$scope.loading = true;
 		productService.getlistBomEntity($scope.curUser.business.id).then(
 				function(list) {
 					$scope.bomList = list;
-
+					$scope.loading = false;
 				});
 	}
 	$scope.printBOM = function(bomId) {

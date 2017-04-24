@@ -1,4 +1,4 @@
-package com.protostar.billingnstock.taskmangement;
+package com.protostar.billnstock.entity;
 
 import java.util.Date;
 
