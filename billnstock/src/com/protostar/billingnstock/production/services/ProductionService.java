@@ -3,9 +3,7 @@ package com.protostar.billingnstock.production.services;
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
 import java.util.ArrayList;
-
 import java.util.Date;
-
 import java.util.List;
 
 import com.google.api.server.spi.config.Api;
@@ -14,16 +12,15 @@ import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
 import com.googlecode.objectify.Key;
 import com.protostar.billingnstock.production.entities.BomEntity;
+import com.protostar.billingnstock.production.entities.MachineQCUnitMeasure;
 import com.protostar.billingnstock.production.entities.ProductionMachineEntity;
-
 import com.protostar.billingnstock.production.entities.ProductionRequisitionEntity;
-
+import com.protostar.billingnstock.production.entities.ProductionSetting;
 import com.protostar.billingnstock.production.entities.QCMachineDailyRecordEntity;
-
 import com.protostar.billingnstock.production.entities.QCMachineEntity;
-
 import com.protostar.billingnstock.stock.entities.BomLineItemCategory;
-
+import com.protostar.billingnstock.stock.entities.StockItemUnit;
+import com.protostar.billingnstock.stock.entities.StockSettingsEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 
 @Api(name = "productionService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.production.services", ownerName = "com.protostar.billingnstock.production.services", packagePath = ""))
@@ -141,11 +138,6 @@ public class ProductionService {
 
 		QCMachineEntity machineQc = getQCMachineById(busId, qcmachineId);
 		Date tempRecordDateObj = new Date(recordDate);
-
-		// quer in DS by fiter
-
-		
-
 		List<QCMachineDailyRecordEntity> foundedDailyRecord = ofy().load()
 				.type(QCMachineDailyRecordEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, busId))
@@ -163,12 +155,6 @@ public class ProductionService {
 							tempRecordDateObj);
 		}
 
-
-		// if(found) return
-		// else temp v = ProductionUtil.createNewQCMachineDailyRecordEntity()
-
-
-
 		return qcMachineDailyRecord;
 	}
 	
@@ -178,6 +164,53 @@ public class ProductionService {
 				.ancestor(Key.create(BusinessEntity.class, busId)).list();
 		
 		return qcMachineRecordList;
+	}
+	
+	@ApiMethod(name = "getQCMachineRecordById", path = "getQCMachineRecordById")
+	public QCMachineDailyRecordEntity getQCMachineRecordById(@Named("busId") Long busId,
+			@Named("id") Long id) {
+		
+		List<QCMachineDailyRecordEntity> list = ofy()
+				.load()
+				.type(QCMachineDailyRecordEntity.class)
+				.filterKey(
+						Key.create(Key.create(BusinessEntity.class, busId),
+								QCMachineDailyRecordEntity.class, id)).list();
+		QCMachineDailyRecordEntity foundMachine = list.size() > 0 ? list.get(0) : null;
+		return foundMachine;
+	}
+	
+	@ApiMethod(name = "addQCMachineUnitMeasure", path = "addQCMachineUnitMeasure")
+	public MachineQCUnitMeasure addQCMachineUnitMeasure(MachineQCUnitMeasure qcMachineUnit) {
+		ofy().save().entity(qcMachineUnit).now();
+		return qcMachineUnit;
+	}
+	
+	@ApiMethod(name = "getMachineQCUnitsMeasureList", path = "getMachineQCUnitsMeasureList")
+	public List<MachineQCUnitMeasure> getMachineQCUnitsMeasureList(@Named("busId") Long busId) {
+
+		List<MachineQCUnitMeasure> qcMachineUnits = ofy().load()
+				.type(MachineQCUnitMeasure.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).list();
+		return qcMachineUnits;
+	}
+	
+	@ApiMethod(name = "addProductionSettings", path = "addProductionSettings")
+	public ProductionSetting addProductionSettings(
+			ProductionSetting settingsEntity) {
+		ofy().save().entity(settingsEntity).now();
+		return settingsEntity;
+
+	}
+	
+	@ApiMethod(name = "getProductionSettingsByBiz", path = "getProductionSettingsByBiz")
+	public ProductionSetting getProductionSettingsByBiz(@Named("busId") Long busId) {
+		ProductionSetting prodSett = ofy().load()
+				.type(ProductionSetting.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).first()
+				.now();
+		return prodSett;
+
 	}
 
 }

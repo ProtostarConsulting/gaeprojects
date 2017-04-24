@@ -29,6 +29,11 @@ var app = angular.module("stockApp")
 							$scope.qcmachine_recordList = list;
 						});
 					}
+					
+					$scope.printQCMachineRecord = function(qcRecordId) {
+						var bid = $scope.curUser.business.id;
+						window.open("PrintQCMachineRecordPdf?bid=" + bid + "&qcRecordId=" + qcRecordId);
+					}
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {

@@ -3245,6 +3245,44 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
+	
+	ProductionService.addProductionSettings = function(settingObj) {
+		var deferred = $q.defer();
+		gapi.client.productionService.addProductionSettings(settingObj).execute(
+				function(resp) {
+					deferred.resolve(resp);
+				});
+		return deferred.promise;
+	}
+	
+	ProductionService.getProductionSettingsByBiz = function(busId) {
+		var deferred = $q.defer();
+		gapi.client.productionService.getProductionSettingsByBiz({
+			"busId" : busId,
+		}).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}
+	
+	ProductionService.addQCMachineUnitMeasure = function(qcUnit) {
+		var deferred = $q.defer();
+		gapi.client.productionService.addQCMachineUnitMeasure(qcUnit).execute(
+				function(resp) {
+					deferred.resolve(resp);
+				});
+		return deferred.promise;
+	}
+	
+	ProductionService.getMachineQCUnitsMeasureList = function(busId) {
+		var deferred = $q.defer();
+		gapi.client.productionService.getMachineQCUnitsMeasureList({
+			"busId" : busId,
+		}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}
 
 	// ====================================================
 

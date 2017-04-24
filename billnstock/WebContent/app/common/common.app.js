@@ -694,6 +694,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		templateUrl : '/app/production/list_qcmachine_record.html',
 		controller : 'qcmachineRecordListCtr'
 	})
+	
+	.state('production.setting', {
+		url : "/production_setting",
+		templateUrl : '/app/production/production_setting.html',
+		controller : 'productionSettingsCtr'
+	})
 
 	// //////////////////////
 
