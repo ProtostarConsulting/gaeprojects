@@ -1,0 +1,144 @@
+<md-content layout="column" flex layout-padding>
+<div ng-if="loading" layout-padding>
+	<div layout="row" layout-sm="column" layout-align="space-around">
+		<md-progress-circular md-diameter="60" md-mode="indeterminate"></md-progress-circular>
+	</div>
+</div>
+<div ng-if="!loading" layout-padding layout="column">
+	<md-subheader class="md-primary">
+	<h4 class="md-title"
+		ng-bind="documentEntity.id?'Edit Product BOM':'Add Product BOM'"></h4>
+	</md-subheader>
+	<div>
+		<form name="entityForm">
+
+			<div layout="row" layout-xs="column">
+				<div layout="row" flex>
+					<md-autocomplete flex required md-input-name="autocompleteField"
+						md-no-cache=true md-selected-item="documentEntity.stockItemType"
+						md-search-text="searchTextInput"
+						md-items="item in querySearch(searchTextInput)"
+						md-item-text="item.itemName" md-floating-label="Select Product">
+					<md-item-template> <span
+						md-highlight-text="searchTextInput">{{item.itemName}}</span> </md-item-template>
+					<div ng-messages="entityForm.autocompleteField.$error"
+						ng-if="entityForm.autocompleteField.$touched">
+						<div ng-message="required">This is required field.</div>
+					</div>
+					</md-autocomplete>
+					<md-icon md-svg-src="img/icons/ic_queue_black_24px.svg"
+						ng-click="addStockType()" class="name"
+						style="color: Green; height: 18px; width: 18px"></md-icon>
+				</div>
+
+				<md-input-container flex> <input type="text"
+					aria-label="period" placeholder="Discription"
+					ng-model="documentEntity.note"> </md-input-container>
+			</div>
+
+			<table md-table md-progress="promise">
+				<thead ng-if="!dataTableOptions.decapitate" md-head>
+					<tr md-row>
+						<th md-column width="20%">Category</th>
+						<th md-column width="25%">Category Name</th>
+						<th md-column width="35%">Item Name</th>
+						<th md-column width="15%">Item Qty.</th>
+						<th md-column width="5%">Delete</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-init="itemToggle=true"
+						ng-repeat-start="bomCategory in documentEntity.catList track by $index">
+						<td md-cell>Category {{ $index +1 }}<md-button
+								class="md-icon-button" ng-show="!itemToggle"
+								ng-click="itemToggle=true"> <ng-md-icon
+								icon="keyboard_arrow_down" style="fill: md-default" size="24">
+							<md-tooltip> Expand</md-tooltip></ng-md-icon></md-button> <md-button
+								class="md-icon-button" ng-show="itemToggle"
+								ng-click="itemToggle=false"> <ng-md-icon
+								icon="keyboard_arrow_up" style="fill: md-default" size="24">
+							<md-tooltip> Collapse</md-tooltip></ng-md-icon></md-button></td>
+						<td md-cell><div layout="row" flex>
+								<md-input-container flex> <md-select
+									name="category" ng-model="bomCategory.cat"
+									ng-change="getStockItemTypes(bomCategory,$index)"
+									placeholder="Category Name" ng-required="true"> <md-option
+									ng-value="category" ng-repeat="category in stockItemCategories"
+									ng-selected="bomCategory.cat.id == category.id">{{category.catName}}
+								</md-option> </md-select> </md-input-container>
+							</div></td>
+						<td md-cell></td>
+						<td md-cell></td>
+						<td md-cell><md-icon
+								md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
+								ng-click="removeCategoryItem($index)" class="name"
+								style="color: Green; height: 18px; width: 18px"> <md-tooltip>Remove
+							Category</md-tooltip></md-icon></td>
+
+					</tr>
+					<tr ng-repeat="itemObj in  bomCategory.items" ng-show="itemToggle">
+						<td md-cell></td>
+						<td md-cell align="right"><p
+								style="width: 100%; text-align: right;">{{$index + 1 }}</p></td>
+						<td md-cell>
+							<div layout="row" flex>
+								<md-input-container flex> <md-select
+									ng-model="itemObj.itemName" placeholder="Item Name"
+									ng-required="true"> <md-option
+									ng-value="stockItemType.itemName"
+									ng-selected="itemObj.itemName == stockItemType.itemName"
+									ng-repeat="stockItemType in bomCategory.categoryStockTypeList">{{stockItemType.itemName
+								}}</md-option> </md-select> </md-input-container>
+
+							</div>
+
+						</td>
+
+						<td md-cell>
+							<div layout="row" flex>
+								<md-input-container style="margin: 0; padding: 0px;">
+								<input ng-model="itemObj.qty" ng-required="true"></md-input-container>
+							</div>
+						</td>
+						<td md-cell><md-icon
+								md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
+								ng-click="removeLineItem(bomCategory,$index)" class="name"
+								style="color: Green; height: 18px; width: 18px"> <md-tooltip>Remove
+							Item</md-tooltip></md-icon></td>
+					</tr>
+					<tr md-row ng-show="itemToggle">
+						<td md-cell></td>
+						<td md-cell></td>
+						<td md-cell><md-button class="md-icon-button"
+								ng-click="addLineItem(bomCategory)"> <ng-md-icon
+								icon="add_circle" style="fill: md-default" size="24">
+							<md-tooltip> Add New Item</md-tooltip></ng-md-icon> </md-button></td>
+						<td md-cell></td>
+						<td md-cell></td>
+					</tr>
+					<tr ng-repeat-end></tr>
+					<tr md-row>
+						<td md-cell></td>
+						<td md-cell><md-button class="md-icon-button"
+								ng-click="addCatogory()"> <ng-md-icon
+								icon="add_circle" style="fill: md-default" size="24">
+							<md-tooltip> Add New Category </md-tooltip></ng-md-icon> </md-button></td>
+						<td md-cell></td>
+						<td md-cell></td>
+						<td md-cell></td>
+					</tr>
+					<tr md-row>
+
+					</tr>
+				</tbody>
+			</table>
+		</form>
+	</div>
+
+	<div layout layout-xs="column">
+		<section layout="row" layout-xs="column">
+			<md-button class="md-raised md-primary"
+				ng-disabled="entityForm.$invalid" ng-click="submitBom()">Submit</md-button>
+		</section>
+	</div>
+</div>
