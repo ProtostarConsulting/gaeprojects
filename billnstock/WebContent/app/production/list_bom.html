@@ -13,7 +13,7 @@
 		<md-input-container flex> <label>Search</label> <input
 			ng-model="searchText"> </md-input-container>
 	</div>
-	<md-button class="md-icon-button" ui-sref="stock.addBudget">
+	<md-button class="md-icon-button" ui-sref="production.add_bom">
 	<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
 	<md-tooltip> Add New </md-tooltip></ng-md-icon> </md-button>
 </section>
@@ -31,8 +31,9 @@
 				</tr>
 			</thead>
 			<tbody md-body>
-				<tr md-row ng-repeat="bomEntity in bomList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit"">
-					<td md-cell>{{$index+1}}</td>
+				<tr md-row
+					ng-repeat="bomEntity in bomList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit"">
+					<td md-cell>{{bomEntity.itemNumber}}</td>
 					<td md-cell>{{bomEntity.stockItemType.itemName}}</td>
 					<td md-cell><md-button class="md-icon-button"
 							ui-sref="production.add_bom({bomCategory:bomEntity})">
