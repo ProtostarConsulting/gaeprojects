@@ -5,9 +5,7 @@ app.controller("list_bom", function($scope, $window, $mdToast, $timeout,
 		$mdColors) {
 
 	$scope.loading = true;
-
 	$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
-
 	$scope.query = {
 		order : 'firstName',
 		limit : $scope.dataTableOptions.limit,

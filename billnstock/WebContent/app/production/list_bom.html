@@ -31,8 +31,7 @@
 				</tr>
 			</thead>
 			<tbody md-body>
-				<tr md-row
-					ng-repeat="bomEntity in bomList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit"">
+				<tr md-row ng-repeat="bomEntity in bomList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit"">
 					<td md-cell>{{bomEntity.itemNumber}}</td>
 					<td md-cell>{{bomEntity.stockItemType.itemName}}</td>
 					<td md-cell><md-button class="md-icon-button"
