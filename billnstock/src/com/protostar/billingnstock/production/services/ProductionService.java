@@ -35,15 +35,16 @@ public class ProductionService {
 	@ApiMethod(name = "getEmptyProductionRequisition", path = "getEmptyProductionRequisition")
 	public ProductionRequisitionEntity getEmptyProductionRequisition(BomEntity bom) {
 
-		ProductionRequisitionEntity productionRequisitionEntity = new ProductionRequisitionEntity();
+		ProductionRequisitionEntity prodReq = new ProductionRequisitionEntity();
 
-		productionRequisitionEntity.setBomEntity(bom);
-		productionRequisitionEntity.setProductQty(1);
+		prodReq.setBomEntity(bom);
+		prodReq.setProductQty(1);
+		prodReq.setDeliveryDateTime(new Date());
 
 		List<BomLineItemCategory> bomCatList = bom.getCatList();
-		productionRequisitionEntity.setCatList(bomCatList);
+		prodReq.setCatList(bomCatList);
 
-		return productionRequisitionEntity;
+		return prodReq;
 	}
 
 	@ApiMethod(name = "addRequisition", path = "addRequisition")
@@ -59,7 +60,7 @@ public class ProductionService {
 	}
 
 	@ApiMethod(name = "listBomEntity", path = "listBomEntity")
-	public List<BomEntity> listBomEntity(@Named("bid") Long busId) {
+	public List<BomEntity> listBomEntity(@Named("busId") Long busId) {
 
 		List<BomEntity> bomEntityList = ofy().load().type(BomEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, busId)).list();
@@ -72,7 +73,7 @@ public class ProductionService {
 		ofy().save().entity(prodPlanEntity).now();
 		return prodPlanEntity;
 	}
-	
+
 	@ApiMethod(name = "getProductionPlanList", path = "getProductionPlanList")
 	public List<ProductionPlanEntity> getProductionPlanList(@Named("busId") Long busId) {
 		List<ProductionPlanEntity> planList = ofy().load().type(ProductionPlanEntity.class)
@@ -82,13 +83,10 @@ public class ProductionService {
 	}
 
 	@ApiMethod(name = "listBomEntityByID", path = "listBomEntityByID")
-	public BomEntity listBomEntityByID(@Named("bid") Long busId, @Named("id") Long bomId) {
-
+	public BomEntity listBomEntityByID(@Named("busId") Long busId, @Named("id") Long bomId) {
 		BomEntity bomEntity = ofy().load()
 				.key(Key.create(Key.create(BusinessEntity.class, busId), BomEntity.class, bomId)).now();
-
 		return bomEntity;
-
 	}
 
 	@ApiMethod(name = "addMachine", path = "addMachine")
@@ -204,7 +202,7 @@ public class ProductionService {
 	}
 
 	@ApiMethod(name = "listProductionRequisitionEntity", path = "listProductionRequisitionEntity")
-	public List<ProductionRequisitionEntity> listProductionRequisitionEntity(@Named("bid") Long busId) {
+	public List<ProductionRequisitionEntity> listProductionRequisitionEntity(@Named("busId") Long busId) {
 
 		List<ProductionRequisitionEntity> productionRequisitionEntityList = ofy().load()
 				.type(ProductionRequisitionEntity.class).ancestor(Key.create(BusinessEntity.class, busId)).list();
@@ -213,7 +211,8 @@ public class ProductionService {
 	}
 
 	@ApiMethod(name = "getRequisitionEntityByID", path = "getRequisitionEntityByID")
-	public ProductionRequisitionEntity getRequisitionEntityByID(@Named("bid") Long busId, @Named("proId") Long proId) {
+	public ProductionRequisitionEntity getRequisitionEntityByID(@Named("busId") Long busId,
+			@Named("proId") Long proId) {
 
 		ProductionRequisitionEntity productionRequisitionEntity = ofy().load()
 				.key(Key.create(Key.create(BusinessEntity.class, busId), ProductionRequisitionEntity.class, proId))
