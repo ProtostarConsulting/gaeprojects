@@ -13,14 +13,11 @@
 		<md-input-container flex> <label>Search</label> <input
 			ng-model="searchText"> </md-input-container>
 	</div>
-	<md-button class="md-icon-button" ui-sref="stock.addBudget">
-	<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
-	<md-tooltip> Add New </md-tooltip></ng-md-icon> </md-button>
 </section>
 
 <div>
 	<div>
-		<md-data-table-container>
+		<md-table-container>
 		<table md-table md-progress="promise">
 			<thead ng-if="!dataTableOptions.decapitate" md-head
 				md-order="query.order" md-on-reorder="logOrder">
@@ -31,23 +28,25 @@
 				</tr>
 			</thead>
 			<tbody md-body>
-				<tr md-row ng-repeat="bomRequisitionEntity in bomRequiList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+				<tr md-row
+					ng-repeat="bomRequisitionEntity in bomRequiList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
 					<td md-cell>{{$index+1}}</td>
 					<td md-cell>{{bomRequisitionEntity.bomEntity.stockItemType.itemName}}</td>
 					<td md-cell><md-button class="md-icon-button"
 							ui-sref="production.bom_requisition({productionRequisition:bomRequisitionEntity})">
 						<ng-md-icon icon="edit" style="fill: md-default" size="20">
 						<md-tooltip> Edit</md-tooltip></ng-md-icon></md-button> <md-button class="md-icon-button"
-							ng-click="printProductRequisition(bomRequisitionEntity.id)"> <ng-md-icon
-							icon="print" style="fill: md-default" size="20"> <md-tooltip>
-						Print Product Requisition</md-tooltip></ng-md-icon></md-button></td>
+							ng-click="printProductRequisition(bomRequisitionEntity.id)">
+						<ng-md-icon icon="print" style="fill: md-default" size="20">
+						<md-tooltip> Print Product Requisition</md-tooltip></ng-md-icon></md-button></td>
 				</tr>
 			</tbody>
 		</table>
+		</md-table-container>
 		<md-table-pagination md-limit="query.limit"
 			md-limit-options="dataTableOptions.limitOptions" md-page="query.page"
 			md-total={{bomList.length}}
 			md-page-select="dataTableOptions.pageSelect"
 			md-boundary-links="dataTableOptions.boundaryLinks"
-			md-on-paginate="logPagination"></md-table-pagination> </md-data-table-container>
+			md-on-paginate="logPagination"></md-table-pagination>
 	</div>

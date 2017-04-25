@@ -1,5 +1,5 @@
 app = angular.module("stockApp");
-app.controller("list_bom", function($scope, $window, $mdToast, $timeout,
+app.controller("listProdPlanCtr", function($scope, $window, $mdToast, $timeout,
 		$mdSidenav, $mdUtil, $log, $state, $http, $stateParams, $routeParams,
 		$filter, $q, $mdMedia, $mdDialog, objectFactory, appEndpointSF,
 		$mdColors) {
@@ -7,7 +7,7 @@ app.controller("list_bom", function($scope, $window, $mdToast, $timeout,
 	$scope.loading = true;
 	$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
 	$scope.query = {
-		order : 'firstName',
+		order : 'itemNumber',
 		limit : $scope.dataTableOptions.limit,
 		page : 1,
 		totalSize : 0,
@@ -22,28 +22,27 @@ app.controller("list_bom", function($scope, $window, $mdToast, $timeout,
 		console.log('page: ', page);
 		console.log('limit: ', limit);
 		$location.hash('tp1');
-		$anchorScroll();
-		if ($scope.query.page > $scope.query.pagesLoaded) {
-			$scope.fetchProductionList();
-		}
+		$anchorScroll();		
 	}
 
-	$scope.fetchProductionList = function() {
+	$scope.getProductionPlanList = function() {
 		var productService = appEndpointSF.getProductionService();
 		$scope.loading = true;
-		productService.getlistBomEntity($scope.curUser.business.id).then(
+		productService.getProductionPlanList($scope.curUser.business.id).then(
 				function(list) {
-					$scope.bomList = list;
+					$scope.entityList = list;
 					$scope.loading = false;
 				});
 	}
+	
 	$scope.printBOM = function(bomId) {
 		var bid = $scope.curUser.business.id;
 		window.open("PrintPdfBOM?bid=" + bid + "&bomId=" + bomId);
 	}
+	
 	$scope.waitForServiceLoad = function() {
 		if (appEndpointSF.is_service_ready) {
-			$scope.fetchProductionList();
+			$scope.getProductionPlanList();
 
 		} else {
 			$log.debug("Services Not Loaded, watiting...");

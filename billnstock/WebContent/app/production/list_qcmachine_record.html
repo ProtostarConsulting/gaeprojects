@@ -9,13 +9,13 @@
 	<h4 class="md-title">Machine QC Record List</h4>
 	</md-subheader>
 	<span flex></span>
-	<!-- <div layout="row" flex="33" flex-sm="50" flex-xs="100">
+	<div layout="row" flex="33" flex-sm="50" flex-xs="100">
 		<md-input-container flex> <label>Search</label> <input
 			ng-model="searchText"> </md-input-container>
-		<md-button class="md-icon-button" ui-sref="invoice.add"> <ng-md-icon
+		<md-button class="md-icon-button" ui-sref="production.add_qcmachine_record"> <ng-md-icon
 			icon="add_circle" style="fill: md-default" size="24"> <md-tooltip>
 		Add New </md-tooltip></ng-md-icon> </md-button>
-	</div> -->
+	</div>
 </section>
 
 <div>
@@ -24,8 +24,8 @@
 		<thead ng-if="!dataTableOptions.decapitate" md-head
 			md-order="query.order" md-on-reorder="logOrder">
 			<tr md-row>
-				<th md-column md-order-by="machineQc.qcName" width="4%">QC Name</th>
-				<th md-column md-order-by="note">Note</th>
+				<th md-column md-order-by="machineQc.qcName" >QC Name</th>
+				<th md-column >Note</th>
 				<th md-column md-order-by="validFrom">Record Date</th>
 				<th md-column>Actions</th>
 			</tr>

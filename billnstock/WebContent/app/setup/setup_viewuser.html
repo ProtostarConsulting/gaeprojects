@@ -1,16 +1,16 @@
 <md-content flex layout-padding md-scroll-y>
 <form name="viewuser">
 	<div id="addField">
-		
+
 		<h4 ng-init="basicDetailToogle=true"
 			ng-click="basicDetailToogle=!basicDetailToogle">
 			Basic Detail
 			<md-button class="md-icon-button" ng-show="basicDetailToogle">
 			<ng-md-icon icon="keyboard_arrow_up" style="fill: md-default"
-				size="24"> <md-tooltip> Expand</md-tooltip></ng-md-icon></md-button>
+				size="24"> <md-tooltip> Collapse</md-tooltip></ng-md-icon></md-button>
 			<md-button class="md-icon-button" ng-show="!basicDetailToogle">
 			<ng-md-icon icon="keyboard_arrow_down" style="fill: md-default"
-				size="24"> <md-tooltip> Collapse</md-tooltip></ng-md-icon></md-button>
+				size="24"> <md-tooltip>Expand </md-tooltip></ng-md-icon></md-button>
 		</h4>
 		<div ng-show="basicDetailToogle">
 			<div layout layout-xs="column">
@@ -76,10 +76,10 @@
 			Employee Detail
 			<md-button class="md-icon-button" ng-show="employeeDetailToogle">
 			<ng-md-icon icon="keyboard_arrow_up" style="fill: md-default"
-				size="24"> <md-tooltip> Expand</md-tooltip></ng-md-icon></md-button>
+				size="24"> <md-tooltip> Collapse</md-tooltip></ng-md-icon></md-button>
 			<md-button class="md-icon-button" ng-show="!employeeDetailToogle">
 			<ng-md-icon icon="keyboard_arrow_down" style="fill: md-default"
-				size="24"> <md-tooltip> Collapse</md-tooltip></ng-md-icon></md-button>
+				size="24"> <md-tooltip> Expand</md-tooltip></ng-md-icon></md-button>
 		</h4>
 		<div ng-show="employeeDetailToogle">
 
@@ -123,10 +123,10 @@
 			Address Detail
 			<md-button class="md-icon-button" ng-show="addressDetailToogle">
 			<ng-md-icon icon="keyboard_arrow_up" style="fill: md-default"
-				size="24"> <md-tooltip> Expand</md-tooltip></ng-md-icon></md-button>
+				size="24"> <md-tooltip>Collapse</md-tooltip></ng-md-icon></md-button>
 			<md-button class="md-icon-button" ng-show="!addressDetailToogle">
 			<ng-md-icon icon="keyboard_arrow_down" style="fill: md-default"
-				size="24"> <md-tooltip> Collapse</md-tooltip></ng-md-icon></md-button>
+				size="24"> <md-tooltip>Expand</md-tooltip></ng-md-icon></md-button>
 		</h4>
 		<div ng-show="addressDetailToogle">
 

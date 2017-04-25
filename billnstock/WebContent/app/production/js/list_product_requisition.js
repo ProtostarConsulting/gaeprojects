@@ -1,8 +1,8 @@
 app = angular.module("stockApp");
-app.controller("list_product_requisition", function($scope, $window, $mdToast, $timeout,
-		$mdSidenav, $mdUtil, $log, $state, $http, $stateParams, $routeParams,
-		$filter, $q, $mdMedia, $mdDialog, objectFactory, appEndpointSF,
-		$mdColors) {
+app.controller("list_product_requisition", function($scope, $window, $mdToast,
+		$timeout, $mdSidenav, $mdUtil, $log, $state, $http, $stateParams,
+		$routeParams, $filter, $q, $mdMedia, $mdDialog, objectFactory,
+		appEndpointSF, $mdColors) {
 	$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
 	$scope.query = {
 		order : 'firstName',
@@ -29,15 +29,17 @@ app.controller("list_product_requisition", function($scope, $window, $mdToast, $
 	$scope.fetchBomRequisitionList = function() {
 		var productService = appEndpointSF.getProductionService();
 
-		productService.listProductionRequisitionEntity($scope.curUser.business.id).then(
-				function(list) {
-					$scope.bomRequiList = list;
+		productService.listProductionRequisitionEntity(
+				$scope.curUser.business.id).then(function(list) {
+			$scope.bomRequiList = list;
 
-				});
+		});
 	}
 	$scope.printProductRequisition = function(proId) {
 		var bid = $scope.curUser.business.id;
-		window.open("PrintPdfProductRequisition?bid=" + bid + "&proId=" + proId);
+		window
+				.open("PrintPdfProductRequisition?bid=" + bid + "&proId="
+						+ proId);
 	}
 	$scope.waitForServiceLoad = function() {
 		if (appEndpointSF.is_service_ready) {

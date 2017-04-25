@@ -16,16 +16,6 @@
 			makes Approval Compulsory for this module Documents like Bom,
 			Production Machine, Machine QC Definition, Machine QC Record etc.</div>
 	</div>
-	<md-input-container flex="80" layout="row"> <label>production
-		Terms and Conditions</label> <textarea
-		ng-model="settingsObj.productionTermsAndConditions" rows="3" cols="1"></textarea>
-	</md-input-container>
-
-	<md-input-container flex="80" layout="row"> <label>
-		Shipment Terms and Conditions</label> <textarea
-		ng-model="settingsObj.productionShipTermsAndConditions" rows="3" cols="1"></textarea>
-	</md-input-container>
-
 	<div layout="row" layout-xs="column">
 		<div flex-xs flex="30">
 			<md-checkbox flex-offset="15"
@@ -39,14 +29,6 @@
 			ng-model="settingsObj.emailNotificationDL" rows="2" cols="1"></textarea>
 		</md-input-container>
 	</div>
-	<div layout="row" layout-xs="column">
-		<div flex-xs flex="30">
-			<md-checkbox flex-offset="15" ng-model="settingsObj.linkPOToBudget"
-				ng-true-value="true" ng-false-value="false"
-				aria-label="isGoogleUser"> Link PO to Budget</md-checkbox>
-		</div>
-	</div>
-
 </form>
 <div flex-xs flex="30">
 	<md-checkbox flex-offset="15" ng-disabled="true"
@@ -58,14 +40,15 @@
 	<div layout="row" layout-xs="column">
 		<md-input-container flex="30"> <label>Enter
 			Unit Name</label> <input name="unitName" type="text"
-			ng-model="qcMachineUnitMeasure.unitName" ng-required="true"> </md-input-container>
+			ng-model="qcMachineUnitMeasure.unitName" ng-required="true">
+		</md-input-container>
 		<md-input-container flex> <label>Enter
 			Description </label> <input type="text" ng-model="qcMachineUnitMeasure.note">
 		</md-input-container>
 		<md-input-container flex> <md-button
-			class="md-icon-button" ng-click="addMachineQCUnitMeasure()"> <ng-md-icon
-			icon="add_circle" style="fill: md-default" size="20"> <md-tooltip>
-		Add Machine QC Unit Measure</md-tooltip></ng-md-icon> </md-button></md-input-container>
+			class="md-icon-button" ng-click="addMachineQCUnitMeasure()">
+		<ng-md-icon icon="add_circle" style="fill: md-default" size="20">
+		<md-tooltip> Add Machine QC Unit Measure</md-tooltip></ng-md-icon> </md-button></md-input-container>
 	</div>
 	<md-data-table-container>
 	<table style="width: 80%" md-table>

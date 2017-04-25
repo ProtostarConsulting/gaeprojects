@@ -2,103 +2,53 @@ var app = angular.module("stockApp");
 
 app
 		.controller(
-				"add_bom",
+				"addProdPlanCtr",
 				function($scope, $window, $mdToast, $q, $timeout, $mdSidenav,
 						$mdUtil, $log, $stateParams, objectFactory,
 						appEndpointSF, $mdDialog, $mdMedia) {
-					
+
 					$scope.loading = true;
-					$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
-					
-					$scope.getEmptyBomObjadd = function() {
+					$scope.curUser = appEndpointSF.getLocalUserService()
+							.getLoggedinUser();
+
+					$scope.getEmptyProdPlan = function() {
 						return {
-							productName : "",
-							catList : [],
+							title : '',
+							note : '',
+							salesOrderNumber : '',
+							customer : null,
+							prodRequisitionList : [],
+							prodShipmentList : [],
 							business : $scope.curUser.business,
 							createdBy : $scope.curUser,
 							modifiedBy : null
 						}
 					};
 
-					$scope.dummyCatList = [];
-					$scope.stockItemCategories = [];
+					$scope.documentEntity = $stateParams.prodPlan ? $stateParams.prodPlan
+							: $scope.getEmptyProdPlan();
 
-					$scope.documentEntity = $stateParams.bomCategory ? $stateParams.bomCategory
-							: $scope.getEmptyBomObjadd();
+					if ($scope.documentEntity.fromDateTime)
+						$scope.documentEntity.fromDateTime = new Date(
+								$scope.documentEntity.fromDateTime);
 
-					$scope.addCatogory = function() {
-						var category = {
-							cat : null,
-							items : [],
-							categoryStockTypeList : []
-						};
+					if ($scope.documentEntity.toDateTime)
+						$scope.documentEntity.toDateTime = new Date(
+								$scope.documentEntity.toDateTime);
 
-						if (!$scope.documentEntity.catList) {
-							$scope.documentEntity.catList = [];
-						}
-						$scope.documentEntity.catList.push(category);
-						$scope.addLineItem(category);
-					}
-
-					$scope.addLineItem = function(category) {
-						// $scope.getStockItemTypes (category)
-
-						var itemObj = {
-							itemName : "",
-							price : 0,
-							qty : "",
-							currentBudgetBalance : 0
-						};
-
-						if (!category.items) {
-							category.items = [];
-						}
-						category.items.push(itemObj);
-					};
-
-					$scope.submitBom = function() {
-
+					$scope.saveEntity = function() {
 						var productService = appEndpointSF
 								.getProductionService();
-						productService.addBomEntity($scope.documentEntity)
-								.then(function(bom) {
-									if (bom.id)
-										$scope.documentEntity.id = bom.id;
+						productService.addProdPlanEntity($scope.documentEntity)
+								.then(function(savedObj) {
+									if (savedObj.id)
+										$scope.documentEntity.id = savedObj.id;
 
 									$scope.showAddToast();
 								});
 
 					}
-					$scope.fetchCatogoryList = function() {
-						var stockService = appEndpointSF.getStockService();
 
-						stockService.getStockItemTypeCategories(
-								$scope.curUser.business.id).then(
-								function(list) {
-									$scope.stockItemCategories = list;
-								})
-					};
-
-					$scope.getStockItemTypes = function(category, index) {
-						$log.debug("Inside Ctr $scope.getStockItemTypes");
-						var stockService = appEndpointSF.getStockService();
-
-						stockService.filterStockItemTypesByCategory(
-								category.cat).then(function(list) {
-							category.categoryStockTypeList = list;
-						});
-					}
-
-					$scope.removeCategoryItem = function(index) {
-						$scope.documentEntity.catList.splice(index, 1);
-					};
-					$scope.removeLineItem = function(category, index) {
-						category.items.splice(index, 1);
-						/* $scope.calItemSubTotal(); */
-					};
-
-					// Select Stock Type
-					$scope.stockItemTypeList = [];
 					$scope.searchTextInput = null;
 
 					$scope.querySearch = function(query) {
@@ -118,32 +68,176 @@ app
 									lowercaseQuery) >= 0);
 						};
 					}
-					
-					function getAllStockItemTypes() {
-						var stockService = appEndpointSF.getStockService();
-						stockService.getStockItemTypes(
-								$scope.curUser.business.id, true).then(
-								function(list) {
-									$scope.stockItemTypeList = list;
-									$scope.loading = false;
-								});
-					}					
-					
+
 					// End Stock Type
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
-							getAllStockItemTypes();
-							$scope.fetchCatogoryList();
-							if (!$scope.documentEntity.id) {
-								$scope.addCatogory();
-							}
-
+							$scope.loading = false;
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
 							$timeout($scope.waitForServiceLoad, 1000);
 						}
 					}
 					$scope.waitForServiceLoad();
+
+					$scope.printProductRequisition = function(proId) {
+						var bid = $scope.curUser.business.id;
+						window.open("PrintPdfProductRequisition?bid=" + bid
+								+ "&proId=" + proId);
+					}
+
+					$scope.addProdReq = function(ev, productionRequisition) {
+						var useFullScreen = $mdMedia('xs');
+						$mdDialog
+								.show(
+										{
+											controller : addProdReqCtr,
+											templateUrl : '/app/production/add_prod_requisition_dialog.html',
+											parent : angular
+													.element(document.body),
+											targetEvent : ev,
+											clickOutsideToClose : true,
+											fullscreen : useFullScreen,
+											locals : {
+												curUser : $scope.curUser,
+												productionRequisition : productionRequisition,
+												prodPlan : $scope.documentEntity,
+												showAddToast : $scope.showAddToast
+											}
+										})
+								.then(
+										function(answer) {
+											$scope.status = 'You said the information was "'
+													+ answer + '".';
+										},
+										function() {
+											$scope.status = 'You cancelled the dialog.';
+										});
+
+					};
+
+					function addProdReqCtr($scope, $mdDialog, curUser,
+							productionRequisition, prodPlan, showAddToast) {
+
+						$scope.productionRequisition = productionRequisition ? productionRequisition
+								: {};
+
+						if ($scope.productionRequisition.id) {
+							$scope.productionRequisition.deliveryDateTime = new Date(
+									$scope.productionRequisition.deliveryDateTime);
+						} else {
+							$scope.productionRequisition.deliveryDateTime = new Date();
+						}
+
+						$scope.bomList = [];
+						$scope.stockItemCategories = [];
+						$scope.stockTypeList = [];
+						var dummyStockTypeList = [];
+
+						$scope.calculation = function() {
+							if ($scope.productionRequisition.productQty != 0
+									&& $scope.productionRequisition.productQty != null) {
+
+								for (var i = 0; i < $scope.productionRequisition.bomEntity.catList.length; i++) {
+									for (var j = 0; j < $scope.productionRequisition.catList[i].items.length; j++) {
+
+										var qty = parseInt($scope.productionRequisition.bomEntity.catList[i].items[j].qty);
+										$scope.productionRequisition.catList[i].items[j].qty = qty
+												* $scope.productionRequisition.productQty;
+									}
+								}
+							}
+						}
+
+						$scope.fetchBomList = function() {
+							var productService = appEndpointSF
+									.getProductionService();
+
+							productService
+									.getlistBomEntity(curUser.business.id)
+									.then(function(list) {
+										$scope.bomList = list;
+									});
+						}
+
+						$scope.addRequisition = function() {
+
+							var productService = appEndpointSF
+									.getProductionService();
+							$scope.productionRequisition.business = curUser.business;
+							$scope.productionRequisition.createdBy = curUser;
+							$scope.productionRequisition.modifiedBy = curUser.email_id;
+							$scope.productionRequisition.prodPlanItemNumber = prodPlan.itemNumber;
+
+							productService
+									.addRequisition(
+											$scope.productionRequisition)
+									.then(
+											function(savedObj) {
+												if (savedObj.id) {
+													var wasUpdate = false;
+													angular
+															.forEach(
+																	prodPlan.prodRequisitionList,
+																	function(
+																			req) {
+																		if (req.id == savedObj.id) {
+																			wasUpdate = true;
+																		}
+																	});
+
+													if (wasUpdate) {
+														showAddToast();
+														$mdDialog.cancel();
+													} else {
+														if (!prodPlan.prodRequisitionList)
+															prodPlan.prodRequisitionList = [];
+
+														prodPlan.prodRequisitionList
+																.push(savedObj)
+
+														productService
+																.addProdPlanEntity(
+																		prodPlan)
+																.then(
+																		function(
+																				savedObj) {
+																			if (savedObj.id)
+																				showAddToast();
+
+																			$mdDialog
+																					.cancel();
+																		});
+													}
+												}
+											});
+						}
+
+						$scope.cancel = function() {
+							$mdDialog.cancel();
+						};
+
+						$scope.reqBomItemChanged = function(bomEntity) {
+
+							if (!$scope.productionRequisition.id) {
+								var productService = appEndpointSF
+										.getProductionService();
+								productService
+										.getEmptyProductionRequisition(
+												bomEntity)
+										.then(
+												function(
+														productionRequisitionTemp) {
+													$scope.productionRequisition = productionRequisitionTemp;
+													$scope.productionRequisition.bomEntity = bomEntity;
+													$scope.productionRequisition.deliveryDateTime = new Date();
+												});
+							}
+
+						}
+
+						$scope.fetchBomList();
+					}
 
 				});

@@ -7,7 +7,7 @@ app.controller("list_bom", function($scope, $window, $mdToast, $timeout,
 	$scope.loading = true;
 	$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
 	$scope.query = {
-		order : 'firstName',
+		order : 'itemNumber',
 		limit : $scope.dataTableOptions.limit,
 		page : 1,
 		totalSize : 0,
@@ -22,10 +22,7 @@ app.controller("list_bom", function($scope, $window, $mdToast, $timeout,
 		console.log('page: ', page);
 		console.log('limit: ', limit);
 		$location.hash('tp1');
-		$anchorScroll();
-		if ($scope.query.page > $scope.query.pagesLoaded) {
-			$scope.fetchProductionList();
-		}
+		$anchorScroll();		
 	}
 
 	$scope.fetchProductionList = function() {
