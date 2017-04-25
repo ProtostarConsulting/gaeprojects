@@ -188,4 +188,23 @@ public class ProductionService {
 
 	}
 
+	@ApiMethod(name = "listProductionRequisitionEntity", path = "listProductionRequisitionEntity")
+	public List<ProductionRequisitionEntity> listProductionRequisitionEntity(@Named("bid") Long busId) {
+
+		List<ProductionRequisitionEntity> productionRequisitionEntityList = ofy().load()
+				.type(ProductionRequisitionEntity.class).ancestor(Key.create(BusinessEntity.class, busId)).list();
+		return productionRequisitionEntityList;
+
+	}
+
+	@ApiMethod(name = "getRequisitionEntityByID", path = "getRequisitionEntityByID")
+	public ProductionRequisitionEntity getRequisitionEntityByID(@Named("bid") Long busId, @Named("proId") Long proId) {
+
+		ProductionRequisitionEntity productionRequisitionEntity = ofy().load()
+				.key(Key.create(Key.create(BusinessEntity.class, busId), ProductionRequisitionEntity.class, proId))
+				.now();
+
+		return productionRequisitionEntity;
+	}
+
 }
