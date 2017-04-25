@@ -42,7 +42,16 @@ public class Constants {
 	public static final String GJE_NO_COUNTER = "GJE_NO_COUNTER";
 	public static final String AFY_NO_COUNTER = "AFY_NO_COUNTER";
 	public static final String AGE_NO_COUNTER = "AGE_NO_COUNTER";
-	public static final String RV_NO_COUNTER = "RV_NO_COUNTER";
+	public static final String RV_NO_COUNTER = "RV_NO_COUNTER";	
+	public static final String PROD_BOM_NO_COUNTER = "PROD_BOM_NO_COUNTER";
+	public static final String PROD_QC_NO_COUNTER = "PROD_QC_NO_COUNTER";
+	public static final String PROD_MACHINE_NO_COUNTER = "PROD_MACHINE_NO_COUNTER";
+	public static final String PROD_QCRECORD_NO_COUNTER = "PROD_QCRECORD_NO_COUNTER";
+	public static final String PROD_PLAN_NO_COUNTER = "PROD_PLAN_NO_COUNTER";
+	public static final String PROD_STOCKSHIPMENT_NO_COUNTER = "PROD_STOCKSHIPMENT_NO_COUNTER";
+	public static final String PROD_REQUISITION_NO_COUNTER = "PROD_REQUISITION_NO_COUNTER";
+
+
 
 	// Default Authorizations\
 	private static final String APP_ALL_AUTHS = "" + "{\"authName\":\"Accounting\",\"authorizations\":["
