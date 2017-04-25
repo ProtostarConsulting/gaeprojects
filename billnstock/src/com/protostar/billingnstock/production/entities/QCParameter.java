@@ -1,7 +1,6 @@
 package com.protostar.billingnstock.production.entities;
 
 import com.googlecode.objectify.Ref;
-import com.googlecode.objectify.annotation.Index;
 import com.protostar.billingnstock.stock.entities.StockItemUnit;
 import com.protostar.billnstock.until.data.Constants.QCParameterType;
 
@@ -16,15 +15,14 @@ public class QCParameter {
 	private boolean booleanIdealValue = false;
 	private String textValue;
 
-	@Index
 	private Ref<MachineQCUnitMeasure> paramUnit;
 	private StockItemUnit itemUnit;
 
-	public MachineQCUnitMeasure getQCMachineParamUnit() {
+	public MachineQCUnitMeasure getParamUnit() {
 		return paramUnit == null ? null : paramUnit.get();
 	}
 
-	public void setQCMachineParamUnit(MachineQCUnitMeasure paramUnit) {
+	public void setParamUnit(MachineQCUnitMeasure paramUnit) {
 		if (paramUnit != null)
 			this.paramUnit = Ref.create(paramUnit);
 	}
@@ -49,8 +47,7 @@ public class QCParameter {
 		return numberIdealValueValidDeviationPerc;
 	}
 
-	public void setNumberIdealValueValidDeviationPerc(
-			float numberIdealValueValidDeviationPerc) {
+	public void setNumberIdealValueValidDeviationPerc(float numberIdealValueValidDeviationPerc) {
 		this.numberIdealValueValidDeviationPerc = numberIdealValueValidDeviationPerc;
 	}
 
