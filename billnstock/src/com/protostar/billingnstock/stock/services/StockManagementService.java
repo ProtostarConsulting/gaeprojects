@@ -22,11 +22,15 @@ import com.googlecode.objectify.TxnType;
 import com.googlecode.objectify.Work;
 import com.googlecode.objectify.cmd.Query;
 import com.protostar.billingnstock.invoice.entities.InvoiceEntity;
+import com.protostar.billingnstock.production.entities.ProductionShipmentEntity;
 import com.protostar.billingnstock.purchase.entities.BudgetEntity;
 import com.protostar.billingnstock.purchase.entities.LineItemCategory;
 import com.protostar.billingnstock.purchase.entities.LineItemEntity;
 import com.protostar.billingnstock.purchase.entities.PurchaseOrderEntity;
+import com.protostar.billingnstock.purchase.entities.PurchaseOrderReport;
+import com.protostar.billingnstock.purchase.entities.PurchaseOrderReportItem;
 import com.protostar.billingnstock.purchase.entities.RequisitionEntity;
+import com.protostar.billingnstock.purchase.entities.StockReceiptDetailsForPOReport;
 import com.protostar.billingnstock.purchase.entities.SupplierEntity;
 import com.protostar.billingnstock.stock.entities.StockItemBrand;
 import com.protostar.billingnstock.stock.entities.StockItemEntity;
@@ -47,7 +51,6 @@ import com.protostar.billingnstock.stock.entities.StockSettingsEntity;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.user.services.UserService;
 import com.protostar.billingnstock.warehouse.entities.WarehouseEntity;
-import com.protostar.billnstock.entity.BaseEntity;
 import com.protostar.billnstock.service.BaseService;
 import com.protostar.billnstock.until.data.Constants.DocumentStatus;
 import com.protostar.billnstock.until.data.EmailHandler;
@@ -429,12 +432,73 @@ public class StockManagementService extends BaseService {
 		return documentEntity;
 	}
 
+	public ProductionShipmentEntity addProductionShipmentEntity(
+			ProductionShipmentEntity documentEntity) {
+		ofy().save().entity(documentEntity).now();
+		List<StockLineItem> productLineItemList = documentEntity
+				.getProductLineItemList();
+
+		if (documentEntity.getStatus() == DocumentStatus.FINALIZED) {
+			List<StockLineItem> stockLineItemsToProcess = new ArrayList<StockLineItem>();
+			if (documentEntity.getShipmentType() != null
+					&& documentEntity.getShipmentType() == ShipmentType.TO_OTHER_WAREHOUSE
+					&& documentEntity.getToWH() != null) {
+
+				for (StockLineItem stockLineItem : productLineItemList) {
+					stockLineItemsToProcess.add(stockLineItem);
+					StockLineItem copy = StockLineItem.getCopy(stockLineItem);
+					StockItemEntity stockItem = getOrCreateWarehouseStockItem(
+							documentEntity.getToWH(), copy);
+					copy.setStockItem(stockItem);
+					// So that credits in adjustStockItems fn
+					copy.setStockMaintainedQty(copy.getQty() * 2);
+					stockLineItemsToProcess.add(copy);
+
+					if (stockLineItem.getStockItem().getStockItemType()
+							.isMaintainStockBySerialNumber()) {
+						List<StockItemInstanceEntity> stockItemInstanceList = stockLineItem
+								.getStockItemInstanceList();
+						for (StockItemInstanceEntity stockItemInstanceEntity : stockItemInstanceList) {
+							stockItemInstanceEntity.setBusiness(stockItem
+									.getBusiness());
+							stockItemInstanceEntity.setStockItemId(stockItem
+									.getId().toString());
+							stockItemInstanceEntity
+									.setStockShipmentNumber(documentEntity
+											.getItemNumber());
+						}
+					}
+					// So that credits in adjustStockItems fn
+					copy.setStockMaintainedQty(stockLineItem.getQty() * 2);
+					stockLineItemsToProcess.add(copy);
+				}
+			} else {
+				stockLineItemsToProcess = documentEntity
+						.getProductLineItemList();
+			}
+
+			// Process stock items
+			StockManagementService.adjustStockItems(
+					documentEntity.getBusiness(), stockLineItemsToProcess,
+					documentEntity.getItemNumber(), 0);
+		} // enf of FINALIZED if
+		return documentEntity;
+	}
+
 	@ApiMethod(name = "getStockItemTypes", path = "getStockItemTypes")
 	public List<StockItemTypeEntity> getStockItemTypes(
-			@Named("busId") Long busId) {
-		List<StockItemTypeEntity> typeList = ofy().load()
+			@Named("busId") Long busId,
+			@Named("productionItemFilter") Boolean productionItemFilter) {
+		Query<StockItemTypeEntity> baseQuery = ofy().load()
 				.type(StockItemTypeEntity.class)
-				.ancestor(Key.create(BusinessEntity.class, busId)).list();
+				.ancestor(Key.create(BusinessEntity.class, busId));
+
+		if (productionItemFilter) {
+			baseQuery = baseQuery.filter("maintainAsProductionItem", true);
+		}
+
+		List<StockItemTypeEntity> typeList = baseQuery.list();
+
 		return typeList;
 	}
 
@@ -735,6 +799,18 @@ public class StockManagementService extends BaseService {
 			return null;
 	}
 
+	@ApiMethod(name = "getStockReceiptsAgainstPO", path = "getStockReceiptsAgainstPO")
+	public List<StockItemsReceiptEntity> getStockReceiptsAgainstPO(
+			PurchaseOrderEntity purchaseOrder) {
+
+		List<StockItemsReceiptEntity> stockReceipts = ofy().load()
+				.type(StockItemsReceiptEntity.class)
+				.ancestor(purchaseOrder.getBusiness())
+				.filter("poNumber ==", purchaseOrder.getItemNumber()).list();
+
+		return stockReceipts;
+	}
+
 	@ApiMethod(name = "getStockShipmentList", path = "getStockShipmentList")
 	public List<StockItemsShipmentEntity> getStockShipmentList(
 			@Named("busId") Long busId) {
@@ -981,6 +1057,17 @@ public class StockManagementService extends BaseService {
 		return filteredSuppliers;
 	}
 
+	@ApiMethod(name = "closePurchaseOrder", path = "closePurchaseOrder")
+	public PurchaseOrderEntity closePurchaseOrder(
+			PurchaseOrderEntity purchaseOrderEntity) throws MessagingException,
+			IOException {
+
+		purchaseOrderEntity.setStatus(DocumentStatus.CLOSED);
+		ofy().save().entity(purchaseOrderEntity).now();
+
+		return purchaseOrderEntity;
+	}
+
 	@ApiMethod(name = "addPurchaseOrder", path = "addPurchaseOrder")
 	public PurchaseOrderEntity addPurchaseOrder(
 			PurchaseOrderEntity purchaseOrderEntity) throws MessagingException,
@@ -1003,8 +1090,10 @@ public class StockManagementService extends BaseService {
 		}
 
 		ofy().save().entity(purchaseOrderEntity).now();
+
 		if (purchaseOrderEntity.getStatus() == DocumentStatus.FINALIZED
 				&& purchaseOrderEntity.getBudget() != null
+
 				&& purchaseOrderEntity.getBudgetLineItem() != null) {
 			// Reduce Budget Balance
 			BudgetEntity budget = purchaseOrderEntity.getBudget();
@@ -1216,6 +1305,87 @@ public class StockManagementService extends BaseService {
 					"PurchaseOrderEntity with not found with id:" + poId);
 		else
 			return now;
+	}
+
+	@ApiMethod(name = "getPOReport", path = "getPOReport")
+	public PurchaseOrderReport getPOReport(PurchaseOrderEntity purchaseOrder) {
+
+		PurchaseOrderReport purchaseOrderReport = new PurchaseOrderReport();
+
+		List<PurchaseOrderReportItem> pOReportItems = new ArrayList<PurchaseOrderReportItem>();
+
+		List<StockLineItem> productLineItems = purchaseOrder
+				.getProductLineItemList();
+
+		for (int i = 0; i < productLineItems.size(); i++) {
+
+			PurchaseOrderReportItem reportItem = new PurchaseOrderReportItem();
+
+			reportItem.setItemName(productLineItems.get(i).getStockItem()
+					.getStockItemType().getItemName());
+			reportItem.setPurchaseOrderQty(productLineItems.get(i).getQty());
+
+			List<StockItemsReceiptEntity> stockReceipts = this
+					.getStockReceiptsAgainstPO(purchaseOrder);
+
+			List<StockReceiptDetailsForPOReport> stockReceiptDetails = new ArrayList<StockReceiptDetailsForPOReport>();
+
+			if (stockReceipts != null && !stockReceipts.isEmpty()) {
+
+				StockReceiptDetailsForPOReport stockReceiptDetailsItem = new StockReceiptDetailsForPOReport();
+				List<Integer> stockReceiptQts = new ArrayList<Integer>();
+				List<Integer> receiptNumbers = new ArrayList<Integer>();
+
+				for (int j = 0; j < stockReceipts.size(); j++) {
+					if (stockReceipts.get(j).getStatus() == DocumentStatus.FINALIZED) {
+						List<StockLineItem> receiptProductLineItems = stockReceipts
+								.get(j).getProductLineItemList();
+
+						for (int k = 0; k < receiptProductLineItems.size(); k++) {
+							if (reportItem.getItemName() == receiptProductLineItems
+									.get(k).getStockItem().getStockItemType()
+									.getItemName()) {
+								int reciptNo = stockReceipts.get(j)
+										.getItemNumber();
+								int stockProductLineQty = receiptProductLineItems
+										.get(k).getQty();
+								stockReceiptQts.add(stockProductLineQty);
+								receiptNumbers.add(reciptNo);
+							}
+						}
+						stockReceiptDetailsItem
+								.setStockReceiptProductQts(stockReceiptQts);
+						stockReceiptDetailsItem
+								.setReceiptNumbers(receiptNumbers);
+					}
+				}
+				stockReceiptDetails.add(stockReceiptDetailsItem);
+			}
+			reportItem.setStockReceiptDetails(stockReceiptDetails);
+
+			int qtyDiff = reportItem.getPurchaseOrderQty();
+
+			for (int l = 0; l < reportItem.getStockReceiptDetails().size(); l++) {
+
+				StockReceiptDetailsForPOReport stockReceiptDetail = reportItem
+						.getStockReceiptDetails().get(l);
+
+				for (int m = 0; m < stockReceiptDetail
+						.getStockReceiptProductQts().size(); m++) {
+					qtyDiff -= stockReceiptDetail.getStockReceiptProductQts()
+							.get(m);
+					if (qtyDiff == 0) {
+						break;
+					}
+				}
+
+			}
+			reportItem.setQtyDiff(qtyDiff);
+			pOReportItems.add(reportItem);
+		}
+		purchaseOrderReport.setpOReportItems(pOReportItems);
+
+		return purchaseOrderReport;
 	}
 
 	@ApiMethod(name = "addStockSettings", path = "addStockSettings")
