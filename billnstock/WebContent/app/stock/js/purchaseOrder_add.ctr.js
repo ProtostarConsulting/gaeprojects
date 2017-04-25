@@ -675,4 +675,122 @@ app
 
 					};
 
+					$scope.viewReceiptsAgainstPo = function(ev) {
+						var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))
+								&& $scope.customFullscreen;
+						$mdDialog
+								.show(
+										{
+											controller : viewReceiptsAgainstPOCtr,
+											templateUrl : '/app/stock/view_stock_receipts_against_po_dialog.html',
+											parent : angular
+													.element(document.body),
+											targetEvent : ev,
+											clickOutsideToClose : true,
+											fullscreen : useFullScreen,
+											locals : {
+												purchaseOrder : $scope.documentEntity
+											}
+										})
+								.then(
+										function(answer) {
+											$scope.status = 'You said the information was "'
+													+ answer + '".';
+										},
+										function() {
+											$scope.status = 'You cancelled the dialog.';
+										});
+
+					};
+
+					function viewReceiptsAgainstPOCtr($scope, $mdDialog,
+							purchaseOrder) {
+
+						$scope.purchaseOrder = purchaseOrder;
+						$scope.pOItemNo = $scope.purchaseOrder.itemNumber;
+						$scope.stockReceipts = [];
+
+						$scope.viewStockReceipts = function() {
+
+							var stockService = appEndpointSF.getStockService();
+
+							stockService.getStockReceiptsAgainstPO(
+									$scope.purchaseOrder).then(
+									function(stockReceipts) {
+
+										$scope.stockReceipts = stockReceipts;
+									});
+
+							// $scope.cancel();
+							// window.history.back();
+						}
+
+						$scope.cancel = function() {
+							$mdDialog.cancel();
+						};
+
+						$scope.viewStockReceipts();
+
+					}
+
+					$scope.viewPurchaseOrderReport = function(ev) {
+						var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))
+								&& $scope.customFullscreen;
+						$mdDialog
+								.show(
+										{
+											controller : viewPurchaseOrderReportCtr,
+											templateUrl : '/app/stock/view_po_report_dialog.html',
+											parent : angular
+													.element(document.body),
+											targetEvent : ev,
+											clickOutsideToClose : true,
+											fullscreen : useFullScreen,
+											locals : {
+												purchaseOrder : $scope.documentEntity
+											}
+										})
+								.then(
+										function(answer) {
+											$scope.status = 'You said the information was "'
+													+ answer + '".';
+										},
+										function() {
+											$scope.status = 'You cancelled the dialog.';
+										});
+
+					};
+
+					function viewPurchaseOrderReportCtr($scope, $mdDialog,
+							purchaseOrder) {
+
+						$scope.purchaseOrder = purchaseOrder;
+						$scope.pOItemNo = $scope.purchaseOrder.itemNumber;
+						$scope.pOStatus = $scope.purchaseOrder.status;
+						$scope.purchaseOrderReport = [];
+
+						$scope.getReport = function() {
+
+							var stockService = appEndpointSF.getStockService();
+
+							stockService
+									.getPOReport($scope.purchaseOrder)
+									.then(
+											function(purchaseOrderReport) {
+
+												$scope.purchaseOrderReport = purchaseOrderReport.pOReportItems;
+
+											});
+
+							// $scope.cancel();
+							// window.history.back();
+						}
+
+						$scope.cancel = function() {
+							$mdDialog.cancel();
+						};
+
+						$scope.getReport();
+
+					}
 				});
