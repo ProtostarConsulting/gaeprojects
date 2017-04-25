@@ -19,12 +19,45 @@
 		<tr>
 			<th>Item Name</th>
 			<th>PO Qty.</th>
+			<th>Stock Receipt Numbers</th>
+			<th>Quantity Received</th>
+			<th>Difference</th>
 		</tr>
 	</thead>
 	<tbody ng-repeat="reportItem in purchaseOrderReport">
 		<tr>
 			<td>{{reportItem.itemName}}</td>
 			<td>{{reportItem.purchaseOrderQty}}</td>
+			<td>
+				<table class="table">
+					<tbody
+						ng-repeat="stockReceiptDetail in reportItem.stockReceiptDetails">
+						<tr
+							ng-repeat="stockReceiptNo in stockReceiptDetail.receiptNumbers">
+							<td>{{stockReceiptNo}}</td>
+						</tr>
+					</tbody>
+
+				</table>
+
+			</td>
+			<td>
+				<table class="table">
+					<tbody
+						ng-repeat="stockReceiptDetail in reportItem.stockReceiptDetails">
+						<tr
+							ng-repeat="stockReceiptQty in stockReceiptDetail.stockReceiptProductQts">
+							<td>{{stockReceiptQty}}</td>
+						</tr>
+						<tr>
+							<td>Total:{{reportItem.purchaseOrderQty-reportItem.qtyDiff}}</td>
+						</tr>
+					</tbody>
+
+				</table>
+
+			</td>
+			<td>{{reportItem.qtyDiff}}</td>
 		</tr>
 
 	</tbody>
