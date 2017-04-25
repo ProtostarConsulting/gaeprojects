@@ -71,9 +71,10 @@
 						</md-select></md-input-container></td>
 					<td md-cell><md-input-container flex
 							style="padding-left:2px; padding-right:0px;">
-						<md-select name="measureUnit" ng-model="parameter.measureUnit"
+						<md-select name="paramUnit" ng-model="parameter.paramUnit"
 							ng-required="true"> <md-option
-							ng-repeat="unit in unitMeasure" ng-value="unit">{{unit}}</md-option>
+							ng-repeat="unit in qcMachineUnitMeasureList"
+							ng-selected="parameter.paramUnit.id==unit.id" ng-value="unit">{{unit.unitName}}</md-option>
 						</md-select></md-input-container></td>
 					<td md-cell><md-input-container flex
 							style="padding-left:2px; padding-right:0px;">

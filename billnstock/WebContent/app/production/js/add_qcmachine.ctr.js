@@ -32,10 +32,11 @@ app.controller("qcmachineAddCtr", function($scope, $window, $mdToast, $timeout,
 	$scope.qcparameter = {
 		name : "",
 		parameterType : "",
-		measureUnit : "",
 		numberIdealValue : "",
 		numberIdealValueValidDeviationPerc : ""
 	}
+
+	$scope.qcMachineUnitMeasureList = [];
 
 	$scope.getEmptyMachineObj = function() {
 		return {
@@ -83,6 +84,15 @@ app.controller("qcmachineAddCtr", function($scope, $window, $mdToast, $timeout,
 		$scope.qcmachine.tillTime = new Date(qcmachine.tillTime);
 	}
 
+	$scope.getMachineQCUnitsMeasureList = function() {
+
+		var productService = appEndpointSF.getProductionService();
+		productService.getMachineQCUnitsMeasureList($scope.curUser.business.id)
+				.then(function(qcMachineUnitMeasureList) {
+					$scope.qcMachineUnitMeasureList = qcMachineUnitMeasureList;
+				})
+	}
+
 	$scope.fetchMachineList = function() {
 
 		var productService = appEndpointSF.getProductionService();
@@ -95,6 +105,7 @@ app.controller("qcmachineAddCtr", function($scope, $window, $mdToast, $timeout,
 	$scope.waitForServiceLoad = function() {
 		if (appEndpointSF.is_service_ready) {
 			$scope.fetchMachineList();
+			$scope.getMachineQCUnitsMeasureList();
 			if ($scope.qcmachine) {
 				$scope.initLoad($scope.qcmachine);
 			}

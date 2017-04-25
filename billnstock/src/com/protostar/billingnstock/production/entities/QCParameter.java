@@ -1,11 +1,13 @@
 package com.protostar.billingnstock.production.entities;
 
+import com.googlecode.objectify.Ref;
+import com.googlecode.objectify.annotation.Index;
+import com.protostar.billingnstock.stock.entities.StockItemUnit;
 import com.protostar.billnstock.until.data.Constants.QCParameterType;
 
 public class QCParameter {
 	private String name;
 	private QCParameterType parameterType = QCParameterType.NUMBER;
-	private String measureUnit;
 	private float numberIdealValue = 25f;
 	private float numberIdealValueValidDeviationPerc = 2.5f;
 	private float numberValidRangeFrom = 0f;
@@ -13,6 +15,19 @@ public class QCParameter {
 
 	private boolean booleanIdealValue = false;
 	private String textValue;
+
+	@Index
+	private Ref<MachineQCUnitMeasure> paramUnit;
+	private StockItemUnit itemUnit;
+
+	public MachineQCUnitMeasure getQCMachineParamUnit() {
+		return paramUnit == null ? null : paramUnit.get();
+	}
+
+	public void setQCMachineParamUnit(MachineQCUnitMeasure paramUnit) {
+		if (paramUnit != null)
+			this.paramUnit = Ref.create(paramUnit);
+	}
 
 	public String getName() {
 		return name;
@@ -25,14 +40,6 @@ public class QCParameter {
 	public float getNumberIdealValue() {
 		return numberIdealValue;
 	}
-	
-	public String getMeasureUnit() {
-		return measureUnit;
-	}
-
-	public void setMeasureUnit(String measureUnit) {
-		this.measureUnit = measureUnit;
-	}
 
 	public void setNumberIdealValue(float numberIdealValue) {
 		this.numberIdealValue = numberIdealValue;
@@ -42,7 +49,8 @@ public class QCParameter {
 		return numberIdealValueValidDeviationPerc;
 	}
 
-	public void setNumberIdealValueValidDeviationPerc(float numberIdealValueValidDeviationPerc) {
+	public void setNumberIdealValueValidDeviationPerc(
+			float numberIdealValueValidDeviationPerc) {
 		this.numberIdealValueValidDeviationPerc = numberIdealValueValidDeviationPerc;
 	}
 
@@ -84,5 +92,13 @@ public class QCParameter {
 
 	public void setParameterType(QCParameterType parameterType) {
 		this.parameterType = parameterType;
+	}
+
+	public StockItemUnit getItemUnit() {
+		return itemUnit;
+	}
+
+	public void setItemUnit(StockItemUnit itemUnit) {
+		this.itemUnit = itemUnit;
 	}
 }

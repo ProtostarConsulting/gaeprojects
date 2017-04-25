@@ -2688,6 +2688,26 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
+	
+	StockService.addStockReceiptQC = function(qcStockReceiptObj) {
+		var deferred = $q.defer();
+		gapi.client.stockService.addStockReceiptQC(qcStockReceiptObj).execute(
+				function(resp) {
+					deferred.resolve(resp);
+				});
+		return deferred.promise;
+	}
+	
+	StockService.getStockReceiptQCList = function(busId) {
+		var deferred = $q.defer();
+		gapi.client.stockService.getStockReceiptQCList({
+			"busId" : busId
+		}).execute(
+				function(resp) {
+					deferred.resolve(resp.items);
+				});
+		return deferred.promise;
+	}
 	// End of StockService
 
 	/* =============================================================================================================================== */

@@ -38,6 +38,7 @@ import com.protostar.billingnstock.stock.entities.StockItemInstanceEntity;
 import com.protostar.billingnstock.stock.entities.StockItemOrderType;
 import com.protostar.billingnstock.stock.entities.StockItemProductTypeEntity;
 import com.protostar.billingnstock.stock.entities.StockItemTxnEntity;
+import com.protostar.billingnstock.stock.entities.StockReceiptQCEntity;
 import com.protostar.billingnstock.stock.entities.StockItemTxnEntity.StockTxnType;
 import com.protostar.billingnstock.stock.entities.StockItemTypeCategory;
 import com.protostar.billingnstock.stock.entities.StockItemTypeEntity;
@@ -1386,6 +1387,20 @@ public class StockManagementService extends BaseService {
 		purchaseOrderReport.setpOReportItems(pOReportItems);
 
 		return purchaseOrderReport;
+	}
+	
+	@ApiMethod(name = "addStockReceiptQC", path = "addStockReceiptQC")
+	public StockReceiptQCEntity addStockReceiptQC(StockReceiptQCEntity qcStockReceiptEntity) {
+		ofy().save().entity(qcStockReceiptEntity).now();
+		return qcStockReceiptEntity;
+	}
+	
+	@ApiMethod(name = "getStockReceiptQCList", path = "getStockReceiptQCList")
+	public List<StockReceiptQCEntity> getStockReceiptQCList(@Named("busId") Long busId) {
+
+		List<StockReceiptQCEntity> stockItemUnits = ofy().load().type(StockReceiptQCEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).list();
+		return stockItemUnits;
 	}
 
 	@ApiMethod(name = "addStockSettings", path = "addStockSettings")
