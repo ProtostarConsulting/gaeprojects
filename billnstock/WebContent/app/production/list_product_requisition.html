@@ -22,7 +22,7 @@
 			<thead ng-if="!dataTableOptions.decapitate" md-head
 				md-order="query.order" md-on-reorder="logOrder">
 				<tr md-row>
-					<th md-column md-order-by="itemNumber">BOM Item No.</th>
+					<th md-column md-order-by="itemNumber">Item No.</th>
 					<th md-column md-order-by="type">Product Name</th>
 					<th md-column md-order-by="type">Action</th>
 				</tr>
@@ -45,7 +45,7 @@
 		</md-table-container>
 		<md-table-pagination md-limit="query.limit"
 			md-limit-options="dataTableOptions.limitOptions" md-page="query.page"
-			md-total={{bomList.length}}
+			md-total={{bomRequiList.length}}
 			md-page-select="dataTableOptions.pageSelect"
 			md-boundary-links="dataTableOptions.boundaryLinks"
 			md-on-paginate="logPagination"></md-table-pagination>

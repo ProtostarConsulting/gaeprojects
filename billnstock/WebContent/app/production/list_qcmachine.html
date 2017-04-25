@@ -56,7 +56,7 @@
 	</md-table-container>
 	<md-table-pagination md-limit="query.limit"
 		md-limit-options="dataTableOptions.limitOptions" md-page="query.page"
-		md-total={{query.totalSize}}
+		md-total={{qcmachineList.length}}
 		md-page-select="dataTableOptions.pageSelect"
 		md-boundary-links="dataTableOptions.boundaryLinks"
 		md-on-paginate="logPagination"></md-table-pagination>
