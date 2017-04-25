@@ -39,6 +39,7 @@ import com.protostar.billingnstock.invoice.entities.InvoiceSettingsEntity;
 import com.protostar.billingnstock.invoice.entities.QuotationEntity;
 import com.protostar.billingnstock.proadmin.entities.BusinessPlanType;
 import com.protostar.billingnstock.production.entities.BomEntity;
+import com.protostar.billingnstock.production.entities.MachineQCUnitMeasure;
 import com.protostar.billingnstock.production.entities.ProductionMachineEntity;
 import com.protostar.billingnstock.production.entities.ProductionPlanEntity;
 import com.protostar.billingnstock.production.entities.ProductionRequisitionEntity;
@@ -166,6 +167,8 @@ public class AppServletContextListener implements ServletContextListener {
 		ObjectifyService.register(ProductionMachineEntity.class);
 		ObjectifyService.register(QCMachineEntity.class);
 		ObjectifyService.register(QCMachineDailyRecordEntity.class);
+		ObjectifyService.register(MachineQCUnitMeasure.class);
+		
 
 	}
 
