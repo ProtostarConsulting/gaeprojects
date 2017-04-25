@@ -40,12 +40,12 @@ public class PrintPdfProductRequisition extends HttpServlet {
 			throws ServletException, IOException {
 
 		Long proId = Long.parseLong(request.getParameter("proId"));
-			Long bid = Long.parseLong(request.getParameter("bid"));
+		Long bid = Long.parseLong(request.getParameter("bid"));
 
 		ProductionService productionService = new ProductionService();
-		ProductionRequisitionEntity productionRequisitionEntity = productionService.getRequisitionEntityByID(bid, proId);
-	
-		
+		ProductionRequisitionEntity productionRequisitionEntity = productionService.getRequisitionEntityByID(bid,
+				proId);
+
 		response.setContentType("application/PDF");
 
 		ServletOutputStream outputStream = response.getOutputStream();
@@ -68,16 +68,16 @@ public class PrintPdfProductRequisition extends HttpServlet {
 			document.open();
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 			Map<String, Object> root = new HashMap<String, Object>();
-		PDFHtmlTemplateService.addDocumentHeaderLogo(productionRequisitionEntity, document, root);
-		
+			PDFHtmlTemplateService.addDocumentHeaderLogo(productionRequisitionEntity, document, root);
+
 			root.put("productItemList", productionRequisitionEntity.getCatList());
 
 			DecimalFormat df = new DecimalFormat("#0.00");
 
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
 			SimpleDateFormat sdfTime = new SimpleDateFormat("hh:mm a");
-			TimeZone timeZone=TimeZone.getTimeZone("IST");
-			   sdfTime.setTimeZone(timeZone);
+			TimeZone timeZone = TimeZone.getTimeZone("IST");
+			sdfTime.setTimeZone(timeZone);
 			Date createdDate = productionRequisitionEntity.getCreatedDate();
 			Date modifiedDate = productionRequisitionEntity.getModifiedDate();
 			String createdDateStr = sdfDate.format(createdDate);
@@ -86,9 +86,10 @@ public class PrintPdfProductRequisition extends HttpServlet {
 			root.put("modifiedDateStr", modifiedDateStr);
 			UserEntity createdBy = productionRequisitionEntity.getCreatedBy();
 			root.put("createdBy", createdBy == null ? "" : createdBy.getFirstName() + " " + createdBy.getLastName());
-			root.put("productName", "" + productionRequisitionEntity.getBomEntity().getStockItemType().getItemName().toString());
-			root.put("deliveryDate", sdfDate.format(productionRequisitionEntity.getDeliveryDate()));
-			root.put("deliveryTime", sdfTime.format(productionRequisitionEntity.getDeliverytime()));
+			root.put("productName",
+					"" + productionRequisitionEntity.getBomEntity().getStockItemType().getItemName().toString());
+			root.put("deliveryDate", sdfDate.format(productionRequisitionEntity.getDeliveryDateTime()));
+			root.put("deliveryTime", sdfTime.format(productionRequisitionEntity.getDeliveryDateTime()));
 			Template temp = PDFHtmlTemplateService.getConfiguration()
 					.getTemplate("pdf_templates/production_requisition_tmpl.ftlh");
 
