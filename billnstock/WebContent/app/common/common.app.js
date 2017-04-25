@@ -620,11 +620,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		controller : 'dayBook',
 
 	}).state('production.bom_requisition', {
-		url : "/bom_requisition",
-		templateUrl : '/app/production/bom_requisition.html',
-		controller : 'bom_requisition',
-
-	}).state('production.bom_requisition', {
 		url : "/bom requisition",
 		templateUrl : '/app/production/bom_requisition.html',
 		controller : 'bom_requisition',
@@ -632,10 +627,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
 			productionRequisition : null
 		}
-		
-	})
-	
-	.state('production.list_product_requisition', {
+	}).state('production.list_product_requisition', {
 		url : "/list Product Requisition",
 		templateUrl : '/app/production/list_product_requisition.html',
 		controller : 'list_product_requisition',
