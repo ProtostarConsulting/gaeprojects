@@ -9,6 +9,9 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
 import com.protostar.billingnstock.cust.entities.Customer;
 import com.protostar.billnstock.entity.BaseEntity;
+import com.protostar.billnstock.until.data.Constants;
+import com.protostar.billnstock.until.data.EntityUtil;
+import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 import com.protostar.billnstock.until.data.Constants.DocumentStatus;
 
 @Cache
@@ -32,6 +35,17 @@ public class ProductionPlanEntity extends BaseEntity {
 
 	private List<ProductionRequisitionEntity> prodRequisitionList;
 	private List<ProductionShipmentEntity> prodShipmentList;
+
+	@Override
+	public void beforeSave() {
+		super.beforeSave();
+
+		if (getId() == null) {
+			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
+					EntityUtil.getBusinessRawKey(getBusiness()), Constants.PROD_PLAN_NO_COUNTER);
+			setItemNumber(sequenceGenService.getNextSequenceNumber());
+		}
+	}
 
 	public Customer getCustomer() {
 		return customer == null ? null : customer.get();

@@ -13,6 +13,7 @@ import com.googlecode.objectify.Key;
 import com.protostar.billingnstock.production.entities.BomEntity;
 import com.protostar.billingnstock.production.entities.MachineQCUnitMeasure;
 import com.protostar.billingnstock.production.entities.ProductionMachineEntity;
+import com.protostar.billingnstock.production.entities.ProductionPlanEntity;
 import com.protostar.billingnstock.production.entities.ProductionRequisitionEntity;
 import com.protostar.billingnstock.production.entities.ProductionSetting;
 import com.protostar.billingnstock.production.entities.ProductionShipmentEntity;
@@ -64,6 +65,20 @@ public class ProductionService {
 				.ancestor(Key.create(BusinessEntity.class, busId)).list();
 		return bomEntityList;
 
+	}
+
+	@ApiMethod(name = "addProdPlanEntity", path = "addProdPlanEntity")
+	public ProductionPlanEntity addProdPlanEntity(ProductionPlanEntity prodPlanEntity) {
+		ofy().save().entity(prodPlanEntity).now();
+		return prodPlanEntity;
+	}
+	
+	@ApiMethod(name = "getProductionPlanList", path = "getProductionPlanList")
+	public List<ProductionPlanEntity> getProductionPlanList(@Named("busId") Long busId) {
+		List<ProductionPlanEntity> planList = ofy().load().type(ProductionPlanEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).list();
+
+		return planList;
 	}
 
 	@ApiMethod(name = "listBomEntityByID", path = "listBomEntityByID")
