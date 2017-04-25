@@ -95,7 +95,7 @@ public class PrintPdfBOM extends HttpServlet {
 			temp.process(root, out);
 			String pdfXMLContent = byteArrayOutputStream.toString();
 			worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
-			PDFHtmlTemplateService.addDocumentFooter(bomEntity, writer);
+
 			document.close();
 
 		} catch (Exception e) {
