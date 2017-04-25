@@ -631,6 +631,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		templateUrl : '/app/accounting/dayBook.html',
 		controller : 'dayBook',
 
+	}).state('production', {
+		url : "/production",
+		templateUrl : '/app/production/prod_module.html',
+		controller : 'prodModuleCtr'
 	}).state('production.bom_requisition', {
 		url : "/bom requisition",
 		templateUrl : '/app/production/bom_requisition.html',
@@ -649,18 +653,23 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		templateUrl : '/app/production/add_bom.html',
 		controller : 'add_bom',
 		params : {
-
 			bomCategory : null
 		}
 	}).state('production.list_bom', {
 		url : "/list_bom",
 		templateUrl : '/app/production/list_bom.html',
-		controller : 'list_bom',
-
-	}).state('production', {
-		url : "/production",
-		templateUrl : '/app/production/prod_module.html',
-		controller : 'prodModuleCtr'
+		controller : 'list_bom'
+	}).state('production.add_prod_plan', {
+		url : "/add_prod_plan",
+		templateUrl : '/app/production/add_prod_plan.html',
+		controller : 'addProdPlanCtr',
+		params : {
+			prodPlan : null
+		}
+	}).state('production.list_prod_plan', {
+		url : "/list_prod_plan",
+		templateUrl : '/app/production/list_prod_plan.html',
+		controller : 'listProdPlanCtr'
 	}).state('production.add_machine', {
 		url : "/add_machine",
 		templateUrl : '/app/production/add_machine.html',

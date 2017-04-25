@@ -3161,6 +3161,25 @@ function googleEndpointSF($q) {
 				});
 		return deferred.promise;
 	}
+	ProductionService.addProdPlanEntity = function(entity) {
+		var deferred = $q.defer();
+		gapi.client.productionService.addProdPlanEntity(entity).execute(
+				function(resp) {
+					deferred.resolve(resp);
+				});
+		return deferred.promise;
+	}
+
+	ProductionService.getProductionPlanList = function(busId) {
+		var deferred = $q.defer();
+		gapi.client.productionService.getProductionPlanList({
+			"busId" : busId
+		}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}
+
 	ProductionService.addRequisition = function(production) {
 		var deferred = $q.defer();
 		gapi.client.productionService.addRequisition(production).execute(
@@ -3169,20 +3188,20 @@ function googleEndpointSF($q) {
 				});
 		return deferred.promise;
 	}
-	ProductionService.getlistBomEntity = function(bid) {
+	ProductionService.getlistBomEntity = function(busId) {
 		var deferred = $q.defer();
 		gapi.client.productionService.listBomEntity({
-			"bid" : bid
+			"busId" : busId
 		}).execute(function(resp) {
 			deferred.resolve(resp.items);
 		});
 		return deferred.promise;
 	}
 
-	ProductionService.listProductionRequisitionEntity = function(bid) {
+	ProductionService.listProductionRequisitionEntity = function(busId) {
 		var deferred = $q.defer();
 		gapi.client.productionService.listProductionRequisitionEntity({
-			"bid" : bid
+			"busId" : busId
 		}).execute(function(resp) {
 			deferred.resolve(resp.items);
 		});
