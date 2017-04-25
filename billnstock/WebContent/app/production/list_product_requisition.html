@@ -6,7 +6,7 @@
 <md-content ng-if="!loading" layout-padding>
 <section layout="row" layout-xs="column">
 	<md-subheader class="md-primary">
-	<h4 class="md-title">BOM List</h4>
+	<h4 class="md-title">BOM Requisition List</h4>
 	</md-subheader>
 	<span flex></span>
 	<div layout="row" flex="33" flex-sm="50" flex-xs="100">
@@ -31,14 +31,14 @@
 				</tr>
 			</thead>
 			<tbody md-body>
-				<tr md-row ng-repeat="bomEntity in bomList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit"">
+				<tr md-row ng-repeat="bomRequisitionEntity in bomRequiList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit"">
 					<td md-cell>{{$index+1}}</td>
-					<td md-cell>{{bomEntity.stockItemType.itemName}}</td>
+					<td md-cell>{{bomRequisitionEntity.bomEntity.stockItemType.itemName}}</td>
 					<td md-cell><md-button class="md-icon-button"
-							ui-sref="production.add_bom({bomCategory:bomEntity})">
+							ui-sref="production.bom_requisition({productionRequisition:bomRequisitionEntity})">
 						<ng-md-icon icon="edit" style="fill: md-default" size="20">
 						<md-tooltip> Edit</md-tooltip></ng-md-icon></md-button> <md-button class="md-icon-button"
-							ng-click="printBOM(bomEntity.id)"> <ng-md-icon
+							ng-click="printProductRequisition(bomRequisitionEntity.id)"> <ng-md-icon
 							icon="print" style="fill: md-default" size="20"> <md-tooltip>
 						Print BOM</md-tooltip></ng-md-icon></md-button></td>
 				</tr>

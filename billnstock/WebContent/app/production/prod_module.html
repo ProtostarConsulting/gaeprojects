@@ -6,24 +6,33 @@
 					ng-click="back()"> <md-tooltip> go back</md-tooltip> <md-icon
 					md-svg-icon="img/icons/ic_reply_black_24px.svg"
 					aria-label="go back"></md-icon> </md-button>
-				<md-button ui-sref="production.add_bom" class="md-primary">Add
+				<md-button hide-xs ui-sref="production.add_bom" class="md-primary">Add
 				BOM </md-button>
-				<md-button ui-sref="production.list_bom" class="md-primary">List
+				<md-button hide-xs ui-sref="production.list_bom" class="md-primary">List
 				BOM </md-button>
-
+				<md-button hide-xs ui-sref="production.add_machine"
+					class="md-primary">Add Machine </md-button>
+				<md-button hide-xs ui-sref="production.list_machine"
+					class="md-primary">Machine List</md-button>
+				<md-button hide-xs ui-sref="production.add_qcmachine"
+					class="md-primary">Add Machine QC</md-button>
+				<md-button hide-xs ui-sref="production.list_qcmachine"
+					class="md-primary">List Machine QC</md-button>
 				<md-button hide-xs ui-sref="production.add_qcmachine_record"
 					class="md-primary">Add QC Machine Record </md-button>
 				<md-button hide-xs ui-sref="production.list_qcmachine_record"
-					class="md-primary">List QC Machine Record </md-button>
+					class="md-primary">List QC Machine Record </md-button>	
 				<md-button hide-xs ui-sref="production.bom_requisition"
 					class="md-primary">Prod Requisition </md-button>
-
-				<span flex></span>
+					<br>
+					<br>
+					
+	<span flex></span>
 				<md-button
 					ng-show="hasUserAuthority(curUser, 'Invoice.ModuleAdmin')"
 					layout-align="center end" class="md-icon-button md-accent"
-					ui-sref="production.setting" aria-label="Favorite"> <md-icon
-					md-svg-icon="img/icons/ic_settings_black_24px.svg"> <md-tooltip>Production
+					ui-sref="invoice.settings" aria-label="Favorite"> <md-icon
+					md-svg-icon="img/icons/ic_settings_black_24px.svg"> <md-tooltip>Invoice
 				Settings</md-tooltip></md-icon> </md-button>
 				<section layout="row">
 					<md-button class="md-icon-button" aria-label="More"
@@ -33,23 +42,24 @@
 				</section>
 			</div>
 
+
 			<md-sidenav class="md-sidenav-right md-whiteframe-z2"
 				md-component-id="right"> <md-toolbar
 				class="md-theme-light">
 			<h1 class="md-toolbar-tools">More Actions...</h1>
 
-			</md-toolbar> <md-content layout-padding> <md-button hide-xs
-				ui-sref="production.add_machine" class="md-primary"
-				ng-click="close()">Add Machine </md-button> <md-button hide-xs
-				ui-sref="production.list_machine" class="md-primary"
-				ng-click="close()">Machine List</md-button> <md-button
-				ui-sref="production.add_qcmachine" class="md-primary"
-				ng-click="close()">Add Machine QC</md-button> <md-button
-				ui-sref="production.list_qcmachine" class="md-primary"
-				ng-click="close()">List Machine QC</md-button> </md-content> </md-sidenav>
+
+			</md-toolbar> <md-content layout-padding><!--  <md-button
+				ui-sref="customer.add" ng-click="close()" class="md-primary">
+			Add Customer </md-button> --></md-content> </md-sidenav>
 		</section>
 
 	</div>
+	
+	<div>
+					<md-button hide-xs ui-sref="production.list_product_requisition"
+					class="md-primary">Prod Requisition List </md-button>
+</div>
 
 	<div ui-view layout-padding></div>
 </div>

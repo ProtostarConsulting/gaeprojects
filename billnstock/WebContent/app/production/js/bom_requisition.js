@@ -9,7 +9,8 @@ app
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
 
-					$scope.productionRequisition = null;
+					$scope.productionRequisition = $stateParams.productionRequisition ? $stateParams.productionRequisition
+							: null;
 
 					$scope.query = {
 						order : 'firstName',

@@ -17,18 +17,8 @@
 					ng-repeat="bomEntity in bomList"
 					ng-selected="productionRequisition.bomEntity.id == bomEntity.id"
 					>{{bomEntity.stockItemType.itemName}} </md-option> </md-select> </md-input-container>
- <!--
- 
- <md-select name="category" ng-model="bomCategory.cat"
-								ng-change="getStockItemTypes(bomCategory,$index)"
-								placeholder="Category Name" ng-required="true"> <md-option
-								ng-value="category" ng-repeat="category in stockItemCategories"
-								ng-selected="bomCategory.cat.id == category.id">{{category.catName}}
-							</md-option> </md-select>
- 
-  
- -->
-ng-selected={{productionRequisition.bomEntity.id == bomEntity.id}}
+
+
 
 				<md-input-container flex> <input type="number"
 					aria-label="period" placeholder="Enter Qty."
@@ -36,6 +26,16 @@ ng-selected={{productionRequisition.bomEntity.id == bomEntity.id}}
 					ng-model="productionRequisition.productQty"> </md-input-container>
 			</div>
 		</div>
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////	//////// -->
+		<div layout="row" layout-xs="column" flex="50" flex-gt-xs>
+		<mdp-date-picker mdp-placeholder="Delivery Date"
+			ng-model="productionRequisition.deliveryDate"></mdp-date-picker>
+	<h5 class="md-caption" class="md-caption" style="padding-top: 20px; padding-left: 20px; padding-right: 20px;"></h5>
+			<mdp-time-picker mdp-format="hh:mm A" ng-model="productionRequisition.deliverytime"
+				mdp-placeholder="Delivery Time"></mdp-time-picker>
+			
+	</div>
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////	 ///////////////////-->
 
 		<table md-table md-progress="promise">
 			<thead ng-if="!dataTableOptions.decapitate" md-head

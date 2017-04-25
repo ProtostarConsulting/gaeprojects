@@ -38,8 +38,6 @@ public class StockItemTypeEntity extends BaseEntity {
 	 */
 	@Index
 	private boolean maintainAsProductionItem = false;
-	
-	@Index
 	private boolean maintainStockBySerialNumber = false;
 
 	@Index

@@ -86,10 +86,10 @@
 			</div>
 		</section>
 		<section layout="row" layout-xs="column">
-			<div flex="50" flex-xs="100">
+			<div flex="50">
 				<h4>Select Category</h4>
-				<div layout="row" layout-xs="column" layout-wrap flex>
-					<div flex="50" flex-xs="100" ng-repeat="cat in stockItemCategories">
+				<div layout="row" layout-wrap flex>
+					<div flex="50" ng-repeat="cat in stockItemCategories">
 						<md-checkbox ng-checked="exists(cat, stock.categoryList)"
 							ng-click="toggle(cat, stock.categoryList)"> {{
 						cat.catName }} </md-checkbox>

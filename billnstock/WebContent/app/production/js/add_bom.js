@@ -7,7 +7,6 @@ app
 						$mdUtil, $log, $stateParams, objectFactory,
 						appEndpointSF, $mdDialog, $mdMedia) {
 					
-					$scope.loading = true;
 					$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
 					
 					$scope.getEmptyBomObjadd = function() {
@@ -122,13 +121,11 @@ app
 					function getAllStockItemTypes() {
 						var stockService = appEndpointSF.getStockService();
 						stockService.getStockItemTypes(
-								$scope.curUser.business.id, true).then(
+								$scope.curUser.business.id).then(
 								function(list) {
 									$scope.stockItemTypeList = list;
-									$scope.loading = false;
 								});
-					}					
-					
+					}
 					// End Stock Type
 
 					$scope.waitForServiceLoad = function() {

@@ -8,6 +8,7 @@ import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.OnSave;
 import com.googlecode.objectify.annotation.Parent;
+import com.protostar.billingnstock.taskmangement.Comment;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.user.entities.UserEntity;
 import com.protostar.billnstock.until.data.WebUtil;
@@ -31,8 +32,6 @@ public abstract class BaseEntity {
 	@Index
 	private Ref<UserEntity> approvedBy;
 	private List<Comment> documentComments;
-
-	private List<DocumentFile> documentFileList = null;
 
 	@Index
 	private boolean isDeleted = false;
@@ -163,15 +162,5 @@ public abstract class BaseEntity {
 
 	public void setDocumentComments(List<Comment> documentComments) {
 		this.documentComments = documentComments;
-	}
-
-	public List<DocumentFile> getDocumentFileList() {
-		return documentFileList;
-	}
-
-	public void setDocumentFileList(List<DocumentFile> documentFileList) {
-		this.documentFileList = documentFileList;
-	}
-
-	
+	}	
 }

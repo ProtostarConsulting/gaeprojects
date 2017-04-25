@@ -39,7 +39,7 @@ td {
 <p>
 	<br></br>
 </p>
-<div align="center"><span style="font-size:20px;"><b>Bill Of Material </b></span>
+<div align="center"><span style="font-size:20px;"><b>Production Requisition </b></span>
 <p align="center"> for</p>
 <p align="center"><b>${productName}</b></p>
 
@@ -55,14 +55,14 @@ td {
 						<table style="width: 100%; height: 100%;">
 							<tbody>
 								<tr>
-									<td align="left" style="border: 0px;"><br></br>
+									<td align="left" style="border: 0px;"><b>Delivery Date:</b>${deliveryDate}<br></br>
 										 <br></br>
 										
 									</td>
 								</tr>
 								<tr>
-									<td align="left" style="border: 0px;">
-										
+									<td align="left" style="border: 0px;"><b> Delivery Time</b>
+										${deliveryTime}
 									</td>
 								</tr>
 								<tr>

@@ -478,7 +478,6 @@ angular
 						boundaryLinks : true,
 						limitSelect : true,
 						pageSelect : false,
-						limit : 50,
 						limitOptions : [ 10, 25, 50, 100 ]
 					};
 
