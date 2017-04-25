@@ -9,7 +9,12 @@ app
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
 
-					$scope.productionRequisition = null;
+					$scope.productionRequisition = $stateParams.productionRequisition ? $stateParams.productionRequisition
+							: null;
+					if($stateParams.productionRequisition!=null){
+					$scope.productionRequisition.deliveryDate=new Date($stateParams.productionRequisition.deliveryDate);
+					$scope.productionRequisition.deliverytime=new Date($stateParams.productionRequisition.deliverytime);
+					}
 
 					$scope.query = {
 						order : 'firstName',
@@ -66,6 +71,8 @@ app
 
 					}
 					$scope.selectItems = function(bomEntity) {
+						
+						if(!$scope.productionRequisition.id){
 						var productService = appEndpointSF
 								.getProductionService();
 						productService
@@ -73,7 +80,8 @@ app
 								.then(
 										function(productionRequisitionTemp) {
 											$scope.productionRequisition = productionRequisitionTemp;
-										});
+											});
+						}
 
 					}
 

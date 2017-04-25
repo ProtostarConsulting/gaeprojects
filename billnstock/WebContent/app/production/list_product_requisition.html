@@ -31,7 +31,7 @@
 				</tr>
 			</thead>
 			<tbody md-body>
-				<tr md-row ng-repeat="bomRequisitionEntity in bomRequiList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit"">
+				<tr md-row ng-repeat="bomRequisitionEntity in bomRequiList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
 					<td md-cell>{{$index+1}}</td>
 					<td md-cell>{{bomRequisitionEntity.bomEntity.stockItemType.itemName}}</td>
 					<td md-cell><md-button class="md-icon-button"
@@ -40,7 +40,7 @@
 						<md-tooltip> Edit</md-tooltip></ng-md-icon></md-button> <md-button class="md-icon-button"
 							ng-click="printProductRequisition(bomRequisitionEntity.id)"> <ng-md-icon
 							icon="print" style="fill: md-default" size="20"> <md-tooltip>
-						Print BOM</md-tooltip></ng-md-icon></md-button></td>
+						Print Product Requisition</md-tooltip></ng-md-icon></md-button></td>
 				</tr>
 			</tbody>
 		</table>
