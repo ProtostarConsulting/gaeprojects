@@ -13,7 +13,7 @@
 		<md-input-container flex> <label>Search</label> <input
 			ng-model="searchText"> </md-input-container>
 	</div>
-	<md-button class="md-icon-button" ui-sref="production.add_bom({currentBomList: bomList})">
+	<md-button class="md-icon-button" ui-sref="production.add_bom">
 	<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
 	<md-tooltip> Add New </md-tooltip></ng-md-icon> </md-button>
 </section>
@@ -27,6 +27,7 @@
 				<tr md-row>
 					<th md-column md-order-by="itemNumber">BOM Item No.</th>
 					<th md-column md-order-by="type">Product Name</th>
+					<th md-column>Desc</th>
 					<th md-column md-order-by="type">Action</th>
 				</tr>
 			</thead>
@@ -34,8 +35,9 @@
 				<tr md-row ng-repeat="bomEntity in bomList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit"">
 					<td md-cell>{{bomEntity.itemNumber}}</td>
 					<td md-cell>{{bomEntity.stockItemType.itemName}}</td>
+					<td md-cell>{{bomEntity.note}}</td>
 					<td md-cell><md-button class="md-icon-button"
-							ui-sref="production.add_bom({bomEntity:bomEntity})">
+							ui-sref="production.add_bom({bomEntity: bomEntity})">
 						<ng-md-icon icon="edit" style="fill: md-default" size="20">
 						<md-tooltip> Edit</md-tooltip></ng-md-icon></md-button> <md-button class="md-icon-button"
 							ng-click="printBOM(bomEntity.id)"> <ng-md-icon

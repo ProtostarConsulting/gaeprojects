@@ -27,10 +27,6 @@ app
 					$scope.documentEntity = $stateParams.bomEntity ? $stateParams.bomEntity
 							: $scope.getEmptyBomObjadd();
 					
-					$scope.currentBomList = $stateParams.currentBomList;
-					if(!$scope.currentBomList){
-						$scope.currentBomList = [];
-					}
 
 					$scope.addCatogory = function() {
 						var category = {
@@ -125,14 +121,16 @@ app
 						};
 					}
 
-					function getAllStockItemTypes() {
+					function getStockItemTypesForNewBom() {
 						var stockService = appEndpointSF.getStockService();
-						// true indicates get only products marked as Production
-						// Items in Stock Item types
-						stockService.getStockItemTypes(
-								$scope.curUser.business.id, true).then(
+						stockService.getStockItemTypesForNewBom(
+								$scope.curUser.business.id).then(
 								function(list) {
-									$scope.stockItemTypeList = list;
+									if (list)
+										$scope.stockItemTypeList = list;
+									else
+										$scope.stockItemTypeList = [];
+									
 									$scope.loading = false;
 								});
 					}
@@ -144,7 +142,7 @@ app
 							$scope.fetchCatogoryList();
 							if (!$scope.documentEntity.id) {
 								/* only load types if fresh add */
-								getAllStockItemTypes();
+								getStockItemTypesForNewBom();
 								$scope.addCatogory();
 							} else {
 								$scope.loading = false;

@@ -310,7 +310,7 @@
 							<th md-column width="4%">Sr.No.</th>
 							<th md-column width="40%">Item Name</th>
 							<th md-column>Quantity</th>
-							<th md-column >Price(&#x20b9)</th>
+							<th md-column>Price(&#x20b9)</th>
 							<th md-column md-numeric>Total(&#x20b9)</th>
 							<th md-column>Actions</th>
 						</tr>
@@ -463,7 +463,7 @@
 		<md-button class="md-raised md-primary"
 			ng-disabled="documentForm.$invalid" ng-click="submitDocumnent()">Submit</md-button>
 		<section layout="row" layout-xs="column"
-			ng-if="!settingsObj.needModuleDocumentApproval || hasUserAuthority(curUser, 'Invoice.ModuleApprover')">
+			ng-if="documentEntity.id &&  (!settingsObj.needModuleDocumentApproval || hasUserAuthority(curUser, 'Invoice.ModuleApprover'))">
 			<md-button class="md-raised md-primary"
 				ng-disabled="documentForm.$invalid"
 				ng-click="finalizeDocumnent($event)">Approve/Finalize</md-button>

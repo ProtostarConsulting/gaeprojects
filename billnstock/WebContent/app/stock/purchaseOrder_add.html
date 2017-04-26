@@ -401,7 +401,7 @@
 				<md-button class="md-raised md-primary"
 					ng-disabled="documentForm.$invalid" ng-click="submitDocumnent()">Submit</md-button>
 				<section layout="row" layout-xs="column"
-					ng-if="!settingsObj.needModuleDocumentApproval || hasUserAuthority(curUser, 'Stock.ModuleApprover')">
+					ng-if="documentEntity.id &&  (!settingsObj.needModuleDocumentApproval || hasUserAuthority(curUser, 'Stock.ModuleApprover'))">
 					<md-button class="md-raised md-primary"
 						ng-disabled="documentForm.$invalid"
 						ng-click="finalizeDocumnent($event)">Approve/Finalize</md-button>

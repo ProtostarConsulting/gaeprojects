@@ -664,8 +664,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		templateUrl : '/app/production/add_bom.html',
 		controller : 'add_bom',
 		params : {
-			bomEntity: null,
-			currentBomList: null
+			bomEntity: null
 		}
 	}).state('production.list_bom', {
 		url : "/list_bom",

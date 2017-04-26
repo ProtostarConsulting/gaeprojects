@@ -400,16 +400,9 @@ public class StockManagementService extends BaseService {
 	}
 
 	@ApiMethod(name = "getStockItemTypes", path = "getStockItemTypes")
-	public List<StockItemTypeEntity> getStockItemTypes(@Named("busId") Long busId,
-			@Named("productionItemFilter") Boolean productionItemFilter) {
-		Query<StockItemTypeEntity> baseQuery = ofy().load().type(StockItemTypeEntity.class)
-				.ancestor(Key.create(BusinessEntity.class, busId));
-
-		if (productionItemFilter) {
-			baseQuery = baseQuery.filter("maintainAsProductionItem", true);
-		}
-
-		List<StockItemTypeEntity> typeList = baseQuery.list();
+	public List<StockItemTypeEntity> getStockItemTypes(@Named("busId") Long busId) {
+		List<StockItemTypeEntity> typeList = ofy().load().type(StockItemTypeEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).list();
 		return typeList;
 	}
 

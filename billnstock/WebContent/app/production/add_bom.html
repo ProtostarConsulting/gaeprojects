@@ -11,26 +11,23 @@
 	</md-subheader>
 	<div>
 		<form name="entityForm">
-
 			<div layout="row" layout-xs="column">
-				<div layout="row" flex>
-					<md-autocomplete flex required ng-disabled="documentEntity.id"
-						md-input-name="autocompleteField" md-no-cache=true
-						md-selected-item="documentEntity.stockItemType"
-						md-search-text="searchTextInput"
-						md-items="item in querySearch(searchTextInput)"
-						md-item-text="item.itemName" md-floating-label="Select Product">
-					<md-item-template> <span
-						md-highlight-text="searchTextInput">{{item.itemName}}</span> </md-item-template>
-					<div ng-messages="entityForm.autocompleteField.$error"
-						ng-if="entityForm.autocompleteField.$touched">
-						<div ng-message="required">This is required field.</div>
-					</div>
-					</md-autocomplete>
-					<md-icon md-svg-src="img/icons/ic_queue_black_24px.svg"
-						ng-click="addStockType()" class="name"
-						style="color: Green; height: 14px; width: 14px;"></md-icon>
+				<md-autocomplete flex required ng-disabled="documentEntity.id"
+					md-input-name="autocompleteField" md-no-cache=true
+					md-selected-item="documentEntity.stockItemType"
+					md-search-text="searchTextInput"
+					md-items="item in querySearch(searchTextInput)"
+					md-item-text="item.itemName" md-floating-label="Select Product">
+				<md-item-template> <span
+					md-highlight-text="searchTextInput">{{item.itemName}}</span> </md-item-template>
+				<div ng-messages="entityForm.autocompleteField.$error"
+					ng-if="entityForm.autocompleteField.$touched">
+					<div ng-message="required">This is required field.</div>
 				</div>
+				<div class="hint" ng-if="!documentEntity.id">This is an
+					auto-complete field, will only suggest stock items marked as
+					Production Items and do not have BOM defined yet.</div>
+				</md-autocomplete>
 
 				<md-input-container flex> <input type="text"
 					aria-label="period" placeholder="Discription"

@@ -2276,19 +2276,25 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
-	StockService.getStockItemTypes = function(busId, productionItemFilterBool) {
+	StockService.getStockItemTypes = function(busId) {
 		var deferred = $q.defer();
-		if (productionItemFilterBool == undefined)
-			productionItemFilterBool = false
 		gapi.client.stockService.getStockItemTypes({
-			"busId" : busId,
-			"productionItemFilter" : productionItemFilterBool
+			"busId" : busId
 		}).execute(function(resp) {
 			deferred.resolve(resp.items);
 		});
 		return deferred.promise;
 	}
-	
+
+	StockService.getStockItemTypesForNewBom = function(busId) {
+		var deferred = $q.defer();
+		gapi.client.stockService.getStockItemTypesForNewBom({
+			"busId" : busId
+		}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
+		return deferred.promise;
+	}
 
 	StockService.getAllStockItems = function(busId) {
 		var deferred = $q.defer();
@@ -2689,7 +2695,7 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	
+
 	StockService.addStockReceiptQC = function(qcStockReceiptObj) {
 		var deferred = $q.defer();
 		gapi.client.stockService.addStockReceiptQC(qcStockReceiptObj).execute(
@@ -2698,18 +2704,17 @@ function googleEndpointSF($q) {
 				});
 		return deferred.promise;
 	}
-	
+
 	StockService.getStockReceiptQCList = function(busId) {
 		var deferred = $q.defer();
 		gapi.client.stockService.getStockReceiptQCList({
 			"busId" : busId
-		}).execute(
-				function(resp) {
-					deferred.resolve(resp.items);
-				});
+		}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
 		return deferred.promise;
 	}
-	
+
 	StockService.getStockReceiptQCById = function(busId, id) {
 		var deferred = $q.defer();
 		gapi.client.stockService.getStockReceiptQCById({
@@ -2720,29 +2725,28 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
-	
+
 	StockService.addStockReceiptQCRecord = function(qcStockReceiptObj) {
 		var deferred = $q.defer();
-		gapi.client.stockService.addStockReceiptQCRecord(qcStockReceiptObj).execute(
-				function(resp) {
+		gapi.client.stockService.addStockReceiptQCRecord(qcStockReceiptObj)
+				.execute(function(resp) {
 					deferred.resolve(resp);
 				});
 		return deferred.promise;
 	}
-	
+
 	StockService.getStockReceiptQCRecord = function(busId) {
 		var deferred = $q.defer();
 		gapi.client.stockService.getStockReceiptQCRecord({
 			"busId" : busId
-		}).execute(
-				function(resp) {
-					deferred.resolve(resp.items);
-				});
+		}).execute(function(resp) {
+			deferred.resolve(resp.items);
+		});
 		return deferred.promise;
 	}
-	
-	StockService.getStockReceiptQCDailyRecordEntity = function(qcStockReceiptId,
-			busId, date) {
+
+	StockService.getStockReceiptQCDailyRecordEntity = function(
+			qcStockReceiptId, busId, date) {
 		var deferred = $q.defer();
 		gapi.client.stockService.getStockReceiptQCDailyRecordEntity({
 			"qcStockReceiptId" : qcStockReceiptId,
