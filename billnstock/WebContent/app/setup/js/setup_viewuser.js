@@ -9,9 +9,11 @@ angular
 					function defaultActionProcessing() {
 						return {
 							saving : false,
-							saveButtonText : "SAVE"
+							saveButtonText : "Save Changes",
+							savingButtonText : "Saving..."
 						};
 					}
+					
 					$scope.actionProcessing = defaultActionProcessing();
 
 					$scope.selectedUser = $stateParams.selectedUser;
@@ -56,8 +58,7 @@ angular
 
 					$scope.updateuser = function() {
 						$scope.actionProcessing.saving = true;
-						$scope.actionProcessing.saveButtonText = "Saving..."
-
+						
 						$scope.selectedUser.modifiedBy = $scope.curUser.email_id;
 						var UserService = appEndpointSF.getUserService();
 						UserService

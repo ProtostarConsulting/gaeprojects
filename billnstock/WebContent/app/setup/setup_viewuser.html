@@ -163,7 +163,8 @@
 <section layout="row" layout-xs="column" layout-align="left left">
 	<md-button class="md-raised md-primary"
 		ng-disabled="viewuser.$invalid || actionProcessing.saving"
-		ng-click="updateuser()" ng-bind="actionProcessing.saveButtonText">Save</md-button>
+		ng-click="updateuser()"
+		ng-bind="actionProcessing.saving?actionProcessing.savingButtonText : actionProcessing.saveButtonText">Save</md-button>
 </section>
 </md-content>
 

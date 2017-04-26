@@ -11,6 +11,16 @@ app
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
 
+					function defaultActionProcessing() {
+						return {
+							saving : false,
+							saveButtonText : "Submit",
+							savingButtonText : "Saving..."
+						};
+					}
+
+					$scope.actionProcessing = defaultActionProcessing();
+
 					$scope.getEmptyBomObjadd = function() {
 						return {
 							productName : "",
@@ -26,7 +36,6 @@ app
 
 					$scope.documentEntity = $stateParams.bomEntity ? $stateParams.bomEntity
 							: $scope.getEmptyBomObjadd();
-					
 
 					$scope.addCatogory = function() {
 						var category = {
@@ -59,16 +68,19 @@ app
 					};
 
 					$scope.submitBom = function() {
-
+						$scope.actionProcessing.saving = true;
 						var productService = appEndpointSF
 								.getProductionService();
-						productService.addBomEntity($scope.documentEntity)
-								.then(function(bom) {
-									if (bom.id)
-										$scope.documentEntity.id = bom.id;
+						productService
+								.addBomEntity($scope.documentEntity)
+								.then(
+										function(bom) {
+											if (bom.id)
+												$scope.documentEntity.id = bom.id;
 
-									$scope.showAddToast();
-								});
+											$scope.actionProcessing = defaultActionProcessing();
+											$scope.showAddToast();
+										});
 
 					}
 					$scope.fetchCatogoryList = function() {
@@ -130,7 +142,7 @@ app
 										$scope.stockItemTypeList = list;
 									else
 										$scope.stockItemTypeList = [];
-									
+
 									$scope.loading = false;
 								});
 					}

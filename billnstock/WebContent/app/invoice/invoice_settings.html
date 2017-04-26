@@ -11,8 +11,9 @@
 			ng-true-value="true" ng-false-value="false"
 			aria-label="needModuleDocumentApproval"> Need Module
 		Document Approval</md-checkbox>
-		<div class= "md-caption" style="padding-left:20px;">This setting makes Approval Compulsory for this module
-			Documents like Invoice, Quotation, etc.</div>
+		<div class="md-caption" style="padding-left: 20px;">This setting
+			makes Approval Compulsory for this module Documents like Invoice,
+			Quotation, etc.</div>
 	</div>
 	<h4 class="md-subhead">Setup Default Invoice Items</h4>
 	<md-content layout="row"> <md-checkbox
@@ -48,8 +49,10 @@
 </form>
 
 <section layout="row" layout-sm="column">
-	<md-button class="md-raised md-primary" id="addInvoice"
-		ng-click="addInvoiceSettings()">Save Changes </md-button>
+	<md-button class="md-raised md-primary"
+		ng-disabled="actionProcessing.saving" ng-click="addInvoiceSettings()"
+		ng-bind="actionProcessing.saving?actionProcessing.savingButtonText : actionProcessing.saveButtonText">Save
+	Changes</md-button>
 </section>
 </md-content>
 

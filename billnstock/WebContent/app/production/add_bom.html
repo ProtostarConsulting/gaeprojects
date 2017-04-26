@@ -134,7 +134,10 @@
 	<div layout layout-xs="column">
 		<section layout="row" layout-xs="column">
 			<md-button class="md-raised md-primary"
-				ng-disabled="entityForm.$invalid" ng-click="submitBom()">Submit</md-button>
+				ng-disabled="entityForm.$invalid || actionProcessing.saving"
+				ng-click="submitBom()"
+				ng-bind="actionProcessing.saving?actionProcessing.savingButtonText : actionProcessing.saveButtonText">Save
+			Changes</md-button>
 		</section>
 	</div>
 </div>

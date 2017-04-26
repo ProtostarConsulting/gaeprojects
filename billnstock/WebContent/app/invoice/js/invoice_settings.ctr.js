@@ -6,6 +6,16 @@ app.controller("invoiceSettingsCtr", function($scope, $window, $mdToast,
 
 	$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
 
+	function defaultActionProcessing() {
+		return {
+			saving : false,
+			saveButtonText : "Save Changes",
+			savingButtonText : "Saving..."
+		};
+	}
+
+	$scope.actionProcessing = defaultActionProcessing();
+
 	$scope.settingsObj = {};
 
 	$scope.addInvoiceSettings = function() {
@@ -13,12 +23,12 @@ app.controller("invoiceSettingsCtr", function($scope, $window, $mdToast,
 		var InvoiceService = appEndpointSF.getInvoiceService();
 		$scope.settingsObj.business = $scope.curUser.business;
 		$scope.settingsObj.modifiedBy = $scope.curUser.email_id;
-
+		$scope.actionProcessing.saving = true;
 		InvoiceService.addInvoiceSettings($scope.settingsObj).then(
 				function(savedRecoed) {
 					$scope.settingsObj = savedRecoed;
 					$scope.showUpdateToast();
-
+					$scope.actionProcessing = defaultActionProcessing();
 				});
 
 	}

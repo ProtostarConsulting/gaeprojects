@@ -6,11 +6,13 @@
 	<span flex></span>
 </section>
 <form name="documentForm" layout="column">
-	<md-input-container flex="80" layout="row" flex> <label>SENDGRID API KEY</label>
-	<input type="text" ng-model="settingsObj.sendGridAPIKey"> </md-input-container>
+	<md-input-container flex="80" layout="row" flex> <label>SENDGRID
+		API KEY</label> <input type="text" ng-model="settingsObj.sendGridAPIKey">
+	</md-input-container>
 
-	<md-input-container flex="80" layout="row" flex> <label>TEXTLOCAL API KEY</label>
-	<input type="text" ng-model="settingsObj.textLocalAPIKey"> </md-input-container>
+	<md-input-container flex="80" layout="row" flex> <label>TEXTLOCAL
+		API KEY</label> <input type="text" ng-model="settingsObj.textLocalAPIKey">
+	</md-input-container>
 
 	<div layout="row" layout-xs="column">
 		<div flex-xs flex="40">
@@ -36,7 +38,8 @@
 		<div flex-xs flex="40">
 			<md-checkbox ng-model="settingsObj.electronicallyGeneratedMsg"
 				ng-true-value="true" ng-false-value="false"
-				aria-label="electronicallyGeneratedMsg"> Display Electronically Generated Document Msg</md-checkbox>
+				aria-label="electronicallyGeneratedMsg"> Display
+			Electronically Generated Document Msg</md-checkbox>
 		</div>
 
 		<div class="md-caption" style="padding-left: 20px;">This is a
@@ -44,8 +47,10 @@
 	</div>
 </form>
 <section layout="row" layout-sm="column">
-	<md-button class="md-raised md-primary" ng-click="addSettings()">Save
-	Changes </md-button>
+	<md-button class="md-raised md-primary"
+		ng-disabled="actionProcessing.saving" ng-click="addSettings()"
+		ng-bind="actionProcessing.saving?actionProcessing.savingButtonText : actionProcessing.saveButtonText">Save
+	Changes</md-button>
 </section>
 </md-content>
 

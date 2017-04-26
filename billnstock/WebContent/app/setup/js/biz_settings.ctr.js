@@ -5,6 +5,16 @@ app.controller("bizSettingsCtr", function($scope, $window, $mdToast, $timeout,
 
 	$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
 
+	function defaultActionProcessing() {
+		return {
+			saving : false,
+			saveButtonText : "Save Changes",
+			savingButtonText : "Saving..."
+		};
+	}
+	
+	$scope.actionProcessing = defaultActionProcessing();
+
 	$scope.settingsObj = {}
 
 	$scope.addSettings = function() {
@@ -14,11 +24,12 @@ app.controller("bizSettingsCtr", function($scope, $window, $mdToast, $timeout,
 			$scope.settingsObj.business = $scope.curUser.business;
 
 		$scope.settingsObj.modifiedBy = $scope.curUser.email_id;
-
+		$scope.actionProcessing.saving = true;
 		userService.addBusinessSettingsEntity($scope.settingsObj).then(
 				function(savedRecoed) {
 					$scope.settingsObj = savedRecoed;
 					$scope.showUpdateToast();
+					$scope.actionProcessing = defaultActionProcessing();
 				});
 	}
 
