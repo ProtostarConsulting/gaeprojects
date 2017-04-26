@@ -293,6 +293,9 @@ app
 							$scope.productionRequisition.deliveryDateTime = new Date();
 						}
 
+						$scope.productionRequisitionBackup = angular
+								.copy($scope.productionRequisition);
+
 						$scope.bomList = [];
 						$scope.stockItemCategories = [];
 						$scope.stockTypeList = [];
@@ -333,6 +336,12 @@ app
 							$scope.productionRequisition.modifiedBy = curUser.email_id;
 							$scope.productionRequisition.prodPlanItemNumber = prodPlan.itemNumber;
 
+							if ($scope.productionRequisitionBackup.id) {
+								// if edit changed the value it should edit
+								// existing record, not create new one
+								$scope.productionRequisition.id = $scope.productionRequisitionBackup.id;
+
+							}
 							productService
 									.addRequisition(
 											$scope.productionRequisition)
@@ -383,7 +392,8 @@ app
 
 						$scope.reqBomItemChanged = function(bomEntity) {
 
-							if (!$scope.productionRequisition.id) {
+							if (!$scope.productionRequisition.id
+									|| $scope.productionRequisitionBackup.bomEntity.id !== bomEntity.id) {
 								var productService = appEndpointSF
 										.getProductionService();
 								productService

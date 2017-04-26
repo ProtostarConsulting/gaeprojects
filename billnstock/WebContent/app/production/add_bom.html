@@ -14,8 +14,9 @@
 
 			<div layout="row" layout-xs="column">
 				<div layout="row" flex>
-					<md-autocomplete flex required md-input-name="autocompleteField"
-						md-no-cache=true md-selected-item="documentEntity.stockItemType"
+					<md-autocomplete flex required ng-disabled="documentEntity.id"
+						md-input-name="autocompleteField" md-no-cache=true
+						md-selected-item="documentEntity.stockItemType"
 						md-search-text="searchTextInput"
 						md-items="item in querySearch(searchTextInput)"
 						md-item-text="item.itemName" md-floating-label="Select Product">
@@ -28,7 +29,7 @@
 					</md-autocomplete>
 					<md-icon md-svg-src="img/icons/ic_queue_black_24px.svg"
 						ng-click="addStockType()" class="name"
-						style="color: Green; height: 18px; width: 18px"></md-icon>
+						style="color: Green; height: 14px; width: 14px;"></md-icon>
 				</div>
 
 				<md-input-container flex> <input type="text"
@@ -59,8 +60,8 @@
 								icon="keyboard_arrow_up" style="fill: md-default" size="24">
 							<md-tooltip> Collapse</md-tooltip></ng-md-icon></md-button></td>
 						<td md-cell><div layout="row" flex>
-								<md-input-container flex> <md-select
-									name="category" ng-model="bomCategory.cat"
+								<md-input-container flex style="margin: 0px; padding: 0px;">
+								<md-select name="category" ng-model="bomCategory.cat"
 									ng-change="getStockItemTypes(bomCategory,$index)"
 									placeholder="Category Name" ng-required="true"> <md-option
 									ng-value="category" ng-repeat="category in stockItemCategories"
@@ -71,8 +72,7 @@
 						<td md-cell></td>
 						<td md-cell><md-icon
 								md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
-								ng-click="removeCategoryItem($index)" class="name"
-								style="color: Green; height: 18px; width: 18px"> <md-tooltip>Remove
+								ng-click="removeCategoryItem($index)"> <md-tooltip>Remove
 							Category</md-tooltip></md-icon></td>
 
 					</tr>
@@ -82,8 +82,8 @@
 								style="width: 100%; text-align: right;">{{$index + 1 }}</p></td>
 						<td md-cell>
 							<div layout="row" flex>
-								<md-input-container flex> <md-select
-									ng-model="itemObj.itemName" placeholder="Item Name"
+								<md-input-container flex style="margin: 0px; padding: 0px;">
+								<md-select ng-model="itemObj.itemName" placeholder="Item Name"
 									ng-required="true"> <md-option
 									ng-value="stockItemType.itemName"
 									ng-selected="itemObj.itemName == stockItemType.itemName"
@@ -96,14 +96,13 @@
 
 						<td md-cell>
 							<div layout="row" flex>
-								<md-input-container style="margin: 0; padding: 0px;">
+								<md-input-container style="margin: 0px; padding: 0px;">
 								<input ng-model="itemObj.qty" ng-required="true"></md-input-container>
 							</div>
 						</td>
 						<td md-cell><md-icon
 								md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
-								ng-click="removeLineItem(bomCategory,$index)" class="name"
-								style="color: Green; height: 18px; width: 18px"> <md-tooltip>Remove
+								ng-click="removeLineItem(bomCategory,$index)"> <md-tooltip>Remove
 							Item</md-tooltip></md-icon></td>
 					</tr>
 					<tr md-row ng-show="itemToggle">

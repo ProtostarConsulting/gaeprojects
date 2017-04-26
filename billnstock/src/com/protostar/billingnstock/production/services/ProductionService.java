@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
+import com.google.api.server.spi.config.ApiMethod.HttpMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.config.Named;
 import com.googlecode.objectify.Key;
@@ -32,7 +33,7 @@ public class ProductionService {
 		return bomEntity;
 	}
 
-	@ApiMethod(name = "getEmptyProductionRequisition", path = "getEmptyProductionRequisition")
+	@ApiMethod(name = "getEmptyProductionRequisition", path = "getEmptyProductionRequisition", httpMethod = HttpMethod.POST)
 	public ProductionRequisitionEntity getEmptyProductionRequisition(BomEntity bom) {
 
 		ProductionRequisitionEntity prodReq = new ProductionRequisitionEntity();

@@ -6,10 +6,11 @@ app
 				function($scope, $window, $mdToast, $q, $timeout, $mdSidenav,
 						$mdUtil, $log, $stateParams, objectFactory,
 						appEndpointSF, $mdDialog, $mdMedia) {
-					
+
 					$scope.loading = true;
-					$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
-					
+					$scope.curUser = appEndpointSF.getLocalUserService()
+							.getLoggedinUser();
+
 					$scope.getEmptyBomObjadd = function() {
 						return {
 							productName : "",
@@ -23,8 +24,13 @@ app
 					$scope.dummyCatList = [];
 					$scope.stockItemCategories = [];
 
-					$scope.documentEntity = $stateParams.bomCategory ? $stateParams.bomCategory
+					$scope.documentEntity = $stateParams.bomEntity ? $stateParams.bomEntity
 							: $scope.getEmptyBomObjadd();
+					
+					$scope.currentBomList = $stateParams.currentBomList;
+					if(!$scope.currentBomList){
+						$scope.currentBomList = [];
+					}
 
 					$scope.addCatogory = function() {
 						var category = {
@@ -118,25 +124,30 @@ app
 									lowercaseQuery) >= 0);
 						};
 					}
-					
+
 					function getAllStockItemTypes() {
 						var stockService = appEndpointSF.getStockService();
+						// true indicates get only products marked as Production
+						// Items in Stock Item types
 						stockService.getStockItemTypes(
 								$scope.curUser.business.id, true).then(
 								function(list) {
 									$scope.stockItemTypeList = list;
 									$scope.loading = false;
 								});
-					}					
-					
+					}
+
 					// End Stock Type
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
-							getAllStockItemTypes();
 							$scope.fetchCatogoryList();
 							if (!$scope.documentEntity.id) {
+								/* only load types if fresh add */
+								getAllStockItemTypes();
 								$scope.addCatogory();
+							} else {
+								$scope.loading = false;
 							}
 
 						} else {

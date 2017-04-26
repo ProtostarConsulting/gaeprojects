@@ -2288,6 +2288,7 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
+	
 
 	StockService.getAllStockItems = function(busId) {
 		var deferred = $q.defer();
