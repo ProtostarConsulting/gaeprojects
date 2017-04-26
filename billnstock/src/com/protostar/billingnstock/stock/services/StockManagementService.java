@@ -31,7 +31,6 @@ import com.protostar.billingnstock.purchase.entities.PurchaseOrderEntity;
 import com.protostar.billingnstock.purchase.entities.PurchaseOrderReport;
 import com.protostar.billingnstock.purchase.entities.PurchaseOrderReportItem;
 import com.protostar.billingnstock.purchase.entities.RequisitionEntity;
-import com.protostar.billingnstock.purchase.entities.StockReceiptDetailsForPOReport;
 import com.protostar.billingnstock.purchase.entities.SupplierEntity;
 import com.protostar.billingnstock.stock.entities.StockItemBrand;
 import com.protostar.billingnstock.stock.entities.StockItemEntity;
@@ -48,8 +47,10 @@ import com.protostar.billingnstock.stock.entities.StockItemsReceiptEntity;
 import com.protostar.billingnstock.stock.entities.StockItemsShipmentEntity;
 import com.protostar.billingnstock.stock.entities.StockItemsShipmentEntity.ShipmentType;
 import com.protostar.billingnstock.stock.entities.StockLineItem;
+import com.protostar.billingnstock.stock.entities.StockReceiptQCDailyRecordEntity;
 import com.protostar.billingnstock.stock.entities.StockReceiptQCEntity;
 import com.protostar.billingnstock.stock.entities.StockSettingsEntity;
+import com.protostar.billingnstock.stock.entities.StockUtil;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billingnstock.user.services.UserService;
 import com.protostar.billingnstock.warehouse.entities.WarehouseEntity;
@@ -1390,10 +1391,55 @@ public class StockManagementService extends BaseService {
 	public List<StockReceiptQCEntity> getStockReceiptQCList(
 			@Named("busId") Long busId) {
 
-		List<StockReceiptQCEntity> stockItemUnits = ofy().load()
+		List<StockReceiptQCEntity> stockReceiptQcList = ofy().load()
 				.type(StockReceiptQCEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, busId)).list();
-		return stockItemUnits;
+		return stockReceiptQcList;
+	}
+	
+	@ApiMethod(name = "getStockReceiptQCById", path = "getStockReceiptQCById")
+	public StockReceiptQCEntity getStockReceiptQCById(@Named("busId") Long busId, @Named("id") Long id) {
+
+		List<StockReceiptQCEntity> list = ofy().load().type(StockReceiptQCEntity.class)
+				.filterKey(Key.create(Key.create(BusinessEntity.class, busId), StockReceiptQCEntity.class, id)).list();
+		StockReceiptQCEntity foundStockReceiptQC = list.size() > 0 ? list.get(0) : null;
+		return foundStockReceiptQC;
+	}
+	
+	@ApiMethod(name = "addStockReceiptQCRecord", path = "addStockReceiptQCRecord")
+	public StockReceiptQCDailyRecordEntity addStockReceiptQCRecord(StockReceiptQCDailyRecordEntity qcStockReceiptEntity) {
+		ofy().save().entity(qcStockReceiptEntity).now();
+		return qcStockReceiptEntity;
+	}
+	
+	@ApiMethod(name = "getStockReceiptQCRecord", path = "getStockReceiptQCRecord")
+	public List<StockReceiptQCDailyRecordEntity> getStockReceiptQCRecord(@Named("busId") Long busId) {
+
+		List<StockReceiptQCDailyRecordEntity> stockReceiptQcRecordList = ofy().load().type(StockReceiptQCDailyRecordEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).list();
+		return stockReceiptQcRecordList;
+	}
+	
+	@ApiMethod(name = "getStockReceiptQCDailyRecordEntity", path = "getStockReceiptQCDailyRecordEntity")
+	public StockReceiptQCDailyRecordEntity getStockReceiptQCDailyRecordEntity(@Named("qcStockReceiptId") Long qcStockReceiptId,
+			@Named("busId") Long busId, @Named("date") Long recordDate) {
+
+		StockReceiptQCEntity stockReceiptQc = getStockReceiptQCById(busId, qcStockReceiptId);
+		Date tempRecordDateObj = new Date(recordDate);
+		List<StockReceiptQCDailyRecordEntity> foundedDailyRecord = ofy().load().type(StockReceiptQCDailyRecordEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).filter("recordDate", tempRecordDateObj)
+				.filter("qcStockReceipt", stockReceiptQc).list();
+
+		StockReceiptQCDailyRecordEntity stockReceiptQcDailyRecord = null;
+
+		if (foundedDailyRecord.size() > 0) {
+			stockReceiptQcDailyRecord = foundedDailyRecord.get(0);
+		} else {
+			StockUtil stockUtil = new StockUtil();
+			stockReceiptQcDailyRecord = stockUtil.createNewStockReceiptQCDailyReceord(stockReceiptQc, tempRecordDateObj);
+		}
+
+		return stockReceiptQcDailyRecord;
 	}
 
 	@ApiMethod(name = "addStockSettings", path = "addStockSettings")

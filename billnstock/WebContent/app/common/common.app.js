@@ -339,7 +339,18 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	}).state('stock.stockReceiptQCList', {
 		url : "/stockreceipt_qc_list",
 		templateUrl : '/app/stock/stock_receipt_qc_list.html',
-		controller : 'qcstockReceiptListCtr',		
+		controller : 'qcstockReceiptListCtr',
+	}).state('stock.addStockReceiptQCRecord', {
+		url : "/stockreceipt_qcrecord_add",
+		templateUrl : '/app/stock/stockreceipt_qcrecord_add.html',
+		controller : 'addStockReceiptQCRecordCtr',
+		params : {
+			stockReceiptQCRecordObj : null
+		}
+	}).state('stock.listStockReceiptQCRecord', {
+		url : "/stockreceipt_qcrecord_list",
+		templateUrl : '/app/stock/stockreceipt_qcrecord_list.html',
+		controller : 'listStockReceiptQCRecordCtr',
 	}).state('stock.stockShipmentAdd', {
 		url : "/stockshipmentadd",
 		templateUrl : '/app/stock/stock_shipment_add.html',

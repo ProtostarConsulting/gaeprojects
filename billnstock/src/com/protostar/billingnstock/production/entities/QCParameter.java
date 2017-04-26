@@ -16,7 +16,7 @@ public class QCParameter {
 	private String textValue;
 
 	private Ref<MachineQCUnitMeasure> paramUnit;
-	private StockItemUnit itemUnit;
+	private Ref<StockItemUnit> itemUnit;
 
 	public MachineQCUnitMeasure getParamUnit() {
 		return paramUnit == null ? null : paramUnit.get();
@@ -92,10 +92,10 @@ public class QCParameter {
 	}
 
 	public StockItemUnit getItemUnit() {
-		return itemUnit;
+		return itemUnit == null ? null : itemUnit.get();
 	}
 
 	public void setItemUnit(StockItemUnit itemUnit) {
-		this.itemUnit = itemUnit;
+		this.itemUnit = Ref.create(itemUnit);
 	}
 }

@@ -33,10 +33,20 @@
 		<mdp-date-picker mdp-placeholder="Valid Till Date"
 			ng-model="qcstockreceipt.validTill"></mdp-date-picker>
 	</div>
-	<div>
-		<h4 class="md-subhead">QC Parameters</h4>
+	<div ng-if="qcstockreceipt.id">
+		<h4 ng-init="prodReqListToogle=true"
+					ng-click="prodReqListToogle=!prodReqListToogle">
+					QC Parameter List
+					<md-button class="md-icon-button" ng-show="prodReqListToogle">
+					<ng-md-icon icon="keyboard_arrow_up" style="fill: md-default"
+						size="24"> <md-tooltip> Collapse</md-tooltip></ng-md-icon></md-button>
+					<md-button class="md-icon-button" ng-show="!prodReqListToogle">
+					<ng-md-icon icon="keyboard_arrow_down" style="fill: md-default"
+						size="24"> <md-tooltip> Expand</md-tooltip></ng-md-icon></md-button>
+		</h4>
+		<!-- <h4 class="md-subhead">QC Parameters</h4> -->
 		<md-table-container>
-		<table md-table md-progress="promise">
+		<table ng-show="prodReqListToogle" md-table md-progress="promise">
 			<thead ng-if="!dataTableOptions.decapitate" md-head
 				md-order="query.order" md-on-reorder="logOrder">
 				<tr md-row>

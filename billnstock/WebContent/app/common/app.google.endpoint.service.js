@@ -2708,6 +2708,50 @@ function googleEndpointSF($q) {
 				});
 		return deferred.promise;
 	}
+	
+	StockService.getStockReceiptQCById = function(busId, id) {
+		var deferred = $q.defer();
+		gapi.client.stockService.getStockReceiptQCById({
+			"busId" : busId,
+			"id" : id
+		}).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}
+	
+	StockService.addStockReceiptQCRecord = function(qcStockReceiptObj) {
+		var deferred = $q.defer();
+		gapi.client.stockService.addStockReceiptQCRecord(qcStockReceiptObj).execute(
+				function(resp) {
+					deferred.resolve(resp);
+				});
+		return deferred.promise;
+	}
+	
+	StockService.getStockReceiptQCRecord = function(busId) {
+		var deferred = $q.defer();
+		gapi.client.stockService.getStockReceiptQCRecord({
+			"busId" : busId
+		}).execute(
+				function(resp) {
+					deferred.resolve(resp.items);
+				});
+		return deferred.promise;
+	}
+	
+	StockService.getStockReceiptQCDailyRecordEntity = function(qcStockReceiptId,
+			busId, date) {
+		var deferred = $q.defer();
+		gapi.client.stockService.getStockReceiptQCDailyRecordEntity({
+			"qcStockReceiptId" : qcStockReceiptId,
+			"busId" : busId,
+			"date" : date
+		}).execute(function(resp) {
+			deferred.resolve(resp);
+		});
+		return deferred.promise;
+	}
 	// End of StockService
 
 	/* =============================================================================================================================== */

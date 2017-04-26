@@ -9,7 +9,6 @@ app
 
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
-					console.log("inside stock receipt add****");
 					
 					$scope.qcstockreceipt = {
 							qcno : "",
@@ -45,6 +44,7 @@ app
 						var stockService = appEndpointSF.getStockService();
 						stockService.addStockReceiptQC($scope.qcstockreceipt).then(function(qcstockreceiptobj){
 							if (qcstockreceiptobj.id != undefined) {
+								$scope.qcstockreceipt.id = qcstockreceiptobj.id;
 								$scope.showAddToast();
 							}
 						});

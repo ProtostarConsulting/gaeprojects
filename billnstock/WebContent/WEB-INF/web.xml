@@ -356,6 +356,17 @@
     <url-pattern>/PrintPdfProductRequisition</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+    <description/>
+    <display-name>PrintQCMachineRecordPdf</display-name>
+    <servlet-name>PrintQCMachineRecordPdf</servlet-name>
+    <servlet-class>com.protostar.billingnstock.production.services.PrintQCMachineRecordPdf</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PrintQCMachineRecordPdf</servlet-name>
+    <url-pattern>/PrintQCMachineRecordPdf</url-pattern>
+  </servlet-mapping>
+  
   
   
   

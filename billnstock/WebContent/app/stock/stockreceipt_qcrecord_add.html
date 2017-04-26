@@ -1,0 +1,51 @@
+<md-subheader class="md-primary">
+<h4 class="md-title"
+	ng-bind="tempStockReceiptQCDailyRecordObj.id?'Edit Stock Receipt QC Record':'Add Stock Receipt QC Record'"></h4>
+</md-subheader>
+
+<form name="addStockReceiptQCRecordFom">
+	<div layout="row" layout-xs="column" flex="65" flex-xs>
+		<md-input-container flex> <label>Stock Receipt
+			QC Name</label> <md-select name="stockReceiptQc" ng-model="stockReceiptQc"
+			ng-change="getStockReceiptQCParamList(stockReceiptQc)" ng-required="true">
+		<md-option ng-repeat="qcStcockReceipt in qcstockReceiptList"
+			ng-selected="stockReceiptQc.id==qcStcockReceipt.id"
+			ng-value="qcStcockReceipt">{{qcStcockReceipt.qcName}}</md-option> </md-select>
+		<div ng-messages="addStockReceiptQCRecordFom.stockReceiptQc.$error"
+			ng-if="addStockReceiptQCRecordFom.stockReceiptQc.$submitted || addStockReceiptQCRecordFom.stockReceiptQc.$touched">
+			<div ng-message="required">Please Select Stock Receipt.</div>
+		</div>
+		</md-input-container>
+
+		<mdp-date-picker mdp-placeholder="QC Record Date"
+			ng-model="recordDate" ng-change="getStockReceiptQCDailyRecord(recordDate)"></mdp-date-picker>
+	</div>
+
+	<div>
+		<md-table-container ng-if="isTableShow">
+		<table md-table md-progress="promise">
+			<tbody md-body>
+				<tr md-row>
+					<td md-cell width="20%">QC Parameter Name</td>
+					<td md-cell>QC Parameter Value</td>
+				</tr>
+				<tr md-row ng-repeat="tempParam in tempStockReceiptQCDailyRecordObj.paramRecordedValues track by $index">
+					<td md-cell ng-model="tempParam.parameterName">{{ tempParam.parameterName }}</td>
+					<td md-cell><md-input-container
+							flex style="padding-left:2px; padding-right:0px;">
+						<label>Enter Value</label> <input
+							ng-model="tempParam.recordedValue"> </md-input-container></td>
+				</tr>
+			</tbody>
+		</table>
+		</md-table-container>
+	</div>
+	<div ng-if="isTableShow">
+		<section layout="row" layout-xs="column">
+			<md-button class="md-raised md-primary" ng-if="!tempStockReceiptQCDailyRecordObj.id"
+				ng-click="addStockReceiptQCRecord()">Save</md-button>
+			<md-button class="md-raised md-primary" ng-if="tempStockReceiptQCDailyRecordObj.id"
+				ng-click="addStockReceiptQCRecord()">Update</md-button>	
+		</section>
+	</div>
+</form>
