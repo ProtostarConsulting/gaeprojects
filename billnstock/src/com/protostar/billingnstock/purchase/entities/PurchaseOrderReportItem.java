@@ -7,7 +7,7 @@ public class PurchaseOrderReportItem {
 
 	private String itemName;
 	private int purchaseOrderQty;
-	private List<StockReceiptDetailsForPOReport> stockReceiptDetails = new ArrayList<StockReceiptDetailsForPOReport>();
+	private List<Integer> itemReceiptQtyList = new ArrayList<Integer>();
 	private int qtyDiff;
 
 	public String getItemName() {
@@ -26,15 +26,7 @@ public class PurchaseOrderReportItem {
 		this.purchaseOrderQty = purchaseOrderQty;
 	}
 
-	public List<StockReceiptDetailsForPOReport> getStockReceiptDetails() {
-		return stockReceiptDetails;
-	}
-
-	public void setStockReceiptDetails(
-			List<StockReceiptDetailsForPOReport> stockReceiptDetails) {
-		this.stockReceiptDetails = stockReceiptDetails;
-	}
-
+	
 	public int getQtyDiff() {
 		return qtyDiff;
 	}
@@ -42,5 +34,14 @@ public class PurchaseOrderReportItem {
 	public void setQtyDiff(int qtyDiff) {
 		this.qtyDiff = qtyDiff;
 	}
+
+	public List<Integer> getItemReceiptQtyList() {
+		return itemReceiptQtyList;
+	}
+
+	public void setItemReceiptQtyList(List<Integer> itemReceiptQtyList) {
+		this.itemReceiptQtyList = itemReceiptQtyList;
+	}
+	
 
 }

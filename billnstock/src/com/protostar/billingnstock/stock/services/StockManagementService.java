@@ -3,6 +3,7 @@ package com.protostar.billingnstock.stock.services;
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -807,7 +808,8 @@ public class StockManagementService extends BaseService {
 		List<StockItemsReceiptEntity> stockReceipts = ofy().load()
 				.type(StockItemsReceiptEntity.class)
 				.ancestor(purchaseOrder.getBusiness())
-				.filter("poNumber ==", purchaseOrder.getItemNumber()).list();
+				.filter("poNumber ==", purchaseOrder.getItemNumber())
+				.filter("status", DocumentStatus.FINALIZED).list();
 
 		return stockReceipts;
 	}
@@ -1312,93 +1314,84 @@ public class StockManagementService extends BaseService {
 	public PurchaseOrderReport getPOReport(PurchaseOrderEntity purchaseOrder) {
 
 		PurchaseOrderReport purchaseOrderReport = new PurchaseOrderReport();
-
 		List<PurchaseOrderReportItem> pOReportItems = new ArrayList<PurchaseOrderReportItem>();
+		purchaseOrderReport.setpOReportItems(pOReportItems);
+
+		List<String> receiptHeadingList = new ArrayList<String>();
+		purchaseOrderReport.setReceiptHeadingList(receiptHeadingList);
+
+		List<StockItemsReceiptEntity> stockReceipts = this
+				.getStockReceiptsAgainstPO(purchaseOrder);
+
+		String date_format = "dd/MMM/yyyy";
+		SimpleDateFormat sdf = new SimpleDateFormat(date_format);
+
+		for (StockItemsReceiptEntity receiptEntity : stockReceipts) {
+			receiptHeadingList.add("Receipt No:"
+					+ receiptEntity.getItemNumber() + " ("
+					+ sdf.format(receiptEntity.getReceiptDate()) + ")");
+		}
 
 		List<StockLineItem> productLineItems = purchaseOrder
 				.getProductLineItemList();
-
-		for (int i = 0; i < productLineItems.size(); i++) {
-
+		for (StockLineItem stockLineItem : productLineItems) {
 			PurchaseOrderReportItem reportItem = new PurchaseOrderReportItem();
 
-			reportItem.setItemName(productLineItems.get(i).getStockItem()
+			reportItem.setItemName(stockLineItem.getStockItem()
 					.getStockItemType().getItemName());
-			reportItem.setPurchaseOrderQty(productLineItems.get(i).getQty());
+			reportItem.setPurchaseOrderQty(stockLineItem.getQty());
 
-			List<StockItemsReceiptEntity> stockReceipts = this
-					.getStockReceiptsAgainstPO(purchaseOrder);
+			List<Integer> itemReceiptQtyList = getItemReceiptQtyList(
+					stockLineItem, stockReceipts);
+			reportItem.setItemReceiptQtyList(itemReceiptQtyList);
+			reportItem.setQtyDiff(stockLineItem.getQty()
+					- sumOfAll(itemReceiptQtyList));
 
-			List<StockReceiptDetailsForPOReport> stockReceiptDetails = new ArrayList<StockReceiptDetailsForPOReport>();
-
-			if (stockReceipts != null && !stockReceipts.isEmpty()) {
-
-				StockReceiptDetailsForPOReport stockReceiptDetailsItem = new StockReceiptDetailsForPOReport();
-				List<Integer> stockReceiptQts = new ArrayList<Integer>();
-				List<Integer> receiptNumbers = new ArrayList<Integer>();
-
-				for (int j = 0; j < stockReceipts.size(); j++) {
-					if (stockReceipts.get(j).getStatus() == DocumentStatus.FINALIZED) {
-						List<StockLineItem> receiptProductLineItems = stockReceipts
-								.get(j).getProductLineItemList();
-
-						for (int k = 0; k < receiptProductLineItems.size(); k++) {
-							if (reportItem.getItemName() == receiptProductLineItems
-									.get(k).getStockItem().getStockItemType()
-									.getItemName()) {
-								int reciptNo = stockReceipts.get(j)
-										.getItemNumber();
-								int stockProductLineQty = receiptProductLineItems
-										.get(k).getQty();
-								stockReceiptQts.add(stockProductLineQty);
-								receiptNumbers.add(reciptNo);
-							}
-						}
-						stockReceiptDetailsItem
-								.setStockReceiptProductQts(stockReceiptQts);
-						stockReceiptDetailsItem
-								.setReceiptNumbers(receiptNumbers);
-					}
-				}
-				stockReceiptDetails.add(stockReceiptDetailsItem);
-			}
-			reportItem.setStockReceiptDetails(stockReceiptDetails);
-
-			int qtyDiff = reportItem.getPurchaseOrderQty();
-
-			for (int l = 0; l < reportItem.getStockReceiptDetails().size(); l++) {
-
-				StockReceiptDetailsForPOReport stockReceiptDetail = reportItem
-						.getStockReceiptDetails().get(l);
-
-				for (int m = 0; m < stockReceiptDetail
-						.getStockReceiptProductQts().size(); m++) {
-					qtyDiff -= stockReceiptDetail.getStockReceiptProductQts()
-							.get(m);
-					if (qtyDiff == 0) {
-						break;
-					}
-				}
-
-			}
-			reportItem.setQtyDiff(qtyDiff);
 			pOReportItems.add(reportItem);
 		}
-		purchaseOrderReport.setpOReportItems(pOReportItems);
 
 		return purchaseOrderReport;
 	}
-	
+
+	private List<Integer> getItemReceiptQtyList(StockLineItem stockLineItem,
+			List<StockItemsReceiptEntity> stockReceipts) {
+		List<Integer> itemReceiptQty = new ArrayList<>(stockReceipts.size());
+		for (StockItemsReceiptEntity receiptEntity : stockReceipts) {
+			List<StockLineItem> receiptProductLineItems = receiptEntity
+					.getProductLineItemList();
+			int receptQty = 0;
+			for (int k = 0; k < receiptProductLineItems.size(); k++) {
+				if (stockLineItem.getStockItem().getStockItemType().getId() == receiptProductLineItems
+						.get(k).getStockItem().getStockItemType().getId()) {
+					receptQty = receiptProductLineItems.get(k).getQty();
+
+				}
+			}
+			itemReceiptQty.add(receptQty);
+		}
+		return itemReceiptQty;
+	}
+
+	private int sumOfAll(List<Integer> list) {
+		int sum = 0;
+		for (int i : list)
+			sum = sum + i;
+		return sum;
+	}
+
 	@ApiMethod(name = "addStockReceiptQC", path = "addStockReceiptQC")
-	public StockReceiptQCEntity addStockReceiptQC(StockReceiptQCEntity qcStockReceiptEntity) {
+	public StockReceiptQCEntity addStockReceiptQC(
+			StockReceiptQCEntity qcStockReceiptEntity) {
 		ofy().save().entity(qcStockReceiptEntity).now();
 		return qcStockReceiptEntity;
 	}
-	
-	@ApiMethod(name = "getStockReceiptQCList", path = "getStockReceiptQCList")
-	public List<StockReceiptQCEntity> getStockReceiptQCList(@Named("busId") Long busId) {
 
-		List<StockReceiptQCEntity> stockItemUnits = ofy().load().type(StockReceiptQCEntity.class)
+	@ApiMethod(name = "getStockReceiptQCList", path = "getStockReceiptQCList")
+	public List<StockReceiptQCEntity> getStockReceiptQCList(
+			@Named("busId") Long busId) {
+
+		List<StockReceiptQCEntity> stockItemUnits = ofy().load()
+				.type(StockReceiptQCEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, busId)).list();
 		return stockItemUnits;
 	}
