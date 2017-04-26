@@ -766,8 +766,6 @@ app
 
 						$scope.purchaseOrder = purchaseOrder;
 						$scope.pOItemNo = $scope.purchaseOrder.itemNumber;
-						$scope.pOStatus = $scope.purchaseOrder.status;
-						$scope.purchaseOrderReport = [];
 
 						$scope.getReport = function() {
 
@@ -778,7 +776,7 @@ app
 									.then(
 											function(purchaseOrderReport) {
 
-												$scope.purchaseOrderReport = purchaseOrderReport.pOReportItems;
+												$scope.purchaseOrderReport = purchaseOrderReport;
 
 											});
 
@@ -791,6 +789,20 @@ app
 						};
 
 						$scope.getReport();
+
+						$scope.printPOReport = function(divId) {
+
+							var printDivCSS = new String(
+									'<link href="/lib/base/css/angular-material.min.css"" rel="stylesheet" type="text/css">'
+											+ '<link href="/lib/base/css/bootstrap.min.css"" rel="stylesheet" type="text/css">')
+
+							window.frames["print_frame"].document.body.innerHTML = printDivCSS
+									+ document.getElementById(divId).innerHTML;
+							window.frames["print_frame"].window.focus();
+
+							window.frames["print_frame"].window.print();
+
+						};
 
 					}
 				});

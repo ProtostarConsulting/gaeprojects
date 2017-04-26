@@ -20,13 +20,16 @@ angular
 					function newTax() {
 						return {
 							taxCodeName : '',
-							taxPercenatge : '',
+							taxPercenatge : 0,
 							active : true,
-							business : ""
+							withSubHeads : false,
+							business : "",
+							subHeads : []
 						}
 					}
 
 					$scope.taxList = [];
+
 					$scope.selectedTax = $stateParams.selectedTax ? $stateParams.selectedTax
 							: newTax();
 
@@ -45,6 +48,25 @@ angular
 								});
 
 					}
+
+					$scope.addTaxLineItem = function() {
+
+						var taxLineItem = {
+							taxSubCodeName : "",
+							taxPercenatge : 0,
+						};
+
+						if (!$scope.selectedTax.subHeads) {
+							$scope.selectedTax.subHeads = [];
+						}
+
+						$scope.selectedTax.subHeads.push(taxLineItem);
+
+					};
+
+					$scope.removeTaxLineItem = function(index) {
+						$scope.selectedTax.subHeads.splice(index, 1);
+					};
 
 					$scope.logOrder = function(order) {
 						console.log('order: ', order);

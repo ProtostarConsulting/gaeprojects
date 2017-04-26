@@ -37,10 +37,68 @@
 			</div>
 			</md-input-container>
 		</div>
-		<label>Tax Visibility </label>
-		<md-checkbox ng-model="selectedTax.active" aria-label="active"
-			ng-true-value="true" ng-false-value="false" id="changer">
-		</md-checkbox>
+		<div layout="row" layout-xs="column">
+			<md-input-container flex> <md-checkbox
+				ng-model="selectedTax.withSubHeads" aria-label="active"
+				ng-true-value="true" ng-false-value="false" id="changer">
+			With Subheads </md-checkbox></md-input-container>
+
+			<md-input-container flex> <md-checkbox
+				ng-model="selectedTax.active" aria-label="active"
+				ng-true-value="true" ng-false-value="false" id="changer">Tax
+			Visibility </md-checkbox></md-input-container>
+		</div>
+		<div ng-show="selectedTax.withSubHeads"
+			ng-hide="!selectedTax.withSubHeads">
+			<div
+				ng-show="!selectedTax.subHeads || selectedTax.subHeads.length==0"
+				ng-hide="selectedTax.subHeads || selectedTax.subHeads.length>0">
+				Add Tax Line Items:
+				<md-button class="md-icon-button" ng-click="addTaxLineItem()">
+				<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
+				<md-tooltip> Add Tax Line Items</md-tooltip></ng-md-icon> </md-button>
+
+			</div>
+			<div ng-show="selectedTax.subHeads || selectedTax.subHeads.length>0">
+				<table md-table style="width: 50%">
+					<thead md-head>
+						<tr md-row>
+							<th md-column width="4%">Sr. No.</th>
+							<th md-column width="30%">Tax Item Name</th>
+							<th md-column>Tax Percentage</th>
+							<th md-column>Actions</th>
+
+						</tr>
+					</thead>
+
+					<tbody md-body>
+						<tr md-row ng-repeat="taxLineItem in selectedTax.subHeads">
+
+							<td md-cell>{{ $index +1 }}</td>
+							<td md-cell width="40%"><md-input-container flex>
+								<input type="text" ng-model="taxLineItem.taxSubCodeName"
+									aria-label="taxSubCodeName" ng-required="true"> </md-input-container></td>
+							<td md-cell><md-input-container flex> <input
+									type="number" ng-model="taxLineItem.taxPercenatge"
+									aria-label="taxPerc"> </md-input-container></td>
+							<td><md-icon
+									md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
+									ng-click="removeTaxLineItem($index)" class="name"
+									style="color: Green; height: 18px; width: 18px"></md-icon></td>
+						</tr>
+						<tr>
+							<td><md-button class="md-icon-button"
+									ng-click="addTaxLineItem()"> <ng-md-icon
+									icon="add_circle" style="fill: md-default" size="24">
+								<md-tooltip> Add New Tax Line Item</md-tooltip></ng-md-icon> </md-button></td>
+
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+
 
 		<section layout="row" layout-sm="column" layout-align="left left">
 			<md-button class="md-raised md-primary" ng-click="cancelUpdate()">Back</md-button>

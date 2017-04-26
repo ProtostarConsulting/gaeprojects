@@ -1,4 +1,4 @@
-<md-dialog aria-label="Add New" style="min-width:800px;"> <md-toolbar>
+<md-dialog aria-label="View PO Report"> <md-toolbar>
 <div class="md-toolbar-tools">
 	<h2>PO No.{{pOItemNo}} Report</h2>
 	<span flex></span>
@@ -6,60 +6,49 @@
 		md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
 	</md-button>
 </div>
-</md-toolbar> <md-dialog-content style="min-width:200px; max-width:800px">
+</md-toolbar> <md-dialog-content style="min-width:1000px; min-height:500px;">
 <md-content layout-padding>
 <section id="pagetoolbar" layout="row" layout-xs="column">
-	<md-subheader class="md-primary">
-	<h4 class="md-title">Status:{{pOStatus}}</h4>
-	</md-subheader>
-	<span flex> </span>
+	<span flex="50"> </span>
+	<md-input-container flex> <md-button
+		class="md-icon-button" ng-click="printPOReport('pOreportContent')">
+	<ng-md-icon icon="print" style="fill: md-default" size="20">
+	<md-tooltip> Print PO Report</md-tooltip></ng-md-icon></md-button> </md-input-container>
 </section>
-<table class="table table-striped">
-	<thead>
-		<tr>
-			<th>Item Name</th>
-			<th>PO Qty.</th>
-			<th>Stock Receipt Numbers</th>
-			<th>Quantity Received</th>
-			<th>Difference</th>
-		</tr>
-	</thead>
-	<tbody ng-repeat="reportItem in purchaseOrderReport">
-		<tr>
-			<td>{{reportItem.itemName}}</td>
-			<td>{{reportItem.purchaseOrderQty}}</td>
-			<td>
-				<table class="table">
-					<tbody
-						ng-repeat="stockReceiptDetail in reportItem.stockReceiptDetails">
-						<tr
-							ng-repeat="stockReceiptNo in stockReceiptDetail.receiptNumbers">
-							<td>{{stockReceiptNo}}</td>
-						</tr>
-					</tbody>
+<div id="pOreportContent">
+	<table class="table"
+		style="border: 1px solid black; border-collapse: collapse;">
+		<caption style="padding: 3px; align: left">
+			<b>PO No.{{pOItemNo}} Report</b>
+		</caption>
+		<thead>
+			<tr style="border: 1px solid black; text-align: center;">
+				<th style="border: 1px solid black; text-align: left; width: 30%">Item
+					Name</th>
+				<th style="border: 1px solid black; text-align: center;">PO
+					Qty.</th>
+				<th style="border: 1px solid black; text-align: center;"
+					ng-repeat="colHeading in purchaseOrderReport.receiptHeadingList">{{colHeading}}</th>
+				<th style="border: 1px solid black; text-align: center;">Total
+					Received Qty.</th>
+				<th style="border: 1px solid black; text-align: center;">Pending
+					Qty.</th>
+			</tr>
+		</thead>
+		<tbody ng-repeat="reportItem in purchaseOrderReport.pOReportItems">
+			<tr style="border: 1px solid black; text-align: centre;">
+				<td style="border: 1px solid black; text-align: left;">{{reportItem.itemName}}</td>
+				<td style="border: 1px solid black; text-align: center;">{{reportItem.purchaseOrderQty}}</td>
+				<td style="border: 1px solid black; text-align: center;"
+					ng-repeat="itemQty in reportItem.itemReceiptQtyList">
+					{{itemQty}}</td>
+				<td style="border: 1px solid black; text-align: center;">{{reportItem.purchaseOrderQty
+					- reportItem.qtyDiff}}</td>
+				<td style="border: 1px solid black; text-align: center;">{{reportItem.qtyDiff}}</td>
+			</tr>
 
-				</table>
-
-			</td>
-			<td>
-				<table class="table">
-					<tbody
-						ng-repeat="stockReceiptDetail in reportItem.stockReceiptDetails">
-						<tr
-							ng-repeat="stockReceiptQty in stockReceiptDetail.stockReceiptProductQts">
-							<td>{{stockReceiptQty}}</td>
-						</tr>
-						<tr>
-							<td>Total:{{reportItem.purchaseOrderQty-reportItem.qtyDiff}}</td>
-						</tr>
-					</tbody>
-
-				</table>
-
-			</td>
-			<td>{{reportItem.qtyDiff}}</td>
-		</tr>
-
-	</tbody>
-</table>
-</md-content> </md-dialog-content> </md-dialog>
+		</tbody>
+	</table>
+</div>
+<iframe name="print_frame" width="0" height="0" frameborder="0"
+	src="about:blank"></iframe> </md-content> </md-dialog-content> </md-dialog>

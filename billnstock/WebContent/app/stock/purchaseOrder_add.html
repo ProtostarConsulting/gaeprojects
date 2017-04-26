@@ -6,6 +6,13 @@
 	</md-subheader>
 	<span flex></span>
 	<div align="right" ng-show="documentEntity.id">
+		<md-button class="md-icon-button" ng-click="viewReceiptsAgainstPo()">
+		<ng-md-icon icon="receipt" style="fill: md-default" size="20">
+		<md-tooltip> View Receipts Against This PO</md-tooltip></ng-md-icon></md-button>
+		<md-button class="md-icon-button"
+			ng-click="viewPurchaseOrderReport($event)"> <ng-md-icon
+			icon="book" style="fill: md-default" size="20"> <md-tooltip>
+		View PO Report</md-tooltip></ng-md-icon></md-button>
 		<md-button class="md-icon-button"
 			ng-click="printPO(documentEntity.id)"> <ng-md-icon
 			icon="print" style="fill: md-default" size="20"> <md-tooltip>
@@ -162,6 +169,15 @@
 			<md-divider flex></md-divider>
 		</div>
 
+		<div
+			ng-hide="documentEntity.productLineItemList || documentEntity.productLineItemList.length > 0"
+			ng-show="!documentEntity.productLineItemList || documentEntity.productLineItemList.length == 0">
+			Add Product Line Items:
+			<md-button class="md-icon-button" ng-click="addProductLineItem()">
+			<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
+			<md-tooltip> Add Product Line Items</md-tooltip></ng-md-icon> </md-button>
+
+		</div>
 		<div
 			ng-show="documentEntity.productLineItemList && documentEntity.productLineItemList.length > 0">
 			<h3>Product Line Items</h3>
