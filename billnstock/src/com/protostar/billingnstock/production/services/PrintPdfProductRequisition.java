@@ -88,6 +88,7 @@ public class PrintPdfProductRequisition extends HttpServlet {
 			root.put("createdBy", createdBy == null ? "" : createdBy.getFirstName() + " " + createdBy.getLastName());
 			root.put("productName",
 					"" + productionRequisitionEntity.getBomEntity().getStockItemType().getItemName().toString());
+			root.put("bomProductQty", productionRequisitionEntity.getProductQty());
 			root.put("deliveryDate", sdfDate.format(productionRequisitionEntity.getDeliveryDateTime()));
 			root.put("deliveryTime", sdfTime.format(productionRequisitionEntity.getDeliveryDateTime()));
 			Template temp = PDFHtmlTemplateService.getConfiguration()

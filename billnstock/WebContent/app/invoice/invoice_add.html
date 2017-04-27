@@ -193,22 +193,19 @@
 
 							<td md-cell width="4%">{{ $index +1 }}</td>
 							<td md-cell width="40%"><div layout="row">
-									<md-input-container flex
-										style="padding-left:2px; padding-right:0px;">
+									<md-input-container flex style="margin: 0px; padding: 0px;">
 									<input ng-model="serviceItem.itemName" ng-required="true"
 										aria-label="iname"> </md-input-container>
 								</div></td>
 
 							<td md-cell><md-input-container flex
-									style="padding-left:2px; padding-right:0px;">
-								<input type="number" ng-model="serviceItem.qty"
-									ng-required="true" ng-change="reCalculateTotal()"
-									aria-label="iqty" /> </md-input-container></td>
+									style="margin: 0px; padding: 0px;"> <input
+									type="number" ng-model="serviceItem.qty" ng-required="true"
+									ng-change="reCalculateTotal()" aria-label="iqty" /> </md-input-container></td>
 							<td md-cell><md-input-container flex
-									style="padding-left:2px; padding-right:0px;">
-								<input type="number" ng-model="serviceItem.price"
-									ng-required="true" ng-change="reCalculateTotal()"
-									aria-label="iprice" /></md-input-container></td>
+									style="margin: 0px; padding: 0px;"> <input
+									type="number" ng-model="serviceItem.price" ng-required="true"
+									ng-change="reCalculateTotal()" aria-label="iprice" /></md-input-container></td>
 							<td md-cell><b>{{serviceItem.qty * serviceItem.price |
 									currency:"":"2"}} </b></td>
 							<td md-cell><md-icon
@@ -322,8 +319,8 @@
 							<td md-cell>{{ $index +1 }}</td>
 							<td md-cell width="40%">
 								<div layout="row">
-									<md-input-container flex> <md-select
-										ng-model="item.stockItem" placeholder="Item Name"
+									<md-input-container flex style="margin: 0px; padding: 0px;">
+									<md-select ng-model="item.stockItem" placeholder="Item Name"
 										ng-click="productLineItemChangedEventFn()"
 										ng-change="productLineItemChanged(item)"> <md-option
 										ng-value="stockItem"
@@ -340,11 +337,13 @@
 								</div>
 							</td>
 
-							<td md-cell><md-input-container flex> <input
+							<td md-cell><md-input-container flex
+									style="margin: 0px; padding: 0px;"> <input
 									type="number" ng-model="item.qty"
 									ng-blur="checkStock(item,$event)"
 									ng-change="reCalculateTotal()" aria-label="iqty" /> </md-input-container></td>
-							<td md-cell><md-input-container flex> <input
+							<td md-cell><md-input-container flex
+									style="margin: 0px; padding: 0px;"> <input
 									type="number" ng-model="item.price"
 									ng-change="reCalculateTotal()" aria-label="iprice" /></md-input-container></td>
 							<td md-cell><b>{{item.qty * item.price |
@@ -389,6 +388,7 @@
 							<td md-cell></td>
 							<td md-cell><label>Product Tax</label></td>
 							<td md-cell><md-input-container flex
+									style="margin: 0px; padding: 0px;"
 									ng-hide="documentEntity.productLineItemList.length==0">
 								<md-select ng-model="documentEntity.selectedProductTax"
 									placeholder="Select Tax" ng-change="reCalculateTotal()">

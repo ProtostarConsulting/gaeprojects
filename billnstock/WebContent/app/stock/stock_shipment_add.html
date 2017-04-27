@@ -24,20 +24,15 @@
 				<md-input-container flex=20> <label>Stock
 					Shipment No.</label> <input ng-model="documentEntity.itemNumber"
 					placeholder="Auto generated number" ng-disabled="true"></input> </md-input-container>
-				<md-input-container flex=15> <label>Document
+				<md-input-container flex=20> <label>Document
 					Status </label> <input type="text" ng-disabled="true"
 					ng-model="documentEntity.status"> </md-input-container>
-				<md-input-container flex=15> <label>Select
-					Order Type</label> <md-select placeholder="Order Type"
-					ng-model="documentEntity.orderType"> <md-option
-					ng-repeat="orderType in stockItemOrderTypes" ng-value="orderType"
-					ng-selected="documentEntity.orderType.id == orderType.id">{{orderType.typeName}}
-				</md-option> </md-select> </md-input-container>
-				<md-input-container flex=25> <label>Created
+				<span flex> </span>
+				<md-input-container flex=15> <label>Created
 					By </label> <input ng-disabled="true" ng-model="createdBy"
 					ng-init="createdBy = documentEntity.createdBy? documentEntity.createdBy.firstName + ' ' + documentEntity.createdBy.lastName: ''"></input>
 				</md-input-container>
-				<md-input-container flex=25> <label>Created
+				<md-input-container flex=15> <label>Created
 					Date </label> <input ng-disabled="true"
 					ng-value="documentEntity.createdDate | formatDate"></input> </md-input-container>
 			</div>
@@ -88,21 +83,31 @@
 				<div ng-message="required">This is required field.</div>
 			</div>
 			</md-autocomplete>
-			<md-input-container flex> <label>Shipment
-				Date</label> <md-datepicker flex ng-model="documentEntity.shipmentDate"
-				md-placeholder="Select Date"></md-datepicker> </md-input-container>
-			<md-input-container flex=10> <label>Approved
+
+			<md-input-container flex=15> <label>Approved
 				By </label> <input ng-disabled="true" ng-model="approvedBy"
 				ng-init="approvedBy = documentEntity.approvedBy? documentEntity.approvedBy.firstName + ' ' + documentEntity.approvedBy.lastName : 'NA'"></input>
 			</md-input-container>
-			<md-input-container flex=10> <label>Last
+			<md-input-container flex=15> <label>Last
 				Modified Date </label> <input ng-disabled="true"
 				ng-value="documentEntity.modifiedDate | formatDate"></input> </md-input-container>
 		</div>
 
 		<div layout="row" layout-xs="column">
+			<div flex=40 layout="row" layout-xs="column">
+				<md-input-container flex> <label>Shipment
+					Date</label> <md-datepicker flex ng-model="documentEntity.shipmentDate"
+					md-placeholder="Select Date"></md-datepicker> </md-input-container>
+
+				<md-input-container flex> <label>Select
+					Order Type</label> <md-select placeholder="Order Type"
+					ng-model="documentEntity.orderType"> <md-option
+					ng-repeat="orderType in stockItemOrderTypes" ng-value="orderType"
+					ng-selected="documentEntity.orderType.id == orderType.id">{{orderType.typeName}}
+				</md-option> </md-select> </md-input-container>
+			</div>
 			<md-input-container flex> <label>Shipment
-				Notes</label> <textarea ng-model="documentEntity.note" rows="2" cols="1"></textarea>
+				Notes</label> <textarea ng-model="documentEntity.note" rows="1" cols="1"></textarea>
 			</md-input-container>
 		</div>
 
@@ -132,8 +137,8 @@
 						<td md-cell>{{ $index +1 }}</td>
 						<td md-cell width="40%">
 							<div layout="row">
-								<md-input-container flex> <md-select
-									ng-model="item.stockItem" placeholder="Item Name"
+								<md-input-container flex style="margin: 0px; padding: 0px;">
+								<md-select ng-model="item.stockItem" placeholder="Item Name"
 									ng-required="true" ng-change="productLineItemChanged(item)">
 								<md-option ng-value="stockItem"
 									ng-selected="item.stockItem.id == stockItem.id"
@@ -146,15 +151,17 @@
 							</div>
 						</td>
 
-						<td md-cell><md-input-container flex> <input
+						<td md-cell><md-input-container flex
+								style="margin: 0px; padding: 0px;"> <input
 								type="number" ng-model="item.qty" ng-required="true"
 								aria-label="iqty" ng-change="calProductSubTotal()"> </md-input-container></td>
-						<td md-cell><md-input-container flex> <input
+						<td md-cell><md-input-container flex
+								style="margin: 0px; padding: 0px;"> <input
 								type="number" ng-model="item.price"
 								ng-change="calProductSubTotal()" aria-label="iprice"
 								ng-required="true"></md-input-container></td>
-						<td md-cell><md-input-container flex> <b>{{item.qty
-								* item.price | currency:"":"2"}} </b></td>
+						<td md-cell><b>{{item.qty * item.price |
+								currency:"":"2"}} </b></td>
 						<td md-cell><md-button class="md-icon-button"
 								ng-show="item.stockItem.stockItemType.maintainStockBySerialNumber"
 								ng-click="addSerialNumbers($event, item)"> <ng-md-icon
@@ -208,18 +215,20 @@
 						ng-repeat="serviceItem in documentEntity.serviceLineItemList">
 
 						<td md-cell>{{ $index +1 }}</td>
-						<td md-cell width="40%"><md-input-container flex>
-							<input ng-model="serviceItem.itemName" aria-label="sName">
-							</md-input-container></td>
+						<td md-cell width="40%"><md-input-container flex
+								style="margin: 0px; padding: 0px;"> <input
+								ng-model="serviceItem.itemName" aria-label="sName"> </md-input-container></td>
 
-						<td md-cell><md-input-container flex> <input
+						<td md-cell><md-input-container flex
+								style="margin: 0px; padding: 0px;"> <input
 								type="number" ng-model="serviceItem.qty" aria-label="sQty"
 								ng-change="calServiceSubTotal()"> </md-input-container></td>
-						<td md-cell><md-input-container flex> <input
+						<td md-cell><md-input-container flex
+								style="margin: 0px; padding: 0px;"> <input
 								type="number" ng-model="serviceItem.price" aria-label="sPrice"
 								ng-change="calServiceSubTotal()"></md-input-container></td>
-						<td md-cell><md-input-container flex> <b>{{serviceItem.qty
-								* serviceItem.price | currency:"":"2"}} </b></td>
+						<td md-cell><b>{{serviceItem.qty * serviceItem.price |
+								currency:"":"2"}} </b></td>
 						<td md-cell><md-button class="md-icon-button"
 								ng-click="removeServiceItem($index)"> <ng-md-icon
 								icon="remove" style="fill: md-default" size="18"> <md-tooltip>

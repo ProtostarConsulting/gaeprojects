@@ -14,16 +14,17 @@
 	<form name="entityForm">
 		<div layout="row" layout-xs="column" flex>
 
-			<md-input-container flex> <md-select
-				name="bomEntity" ng-model="productionRequisition.bomEntity"
+			<md-input-container flex> <label>Select
+				Product BOM</label> <md-select name="bomEntity"
+				ng-model="productionRequisition.bomEntity"
 				ng-change="reqBomItemChanged(productionRequisition.bomEntity)"
-				placeholder="Product Name" ng-required="true"> <md-option
+				placeholder="Select Product" ng-required="true"> <md-option
 				ng-value="bomEntity" ng-repeat="bomEntity in bomList"
 				ng-selected="productionRequisition.bomEntity.id == bomEntity.id">{{bomEntity.stockItemType.itemName}}
 			</md-option> </md-select> </md-input-container>
 
 			<md-input-container flex> <input type="number"
-				aria-label="period" placeholder="Enter Qty."
+				aria-label="period" placeholder="BOM Product Qty."
 				ng-change="calculation()"
 				ng-model="productionRequisition.productQty"> </md-input-container>
 		</div>
@@ -44,55 +45,28 @@
 			<thead ng-if="!dataTableOptions.decapitate" md-head
 				md-order="query.order" md-on-reorder="logOrder">
 				<tr md-row>
-					<th md-column>Category</th>
 					<th md-column>Category Name</th>
 					<th md-column>Items</th>
-					<th md-column>Qty.</th>
-					<th md-column></th>
+					<th md-column>Qty. Needed</th>
+					<th md-column>Stock-in-Hand</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr md-row ng-init="itemToggle=true"
 					ng-repeat-start="bomCategory in productionRequisition.catList track by $index">
-
-					<td md-cell>Category {{ $index +1 }}<md-button
-							class="md-icon-button" ng-show="!itemToggle"
-							ng-click="itemToggle=true"> </md-button> <md-button
-							class="md-icon-button" ng-show="itemToggle"
-							ng-click="itemToggle=false" ng-disabled="true"> </md-button></td>
-					<td md-cell><div layout="row">
-							<md-input-container flex style="margin: 0; padding: 0px;">
-							<input type="text" aria-label="period"
-								ng-model="bomCategory.cat.catName" ng-disabled="true"> </md-input-container>
-
-						</div></td>
-
+					<td md-cell>{{bomCategory.cat.catName}}</td>
+					<td md-cell></td>
 					<td md-cell></td>
 					<td md-cell></td>
 				</tr>
 				<tr md-row ng-repeat="itemObj in  bomCategory.items"
-					ng-show="itemToggle">
+					ng-show="itemToggle" style="padding-top: 10px; padding-bottom: 10px;">
 					<td md-cell></td>
-					<td md-cell></td>
-					<td md-cell>
-						<div layout="row">
-							<md-input-container flex style="margin: 0; padding: 0px;">
-							<input type="text" aria-label="period"
-								ng-model="itemObj.itemName" ng-disabled="true"> </md-input-container>
-						</div>
-					</td>
-					<td md-cell>
-						<div layout="row">
-							<md-input-container style="margin: 0; padding: 0px;">
-							<input ng-model="itemObj.qty" ng-required="true"
-								ng-disabled="true"></md-input-container>
-
-						</div>
-					</td>
-					<td md-cell></td>
+					<td md-cell style="padding-top: 10px; padding-bottom: 10px;">{{itemObj.stockItemType.itemName}}</td>
+					<td md-cell style="padding-top: 10px; padding-bottom: 10px;">{{itemObj.qty}}</td>
+					<td md-cell style="padding-top: 10px; padding-bottom: 10px;">{{getCurrentWHStockItemQty(itemObj.stockItemType)}}</td>
 				</tr>
 				<tr md-row>
-					<td md-cell></td>
 					<td md-cell></td>
 					<td md-cell></td>
 					<td md-cell></td>
@@ -100,7 +74,6 @@
 				</tr>
 				<tr ng-repeat-end></tr>
 				<tr md-row>
-					<td md-cell></td>
 					<td md-cell></td>
 					<td md-cell></td>
 					<td md-cell></td>

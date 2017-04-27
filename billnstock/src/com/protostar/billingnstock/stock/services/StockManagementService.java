@@ -34,6 +34,7 @@ import com.protostar.billingnstock.purchase.entities.PurchaseOrderReport;
 import com.protostar.billingnstock.purchase.entities.PurchaseOrderReportItem;
 import com.protostar.billingnstock.purchase.entities.RequisitionEntity;
 import com.protostar.billingnstock.purchase.entities.SupplierEntity;
+import com.protostar.billingnstock.stock.entities.BomLineItemCategory;
 import com.protostar.billingnstock.stock.entities.StockItemBrand;
 import com.protostar.billingnstock.stock.entities.StockItemEntity;
 import com.protostar.billingnstock.stock.entities.StockItemInstanceEntity;
@@ -357,92 +358,70 @@ public class StockManagementService extends BaseService {
 
 		return documentEntity;
 	}
-	
+
 	@ApiMethod(name = "addProductionStockShipment", path = "addProductionStockShipment")
-	public ProductionShipmentEntity addProductionStockShipment(
-			ProductionShipmentEntity documentEntity) throws MessagingException,
-			IOException {
-		if (documentEntity.getStatus() == DocumentStatus.FINALIZED
-				&& documentEntity.isStatusAlreadyFinalized()) {
-			throw new RuntimeException(
-					"Save not allowed. StockItemsShipmentEntity is already FINALIZED: "
-							+ this.getClass().getSimpleName()
-							+ " Finalized entity can't be altered.");
+	public ProductionShipmentEntity addProductionStockShipment(ProductionShipmentEntity documentEntity)
+			throws MessagingException, IOException {
+		if (documentEntity.getStatus() == DocumentStatus.FINALIZED && documentEntity.isStatusAlreadyFinalized()) {
+			throw new RuntimeException("Save not allowed. StockItemsShipmentEntity is already FINALIZED: "
+					+ this.getClass().getSimpleName() + " Finalized entity can't be altered.");
 		}
 
 		if (documentEntity.getToWH() == null) {
-			throw new RuntimeException("Save not allowed. "
-					+ this.getClass().getSimpleName()
-					+ " To WarehouseEntity must not be null.");
+			throw new RuntimeException(
+					"Save not allowed. " + this.getClass().getSimpleName() + " To WarehouseEntity must not be null.");
 		}
 
-		documentEntity = ofy().execute(TxnType.REQUIRED,
-				new Work<ProductionShipmentEntity>() {
-					private ProductionShipmentEntity documentEntity;
+		documentEntity = ofy().execute(TxnType.REQUIRED, new Work<ProductionShipmentEntity>() {
+			private ProductionShipmentEntity documentEntity;
 
-					private Work<ProductionShipmentEntity> init(
-							ProductionShipmentEntity documentEntity) {
-						this.documentEntity = documentEntity;
-						return this;
-					}
+			private Work<ProductionShipmentEntity> init(ProductionShipmentEntity documentEntity) {
+				this.documentEntity = documentEntity;
+				return this;
+			}
 
-					public ProductionShipmentEntity run() {
-						List<StockLineItem> productLineItemList = documentEntity
-								.getProductLineItemList();
+			public ProductionShipmentEntity run() {
+				List<StockLineItem> productLineItemList = documentEntity.getProductLineItemList();
 
-						if (documentEntity.getStatus() == DocumentStatus.FINALIZED) {
-							List<StockLineItem> stockLineItemsToProcess = new ArrayList<StockLineItem>();
-							if (stockLineItemsToProcess.size() > 0) {
+				if (documentEntity.getStatus() == DocumentStatus.FINALIZED) {
+					List<StockLineItem> stockLineItemsToProcess = new ArrayList<StockLineItem>();
+					if (stockLineItemsToProcess.size() > 0) {
 
-								for (StockLineItem stockLineItem : productLineItemList) {
-									stockLineItemsToProcess.add(stockLineItem);
-									StockLineItem copy = StockLineItem
-											.getCopy(stockLineItem);
-									StockItemEntity stockItem = getOrCreateWarehouseStockItem(
-											documentEntity.getToWH(), copy);
-									copy.setStockItem(stockItem);
-									// So that credits in adjustStockItems fn
-									copy.setStockMaintainedQty(copy.getQty() * 2);
-									stockLineItemsToProcess.add(copy);
+						for (StockLineItem stockLineItem : productLineItemList) {
+							stockLineItemsToProcess.add(stockLineItem);
+							StockLineItem copy = StockLineItem.getCopy(stockLineItem);
+							StockItemEntity stockItem = getOrCreateWarehouseStockItem(documentEntity.getToWH(), copy);
+							copy.setStockItem(stockItem);
+							// So that credits in adjustStockItems fn
+							copy.setStockMaintainedQty(copy.getQty() * 2);
+							stockLineItemsToProcess.add(copy);
 
-									if (stockLineItem.getStockItem()
-											.getStockItemType()
-											.isMaintainStockBySerialNumber()) {
-										List<StockItemInstanceEntity> stockItemInstanceList = stockLineItem
-												.getStockItemInstanceList();
-										for (StockItemInstanceEntity stockItemInstanceEntity : stockItemInstanceList) {
-											stockItemInstanceEntity
-													.setBusiness(stockItem
-															.getBusiness());
-											stockItemInstanceEntity
-													.setStockItemId(stockItem
-															.getId().toString());
-											stockItemInstanceEntity
-													.setStockShipmentNumber(documentEntity
-															.getItemNumber());
-										}
-									}
-									// So that credits in adjustStockItems fn
-									copy.setStockMaintainedQty(stockLineItem
-											.getQty() * 2);
-									stockLineItemsToProcess.add(copy);
+							if (stockLineItem.getStockItem().getStockItemType().isMaintainStockBySerialNumber()) {
+								List<StockItemInstanceEntity> stockItemInstanceList = stockLineItem
+										.getStockItemInstanceList();
+								for (StockItemInstanceEntity stockItemInstanceEntity : stockItemInstanceList) {
+									stockItemInstanceEntity.setBusiness(stockItem.getBusiness());
+									stockItemInstanceEntity.setStockItemId(stockItem.getId().toString());
+									stockItemInstanceEntity.setStockShipmentNumber(documentEntity.getItemNumber());
 								}
-							} else {
-								stockLineItemsToProcess = documentEntity
-										.getProductLineItemList();
 							}
-
-							// Process stock items
-							StockManagementService.adjustStockItems(
-									documentEntity.getBusiness(),
-									stockLineItemsToProcess,
-									documentEntity.getItemNumber(), 0);
-						} // enf of FINALIZED if
-
-						ofy().save().entity(documentEntity).now();
-						return documentEntity;
+							// So that credits in adjustStockItems fn
+							copy.setStockMaintainedQty(stockLineItem.getQty() * 2);
+							stockLineItemsToProcess.add(copy);
+						}
+					} else {
+						stockLineItemsToProcess = documentEntity.getProductLineItemList();
 					}
-				}.init(documentEntity));
+
+					// Process stock items
+					StockManagementService.adjustStockItems(documentEntity.getBusiness(), stockLineItemsToProcess,
+							documentEntity.getItemNumber(), 0);
+				} // enf of FINALIZED if
+
+				ofy().save().entity(documentEntity).now();
+				return documentEntity;
+			}
+		}.init(documentEntity));
 
 		if (documentEntity.getStatus() != DocumentStatus.DRAFT) {
 			// new EmailHandler().sendStockShipmentEmail(documentEntity);
@@ -563,6 +542,39 @@ public class StockManagementService extends BaseService {
 					.filter("stockItemType IN", filteredStockItemTypes).list();
 		}
 		return filteredStocks;
+	}
+
+	@ApiMethod(name = "filterStockItemsByType", path = "filterStockItemsByType")
+	public List<StockItemEntity> filterStockItemsByType(StockItemTypeEntity stockItemType) {
+		List<StockItemEntity> filteredStocks = ofy().load().type(StockItemEntity.class)
+				.ancestor(stockItemType.getBusiness()).filter("stockItemType", stockItemType).list();
+
+		return filteredStocks;
+	}
+
+	@ApiMethod(name = "filterStockItemsByBomTypes", path = "filterStockItemsByBomTypes")
+	public List<StockItemEntity> filterStockItemsByBomTypes(BomEntity bomEntity) {
+		List<StockItemTypeEntity> bomStockItemTypes = new ArrayList<StockItemTypeEntity>();
+
+		if (bomEntity.getCatList() != null) {
+			List<BomLineItemCategory> catList = bomEntity.getCatList();
+			for (BomLineItemCategory bomLineItemCategory : catList) {
+				if (bomLineItemCategory != null && bomLineItemCategory.getItems() != null) {
+					for (LineItemEntity lineItem : bomLineItemCategory.getItems()) {
+						if (lineItem.getStockItemType() != null) {
+							bomStockItemTypes.add(lineItem.getStockItemType());
+						}
+					}
+				}
+			}
+		}
+
+		List<StockItemEntity> filteredStocksAcrossWarehouses = new ArrayList<StockItemEntity>();
+		if (bomStockItemTypes.size() > 0) {
+			filteredStocksAcrossWarehouses = ofy().load().type(StockItemEntity.class).ancestor(bomEntity.getBusiness())
+					.filter("stockItemType IN", bomStockItemTypes).list();
+		}
+		return filteredStocksAcrossWarehouses;
 	}
 
 	@ApiMethod(name = "filterStockItemTypesByProductionProducts", path = "filterStockItemTypesByProductionProducts")
@@ -1250,9 +1262,9 @@ public class StockManagementService extends BaseService {
 	public StockReceiptQCRecord getStockReceiptQCDailyRecordEntity(StockReceiptQCEntity qcStockReceipt,
 			@Named("busId") Long busId) {
 
-		System.out.println("qcStockReceipt  Id-----"+qcStockReceipt.getId());
-		List<QCParameter> parameterList  = qcStockReceipt.getParameterList();
-		System.out.println("parameterList---"+qcStockReceipt.getParameterList());
+		System.out.println("qcStockReceipt  Id-----" + qcStockReceipt.getId());
+		List<QCParameter> parameterList = qcStockReceipt.getParameterList();
+		System.out.println("parameterList---" + qcStockReceipt.getParameterList());
 		StockReceiptQCRecord stockReceiptQcDailyRecord = null;
 
 		StockUtil stockUtil = new StockUtil();

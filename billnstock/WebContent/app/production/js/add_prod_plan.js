@@ -157,9 +157,7 @@ app
 						$scope.stockItemList = [];
 						$scope.documentEntity = productionShipment ? productionShipment
 								: {};
-								
-								
-								
+
 						if (!$scope.documentEntity.id) {
 
 							$scope.documentEntity.createdBy = curUser;
@@ -168,13 +166,14 @@ app
 							$scope.documentEntity.shipmentDate = new Date();
 							$scope.documentEntity.status = 'DRAFT';
 							$scope.documentEntity.productLineItemList = [];
-							//$scope.stockItemList = prodPlan.prodRequisitionList;
+							// $scope.stockItemList =
+							// prodPlan.prodRequisitionList;
 
-						}else{
-							
-							$scope.documentEntity.shipmentDate=new Date(productionShipment.shipmentDate);
-							
-							
+						} else {
+
+							$scope.documentEntity.shipmentDate = new Date(
+									productionShipment.shipmentDate);
+
 						}
 
 						$scope.filterStockItemsByWarehouse = function(
@@ -232,8 +231,8 @@ app
 							$scope.saveDocument();
 						}
 						$scope.removeProductItem = function(index) {
-							$scope.documentEntity.productLineItemList.splice(index,
-									1);
+							$scope.documentEntity.productLineItemList.splice(
+									index, 1);
 
 							if ($scope.documentEntity.productLineItemList.length == 0) {
 								$scope.documentEntity.productSubTotal = 0;
@@ -362,6 +361,30 @@ app
 									});
 						}
 
+						$scope.filterStockItemsByBomTypes = function(bomEntity) {
+							var stockService = appEndpointSF.getStockService();
+							stockService.filterStockItemsByBomTypes(bomEntity)
+									.then(function(stockList) {
+										$scope.firmStockItemList = stockList;
+										$scope.loading = false;
+									});
+						}
+
+						$scope.getCurrentWHStockItemQty = function(
+								stockItemType) {
+							var totalStockQty = 0;
+							if (!stockItemType)
+								return 'NA';
+							angular
+									.forEach(
+											$scope.firmStockItemList,
+											function(stockItem) {
+												if (stockItem.stockItemType.id == stockItemType.id)
+													totalStockQty += stockItem.qty;
+											});
+							return totalStockQty;
+						}
+
 						$scope.addRequisition = function() {
 
 							var productService = appEndpointSF
@@ -429,6 +452,10 @@ app
 
 							if (!$scope.productionRequisition.id
 									|| $scope.productionRequisitionBackup.bomEntity.id !== bomEntity.id) {
+
+								$scope
+										.filterStockItemsByBomTypes($scope.productionRequisitionBackup.bomEntity);
+
 								var productService = appEndpointSF
 										.getProductionService();
 								productService
@@ -441,11 +468,17 @@ app
 													$scope.productionRequisition.bomEntity = bomEntity;
 													$scope.productionRequisition.deliveryDateTime = new Date();
 												});
+
 							}
 
 						}
 
 						$scope.fetchBomList();
+						if ($scope.productionRequisitionBackup.bomEntity
+								&& $scope.productionRequisitionBackup.bomEntity.id) {
+							$scope
+									.filterStockItemsByBomTypes($scope.productionRequisitionBackup.bomEntity);
+						}
 					}
 
 				});

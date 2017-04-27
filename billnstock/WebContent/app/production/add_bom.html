@@ -80,10 +80,10 @@
 						<td md-cell>
 							<div layout="row" flex>
 								<md-input-container flex style="margin: 0px; padding: 0px;">
-								<md-select ng-model="itemObj.itemName" placeholder="Item Name"
+								<md-select ng-model="itemObj.stockItemType" placeholder="Item Name"
 									ng-required="true"> <md-option
-									ng-value="stockItemType.itemName"
-									ng-selected="itemObj.itemName == stockItemType.itemName"
+									ng-value="stockItemType"
+									ng-selected="itemObj.stockItemType.id == stockItemType.id"
 									ng-repeat="stockItemType in bomCategory.categoryStockTypeList">{{stockItemType.itemName
 								}}</md-option> </md-select> </md-input-container>
 

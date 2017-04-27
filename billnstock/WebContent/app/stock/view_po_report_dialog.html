@@ -8,18 +8,17 @@
 </div>
 </md-toolbar> <md-dialog-content style="min-width:1000px; min-height:500px;">
 <md-content layout-padding>
-<section id="pagetoolbar" layout="row" layout-xs="column">
-	<span flex="50"> </span>
-	<md-input-container flex> <md-button
-		class="md-icon-button" ng-click="printPOReport('pOreportContent')">
-	<ng-md-icon icon="print" style="fill: md-default" size="20">
-	<md-tooltip> Print PO Report</md-tooltip></ng-md-icon></md-button> </md-input-container>
-</section>
 <div id="pOreportContent">
 	<table class="table"
 		style="border: 1px solid black; border-collapse: collapse;">
 		<caption style="padding: 3px; align: left">
-			<b>PO No.{{pOItemNo}} Report</b>
+			<div layout="row">
+				<b>PO No.{{pOItemNo}} Report</b>
+				<md-button class="md-icon-button"
+					ng-click="printPOReport('pOreportContent')"> <ng-md-icon
+					icon="print" style="fill: md-default" size="20"> <md-tooltip>
+				Print PO Report</md-tooltip></ng-md-icon></md-button>
+			</div>
 		</caption>
 		<thead>
 			<tr style="border: 1px solid black; text-align: center;">

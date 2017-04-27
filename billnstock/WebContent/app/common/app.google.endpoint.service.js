@@ -2116,6 +2116,24 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
+	StockService.filterStockItemsByBomTypes = function(bomEntity) {
+		var deferred = $q.defer();
+		gapi.client.stockService.filterStockItemsByBomTypes(bomEntity).execute(
+				function(resp) {
+					deferred.resolve(resp.items);
+				});
+		return deferred.promise;
+	}
+
+	StockService.filterStockItemsByType = function(stockItemType) {
+		var deferred = $q.defer();
+		gapi.client.stockService.filterStockItemsByType(stockItemType).execute(
+				function(resp) {
+					deferred.resolve(resp.items);
+				});
+		return deferred.promise;
+	}
+
 	StockService.filterStockItemsByCategory = function(
 			stockItemProductTypeCategory) {
 		var deferred = $q.defer();
@@ -2274,7 +2292,7 @@ function googleEndpointSF($q) {
 					deferred.resolve(resp);
 				});
 		return deferred.promise;
-	}//////////////
+	}// ////////////
 	StockService.addProductionStockShipment = function(stockShip) {
 		var deferred = $q.defer();
 		gapi.client.stockService.addProductionStockShipment(stockShip).execute(
@@ -2762,12 +2780,12 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
-	StockService.getStockReceiptQCDailyRecordEntity = function(
-			qcStockReceipt, busId) {
+	StockService.getStockReceiptQCDailyRecordEntity = function(qcStockReceipt,
+			busId) {
 		var deferred = $q.defer();
 		gapi.client.stockService.getStockReceiptQCDailyRecordEntity({
 			"busId" : busId
-		},qcStockReceipt).execute(function(resp) {
+		}, qcStockReceipt).execute(function(resp) {
 			deferred.resolve(resp);
 		});
 		return deferred.promise;

@@ -34,12 +34,13 @@
 				<md-button class="md-accent" ng-click="gotoPart('part4')">Contact
 				Us</md-button>
 			</section> -->
-			<md-nav-bar md-selected-nav-item="currentNavItem"> <md-nav-item
+			<md-nav-bar md-selected-nav-item="currentNavItem" aria-label="temp1"> <md-nav-item
 				md-nav-click="gotoPart('part1')" name="part1"> Sign-up
-			for Trial </md-nav-item> <md-nav-item md-nav-click="gotoPart('part2') aria-label="temp1" name="part2">
-			Pricing </md-nav-item> <md-nav-item md-nav-click="gotoPart('part3')" aria-label="temp1" name="part3">
-			Help </md-nav-item> <md-nav-item md-nav-click="gotoPart('part4')" aria-label="temp1" name="part4">
-			Contact Us </md-nav-item> </md-nav-bar>
+			for Trial </md-nav-item> <md-nav-item md-nav-click="gotoPart('part2')"
+				aria-label="temp1" name="part2"> Pricing </md-nav-item> <md-nav-item
+				md-nav-click="gotoPart('part3')" aria-label="temp1" name="part3">
+			Help </md-nav-item> <md-nav-item md-nav-click="gotoPart('part4')"
+				aria-label="temp1" name="part4"> Contact Us </md-nav-item> </md-nav-bar>
 		</div>
 		<span flex></span>
 		<md-button class="md-accent" ng-click="loginClick()">
@@ -409,14 +410,7 @@
 		<p>
 			An ERP system covers the following common functional areas. In many
 			ERP systems these are called and grouped together as <i>ERP
-				modules</i>:
-
-			<md-nav-bar md-selected-nav-item="currentNavItem"> <md-nav-item
-				md-nav-click="goto('page1')" name="page1"> Page One </md-nav-item> <md-nav-item
-				md-nav-href="#page2" name="page3">Page Two</md-nav-item> <md-nav-item
-				md-nav-sref="page3" name="page2">Page Three</md-nav-item> <md-nav-item
-				md-nav-sref="app.page4" sref-opts="{reload: true, notify: true}"
-				name="page4"> Page Four </md-nav-item> </md-nav-bar>
+				modules</i>
 		</p>
 	</div>
 	</md-content>

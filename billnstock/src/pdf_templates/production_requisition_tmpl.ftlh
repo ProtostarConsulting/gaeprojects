@@ -55,13 +55,19 @@ td {
 						<table style="width: 100%; height: 100%;">
 							<tbody>
 								<tr>
-									<td align="left" style="border: 0px;"><b>Delivery Date:</b>${deliveryDate}<br></br>
+									<td align="left" style="border: 0px;"><b>BOM Product Qty: </b>${bomProductQty}<br></br>
 										 <br></br>
 										
 									</td>
 								</tr>
 								<tr>
-									<td align="left" style="border: 0px;"><b> Delivery Time</b>
+									<td align="left" style="border: 0px;"><b>Delivery Date: </b>${deliveryDate}<br></br>
+										 <br></br>
+										
+									</td>
+								</tr>
+								<tr>
+									<td align="left" style="border: 0px;"><b> Delivery Time: </b>
 										${deliveryTime}
 									</td>
 								</tr>
@@ -76,14 +82,6 @@ td {
 					<td style="width: 40%; border: 0px; vertical-align:top; padding-top: 0px;">										
 						<table style="width: 100%; height: 100%;">
 							<tbody>
-								<tr>
-									<td align="right" style="border: 0px;">
-										
-									</td>
-									<td align="left" style="border: 0px;">
-										
-									</td>
-								</tr>
 								<tr>
 									<td align="right" style="border: 0px;">
 										
@@ -183,7 +181,7 @@ td {
 			<th align="center">Category Name </th>
 			<th
 				style="width:46%;"
-				align="center">Items.</th>
+				align="center">Items</th>
 			<th
 				style="width:10%;" 
 				align="center">Qty.
@@ -199,11 +197,8 @@ td {
 			
 			<table style="width: 100%; height: 100%;border: 0px;">
 			<#list lineItem.items as item>
-			<tr style="border: 0px">
-			
-			<td style="font-size:10px;border: 0px;" align="center;">${item.itemName}</td>
-			
-			
+			<tr style="border: 0px">			
+				<td style="font-size:10px;border: 0px;" align="center;">${item.stockItemType.itemName}</td>
 			
 			</tr>
 			</#list>
