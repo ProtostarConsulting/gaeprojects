@@ -650,19 +650,20 @@ app
 							}
 
 							$scope.addComment = function() {
-								if (!editComment)
-									documentEntity.documentComments
-											.push($scope.documentComment);
 
 								var stockService = appEndpointSF
 										.getStockService();
 								stockService
 										.addPurchaseOrder(documentEntity)
 										.then(
-												function(data) {
-													if (editComment)
-														editComment.commentText = $scope.documentComment.commentText;
-
+												function(returnedObj) {
+													if (returnedObj.id) {
+														if (editComment)
+															editComment.commentText = $scope.documentComment.commentText;
+														else
+															documentEntity.documentComments
+																	.push($scope.documentComment);
+													}
 													$mdDialog.cancel();
 												});
 
