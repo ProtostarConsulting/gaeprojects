@@ -159,10 +159,14 @@ app
 						}
 
 					}
+
 					$scope.closeDocument = function(ev) {
 
 						$scope.documentEntity.status = 'CLOSED';
-						$scope.saveDocument();
+						var stockService = appEndpointSF.getStockService();
+						stockService.updatePurchaseOrder($scope.documentEntity)
+								.then(function() {
+								});
 
 					}
 
@@ -654,7 +658,7 @@ app
 								var stockService = appEndpointSF
 										.getStockService();
 								stockService
-										.addPurchaseOrder(documentEntity)
+										.updatePurchaseOrder(documentEntity)
 										.then(
 												function(returnedObj) {
 													if (returnedObj.id) {

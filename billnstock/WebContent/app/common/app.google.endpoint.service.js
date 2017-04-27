@@ -2516,6 +2516,15 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
+	StockService.updatePurchaseOrder = function(purchaseOrder) {
+		var deferred = $q.defer();
+		gapi.client.stockService.updatePurchaseOrder(purchaseOrder).execute(
+				function(resp) {
+					deferred.resolve(resp);
+				});
+		return deferred.promise;
+	}
+
 	StockService.addRequisition = function(requisitionEntity) {
 
 		var deferred = $q.defer();

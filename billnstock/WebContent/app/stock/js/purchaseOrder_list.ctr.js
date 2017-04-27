@@ -119,10 +119,11 @@ app
 					$scope.changeStarredValue = function(purchaseOrder) {
 
 						purchaseOrder.starred = !purchaseOrder.starred;
+						purchaseOrder.modifiedBy = $scope.curUser.email_id;
 
 						var stockService = appEndpointSF.getStockService();
-						purchaseOrder.modifiedBy = $scope.curUser.email_id;
-						stockService.addPurchaseOrder(purchaseOrder).then(
+
+						stockService.updatePurchaseOrder(purchaseOrder).then(
 								function() {
 								});
 					}
