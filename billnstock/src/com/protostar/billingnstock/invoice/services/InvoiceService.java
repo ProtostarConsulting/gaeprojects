@@ -23,7 +23,6 @@ import com.protostar.billingnstock.cust.entities.Customer;
 import com.protostar.billingnstock.invoice.entities.InvoiceEntity;
 import com.protostar.billingnstock.invoice.entities.InvoiceSettingsEntity;
 import com.protostar.billingnstock.invoice.entities.QuotationEntity;
-import com.protostar.billingnstock.stock.entities.StockItemEntity;
 import com.protostar.billingnstock.stock.entities.StockLineItem;
 import com.protostar.billingnstock.stock.services.StockManagementService;
 import com.protostar.billingnstock.tax.entities.TaxEntity;
@@ -155,97 +154,112 @@ public class InvoiceService extends BaseService {
 				.filter("isPaid", true).filter("paidDate >=", beginningDate)
 				.filter("paidDate <=", endDate).list();
 
-		for (int i = 0; i < filteredInvoices.size(); i++) {
+		for (InvoiceEntity invoiceEntity : filteredInvoices) {
+
 			double productSubTotal = 0;
 			double serviceSubTotal = 0;
 			double serviceTaxTotal = 0;
 			double productTaxTotal = 0;
+
 			TaxReportItem taxReportItem = new TaxReportItem();
-			InvoiceEntity invoiceEntity = filteredInvoices.get(i);
-			if (invoiceEntity.getSelectedProductTax().getId()
-					.equals(taxEntity.getId())
-					&& !invoiceEntity.getSelectedServiceTax().getId()
-							.equals(taxEntity.getId())) {
-				if (invoiceEntity.getProductLineItemList() != null
-						&& !invoiceEntity.getProductLineItemList().isEmpty()) {
-					List<StockLineItem> productItemList = invoiceEntity
-							.getProductLineItemList();
-					for (int j = 0; j < productItemList.size(); j++) {
-						productSubTotal += (productItemList.get(j).getQty())
-								* (productItemList.get(j).getPrice());
-					}
-				}
 
-				productTaxTotal = (taxEntity.getTaxPercenatge() / 100)
-						* (productSubTotal - invoiceEntity.getDiscAmount());
-				taxReportItem.setInvoiceItemNumber(invoiceEntity
-						.getItemNumber());
-				taxReportItem.setInvoiceDate(invoiceEntity.getPaidDate());
-				taxReportItem.setTaxAmt(productTaxTotal);
-				taxReportItemList.add(taxReportItem);
+			if (invoiceEntity.getSelectedProductTax() != null) {
+				if (invoiceEntity.getSelectedProductTax().getId()
+						.equals(taxEntity.getId())
+						&& !invoiceEntity.getSelectedServiceTax().getId()
+								.equals(taxEntity.getId())) {
+					if (invoiceEntity.getProductLineItemList() != null
+							&& !invoiceEntity.getProductLineItemList()
+									.isEmpty()) {
+						List<StockLineItem> productItemList = invoiceEntity
+								.getProductLineItemList();
+						for (StockLineItem stockLineItem : productItemList) {
+							productSubTotal += (stockLineItem.getQty())
+									* (stockLineItem.getPrice());
+						}
+					}
+
+					productTaxTotal = (taxEntity.getTaxPercenatge() / 100)
+							* (productSubTotal - invoiceEntity.getDiscAmount());
+					taxReportItem.setInvoiceItemNumber(invoiceEntity
+							.getItemNumber());
+					taxReportItem.setInvoiceDate(invoiceEntity.getPaidDate());
+					taxReportItem.setTaxAmt(productTaxTotal);
+					taxReportItemList.add(taxReportItem);
+				}
 			}
-			if (invoiceEntity.getSelectedServiceTax().getId()
-					.equals(taxEntity.getId())
-					&& !invoiceEntity.getSelectedProductTax().getId()
-							.equals(taxEntity.getId())) {
-				if (invoiceEntity.getServiceLineItemList() != null
-						&& !invoiceEntity.getServiceLineItemList().isEmpty()) {
-					List<StockLineItem> serviceLineItemList = invoiceEntity
-							.getServiceLineItemList();
-					for (int j = 0; j < serviceLineItemList.size(); j++) {
-						serviceSubTotal += (serviceLineItemList.get(j).getQty())
-								* (serviceLineItemList.get(j).getPrice());
-					}
-				}
+			if (invoiceEntity.getSelectedServiceTax() != null) {
+				if (invoiceEntity.getSelectedServiceTax().getId()
+						.equals(taxEntity.getId())
+						&& !invoiceEntity.getSelectedProductTax().getId()
+								.equals(taxEntity.getId())) {
+					if (invoiceEntity.getServiceLineItemList() != null
+							&& !invoiceEntity.getServiceLineItemList()
+									.isEmpty()) {
+						List<StockLineItem> serviceLineItemList = invoiceEntity
+								.getServiceLineItemList();
+						for (StockLineItem stockLineItem : serviceLineItemList) {
+							serviceSubTotal += (stockLineItem.getQty())
+									* (stockLineItem.getPrice());
+						}
 
-				serviceTaxTotal = (taxEntity.getTaxPercenatge() / 100)
-						* (serviceSubTotal - invoiceEntity.getDiscAmount());
-				taxReportItem.setInvoiceItemNumber(invoiceEntity
-						.getItemNumber());
-				taxReportItem.setInvoiceDate(invoiceEntity.getPaidDate());
-				taxReportItem.setTaxAmt(serviceTaxTotal);
-				taxReportItemList.add(taxReportItem);
+					}
+
+					serviceTaxTotal = (taxEntity.getTaxPercenatge() / 100)
+							* (serviceSubTotal - invoiceEntity.getDiscAmount());
+					taxReportItem.setInvoiceItemNumber(invoiceEntity
+							.getItemNumber());
+					taxReportItem.setInvoiceDate(invoiceEntity.getPaidDate());
+					taxReportItem.setTaxAmt(serviceTaxTotal);
+					taxReportItemList.add(taxReportItem);
+				}
 			}
+			if (invoiceEntity.getSelectedProductTax() != null
+					&& invoiceEntity.getSelectedServiceTax() != null) {
+				if (invoiceEntity.getSelectedServiceTax().getId()
+						.equals(taxEntity.getId())
+						&& invoiceEntity.getSelectedProductTax().getId()
+								.equals(taxEntity.getId())) {
 
-			if (invoiceEntity.getSelectedServiceTax().getId()
-					.equals(taxEntity.getId())
-					&& invoiceEntity.getSelectedProductTax().getId()
-							.equals(taxEntity.getId())) {
+					if (invoiceEntity.getProductLineItemList() != null
+							&& !invoiceEntity.getProductLineItemList()
+									.isEmpty()) {
+						List<StockLineItem> productItemList = invoiceEntity
+								.getProductLineItemList();
+						for (StockLineItem stockLineItem : productItemList) {
+							productSubTotal += (stockLineItem.getQty())
+									* (stockLineItem.getPrice());
+						}
 
-				if (invoiceEntity.getProductLineItemList() != null
-						&& !invoiceEntity.getProductLineItemList().isEmpty()) {
-					List<StockLineItem> productItemList = invoiceEntity
-							.getProductLineItemList();
-					for (int j = 0; j < productItemList.size(); j++) {
-						productSubTotal += (productItemList.get(j).getQty())
-								* (productItemList.get(j).getPrice());
 					}
-				}
-				productTaxTotal = (taxEntity.getTaxPercenatge() / 100)
-						* (productSubTotal - invoiceEntity.getDiscAmount());
+					productTaxTotal = (taxEntity.getTaxPercenatge() / 100)
+							* (productSubTotal - invoiceEntity.getDiscAmount());
 
-				if (invoiceEntity.getServiceLineItemList() != null
-						&& !invoiceEntity.getServiceLineItemList().isEmpty()) {
-					List<StockLineItem> serviceLineItemList = invoiceEntity
-							.getServiceLineItemList();
-					for (int j = 0; j < serviceLineItemList.size(); j++) {
-						serviceSubTotal += (serviceLineItemList.get(j).getQty())
-								* (serviceLineItemList.get(j).getPrice());
+					if (invoiceEntity.getServiceLineItemList() != null
+							&& !invoiceEntity.getServiceLineItemList()
+									.isEmpty()) {
+						List<StockLineItem> serviceLineItemList = invoiceEntity
+								.getServiceLineItemList();
+						for (StockLineItem stockLineItem : serviceLineItemList) {
+							serviceSubTotal += (stockLineItem.getQty())
+									* (stockLineItem.getPrice());
+						}
+
 					}
+					serviceTaxTotal = (taxEntity.getTaxPercenatge() / 100)
+							* (serviceSubTotal - invoiceEntity.getDiscAmount());
+					taxReportItem.setInvoiceItemNumber(invoiceEntity
+							.getItemNumber());
+					taxReportItem.setInvoiceDate(invoiceEntity.getPaidDate());
+					taxReportItem.setTaxAmt(productTaxTotal + serviceTaxTotal);
+					taxReportItemList.add(taxReportItem);
 				}
-				serviceTaxTotal = (taxEntity.getTaxPercenatge() / 100)
-						* (serviceSubTotal - invoiceEntity.getDiscAmount());
-				taxReportItem.setInvoiceItemNumber(invoiceEntity
-						.getItemNumber());
-				taxReportItem.setInvoiceDate(invoiceEntity.getPaidDate());
-				taxReportItem.setTaxAmt(productTaxTotal + serviceTaxTotal);
-				taxReportItemList.add(taxReportItem);
 			}
 		}
 		taxReport.setItemList(taxReportItemList);
 		double taxTotal = 0;
-		for (int i = 0; i < taxReport.getItemList().size(); i++) {
-			taxTotal += taxReport.getItemList().get(i).getTaxAmt();
+		for (TaxReportItem taxReportItem : taxReportItemList) {
+			taxTotal += taxReportItem.getTaxAmt();
 		}
 		taxReport.setTaxTotal(taxTotal);
 		return taxReport;
