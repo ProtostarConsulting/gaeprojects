@@ -363,11 +363,28 @@ app
 
 						$scope.filterStockItemsByBomTypes = function(bomEntity) {
 							var stockService = appEndpointSF.getStockService();
-							stockService.filterStockItemsByBomTypes(bomEntity)
-									.then(function(stockList) {
-										$scope.firmStockItemList = stockList;
-										$scope.loading = false;
-									});
+							stockService
+									.filterStockItemsByBomTypes(bomEntity)
+									.then(
+											function(stockList) {
+												$scope.firmStockItemList = stockList;
+
+												if (!$scope.productionRequisition.id
+														|| $scope.productionRequisitionBackup.bomEntity.id !== bomEntity.id) {
+													var productService = appEndpointSF
+															.getProductionService();
+													productService
+															.getEmptyProductionRequisition(
+																	bomEntity)
+															.then(
+																	function(
+																			productionRequisitionTemp) {
+																		$scope.productionRequisition = productionRequisitionTemp;
+																		$scope.productionRequisition.bomEntity = bomEntity;
+																		$scope.productionRequisition.deliveryDateTime = new Date();
+																	});
+												}
+											});
 						}
 
 						$scope.getCurrentWHStockItemQty = function(
@@ -453,21 +470,7 @@ app
 							if (!$scope.productionRequisition.id
 									|| $scope.productionRequisitionBackup.bomEntity.id !== bomEntity.id) {
 
-								$scope
-										.filterStockItemsByBomTypes($scope.productionRequisitionBackup.bomEntity);
-
-								var productService = appEndpointSF
-										.getProductionService();
-								productService
-										.getEmptyProductionRequisition(
-												bomEntity)
-										.then(
-												function(
-														productionRequisitionTemp) {
-													$scope.productionRequisition = productionRequisitionTemp;
-													$scope.productionRequisition.bomEntity = bomEntity;
-													$scope.productionRequisition.deliveryDateTime = new Date();
-												});
+								$scope.filterStockItemsByBomTypes(bomEntity);
 
 							}
 
