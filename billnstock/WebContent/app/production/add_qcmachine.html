@@ -32,10 +32,10 @@
 	</div>
 	<div layout="row" layout-xs="column" flex="50" flex-gt-xs>
 		<mdp-date-picker mdp-placeholder="Valid Since Date"
-			ng-model="qcmachine.validFrom"></mdp-date-picker>
+			ng-model="qcmachine.validFrom" mdp-format="DD/MM/YYYY"></mdp-date-picker>
 
 		<mdp-date-picker mdp-placeholder="Valid Till Date"
-			ng-model="qcmachine.validTill"></mdp-date-picker>
+			ng-model="qcmachine.validTill" mdp-min-date="qcmachine.validFrom" mdp-format="DD/MM/YYYY"></mdp-date-picker>
 	</div>
 	<div>
 		<h4 class="md-subhead">QC Parameters</h4>
@@ -59,29 +59,30 @@
 
 					<td md-cell width="4%">{{$index + 1}}</td>
 					<td md-cell width="40%"><div layout="row">
-							<md-input-container flex
-								style="padding-left:2px; padding-right:0px;">
+							<md-input-container flex style="margin: 0px; padding: 0px;">
 							<input ng-model="parameter.name"> </md-input-container>
 						</div></td>
+					<td md-cell><div layout="row" flex>
+							<md-input-container flex style="margin: 0px; padding: 0px;">
+							<md-select name="parameterType"
+								ng-model="parameter.parameterType" placeholder="Select Type" ng-required="true" >
+							<md-option ng-repeat="paramType in qcparameterType"
+								ng-value="paramType">{{paramType}}</md-option> </md-select></md-input-container>
+						</div></td>
+					<td md-cell><div layout="row" flex>
+							<md-input-container flex style="margin: 0px; padding: 0px;">
+							<md-select name="paramUnit" ng-model="parameter.paramUnit" placeholder="Select Unit"
+								ng-required="true"> <md-option
+								ng-repeat="unit in qcMachineUnitMeasureList"
+								ng-selected="parameter.paramUnit.id==unit.id" ng-value="unit">{{unit.unitName}}</md-option>
+							</md-select></md-input-container>
+						</div></td>
 					<td md-cell><md-input-container flex
-							style="padding-left:2px; padding-right:0px;">
-						<md-select name="parameterType" ng-model="parameter.parameterType"
-							ng-required="true"> <md-option
-							ng-repeat="paramType in qcparameterType" ng-value="paramType">{{paramType}}</md-option>
-						</md-select></md-input-container></td>
+							style="margin: 0px; padding: 0px;"> <input
+							ng-model="parameter.numberIdealValue"> </md-input-container></td>
 					<td md-cell><md-input-container flex
-							style="padding-left:2px; padding-right:0px;">
-						<md-select name="paramUnit" ng-model="parameter.paramUnit"
-							ng-required="true"> <md-option
-							ng-repeat="unit in qcMachineUnitMeasureList"
-							ng-selected="parameter.paramUnit.id==unit.id" ng-value="unit">{{unit.unitName}}</md-option>
-						</md-select></md-input-container></td>
-					<td md-cell><md-input-container flex
-							style="padding-left:2px; padding-right:0px;">
-						<input ng-model="parameter.numberIdealValue"> </md-input-container></td>
-					<td md-cell><md-input-container flex
-							style="padding-left:2px; padding-right:0px;">
-						<input ng-model="parameter.numberIdealValueValidDeviationPerc">
+							style="margin: 0px; padding: 0px;"> <input
+							ng-model="parameter.numberIdealValueValidDeviationPerc">
 						</md-input-container></td>
 					<td md-cell><md-icon
 							md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
@@ -103,24 +104,28 @@
 		</md-table-container>
 	</div>
 	<div>
-		<h4 class="md-subhead">Define QC Check Frequency</h4>	
+		<h4 class="md-subhead">Define QC Check Frequency</h4>
 		<div layout="row" layout-xs="column" flex>
-			<h5 class="md-caption" style="padding-top: 20px; padding-left: 20px; padding-right: 20px;">Repeat</h5>
+			<h5 class="md-caption"
+				style="padding-top: 20px; padding-left: 20px; padding-right: 20px;">Repeat</h5>
 			<md-input-container flex style="padding-left:2px; padding-right:0px;">
 			<label>Schedule </label> <md-select name="schedule"
 				ng-model="qcmachine.schedule" ng-required="true"> <md-option
 				ng-repeat="scheduler in tempScheduler" ng-value="scheduler">{{scheduler}}</md-option>
 			</md-select></md-input-container>
-			<h5 class="md-caption" class="md-caption" style="padding-top: 20px; padding-left: 20px; padding-right: 20px;">Every</h5>
+			<h5 class="md-caption" class="md-caption"
+				style="padding-top: 20px; padding-left: 20px; padding-right: 20px;">Every</h5>
 			<md-input-container flex style="padding-left:2px; padding-right:0px;">
 			<label>Schedule Time</label> <md-select name="scheduleTime"
 				ng-model="qcmachine.scheduleTime" ng-required="true"> <md-option
 				ng-repeat="schedulerTime in tempSchedulerTime"
 				ng-value="schedulerTime">{{schedulerTime}}</md-option> </md-select></md-input-container>
-			<h5 class="md-caption" class="md-caption" style="padding-top: 20px; padding-left: 20px; padding-right: 20px;">From</h5>
+			<h5 class="md-caption" class="md-caption"
+				style="padding-top: 20px; padding-left: 20px; padding-right: 20px;">From</h5>
 			<mdp-time-picker mdp-format="hh:mm A"
 				ng-model="qcmachine.startFromTime" mdp-placeholder="From Time"></mdp-time-picker>
-			<h5 class="md-caption" class="md-caption" style="padding-top: 20px; padding-left: 20px; padding-right: 20px;">To</h5>
+			<h5 class="md-caption" class="md-caption"
+				style="padding-top: 20px; padding-left: 20px; padding-right: 20px;">To</h5>
 			<mdp-time-picker mdp-format="hh:mm A" ng-model="qcmachine.tillTime"
 				mdp-placeholder="Till Time"></mdp-time-picker>
 		</div>

@@ -21,28 +21,29 @@
 			ng-model="recordDate" ng-change="getQCMachineDailyRecord(recordDate)"></mdp-date-picker>
 	</div>
 
-	<div>
-		<md-table-container ng-if="isTableShow">
-		<table md-table md-progress="promise">
-			<tbody md-body>
-				<tr md-row>
-					<td md-cell width="20%">Time/QC Parameter Name</td>
-					<td md-cell
-						ng-repeat="parameterValue in tempQCMachineDailyRecordObj.parameterValueList[0].paramRecordedValues">{{parameterValue.parameterName}}</td>
-				</tr>
-				<tr md-row ng-repeat="tempTime in timeArray track by $index">
-					<td md-cell ng-model="parameterValueObj.time">{{ tempTime }}</td>
-					<td md-cell
-						ng-repeat="paramRecordedValue in tempQCMachineDailyRecordObj.parameterValueList[$index].paramRecordedValues"><md-input-container
-							flex style="padding-left:2px; padding-right:0px;">
-						<label>Enter Value</label> <input
-							ng-model="paramRecordedValue.recordedValue"> </md-input-container></td>
-				</tr>
-			</tbody>
-		</table>
-		</md-table-container>
-	</div>
 	<div ng-if="isTableShow">
+		<div>
+			<md-table-container>
+			<table md-table md-progress="promise">
+				<tbody md-body>
+					<tr md-row>
+						<td md-cell width="20%">Time/QC Parameter Name</td>
+						<td md-cell
+							ng-repeat="parameterValue in tempQCMachineDailyRecordObj.parameterValueList[0].paramRecordedValues">{{parameterValue.parameterName}}</td>
+					</tr>
+					<tr md-row ng-repeat="tempTime in timeArray track by $index">
+						<td md-cell ng-model="parameterValueObj.time">{{ tempTime }}</td>
+						<td md-cell
+							ng-repeat="paramRecordedValue in tempQCMachineDailyRecordObj.parameterValueList[$index].paramRecordedValues"><md-input-container
+								flex style="margin: 0px; padding: 0px;"> <input
+								ng-model="paramRecordedValue.recordedValue"
+								placeholder="Enter value"> </md-input-container></td>
+					</tr>
+				</tbody>
+			</table>
+			</md-table-container>
+		</div>
+
 		<section layout="row" layout-xs="column">
 			<md-button class="md-raised md-primary"
 				ng-click="addQCMachineRecord()">Save</md-button>

@@ -69,6 +69,11 @@ app.controller("qcmachineAddCtr", function($scope, $window, $mdToast, $timeout,
 			numberIdealValue : "",
 			numberIdealValueValidDeviationPerc : ""
 		}
+		
+		if (!$scope.qcmachine.parameterList) {
+			$scope.qcmachine.parameterList = [];
+		}
+
 		$scope.qcmachine.parameterList.push($scope.qcparameter);
 	};
 

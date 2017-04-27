@@ -282,7 +282,7 @@ app
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////					
 					function addProdReqCtr($scope, $mdDialog, curUser,
 							productionRequisition, prodPlan, showAddToast) {
-
+						$scope.todaysDate = new Date();
 						$scope.productionRequisition = productionRequisition ? productionRequisition
 								: {};
 

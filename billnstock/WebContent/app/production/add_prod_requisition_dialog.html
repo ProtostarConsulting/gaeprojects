@@ -9,116 +9,112 @@
 </div>
 </md-toolbar> <md-dialog-content
 	style="min-width:1100px; max-width:1200px; max-height:1800px;">
-<md-content layout-padding>
-<form name="stockItemUnitForm">
-	<md-content layout-padding>
-	<div>
-		<form name="bomRequisition">
-			<div layout="row" layout-xs="column" flex>
+<md-content layout-padding> <md-content layout-padding>
+<div>
+	<form name="entityForm">
+		<div layout="row" layout-xs="column" flex>
 
-				<md-input-container flex> <md-select
-					name="bomEntity" ng-model="productionRequisition.bomEntity"
-					ng-change="reqBomItemChanged(productionRequisition.bomEntity)"
-					placeholder="Product Name" ng-required="true"> <md-option
-					ng-value="bomEntity" ng-repeat="bomEntity in bomList"
-					ng-selected="productionRequisition.bomEntity.id == bomEntity.id">{{bomEntity.stockItemType.itemName}}
-				</md-option> </md-select> </md-input-container>
+			<md-input-container flex> <md-select
+				name="bomEntity" ng-model="productionRequisition.bomEntity"
+				ng-change="reqBomItemChanged(productionRequisition.bomEntity)"
+				placeholder="Product Name" ng-required="true"> <md-option
+				ng-value="bomEntity" ng-repeat="bomEntity in bomList"
+				ng-selected="productionRequisition.bomEntity.id == bomEntity.id">{{bomEntity.stockItemType.itemName}}
+			</md-option> </md-select> </md-input-container>
 
-				<md-input-container flex> <input type="number"
-					aria-label="period" placeholder="Enter Qty."
-					ng-change="calculation()"
-					ng-model="productionRequisition.productQty"> </md-input-container>
-			</div>
+			<md-input-container flex> <input type="number"
+				aria-label="period" placeholder="Enter Qty."
+				ng-change="calculation()"
+				ng-model="productionRequisition.productQty"> </md-input-container>
+		</div>
 
-			<div layout="row" layout-xs="column" flex>
-				<mdp-date-picker flex mdp-placeholder="Delivery Date"
-					ng-model="productionRequisition.deliveryDateTime" required></mdp-date-picker>
-				<h5 class="md-caption" class="md-caption"
-					style="padding-top: 20px; padding-left: 20px; padding-right: 20px;"></h5>
-				<mdp-time-picker flex mdp-format="hh:mm A"
-					ng-model="productionRequisition.deliveryDateTime"
-					mdp-placeholder="Delivery Time" required></mdp-time-picker>
+		<div layout="row" layout-xs="column" flex="50" flex-xs="100">
+			<mdp-date-picker flex mdp-placeholder="Delivery Date"
+				ng-model="productionRequisition.deliveryDateTime"
+				mdp-min-date="todaysDate" mdp-format="DD/MM/YYYY"></mdp-date-picker>
+			<h5 class="md-caption" class="md-caption"
+				style="padding-top: 20px; padding-left: 20px; padding-right: 20px;"></h5>
+			<mdp-time-picker flex mdp-format="hh:mm A" mdp-auto-switch="true"
+				ng-model="productionRequisition.deliveryDateTime"
+				mdp-placeholder="Delivery Time" ng-required="true"></mdp-time-picker>
 
-			</div>
+		</div>
 
-			<table md-table md-progress="promise">
-				<thead ng-if="!dataTableOptions.decapitate" md-head
-					md-order="query.order" md-on-reorder="logOrder">
-					<tr md-row>
-						<th md-column>Category</th>
-						<th md-column>Category Name</th>
-						<th md-column>Items</th>
-						<th md-column>Qty.</th>
-						<th md-column></th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr md-row ng-init="itemToggle=true"
-						ng-repeat-start="bomCategory in productionRequisition.catList track by $index">
+		<table md-table md-progress="promise">
+			<thead ng-if="!dataTableOptions.decapitate" md-head
+				md-order="query.order" md-on-reorder="logOrder">
+				<tr md-row>
+					<th md-column>Category</th>
+					<th md-column>Category Name</th>
+					<th md-column>Items</th>
+					<th md-column>Qty.</th>
+					<th md-column></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr md-row ng-init="itemToggle=true"
+					ng-repeat-start="bomCategory in productionRequisition.catList track by $index">
 
-						<td md-cell>Category {{ $index +1 }}<md-button
-								class="md-icon-button" ng-show="!itemToggle"
-								ng-click="itemToggle=true"> </md-button> <md-button
-								class="md-icon-button" ng-show="itemToggle"
-								ng-click="itemToggle=false" ng-disabled="true"> </md-button></td>
-						<td md-cell><div layout="row">
-								<md-input-container flex style="margin: 0; padding: 0px;">
-								<input type="text" aria-label="period"
-									ng-model="bomCategory.cat.catName" ng-disabled="true">
-								</md-input-container>
+					<td md-cell>Category {{ $index +1 }}<md-button
+							class="md-icon-button" ng-show="!itemToggle"
+							ng-click="itemToggle=true"> </md-button> <md-button
+							class="md-icon-button" ng-show="itemToggle"
+							ng-click="itemToggle=false" ng-disabled="true"> </md-button></td>
+					<td md-cell><div layout="row">
+							<md-input-container flex style="margin: 0; padding: 0px;">
+							<input type="text" aria-label="period"
+								ng-model="bomCategory.cat.catName" ng-disabled="true"> </md-input-container>
 
-							</div></td>
+						</div></td>
 
-						<td md-cell></td>
-						<td md-cell></td>
-					</tr>
-					<tr md-row ng-repeat="itemObj in  bomCategory.items"
-						ng-show="itemToggle">
-						<td md-cell></td>
-						<td md-cell></td>
-						<td md-cell>
-							<div layout="row">
-								<md-input-container flex style="margin: 0; padding: 0px;">
-								<input type="text" aria-label="period"
-									ng-model="itemObj.itemName" ng-disabled="true"> </md-input-container>
-							</div>
-						</td>
-						<td md-cell>
-							<div layout="row">
-								<md-input-container style="margin: 0; padding: 0px;">
-								<input ng-model="itemObj.qty" ng-required="true"
-									ng-disabled="true"></md-input-container>
+					<td md-cell></td>
+					<td md-cell></td>
+				</tr>
+				<tr md-row ng-repeat="itemObj in  bomCategory.items"
+					ng-show="itemToggle">
+					<td md-cell></td>
+					<td md-cell></td>
+					<td md-cell>
+						<div layout="row">
+							<md-input-container flex style="margin: 0; padding: 0px;">
+							<input type="text" aria-label="period"
+								ng-model="itemObj.itemName" ng-disabled="true"> </md-input-container>
+						</div>
+					</td>
+					<td md-cell>
+						<div layout="row">
+							<md-input-container style="margin: 0; padding: 0px;">
+							<input ng-model="itemObj.qty" ng-required="true"
+								ng-disabled="true"></md-input-container>
 
-							</div>
-						</td>
-						<td md-cell></td>
-					</tr>
-					<tr md-row>
-						<td md-cell></td>
-						<td md-cell></td>
-						<td md-cell></td>
-						<td md-cell></td>
-						<td md-cell></td>
-					</tr>
-					<tr ng-repeat-end></tr>
-					<tr md-row>
-						<td md-cell></td>
-						<td md-cell></td>
-						<td md-cell></td>
-						<td md-cell></td>
-						<td md-cell></td>
-					</tr>
-					<tr md-row>
+						</div>
+					</td>
+					<td md-cell></td>
+				</tr>
+				<tr md-row>
+					<td md-cell></td>
+					<td md-cell></td>
+					<td md-cell></td>
+					<td md-cell></td>
+					<td md-cell></td>
+				</tr>
+				<tr ng-repeat-end></tr>
+				<tr md-row>
+					<td md-cell></td>
+					<td md-cell></td>
+					<td md-cell></td>
+					<td md-cell></td>
+					<td md-cell></td>
+				</tr>
+				<tr md-row>
 
-					</tr>
-				</tbody>
-			</table>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+</div>
 
-		</form>
-	</div>
-
-	</md-content>
-</form>
-</md-content> </md-dialog-content> <md-dialog-actions layout="row"> <md-button
-	class="md-raised md-primary" ng-click="addRequisition()">Submit</md-button>
-<md-button class="md-raised" ng-click="cancel()">Cancel</md-button> </md-dialog-actions> </md-dialog>
+</md-content> </md-content> </md-dialog-content> <md-dialog-actions layout="row"> <md-button
+	class="md-raised md-primary" ng-disabled="entityForm.$invalid"
+	ng-click="addRequisition()">Submit</md-button> <md-button
+	class="md-raised" ng-click="cancel()">Cancel</md-button> </md-dialog-actions> </md-dialog>

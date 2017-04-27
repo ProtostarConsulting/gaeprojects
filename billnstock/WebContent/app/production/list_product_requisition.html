@@ -6,7 +6,7 @@
 <md-content ng-if="!loading" layout-padding>
 <section layout="row" layout-xs="column">
 	<md-subheader class="md-primary">
-	<h4 class="md-title">BOM Requisition List</h4>
+	<h4 class="md-title">Production Requisition List</h4>
 	</md-subheader>
 	<span flex></span>
 	<div layout="row" flex="33" flex-sm="50" flex-xs="100">
@@ -22,20 +22,23 @@
 			<thead ng-if="!dataTableOptions.decapitate" md-head
 				md-order="query.order" md-on-reorder="logOrder">
 				<tr md-row>
-					<th md-column md-order-by="itemNumber">Item No.</th>
-					<th md-column md-order-by="type">Product Name</th>
-					<th md-column md-order-by="type">Action</th>
+					<th md-column md-order-by="itemNumber">Requisition No.</th>
+					<th md-column md-order-by="bomEntity.stockItemType.itemName">BOM
+						Product</th>
+					<th md-column md-order-by="deliveryDateTime">Delivery Date</th>
+					<th md-column>Status</th>
+					<th md-column>Action</th>
 				</tr>
 			</thead>
 			<tbody md-body>
 				<tr md-row
 					ng-repeat="bomRequisitionEntity in bomRequiList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
-					<td md-cell>{{$index+1}}</td>
+					<td md-cell>{{bomRequisitionEntity.itemNumber}}</td>
 					<td md-cell>{{bomRequisitionEntity.bomEntity.stockItemType.itemName}}</td>
+					<td md-cell>{{bomRequisitionEntity.deliveryDateTime |
+						formatDateWithTime}}</td>
+					<td md-cell>{{bomRequisitionEntity.status}}</td>
 					<td md-cell><md-button class="md-icon-button"
-							ui-sref="production.bom_requisition({productionRequisition:bomRequisitionEntity})">
-						<ng-md-icon icon="edit" style="fill: md-default" size="20">
-						<md-tooltip> Edit</md-tooltip></ng-md-icon></md-button> <md-button class="md-icon-button"
 							ng-click="printProductRequisition(bomRequisitionEntity.id)">
 						<ng-md-icon icon="print" style="fill: md-default" size="20">
 						<md-tooltip> Print Product Requisition</md-tooltip></ng-md-icon></md-button></td>
