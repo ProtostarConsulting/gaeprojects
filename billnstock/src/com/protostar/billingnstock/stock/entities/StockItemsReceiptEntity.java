@@ -29,6 +29,8 @@ public class StockItemsReceiptEntity extends BaseEntity {
 	private List<StockLineItem> productLineItemList = new ArrayList<StockLineItem>();
 	private List<StockLineItem> serviceLineItemList = new ArrayList<StockLineItem>();
 	// store other costs in serviceLineItems
+	
+	private List<StockReceiptQCRecord> recepitQCList = new ArrayList<StockReceiptQCRecord>();
 
 	private Ref<SupplierEntity> supplier;
 	@Index
@@ -127,6 +129,14 @@ public class StockItemsReceiptEntity extends BaseEntity {
 
 	public void setFinalTotal(double finalTotal) {
 		this.finalTotal = finalTotal;
+	}
+
+	public List<StockReceiptQCRecord> getRecepitQCList() {
+		return recepitQCList;
+	}
+
+	public void setRecepitQCList(List<StockReceiptQCRecord> recepitQCList) {
+		this.recepitQCList = recepitQCList;
 	}
 
 }// end of InvoiceEntity

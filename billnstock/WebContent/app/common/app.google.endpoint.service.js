@@ -2763,13 +2763,11 @@ function googleEndpointSF($q) {
 	}
 
 	StockService.getStockReceiptQCDailyRecordEntity = function(
-			qcStockReceiptId, busId, date) {
+			qcStockReceipt, busId) {
 		var deferred = $q.defer();
 		gapi.client.stockService.getStockReceiptQCDailyRecordEntity({
-			"qcStockReceiptId" : qcStockReceiptId,
-			"busId" : busId,
-			"date" : date
-		}).execute(function(resp) {
+			"busId" : busId
+		},qcStockReceipt).execute(function(resp) {
 			deferred.resolve(resp);
 		});
 		return deferred.promise;

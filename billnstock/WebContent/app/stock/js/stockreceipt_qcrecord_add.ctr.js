@@ -12,61 +12,68 @@ app
 
 					$scope.isTableShow = false;
 					$scope.qcstockReceiptList = [];
-					$scope.tempStockReceiptQC = null;
-					
+
 					$scope.tempStockReceiptQCDailyRecordObj = $stateParams.stockReceiptQCRecordObj ? $stateParams.stockReceiptQCRecordObj
 							: $scope.tempStockReceiptQCDailyRecordObj;
-					
-					if($scope.tempStockReceiptQCDailyRecordObj != undefined){
+
+					$scope.tempStockReceiptObj = $stateParams.stockReceiptObj ? $stateParams.stockReceiptObj
+							: null;
+
+					$scope.tempRecepitQCObj = {
+						qcStockReceipt : "",
+						paramRecordedValues : []
+					};
+
+					if ($scope.tempStockReceiptQCDailyRecordObj != undefined) {
 						$scope.isTableShow = true;
 						$scope.stockReceiptQc = $scope.tempStockReceiptQCDailyRecordObj.qcStockReceipt;
-						$scope.recordDate = new Date($scope.tempStockReceiptQCDailyRecordObj.recordDate);
+						$scope.recordDate = new Date(
+								$scope.tempStockReceiptQCDailyRecordObj.recordDate);
 					}
 
-					$scope.getStockReceiptQCParamList = function(qcStockReceipt) {
-						var stockService = appEndpointSF.getStockService();
-						stockService.getStockReceiptQCById(
-								$scope.curUser.business.id, qcStockReceipt.id).then(
-								function(qcStockReceiptObj) {
-									$scope.tempStockReceiptQC = qcStockReceiptObj;
-								});
-					}
-
-					$scope.getStockReceiptQCDailyRecord = function(recordDate) {
+					$scope.getStockReceiptQCDailyRecord = function(
+							qcStockReceiptObj) {
 						$scope.isTableShow = true;
-						$scope.tempDate = new Date(recordDate);
 						var stockService = appEndpointSF.getStockService();
-						stockService.getStockReceiptQCDailyRecordEntity($scope.tempStockReceiptQC.id,
-										$scope.curUser.business.id,$scope.tempDate.getTime())
-								.then(function(qcMachineDailyRecordObj) {
-												$scope.tempStockReceiptQCDailyRecordObj = qcMachineDailyRecordObj;											
+						stockService
+								.getStockReceiptQCDailyRecordEntity(
+										qcStockReceiptObj,
+										$scope.curUser.business.id)
+								.then(
+										function(qcMachineDailyRecordObj) {
+											$scope.tempStockReceiptQCDailyRecordObj = qcMachineDailyRecordObj;
+											$scope.tempRecepitQCObj.paramRecordedValues = $scope.tempStockReceiptQCDailyRecordObj.paramRecordedValues;
 										});
 					}
 
 					$scope.addStockReceiptQCRecord = function() {
 
-						$scope.tempStockReceiptQCDailyRecordObj.createdBy = $scope.curUser;
-						$scope.tempStockReceiptQCDailyRecordObj.business = $scope.curUser.business;
-						$scope.tempStockReceiptQCDailyRecordObj.modifiedBy = $scope.curUser.email_id;
-
-						$scope.tempStockReceiptQCDailyRecordObj.qcStockReceipt = $scope.tempStockReceiptQC;
-						$scope.tempStockReceiptQCDailyRecordObj.recordDate = $scope.recordDate;
-
+						if (!$scope.tempStockReceiptObj.recepitQCList) {
+							$scope.tempStockReceiptObj.recepitQCList = [];
+							$scope.tempStockReceiptObj.recepitQCList.push($scope.tempRecepitQCObj);
+						} else {
+							$scope.tempStockReceiptObj.recepitQCList
+									.push($scope.tempRecepitQCObj);
+						}
 						var stockService = appEndpointSF.getStockService();
-						stockService.addStockReceiptQCRecord(
-								$scope.tempStockReceiptQCDailyRecordObj).then(
-								function(qcRecordObj) {
+						stockService
+								.addStockReceipt($scope.tempStockReceiptObj)
+								.then(function(qcRecordObj) {
 									if (qcRecordObj.id != undefined) {
 										$scope.showAddToast();
+										// $state.go('stock.stockReceiptAdd',{'stockReceiptObj':
+										// qcRecordObj});
 									}
 								});
 					}
 
 					$scope.fetchStockReceiptQCList = function() {
 						var stockService = appEndpointSF.getStockService();
-						stockService.getStockReceiptQCList($scope.curUser.business.id).then(function(list) {
-							$scope.qcstockReceiptList = list;
-						});
+						stockService.getStockReceiptQCList(
+								$scope.curUser.business.id).then(
+								function(list) {
+									$scope.qcstockReceiptList = list;
+								});
 					}
 
 					$scope.waitForServiceLoad = function() {

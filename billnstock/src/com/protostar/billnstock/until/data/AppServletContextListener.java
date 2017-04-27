@@ -62,7 +62,7 @@ import com.protostar.billingnstock.stock.entities.StockItemTypeEntity;
 import com.protostar.billingnstock.stock.entities.StockItemUnit;
 import com.protostar.billingnstock.stock.entities.StockItemsReceiptEntity;
 import com.protostar.billingnstock.stock.entities.StockItemsShipmentEntity;
-import com.protostar.billingnstock.stock.entities.StockReceiptQCDailyRecordEntity;
+import com.protostar.billingnstock.stock.entities.StockReceiptQCRecord;
 import com.protostar.billingnstock.stock.entities.StockReceiptQCEntity;
 import com.protostar.billingnstock.stock.entities.StockSettingsEntity;
 import com.protostar.billingnstock.taskmangement.TaskEntity;
@@ -126,7 +126,6 @@ public class AppServletContextListener implements ServletContextListener {
 		ObjectifyService.register(StockItemBrand.class);
 		ObjectifyService.register(StockItemProductTypeEntity.class);
 		ObjectifyService.register(StockReceiptQCEntity.class);
-		ObjectifyService.register(StockReceiptQCDailyRecordEntity.class);
 		
 		
 		ObjectifyService.register(InvoiceEntity.class);

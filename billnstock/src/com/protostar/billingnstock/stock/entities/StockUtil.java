@@ -1,19 +1,16 @@
 package com.protostar.billingnstock.stock.entities;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.protostar.billingnstock.production.entities.QCParameter;
 import com.protostar.billingnstock.production.entities.QCParameterRecord;
 
 public class StockUtil {
-	public StockReceiptQCDailyRecordEntity createNewStockReceiptQCDailyReceord(StockReceiptQCEntity stockReceiptQc, Date recordDate) {
+	public StockReceiptQCRecord createNewStockReceiptQCDailyReceord(StockReceiptQCEntity stockReceiptQc, List<QCParameter> parameterList) {
 		
-		StockReceiptQCDailyRecordEntity stockReceiptQcDailyRecord = new StockReceiptQCDailyRecordEntity();
+		StockReceiptQCRecord stockReceiptQcDailyRecord = new StockReceiptQCRecord();
 		List<QCParameterRecord> paramRecordedValues = new ArrayList<QCParameterRecord>();
-		
-		List<QCParameter> parameterList  = stockReceiptQc.getParameterList();
 		
 		if(parameterList.size() > 0) {
 			for (QCParameter qcParameter : parameterList) {

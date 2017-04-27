@@ -6,6 +6,9 @@
 	</md-subheader>
 	<span flex></span>
 	<div align="right" ng-show="documentEntity.id">
+		<md-button class="md-icon-button" ui-sref="stock.listStockReceiptQCRecord({stockReceiptObj : documentEntity })">
+		<ng-md-icon icon="receipt" style="fill: md-default" size="20">
+		<md-tooltip> View QC Records</md-tooltip></ng-md-icon></md-button>
 		<md-button class="md-icon-button"
 			ng-click="printstockReceipt(documentEntity.id)"> <ng-md-icon
 			icon="print" style="fill: md-default" size="20"> <md-tooltip>

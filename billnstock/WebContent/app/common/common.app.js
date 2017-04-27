@@ -345,12 +345,16 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		templateUrl : '/app/stock/stockreceipt_qcrecord_add.html',
 		controller : 'addStockReceiptQCRecordCtr',
 		params : {
-			stockReceiptQCRecordObj : null
+			stockReceiptQCRecordObj : null,
+			stockReceiptObj : null
 		}
 	}).state('stock.listStockReceiptQCRecord', {
 		url : "/stockreceipt_qcrecord_list",
 		templateUrl : '/app/stock/stockreceipt_qcrecord_list.html',
 		controller : 'listStockReceiptQCRecordCtr',
+			params : {
+				stockReceiptObj : null
+			}
 	}).state('stock.stockShipmentAdd', {
 		url : "/stockshipmentadd",
 		templateUrl : '/app/stock/stock_shipment_add.html',

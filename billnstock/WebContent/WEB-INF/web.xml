@@ -366,11 +366,16 @@
     <servlet-name>PrintQCMachineRecordPdf</servlet-name>
     <url-pattern>/PrintQCMachineRecordPdf</url-pattern>
   </servlet-mapping>
-  
-  
-  
-  
-  
+   <servlet>
+    <description></description>
+    <display-name>PrintStockReceiptQCRecordPdf</display-name>
+    <servlet-name>PrintStockReceiptQCRecordPdf</servlet-name>
+    <servlet-class>com.protostar.billingnstock.stock.services.PrintStockReceiptQCRecordPdf</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PrintStockReceiptQCRecordPdf</servlet-name>
+    <url-pattern>/PrintStockReceiptQCRecordPdf</url-pattern>
+  </servlet-mapping>  
   <servlet>
     <description/>
     <display-name>PrintPdfstockReceipt</display-name>
@@ -392,9 +397,6 @@
     <url-pattern>/PrintPdfstockShipment</url-pattern>
   </servlet-mapping>
   
-  
-  
-  
   <servlet>
     <description/>
     <display-name>PrintPdfProdShipment</display-name>
@@ -405,8 +407,6 @@
     <servlet-name>PrintPdfProdShipment</servlet-name>
     <url-pattern>/PrintPdfProdShipment</url-pattern>
   </servlet-mapping>
-  
-  
   
    <servlet>
     <description/>

@@ -21,12 +21,16 @@ var app = angular.module("stockApp")
 					
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
+			
+					$scope.tempStockReceiptObj = $stateParams.stockReceiptObj ? $stateParams.stockReceiptObj : null;
 					
 					$scope.fetchStockReceiptQCRecordList = function() {
-						var stockService = appEndpointSF.getStockService();
-						stockService.getStockReceiptQCRecord($scope.curUser.business.id).then(function(list) {
-							$scope.stockreceipt_qcrecordList = list;
-						});
+						$scope.stockreceipt_qcrecordList = $scope.tempStockReceiptObj.recepitQCList;
+					}
+					
+					$scope.printStockReceiptQCRecord = function(qcRecordId) {
+						var bid = $scope.curUser.business.id;
+						window.open("PrintStockReceiptQCRecordPdf?bid=" + bid + "&qcRecordId=" + qcRecordId);
 					}
 
 					$scope.waitForServiceLoad = function() {
