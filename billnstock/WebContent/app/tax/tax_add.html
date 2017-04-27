@@ -20,16 +20,12 @@
 				ng-if="taxForm.taxName.$submitted || taxForm.taxName.$touched">
 				<div ng-message="required">Please Enter Tax Name(Example.:GST
 					12.50)</div>
-
-				<!-- 				<span class="help-block"
-					ng-show="((taxForm.taxName.$error.pattern) &&  taxForm.taxName.$dirty) ">Tax
-					Name should be text only.(Example.:abc)</span>
- -->
 			</div>
 			</md-input-container>
 			<md-input-container flex> <label>Tax
-				Rate </label> <input type="number" name="taxPercenatge"
-				ng-model="selectedTax.taxPercenatge" ng-required="true">
+				Rate(&#37) </label> <input type="number" name="taxPercenatge"
+				ng-model="selectedTax.taxPercenatge" ng-required="true"
+				ng-disabled="selectedTax.withSubHeads">
 			<div ng-messages="taxForm.taxPercenatge.$error"
 				ng-if="taxForm.taxPercenatge.$touched">
 				<div ng-message="required">Please Enter Tax in
@@ -50,23 +46,18 @@
 		</div>
 		<div ng-show="selectedTax.withSubHeads"
 			ng-hide="!selectedTax.withSubHeads">
-			<div
-				ng-show="!selectedTax.subHeads || selectedTax.subHeads.length==0"
-				ng-hide="selectedTax.subHeads || selectedTax.subHeads.length>0">
-				Add Tax Line Items:
-				<md-button class="md-icon-button" ng-click="addTaxLineItem()">
-				<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
-				<md-tooltip> Add Tax Line Items</md-tooltip></ng-md-icon> </md-button>
 
-			</div>
 			<div ng-show="selectedTax.subHeads || selectedTax.subHeads.length>0">
 				<table md-table style="width: 50%">
+					<caption align="left" style="border-spacing: 5px; padding: 3px;">
+						<b>Tax Subheads</b>
+					</caption>
 					<thead md-head>
 						<tr md-row>
-							<th md-column width="4%">Sr. No.</th>
-							<th md-column width="30%">Tax Item Name</th>
-							<th md-column>Tax Percentage</th>
-							<th md-column>Actions</th>
+							<th md-column width="10%">Sr. No.</th>
+							<th md-column width="25%">Tax Item Name</th>
+							<th md-column width="10%">Tax Percentage</th>
+							<th md-column width="5%">Actions</th>
 
 						</tr>
 					</thead>
@@ -80,24 +71,39 @@
 									aria-label="taxSubCodeName" ng-required="true"> </md-input-container></td>
 							<td md-cell><md-input-container flex> <input
 									type="number" ng-model="taxLineItem.taxPercenatge"
-									aria-label="taxPerc"> </md-input-container></td>
-							<td><md-icon
+									ng-change="calSubheadsTaxPercTotal()" aria-label="taxPerc">
+								</md-input-container></td>
+							<td md-cell><md-icon
 									md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
 									ng-click="removeTaxLineItem($index)" class="name"
-									style="color: Green; height: 18px; width: 18px"></md-icon></td>
+									style="color: Green; height: 18px; width: 18px"> <md-tooltip>Remove
+								Tax Item</md-tooltip></md-icon></td>
 						</tr>
-						<tr>
-							<td><md-button class="md-icon-button"
+						<tr md-row>
+							<td md-cell><md-button class="md-icon-button"
 									ng-click="addTaxLineItem()"> <ng-md-icon
 									icon="add_circle" style="fill: md-default" size="24">
 								<md-tooltip> Add New Tax Line Item</md-tooltip></ng-md-icon> </md-button></td>
-
+							<td md-cell></td>
+							<td md-cell></td>
+							<td md-cell></td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
 		</div>
+		<div layout="row" layout-xs="column">
+			<md-input-container flex> <md-checkbox
+				ng-model="selectedTax.withAdditionalExciseTax" aria-label="active"
+				ng-true-value="true" ng-false-value="false" id="changer">
+			With Additional Excise Tax </md-checkbox></md-input-container>
 
+			<md-input-container flex
+				ng-show="selectedTax.withAdditionalExciseTax">
+			<label>Excise Tax Rate(&#37)</label> <input type="number"
+				ng-model="selectedTax.exciseTaxPercenatge" ng-required="true">
+			</md-input-container>
+		</div>
 
 
 		<section layout="row" layout-sm="column" layout-align="left left">

@@ -23,6 +23,8 @@ angular
 							taxPercenatge : 0,
 							active : true,
 							withSubHeads : false,
+							withAdditionalExciseTax : false,
+							exciseTaxPercenatge : 0,
 							business : "",
 							subHeads : []
 						}
@@ -66,6 +68,7 @@ angular
 
 					$scope.removeTaxLineItem = function(index) {
 						$scope.selectedTax.subHeads.splice(index, 1);
+						$scope.calSubheadsTaxPercTotal();
 					};
 
 					$scope.logOrder = function(order) {
@@ -89,6 +92,23 @@ angular
 									$scope.taxList = taxList;
 								});
 					}
+
+					$scope.calSubheadsTaxPercTotal = function() {
+
+						$scope.selectedTax.taxPercenatge = 0;
+						if ($scope.selectedTax.subHeads
+								&& $scope.selectedTax.subHeads.length > 0) {
+
+							for (var i = 0; i < $scope.selectedTax.subHeads.length; i++) {
+
+								var taxPerc = $scope.selectedTax.subHeads[i].taxPercenatge;
+
+								$scope.selectedTax.taxPercenatge += taxPerc;
+
+							}
+						}
+
+					};
 
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
