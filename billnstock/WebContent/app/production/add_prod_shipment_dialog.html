@@ -47,7 +47,8 @@
 			<div flex=40 layout="row" layout-xs="column">
 				<md-input-container flex>
 			<label> To Warehouse </label> <md-select flex
-				ng-model="documentEntity.toWH" placeholder="Select Warehouse">
+				ng-model="documentEntity.toWH" placeholder="Select Warehouse"
+					ng-change="filterStockItemsByWarehouse(documentEntity.toWH)">
 			<md-option ng-value="warehouse" ng-required="true"
 				ng-selected="documentEntity.toWH.id == warehouse.id"
 				ng-repeat="warehouse in warehouses ">{{warehouse.warehouseName
@@ -56,7 +57,7 @@
 			</div>
 			
 		
-			<md-input-container flex> <label>Shipment
+			 <md-input-container flex> <label>Shipment
 				Date</label> <md-datepicker flex ng-model="documentEntity.shipmentDate"
 				md-placeholder="Select Date"></md-datepicker> </md-input-container>
 			
@@ -81,8 +82,6 @@
 						<th md-column width="4%">Sr. No</th>
 						<th md-column width="40%">Item Name</th>
 						<th md-column>Quantity</th>
-						<th md-column>Price(&#x20b9)</th>
-						<th md-column>Total(&#x20b9)</th>
 						<th md-column>Actions</th>
 					</tr>
 				</thead>
@@ -96,9 +95,9 @@
 								<md-input-container flex> <md-select
 									ng-model="item.stockItem" placeholder="Item Name"
 									ng-required="true" ng-change="productLineItemChanged(item)">
-								<md-option ng-value="stockItem.bomEntity.stockItemType"
+								<md-option ng-value="stockItem"
 									ng-selected="item.stockItem.id == stockItem.id"
-									ng-repeat="stockItem in stockItemList">{{stockItem.bomEntity.stockItemType.itemName
+									ng-repeat="stockItem in stockItemList">{{stockItem.stockItemType.itemName
 								}}</md-option> </md-select> </md-input-container>
 								
 							</div>
@@ -107,12 +106,7 @@
 						<td md-cell><md-input-container flex> <input
 								type="number" ng-model="item.qty" ng-required="true"
 								aria-label="iqty" ng-change="calProductSubTotal()"> </md-input-container></td>
-						<td md-cell><md-input-container flex> <input
-								type="number" ng-model="item.price"
-								ng-change="calProductSubTotal()" aria-label="iprice"
-								ng-required="true"></md-input-container></td>
-						<td md-cell><md-input-container flex> <b>{{item.qty
-								* item.price | currency:"":"2"}} </b></td>
+						
 						<td md-cell><md-button class="md-icon-button"
 								ng-show="item.stockItem.stockItemType.maintainStockBySerialNumber"
 								ng-click="addSerialNumbers($event, item)"> <ng-md-icon
@@ -137,16 +131,16 @@
 					</tr>
 				</tbody>
 			</table>
-		</div>
+		</div> 
 
-		<!-- <div ng-show="documentEntity.serviceLineItemList.length == 0">
+		 <div ng-show="documentEntity.serviceLineItemList.length == 0">
 			Add New Other Cost Items:
 			<md-button class="md-icon-button" ng-click="addServiceLineItem()">
 			<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
 			<md-tooltip> Add New Other Costs</md-tooltip></ng-md-icon> </md-button>
 
-		</div> -->
-		<!-- <div
+		</div> 
+		 <div
 			ng-show="documentEntity.serviceLineItemList && documentEntity.serviceLineItemList.length > 0">
 			<h3>Other Cost Line Items</h3>
 			<table md-table>
@@ -207,7 +201,7 @@
 					</tr>
 				</tbody>
 			</table>
-		</div> -->
+		</div> 
 		<div layout layout-xs="column">
 		<!-- 	ng-if="isDocumentEditAllowed(documentEntity)" >-->
 			<section layout="row" layout-xs="column">

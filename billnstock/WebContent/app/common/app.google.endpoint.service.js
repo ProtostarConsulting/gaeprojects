@@ -2274,6 +2274,14 @@ function googleEndpointSF($q) {
 					deferred.resolve(resp);
 				});
 		return deferred.promise;
+	}//////////////
+	StockService.addProductionStockShipment = function(stockShip) {
+		var deferred = $q.defer();
+		gapi.client.stockService.addProductionStockShipment(stockShip).execute(
+				function(resp) {
+					deferred.resolve(resp);
+				});
+		return deferred.promise;
 	}
 
 	StockService.getStockItemTypes = function(busId) {

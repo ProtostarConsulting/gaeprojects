@@ -391,6 +391,23 @@
     <servlet-name>PrintPdfstockShipment</servlet-name>
     <url-pattern>/PrintPdfstockShipment</url-pattern>
   </servlet-mapping>
+  
+  
+  
+  
+  <servlet>
+    <description/>
+    <display-name>PrintPdfProdShipment</display-name>
+    <servlet-name>PrintPdfProdShipment</servlet-name>
+    <servlet-class>com.protostar.billingnstock.production.services.PrintPdfProdShipment</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PrintPdfProdShipment</servlet-name>
+    <url-pattern>/PrintPdfProdShipment</url-pattern>
+  </servlet-mapping>
+  
+  
+  
    <servlet>
     <description/>
     <display-name>PrintPdfTaxCollectionReport</display-name>

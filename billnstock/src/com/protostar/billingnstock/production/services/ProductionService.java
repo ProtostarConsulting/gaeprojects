@@ -21,6 +21,7 @@ import com.protostar.billingnstock.production.entities.ProductionShipmentEntity;
 import com.protostar.billingnstock.production.entities.QCMachineDailyRecordEntity;
 import com.protostar.billingnstock.production.entities.QCMachineEntity;
 import com.protostar.billingnstock.stock.entities.BomLineItemCategory;
+import com.protostar.billingnstock.stock.entities.StockItemsShipmentEntity;
 import com.protostar.billingnstock.stock.services.StockManagementService;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 
@@ -31,6 +32,19 @@ public class ProductionService {
 	public BomEntity addBomEntity(BomEntity bomEntity) {
 		ofy().save().entity(bomEntity).now();
 		return bomEntity;
+	}
+	
+	@ApiMethod(name = "getProdShipmentByID", path = "getProdShipmentByID")
+	public ProductionShipmentEntity getProdShipmentByID(
+			@Named("busId") Long busId, @Named("id") Long prShipId) {
+
+		ProductionShipmentEntity foundProdReceipt = ofy()
+				.load()
+				.key(Key.create(Key.create(BusinessEntity.class, busId), ProductionShipmentEntity.class, prShipId))
+				.now();
+		System.out.println("foundProdReceipt-----------"+foundProdReceipt.getId());
+		return foundProdReceipt;
+		
 	}
 
 	@ApiMethod(name = "getEmptyProductionRequisition", path = "getEmptyProductionRequisition", httpMethod = HttpMethod.POST)

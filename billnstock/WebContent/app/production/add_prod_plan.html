@@ -119,16 +119,16 @@
 							<tr md-row
 								ng-repeat="shipmentEntity in documentEntity.prodShipmentList">
 								<td md-cell>{{$index+1}}</td>
-								<td md-cell>{{shipmentEntity.date | formatDateWithTime}}</td>
-								<td md-cell>{{shipmentEntity.toWH }}</td>
+								<td md-cell>{{shipmentEntity.shipmentDate | formatDateWithTime}}</td>
+								<td md-cell>{{shipmentEntity.toWH.warehouseName }}</td> 
 								<td md-cell><md-button class="md-icon-button"
-										ng-click="addProdReq($event, bomRequisitionEntity)">
+										ng-click="addProdShip($event, shipmentEntity)">
 									<ng-md-icon icon="edit" style="fill: md-default" size="20">
 									<md-tooltip> Edit</md-tooltip></ng-md-icon></md-button> <md-button
 										class="md-icon-button"
-										ng-click="printProductRequisition(bomRequisitionEntity.id)">
+										ng-click="printstockShipment(shipmentEntity.id)">
 									<ng-md-icon icon="print" style="fill: md-default" size="20">
-									<md-tooltip> Print Product Requisition</md-tooltip></ng-md-icon></md-button></td>
+									<md-tooltip> Print Product Shipment</md-tooltip></ng-md-icon></md-button></td>
 							</tr>
 						</tbody>
 					</table>
