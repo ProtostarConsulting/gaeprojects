@@ -8,8 +8,8 @@ app.controller("qcmachineAddCtr", function($scope, $window, $mdToast, $timeout,
 
 	$scope.qcmachine = {
 		qcName : "",
-		validFrom : new Date(),
-		validTill : new Date(),
+		validFrom : new Date().setHours(00, 00, 00, 000),
+		validTill : new Date().setHours(00, 00, 00, 000),
 		parameterList : [],
 		note : "",
 		machine : "",

@@ -162,19 +162,18 @@ td {
 	<tr>
 			<td style="width: 15%">Parameter Name</td>
 			<#list parameterRecordList[i] as parameterRecord>
-			<td>${parameterRecord.parameterName}</td>
+			<td style="width: 15%">${parameterRecord.parameterName}</td>
 			</#list>			
 		</tr>
 
 		<tr>
 			<td style="width: 15%">Recorded Value</td>
 			<#list parameterRecordList[i]  as parameterRecord>
-			<td>${parameterRecord.recordedValue}</td>
+			<td style="width: 15%">${parameterRecord.recordedValue}</td>
 			</#list>
 		</tr>
 		</tbody>
 		</table>
 		<br></br>
 		</#list>			
-	
 </html>

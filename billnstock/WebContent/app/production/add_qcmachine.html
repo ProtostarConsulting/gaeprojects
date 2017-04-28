@@ -31,10 +31,10 @@
 			name="note" ng-model="qcmachine.note"> </md-input-container>
 	</div>
 	<div layout="row" layout-xs="column" flex="50" flex-gt-xs>
-		<mdp-date-picker mdp-placeholder="Valid Since Date"
+		<mdp-date-picker name="validFrom" mdp-placeholder="Valid Since Date" mdp-min-date="qcmachine.validFrom"
 			ng-model="qcmachine.validFrom" mdp-format="DD/MM/YYYY"></mdp-date-picker>
 
-		<mdp-date-picker mdp-placeholder="Valid Till Date"
+		<mdp-date-picker name="validTill" mdp-placeholder="Valid Till Date" mdp-min-date="qcmachine.validFrom" ng-disabled="!addQCMachineForm.validFrom.$dirty"
 			ng-model="qcmachine.validTill" mdp-min-date="qcmachine.validFrom" mdp-format="DD/MM/YYYY"></mdp-date-picker>
 	</div>
 	<div>
@@ -94,6 +94,8 @@
 							ng-click="addNewQcParameter()"> <ng-md-icon
 							icon="add_circle" style="fill: md-default" size="24">
 						<md-tooltip> Add New </md-tooltip></ng-md-icon> </md-button></td>
+					<td md-cell></td>
+					<td md-cell></td>
 					<td md-cell></td>
 					<td md-cell></td>
 					<td md-cell></td>
