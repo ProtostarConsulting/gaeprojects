@@ -32,7 +32,9 @@ angular
 					$scope.eid = null;
 					$scope.test;
 					$scope.loginClick = function() {
-						$state.go("login");
+						var hostBaseUrl = '//' + window.location.host
+								+ '/login.html';
+						$window.location.href = hostBaseUrl;
 					};
 
 					// on page load firs see if user is already logged. if yes
@@ -67,7 +69,7 @@ angular
 										$scope.user.password)
 								.then(
 										function(result) {
-											if (result.items) {												
+											if (result.items) {
 												if (result.items.length > 1) {
 													$scope.loading = false;
 													$scope.multiUsers = result.items;
@@ -142,9 +144,10 @@ angular
 						$scope.$emit('customLoginEvent', {
 							curUser : multiBizSelectedUser
 						});
-						/*$scope.$broadcast('customLoginEvent', {
-							curUser : multiBizSelectedUser
-						});*/
+						/*
+						 * $scope.$broadcast('customLoginEvent', { curUser :
+						 * multiBizSelectedUser });
+						 */
 						$state.go("home");
 
 					}
@@ -381,13 +384,17 @@ angular
 
 							return;
 						}
-						
+
 						$scope.curUser = appEndpointSF.getLocalUserService()
 								.getLoggedinUser();
-						if (toState.name != 'login' && !$scope.curUser) {
+						if (!$scope.curUser) {
 							event.preventDefault();
-							$log.debug('prevented going to without login to: ' + toState.name);
-							$state.go('login');
+							$log.debug('prevented going to without login to: '
+									+ toState.name);
+							// $state.go('login');
+							var hostBaseUrl = '//' + window.location.host
+									+ '/login.html';
+							$window.location.href = hostBaseUrl;
 						}
 						/*
 						 * else if ($scope.curUser &&

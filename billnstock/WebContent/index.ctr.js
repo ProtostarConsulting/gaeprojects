@@ -50,7 +50,7 @@ app
 
 					$scope.loginClick = function() {
 						var hostBaseUrl = '//' + window.location.host
-								+ '/app.html#/login#tp1';
+								+ '/login.html';
 						$log.debug("hostBaseUrl: " + hostBaseUrl);
 						$window.location.href = hostBaseUrl;
 					}

@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import com.protostar.billingnstock.user.services.CurrentUserSession;
 import com.protostar.billingnstock.user.services.UserLoginService;
@@ -60,17 +61,28 @@ public class BusinessNSFilter implements Filter {
 
 		if (skipLoginChk) {
 			// This is public API/Page
-			//logger.info("Skipping Login Check...");
+			// logger.info("Skipping Login Check...");
 		} else {
 			UserLoginService userLoginService = new UserLoginService();
 			if (accessToken != null && userLoginService.getCurrentUser(accessToken) != null) {
-				// Temp disabling loign check
-				CurrentUserSession currentUserSession = userLoginService.getCurrentUserSession(accessToken);
-				logger.info("currentUserSession.getId(): " + currentUserSession.getId());
+				CurrentUserSession currentUserSession;
+				try {
+					currentUserSession = userLoginService.getCurrentUserSession(accessToken);
+					logger.info("currentUserSession.getId(): " + currentUserSession.getId());
+				} catch (Exception e) {
+					e.printStackTrace();
+					HttpServletResponse httpResponse = (HttpServletResponse) resp;
+					httpResponse.sendRedirect("/logout.html");
+					return;
+				}
 				WebUtil.setCurrentUser(currentUserSession);
 			} else {
 				logger.warning("ERROR: RuntimeException- User is not logged in. Please login first.");
-				throw new RuntimeException("ErrorCode:403: User is not logged in. Please login first.");
+				logger.warning(
+						new RuntimeException("ErrorCode:403: User is not logged in. Please login first.").getMessage());
+				HttpServletResponse httpResponse = (HttpServletResponse) resp;
+				httpResponse.sendRedirect("/logout.html");
+				return;
 			}
 		}
 

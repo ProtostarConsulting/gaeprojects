@@ -201,7 +201,7 @@ td {
 			<#list lineItem.items as item>
 			<tr style="border: 0px">
 			
-			<td style="font-size:10px;border: 0px;" align="center;">${item.itemName}</td>
+			<td style="font-size:10px;border: 0px;" align="center;">${item.stockItemType.itemName}</td>
 			
 			
 			
