@@ -56,6 +56,11 @@ public class InvoiceEntity extends BaseEntity {
 	private Ref<TaxEntity> selectedServiceTax;
 
 	@Index
+	private boolean indiviualServiceLineItemTax = false;
+	@Index
+	private boolean indiviualProductLineItemTax = false;
+
+	@Index
 	private Ref<Customer> customer;
 	@Index
 	private Ref<Contact> customerContact;
@@ -68,7 +73,8 @@ public class InvoiceEntity extends BaseEntity {
 		super.beforeSave();
 
 		if (getFromWH() == null) {
-			throw new RuntimeException("Warehouse entity is not set on: " + this.getClass().getSimpleName()
+			throw new RuntimeException("Warehouse entity is not set on: "
+					+ this.getClass().getSimpleName()
 					+ " This is required field. Aborting save operation...");
 		}
 
@@ -78,7 +84,8 @@ public class InvoiceEntity extends BaseEntity {
 
 		if (getId() == null) {
 			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
-					EntityUtil.getBusinessRawKey(getBusiness()), Constants.INVOICE_NO_COUNTER);
+					EntityUtil.getBusinessRawKey(getBusiness()),
+					Constants.INVOICE_NO_COUNTER);
 			setItemNumber(sequenceGenService.getNextSequenceNumber());
 		}
 	}
@@ -198,6 +205,24 @@ public class InvoiceEntity extends BaseEntity {
 
 	public void setDraft(boolean isDraft) {
 		this.isDraft = isDraft;
+	}
+
+	public boolean isIndiviualServiceLineItemTax() {
+		return indiviualServiceLineItemTax;
+	}
+
+	public void setIndiviualServiceLineItemTax(
+			boolean indiviualServiceLineItemTax) {
+		this.indiviualServiceLineItemTax = indiviualServiceLineItemTax;
+	}
+
+	public boolean isIndiviualProductLineItemTax() {
+		return indiviualProductLineItemTax;
+	}
+
+	public void setIndiviualProductLineItemTax(
+			boolean indiviualProductLineItemTax) {
+		this.indiviualProductLineItemTax = indiviualProductLineItemTax;
 	}
 
 	public List<StockLineItem> getProductLineItemList() {
