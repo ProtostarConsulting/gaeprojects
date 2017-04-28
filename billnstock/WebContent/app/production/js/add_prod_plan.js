@@ -175,6 +175,13 @@ app
 									productionShipment.shipmentDate);
 
 						}
+						
+						$scope.cancel = function() {
+							$mdDialog.cancel();
+						};
+						
+						
+						
 
 						$scope.filterStockItemsByWarehouse = function(
 								selectedWarehouse) {
@@ -188,6 +195,7 @@ app
 										$scope.stockItemList = stockList;
 										$scope.loading = false;
 									});
+							$scope.addProductLineItem();
 						}
 
 						$scope.getAllWarehouseByBusiness = function() {

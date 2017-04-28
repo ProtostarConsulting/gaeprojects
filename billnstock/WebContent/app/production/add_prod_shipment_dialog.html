@@ -1,22 +1,15 @@
-<div ng-if="loading">
-	<div layout="row" layout-sm="column" layout-align="space-around">
-		<md-progress-circular md-diameter="60" md-mode="indeterminate"></md-progress-circular>
-	</div>
-</div>
-<md-content ng-if="!loading" layout-padding>
-<section layout="row" layout-xs="column">
-	<md-subheader class="md-primary">
-	<h4 class="md-title"
-		ng-bind="documentEntity.id?'Edit Stock Shipment/Transfer: ' + documentEntity.itemNumber:'Create Stock Shipment/Transfer'"></h4>
-	</md-subheader>
+<md-dialog aria-label="Add New" style="min-width:500px;"> <md-toolbar>
+<div class="md-toolbar-tools">
+	<h2>{{documentEntity.id?'Edit Stock Shipment/Transfer: ' +
+		documentEntity.itemNumber:'Create Stock Shipment/Transfer'}}</h2>
 	<span flex></span>
-	<div align="right" ng-show="documentEntity.id">
-		<md-button class="md-icon-button"
-			ng-click="printstockShipment(documentEntity.id)"> <ng-md-icon
-			icon="print" style="fill: md-default" size="20"> <md-tooltip>
-		Print Stock Shipment</md-tooltip></ng-md-icon></md-button>
-	</div>
-</section>
+	<md-button class="md-icon-button" ng-click="cancel()"> <md-icon
+		md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+	</md-button>
+</div>
+</md-toolbar> <md-dialog-content
+	style="min-width:1100px; max-width:1200px; max-height:1800px;">
+<md-content layout-padding> <md-content layout-padding>
 <div>
 	<form ng-submit="$event.preventDefault()" name="documentForm">
 		<div layout="row" layout-xs="column">
@@ -45,22 +38,23 @@
 
 		<div flex layout="row" layout-xs="column">
 			<div flex=40 layout="row" layout-xs="column">
-				<md-input-container flex>
-			<label> To Warehouse </label> <md-select flex
-				ng-model="documentEntity.toWH" placeholder="Select Warehouse"
+				<md-input-container flex> <label> To
+					Warehouse </label> <md-select flex ng-model="documentEntity.toWH"
+					ng-required="true"
+					placeholder="Select Warehouse"
 					ng-change="filterStockItemsByWarehouse(documentEntity.toWH)">
-			<md-option ng-value="warehouse" ng-required="true"
-				ng-selected="documentEntity.toWH.id == warehouse.id"
-				ng-repeat="warehouse in warehouses ">{{warehouse.warehouseName
-			}}</md-option> </md-select> </md-input-container>
-				
+				<md-option ng-value="warehouse" 
+					ng-selected="documentEntity.toWH.id == warehouse.id"
+					ng-repeat="warehouse in warehouses ">{{warehouse.warehouseName
+				}}</md-option> </md-select> </md-input-container>
+
 			</div>
-			
-		
-			 <md-input-container flex> <label>Shipment
+
+
+			<md-input-container flex> <label>Shipment
 				Date</label> <md-datepicker flex ng-model="documentEntity.shipmentDate"
 				md-placeholder="Select Date"></md-datepicker> </md-input-container>
-			
+
 		</div>
 
 		<div layout="row" layout-xs="column">
@@ -99,14 +93,14 @@
 									ng-selected="item.stockItem.id == stockItem.id"
 									ng-repeat="stockItem in stockItemList">{{stockItem.stockItemType.itemName
 								}}</md-option> </md-select> </md-input-container>
-								
+
 							</div>
 						</td>
 
 						<td md-cell><md-input-container flex> <input
 								type="number" ng-model="item.qty" ng-required="true"
 								aria-label="iqty" ng-change="calProductSubTotal()"> </md-input-container></td>
-						
+
 						<td md-cell><md-button class="md-icon-button"
 								ng-show="item.stockItem.stockItemType.maintainStockBySerialNumber"
 								ng-click="addSerialNumbers($event, item)"> <ng-md-icon
@@ -131,16 +125,16 @@
 					</tr>
 				</tbody>
 			</table>
-		</div> 
+		</div>
 
-		 <div ng-show="documentEntity.serviceLineItemList.length == 0">
+		<div ng-show="documentEntity.serviceLineItemList.length == 0">
 			Add New Other Cost Items:
 			<md-button class="md-icon-button" ng-click="addServiceLineItem()">
 			<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
 			<md-tooltip> Add New Other Costs</md-tooltip></ng-md-icon> </md-button>
 
-		</div> 
-		 <div
+		</div>
+		<div
 			ng-show="documentEntity.serviceLineItemList && documentEntity.serviceLineItemList.length > 0">
 			<h3>Other Cost Line Items</h3>
 			<table md-table>
@@ -201,25 +195,27 @@
 					</tr>
 				</tbody>
 			</table>
-		</div> 
-		<div layout layout-xs="column">
-		<!-- 	ng-if="isDocumentEditAllowed(documentEntity)" >-->
-			<section layout="row" layout-xs="column">
-				<md-button class="md-raised md-primary"
-					ng-disabled="documentForm.$invalid" ng-click="draftDocumnent()">Save
-				as Draft</md-button>
-				<md-button class="md-raised md-primary"
-					ng-disabled="documentForm.$invalid" ng-click="submitDocumnent()">Submit</md-button>
-				<section layout="row" layout-xs="column"
-					ng-if="!settingsObj.needModuleDocumentApproval || hasUserAuthority(curUser, 'Stock.ModuleApprover')">
-					<md-button class="md-raised md-primary"
-						ng-disabled="documentForm.$invalid"
-						ng-click="finalizeDocumnent($event)">Approve/Finalize</md-button>
-					<md-button class="md-raised md-primary"
-						ng-disabled="documentForm.$invalid" ng-click="rejectDocumnent()">Reject</md-button>
-				</section>
-			</section>
 		</div>
 	</form>
 </div>
-</md-content>
+
+
+
+
+
+</md-content></md-dialog-content> <md-dialog-actions layout="row" ng-if="documentEntity.status != 'FINALIZED'"> <md-button
+	class="md-raised md-primary" ng-disabled="documentForm.$invalid"
+	ng-click="draftDocumnent()">Save as Draft</md-button> <md-button
+	class="md-raised md-primary" ng-disabled="documentForm.$invalid"
+	ng-click="submitDocumnent()">Submit</md-button>
+
+<section layout="row" layout-xs="column"
+	ng-if="documentEntity.status == 'SUBMITTED'">
+	<md-button class="md-raised md-primary"
+		ng-disabled="documentForm.$invalid"
+		ng-click="finalizeDocumnent($event)">Approve/Finalize</md-button>
+	<md-button class="md-raised md-primary"
+		ng-disabled="documentForm.$invalid" ng-click="rejectDocumnent()">Reject</md-button>
+</section>
+
+</md-dialog-actions> </md-dialog>
