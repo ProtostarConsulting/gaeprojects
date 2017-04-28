@@ -279,10 +279,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	}).state('selectmultibiz', {
 		url : "/selectbiz",
 		templateUrl : "/app/login/multiselectbusiness.html",
-		controller : 'multiSelectBusinessCtr',
-		params : {
-			multiUsers : null
-		}
+		controller : 'multiSelectBusinessCtr'
 	}).state('home', {
 		url : "/home",
 		templateUrl : '/home.html',
