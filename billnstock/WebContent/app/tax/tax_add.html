@@ -47,6 +47,14 @@
 		<div ng-show="selectedTax.withSubHeads"
 			ng-hide="!selectedTax.withSubHeads">
 
+			<div
+				ng-show="!selectedTax.subHeads || selectedTax.subHeads.length==0"
+				ng-hide="selectedTax.subHeads || selectedTax.subHeads.length>0">
+				Add Tax Line Items:
+				<md-button class="md-icon-button" ng-click="addTaxLineItem()">
+				<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
+				<md-tooltip> Add Tax Line Items</md-tooltip></ng-md-icon> </md-button>
+			</div>
 			<div ng-show="selectedTax.subHeads || selectedTax.subHeads.length>0">
 				<table md-table style="width: 50%">
 					<caption align="left" style="border-spacing: 5px; padding: 3px;">
