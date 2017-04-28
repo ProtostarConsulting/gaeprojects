@@ -19,22 +19,27 @@ import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 @Entity
 public class ProductionPlanEntity extends BaseEntity {
 
+	@Index
+	private Ref<BomEntity> bomEntity;
+
 	private String title;
+
+	private int plannedQty;
+
 	// use desc note from BaseEntity
 	private String salesOrderNumber;
 
 	@Index
 	private DocumentStatus status = DocumentStatus.DRAFT;
-	@Index
-	private boolean isStatusAlreadyFinalized = false;
 
 	private Date fromDateTime;
 	private Date toDateTime;
 
-	@Index
 	private Ref<Customer> customer;
+
 	private List<Ref<ProductionRequisitionEntity>> prodRequisitionList = new ArrayList<Ref<ProductionRequisitionEntity>>();
 	private List<Ref<ProductionShipmentEntity>> prodShipmentList = new ArrayList<Ref<ProductionShipmentEntity>>();
+	private List<Ref<ProductionPlanDailyReport>> planDailyReport = new ArrayList<Ref<ProductionPlanDailyReport>>();
 
 	@Override
 	public void beforeSave() {
@@ -45,6 +50,16 @@ public class ProductionPlanEntity extends BaseEntity {
 					EntityUtil.getBusinessRawKey(getBusiness()), Constants.PROD_PLAN_NO_COUNTER);
 			setItemNumber(sequenceGenService.getNextSequenceNumber());
 		}
+	}
+
+	public BomEntity getBomEntity() {
+		return bomEntity == null ? null : bomEntity.get();
+	}
+
+	public void setBomEntity(BomEntity bomEntity) {
+		if (bomEntity != null)
+			this.bomEntity = Ref.create(bomEntity);
+
 	}
 
 	public Customer getCustomer() {
@@ -117,8 +132,8 @@ public class ProductionPlanEntity extends BaseEntity {
 			return null;
 		}
 		List<ProductionShipmentEntity> tempList = new ArrayList<ProductionShipmentEntity>(prodShipmentList.size());
-		for (Ref<ProductionShipmentEntity> catRef : prodShipmentList) {
-			tempList.add(catRef.get());
+		for (Ref<ProductionShipmentEntity> entityRef : prodShipmentList) {
+			tempList.add(entityRef.get());
 		}
 		return tempList;
 	}
@@ -130,8 +145,39 @@ public class ProductionPlanEntity extends BaseEntity {
 		}
 
 		this.prodShipmentList = new ArrayList<Ref<ProductionShipmentEntity>>(prodShipmentList.size());
-		for (ProductionShipmentEntity shipment : prodShipmentList) {
-			this.prodShipmentList.add(Ref.create(shipment));
+		for (ProductionShipmentEntity entity : prodShipmentList) {
+			this.prodShipmentList.add(Ref.create(entity));
+		}
+	}
+
+	public int getPlannedQty() {
+		return plannedQty;
+	}
+
+	public void setPlannedQty(int plannedQty) {
+		this.plannedQty = plannedQty;
+	}
+
+	public List<ProductionPlanDailyReport> getPlanDailyReport() {
+		if (planDailyReport == null || planDailyReport.isEmpty()) {
+			return null;
+		}
+		List<ProductionPlanDailyReport> tempList = new ArrayList<ProductionPlanDailyReport>(planDailyReport.size());
+		for (Ref<ProductionPlanDailyReport> entityRef : planDailyReport) {
+			tempList.add(entityRef.get());
+		}
+		return tempList;
+	}
+
+	public void setPlanDailyReport(List<ProductionPlanDailyReport> planDailyReport) {
+		if (planDailyReport == null || planDailyReport.isEmpty()) {
+			this.planDailyReport = null;
+			return;
+		}
+
+		this.planDailyReport = new ArrayList<Ref<ProductionPlanDailyReport>>(planDailyReport.size());
+		for (ProductionPlanDailyReport entity : planDailyReport) {
+			this.planDailyReport.add(Ref.create(entity));
 		}
 	}
 

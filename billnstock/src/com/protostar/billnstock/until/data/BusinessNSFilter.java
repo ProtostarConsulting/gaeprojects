@@ -68,7 +68,7 @@ public class BusinessNSFilter implements Filter {
 				CurrentUserSession currentUserSession;
 				try {
 					currentUserSession = userLoginService.getCurrentUserSession(accessToken);
-					logger.info("currentUserSession.getId(): " + currentUserSession.getId());
+					//logger.info("currentUserSession.getId(): " + currentUserSession.getId());
 				} catch (Exception e) {
 					e.printStackTrace();
 					HttpServletResponse httpResponse = (HttpServletResponse) resp;

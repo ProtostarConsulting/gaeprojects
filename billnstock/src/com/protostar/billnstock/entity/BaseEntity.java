@@ -24,6 +24,7 @@ public abstract class BaseEntity {
 	private Date createdDate;
 	private Date modifiedDate;
 	private String modifiedBy;
+	private Ref<UserEntity> modifiedByUser;
 	private String note;
 
 	@Index
@@ -53,13 +54,12 @@ public abstract class BaseEntity {
 		 */
 		if (getId() == null) {
 			setCreatedDate(new Date());
-			setModifiedDate(new Date());
 			if (WebUtil.getCurrentUser() != null)
-				System.out.println("WebUtil.getCurrentUser(): " + WebUtil.getCurrentUser().getId());
+				setCreatedBy(WebUtil.getCurrentUser().getUser());
 		} else {
 			setModifiedDate(new Date());
 			if (WebUtil.getCurrentUser() != null)
-				System.out.println("WebUtil.getCurrentUser(): " + WebUtil.getCurrentUser().getId());
+				setModifiedByUser(WebUtil.getCurrentUser().getUser());
 		}
 
 	}
@@ -104,6 +104,15 @@ public abstract class BaseEntity {
 	public void setCreatedBy(UserEntity createdBy) {
 		if (createdBy != null)
 			this.createdBy = Ref.create(createdBy);
+	}
+
+	public UserEntity getModifiedByUser() {
+		return modifiedByUser == null ? null : modifiedByUser.get();
+	}
+
+	public void setModifiedByUser(UserEntity modifiedByUser) {
+		if (modifiedByUser != null)
+			this.modifiedByUser = Ref.create(modifiedByUser);
 	}
 
 	public UserEntity getApprovedBy() {
@@ -161,5 +170,5 @@ public abstract class BaseEntity {
 
 	public void setDocumentComments(List<Comment> documentComments) {
 		this.documentComments = documentComments;
-	}	
+	}
 }

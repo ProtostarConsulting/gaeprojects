@@ -52,7 +52,7 @@
 			<td md-cell>{{(task.assignedTo.firstName + ' ' +
 				task.assignedTo.lastName) | uppercase}}</td>
 			<td md-cell>{{task.assignedDate | formatDate}}</td>
-			<td md-cell>{{getDelayInDays(task.assignedDate)}}</td>
+			<td md-cell>{{getDelayInDays(task)}}</td>
 			<td md-cell>{{task.taskStatus}}</td>
 			<td md-cell>{{task.taskTitle}}</td>
 			<!-- <td md-cell>{{task.taskDesc.substring(0, 100) + "..." |
@@ -102,7 +102,7 @@
 				<td md-cell>{{(task.assignedTo.firstName + ' ' +
 					task.assignedTo.lastName) | uppercase}}</td>
 				<td md-cell>{{task.assignedDate | formatDate}}</td>
-				<td md-cell>{{getDelayInDays(task.assignedDate)}}</td>
+				<td md-cell>{{getDelayInDays(task)}}</td>
 				<td md-cell>{{task.taskStatus}}</td>
 				<td md-cell>{{task.taskTitle}}</td>
 				<!-- <td md-cell>{{task.taskDesc.substring(0, 100) + "..." |

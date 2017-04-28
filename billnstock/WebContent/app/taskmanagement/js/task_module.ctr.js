@@ -87,10 +87,11 @@ angular
 
 					}
 
-					$scope.getDelayInDays = function(assignedDate) {
+					$scope.getDelayInDays = function(task) {
 						var today = new Date();
-						var taskAssignedDate = new Date(assignedDate);
-						var diffInDays = (today.getTime() - taskAssignedDate
+						var taskCompletionDate = task.completionDate? new Date(task.completionDate) : today;
+						var taskAssignedDate = new Date(task.assignedDate);
+						var diffInDays = (taskCompletionDate.getTime() - taskAssignedDate
 								.getTime())
 								/ (1000 * 3600 * 24);
 						return Math.ceil(diffInDays);
