@@ -41,4 +41,8 @@ public class StockShipmentAgainstProductionRequisition extends BaseEntity {
 	public void setStatus(DocumentStatus status) {
 		this.status = status;
 	}
+
+	public void setCatList(List<BomLineItemCategory> catList) {
+		this.catList = catList;
+	}
 }

@@ -1,6 +1,6 @@
 <md-dialog aria-label="Add New" style="min-width:500px;"> <md-toolbar>
 <div class="md-toolbar-tools">
-	<h2>{{documentEntity.id?'Edit Stock Shipment/Transfer: ' +
+	<h2>{{documentEntity.id?'Edit Production Stock Issue: ' +
 		documentEntity.itemNumber:'Create Stock Shipment/Transfer'}}</h2>
 	<span flex></span>
 	<md-button class="md-icon-button" ng-click="cancel()"> <md-icon
@@ -210,7 +210,7 @@
 
 
 
-</md-content></md-dialog-content> <md-dialog-actions layout="row" ng-if="documentEntity.status != 'FINALIZED'"> <md-button
+</md-content></md-dialog-content> <md-dialog-actions layout="row"> <md-button
 	class="md-raised md-primary" ng-disabled="documentForm.$invalid"
 	ng-click="draftDocumnent()">Save as Draft</md-button> <md-button
 	class="md-raised md-primary" ng-disabled="documentForm.$invalid"

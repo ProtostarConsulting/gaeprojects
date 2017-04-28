@@ -2552,7 +2552,17 @@ function googleEndpointSF($q) {
 				});
 		return deferred.promise;
 	}
+	
+	
+	StockService.addProductionStockIssueList = function(stockissue) {
 
+		var deferred = $q.defer();
+		gapi.client.stockService.addProductionStockIssueList(stockissue).execute(
+				function(resp) {
+					deferred.resolve(resp);
+				});
+		return deferred.promise;
+	}
 	StockService.getStarredRequisitions = function(busId) {
 		var deferred = $q.defer();
 		gapi.client.stockService.getStarredRequisitions({

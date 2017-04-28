@@ -46,6 +46,7 @@ import com.protostar.billingnstock.production.entities.ProductionRequisitionEnti
 import com.protostar.billingnstock.production.entities.ProductionShipmentEntity;
 import com.protostar.billingnstock.production.entities.QCMachineDailyRecordEntity;
 import com.protostar.billingnstock.production.entities.QCMachineEntity;
+import com.protostar.billingnstock.production.entities.StockShipmentAgainstProductionRequisition;
 import com.protostar.billingnstock.purchase.entities.BudgetEntity;
 import com.protostar.billingnstock.purchase.entities.PurchaseOrderEntity;
 import com.protostar.billingnstock.purchase.entities.RequisitionEntity;
@@ -62,7 +63,6 @@ import com.protostar.billingnstock.stock.entities.StockItemTypeEntity;
 import com.protostar.billingnstock.stock.entities.StockItemUnit;
 import com.protostar.billingnstock.stock.entities.StockItemsReceiptEntity;
 import com.protostar.billingnstock.stock.entities.StockItemsShipmentEntity;
-import com.protostar.billingnstock.stock.entities.StockReceiptQCRecord;
 import com.protostar.billingnstock.stock.entities.StockReceiptQCEntity;
 import com.protostar.billingnstock.stock.entities.StockSettingsEntity;
 import com.protostar.billingnstock.taskmangement.TaskEntity;
@@ -171,6 +171,8 @@ public class AppServletContextListener implements ServletContextListener {
 		ObjectifyService.register(QCMachineDailyRecordEntity.class);
 		ObjectifyService.register(MachineQCUnitMeasure.class);
 		ObjectifyService.register(ProductionShipmentEntity.class);
+		ObjectifyService.register(StockShipmentAgainstProductionRequisition.class);
+		
 		
 
 	}

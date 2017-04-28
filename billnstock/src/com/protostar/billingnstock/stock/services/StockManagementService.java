@@ -26,6 +26,7 @@ import com.protostar.billingnstock.invoice.entities.InvoiceEntity;
 import com.protostar.billingnstock.production.entities.BomEntity;
 import com.protostar.billingnstock.production.entities.ProductionShipmentEntity;
 import com.protostar.billingnstock.production.entities.QCParameter;
+import com.protostar.billingnstock.production.entities.StockShipmentAgainstProductionRequisition;
 import com.protostar.billingnstock.purchase.entities.BudgetEntity;
 import com.protostar.billingnstock.purchase.entities.LineItemCategory;
 import com.protostar.billingnstock.purchase.entities.LineItemEntity;
@@ -107,6 +108,18 @@ public class StockManagementService extends BaseService {
 		return stockItemBrands;
 	}
 
+	
+	
+	@ApiMethod(name = "addProductionStockIssueList", path = "addProductionStockIssueList")
+	public StockShipmentAgainstProductionRequisition addProductionStockIssueList (StockShipmentAgainstProductionRequisition stockissue) {
+		ofy().save().entity(stockissue).now();
+		return stockissue;
+	}
+	
+	
+	
+	
+	
 	@ApiMethod(name = "getStockItemProductTypes", path = "getStockItemProductTypes")
 	public List<StockItemProductTypeEntity> getStockItemProductTypes(@Named("busId") Long busId) {
 
