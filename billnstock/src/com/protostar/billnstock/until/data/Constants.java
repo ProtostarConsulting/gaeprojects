@@ -50,6 +50,7 @@ public class Constants {
 	public static final String PROD_PLAN_NO_COUNTER = "PROD_PLAN_NO_COUNTER";
 	public static final String PROD_STOCKSHIPMENT_NO_COUNTER = "PROD_STOCKSHIPMENT_NO_COUNTER";
 	public static final String PROD_REQUISITION_NO_COUNTER = "PROD_REQUISITION_NO_COUNTER";
+	public static final String PROD_STOCKISSUE_NO_COUNTER = "PROD_STOCKISSUE_NO_COUNTER";
 
 	// Default Authorizations\
 	private static final String APP_ALL_AUTHS = "" + "{\"authName\":\"Accounting\",\"authorizations\":["

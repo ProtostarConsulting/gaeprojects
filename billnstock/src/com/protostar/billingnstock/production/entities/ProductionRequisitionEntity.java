@@ -11,9 +11,9 @@ import com.googlecode.objectify.annotation.Index;
 import com.protostar.billingnstock.stock.entities.BomLineItemCategory;
 import com.protostar.billnstock.entity.BaseEntity;
 import com.protostar.billnstock.until.data.Constants;
+import com.protostar.billnstock.until.data.Constants.DocumentStatus;
 import com.protostar.billnstock.until.data.EntityUtil;
 import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
-import com.protostar.billnstock.until.data.Constants.DocumentStatus;
 
 @Cache
 @Entity
@@ -30,6 +30,7 @@ public class ProductionRequisitionEntity extends BaseEntity {
 	private int prodPlanItemNumber;
 
 	private List<BomLineItemCategory> catList = new ArrayList<BomLineItemCategory>();
+	private List<Ref<StockShipmentAgainstProductionRequisition>> stockShipmentList = new ArrayList<Ref<StockShipmentAgainstProductionRequisition>>();
 
 	@Override
 	public void beforeSave() {
@@ -90,6 +91,31 @@ public class ProductionRequisitionEntity extends BaseEntity {
 
 	public void setDeliveryDateTime(Date deliveryDateTime) {
 		this.deliveryDateTime = deliveryDateTime;
+	}
+
+	public List<StockShipmentAgainstProductionRequisition> getStockShipmentList() {
+		if (stockShipmentList == null || stockShipmentList.isEmpty()) {
+			return null;
+		}
+		List<StockShipmentAgainstProductionRequisition> tempList = new ArrayList<StockShipmentAgainstProductionRequisition>(
+				getStockShipmentList().size());
+		for (Ref<StockShipmentAgainstProductionRequisition> entityRef : stockShipmentList) {
+			tempList.add(entityRef.get());
+		}
+		return tempList;
+	}
+
+	public void setStockShipmentList(List<StockShipmentAgainstProductionRequisition> stockShipmentList) {
+		if (stockShipmentList == null || stockShipmentList.isEmpty()) {
+			this.stockShipmentList = null;
+			return;
+		}
+
+		this.stockShipmentList = new ArrayList<Ref<StockShipmentAgainstProductionRequisition>>(
+				stockShipmentList.size());
+		for (StockShipmentAgainstProductionRequisition entity : stockShipmentList) {
+			this.stockShipmentList.add(Ref.create(entity));
+		}
 	}
 
 }
