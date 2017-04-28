@@ -2,36 +2,25 @@
 <div>
 	<div class="md-toolbar-tools">
 		<md-subheader class="md-primary">
-		<h4 class="md-title">{{productionRequisition.id?'Edit Production
-			Requisition':'Add Production Requisition'}}</h4>
+		<h4 class="md-title">Production Requisition View</h4>
 		</md-subheader>
 		<span flex></span>
 
 	</div>
 	<form name="bomRequisition">
-
+  <fieldset disabled>
 
 		<div layout="row" layout-xs="column">
 			<div layout="row" flex=70>
 
-				<md-input-container flex> <md-select
+				<md-input-container flex><label>Product Name</label> <md-select
 					name="bomEntity" ng-model="productionRequisition.bomEntity"
 					ng-change="selectItems(productionRequisition.bomEntity)"
-					placeholder="Product Name" ng-required="true"> <md-option
+					placeholder="Product Name" ng-required="true"
+					ng-disabled="true"> <md-option
 					ng-value="bomEntity" ng-repeat="bomEntity in bomList"
 					ng-selected="bomEntity.id == productionRequisition.bomEntity.id">
 				{{bomEntity.stockItemType.itemName}} </md-option> </md-select> </md-input-container>
-
-
-				<!--<md-input-container flex> <label>Select
-					Order Type</label> <md-select placeholder="Order Type"
-					ng-model="documentEntity.orderType"> <md-option
-					ng-repeat="orderType in stockItemOrderTypes" ng-value="orderType"
-					ng-selected="documentEntity.orderType.id == orderType.id">{{orderType.typeName}}
-				</md-option> </md-select> </md-input-container>  -->
-
-
-
 
 
 				<md-input-container flex> <input type="number"
@@ -53,54 +42,35 @@
 		</div>
 
 
-		<table md-table md-progress="promise">
+	
+  </fieldset>
+  <table md-table md-progress="promise">
 			<thead ng-if="!dataTableOptions.decapitate" md-head
 				md-order="query.order" md-on-reorder="logOrder">
 				<tr md-row>
-					<th md-column md-order-by="srNo">Category</th>
-					<th md-column md-order-by="srNo">Catogory Name</th>
+					<th md-column>Category Name</th>
+					<th md-column>Items</th>
+					<th md-column>Qty. Needed</th>
+					<th md-column>Stock-in-Hand</th>
+					<th md-column>Stock-Issueed Qty.</th>
+					
 				</tr>
 			</thead>
 			<tbody>
 				<tr md-row ng-init="itemToggle=true"
 					ng-repeat-start="bomCategory in productionRequisition.catList track by $index">
-
-					<td md-cell>Category {{ $index +1 }}<md-button
-							class="md-icon-button" ng-show="!itemToggle"
-							ng-click="itemToggle=true"> </md-button> <md-button
-							class="md-icon-button" ng-show="itemToggle"
-							ng-click="itemToggle=false" ng-disabled="true"> </md-button></td>
-					<td md-cell><div layout="row">
-							<md-input-container flex> <input type="text"
-								aria-label="period" placeholder="Enter Qty."
-								ng-model="bomCategory.cat.catName" ng-disabled="true"> </md-input-container>
-
-						</div></td>
-
+					<td md-cell>{{bomCategory.cat.catName}}</td>
 					<td md-cell></td>
-
+					<td md-cell></td>
+					<td md-cell></td>
 				</tr>
 				<tr md-row ng-repeat="itemObj in  bomCategory.items"
-					ng-show="itemToggle">
+					ng-show="itemToggle" style="padding-top: 10px; padding-bottom: 10px;">
 					<td md-cell></td>
-					<td md-cell>
-						<div layout="row">
-
-							<md-input-container flex> <input type="text"
-								aria-label="period" placeholder="Enter Qty."
-								ng-model="itemObj.itemName" ng-disabled="true"> </md-input-container>
-						</div>
-					</td>
-
-					<td md-cell>
-						<div layout="row">
-							<md-input-container> <input
-								placeholder="Product qty." ng-model="itemObj.qty"
-								ng-required="true" ng-disabled="true"></md-input-container>
-
-						</div>
-					</td>
-					<td md-cell></td>
+					<td md-cell style="padding-top: 10px; padding-bottom: 10px;">{{itemObj.stockItemType.itemName}}</td>
+					<td md-cell style="padding-top: 10px; padding-bottom: 10px;">{{itemObj.qty}}</td>
+					<td md-cell style="padding-top: 10px; padding-bottom: 10px;">{{getCurrentWHStockItemQty(itemObj.stockItemType)}}</td>
+					<td md-cell style="padding-top: 10px; padding-bottom: 10px;">  {{}}  </td>
 				</tr>
 				<tr md-row>
 					<td md-cell></td>
@@ -122,11 +92,61 @@
 		</table>
 
 	</form>
+	
+		<h4 ng-init="prodStockListToogle=true"
+					ng-click="prodStockListToogle=!prodStockListToogle">
+					Production Stock Issue List
+					<md-button class="md-icon-button" ng-show="prodStockListToogle">
+					<ng-md-icon icon="keyboard_arrow_up" style="fill: md-default"
+						size="24"> <md-tooltip> Collapse</md-tooltip></ng-md-icon></md-button>
+					<md-button class="md-icon-button" ng-show="!prodStockListToogle">
+					<ng-md-icon icon="keyboard_arrow_down" style="fill: md-default"
+						size="24"> <md-tooltip> Expand</md-tooltip></ng-md-icon></md-button>
+				</h4>
+				
+				<div ng-show="prodStockListToogle">
+					<md-button class="md-icon-button" ng-click="addProdstock($event)">
+					<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
+					<md-tooltip> Add New </md-tooltip></ng-md-icon> </md-button>
+					<md-table-container>
+					<table md-table md-progress="promise">
+						<thead ng-if="!dataTableOptions.decapitate" md-head
+							md-order="query.order" md-on-reorder="logOrder">
+							<tr md-row>
+								<th md-column>Issue No.</th>
+								<th md-column>BOM Product</th>
+								<th md-column>Delivery Date</th>
+								<th md-column>Status</th>
+								<th md-column>Action</th>
+							</tr>
+						</thead>
+					
+						<tbody md-body ng-repeat="documentEntity1 in documentEntity">
+						
+							<tr md-row
+								ng-repeat="bomRequisitionEntity in documentEntity1.prodRequisitionList">
+								<td md-cell>{{bomRequisitionEntity.itemNumber}}</td>
+								<td md-cell>{{bomRequisitionEntity.bomEntity.stockItemType.itemName}}</td>
+								<td md-cell>{{bomRequisitionEntity.deliveryDateTime |
+									formatDateWithTime}}</td>
+								<td md-cell>{{bomRequisitionEntity.status}}</td>
+								<td md-cell><md-button class="md-icon-button"
+										ng-click="addProdStockIssue($event, bomRequisitionEntity)">
+									<ng-md-icon icon="edit" style="fill: md-default" size="20">
+									<md-tooltip> Edit</md-tooltip></ng-md-icon></md-button> <md-button
+										class="md-icon-button"
+										ng-click="printProductStockIssue(bomRequisitionEntity.id)">
+									<ng-md-icon icon="print" style="fill: md-default" size="20">
+									<md-tooltip> Print Product Requisition</md-tooltip></ng-md-icon></md-button></td>
+							</tr>
+						</tbody>
+					</table>
+					</md-table-container>
+				</div>
+				
+	
+	
+	
 </div>
-<div layout layout-xs="column" ng-hide="budgetObj.status == 'FINALIZED'">
-	<section layout="row" layout-xs="column">
 
-		<md-button class="md-raised md-primary" ng-click="submitPequisition()">Submit</md-button>
-	</section>
-</div>
 </md-content>

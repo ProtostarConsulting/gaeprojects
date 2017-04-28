@@ -195,7 +195,8 @@ app
 										$scope.stockItemList = stockList;
 										$scope.loading = false;
 									});
-							$scope.addProductLineItem();
+							if(!$scope.documentEntity.id){
+							$scope.addProductLineItem();}
 						}
 
 						$scope.getAllWarehouseByBusiness = function() {

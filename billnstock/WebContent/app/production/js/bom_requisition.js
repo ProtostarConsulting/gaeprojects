@@ -12,12 +12,114 @@ app
 
 					$scope.productionRequisition = $stateParams.productionRequisition ? $stateParams.productionRequisition
 							: null;
+				
+					$scope.addProdstock=function(ev, ProdStock){
+						
+
+						var useFullScreen = $mdMedia('xs');
+						$mdDialog
+								.show(
+										{
+											controller : requisition_stock,
+											templateUrl : '/app/production/add_prod_stock_dialog.html',
+											parent : angular
+													.element(document.body),
+											targetEvent : ev,
+											clickOutsideToClose : true,
+											fullscreen : useFullScreen,
+											locals : {
+												curUser : $scope.curUser,
+												ProdStock : ProdStock,
+												productionRequisition : $scope.productionRequisition,
+												showAddToast : $scope.showAddToast
+											}
+										})
+								.then(
+										function(answer) {
+											$scope.status = 'You said the information was "'
+													+ answer + '".';
+										},
+										function() {
+											$scope.status = 'You cancelled the dialog.';
+										});
+
+					
+						
+						
+						
+					}
+					function requisition_stock($scope, $mdDialog, curUser,
+							productionRequisition, ProdStock, showAddToast) {
+						
+						
+						$scope.getCategoryBynum=function(){
+							
+							
+							
+							
+							
+							
+						}
+						
+						
+						$scope.getAllWarehouseByBusiness = function() {
+							$log
+									.debug("Inside function $scope.getAllWarehouseByBusiness");
+							$scope.loading = true;
+							var warehouseService = appEndpointSF
+									.getWarehouseManagementService();
+
+							warehouseService.getAllWarehouseByBusiness(
+									curUser.business.id).then(
+									function(warehouseList) {
+										$scope.warehouses = warehouseList;
+
+										$scope.loading = false;
+									});
+						}
+					}
+					$scope.addProductLineItem = function() {
+						var item = {
+							isProduct : true,
+							itemName : "",
+							qty : 1,
+							price : "",
+							stockItem : null,
+							selectedTaxItem : null
+						};
+						if (!$scope.documentEntity.productLineItemList) {
+							$scope.documentEntity.productLineItemList = [];
+						}
+						$scope.documentEntity.productLineItemList
+								.push(item);
+					};
+					$scope.draftDocumnent = function(ev) {
+						$scope.documentEntity.status = 'DRAFT';
+						$scope.saveDocument();
+					}
+
+					$scope.submitDocumnent = function(ev) {
+						$scope.documentEntity.status = 'SUBMITTED';
+						$scope.saveDocument();
+					}
+					$scope.removeProductItem = function(index) {
+						$scope.documentEntity.productLineItemList.splice(
+								index, 1);
+
+						if ($scope.documentEntity.productLineItemList.length == 0) {
+							$scope.documentEntity.productSubTotal = 0;
+							$scope.documentEntity.productTotal = 0;
+							$scope.documentEntity.productTaxTotal = 0;
+							$scope.documentEntity.selectedProductTax = null;
+						}
 					if ($stateParams.productionRequisition != null) {
 						$scope.productionRequisition.deliveryDate = new Date(
-								$stateParams.productionRequisition.deliveryDate);
+								$stateParams.productionRequisition.deliveryDateTime);
 						$scope.productionRequisition.deliverytime = new Date(
-								$stateParams.productionRequisition.deliverytime);
-					}
+							$stateParams.productionRequisition.deliveryDateTime);
+				}
+					
+			};
 
 					$scope.query = {
 						order : 'firstName',
@@ -27,12 +129,12 @@ app
 						pagesLoaded : 0
 					};
 
-					$scope.bomList = [];
+					/*$scope.bomList = [];
 					$scope.stockItemCategories = [];
 					$scope.stockTypeList = [];
 					var dummyStockTypeList = [];
-
-					$scope.calculation = function() {
+*/
+					/*$scope.calculation = function() {
 						if ($scope.productionRequisition.productQty != 0
 								&& $scope.productionRequisition.productQty != null) {
 
@@ -45,8 +147,8 @@ app
 								}
 							}
 						}
-					}
-
+					}*/
+/*
 					$scope.fetchProductionList = function() {
 						var productService = appEndpointSF
 								.getProductionService();
@@ -56,7 +158,7 @@ app
 								function(list) {
 									$scope.bomList = list;
 								});
-					}
+					}*/
 
 					$scope.submitPequisition = function() {
 
@@ -71,7 +173,7 @@ app
 						});
 
 					}
-					$scope.selectItems = function(bomEntity) {
+				/*	$scope.selectItems = function(bomEntity) {
 
 						if (!$scope.productionRequisition.id) {
 							var productService = appEndpointSF
@@ -85,7 +187,9 @@ app
 						}
 
 					}
-
+					*/
+					
+					
 					$scope.printBOM = function(bomId) {
 						var bid = $scope.curUser.business.id;
 						window.open("PrintPdfBOM?bid=" + bid + "&bomId="
@@ -94,8 +198,8 @@ app
 					
 					$scope.waitForServiceLoad = function() {
 						if (appEndpointSF.is_service_ready) {
-							$scope.fetchProductionList();
-
+						
+							
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
 							$timeout($scope.waitForServiceLoad, 1000);
