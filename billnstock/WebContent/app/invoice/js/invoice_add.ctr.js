@@ -33,6 +33,8 @@ app
 							finalTotal : 0,
 							isPaid : false,
 							isDraft : false,
+							indiviualServiceLineItemTax : false,
+							indiviualProductLineItemTax : false,
 							paidDate : null,
 							business : null,
 							fromWH : null,
@@ -215,7 +217,6 @@ app
 						// other
 						$scope.serviceTaxChanged();
 						$scope.productTaxChanged();
-
 						$scope.calfinalTotal();
 					}
 
@@ -256,14 +257,39 @@ app
 					}
 
 					$scope.serviceTaxChanged = function() {
-						if (!$scope.documentEntity.selectedServiceTax) {
-							$scope.documentEntity.serviceTaxTotal = 0;
+
+						$scope.taxAmtsForServiceLineItems = [];
+						if ($scope.documentEntity.indiviualServiceLineItemTax) {
+							if ($scope.documentEntity.serviceLineItemList
+									&& $scope.documentEntity.serviceLineItemList.length > 0) {
+								for (var i = 0; i < $scope.documentEntity.serviceLineItemList.length; i++) {
+									var lineItem = $scope.documentEntity.serviceLineItemList[i];
+									if (lineItem.selectedTaxItem) {
+										lineItem.taxAmt = (lineItem.qty * lineItem.price)
+												* (lineItem.selectedTaxItem.taxPercenatge / 100);
+										$scope.taxAmtsForServiceLineItems
+												.push(lineItem.taxAmt);
+									}
+
+								}
+								$scope.documentEntity.serviceTaxTotal = 0;
+								for (var j = 0; j < $scope.taxAmtsForServiceLineItems.length; j++) {
+									$scope.documentEntity.serviceTaxTotal += parseFloat($scope.taxAmtsForServiceLineItems[j]);
+								}
+								$scope.documentEntity.serviceTotal = ($scope.documentEntity.serviceSubTotal - $scope.documentEntity.serviceDiscAmount)
+										+ $scope.documentEntity.serviceTaxTotal;
+							}
+
 						} else {
-							$scope.documentEntity.serviceTaxTotal = parseFloat(($scope.documentEntity.selectedServiceTax.taxPercenatge / 100)
-									* ($scope.documentEntity.serviceSubTotal - $scope.documentEntity.serviceDiscAmount));
+							if (!$scope.documentEntity.selectedServiceTax) {
+								$scope.documentEntity.serviceTaxTotal = 0;
+							} else {
+								$scope.documentEntity.serviceTaxTotal = parseFloat(($scope.documentEntity.selectedServiceTax.taxPercenatge / 100)
+										* ($scope.documentEntity.serviceSubTotal - $scope.documentEntity.serviceDiscAmount));
+							}
+							$scope.documentEntity.serviceTotal = ($scope.documentEntity.serviceSubTotal - $scope.documentEntity.serviceDiscAmount)
+									+ $scope.documentEntity.serviceTaxTotal;
 						}
-						$scope.documentEntity.serviceTotal = ($scope.documentEntity.serviceSubTotal - $scope.documentEntity.serviceDiscAmount)
-								+ $scope.documentEntity.serviceTaxTotal;
 					};
 
 					$scope.productTaxChanged = function() {

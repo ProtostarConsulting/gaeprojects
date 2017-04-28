@@ -174,6 +174,13 @@
 			</h3>
 
 			<div ng-show="settingsObj.showDefaultServiceItems">
+				<md-input-container flex> <md-checkbox
+					ng-model="documentEntity.indiviualServiceLineItemTax"
+					aria-label="active" ng-true-value="true" ng-false-value="false"
+					id="changer"> Select Taxes For Individual Line Items
+				</md-checkbox> </md-input-container>
+			</div>
+			<div ng-show="settingsObj.showDefaultServiceItems">
 				<md-table-container>
 				<table md-table>
 					<thead md-head>
@@ -183,6 +190,8 @@
 							<th md-column>Quantity</th>
 							<th md-column>Price(&#x20b9)</th>
 							<th md-column md-numeric>Total(&#x20b9)</th>
+							<th md-column
+								ng-show="documentEntity.indiviualServiceLineItemTax">Tax</th>
 							<th md-column>Actions</th>
 						</tr>
 					</thead>
@@ -208,6 +217,12 @@
 									ng-change="reCalculateTotal()" aria-label="iprice" /></md-input-container></td>
 							<td md-cell><b>{{serviceItem.qty * serviceItem.price |
 									currency:"":"2"}} </b></td>
+							<td md-cell ng-show="documentEntity.indiviualServiceLineItemTax"><md-select
+									ng-model="serviceItem.selectedTaxItem" placeholder="Select Tax"
+									ng-change="reCalculateTotal()"> <md-option
+									ng-value="taxItem" ng-repeat="taxItem in taxList"
+									ng-selected="serviceItem.selectedTaxItem.id == taxItem.id">{{taxItem?taxItem.taxCodeName:'NA'}}({{taxItem.taxPercenatge}}&#37)</md-option>
+								</md-select></td>
 							<td md-cell><md-icon
 									md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
 									ng-click="removeServiceItem($index)" class="name"
@@ -220,54 +235,70 @@
 									icon="add_circle" style="fill: md-default" size="24">
 								<md-tooltip> Add New </md-tooltip></ng-md-icon> </md-button></td>
 							<td md-cell></td>
+							<td md-cell colspan="2"><label>Service Sub Total</label></td>
+							<td md-cell>
+								<div align="right">
+									<b>{{documentEntity.serviceSubTotal | currency:"":"2"}}</b>
+								</div>
+							</td>
 							<td md-cell></td>
-							<td md-cell><label>Service Sub Total</label></td>
-							<td md-cell><b>{{documentEntity.serviceSubTotal |
-									currency:"":"2"}}</b></td>
+						</tr>
+
+						<tr md-row ng-if="documentEntity.serviceDiscAmount">
+							<td md-cell></td>
+							<td md-cell></td>
+							<td md-cell colspan="2"><label>Discount Amount</label></td>
+							<td md-cell>
+								<div align="right">
+									<b>{{documentEntity.serviceDiscAmount | currency:"":"2"}}</b>
+								</div>
+							</td>
 							<td md-cell></td>
 						</tr>
 						<tr md-row ng-if="documentEntity.serviceDiscAmount">
 							<td md-cell></td>
 							<td md-cell></td>
-							<td md-cell></td>
-							<td md-cell><label>Discount Amount</label></td>
-							<td md-cell><b>{{documentEntity.serviceDiscAmount |
-									currency:"":"2"}}</b></td>
-							<td md-cell></td>
-						</tr>
-						<tr md-row ng-if="documentEntity.serviceDiscAmount">
-							<td md-cell></td>
-							<td md-cell></td>
-							<td md-cell></td>
-							<td md-cell><label>After Discount Total</label></td>
-							<td md-cell><b>{{(documentEntity.serviceSubTotal -
-									documentEntity.serviceDiscAmount) | currency:"":"2"}}</b></td>
+							<td md-cell colspan="2"><label>After Discount Total</label></td>
+							<td md-cell><div align="right">
+									<b>{{(documentEntity.serviceSubTotal -
+										documentEntity.serviceDiscAmount) | currency:"":"2"}}</b>
+								</div></td>
 							<td md-cell></td>
 						</tr>
 
 						<tr md-row>
 							<td md-cell></td>
-							<td md-cell><label>Services Tax</label></td>
-							<td md-cell><md-input-container flex
-									ng-hide="documentEntity.serviceLineItemList.length==0">
-								<md-select ng-model="documentEntity.selectedServiceTax"
-									placeholder="Select Tax" ng-change="reCalculateTotal()">
-								<md-option ng-value="taxItem" ng-repeat="taxItem in taxList"
-									ng-selected="documentEntity.selectedServiceTax.id == taxItem.id">{{taxItem?taxItem.taxCodeName:'NA'}}</md-option>
-								</md-select> </md-input-container></td>
-							<td md-cell>{{documentEntity.selectedServiceTax.taxPercenatge}}&#37</td>
-							<td md-cell><b>{{documentEntity.serviceTaxTotal |
-									currency:"":"2"}}</b></td>
+							<td md-cell>
+								<div align="right">
+									<md-input-container flex
+										ng-if="!documentEntity.indiviualServiceLineItemTax">
+									<label>Select Tax</label> <md-select
+										ng-model="documentEntity.selectedServiceTax"
+										placeholder="Select Tax" ng-change="reCalculateTotal()">
+									<md-option ng-value="taxItem" ng-repeat="taxItem in taxList"
+										ng-selected="documentEntity.selectedServiceTax.id == taxItem.id">{{taxItem?taxItem.taxCodeName:'NA'}}({{taxItem.taxPercenatge}}&#37)</md-option>
+									</md-select> </md-input-container>
+								</div>
+							</td>
+							<td md-cell colspan="2"><label>Tax Total</label></td>
+							<td md-cell>
+								<div align="right">
+									<b>{{documentEntity.serviceTaxTotal | currency:"":"2"}}</b>
+								</div>
+							</td>
 							<td md-cell></td>
 						</tr>
 
 						<tr md-row>
 							<td md-cell></td>
 							<td md-cell></td>
-							<td md-cell></td>
-							<td md-cell><label>Service Total</label></td>
-							<td md-cell><b>&#x20b9{{documentEntity.serviceTotal |
-									currency:"":"2"}}</b></td>
+							<!--  	<td md-cell></td>-->
+							<td md-cell colspan="2"><label>Service Total</label></td>
+							<td md-cell>
+								<div align="right">
+									<b>&#x20b9{{documentEntity.serviceTotal | currency:"":"2"}}</b>
+								</div>
+							</td>
 							<td md-cell></td>
 						</tr>
 
