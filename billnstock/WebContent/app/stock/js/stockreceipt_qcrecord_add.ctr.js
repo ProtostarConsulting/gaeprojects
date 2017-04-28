@@ -12,38 +12,42 @@ app
 
 					$scope.isTableShow = false;
 					$scope.qcstockReceiptList = [];
-
-					$scope.tempStockReceiptQCDailyRecordObj = $stateParams.stockReceiptQCRecordObj ? $stateParams.stockReceiptQCRecordObj
-							: $scope.tempStockReceiptQCDailyRecordObj;
-
-					$scope.tempStockReceiptObj = $stateParams.stockReceiptObj ? $stateParams.stockReceiptObj
-							: null;
-
 					$scope.tempRecepitQCObj = {
-						qcStockReceipt : "",
-						paramRecordedValues : []
-					};
-
-					if ($scope.tempStockReceiptQCDailyRecordObj != undefined) {
+							qcStockReceipt : "",
+							paramRecordedValues : [],
+							createdDate : new Date(),
+							createdBy : $scope.curUser,
+							qcResult : "",
+							note : ""
+						};
+										
+					$scope.tempStockReceiptObj = $stateParams.stockReceiptObj ? $stateParams.stockReceiptObj
+								: $scope.tempStockReceiptObj;
+					if ($scope.tempStockReceiptObj == undefined) {
 						$scope.isTableShow = true;
-						$scope.stockReceiptQc = $scope.tempStockReceiptQCDailyRecordObj.qcStockReceipt;
-						$scope.recordDate = new Date(
-								$scope.tempStockReceiptQCDailyRecordObj.recordDate);
+						$scope.tempRecepitQCObj = $stateParams.stockReceiptQCRecordObj ? $stateParams.stockReceiptQCRecordObj
+								: $scope.tempRecepitQCObj;
 					}
-
+					//this temp obj
+					if($stateParams.tempReceiptObj){
+						$scope.tempReceipt = $stateParams.tempReceiptObj;
+					}	
+														
 					$scope.getStockReceiptQCDailyRecord = function(
 							qcStockReceiptObj) {
 						$scope.isTableShow = true;
-						var stockService = appEndpointSF.getStockService();
-						stockService
-								.getStockReceiptQCDailyRecordEntity(
-										qcStockReceiptObj,
-										$scope.curUser.business.id)
-								.then(
-										function(qcMachineDailyRecordObj) {
-											$scope.tempStockReceiptQCDailyRecordObj = qcMachineDailyRecordObj;
-											$scope.tempRecepitQCObj.paramRecordedValues = $scope.tempStockReceiptQCDailyRecordObj.paramRecordedValues;
-										});
+						if($scope.tempStockReceiptObj != undefined){
+							var stockService = appEndpointSF.getStockService();
+							stockService
+									.getStockReceiptQCDailyRecordEntity(
+											qcStockReceiptObj,
+											$scope.curUser.business.id)
+									.then(
+											function(qcRecordObj) {
+												$scope.tempStockReceiptQCDailyRecordObj = qcRecordObj;
+												$scope.tempRecepitQCObj.paramRecordedValues = $scope.tempStockReceiptQCDailyRecordObj.paramRecordedValues;
+											});
+						}
 					}
 
 					$scope.addStockReceiptQCRecord = function() {

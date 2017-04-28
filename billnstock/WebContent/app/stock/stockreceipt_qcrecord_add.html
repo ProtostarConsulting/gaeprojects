@@ -1,20 +1,36 @@
 <md-subheader class="md-primary">
-<h4 class="md-title"
-	ng-bind="tempStockReceiptQCDailyRecordObj.id?'Edit QC Record':'Add QC Record'"></h4>
+<h4 class="md-title" ng-if="tempStockReceiptObj">Add QC Record</h4>
+<h4 class="md-title" ng-if="!tempStockReceiptObj">Edit QC Record</h4>
 </md-subheader>
 
 <form name="addStockReceiptQCRecordFom">
-		<md-input-container flex> <label>Stock Receipt
-			QC Name</label> <md-select name="qcStockReceipt" ng-model="tempRecepitQCObj.qcStockReceipt"
-			ng-change="getStockReceiptQCDailyRecord(tempRecepitQCObj.qcStockReceipt)" ng-required="true">
-		<md-option ng-repeat="stockReceiptQc in qcstockReceiptList"
-			ng-selected="stockReceiptQc.id==qcStcockReceipt.id"
-			ng-value="stockReceiptQc">{{stockReceiptQc.qcName}}</md-option> </md-select>
-		<div ng-messages="addStockReceiptQCRecordFom.qcStockReceipt.$error"
-			ng-if="addStockReceiptQCRecordFom.qcStockReceipt.$submitted || addStockReceiptQCRecordFom.qcStockReceipt.$touched">
-			<div ng-message="required">Please Select Stock Receipt.</div>
-		</div>
-		</md-input-container>
+	<md-input-container style="padding-right: 50px; width: 30%" flex>
+	<label>Stock Receipt QC Name</label> <md-select name="qcStockReceipt"
+		ng-model="tempRecepitQCObj.qcStockReceipt"
+		ng-change="getStockReceiptQCDailyRecord(tempRecepitQCObj.qcStockReceipt)"
+		ng-required="true"> <md-option
+		ng-repeat="stockReceiptQc in qcstockReceiptList"
+		ng-selected="stockReceiptQc.id==tempRecepitQCObj.qcStockReceipt.id"
+		ng-value="stockReceiptQc">{{stockReceiptQc.qcName}}</md-option> </md-select>
+	<div ng-messages="addStockReceiptQCRecordFom.qcStockReceipt.$error"
+		ng-if="addStockReceiptQCRecordFom.qcStockReceipt.$submitted || addStockReceiptQCRecordFom.qcStockReceipt.$touched">
+		<div ng-message="required">Please Select Stock Receipt.</div>
+	</div>
+	</md-input-container>
+	<md-input-container style="padding-right: 50px;" flex>
+	<md-radio-group name="qcResult" layout="row" ng-model="tempRecepitQCObj.qcResult" ng-required="true">
+	<md-radio-button value="PASS" class="md-primary">Pass</md-radio-button>
+	<br>
+	<md-radio-button value="WARN" class="md-primary">
+	Warn </md-radio-button>
+	<br>
+	<md-radio-button value="FAIL" class="md-primary">
+	Fail </md-radio-button> </md-radio-group><div ng-messages="addStockReceiptQCRecordFom.qcResult.$error"
+		ng-if="addStockReceiptQCRecordFom.qcResult.$submitted || addStockReceiptQCRecordFom.qcResult.$touched">
+		<div ng-message="required">Please Select Qc Result.</div>
+	</div> </md-input-container>
+	<md-input-container style="width: 30%" flex> <label>Note</label> <input
+		ng-model="tempRecepitQCObj.note"> </md-input-container>
 	</div>
 
 	<div>
@@ -25,12 +41,14 @@
 					<td md-cell width="20%">QC Parameter Name</td>
 					<td md-cell>QC Parameter Value</td>
 				</tr>
-				<tr md-row ng-repeat="tempParam in tempRecepitQCObj.paramRecordedValues track by $index">
-					<td md-cell ng-model="tempParam.parameterName">{{ tempParam.parameterName }}</td>
-					<td md-cell><md-input-container
-							flex style="padding-left:2px; padding-right:0px;">
-						<label>Enter Value</label> <input
-							ng-model="tempParam.recordedValue"> </md-input-container></td>
+				<tr md-row
+					ng-repeat="tempParam in tempRecepitQCObj.paramRecordedValues track by $index">
+					<td md-cell ng-model="tempParam.parameterName">{{
+						tempParam.parameterName }}</td>
+					<td md-cell><md-input-container flex
+							style="padding-left:2px; padding-right:0px;">
+						<label>Enter Value</label> <input name="recordedValue"
+							ng-model="tempParam.recordedValue"></md-input-container></td>
 				</tr>
 			</tbody>
 		</table>
@@ -38,10 +56,12 @@
 	</div>
 	<div ng-if="isTableShow">
 		<section layout="row" layout-xs="column">
-			<md-button class="md-raised md-primary" ng-if="!tempStockReceiptQCDailyRecordObj.id"
-				ng-click="addStockReceiptQCRecord()">Save</md-button>
-			<md-button class="md-raised md-primary" ng-if="tempStockReceiptQCDailyRecordObj.id"
-				ng-click="addStockReceiptQCRecord()">Update</md-button>	
+			<md-button class="md-raised md-primary" ng-if="tempStockReceiptObj"
+				ng-click="addStockReceiptQCRecord()" ng-disabled="addStockReceiptQCRecordFom.$invalid">Save</md-button>
+			<md-button class="md-raised md-primary" ng-if="!tempStockReceiptObj"
+				ng-click="addStockReceiptQCRecord()">Update</md-button>
+			<md-button class="md-raised md-primary"
+				ui-sref="stock.listStockReceiptQCRecord({stockReceiptObj : tempStockReceiptObj, tempObj : tempReceipt})">Back</md-button>
 		</section>
 	</div>
 </form>

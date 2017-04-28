@@ -4,10 +4,10 @@ import java.util.Date;
 
 import com.googlecode.objectify.Ref;
 import com.protostar.billingnstock.user.entities.UserEntity;
+import com.protostar.billnstock.until.data.Constants.QCRecordResultType;
 
 abstract class QCRecord {
-	public enum QCRecordResultType { PASS, WARN, FAIL }
-	
+		
 	private Date createdDate;
 	private Ref<UserEntity> createdBy;
 	private String note;
@@ -22,12 +22,12 @@ abstract class QCRecord {
 		this.createdDate = createdDate;
 	}
 
-	public Ref<UserEntity> getCreatedBy() {
-		return createdBy;
+	public UserEntity getCreatedBy() {
+		return createdBy == null ? null : createdBy.get();
 	}
 
-	public void setCreatedBy(Ref<UserEntity> createdBy) {
-		this.createdBy = createdBy;
+	public void setCreatedBy(UserEntity createdBy) {
+		this.createdBy = Ref.create(createdBy);
 	}
 
 	public String getNote() {

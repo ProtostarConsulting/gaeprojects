@@ -1262,11 +1262,8 @@ public class StockManagementService extends BaseService {
 	public StockReceiptQCRecord getStockReceiptQCDailyRecordEntity(StockReceiptQCEntity qcStockReceipt,
 			@Named("busId") Long busId) {
 
-		System.out.println("qcStockReceipt  Id-----" + qcStockReceipt.getId());
 		List<QCParameter> parameterList = qcStockReceipt.getParameterList();
-		System.out.println("parameterList---" + qcStockReceipt.getParameterList());
 		StockReceiptQCRecord stockReceiptQcDailyRecord = null;
-
 		StockUtil stockUtil = new StockUtil();
 		stockReceiptQcDailyRecord = stockUtil.createNewStockReceiptQCDailyReceord(qcStockReceipt, parameterList);
 

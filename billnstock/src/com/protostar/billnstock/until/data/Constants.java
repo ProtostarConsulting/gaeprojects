@@ -151,4 +151,8 @@ public class Constants {
 	public enum SchedulingTimeFrequecyType {
 		HOURS, MINTUES
 	};
+	
+	public enum QCRecordResultType { 
+		PASS, WARN, FAIL 
+	};
 }

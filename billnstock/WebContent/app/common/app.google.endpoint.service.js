@@ -2761,25 +2761,6 @@ function googleEndpointSF($q) {
 		return deferred.promise;
 	}
 
-	StockService.addStockReceiptQCRecord = function(qcStockReceiptObj) {
-		var deferred = $q.defer();
-		gapi.client.stockService.addStockReceiptQCRecord(qcStockReceiptObj)
-				.execute(function(resp) {
-					deferred.resolve(resp);
-				});
-		return deferred.promise;
-	}
-
-	StockService.getStockReceiptQCRecord = function(busId) {
-		var deferred = $q.defer();
-		gapi.client.stockService.getStockReceiptQCRecord({
-			"busId" : busId
-		}).execute(function(resp) {
-			deferred.resolve(resp.items);
-		});
-		return deferred.promise;
-	}
-
 	StockService.getStockReceiptQCDailyRecordEntity = function(qcStockReceipt,
 			busId) {
 		var deferred = $q.defer();

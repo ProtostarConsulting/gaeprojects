@@ -32,8 +32,8 @@ td {
 	<br></br>
 </p>
 <div align="center"><span style="font-size:20px;"><b>Stock Receipt QC Record </b></span><br></br>
-						for
-						<b>${qcname}</b>
+						for<br></br>
+						<b>Receipt No.${receiptNo}</b>
 	</div>
 <p>
 	<br></br>
@@ -88,10 +88,10 @@ td {
 								</tr>
 								<tr>
 									<td align="right" style="border: 0px;">
-										<b>Record Date</b>
+										<b>Created Date</b>
 									</td>
 									<td align="left" style="border: 0px;">
-										${recordDateStr}
+										${createdDateStr}
 									</td>
 								</tr>
 								<tr>
@@ -154,26 +154,27 @@ td {
 </table>
 
 	</div>	
-	
+	<#list 0..parameterRecordList?size-1 as i>
 	<table 
 	style="width: 100%; height: 100%; ">
 	<caption align="left" style="border-spacing: 5px;padding: 3px;"></caption>
 	<tbody>
-	
-	
 	<tr>
-			<td>Parameter Name</td>
-			<td>Recorded Value</td>
-			
-		</tr>
-		<#list parameterRecordList as parameterRecord>
-		<tr>
+			<td style="width: 15%">Parameter Name</td>
+			<#list parameterRecordList[i] as parameterRecord>
 			<td>${parameterRecord.parameterName}</td>
-			<td>${parameterRecord.recordedValue}</td>
+			</#list>			
 		</tr>
-		</#list>
+
+		<tr>
+			<td style="width: 15%">Recorded Value</td>
+			<#list parameterRecordList[i]  as parameterRecord>
+			<td>${parameterRecord.recordedValue}</td>
+			</#list>
+		</tr>
 		</tbody>
 		</table>
-		
+		<br></br>
+		</#list>			
 	
 </html>

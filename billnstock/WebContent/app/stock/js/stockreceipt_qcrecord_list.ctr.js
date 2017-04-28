@@ -23,14 +23,17 @@ var app = angular.module("stockApp")
 							.getLoggedinUser();
 			
 					$scope.tempStockReceiptObj = $stateParams.stockReceiptObj ? $stateParams.stockReceiptObj : null;
+					if($stateParams.tempObj){
+						$scope.tempStockReceiptObj = $stateParams.tempObj ? $stateParams.tempObj : null;
+					}
 					
 					$scope.fetchStockReceiptQCRecordList = function() {
 						$scope.stockreceipt_qcrecordList = $scope.tempStockReceiptObj.recepitQCList;
 					}
 					
-					$scope.printStockReceiptQCRecord = function(qcRecordId) {
+					$scope.printStockReceiptQCRecord = function() {
 						var bid = $scope.curUser.business.id;
-						window.open("PrintStockReceiptQCRecordPdf?bid=" + bid + "&qcRecordId=" + qcRecordId);
+						window.open("PrintStockReceiptQCRecordPdf?bid=" + bid + "&receiptId=" + $scope.tempStockReceiptObj.id);
 					}
 
 					$scope.waitForServiceLoad = function() {

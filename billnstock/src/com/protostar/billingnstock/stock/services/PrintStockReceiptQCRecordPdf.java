@@ -23,7 +23,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
+import com.protostar.billingnstock.production.entities.QCParameter;
 import com.protostar.billingnstock.production.entities.QCParameterRecord;
+import com.protostar.billingnstock.stock.entities.StockItemsReceiptEntity;
 import com.protostar.billingnstock.stock.entities.StockReceiptQCEntity;
 import com.protostar.billingnstock.stock.entities.StockReceiptQCRecord;
 import com.protostar.billingnstock.user.entities.UserEntity;
@@ -44,13 +46,11 @@ public class PrintStockReceiptQCRecordPdf extends HttpServlet {
     }
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		Long qcRecordId = Long.parseLong(request.getParameter("qcRecordId"));
+		Long receiptId = Long.parseLong(request.getParameter("receiptId"));
 		Long bid = Long.parseLong(request.getParameter("bid"));
 		
 		StockManagementService stockService = new StockManagementService();
-		//StockReceiptQCRecord qcRecordEntity = stockService.getStockReceiptQCRecordById(bid, qcRecordId);
-		//StockReceiptQCEntity stockReceiptQc = qcRecordEntity.getQcStockReceipt();
-		//List<StockReceiptQCRecord> qcRecordEntityList = stockService.getAllQcRecordofStockReceiptQC(bid, stockReceiptQc.getId());
+		StockItemsReceiptEntity receiptEntity = stockService.getStockReceiptByID(bid, receiptId);
 		response.setContentType("application/PDF");
 		
 		ServletOutputStream outputStream = response.getOutputStream();
@@ -61,9 +61,9 @@ public class PrintStockReceiptQCRecordPdf extends HttpServlet {
 		String fileNameAppend = "StockReceiptQCRecord" + "_" + sdf.format(date);
 		response.setHeader("Content-disposition", "inline; filename='ProERP_" + fileNameAppend + ".pdf'");
 
-		//this.generatePdf(qcRecordEntityList, outputStream);
+		this.generatePdf(receiptEntity, outputStream);
 	}
-	/*private void generatePdf(List<StockReceiptQCRecord> qcRecordEntityList,
+	private void generatePdf(StockItemsReceiptEntity receiptEntity,
 			ServletOutputStream outputStream) {
 		// TODO Auto-generated method stub
 		try {
@@ -72,36 +72,31 @@ public class PrintStockReceiptQCRecordPdf extends HttpServlet {
 			document.open();
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 			Map<String, Object> root = new HashMap<String, Object>();
-			PDFHtmlTemplateService.addDocumentHeaderLogo(qcRecordEntityList.get(0), document, root);
+			PDFHtmlTemplateService.addDocumentHeaderLogo(receiptEntity, document, root);
 
 			DecimalFormat df = new DecimalFormat("#0.00");
 
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
 			TimeZone timeZone=TimeZone.getTimeZone("IST");
 			sdfDate.setTimeZone(timeZone);
-			Date createdDate = qcRecordEntityList.get(0).getCreatedDate();
-			Date modifiedDate = qcRecordEntityList.get(0).getModifiedDate();
+			Date createdDate = receiptEntity.getCreatedDate();
+			Date modifiedDate = receiptEntity.getModifiedDate();
 			String createdDateStr = sdfDate.format(createdDate);
 			String modifiedDateStr = sdfDate.format(modifiedDate);
 			root.put("createdDateStr", createdDateStr);
 			root.put("modifiedDateStr", modifiedDateStr);
-			UserEntity createdBy = qcRecordEntityList.get(0).getCreatedBy();
+			UserEntity createdBy = receiptEntity.getCreatedBy();
 			root.put("createdBy", createdBy == null ? "" : createdBy.getFirstName() + " " + createdBy.getLastName());
-			String qcname = qcRecordEntityList.get(0).getQcStockReceipt().getQcName();
-			root.put("qcname", qcname);
-			String tempTimeArrayStr1 = null;
-			for (int i = 0; i < qcRecordEntityList.size(); i++) {
-				
-				List<String> timeArrayStr = new ArrayList<String>();
-				Date recordDate = qcRecordEntityList.get(i).getRecordDate();
-				tempTimeArrayStr1 = sdfDate.format(timeArray);
-				timeArrayStr.add(tempTimeArrayStr1);
-				Date recordDate = qcRecordEntity.getRecordDate();
-				String recordDateStr = sdfDate.format(recordDate);
-				root.put("recordDateStr", recordDateStr);
-				List<QCParameterRecord> parameterRecordList = qcRecordEntity.getParamRecordedValues();
-				root.put("parameterRecordList", parameterRecordList);
+			int itemNumber = receiptEntity.getItemNumber();
+			String receiptNo = Integer.toString(itemNumber);
+			root.put("receiptNo", receiptNo);
+			List<StockReceiptQCRecord> receiptQCList = receiptEntity.getRecepitQCList();
+			List parameterRecordList = new ArrayList();
+			
+			for (int i = 0; i < receiptQCList.size(); i++) {
+				parameterRecordList.add(receiptQCList.get(i).getParamRecordedValues());				
 			}
+			root.put("parameterRecordList", parameterRecordList);
 			
 			Template temp = PDFHtmlTemplateService.getConfiguration()
 					.getTemplate("/pdf_templates/stock_receipt_qcrecord_tmpl.ftlh");
@@ -116,6 +111,6 @@ public class PrintStockReceiptQCRecordPdf extends HttpServlet {
 			document.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}}*/
+		}}
 		
 }
