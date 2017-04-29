@@ -260,6 +260,7 @@ app
 
 						$scope.taxAmtsForServiceLineItems = [];
 						if ($scope.documentEntity.indiviualServiceLineItemTax) {
+							$scope.documentEntity.selectedServiceTax = null;
 							if ($scope.documentEntity.serviceLineItemList
 									&& $scope.documentEntity.serviceLineItemList.length > 0) {
 								for (var i = 0; i < $scope.documentEntity.serviceLineItemList.length; i++) {
@@ -293,16 +294,42 @@ app
 					};
 
 					$scope.productTaxChanged = function() {
-						if (!$scope.documentEntity.selectedProductTax) {
-							$scope.documentEntity.productTaxTotal = 0;
+
+						$scope.taxAmtsForProductLineItems = [];
+						if ($scope.documentEntity.indiviualProductLineItemTax) {
+							$scope.documentEntity.selectedProductTax = null;
+							if ($scope.documentEntity.productLineItemList
+									&& $scope.documentEntity.productLineItemList.length > 0) {
+								for (var i = 0; i < $scope.documentEntity.productLineItemList.length; i++) {
+									var lineItem = $scope.documentEntity.productLineItemList[i];
+									if (lineItem.selectedTaxItem) {
+										lineItem.taxAmt = (lineItem.qty * lineItem.price)
+												* (lineItem.selectedTaxItem.taxPercenatge / 100);
+										$scope.taxAmtsForProductLineItems
+												.push(lineItem.taxAmt);
+									}
+
+								}
+								$scope.documentEntity.productTaxTotal = 0;
+								for (var j = 0; j < $scope.taxAmtsForProductLineItems.length; j++) {
+									$scope.documentEntity.productTaxTotal += parseFloat($scope.taxAmtsForProductLineItems[j]);
+								}
+								$scope.documentEntity.productTotal = ($scope.documentEntity.productSubTotal - $scope.documentEntity.productDiscAmount)
+										+ $scope.documentEntity.productTaxTotal;
+							}
 
 						} else {
-							$scope.documentEntity.productTaxTotal = parseFloat(($scope.documentEntity.selectedProductTax.taxPercenatge / 100)
-									* ($scope.documentEntity.productSubTotal - $scope.documentEntity.productDiscAmount));
+							if (!$scope.documentEntity.selectedProductTax) {
+								$scope.documentEntity.productTaxTotal = 0;
+
+							} else {
+								$scope.documentEntity.productTaxTotal = parseFloat(($scope.documentEntity.selectedProductTax.taxPercenatge / 100)
+										* ($scope.documentEntity.productSubTotal - $scope.documentEntity.productDiscAmount));
+							}
+							$scope.documentEntity.productTotal = ($scope.documentEntity.productSubTotal - $scope.documentEntity.productDiscAmount)
+									+ $scope.documentEntity.productTaxTotal;
 						}
-						$scope.documentEntity.productTotal = ($scope.documentEntity.productSubTotal - $scope.documentEntity.productDiscAmount)
-								+ $scope.documentEntity.productTaxTotal;
-					}
+					};
 
 					$scope.calfinalTotal = function() {
 						var finalTotal = 0;

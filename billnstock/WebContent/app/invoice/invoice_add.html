@@ -328,6 +328,13 @@
 				<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
 				<md-tooltip>Add Product Line Items</md-tooltip></ng-md-icon></md-button>
 			</h3>
+			<div ng-show="settingsObj.showDefaultProductItems">
+				<md-input-container flex> <md-checkbox
+					ng-model="documentEntity.indiviualProductLineItemTax"
+					aria-label="active" ng-true-value="true" ng-false-value="false"
+					id="changer"> Select Taxes For Individual Line Items
+				</md-checkbox> </md-input-container>
+			</div>
 
 			<div ng-show="settingsObj.showDefaultProductItems">
 
@@ -340,6 +347,8 @@
 							<th md-column>Quantity</th>
 							<th md-column>Price(&#x20b9)</th>
 							<th md-column md-numeric>Total(&#x20b9)</th>
+							<th md-column
+								ng-show="documentEntity.indiviualProductLineItemTax">Tax</th>
 							<th md-column>Actions</th>
 						</tr>
 					</thead>
@@ -379,6 +388,12 @@
 									ng-change="reCalculateTotal()" aria-label="iprice" /></md-input-container></td>
 							<td md-cell><b>{{item.qty * item.price |
 									currency:"":"2"}} </b></td>
+							<td md-cell ng-show="documentEntity.indiviualProductLineItemTax"><md-select
+									ng-model="item.selectedTaxItem" placeholder="Select Tax"
+									ng-change="reCalculateTotal()"> <md-option
+									ng-value="taxItem" ng-repeat="taxItem in taxList"
+									ng-selected="item.selectedTaxItem.id == taxItem.id">{{taxItem?taxItem.taxCodeName:'NA'}}({{taxItem.taxPercenatge}}&#37)</md-option>
+								</md-select></td>
 							<td md-cell><md-icon
 									md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
 									ng-click="removeProductItem($index)" class="name"
@@ -391,64 +406,75 @@
 									icon="add_circle" style="fill: md-default" size="24">
 								<md-tooltip> New Entry </md-tooltip></ng-md-icon> </md-button></td>
 							<td md-cell></td>
-							<td md-cell></td>
-							<td md-cell><label>Product Sub Total</label></td>
-							<td md-cell><b>{{documentEntity.productSubTotal |
-									currency:"":"2"}}</b></td>
-							<td md-cell></td>
-						</tr>
-						<tr md-row ng-if="documentEntity.productDiscAmount">
-							<td md-cell></td>
-							<td md-cell></td>
-							<td md-cell></td>
-							<td md-cell><label>Discount Amount</label></td>
-							<td md-cell><b>{{documentEntity.productDiscAmount |
-									currency:"":"2"}}</b></td>
+							<td md-cell colspan="2"><label>Product Sub Total</label></td>
+							<td md-cell>
+								<div align="right">
+									<b>{{documentEntity.productSubTotal | currency:"":"2"}}</b>
+								</div>
+							</td>
 							<td md-cell></td>
 						</tr>
 						<tr md-row ng-if="documentEntity.productDiscAmount">
 							<td md-cell></td>
 							<td md-cell></td>
+							<td md-cell colspan="2"><label>Discount Amount</label></td>
+							<td md-cell>
+								<div align="right">
+									<b>{{documentEntity.productDiscAmount | currency:"":"2"}}</b>
+								</div>
+							</td>
 							<td md-cell></td>
-							<td md-cell><label>After Discount Total</label></td>
-							<td md-cell><b>{{(documentEntity.productSubTotal -
-									documentEntity.productDiscAmount) | currency:"":"2"}}</b></td>
+						</tr>
+						<tr md-row ng-if="documentEntity.productDiscAmount">
+							<td md-cell></td>
+							<td md-cell></td>
+							<td md-cell colspan="2"><label>After Discount Total</label></td>
+							<td md-cell><div align="right">
+									<b>{{(documentEntity.productSubTotal -
+										documentEntity.productDiscAmount) | currency:"":"2"}}</b>
+								</div></td>
 							<td md-cell></td>
 						</tr>
 						<tr md-row>
 							<td md-cell></td>
-							<td md-cell><label>Product Tax</label></td>
-							<td md-cell><md-input-container flex
-									style="margin: 0px; padding: 0px;"
-									ng-hide="documentEntity.productLineItemList.length==0">
-								<md-select ng-model="documentEntity.selectedProductTax"
-									placeholder="Select Tax" ng-change="reCalculateTotal()">
-								<md-option ng-value="taxItem"
-									ng-selected="documentEntity.selectedProductTax.id == taxItem.id"
-									ng-repeat="taxItem in taxList">{{taxItem?taxItem.taxCodeName:'NA'}}</md-option>
-								</md-select> </md-input-container></td>
-							<td md-cell>{{documentEntity.selectedProductTax.taxPercenatge}}&#37</td>
-							<td md-cell><b>{{documentEntity.productTaxTotal |
-									currency:"":"2"}}</b></td>
+							<td md-cell>
+								<div align="right">
+									<md-input-container flex
+										ng-if="!documentEntity.indiviualProductLineItemTax">
+									<label>Select Tax</label> <md-select
+										ng-model="documentEntity.selectedProductTax"
+										placeholder="Select Tax" ng-change="reCalculateTotal()">
+									<md-option ng-value="taxItem" ng-repeat="taxItem in taxList"
+										ng-selected="documentEntity.selectedProductTax.id == taxItem.id">{{taxItem?taxItem.taxCodeName:'NA'}}({{taxItem.taxPercenatge}}&#37)</md-option>
+									</md-select> </md-input-container>
+								</div>
+							</td>
+
+							<td md-cell colspan="2"><label>Tax Total</label></td>
+							<td md-cell>
+								<div align="right">
+									<b>{{documentEntity.productTaxTotal | currency:"":"2"}}</b>
+								</div>
+							</td>
 							<td md-cell></td>
 						</tr>
 
 						<tr md-row>
 							<td md-cell></td>
 							<td md-cell></td>
-							<td md-cell></td>
-							<td md-cell><label>Product Total </label></td>
-							<td md-cell><b>&#x20b9{{documentEntity.productTotal |
-									currency:"":"2"}}</b></td>
+							<td md-cell colspan="2"><label>Product Total </label></td>
+							<td md-cell><div align="right">
+									<b>&#x20b9{{documentEntity.productTotal | currency:"":"2"}}</b>
+								</div></td>
 							<td md-cell></td>
 						</tr>
 						<tr md-row>
 							<td md-cell></td>
 							<td md-cell></td>
-							<td md-cell></td>
-							<td md-cell><label>Final Total</label></td>
-							<td md-cell><b> &#x20b9{{documentEntity.finalTotal |
-									currency:"":"2"}}</b></td>
+							<td md-cell colspan="2"><label>Final Total</label></td>
+							<td md-cell><div align="right">
+									<b> &#x20b9{{documentEntity.finalTotal | currency:"":"2"}}</b>
+								</div></td>
 							<td md-cell></td>
 						</tr>
 						<tr md-row>
