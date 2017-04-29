@@ -98,7 +98,7 @@ public class ProductionRequisitionEntity extends BaseEntity {
 			return null;
 		}
 		List<StockShipmentAgainstProductionRequisition> tempList = new ArrayList<StockShipmentAgainstProductionRequisition>(
-				getStockShipmentList().size());
+				stockShipmentList.size());
 		for (Ref<StockShipmentAgainstProductionRequisition> entityRef : stockShipmentList) {
 			tempList.add(entityRef.get());
 		}

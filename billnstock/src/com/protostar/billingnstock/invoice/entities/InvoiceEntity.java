@@ -68,13 +68,14 @@ public class InvoiceEntity extends BaseEntity {
 	private String pOrder;
 	private Ref<WarehouseEntity> fromWH;
 
+	private List<Ref<PaymentTxnTypeEntity>> paymentList;
+
 	@Override
 	public void beforeSave() {
 		super.beforeSave();
 
 		if (getFromWH() == null) {
-			throw new RuntimeException("Warehouse entity is not set on: "
-					+ this.getClass().getSimpleName()
+			throw new RuntimeException("Warehouse entity is not set on: " + this.getClass().getSimpleName()
 					+ " This is required field. Aborting save operation...");
 		}
 
@@ -84,8 +85,7 @@ public class InvoiceEntity extends BaseEntity {
 
 		if (getId() == null) {
 			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
-					EntityUtil.getBusinessRawKey(getBusiness()),
-					Constants.INVOICE_NO_COUNTER);
+					EntityUtil.getBusinessRawKey(getBusiness()), Constants.INVOICE_NO_COUNTER);
 			setItemNumber(sequenceGenService.getNextSequenceNumber());
 		}
 	}
@@ -211,8 +211,7 @@ public class InvoiceEntity extends BaseEntity {
 		return indiviualServiceLineItemTax;
 	}
 
-	public void setIndiviualServiceLineItemTax(
-			boolean indiviualServiceLineItemTax) {
+	public void setIndiviualServiceLineItemTax(boolean indiviualServiceLineItemTax) {
 		this.indiviualServiceLineItemTax = indiviualServiceLineItemTax;
 	}
 
@@ -220,8 +219,7 @@ public class InvoiceEntity extends BaseEntity {
 		return indiviualProductLineItemTax;
 	}
 
-	public void setIndiviualProductLineItemTax(
-			boolean indiviualProductLineItemTax) {
+	public void setIndiviualProductLineItemTax(boolean indiviualProductLineItemTax) {
 		this.indiviualProductLineItemTax = indiviualProductLineItemTax;
 	}
 
@@ -295,6 +293,29 @@ public class InvoiceEntity extends BaseEntity {
 
 	public void setProductDiscAmount(double productDiscAmount) {
 		this.productDiscAmount = productDiscAmount;
+	}
+
+	public List<PaymentTxnTypeEntity> getPaymentList() {
+		if (paymentList == null || paymentList.isEmpty()) {
+			return null;
+		}
+		List<PaymentTxnTypeEntity> tempList = new ArrayList<PaymentTxnTypeEntity>(paymentList.size());
+		for (Ref<PaymentTxnTypeEntity> entityRef : paymentList) {
+			tempList.add(entityRef.get());
+		}
+		return tempList;
+	}
+
+	public void setPaymentList(List<PaymentTxnTypeEntity> paymentList) {
+		if (paymentList == null || paymentList.isEmpty()) {
+			this.paymentList = null;
+			return;
+		}
+
+		this.paymentList = new ArrayList<Ref<PaymentTxnTypeEntity>>(paymentList.size());
+		for (PaymentTxnTypeEntity entity : paymentList) {
+			this.paymentList.add(Ref.create(entity));
+		}
 	}
 
 }// end of InvoiceEntity

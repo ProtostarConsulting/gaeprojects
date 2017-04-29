@@ -91,12 +91,12 @@ app
 					$scope.waitForServiceLoad();
 
 					$scope.calculateProducedQty = function() {
-						if ($stateParams.prodPlan) {
-							for (var i = 0; i < $stateParams.prodPlan.planDailyReport.length; i++) {
-								$scope.totalProducedQty += $stateParams.prodPlan.planDailyReport[i].bomProducedQty;
+						if ($scope.documentEntity.planDailyReport) {
+							for (var i = 0; i < $scope.documentEntity.planDailyReport.length; i++) {
+								$scope.totalProducedQty += $scope.documentEntity.planDailyReport[i].bomProducedQty;
 							}
 							$scope.totalProducedPerc = ($scope.totalProducedQty * 100)
-									/ $stateParams.prodPlan.plannedQty;
+									/ $scope.documentEntity.plannedQty;
 						}
 					};
 
@@ -104,7 +104,6 @@ app
 						return {
 							'width' : $scope.totalProducedPerc - 4 + '%'
 						};
-
 					}
 
 					$scope.printProductRequisition = function(proId) {
@@ -177,10 +176,21 @@ app
 
 					function addProdReportCtr($scope, $mdDialog, curUser,
 							prodctionReport, prodPlan, bomList, showAddToast) {
+
+						$scope.getEmptyObj = function() {
+							return {
+								prodPlanItemNumber : prodPlan.itemNumber,
+								createdDate : new Date(),
+								createdBy : curUser,
+								business : curUser.business,
+								status : 'DRAFT'
+							};
+						}
+
 						$scope.todaysDate = new Date()
 								.setHours(00, 00, 00, 000);
 						$scope.prodctionReport = prodctionReport ? prodctionReport
-								: {};
+								: $scope.getEmptyObj();
 
 						if ($scope.prodctionReport.id) {
 							$scope.prodctionReport.reportDate = new Date(
@@ -198,10 +208,8 @@ app
 
 							var productService = appEndpointSF
 									.getProductionService();
-							$scope.prodctionReport.business = curUser.business;
-							$scope.prodctionReport.createdBy = curUser;
+
 							$scope.prodctionReport.modifiedBy = curUser.email_id;
-							$scope.prodctionReport.prodPlanItemNumber = prodPlan.itemNumber;
 
 							if ($scope.prodctionReportBackup.id) {
 								// if edit changed the value it should edit
@@ -209,22 +217,19 @@ app
 								$scope.prodctionReport.id = $scope.prodctionReportBackup.id;
 
 							}
+
+							var wasUpdate = null;
+							if ($scope.prodctionReport.id) {
+								wasUpdate = true;
+							} else {
+								wasUpdate = false;
+							}
+
 							productService
 									.addProductionReport($scope.prodctionReport)
 									.then(
 											function(savedObj) {
 												if (savedObj.id) {
-													var wasUpdate = false;
-													angular
-															.forEach(
-																	prodPlan.planDailyReport,
-																	function(
-																			req) {
-																		if (req.id == savedObj.id) {
-																			wasUpdate = true;
-																		}
-																	});
-
 													if (wasUpdate) {
 														showAddToast();
 														$mdDialog.cancel();
@@ -291,27 +296,26 @@ app
 					};
 					function addProdShipCtr($scope, $mdDialog, curUser,
 							productionShipment, prodPlan, showAddToast) {
+
+						$scope.getEmptyObj = function() {
+							return {
+								productLineItemList : [],
+								shipmentDate : new Date(),
+								createdDate : new Date(),
+								createdBy : curUser,
+								business : curUser.business,
+								status : 'DRAFT'
+							};
+						}
+
 						$scope.warehouses = [];
 						$scope.stockItemList = [];
 						$scope.documentEntity = productionShipment ? productionShipment
-								: {};
+								: getEmptyObj();
 
-						if (!$scope.documentEntity.id) {
-
-							$scope.documentEntity.createdBy = curUser;
-							$scope.documentEntity.createdDate = new Date();
-							$scope.documentEntity.modifiedDate = new Date();
-							$scope.documentEntity.shipmentDate = new Date();
-							$scope.documentEntity.status = 'DRAFT';
-							$scope.documentEntity.productLineItemList = [];
-							// $scope.stockItemList =
-							// prodPlan.prodRequisitionList;
-
-						} else {
-
+						if ($scope.documentEntity.id) {
 							$scope.documentEntity.shipmentDate = new Date(
 									productionShipment.shipmentDate);
-
 						}
 
 						$scope.cancel = function() {
@@ -336,8 +340,6 @@ app
 						}
 
 						$scope.getAllWarehouseByBusiness = function() {
-							$log
-									.debug("Inside function $scope.getAllWarehouseByBusiness");
 							$scope.loading = true;
 							var warehouseService = appEndpointSF
 									.getWarehouseManagementService();
@@ -375,6 +377,7 @@ app
 							$scope.documentEntity.status = 'SUBMITTED';
 							$scope.saveDocument();
 						}
+
 						$scope.removeProductItem = function(index) {
 							$scope.documentEntity.productLineItemList.splice(
 									index, 1);
@@ -411,26 +414,23 @@ app
 												$log.debug("Cancelled...");
 											});
 						}
-						var productService = appEndpointSF
-								.getProductionService();
+
 						$scope.saveDocument = function() {
-							$scope.documentEntity.business = curUser.business;
+
 							$scope.documentEntity.modifiedBy = curUser.email_id;
+
+							var wasUpdate = null;
+							if ($scope.documentEntity.id) {
+								wasUpdate = true;
+							} else {
+								wasUpdate = false;
+							}
 
 							var stockService = appEndpointSF.getStockService();
 
 							stockService.addProductionStockShipment(
 									$scope.documentEntity).then(
 									function(savedObj) {
-										var wasUpdate = false;
-										angular.forEach(
-												prodPlan.prodShipmentList,
-												function(req) {
-													if (req.id == savedObj.id) {
-														wasUpdate = true;
-													}
-												});
-
 										if (wasUpdate) {
 											showAddToast();
 											$mdDialog.cancel();
@@ -440,6 +440,8 @@ app
 
 											prodPlan.prodShipmentList
 													.push(savedObj)
+											var productService = appEndpointSF
+													.getProductionService();
 
 											productService.addProdPlanEntity(
 													prodPlan).then(
@@ -462,9 +464,19 @@ app
 					function addProdReqCtr($scope, $mdDialog, curUser,
 							productionRequisition, prodPlan, bomList,
 							showAddToast) {
+
+						$scope.getEmptyObj = function() {
+							return {
+								createdDate : new Date(),
+								createdBy : curUser,
+								business : curUser.business,
+								status : 'DRAFT'
+							};
+						}
+
 						$scope.todaysDate = new Date();
 						$scope.productionRequisition = productionRequisition ? productionRequisition
-								: {};
+								: $scope.getEmptyObj();
 
 						if ($scope.productionRequisition.id) {
 							$scope.productionRequisition.deliveryDateTime = new Date(
@@ -552,48 +564,54 @@ app
 								$scope.productionRequisition.id = $scope.productionRequisitionBackup.id;
 
 							}
+
+							var wasUpdate = null;
+							if ($scope.productionRequisition.id) {
+								wasUpdate = true;
+							} else {
+								wasUpdate = false;
+							}
+
 							productService
 									.addRequisition(
 											$scope.productionRequisition)
 									.then(
 											function(savedObj) {
-												if (savedObj.id) {
-													var wasUpdate = false;
-													angular
-															.forEach(
-																	prodPlan.prodRequisitionList,
+												if (wasUpdate) {
+													showAddToast();
+													$mdDialog.cancel();
+												} else {
+													if (!prodPlan.prodRequisitionList)
+														prodPlan.prodRequisitionList = [];
+
+													prodPlan.prodRequisitionList
+															.push(savedObj)
+
+													productService
+															.addProdPlanEntity(
+																	prodPlan)
+															.then(
 																	function(
-																			req) {
-																		if (req.id == savedObj.id) {
-																			wasUpdate = true;
-																		}
+																			savedObj) {
+																		if (savedObj.id)
+																			showAddToast();
+
+																		$mdDialog
+																				.cancel();
 																	});
-
-													if (wasUpdate) {
-														showAddToast();
-														$mdDialog.cancel();
-													} else {
-														if (!prodPlan.prodRequisitionList)
-															prodPlan.prodRequisitionList = [];
-
-														prodPlan.prodRequisitionList
-																.push(savedObj)
-
-														productService
-																.addProdPlanEntity(
-																		prodPlan)
-																.then(
-																		function(
-																				savedObj) {
-																			if (savedObj.id)
-																				showAddToast();
-
-																			$mdDialog
-																					.cancel();
-																		});
-													}
 												}
+
 											});
+						}
+
+						$scope.draftDocumnent = function(ev) {
+							$scope.productionRequisition.status = 'DRAFT';
+							$scope.addRequisition();
+						}
+
+						$scope.submitDocumnent = function(ev) {
+							$scope.productionRequisition.status = 'SUBMITTED';
+							$scope.addRequisition();
 						}
 
 						$scope.cancel = function() {

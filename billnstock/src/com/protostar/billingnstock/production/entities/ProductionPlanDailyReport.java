@@ -8,6 +8,7 @@ import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
 import com.protostar.billnstock.entity.BaseEntity;
+import com.protostar.billnstock.until.data.Constants.DocumentStatus;
 
 @Cache
 @Entity
@@ -17,6 +18,8 @@ public class ProductionPlanDailyReport extends BaseEntity {
 
 	@Index
 	private Ref<BomEntity> bomEntity;
+	
+	private DocumentStatus status = DocumentStatus.DRAFT;
 
 	private Date reportDate;
 	private int bomProducedQty;
@@ -53,6 +56,14 @@ public class ProductionPlanDailyReport extends BaseEntity {
 
 	public void setProdPlanItemNumber(int prodPlanItemNumber) {
 		this.prodPlanItemNumber = prodPlanItemNumber;
+	}
+
+	public DocumentStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(DocumentStatus status) {
+		this.status = status;
 	}
 
 }

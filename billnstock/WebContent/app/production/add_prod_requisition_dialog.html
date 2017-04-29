@@ -13,7 +13,24 @@
 <div>
 	<form name="entityForm">
 		<div layout="row" layout-xs="column" flex>
+			<md-input-container flex> <label>Prod
+				Stock Requisition Number</label> <input
+				ng-model="productionRequisition.itemNumber"
+				placeholder="Auto generated number" ng-disabled="true"></input> </md-input-container>
+			<md-input-container flex> <label>Document
+				Status </label> <input type="text" ng-disabled="true"
+				ng-model="productionRequisition.status"> </md-input-container>
+			<md-input-container flex=25> <label>Created
+				By </label> <input ng-disabled="true" ng-model="createdBy"
+				ng-init="createdBy = productionRequisition.createdBy? productionRequisition.createdBy.firstName + ' ' + productionRequisition.createdBy.lastName: ''"></input>
+			</md-input-container>
+			<md-input-container flex=25> <label>Created
+				Date </label> <input ng-disabled="true"
+				ng-value="productionRequisition.createdDate | formatDate"></input> </md-input-container>
 
+		</div>
+
+		<div layout="row" layout-xs="column">
 			<md-input-container flex> <label>Select
 				Product BOM</label> <md-select name="bomEntity"
 				ng-model="productionRequisition.bomEntity"
@@ -22,14 +39,10 @@
 				ng-value="bomEntity" ng-repeat="bomEntity in bomList"
 				ng-selected="productionRequisition.bomEntity.id == bomEntity.id">{{bomEntity.stockItemType.itemName}}
 			</md-option> </md-select> </md-input-container>
-
 			<md-input-container flex> <input type="number"
 				aria-label="period" placeholder="BOM Product Qty."
 				ng-change="calculation()"
 				ng-model="productionRequisition.productQty"> </md-input-container>
-		</div>
-
-		<div layout="row" layout-xs="column" flex="50" flex-xs="100">
 			<mdp-date-picker flex mdp-placeholder="Delivery Date"
 				ng-model="productionRequisition.deliveryDateTime"
 				mdp-min-date="todaysDate" mdp-format="DD/MM/YYYY"></mdp-date-picker>
@@ -39,6 +52,12 @@
 				ng-model="productionRequisition.deliveryDateTime"
 				mdp-placeholder="Delivery Time" ng-required="true"></mdp-time-picker>
 
+
+		</div>
+		<div layout="row" layout-xs="column">
+			<md-input-container flex> <label>Requisition
+				Notes</label> <textarea ng-model="productionRequisition.note" rows="2"
+				cols="1"></textarea> </md-input-container>
 		</div>
 
 		<table md-table md-progress="promise">
@@ -60,7 +79,8 @@
 					<td md-cell></td>
 				</tr>
 				<tr md-row ng-repeat="itemObj in  bomCategory.items"
-					ng-show="itemToggle" style="padding-top: 10px; padding-bottom: 10px;">
+					ng-show="itemToggle"
+					style="padding-top: 10px; padding-bottom: 10px;">
 					<td md-cell></td>
 					<td md-cell style="padding-top: 10px; padding-bottom: 10px;">{{itemObj.stockItemType.itemName}}</td>
 					<td md-cell style="padding-top: 10px; padding-bottom: 10px;">{{itemObj.qty}}</td>
@@ -88,6 +108,8 @@
 </div>
 
 </md-content> </md-content> </md-dialog-content> <md-dialog-actions layout="row"> <md-button
-	class="md-raised md-primary" ng-disabled="entityForm.$invalid"
-	ng-click="addRequisition()">Submit</md-button> <md-button
+	class="md-raised md-primary" ng-disabled="documentForm.$invalid"
+	ng-click="draftDocumnent()">Save as Draft</md-button> <md-button
+	class="md-raised md-primary" ng-disabled="documentForm.$invalid"
+	ng-click="submitDocumnent()">Submit</md-button> <md-button
 	class="md-raised" ng-click="cancel()">Cancel</md-button> </md-dialog-actions> </md-dialog>

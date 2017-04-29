@@ -649,18 +649,17 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/production",
 		templateUrl : '/app/production/prod_module.html',
 		controller : 'prodModuleCtr'
-	}).state('production.bom_requisition', {
-		url : "/bom requisition",
-		templateUrl : '/app/production/bom_requisition.html',
-		controller : 'bom_requisition',
+	}).state('production.view_prod_requisition', {
+		url : "/view_prod_requisition",
+		templateUrl : '/app/production/view_prod_requisition.html',
+		controller : 'view_prod_requisition',
 		params : {
-
 			productionRequisition : null
 		}
-	}).state('production.list_product_requisition', {
-		url : "/list Product Requisition",
-		templateUrl : '/app/production/list_product_requisition.html',
-		controller : 'list_product_requisition',
+	}).state('production.list_prod_requisition', {
+		url : "/list_prod_requisition",
+		templateUrl : '/app/production/list_prod_requisition.html',
+		controller : 'list_prod_requisition',
 
 	}).state('production.add_bom', {
 		url : "/addBillOfMaterial",

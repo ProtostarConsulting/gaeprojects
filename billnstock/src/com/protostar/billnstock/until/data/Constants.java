@@ -128,6 +128,14 @@ public class Constants {
 		OPEX, CAPEX, NA
 	};
 
+	public enum PaymentModeType {
+		CASH, WIRE, BANKDEPOSIT, OTHER
+	}
+
+	public enum PaymentTxnType {
+		CR, DR
+	}
+
 	public enum SalaryHeadType {
 		FIXED, PERCENTAGE
 	};
@@ -151,8 +159,8 @@ public class Constants {
 	public enum SchedulingTimeFrequecyType {
 		HOURS, MINTUES
 	};
-	
-	public enum QCRecordResultType { 
-		PASS, WARN, FAIL 
+
+	public enum QCRecordResultType {
+		PASS, WARN, FAIL
 	};
 }

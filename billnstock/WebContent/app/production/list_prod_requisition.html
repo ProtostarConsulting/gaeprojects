@@ -40,10 +40,9 @@
 					<td md-cell>{{bomRequisitionEntity.status}}</td>
 					
 					<td md-cell><md-button class="md-icon-button"
-							ui-sref="production.bom_requisition({productionRequisition:bomRequisitionEntity})">
+							ui-sref="production.view_prod_requisition({productionRequisition:bomRequisitionEntity})">
 						<ng-md-icon icon="pageview" style="fill: md-default" size="20">
-						<md-tooltip> View </md-tooltip></ng-md-icon></md-button>
-					
+						<md-tooltip> View </md-tooltip></ng-md-icon></md-button>					
 					
 					<md-button class="md-icon-button"
 							ng-click="printProductRequisition(bomRequisitionEntity.id)">

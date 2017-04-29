@@ -1,5 +1,5 @@
 app = angular.module("stockApp");
-app.controller("list_product_requisition", function($scope, $window, $mdToast,
+app.controller("list_prod_requisition", function($scope, $window, $mdToast,
 		$timeout, $mdSidenav, $mdUtil, $log, $state, $http, $stateParams,
 		$routeParams, $filter, $q, $mdMedia, $mdDialog, objectFactory,
 		appEndpointSF, $mdColors) {

@@ -40,7 +40,7 @@ td {
 	<br></br>
 </p>
 <div align="center"> 
-	<span style="font-size:20px;"><b>Product Shipment Receipt</b></span>
+	<span style="font-size:20px;"><b>Production Finished Goods Shipment</b></span>
 	</div>
 	<p>
 	<br></br>
@@ -83,7 +83,7 @@ td {
 							<tbody>
 								<tr>
 									<td align="right" style="border: 0px;">
-										<b>Shipment No:</b>
+										<b> Prod Shipment No:</b>
 									</td>
 									<td align="left" style="border: 0px;">
 										${shipmentNo}
@@ -108,18 +108,7 @@ td {
 									<td align="left" style="border: 0px;">
 										${modifiedDate}
 									</td>
-								</tr>
-								<#if Discount??>
-								<tr>
-									<td align="right" style="border: 0px;">
-										<b>Discount:</b>
-									</td>
-									<td align="left" style="border: 0px;">
-										${Discount}
-									</td>
-								</tr>
-								<#else>									
-								</#if>								
+								</tr>															
 							 </tbody>
 						</table>					
 					</td>					
@@ -153,18 +142,8 @@ td {
 									<td align="left" style="border: 0px;">
 										${toWarehouse} <br></br>
 										${toWHAddress}
-									</td>
-								<#elseif customerName??>
-									<td align="left" style="border: 0px;">
-										${customerName} <br></br>
-										${customerAddress}
-									</td>
-								 <#elseif partnerName??>
-									<td align="left" style="border: 0px;">
-										${partnerName} <br></br>
-										${partnerCoAddress}
-									</td>
-									</#if>
+									</td>							
+								</#if>
 								</tr>	
 								</table>
 						</td>
@@ -197,81 +176,18 @@ td {
 			<th align="center">Product Name </th>
 			<th
 				style=""
-				align="center">Qty.</th>
-			<th
-				style="" 
-				align="center">Price
-			</th>
-			<th
-				style=""
-				align="center">Sub Total</th>
+				align="center">Qty.</th>			
 		</tr>
 		
-		<#list productItemList as lineItem>
-		    <#assign productSubTotal = lineItem.qty * lineItem.price>	
+		<#list productItemList as lineItem>		   
 			<tr>
 			<td style="font-size:10px;" align="center">${lineItem.stockItem.stockItemType.itemName}</td>
 			<td style="font-size:10px;" align="center">${lineItem.qty}</td>
-			<td style="font-size:10px;" align="right">${lineItem.price?string["0.00"]}</td>			
-			<td style="font-size:10px;" align="right">${productSubTotal?string["0.00"]}</td>
 		</tr>
 		</#list>	
 		</tbody>
 		</table>		
 <#else>
   NO product items
-</#if>		
-<#if serviceItemList??>
-<p>
-	<br></br>
-	<br></br>
-</p>
-		<table
-	style="width: 100%; height: 100%; ">
-	<caption align="left" style="border-spacing: 5px;padding: 3px;"><b>Other Costs: </b></caption>
-	<tbody>
-
-		<tr>
-			<th
-				style=""
-				align="center">Service Name</th>
-			<th
-				style=""
-				align="center">Qty.</th>
-			<th
-				style="" align="center">Price
-			</th>
-			<th
-				style=""
-				align="center">Sub Total</th>
-		</tr>
-		<#list serviceItemList as lineItem>
-		    <#assign serviceSubTotal = lineItem.qty * lineItem.price>	
-			<tr>
-			<td style="font-size:10px;" align="center">${lineItem.itemName}</td>
-			<td style="font-size:10px;" align="center">${lineItem.qty}</td>
-			<td style="font-size:10px;" align="right">${lineItem.price?string["0.00"]}</td>			
-			<td style="font-size:10px;" align="right">${serviceSubTotal?string["0.00"]}</td>
-		</tr>
-		</#list>	
-		</tbody>
-		</table>
-		<#else>
-  No service items
-</#if>
-<table
-	style="width: 100%; height: 100%; border-spacing: 5px; height: 30px; padding: 5px;">	
-	<tbody>
-		<tr>			
-			<th
-				style="width:100%;"
-				align="right">Final Total:&nbsp;${finalTotal?string["0.00"]}</th>			
-		</tr>
-		<tr>
-			<th
-				style="width:100%;"
-				align="right">${finalTotalInWords}</th>					
-		</tr>
-	</tbody>
-</table>	
+</#if>	
 </html>

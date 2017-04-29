@@ -14,18 +14,12 @@
 	<form ng-submit="$event.preventDefault()" name="documentForm">
 		<div layout="row" layout-xs="column">
 			<div layout="row" flex>
-				<md-input-container flex=20> <label>Stock
-					Shipment No.</label> <input ng-model="documentEntity.itemNumber"
+				<md-input-container flex> <label>Prod
+					Stock Shipment Number</label> <input ng-model="documentEntity.itemNumber"
 					placeholder="Auto generated number" ng-disabled="true"></input> </md-input-container>
-				<md-input-container flex=15> <label>Document
+				<md-input-container flex> <label>Document
 					Status </label> <input type="text" ng-disabled="true"
 					ng-model="documentEntity.status"> </md-input-container>
-				<md-input-container flex=15> <label>Select
-					Order Type</label> <md-select placeholder="Order Type"
-					ng-model="documentEntity.orderType"> <md-option
-					ng-repeat="orderType in stockItemOrderTypes" ng-value="orderType"
-					ng-selected="documentEntity.orderType.id == orderType.id">{{orderType.typeName}}
-				</md-option> </md-select> </md-input-container>
 				<md-input-container flex=25> <label>Created
 					By </label> <input ng-disabled="true" ng-model="createdBy"
 					ng-init="createdBy = documentEntity.createdBy? documentEntity.createdBy.firstName + ' ' + documentEntity.createdBy.lastName: ''"></input>
@@ -37,30 +31,23 @@
 		</div>
 
 		<div flex layout="row" layout-xs="column">
-			<div flex=40 layout="row" layout-xs="column">
-				<md-input-container flex> <label> To
-					Warehouse </label> <md-select flex ng-model="documentEntity.toWH"
-					ng-required="true"
-					placeholder="Select Warehouse"
-					ng-change="filterStockItemsByWarehouse(documentEntity.toWH)">
-				<md-option ng-value="warehouse" 
-					ng-selected="documentEntity.toWH.id == warehouse.id"
-					ng-repeat="warehouse in warehouses ">{{warehouse.warehouseName
-				}}</md-option> </md-select> </md-input-container>
-
-			</div>
-
-
 			<md-input-container flex> <label>Shipment
 				Date</label> <md-datepicker flex ng-model="documentEntity.shipmentDate"
 				md-placeholder="Select Date"></md-datepicker> </md-input-container>
 
-		</div>
+			<md-input-container flex> <label> To
+				Warehouse </label> <md-select flex ng-model="documentEntity.toWH"
+				ng-required="true" placeholder="Select To Warehouse"
+				ng-change="filterStockItemsByWarehouse(documentEntity.toWH)">
+			<md-option ng-value="warehouse"
+				ng-selected="documentEntity.toWH.id == warehouse.id"
+				ng-repeat="warehouse in warehouses ">{{warehouse.warehouseName
+			}}</md-option> </md-select> </md-input-container>
 
-		<div layout="row" layout-xs="column">
-			<md-input-container flex> <label>Shipment
+			<md-input-container flex=50 flex-xs=100> <label>Shipment
 				Notes</label> <textarea ng-model="documentEntity.note" rows="2" cols="1"></textarea>
 			</md-input-container>
+
 		</div>
 
 		<div layout="row" layout-align="center start"
@@ -199,11 +186,8 @@
 	</form>
 </div>
 
-
-
-
-
-</md-content></md-dialog-content> <md-dialog-actions layout="row" ng-if="documentEntity.status != 'FINALIZED'"> <md-button
+</md-content></md-dialog-content> <md-dialog-actions layout="row"
+	ng-if="documentEntity.status != 'FINALIZED'"> <md-button
 	class="md-raised md-primary" ng-disabled="documentForm.$invalid"
 	ng-click="draftDocumnent()">Save as Draft</md-button> <md-button
 	class="md-raised md-primary" ng-disabled="documentForm.$invalid"
@@ -214,8 +198,5 @@
 	<md-button class="md-raised md-primary"
 		ng-disabled="documentForm.$invalid"
 		ng-click="finalizeDocumnent($event)">Approve/Finalize</md-button>
-	<md-button class="md-raised md-primary"
-		ng-disabled="documentForm.$invalid" ng-click="rejectDocumnent()">Reject</md-button>
 </section>
-
-</md-dialog-actions> </md-dialog>
+<md-button class="md-raised" ng-click="cancel()">Cancel</md-button> </md-dialog-actions> </md-dialog>
