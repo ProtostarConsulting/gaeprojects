@@ -121,21 +121,21 @@
 							</tr>
 						</thead>
 					
-						<tbody md-body ng-repeat="documentEntity1 in documentEntity">
+						<tbody md-body >
 						
 							<tr md-row
-								ng-repeat="bomRequisitionEntity in documentEntity1.prodRequisitionList">
+								ng-repeat="bomRequisitionEntity in productionRequisition.stockShipmentList">
 								<td md-cell>{{bomRequisitionEntity.itemNumber}}</td>
-								<td md-cell>{{bomRequisitionEntity.bomEntity.stockItemType.itemName}}</td>
+								<td md-cell>{{bomRequisitionEntity.stockShipmentList.stockItemType.itemName}}</td>
 								<td md-cell>{{bomRequisitionEntity.deliveryDateTime |
 									formatDateWithTime}}</td>
 								<td md-cell>{{bomRequisitionEntity.status}}</td>
 								<td md-cell><md-button class="md-icon-button"
-										ng-click="addProdStockIssue($event, bomRequisitionEntity)">
+										ng-click="addProdstock($event, bomRequisitionEntity)">
 									<ng-md-icon icon="edit" style="fill: md-default" size="20">
 									<md-tooltip> Edit</md-tooltip></ng-md-icon></md-button> <md-button
 										class="md-icon-button"
-										ng-click="printProductStockIssue(bomRequisitionEntity.id)">
+										ng-click="print_prod_stock(bomRequisitionEntity.id)">
 									<ng-md-icon icon="print" style="fill: md-default" size="20">
 									<md-tooltip> Print Product Requisition</md-tooltip></ng-md-icon></md-button></td>
 							</tr>

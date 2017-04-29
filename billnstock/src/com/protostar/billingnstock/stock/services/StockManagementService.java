@@ -112,13 +112,19 @@ public class StockManagementService extends BaseService {
 	
 	@ApiMethod(name = "addProductionStockIssueList", path = "addProductionStockIssueList")
 	public StockShipmentAgainstProductionRequisition addProductionStockIssueList (StockShipmentAgainstProductionRequisition stockissue) {
+		System.out.println("--------stockissue-DeliveryDateTime-------"+stockissue.getDeliveryDateTime());
 		ofy().save().entity(stockissue).now();
 		return stockissue;
 	}
 	
 	
-	
-	
+	@ApiMethod(name = "getStockShipmentIssueList", path = "getStockShipmentIssueList")
+	public List<StockShipmentAgainstProductionRequisition> getStockShipmentIssueList(@Named("busId") Long busId) {
+
+		List<StockShipmentAgainstProductionRequisition> stockShipmentIssueList = ofy().load().type(StockShipmentAgainstProductionRequisition.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).list();
+		return stockShipmentIssueList;
+	}
 	
 	@ApiMethod(name = "getStockItemProductTypes", path = "getStockItemProductTypes")
 	public List<StockItemProductTypeEntity> getStockItemProductTypes(@Named("busId") Long busId) {

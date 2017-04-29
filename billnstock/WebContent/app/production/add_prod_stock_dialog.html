@@ -1,7 +1,7 @@
 <md-dialog aria-label="Add New" style="min-width:500px;"> <md-toolbar>
 <div class="md-toolbar-tools">
 	<h2>{{documentEntity.id?'Edit Production Stock Issue: ' +
-		documentEntity.itemNumber:'Create Stock Shipment/Transfer'}}</h2>
+		documentEntity.itemNumber:'Create Production Stock Issue'}}</h2>
 	<span flex></span>
 	<md-button class="md-icon-button" ng-click="cancel()"> <md-icon
 		md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
@@ -20,13 +20,7 @@
 				<md-input-container flex=15> <label>Document
 					Status </label> <input type="text" ng-disabled="true"
 					ng-model="documentEntity.status"> </md-input-container>
-				<md-input-container flex=15> <label>Select
-					Order Type</label> <md-select placeholder="Order Type"
-					ng-model="documentEntity.orderType"> <md-option
-					ng-repeat="orderType in stockItemOrderTypes" ng-value="orderType"
-					ng-selected="documentEntity.orderType.id == orderType.id">{{orderType.typeName}}
-				</md-option> </md-select> </md-input-container>
-				<md-input-container flex=25> <label>Created
+			<md-input-container flex=25> <label>Created
 					By </label> <input ng-disabled="true" ng-model="createdBy"
 					ng-init="createdBy = documentEntity.createdBy? documentEntity.createdBy.firstName + ' ' + documentEntity.createdBy.lastName: ''"></input>
 				</md-input-container>
@@ -51,15 +45,16 @@
 			</div>
 			
 			<md-input-container flex> <label>Requisition NO.</label> 
-				 <input 	type="number" ng-model="reuisitionNum" aria-label="sQty"
-								ng-change="getCategoryBynum()">
+				 <input 	type="number" ng-model="documentEntity.reqItemNumber" aria-label="sQty"
+								>
 				
 				
 				</md-input-container>
 
 
-			<md-input-container flex> <label>Shipment
-				Date</label> <md-datepicker flex ng-model="documentEntity.shipmentDate"
+			<md-input-container flex> <label> Delivery
+				Date</label> <md-datepicker flex
+				 ng-model="documentEntity.deliveryDateTime"
 				md-placeholder="Select Date"></md-datepicker> </md-input-container>
 
 		</div>
@@ -76,6 +71,73 @@
 		</div>
 
 		<div>
+		<table md-table md-progress="promise">
+			<thead ng-if="!dataTableOptions.decapitate" md-head
+				md-order="query.order" md-on-reorder="logOrder">
+				<tr md-row>
+					<th md-column>Category Name</th>
+					<th md-column>Items</th>
+					<th md-column>Qty. Needed</th>
+					<th md-column>Stock-in-Hand</th>
+					<th md-column>Stock-Issueed Qty.</th>
+					
+				</tr>
+			</thead>
+			<tbody>
+				<tr md-row ng-init="itemToggle=true"
+					ng-repeat-start="bomCategory in documentEntity.catList track by $index">
+					<td md-cell>{{bomCategory.cat.catName}}</td>
+					<td md-cell></td>
+					<td md-cell></td>
+					<td md-cell></td>
+				</tr>
+				<tr md-row ng-repeat="itemObj in  bomCategory.items"
+					ng-show="itemToggle" style="padding-top: 10px; padding-bottom: 10px;">
+					<td md-cell></td>
+					<td md-cell style="padding-top: 10px; padding-bottom: 10px;">{{itemObj.stockItemType.itemName}}</td>
+					<td md-cell style="padding-top: 10px; padding-bottom: 10px;">{{itemObj.qty}}</td>
+					<td md-cell style="padding-top: 10px; padding-bottom: 10px;">{{getCurrentWHStockItemQty(itemObj.stockItemType)}}</td>
+					<td md-cell style="padding-top: 10px; padding-bottom: 10px;"> <md-input-container flex> <label>Requisition NO.</label> 
+				 <input type="text" ng-model="bomCategory.stockIssuedQty" aria-label="sQty"	>
+				
+				
+				</md-input-container>  </td>
+				</tr>
+				<tr md-row>
+					<td md-cell></td>
+					<td md-cell></td>
+					<td md-cell></td>
+					<td md-cell></td>
+				</tr>
+				<tr ng-repeat-end></tr>
+				<tr md-row>
+					<td md-cell></td>
+					<td md-cell></td>
+					<td md-cell></td>
+					<td md-cell></td>
+				</tr>
+				<tr md-row>
+
+				</tr>
+			</tbody>
+		</table>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		</div>
+		<!-- <div>
 			<h3>Product Line Items</h3>
 			<table md-table>
 				<thead md-head>
@@ -133,76 +195,8 @@
 				</tbody>
 			</table>
 		</div>
-
-		<div ng-show="documentEntity.serviceLineItemList.length == 0">
-			Add New Other Cost Items:
-			<md-button class="md-icon-button" ng-click="addServiceLineItem()">
-			<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
-			<md-tooltip> Add New Other Costs</md-tooltip></ng-md-icon> </md-button>
-
-		</div>
-		<div
-			ng-show="documentEntity.serviceLineItemList && documentEntity.serviceLineItemList.length > 0">
-			<h3>Other Cost Line Items</h3>
-			<table md-table>
-				<thead md-head>
-					<tr md-row>
-						<th md-column width="4%">Sr.No</th>
-						<th md-column width="40%">Service Name</th>
-						<th md-column>Quantity</th>
-						<th md-column>Price(&#x20b9)</th>
-						<th md-column md-numeric>Total(&#x20b9)</th>
-						<th md-column>Actions</th>
-					</tr>
-				</thead>
-
-				<tbody md-body>
-					<tr md-row
-						ng-repeat="serviceItem in documentEntity.serviceLineItemList">
-
-						<td md-cell>{{ $index +1 }}</td>
-						<td md-cell width="40%"><md-input-container flex>
-							<input ng-model="serviceItem.itemName" aria-label="sName">
-							</md-input-container></td>
-
-						<td md-cell><md-input-container flex> <input
-								type="number" ng-model="serviceItem.qty" aria-label="sQty"
-								ng-change="calServiceSubTotal()"> </md-input-container></td>
-						<td md-cell><md-input-container flex> <input
-								type="number" ng-model="serviceItem.price" aria-label="sPrice"
-								ng-change="calServiceSubTotal()"></md-input-container></td>
-						<td md-cell><md-input-container flex> <b>{{serviceItem.qty
-								* serviceItem.price | currency:"":"2"}} </b></td>
-						<td md-cell><md-button class="md-icon-button"
-								ng-click="removeServiceItem($index)"> <ng-md-icon
-								icon="remove" style="fill: md-default" size="18"> <md-tooltip>
-							Remove Line Item</md-tooltip></ng-md-icon></md-button></td>
-						<td md-cell></td>
-					</tr>
-
-					<tr md-row>
-						<td md-cell><md-button class="md-icon-button"
-								ng-click="addServiceLineItem()"> <ng-md-icon
-								icon="add_circle" style="fill: md-default" size="24">
-							<md-tooltip> Add New </md-tooltip></ng-md-icon> </md-button></td>
-						<td md-cell></td>
-						<td md-cell></td>
-						<td md-cell><label>Service Total</label></td>
-						<td md-cell><b> {{documentEntity.serviceTotal |
-								currency:"":"2"}}</b></td>
-						<td md-cell></td>
-					</tr>
-					<tr md-row>
-						<td md-cell></td>
-						<td md-cell></td>
-						<td md-cell></td>
-						<td md-cell><label>Final Total</label></td>
-						<td md-cell><b>&#x20b9 {{documentEntity.finalTotal
-								|currency:"":"2"}}</b></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
+ -->
+	
 	</form>
 </div>
 

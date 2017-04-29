@@ -8,6 +8,8 @@ public class LineItemEntity {
 	private String itemName;
 	private double price;
 	private String qty;
+	private int stockIssuedQty;
+	
 	private double currentBudgetBalance;
 
 	private Ref<StockItemTypeEntity> stockItemType;
@@ -54,5 +56,13 @@ public class LineItemEntity {
 
 	public void setCurrentBudgetBalance(double currentBudgetBalance) {
 		this.currentBudgetBalance = currentBudgetBalance;
+	}
+
+	public int getStockIssuedQty() {
+		return stockIssuedQty;
+	}
+
+	public void setStockIssuedQty(int stockIssuedQty) {
+		this.stockIssuedQty = stockIssuedQty;
 	}
 }
