@@ -7,15 +7,21 @@
 	<md-content class="md-padding" layout="column"
 		layout-align="center, center">
 	<div align="center" flex>
-		<h4 class="md-title">Logging-in with Google Account..... Please
-			wait...</h4>
-		<!-- ProERP DEV  -->
-		<!-- <google-plus-signin
+		<div ng-class="{'visible' : true}" layout-padding>
+			<md-progress-linear md-mode="query" ng-disabled="false"></md-progress-linear>
+			<div class="bottom-block">
+				<h4 class="md-title">Logging-in with Google Account..... Please
+					wait...</h4>
+				<!-- ProERP DEV  -->
+				<!-- <google-plus-signin
 			clientid="212292411606-4l7lvgniidvq9djckr5cb1ei0iiu3a3c.apps.googleusercontent.com"></google-plus-signin>
 		 -->
-		<!-- Suruchi Dairy Prod  -->
-		<google-plus-signin
-			clientid="87556941487-36krkq9mr6iltvqpjd3k0r0il83h0b76.apps.googleusercontent.com"></google-plus-signin>
+				<!-- Suruchi Dairy Prod  -->
+				<google-plus-signin
+					clientid="87556941487-36krkq9mr6iltvqpjd3k0r0il83h0b76.apps.googleusercontent.com"></google-plus-signin>
+				<span>Loading application libraries...</span>
+			</div>
+		</div>
 	</div>
 
 	</md-content>
