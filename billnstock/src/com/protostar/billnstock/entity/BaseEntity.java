@@ -3,6 +3,7 @@ package com.protostar.billnstock.entity;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
@@ -24,6 +25,7 @@ public abstract class BaseEntity {
 	private Date createdDate;
 	private Date modifiedDate;
 	private String modifiedBy;
+	@JsonBackReference
 	private Ref<UserEntity> modifiedByUser;
 	private String note;
 
@@ -45,7 +47,8 @@ public abstract class BaseEntity {
 	@OnSave
 	public void beforeSave() {
 		if (getBusiness() == null) {
-			throw new RuntimeException("Business entity is not set on: " + this.getClass().getSimpleName()
+			throw new RuntimeException("Business entity is not set on: "
+					+ this.getClass().getSimpleName()
 					+ " This is required field. Aborting save operation...");
 		}
 		/*
