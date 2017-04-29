@@ -234,7 +234,10 @@ app
 
 														prodPlan.planDailyReport
 																.push(savedObj)
-
+														if (savedObj.bomProducedQty > 0
+																&& prodPlan.status == "DRAFT") {
+															prodPlan.status = "INPROGRESS";
+														}
 														productService
 																.addProdPlanEntity(
 																		prodPlan)

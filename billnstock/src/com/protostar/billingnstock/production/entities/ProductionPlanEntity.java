@@ -181,4 +181,12 @@ public class ProductionPlanEntity extends BaseEntity {
 		}
 	}
 
+	public DocumentStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(DocumentStatus status) {
+		this.status = status;
+	}
+
 }

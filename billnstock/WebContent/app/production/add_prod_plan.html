@@ -10,6 +10,7 @@
 		ng-bind="documentEntity.id?'Edit Production Plan':'Add Production Plan'"></h4>
 	</md-subheader>
 	<div layout="column">
+		<div class="md-caption">Plan Progress:</div>
 		<div layout="row">
 			<span>0%</span> <span ng-style="getFlexPerc()"></span><span flex
 				ng-if="!(totalProducedPerc > 5 && totalProducedPerc < 95)"> </span><span
@@ -74,9 +75,8 @@
 					mdp-min-date="documentEntity.fromDateTime" mdp-format="DD/MM/YYYY"></mdp-date-picker>
 
 				<md-input-container flex> <label>Select
-					Status</label> <md-select name="status" ng-model="documentEntity.status"
-					ng-disabled="true"> <md-option
-					ng-repeat="status in statusList" ng-selected="$index == 0"
+					Status</label> <md-select name="status" ng-model="documentEntity.status"> <md-option
+					ng-repeat="status in statusList" ng-selected="status == documentEntity.status"
 					ng-value="status">{{status}}</md-option> </md-select> </md-input-container>
 			</div>
 
