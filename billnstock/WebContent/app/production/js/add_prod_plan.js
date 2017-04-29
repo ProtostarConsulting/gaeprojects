@@ -89,15 +89,23 @@ app
 						}
 					}
 					$scope.waitForServiceLoad();
-					
-					$scope.calculateProducedQty = function(){
-						if($stateParams.prodPlan){
-							for(var i = 0; i < $stateParams.prodPlan.planDailyReport.length; i++){
+
+					$scope.calculateProducedQty = function() {
+						if ($stateParams.prodPlan) {
+							for (var i = 0; i < $stateParams.prodPlan.planDailyReport.length; i++) {
 								$scope.totalProducedQty += $stateParams.prodPlan.planDailyReport[i].bomProducedQty;
 							}
-							$scope.totalProducedPerc=  ($scope.totalProducedQty * 100) / $stateParams.prodPlan.plannedQty;
+							$scope.totalProducedPerc = ($scope.totalProducedQty * 100)
+									/ $stateParams.prodPlan.plannedQty;
 						}
 					};
+
+					$scope.getFlexPerc = function() {
+						return {
+							'width' : $scope.totalProducedPerc - 4 + '%'
+						};
+
+					}
 
 					$scope.printProductRequisition = function(proId) {
 						var bid = $scope.curUser.business.id;
@@ -163,14 +171,16 @@ app
 										},
 										function() {
 											$scope.status = 'You cancelled the dialog.';
+											$scope.calculateProducedQty();
 										});
 					};
-					
+
 					function addProdReportCtr($scope, $mdDialog, curUser,
 							prodctionReport, prodPlan, bomList, showAddToast) {
-						$scope.todaysDate = new Date().setHours(00, 00, 00, 000);
+						$scope.todaysDate = new Date()
+								.setHours(00, 00, 00, 000);
 						$scope.prodctionReport = prodctionReport ? prodctionReport
-								: {};								
+								: {};
 
 						if ($scope.prodctionReport.id) {
 							$scope.prodctionReport.reportDate = new Date(
@@ -200,8 +210,7 @@ app
 
 							}
 							productService
-									.addProductionReport(
-											$scope.prodctionReport)
+									.addProductionReport($scope.prodctionReport)
 									.then(
 											function(savedObj) {
 												if (savedObj.id) {
@@ -448,7 +457,8 @@ app
 					}
 					// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 					function addProdReqCtr($scope, $mdDialog, curUser,
-							productionRequisition, prodPlan, bomList, showAddToast) {
+							productionRequisition, prodPlan, bomList,
+							showAddToast) {
 						$scope.todaysDate = new Date();
 						$scope.productionRequisition = productionRequisition ? productionRequisition
 								: {};

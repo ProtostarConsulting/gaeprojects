@@ -9,9 +9,15 @@
 	<h4 class="md-title"
 		ng-bind="documentEntity.id?'Edit Production Plan':'Add Production Plan'"></h4>
 	</md-subheader>
-	<div>
+	<div layout="column">
+		<div layout="row">
+			<span>0%</span> <span ng-style="getFlexPerc()"></span><span flex
+				ng-if="!(totalProducedPerc > 5 && totalProducedPerc < 95)"> </span><span
+				flex ng-if="totalProducedPerc > 5 && totalProducedPerc < 95"
+				ng-bind="totalProducedQty"></span><span>100%</span>
+		</div>
 		<md-progress-linear md-mode="determinate" value={{totalProducedPerc}}></md-progress-linear>
-	</div>	
+	</div>
 	<div>
 		<form name="entityForm">
 
@@ -40,7 +46,8 @@
 
 				<md-input-container flex> <input
 					name="plannedQty" type="number" aria-label="period"
-					placeholder="Planned Qty" ng-model="documentEntity.plannedQty" ng-required="true">
+					placeholder="Planned Qty" ng-model="documentEntity.plannedQty"
+					ng-change="calculateProducedQty()" ng-required="true">
 				<div ng-messages="entityForm.plannedQty.$error"
 					ng-if="entityForm.plannedQty.$submitted || entityForm.plannedQty.$touched">
 					<div ng-message="required">Enter Planned Qty.</div>
@@ -122,7 +129,7 @@
 					</table>
 					</md-table-container>
 				</div>
-				
+
 				<h4 ng-init="prodReportListToogle=true"
 					ng-click="prodReportListToogle=!prodReportListToogle">
 					Production Daily Report
