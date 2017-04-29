@@ -311,7 +311,7 @@ app
 						$scope.warehouses = [];
 						$scope.stockItemList = [];
 						$scope.documentEntity = productionShipment ? productionShipment
-								: getEmptyObj();
+								: $scope.getEmptyObj();
 
 						if ($scope.documentEntity.id) {
 							$scope.documentEntity.shipmentDate = new Date(
