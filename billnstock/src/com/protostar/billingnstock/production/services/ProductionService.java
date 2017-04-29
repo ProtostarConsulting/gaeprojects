@@ -14,6 +14,7 @@ import com.googlecode.objectify.Key;
 import com.protostar.billingnstock.production.entities.BomEntity;
 import com.protostar.billingnstock.production.entities.MachineQCUnitMeasure;
 import com.protostar.billingnstock.production.entities.ProductionMachineEntity;
+import com.protostar.billingnstock.production.entities.ProductionPlanDailyReport;
 import com.protostar.billingnstock.production.entities.ProductionPlanEntity;
 import com.protostar.billingnstock.production.entities.ProductionRequisitionEntity;
 import com.protostar.billingnstock.production.entities.ProductionSetting;
@@ -310,6 +311,12 @@ public class ProductionService {
 						ProductionRequisitionEntity.class, proId)).now();
 
 		return productionRequisitionEntity;
+	}
+	
+	@ApiMethod(name = "addProductionReport", path = "addProductionReport")
+	public ProductionPlanDailyReport addProductionReport(ProductionPlanDailyReport reportEntity) {
+		ofy().save().entity(reportEntity).now();
+		return reportEntity;
 	}
 
 }

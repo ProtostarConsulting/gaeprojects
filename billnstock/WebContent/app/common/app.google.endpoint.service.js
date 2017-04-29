@@ -3456,6 +3456,15 @@ function googleEndpointSF($q) {
 		});
 		return deferred.promise;
 	}
+	
+	ProductionService.addProductionReport = function(prodReport) {
+		var deferred = $q.defer();
+		gapi.client.productionService.addProductionReport(prodReport).execute(
+				function(resp) {
+					deferred.resolve(resp);
+				});
+		return deferred.promise;
+	}
 
 	// ====================================================
 

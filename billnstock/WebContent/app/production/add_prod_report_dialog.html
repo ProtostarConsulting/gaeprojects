@@ -1,0 +1,44 @@
+<md-dialog aria-label="Add New" style="min-width:500px;"> <md-toolbar>
+<div class="md-toolbar-tools">
+	<h2>Add Production Report</h2>
+	<!-- <h2>{{productionRequisition.id?'Edit Production Report':'Add
+		Production Report'}}</h2> -->
+	<span flex></span>
+	<md-button class="md-icon-button" ng-click="cancel()"> <md-icon
+		md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+	</md-button>
+</div>
+</md-toolbar> <md-dialog-content
+	style="min-width:1100px; max-width:1200px; max-height:1800px;">
+<md-content layout-padding> <md-content layout-padding>
+<div>
+	<form name="entityForm">
+		<div layout="row" layout-xs="column" flex>
+			<mdp-date-picker style="width: 30%" flex
+				mdp-placeholder="Report Date" ng-model="prodctionReport.reportDate"
+				mdp-min-date="todaysDate" mdp-format="DD/MM/YYYY"></mdp-date-picker>
+
+			<md-input-container style="width: 40%" flex> <md-select
+				name="bomEntity" ng-model="prodctionReport.bomEntity"
+				placeholder="Select Product" ng-required="true"> <md-option
+				ng-value="bomEntity" ng-repeat="bomEntity in bomList"
+				ng-selected="prodctionReport.bomEntity.id == bomEntity.id">{{bomEntity.stockItemType.itemName}}
+			</md-option> </md-select> </md-input-container>
+
+			<md-input-container style="width: 30%" flex> <input
+				type="number" aria-label="bomProducedQty" placeholder="BOM Product Qty."
+				ng-model="prodctionReport.bomProducedQty"> </md-input-container>
+		</div>
+
+		<div layout="row" layout-xs="column" flex>
+			<md-input-container flex> <input name="note"
+				type="text" aria-label="note" placeholder="Note"
+				ng-model="prodctionReport.note"> </md-input-container>
+		</div>
+	</form>
+</div>
+
+</md-content> </md-content> </md-dialog-content> <md-dialog-actions layout="row"> <md-button
+	class="md-raised md-primary" ng-disabled="entityForm.$invalid"
+	ng-click="addProductionReport()">Submit</md-button> <md-button
+	class="md-raised" ng-click="cancel()">Cancel</md-button> </md-dialog-actions> </md-dialog>

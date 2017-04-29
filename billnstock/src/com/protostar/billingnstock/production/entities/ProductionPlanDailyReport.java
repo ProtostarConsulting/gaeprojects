@@ -13,9 +13,7 @@ import com.protostar.billnstock.entity.BaseEntity;
 @Entity
 public class ProductionPlanDailyReport extends BaseEntity {
 
-	@JsonBackReference
-	@Index
-	private Ref<ProductionPlanEntity> prodPlan;
+	private int prodPlanItemNumber;
 
 	@Index
 	private Ref<BomEntity> bomEntity;
@@ -49,13 +47,12 @@ public class ProductionPlanDailyReport extends BaseEntity {
 		this.bomProducedQty = bomProducedQty;
 	}
 
-	public ProductionPlanEntity getProdPlan() {
-		return prodPlan == null ? null : prodPlan.get();
+	public int getProdPlanItemNumber() {
+		return prodPlanItemNumber;
 	}
 
-	public void setProdPlan(ProductionPlanEntity prodPlan) {
-		if (prodPlan != null)
-			this.prodPlan = Ref.create(prodPlan);
+	public void setProdPlanItemNumber(int prodPlanItemNumber) {
+		this.prodPlanItemNumber = prodPlanItemNumber;
 	}
 
 }

@@ -11,6 +11,8 @@ app
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
 
+					$scope.statusList = [ "DRAFT", "INPROGRESS", "COMPLETED" ];
+
 					$scope.getEmptyProdPlan = function() {
 						return {
 							title : '',
@@ -27,6 +29,7 @@ app
 
 					$scope.documentEntity = $stateParams.prodPlan ? $stateParams.prodPlan
 							: $scope.getEmptyProdPlan();
+					$scope.totalProducedQty = 0;
 
 					if ($scope.documentEntity.fromDateTime)
 						$scope.documentEntity.fromDateTime = new Date(
@@ -86,6 +89,15 @@ app
 						}
 					}
 					$scope.waitForServiceLoad();
+					
+					$scope.calculateProducedQty = function(){
+						if($stateParams.prodPlan){
+							for(var i = 0; i < $stateParams.prodPlan.planDailyReport.length; i++){
+								$scope.totalProducedQty += $stateParams.prodPlan.planDailyReport[i].bomProducedQty;
+							}
+							$scope.totalProducedPerc=  ($scope.totalProducedQty * 100) / $stateParams.prodPlan.plannedQty;
+						}
+					};
 
 					$scope.printProductRequisition = function(proId) {
 						var bid = $scope.curUser.business.id;
@@ -109,6 +121,7 @@ app
 												curUser : $scope.curUser,
 												productionRequisition : productionRequisition,
 												prodPlan : $scope.documentEntity,
+												bomList : $scope.bomList,
 												showAddToast : $scope.showAddToast
 											}
 										})
@@ -122,6 +135,119 @@ app
 										});
 
 					};
+
+					$scope.addProdReport = function(ev, prodctionReport) {
+						var useFullScreen = $mdMedia('xs');
+						$mdDialog
+								.show(
+										{
+											controller : addProdReportCtr,
+											templateUrl : '/app/production/add_prod_report_dialog.html',
+											parent : angular
+													.element(document.body),
+											targetEvent : ev,
+											clickOutsideToClose : true,
+											fullscreen : useFullScreen,
+											locals : {
+												curUser : $scope.curUser,
+												prodctionReport : prodctionReport,
+												prodPlan : $scope.documentEntity,
+												bomList : $scope.bomList,
+												showAddToast : $scope.showAddToast
+											}
+										})
+								.then(
+										function(answer) {
+											$scope.status = 'You said the information was "'
+													+ answer + '".';
+										},
+										function() {
+											$scope.status = 'You cancelled the dialog.';
+										});
+					};
+					
+					function addProdReportCtr($scope, $mdDialog, curUser,
+							prodctionReport, prodPlan, bomList, showAddToast) {
+						$scope.todaysDate = new Date().setHours(00, 00, 00, 000);
+						$scope.prodctionReport = prodctionReport ? prodctionReport
+								: {};								
+
+						if ($scope.prodctionReport.id) {
+							$scope.prodctionReport.reportDate = new Date(
+									$scope.prodctionReport.reportDate);
+						} else {
+							$scope.prodctionReport.reportDate = new Date();
+						}
+
+						$scope.prodctionReportBackup = angular
+								.copy($scope.prodctionReport);
+
+						$scope.bomList = bomList;
+
+						$scope.addProductionReport = function() {
+
+							var productService = appEndpointSF
+									.getProductionService();
+							$scope.prodctionReport.business = curUser.business;
+							$scope.prodctionReport.createdBy = curUser;
+							$scope.prodctionReport.modifiedBy = curUser.email_id;
+							$scope.prodctionReport.prodPlanItemNumber = prodPlan.itemNumber;
+
+							if ($scope.prodctionReportBackup.id) {
+								// if edit changed the value it should edit
+								// existing record, not create new one
+								$scope.prodctionReport.id = $scope.prodctionReportBackup.id;
+
+							}
+							productService
+									.addProductionReport(
+											$scope.prodctionReport)
+									.then(
+											function(savedObj) {
+												if (savedObj.id) {
+													var wasUpdate = false;
+													angular
+															.forEach(
+																	prodPlan.planDailyReport,
+																	function(
+																			req) {
+																		if (req.id == savedObj.id) {
+																			wasUpdate = true;
+																		}
+																	});
+
+													if (wasUpdate) {
+														showAddToast();
+														$mdDialog.cancel();
+													} else {
+														if (!prodPlan.planDailyReport)
+															prodPlan.planDailyReport = [];
+
+														prodPlan.planDailyReport
+																.push(savedObj)
+
+														productService
+																.addProdPlanEntity(
+																		prodPlan)
+																.then(
+																		function(
+																				savedObj) {
+																			if (savedObj.id)
+																				showAddToast();
+
+																			$mdDialog
+																					.cancel();
+																		});
+													}
+												}
+											});
+						}
+
+						$scope.cancel = function() {
+							$mdDialog.cancel();
+						};
+					}
+					// production shipment List
 					$scope.addProdShip = function(ev, productionShipment) {
 						var useFullScreen = $mdMedia('xs');
 						$mdDialog
@@ -175,13 +301,10 @@ app
 									productionShipment.shipmentDate);
 
 						}
-						
+
 						$scope.cancel = function() {
 							$mdDialog.cancel();
 						};
-						
-						
-						
 
 						$scope.filterStockItemsByWarehouse = function(
 								selectedWarehouse) {
@@ -195,8 +318,9 @@ app
 										$scope.stockItemList = stockList;
 										$scope.loading = false;
 									});
-							if(!$scope.documentEntity.id){
-							$scope.addProductLineItem();}
+							if (!$scope.documentEntity.id) {
+								$scope.addProductLineItem();
+							}
 						}
 
 						$scope.getAllWarehouseByBusiness = function() {
@@ -324,7 +448,7 @@ app
 					}
 					// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 					function addProdReqCtr($scope, $mdDialog, curUser,
-							productionRequisition, prodPlan, showAddToast) {
+							productionRequisition, prodPlan, bomList, showAddToast) {
 						$scope.todaysDate = new Date();
 						$scope.productionRequisition = productionRequisition ? productionRequisition
 								: {};
@@ -339,7 +463,7 @@ app
 						$scope.productionRequisitionBackup = angular
 								.copy($scope.productionRequisition);
 
-						$scope.bomList = [];
+						$scope.bomList = bomList;
 						$scope.stockItemCategories = [];
 						$scope.stockTypeList = [];
 						var dummyStockTypeList = [];
@@ -357,17 +481,6 @@ app
 									}
 								}
 							}
-						}
-
-						$scope.fetchBomList = function() {
-							var productService = appEndpointSF
-									.getProductionService();
-
-							productService
-									.getlistBomEntity(curUser.business.id)
-									.then(function(list) {
-										$scope.bomList = list;
-									});
 						}
 
 						$scope.filterStockItemsByBomTypes = function(bomEntity) {
@@ -485,12 +598,34 @@ app
 
 						}
 
-						$scope.fetchBomList();
 						if ($scope.productionRequisitionBackup.bomEntity
 								&& $scope.productionRequisitionBackup.bomEntity.id) {
 							$scope
 									.filterStockItemsByBomTypes($scope.productionRequisitionBackup.bomEntity);
 						}
 					}
+
+					$scope.fetchBomList = function() {
+						var productService = appEndpointSF
+								.getProductionService();
+
+						productService.getlistBomEntity(
+								$scope.curUser.business.id).then(
+								function(list) {
+									$scope.bomList = list;
+								});
+					}
+
+					$scope.waitForServiceLoad = function() {
+						if (appEndpointSF.is_service_ready) {
+							$scope.fetchBomList();
+							$scope.calculateProducedQty();
+						} else {
+							$log.debug("Services Not Loaded, watiting...");
+							$timeout($scope.waitForServiceLoad, 1000);
+						}
+					}
+
+					$scope.waitForServiceLoad();
 
 				});
