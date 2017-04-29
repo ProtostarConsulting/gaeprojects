@@ -97,6 +97,62 @@ public class PrintPdfInvoice extends HttpServlet {
 			List<StockLineItem> productLineItemList = invoiceEntity
 					.getProductLineItemList();
 
+			// //Service Line Items Part
+			double serviceTotal = 0;
+			double serviceTaxTotal = 0;
+			if (serviceLineItemList != null && serviceLineItemList.size() > 0) {
+				root.put("serviceItemList", serviceLineItemList);
+				root.put("serviceTax", serviceTax);
+
+				for (StockLineItem stockLineItem : serviceLineItemList) {
+					serviceTotal += stockLineItem.getQty()
+							* stockLineItem.getPrice();
+				}
+				if (invoiceEntity.isIndiviualServiceLineItemTax()) {
+					for (StockLineItem stockLineItem : serviceLineItemList) {
+						serviceTaxTotal += stockLineItem.getPrice()
+								* stockLineItem.getQty()
+								* (stockLineItem.getSelectedTaxItem()
+										.getTaxPercenatge() / 100);
+					}
+				} else {
+					if (serviceTax != null)
+						serviceTaxTotal = (serviceTax.getTaxPercenatge() / 100)
+								* (serviceTotal - invoiceEntity.getDiscAmount());
+
+				}
+			}
+
+			root.put("serviceTotal", serviceTotal);
+			root.put("serviceTaxTotal", serviceTaxTotal);
+
+			// //Product Line Items Part
+			double productTotal = 0;
+			double productTaxTotal = 0;
+			if (productLineItemList != null && productLineItemList.size() > 0) {
+				root.put("productItemList", productLineItemList);
+				root.put("productTax", productTax);
+				for (StockLineItem stockLineItem : productLineItemList) {
+					productTotal += stockLineItem.getQty()
+							* stockLineItem.getPrice();
+				}
+				if (invoiceEntity.isIndiviualProductLineItemTax()) {
+					for (StockLineItem stockLineItem : productLineItemList) {
+						productTaxTotal += stockLineItem.getPrice()
+								* stockLineItem.getQty()
+								* (stockLineItem.getSelectedTaxItem()
+										.getTaxPercenatge() / 100);
+					}
+				} else {
+					if (productTax != null)
+						productTaxTotal = (productTax.getTaxPercenatge() / 100)
+								* (productTotal - invoiceEntity.getDiscAmount());
+
+				}
+			}
+			root.put("productTotal", productTotal);
+			root.put("productTaxTotal", productTaxTotal);
+
 			root.put("docStatus", invoiceEntity.getStatus());
 			root.put("createdBy", invoiceEntity.getCreatedBy().getFirstName()
 					+ " " + invoiceEntity.getCreatedBy().getLastName());
@@ -160,16 +216,8 @@ public class PrintPdfInvoice extends HttpServlet {
 
 			// root.put("SalesOrderNo", salesOrderNo);
 
-			if (serviceLineItemList != null && serviceLineItemList.size() > 0) {
-				root.put("serviceItemList", serviceLineItemList);
-				root.put("serviceTax", serviceTax);
-			}
-			if (productLineItemList != null && productLineItemList.size() > 0) {
-				root.put("productItemList", productLineItemList);
-				root.put("productTax", productTax);
-			}
-
 			root.put("serviceTax", serviceTax);
+
 			// root.put("TaxPercentage", df.format(taxPercentage));
 			// root.put("ServiceTaxTotal", df.format(serviceTaxTotal));
 			// root.put("ServiceTotal", df.format(serviceTotal));
