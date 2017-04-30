@@ -73,8 +73,8 @@
 						<td md-cell>{{ $index +1 }}</td>
 						<td md-cell width="40%">
 							<div layout="row">
-								<md-input-container flex> <md-select
-									ng-model="item.stockItem" placeholder="Item Name"
+								<md-input-container flex style="margin: 0px; padding: 0px;">
+								<md-select ng-model="item.stockItem" placeholder="Item Name"
 									ng-required="true" ng-change="productLineItemChanged(item)">
 								<md-option ng-value="stockItem"
 									ng-selected="item.stockItem.id == stockItem.id"
@@ -84,7 +84,8 @@
 							</div>
 						</td>
 
-						<td md-cell><md-input-container flex> <input
+						<td md-cell><md-input-container flex
+								style="margin: 0px; padding: 0px;"> <input
 								type="number" ng-model="item.qty" ng-required="true"
 								aria-label="iqty" ng-change="calProductSubTotal()"> </md-input-container></td>
 
@@ -92,10 +93,10 @@
 								ng-show="item.stockItem.stockItemType.maintainStockBySerialNumber"
 								ng-click="addSerialNumbers($event, item)"> <ng-md-icon
 								icon="list" style="fill: md-default" size="18"> <md-tooltip>
-							Add Serial Numbers</md-tooltip></ng-md-icon></md-button> <md-button class="md-icon-button"
-								ng-click="removeProductItem($index)"> <ng-md-icon
-								icon="remove" style="fill: md-default" size="18"> <md-tooltip>
-							Remove Line Item</md-tooltip></ng-md-icon></md-button></td>
+							Add Serial Numbers</md-tooltip></ng-md-icon></md-button> <md-icon
+								md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
+								ng-click="removeProductItem($index)"> <md-tooltip>Remove
+							Item</md-tooltip></md-icon></td>
 
 					</tr>
 					<tr md-row>
@@ -122,12 +123,5 @@
 	class="md-raised md-primary" ng-disabled="documentForm.$invalid"
 	ng-click="draftDocumnent()">Save as Draft</md-button> <md-button
 	class="md-raised md-primary" ng-disabled="documentForm.$invalid"
-	ng-click="submitDocumnent()">Submit</md-button>
-
-<section layout="row" layout-xs="column"
-	ng-if="documentEntity.status == 'SUBMITTED'">
-	<md-button class="md-raised md-primary"
-		ng-disabled="documentForm.$invalid"
-		ng-click="finalizeDocumnent($event)">Approve/Finalize</md-button>
-</section>
-<md-button class="md-raised" ng-click="cancel()">Cancel</md-button> </md-dialog-actions> </md-dialog>
+	ng-click="submitDocumnent()">Submit</md-button> <md-button
+	class="md-raised" ng-click="cancel()">Cancel</md-button> </md-dialog-actions> </md-dialog>

@@ -39,7 +39,7 @@
 			<md-input-container flex> <label>
 				Delivery Date</label> <md-datepicker flex
 				ng-model="documentEntity.deliveryDateTime"
-				md-placeholder="Select Date"></md-datepicker> </md-input-container>
+				md-placeholder="Select Date" ng-required="true"></md-datepicker> </md-input-container>
 
 			<md-input-container flex> <label> From
 				Warehouse </label> <md-select flex ng-model="documentEntity.toWH"
@@ -67,7 +67,7 @@
 					<tr md-row>
 						<th md-column>Category Name</th>
 						<th md-column>Items</th>
-						<th md-column>Qty. Needed</th>
+						<th md-column>Requisition Qty.</th>
 						<th md-column>Stock-in-Hand</th>
 						<th md-column>Stock-Issued Qty.</th>
 

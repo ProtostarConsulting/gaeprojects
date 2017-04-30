@@ -91,6 +91,8 @@ app
 					$scope.waitForServiceLoad();
 
 					$scope.calculateProducedQty = function() {
+						$scope.totalProducedQty = 0;
+						$scope.totalProducedPerc = 0;
 						if ($scope.documentEntity.planDailyReport) {
 							for (var i = 0; i < $scope.documentEntity.planDailyReport.length; i++) {
 								$scope.totalProducedQty += $scope.documentEntity.planDailyReport[i].bomProducedQty;
@@ -174,96 +176,7 @@ app
 										});
 					};
 
-					function addProdReportCtr($scope, $mdDialog, curUser,
-							prodctionReport, prodPlan, bomList, showAddToast) {
-
-						$scope.getEmptyObj = function() {
-							return {
-								prodPlanItemNumber : prodPlan.itemNumber,
-								createdDate : new Date(),
-								createdBy : curUser,
-								business : curUser.business,
-								status : 'DRAFT'
-							};
-						}
-
-						$scope.todaysDate = new Date()
-								.setHours(00, 00, 00, 000);
-						$scope.prodctionReport = prodctionReport ? prodctionReport
-								: $scope.getEmptyObj();
-
-						if ($scope.prodctionReport.id) {
-							$scope.prodctionReport.reportDate = new Date(
-									$scope.prodctionReport.reportDate);
-						} else {
-							$scope.prodctionReport.reportDate = new Date();
-						}
-
-						$scope.prodctionReportBackup = angular
-								.copy($scope.prodctionReport);
-
-						$scope.bomList = bomList;
-
-						$scope.addProductionReport = function() {
-
-							var productService = appEndpointSF
-									.getProductionService();
-
-							$scope.prodctionReport.modifiedBy = curUser.email_id;
-
-							if ($scope.prodctionReportBackup.id) {
-								// if edit changed the value it should edit
-								// existing record, not create new one
-								$scope.prodctionReport.id = $scope.prodctionReportBackup.id;
-
-							}
-
-							var wasUpdate = null;
-							if ($scope.prodctionReport.id) {
-								wasUpdate = true;
-							} else {
-								wasUpdate = false;
-							}
-
-							productService
-									.addProductionReport($scope.prodctionReport)
-									.then(
-											function(savedObj) {
-												if (savedObj.id) {
-													if (wasUpdate) {
-														showAddToast();
-														$mdDialog.cancel();
-													} else {
-														if (!prodPlan.planDailyReport)
-															prodPlan.planDailyReport = [];
-
-														prodPlan.planDailyReport
-																.push(savedObj)
-														if (savedObj.bomProducedQty > 0
-																&& prodPlan.status == "DRAFT") {
-															prodPlan.status = "INPROGRESS";
-														}
-														productService
-																.addProdPlanEntity(
-																		prodPlan)
-																.then(
-																		function(
-																				savedObj) {
-																			if (savedObj.id)
-																				showAddToast();
-
-																			$mdDialog
-																					.cancel();
-																		});
-													}
-												}
-											});
-						}
-
-						$scope.cancel = function() {
-							$mdDialog.cancel();
-						};
-					}
+					
 					// production shipment List
 					$scope.addProdShip = function(ev, productionShipment) {
 						var useFullScreen = $mdMedia('xs');
@@ -293,174 +206,8 @@ app
 											$scope.status = 'You cancelled the dialog.';
 										});
 
-					};
-					function addProdShipCtr($scope, $mdDialog, curUser,
-							productionShipment, prodPlan, showAddToast) {
-
-						$scope.getEmptyObj = function() {
-							return {
-								productLineItemList : [],
-								shipmentDate : new Date(),
-								createdDate : new Date(),
-								createdBy : curUser,
-								business : curUser.business,
-								status : 'DRAFT'
-							};
-						}
-
-						$scope.warehouses = [];
-						$scope.stockItemList = [];
-						$scope.documentEntity = productionShipment ? productionShipment
-								: $scope.getEmptyObj();
-
-						if ($scope.documentEntity.id) {
-							$scope.documentEntity.shipmentDate = new Date(
-									productionShipment.shipmentDate);
-						}
-
-						$scope.cancel = function() {
-							$mdDialog.cancel();
-						};
-
-						$scope.filterStockItemsByWarehouse = function(
-								selectedWarehouse) {
-							$scope.loading = true;
-							$scope.selectedWarehouse = selectedWarehouse;
-							var stockService = appEndpointSF.getStockService();
-
-							stockService.filterStockItemsByWarehouse(
-									$scope.selectedWarehouse).then(
-									function(stockList) {
-										$scope.stockItemList = stockList;
-										$scope.loading = false;
-									});
-							if (!$scope.documentEntity.id) {
-								$scope.addProductLineItem();
-							}
-						}
-
-						$scope.getAllWarehouseByBusiness = function() {
-							$scope.loading = true;
-							var warehouseService = appEndpointSF
-									.getWarehouseManagementService();
-
-							warehouseService.getAllWarehouseByBusiness(
-									curUser.business.id).then(
-									function(warehouseList) {
-										$scope.warehouses = warehouseList;
-
-										$scope.loading = false;
-									});
-						}
-
-						$scope.addProductLineItem = function() {
-							var item = {
-								isProduct : true,
-								itemName : "",
-								qty : 1,
-								price : "",
-								stockItem : null,
-								selectedTaxItem : null
-							};
-							if (!$scope.documentEntity.productLineItemList) {
-								$scope.documentEntity.productLineItemList = [];
-							}
-							$scope.documentEntity.productLineItemList
-									.push(item);
-						};
-						$scope.draftDocumnent = function(ev) {
-							$scope.documentEntity.status = 'DRAFT';
-							$scope.saveDocument();
-						}
-
-						$scope.submitDocumnent = function(ev) {
-							$scope.documentEntity.status = 'SUBMITTED';
-							$scope.saveDocument();
-						}
-
-						$scope.removeProductItem = function(index) {
-							$scope.documentEntity.productLineItemList.splice(
-									index, 1);
-
-							if ($scope.documentEntity.productLineItemList.length == 0) {
-								$scope.documentEntity.productSubTotal = 0;
-								$scope.documentEntity.productTotal = 0;
-								$scope.documentEntity.productTaxTotal = 0;
-								$scope.documentEntity.selectedProductTax = null;
-							}
-
-							$scope.calProductSubTotal();
-							$scope.calfinalTotal();
-						};
-
-						$scope.finalizeDocumnent = function(ev) {
-							var confirm = $mdDialog
-									.confirm()
-									.title(
-											'Do you want to approve/finalize this Document? Note, after this you will not be able to make any changes in this document.')
-									.textContent('').ariaLabel('finalize?')
-									.targetEvent(ev).ok('Yes').cancel('No');
-
-							$mdDialog
-									.show(confirm)
-									.then(
-											function() {
-												$log
-														.debug("Inside Yes, function");
-												$scope.documentEntity.status = 'FINALIZED';
-												$scope.documentEntity.approvedBy = $scope.curUser;
-												$scope.saveDocument();
-											}, function() {
-												$log.debug("Cancelled...");
-											});
-						}
-
-						$scope.saveDocument = function() {
-
-							$scope.documentEntity.modifiedBy = curUser.email_id;
-
-							var wasUpdate = null;
-							if ($scope.documentEntity.id) {
-								wasUpdate = true;
-							} else {
-								wasUpdate = false;
-							}
-
-							var stockService = appEndpointSF.getStockService();
-
-							stockService.addProductionStockShipment(
-									$scope.documentEntity).then(
-									function(savedObj) {
-										if (wasUpdate) {
-											showAddToast();
-											$mdDialog.cancel();
-										} else {
-											if (!prodPlan.prodShipmentList)
-												prodPlan.prodShipmentList = [];
-
-											prodPlan.prodShipmentList
-													.push(savedObj)
-											var productService = appEndpointSF
-													.getProductionService();
-
-											productService.addProdPlanEntity(
-													prodPlan).then(
-													function(savedObj) {
-														if (savedObj.id)
-															showAddToast();
-
-														$mdDialog.cancel();
-													});
-										}
-
-									});
-
-						}
-
-						$scope.getAllWarehouseByBusiness();
-
 					}
-					// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+					
 					function addProdReqCtr($scope, $mdDialog, curUser,
 							productionRequisition, prodPlan, bomList,
 							showAddToast) {
@@ -635,6 +382,266 @@ app
 									.filterStockItemsByBomTypes($scope.productionRequisitionBackup.bomEntity);
 						}
 					}
+					
+					function addProdReportCtr($scope, $mdDialog, curUser,
+							prodctionReport, prodPlan, bomList, showAddToast) {
+
+						$scope.getEmptyObj = function() {
+							return {
+								prodPlanItemNumber : prodPlan.itemNumber,
+								createdDate : new Date(),
+								createdBy : curUser,
+								business : curUser.business,
+								status : 'DRAFT'
+							};
+						}
+
+						$scope.todaysDate = new Date()
+								.setHours(00, 00, 00, 000);
+						$scope.prodctionReport = prodctionReport ? prodctionReport
+								: $scope.getEmptyObj();
+
+						if ($scope.prodctionReport.id) {
+							$scope.prodctionReport.reportDate = new Date(
+									$scope.prodctionReport.reportDate);
+						} else {
+							$scope.prodctionReport.reportDate = new Date();
+						}
+
+						$scope.prodctionReportBackup = angular
+								.copy($scope.prodctionReport);
+
+						$scope.bomList = bomList;
+
+						$scope.addProductionReport = function() {
+
+							var productService = appEndpointSF
+									.getProductionService();
+
+							$scope.prodctionReport.modifiedBy = curUser.email_id;
+
+							if ($scope.prodctionReportBackup.id) {
+								// if edit changed the value it should edit
+								// existing record, not create new one
+								$scope.prodctionReport.id = $scope.prodctionReportBackup.id;
+
+							}
+
+							var wasUpdate = null;
+							if ($scope.prodctionReport.id) {
+								wasUpdate = true;
+							} else {
+								wasUpdate = false;
+							}
+
+							productService
+									.addProductionReport($scope.prodctionReport)
+									.then(
+											function(savedObj) {
+												if (savedObj.id) {
+													if (wasUpdate) {
+														showAddToast();
+														$mdDialog.cancel();
+													} else {
+														if (!prodPlan.planDailyReport)
+															prodPlan.planDailyReport = [];
+
+														prodPlan.planDailyReport
+																.push(savedObj)
+														if (savedObj.bomProducedQty > 0
+																&& prodPlan.status == "DRAFT") {
+															prodPlan.status = "INPROGRESS";
+														}
+														productService
+																.addProdPlanEntity(
+																		prodPlan)
+																.then(
+																		function(
+																				savedObj) {
+																			if (savedObj.id)
+																				showAddToast();
+
+																			$mdDialog
+																					.cancel();
+																		});
+													}
+												}
+											});
+						}
+
+						$scope.cancel = function() {
+							$mdDialog.cancel();
+						};
+					}
+					
+					function addProdShipCtr($scope, $mdDialog, curUser,
+							productionShipment, prodPlan, showAddToast) {
+
+						$scope.getEmptyObj = function() {
+							return {
+								productLineItemList : [],
+								shipmentDate : new Date(),
+								createdDate : new Date(),
+								createdBy : curUser,
+								business : curUser.business,
+								status : 'DRAFT'
+							};
+						}
+
+						$scope.warehouses = [];
+						$scope.stockItemList = [];
+						$scope.documentEntity = productionShipment ? productionShipment
+								: $scope.getEmptyObj();
+
+						if ($scope.documentEntity.id) {
+							$scope.documentEntity.shipmentDate = new Date(
+									productionShipment.shipmentDate);
+						}
+
+						$scope.cancel = function() {
+							$mdDialog.cancel();
+						};
+
+						$scope.filterStockItemsByWarehouse = function(
+								selectedWarehouse) {
+							$scope.loading = true;
+							$scope.selectedWarehouse = selectedWarehouse;
+							var stockService = appEndpointSF.getStockService();
+
+							stockService.filterStockItemsByWarehouse(
+									$scope.selectedWarehouse).then(
+									function(stockList) {
+										$scope.stockItemList = stockList;
+										$scope.loading = false;
+									});
+							if (!$scope.documentEntity.id) {
+								$scope.addProductLineItem();
+							}
+						}
+
+						$scope.getAllWarehouseByBusiness = function() {
+							$scope.loading = true;
+							var warehouseService = appEndpointSF
+									.getWarehouseManagementService();
+
+							warehouseService.getAllWarehouseByBusiness(
+									curUser.business.id).then(
+									function(warehouseList) {
+										$scope.warehouses = warehouseList;
+
+										$scope.loading = false;
+									});
+						}
+
+						$scope.addProductLineItem = function() {
+							var item = {
+								isProduct : true,
+								itemName : "",
+								qty : 1,
+								price : "",
+								stockItem : null,
+								selectedTaxItem : null
+							};
+							if (!$scope.documentEntity.productLineItemList) {
+								$scope.documentEntity.productLineItemList = [];
+							}
+							$scope.documentEntity.productLineItemList
+									.push(item);
+						};
+						$scope.draftDocumnent = function(ev) {
+							$scope.documentEntity.status = 'DRAFT';
+							$scope.saveDocument();
+						}
+
+						$scope.submitDocumnent = function(ev) {
+							$scope.documentEntity.status = 'SUBMITTED';
+							$scope.saveDocument();
+						}
+
+						$scope.removeProductItem = function(index) {
+							$scope.documentEntity.productLineItemList.splice(
+									index, 1);
+
+							if ($scope.documentEntity.productLineItemList.length == 0) {
+								$scope.documentEntity.productSubTotal = 0;
+								$scope.documentEntity.productTotal = 0;
+								$scope.documentEntity.productTaxTotal = 0;
+								$scope.documentEntity.selectedProductTax = null;
+							}
+
+							$scope.calProductSubTotal();
+							$scope.calfinalTotal();
+						};
+
+						$scope.finalizeDocumnent = function(ev) {
+							var confirm = $mdDialog
+									.confirm()
+									.title(
+											'Do you want to approve/finalize this Document? Note, after this you will not be able to make any changes in this document.')
+									.textContent('').ariaLabel('finalize?')
+									.targetEvent(ev).ok('Yes').cancel('No');
+
+							$mdDialog
+									.show(confirm)
+									.then(
+											function() {
+												$log
+														.debug("Inside Yes, function");
+												$scope.documentEntity.status = 'FINALIZED';
+												$scope.documentEntity.approvedBy = $scope.curUser;
+												$scope.saveDocument();
+											}, function() {
+												$log.debug("Cancelled...");
+											});
+						}
+
+						$scope.saveDocument = function() {
+
+							$scope.documentEntity.modifiedBy = curUser.email_id;
+
+							var wasUpdate = null;
+							if ($scope.documentEntity.id) {
+								wasUpdate = true;
+							} else {
+								wasUpdate = false;
+							}
+
+							var stockService = appEndpointSF.getStockService();
+
+							stockService.addProductionStockShipment(
+									$scope.documentEntity).then(
+									function(savedObj) {
+										if (wasUpdate) {
+											showAddToast();
+											$mdDialog.cancel();
+										} else {
+											if (!prodPlan.prodShipmentList)
+												prodPlan.prodShipmentList = [];
+
+											prodPlan.prodShipmentList
+													.push(savedObj)
+											var productService = appEndpointSF
+													.getProductionService();
+
+											productService.addProdPlanEntity(
+													prodPlan).then(
+													function(savedObj) {
+														if (savedObj.id)
+															showAddToast();
+
+														$mdDialog.cancel();
+													});
+										}
+
+									});
+
+						}
+
+						$scope.getAllWarehouseByBusiness();
+
+					}
+					
+					
 
 					$scope.fetchBomList = function() {
 						var productService = appEndpointSF

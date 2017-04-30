@@ -75,9 +75,10 @@
 					mdp-min-date="documentEntity.fromDateTime" mdp-format="DD/MM/YYYY"></mdp-date-picker>
 
 				<md-input-container flex> <label>Select
-					Status</label> <md-select name="status" ng-model="documentEntity.status"> <md-option
-					ng-repeat="status in statusList" ng-selected="status == documentEntity.status"
-					ng-value="status">{{status}}</md-option> </md-select> </md-input-container>
+					Status</label> <md-select name="status" ng-model="documentEntity.status">
+				<md-option ng-repeat="status in statusList"
+					ng-selected="status == documentEntity.status" ng-value="status">{{status}}</md-option>
+				</md-select> </md-input-container>
 			</div>
 
 			<div ng-if="documentEntity.id">
@@ -126,6 +127,12 @@
 									<md-tooltip> Print Product Requisition</md-tooltip></ng-md-icon></md-button></td>
 							</tr>
 						</tbody>
+						<tfoot md-foot>
+							<tr md-row>
+								<td md-cell colspan="5"></td>
+							</tr>
+						</tfoot>
+
 					</table>
 					</md-table-container>
 				</div>
@@ -149,16 +156,16 @@
 						<thead ng-if="!dataTableOptions.decapitate" md-head
 							md-order="query.order" md-on-reorder="logOrder">
 							<tr md-row>
-								<th md-column>Sr No.</th>
+								<th md-column>Daily Report Number</th>
 								<th md-column>Report Date</th>
-								<th md-column>Produced Qty</th>
+								<th md-column>Produced Qty.</th>
 								<th md-column>Action</th>
 							</tr>
 						</thead>
 						<tbody md-body>
 							<tr md-row
 								ng-repeat="reportEntity in documentEntity.planDailyReport">
-								<td md-cell>{{$index+1}}</td>
+								<td md-cell>{{reportEntity.itemNumber}}</td>
 								<td md-cell>{{reportEntity.reportDate |
 									formatDateWithTime}}</td>
 								<td md-cell>{{reportEntity.bomProducedQty }}</td>
@@ -170,7 +177,13 @@
 									<ng-md-icon icon="print" style="fill: md-default" size="20">
 									<md-tooltip> Print Product Shipment</md-tooltip></ng-md-icon></md-button> --></td>
 							</tr>
+							
 						</tbody>
+						<tfoot md-foot>
+							<tr md-row>
+								<td md-cell colspan="5"></td>
+							</tr>
+						</tfoot>
 					</table>
 					</md-table-container>
 				</div>
@@ -194,16 +207,16 @@
 						<thead ng-if="!dataTableOptions.decapitate" md-head
 							md-order="query.order" md-on-reorder="logOrder">
 							<tr md-row>
-								<th md-column md-order-by="itemNumber">Ship Item No.</th>
-								<th md-column md-order-by="type">Shipment Date</th>
-								<th md-column md-order-by="type">To Warehouse</th>
-								<th md-column md-order-by="type">Action</th>
+								<th md-column>Stock Transfer Number</th>
+								<th md-column>Transfer Date</th>
+								<th md-column>To Warehouse</th>
+								<th md-column>Action</th>
 							</tr>
 						</thead>
 						<tbody md-body>
 							<tr md-row
 								ng-repeat="shipmentEntity in documentEntity.prodShipmentList">
-								<td md-cell>{{$index+1}}</td>
+								<td md-cell>{{shipmentEntity.itemNumber}}</td>
 								<td md-cell>{{shipmentEntity.shipmentDate |
 									formatDateWithTime}}</td>
 								<td md-cell>{{shipmentEntity.toWH.warehouseName }}</td>
@@ -215,7 +228,13 @@
 									<ng-md-icon icon="print" style="fill: md-default" size="20">
 									<md-tooltip> Print Product Shipment</md-tooltip></ng-md-icon></md-button></td>
 							</tr>
+							
 						</tbody>
+						<tfoot md-foot>
+							<tr md-row>
+								<td md-cell colspan="5"></td>
+							</tr>
+						</tfoot>
 					</table>
 					</md-table-container>
 				</div>

@@ -4,13 +4,16 @@ app.controller("list_prod_requisition", function($scope, $window, $mdToast,
 		$routeParams, $filter, $q, $mdMedia, $mdDialog, objectFactory,
 		appEndpointSF, $mdColors) {
 	$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
-	$scope.query = {
-		order : 'firstName',
-		limit : 5,
-		page : 1,
-		totalSize : 0,
-		pagesLoaded : 0
-	};
+	function reSetQuery() {
+		return {
+			order : '-itemNumber',
+			limit : 50,
+			page : 1,
+			totalSize : 0,
+			pagesLoaded : 0
+		};
+	}
+	$scope.query = reSetQuery();
 
 	$scope.logOrder = function(order) {
 		console.log('order: ', order);

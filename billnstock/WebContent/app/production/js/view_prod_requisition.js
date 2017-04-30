@@ -7,6 +7,17 @@ app
 						appEndpointSF, $mdDialog, $mdMedia) {
 
 					$scope.loading = true;
+					function reSetQuery() {
+						return {
+							order : '-itemNumber',
+							limit : 50,
+							page : 1,
+							totalSize : 0,
+							pagesLoaded : 0
+						};
+					}
+					$scope.query = reSetQuery();
+					
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
 
@@ -61,7 +72,7 @@ app
 						$scope.getEmptyObj = function() {
 							return {
 								productLineItemList : [],
-								catList : productionRequisition.catList,
+								catList : angular.copy(productionRequisition.catList),
 								reqItemNumber : productionRequisition.itemNumber,
 								createdDate : new Date(),
 								createdBy : curUser,
