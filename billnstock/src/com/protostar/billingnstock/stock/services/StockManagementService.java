@@ -28,14 +28,11 @@ import com.protostar.billingnstock.production.entities.ProductionShipmentEntity;
 import com.protostar.billingnstock.production.entities.QCParameter;
 import com.protostar.billingnstock.production.entities.StockShipmentAgainstProductionRequisition;
 import com.protostar.billingnstock.purchase.entities.BudgetEntity;
-import com.protostar.billingnstock.purchase.entities.LineItemCategory;
-import com.protostar.billingnstock.purchase.entities.LineItemEntity;
 import com.protostar.billingnstock.purchase.entities.PurchaseOrderEntity;
 import com.protostar.billingnstock.purchase.entities.PurchaseOrderReport;
 import com.protostar.billingnstock.purchase.entities.PurchaseOrderReportItem;
 import com.protostar.billingnstock.purchase.entities.RequisitionEntity;
 import com.protostar.billingnstock.purchase.entities.SupplierEntity;
-import com.protostar.billingnstock.stock.entities.BomLineItemCategory;
 import com.protostar.billingnstock.stock.entities.StockItemBrand;
 import com.protostar.billingnstock.stock.entities.StockItemEntity;
 import com.protostar.billingnstock.stock.entities.StockItemInstanceEntity;
@@ -49,8 +46,9 @@ import com.protostar.billingnstock.stock.entities.StockItemTypeFilterWrapper;
 import com.protostar.billingnstock.stock.entities.StockItemUnit;
 import com.protostar.billingnstock.stock.entities.StockItemsReceiptEntity;
 import com.protostar.billingnstock.stock.entities.StockItemsShipmentEntity;
-import com.protostar.billingnstock.stock.entities.StockItemsShipmentEntity.ShipmentType;
 import com.protostar.billingnstock.stock.entities.StockLineItem;
+import com.protostar.billingnstock.stock.entities.StockLineItemCategory;
+import com.protostar.billingnstock.stock.entities.StockLineItemsByCategory;
 import com.protostar.billingnstock.stock.entities.StockReceiptQCEntity;
 import com.protostar.billingnstock.stock.entities.StockReceiptQCRecord;
 import com.protostar.billingnstock.stock.entities.StockSettingsEntity;
@@ -60,6 +58,7 @@ import com.protostar.billingnstock.user.services.UserService;
 import com.protostar.billingnstock.warehouse.entities.WarehouseEntity;
 import com.protostar.billnstock.service.BaseService;
 import com.protostar.billnstock.until.data.Constants.DocumentStatus;
+import com.protostar.billnstock.until.data.Constants.StockShipmentType;
 import com.protostar.billnstock.until.data.EmailHandler;
 import com.protostar.billnstock.until.data.EntityPagingInfo;
 import com.protostar.billnstock.until.data.EntityUtil;
@@ -108,24 +107,23 @@ public class StockManagementService extends BaseService {
 		return stockItemBrands;
 	}
 
-	
-	
 	@ApiMethod(name = "addProductionStockIssueList", path = "addProductionStockIssueList")
-	public StockShipmentAgainstProductionRequisition addProductionStockIssueList (StockShipmentAgainstProductionRequisition stockissue) {
-		//System.out.println("--------stockissue-DeliveryDateTime-------"+stockissue.getDeliveryDateTime());
+	public StockShipmentAgainstProductionRequisition addProductionStockIssueList(
+			StockShipmentAgainstProductionRequisition stockissue) {
+		// System.out.println("--------stockissue-DeliveryDateTime-------"+stockissue.getDeliveryDateTime());
 		ofy().save().entity(stockissue).now();
 		return stockissue;
 	}
-	
-	
+
 	@ApiMethod(name = "getStockShipmentIssueList", path = "getStockShipmentIssueList")
 	public List<StockShipmentAgainstProductionRequisition> getStockShipmentIssueList(@Named("busId") Long busId) {
 
-		List<StockShipmentAgainstProductionRequisition> stockShipmentIssueList = ofy().load().type(StockShipmentAgainstProductionRequisition.class)
-				.ancestor(Key.create(BusinessEntity.class, busId)).list();
+		List<StockShipmentAgainstProductionRequisition> stockShipmentIssueList = ofy().load()
+				.type(StockShipmentAgainstProductionRequisition.class).ancestor(Key.create(BusinessEntity.class, busId))
+				.list();
 		return stockShipmentIssueList;
 	}
-	
+
 	@ApiMethod(name = "getStockItemProductTypes", path = "getStockItemProductTypes")
 	public List<StockItemProductTypeEntity> getStockItemProductTypes(@Named("busId") Long busId) {
 
@@ -332,7 +330,7 @@ public class StockManagementService extends BaseService {
 				if (documentEntity.getStatus() == DocumentStatus.FINALIZED) {
 					List<StockLineItem> stockLineItemsToProcess = new ArrayList<StockLineItem>();
 					if (documentEntity.getShipmentType() != null
-							&& documentEntity.getShipmentType() == ShipmentType.TO_OTHER_WAREHOUSE
+							&& documentEntity.getShipmentType() == StockShipmentType.TO_OTHER_WAREHOUSE
 							&& documentEntity.getToWH() != null) {
 
 						for (StockLineItem stockLineItem : productLineItemList) {
@@ -449,14 +447,18 @@ public class StockManagementService extends BaseService {
 		return documentEntity;
 	}
 
+	@SuppressWarnings("unused")
 	public ProductionShipmentEntity addProductionShipmentEntity(ProductionShipmentEntity documentEntity) {
 		ofy().save().entity(documentEntity).now();
 		List<StockLineItem> productLineItemList = documentEntity.getProductLineItemList();
 
-		if (documentEntity.getStatus() == DocumentStatus.FINALIZED) {
+		// this should never execute, as stock owner should create separate
+		// Stock
+		// Receipt, QC and verify against this transfer
+		if (false && documentEntity.getStatus() == DocumentStatus.FINALIZED) {
 			List<StockLineItem> stockLineItemsToProcess = new ArrayList<StockLineItem>();
 			if (documentEntity.getShipmentType() != null
-					&& documentEntity.getShipmentType() == ShipmentType.TO_OTHER_WAREHOUSE
+					&& documentEntity.getShipmentType() == StockShipmentType.TO_OTHER_WAREHOUSE
 					&& documentEntity.getToWH() != null) {
 
 				for (StockLineItem stockLineItem : productLineItemList) {
@@ -572,14 +574,21 @@ public class StockManagementService extends BaseService {
 	}
 
 	@ApiMethod(name = "filterStockItemsByBomTypes", path = "filterStockItemsByBomTypes")
-	public List<StockItemEntity> filterStockItemsByBomTypes(BomEntity bomEntity) {
+	public List<StockItemEntity> filterStockItemsByBomTypes(StockItemTypeFilterWrapper fitlerWrapper) {
 		List<StockItemTypeEntity> bomStockItemTypes = new ArrayList<StockItemTypeEntity>();
+		WarehouseEntity warehouse = fitlerWrapper.getWarehouse();
+		Query<StockItemEntity> filterQuery = null;
+		if (warehouse != null) {
+			filterQuery = ofy().load().type(StockItemEntity.class).ancestor(warehouse.getBusiness()).filter("warehouse",
+					warehouse);
+		}
 
-		if (bomEntity.getCatList() != null) {
-			List<BomLineItemCategory> catList = bomEntity.getCatList();
-			for (BomLineItemCategory bomLineItemCategory : catList) {
+		BomEntity bomEntity = fitlerWrapper.getBomEntity();
+		if (bomEntity != null && bomEntity.getCatList() != null) {
+			List<StockLineItemsByCategory> catList = bomEntity.getCatList();
+			for (StockLineItemsByCategory bomLineItemCategory : catList) {
 				if (bomLineItemCategory != null && bomLineItemCategory.getItems() != null) {
-					for (LineItemEntity lineItem : bomLineItemCategory.getItems()) {
+					for (StockLineItem lineItem : bomLineItemCategory.getItems()) {
 						if (lineItem.getStockItemType() != null) {
 							bomStockItemTypes.add(lineItem.getStockItemType());
 						}
@@ -590,8 +599,12 @@ public class StockManagementService extends BaseService {
 
 		List<StockItemEntity> filteredStocksAcrossWarehouses = new ArrayList<StockItemEntity>();
 		if (bomStockItemTypes.size() > 0) {
-			filteredStocksAcrossWarehouses = ofy().load().type(StockItemEntity.class).ancestor(bomEntity.getBusiness())
-					.filter("stockItemType IN", bomStockItemTypes).list();
+			if (filterQuery == null) {
+				filteredStocksAcrossWarehouses = ofy().load().type(StockItemEntity.class)
+						.ancestor(bomEntity.getBusiness()).filter("stockItemType IN", bomStockItemTypes).list();
+			} else {
+				filteredStocksAcrossWarehouses = filterQuery.filter("stockItemType IN", bomStockItemTypes).list();
+			}
 		}
 		return filteredStocksAcrossWarehouses;
 	}
@@ -697,7 +710,7 @@ public class StockManagementService extends BaseService {
 
 		List<StockItemTypeEntity> filteredStocks = ofy().load().type(StockItemTypeEntity.class)
 				.ancestor(category.getBusiness()).filter("categoryList", category).list();
-		//System.out.println("filteredStocks.size" + filteredStocks.size());
+		// System.out.println("filteredStocks.size" + filteredStocks.size());
 		return filteredStocks;
 	}
 
@@ -1027,16 +1040,16 @@ public class StockManagementService extends BaseService {
 				&& purchaseOrderEntity.getBudgetLineItem() != null) {
 			// Reduce Budget Balance
 			BudgetEntity budget = purchaseOrderEntity.getBudget();
-			List<LineItemCategory> categoryList = budget.getCategoryList();
-			for (LineItemCategory lineItemCat : categoryList) {
+			List<StockLineItemCategory> categoryList = budget.getCategoryList();
+			for (StockLineItemCategory lineItemCat : categoryList) {
 				if (lineItemCat.getCategoryName()
 						.equalsIgnoreCase(purchaseOrderEntity.getBudgetLineItemCategory().getCategoryName().trim())) {
-					List<LineItemEntity> items = lineItemCat.getItems();
-					for (LineItemEntity lineItemEntity : items) {
-						if (lineItemEntity.getItemName()
+					List<StockLineItem> items = lineItemCat.getItems();
+					for (StockLineItem stockLineItem : items) {
+						if (stockLineItem.getItemName()
 								.equalsIgnoreCase(purchaseOrderEntity.getBudgetLineItem().getItemName().trim())) {
-							lineItemEntity.setCurrentBudgetBalance(
-									lineItemEntity.getCurrentBudgetBalance() - purchaseOrderEntity.getFinalTotal());
+							stockLineItem.setCurrentBudgetBalance(
+									stockLineItem.getCurrentBudgetBalance() - purchaseOrderEntity.getFinalTotal());
 							// save async
 							ofy().save().entity(budget);
 							break;

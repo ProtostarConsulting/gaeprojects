@@ -8,7 +8,7 @@ import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
-import com.protostar.billingnstock.stock.entities.BomLineItemCategory;
+import com.protostar.billingnstock.stock.entities.StockLineItemsByCategory;
 import com.protostar.billnstock.entity.BaseEntity;
 import com.protostar.billnstock.until.data.Constants;
 import com.protostar.billnstock.until.data.Constants.DocumentStatus;
@@ -29,7 +29,7 @@ public class ProductionRequisitionEntity extends BaseEntity {
 	@Index
 	private int prodPlanItemNumber;
 
-	private List<BomLineItemCategory> catList = new ArrayList<BomLineItemCategory>();
+	private List<StockLineItemsByCategory> catList = new ArrayList<StockLineItemsByCategory>();
 	private List<Ref<StockShipmentAgainstProductionRequisition>> stockShipmentList = new ArrayList<Ref<StockShipmentAgainstProductionRequisition>>();
 
 	@Override
@@ -43,7 +43,7 @@ public class ProductionRequisitionEntity extends BaseEntity {
 		}
 	}
 
-	public List<BomLineItemCategory> getCatList() {
+	public List<StockLineItemsByCategory> getCatList() {
 		return catList;
 	}
 
@@ -65,7 +65,7 @@ public class ProductionRequisitionEntity extends BaseEntity {
 		this.productQty = productQty;
 	}
 
-	public void setCatList(List<BomLineItemCategory> catList) {
+	public void setCatList(List<StockLineItemsByCategory> catList) {
 		this.catList = catList;
 	}
 

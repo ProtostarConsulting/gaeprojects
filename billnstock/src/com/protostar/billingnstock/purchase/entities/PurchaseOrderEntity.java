@@ -8,6 +8,8 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
 import com.protostar.billingnstock.invoice.entities.InvoiceEntity;
 import com.protostar.billingnstock.stock.entities.StockItemOrderType;
+import com.protostar.billingnstock.stock.entities.StockLineItem;
+import com.protostar.billingnstock.stock.entities.StockLineItemCategory;
 import com.protostar.billingnstock.warehouse.entities.WarehouseEntity;
 import com.protostar.billnstock.until.data.Constants;
 import com.protostar.billnstock.until.data.Constants.DocumentStatus;
@@ -35,8 +37,8 @@ public class PurchaseOrderEntity extends InvoiceEntity {
 	@Index
 	private Ref<StockItemOrderType> orderType;
 
-	private LineItemCategory budgetLineItemCategory;
-	private LineItemEntity budgetLineItem;
+	private StockLineItemCategory budgetLineItemCategory;
+	private StockLineItem budgetLineItem;
 
 	@Override
 	public void beforeSave() {
@@ -171,20 +173,20 @@ public class PurchaseOrderEntity extends InvoiceEntity {
 		this.poDueDate = poDueDate;
 	}
 
-	public LineItemCategory getBudgetLineItemCategory() {
+	public StockLineItemCategory getBudgetLineItemCategory() {
 		return budgetLineItemCategory;
 	}
 
 	public void setBudgetLineItemCategory(
-			LineItemCategory budgetLineItemCategory) {
+			StockLineItemCategory budgetLineItemCategory) {
 		this.budgetLineItemCategory = budgetLineItemCategory;
 	}
 
-	public LineItemEntity getBudgetLineItem() {
+	public StockLineItem getBudgetLineItem() {
 		return budgetLineItem;
 	}
 
-	public void setBudgetLineItem(LineItemEntity budgetLineItem) {
+	public void setBudgetLineItem(StockLineItem budgetLineItem) {
 		this.budgetLineItem = budgetLineItem;
 	}
 }

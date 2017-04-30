@@ -17,7 +17,7 @@ app
 						};
 					}
 					$scope.query = reSetQuery();
-					
+
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
 
@@ -72,7 +72,8 @@ app
 						$scope.getEmptyObj = function() {
 							return {
 								productLineItemList : [],
-								catList : angular.copy(productionRequisition.catList),
+								catList : angular
+										.copy(productionRequisition.catList),
 								reqItemNumber : productionRequisition.itemNumber,
 								createdDate : new Date(),
 								createdBy : curUser,
@@ -80,6 +81,8 @@ app
 								status : 'DRAFT'
 							};
 						}
+
+						$scope.productionRequisition = productionRequisition;
 
 						$scope.documentEntity = prodStock ? prodStock : $scope
 								.getEmptyObj();
@@ -89,17 +92,37 @@ app
 									$scope.documentEntity.deliveryDateTime);
 						}
 
-						$scope.addCatogory = function() {
+						$scope.removeWarehouseLineItem = function(index) {
+							$scope.documentEntity.fromWarehouseList.splice(
+									index, 1);
+						}
+
+						$scope.addWarehouseLineItem = function() {
+							var fromWarehouse = {
+								fromWH : null,
+								catList : angular
+										.copy(productionRequisition.catList),
+							};
+
+							if (!$scope.documentEntity.fromWarehouseList) {
+								$scope.documentEntity.fromWarehouseList = [];
+							}
+							$scope.documentEntity.fromWarehouseList
+									.push(fromWarehouse);
+
+							// $scope.addCatogory(fromWarehouse);
+						};
+
+						$scope.addCatogory = function(fromWarehouse) {
 							var category = {
 								cat : null,
-								items : [],
-								categoryStockTypeList : []
+								items : []
 							};
 
 							if (!$scope.documentEntity.catList) {
-								$scope.documentEntity.catList = [];
+								fromWarehouse.catList = [];
 							}
-							$scope.documentEntity.catList.push(category);
+							fromWarehouse.catList.push(category);
 							$scope.addLineItem(category);
 						}
 
@@ -108,9 +131,7 @@ app
 
 							var itemObj = {
 								itemName : "",
-								price : 0,
-								qty : "",
-								currentBudgetBalance : 0
+								qty : ""
 							};
 
 							if (!category.items) {
@@ -174,10 +195,52 @@ app
 									curUser.business.id).then(
 									function(warehouseList) {
 										$scope.warehouses = warehouseList;
+										if (!$scope.documentEntity.id) {
+											$scope.addWarehouseLineItem();
+										}
 										$scope.loading = false;
 									});
 						}
-						$scope.getAllWarehouseByBusiness();
+
+						$scope.filterStockItemsByBomTypes = function(
+								warehouseLineItem) {
+							if (warehouseLineItem.fromWH
+									&& $scope.productionRequisition.bomEntity
+									&& !warehouseLineItem.fromWH.warehouseStockItemList) {
+								var stockService = appEndpointSF
+										.getStockService();
+								stockService
+										.filterStockItemsByBomTypes(
+												{
+													'warehouse' : warehouseLineItem.fromWH,
+													'bomEntity' : $scope.productionRequisition.bomEntity
+												})
+										.then(
+												function(stockList) {
+													warehouseLineItem.fromWH.warehouseStockItemList = stockList;
+												});
+							}
+						}
+
+						$scope.getCurrentWHStockItemQty = function(
+								warehouseLineItem, stockItemType) {
+							var totalStockQty = 0;
+							if (!stockItemType || !warehouseLineItem.fromWH) {
+								return 'NA';
+							}
+
+							if (!warehouseLineItem.fromWH.warehouseStockItemList) {
+								return totalStockQty;
+							}
+							angular
+									.forEach(
+											warehouseLineItem.fromWH.warehouseStockItemList,
+											function(stockItem) {
+												if (stockItem.stockItemType.id == stockItemType.id)
+													totalStockQty += stockItem.qty;
+											});
+							return totalStockQty;
+						}
 
 						$scope.draftDocumnent = function(ev) {
 							$scope.documentEntity.status = 'DRAFT';
@@ -192,6 +255,7 @@ app
 						$scope.cancel = function() {
 							$mdDialog.cancel();
 						};
+						$scope.getAllWarehouseByBusiness();
 					}
 
 				});

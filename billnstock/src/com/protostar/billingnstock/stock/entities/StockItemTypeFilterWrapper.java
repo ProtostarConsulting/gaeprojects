@@ -2,6 +2,7 @@ package com.protostar.billingnstock.stock.entities;
 
 import java.util.List;
 
+import com.protostar.billingnstock.production.entities.BomEntity;
 import com.protostar.billingnstock.warehouse.entities.WarehouseEntity;
 
 public class StockItemTypeFilterWrapper {
@@ -9,6 +10,7 @@ public class StockItemTypeFilterWrapper {
 	private StockItemProductTypeEntity productType;
 	private StockItemTypeCategory category;
 	private WarehouseEntity warehouse;
+	private BomEntity bomEntity;
 	private List<StockItemTypeCategory> categoryList;
 
 	public List<StockItemTypeCategory> getCategoryList() {
@@ -49,5 +51,13 @@ public class StockItemTypeFilterWrapper {
 
 	public void setBrand(StockItemBrand brand) {
 		this.brand = brand;
+	}
+
+	public BomEntity getBomEntity() {
+		return bomEntity;
+	}
+
+	public void setBomEntity(BomEntity bomEntity) {
+		this.bomEntity = bomEntity;
 	}
 }

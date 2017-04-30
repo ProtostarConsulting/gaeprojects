@@ -12,18 +12,17 @@ import com.protostar.billingnstock.warehouse.entities.WarehouseEntity;
 import com.protostar.billnstock.entity.BaseEntity;
 import com.protostar.billnstock.until.data.Constants;
 import com.protostar.billnstock.until.data.Constants.DocumentStatus;
+import com.protostar.billnstock.until.data.Constants.StockShipmentType;
 import com.protostar.billnstock.until.data.EntityUtil;
 import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 
 @Entity
 public class StockItemsShipmentEntity extends BaseEntity {
 
-	public enum ShipmentType {
-		TO_CUSTOMER, TO_OTHER_WAREHOUSE, TO_PARTNER
-	};
+	
 
 	@Index
-	private ShipmentType shipmentType = ShipmentType.TO_CUSTOMER;
+	private StockShipmentType shipmentType = StockShipmentType.TO_CUSTOMER;
 
 	@Index
 	private DocumentStatus status = DocumentStatus.DRAFT;
@@ -56,8 +55,7 @@ public class StockItemsShipmentEntity extends BaseEntity {
 
 		if (getId() == null) {
 			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
-					EntityUtil.getBusinessRawKey(getBusiness()),
-					Constants.STOCKSHIPMENT_NO_COUNTER);
+					EntityUtil.getBusinessRawKey(getBusiness()), Constants.STOCKSHIPMENT_NO_COUNTER);
 			setItemNumber(sequenceGenService.getNextSequenceNumber());
 		}
 	}
@@ -101,8 +99,7 @@ public class StockItemsShipmentEntity extends BaseEntity {
 		return otherCostsLineItemList;
 	}
 
-	public void setOtherCostsLineItemList(
-			List<StockLineItem> otherCostsLineItemList) {
+	public void setOtherCostsLineItemList(List<StockLineItem> otherCostsLineItemList) {
 		this.otherCostsLineItemList = otherCostsLineItemList;
 	}
 
@@ -148,11 +145,11 @@ public class StockItemsShipmentEntity extends BaseEntity {
 		this.deliveredDate = deliveredDate;
 	}
 
-	public ShipmentType getShipmentType() {
+	public StockShipmentType getShipmentType() {
 		return shipmentType;
 	}
 
-	public void setShipmentType(ShipmentType shipmentType) {
+	public void setShipmentType(StockShipmentType shipmentType) {
 		this.shipmentType = shipmentType;
 	}
 

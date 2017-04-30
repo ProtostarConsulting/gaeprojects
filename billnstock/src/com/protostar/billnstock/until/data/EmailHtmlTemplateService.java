@@ -15,13 +15,13 @@ import com.protostar.billingnstock.purchase.entities.PurchaseOrderEntity;
 import com.protostar.billingnstock.purchase.entities.RequisitionEntity;
 import com.protostar.billingnstock.stock.entities.StockItemsReceiptEntity;
 import com.protostar.billingnstock.stock.entities.StockItemsShipmentEntity;
-import com.protostar.billingnstock.stock.entities.StockItemsShipmentEntity.ShipmentType;
 import com.protostar.billingnstock.taskmangement.TaskEntity;
 import com.protostar.billingnstock.taskmangement.TaskEntity.TaskStatus;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 import com.protostar.billnstock.entity.BaseEntity;
 import com.protostar.billnstock.service.UtilityService;
 import com.protostar.billnstock.until.data.Constants.DocumentStatus;
+import com.protostar.billnstock.until.data.Constants.StockShipmentType;
 
 import freemarker.core.ParseException;
 import freemarker.template.Configuration;
@@ -187,12 +187,12 @@ public class EmailHtmlTemplateService {
 			root.put("documentStatus", documentStatus);
 			root.put("docStatusLable", docStatusLable);
 
-			ShipmentType shipmentType = documentEntity.getShipmentType();
-			if (shipmentType.equals(ShipmentType.TO_OTHER_WAREHOUSE)) {
+			StockShipmentType shipmentType = documentEntity.getShipmentType();
+			if (shipmentType.equals(StockShipmentType.TO_OTHER_WAREHOUSE)) {
 				root.put("toWH", documentEntity.getToWH().getWarehouseName());
 			}
 
-			else if (shipmentType.equals(ShipmentType.TO_CUSTOMER)) {
+			else if (shipmentType.equals(StockShipmentType.TO_CUSTOMER)) {
 
 				Customer customer = documentEntity.getCustomer();
 
@@ -206,7 +206,7 @@ public class EmailHtmlTemplateService {
 				}
 
 				root.put("customerName", custName);
-			} else if (shipmentType.equals(ShipmentType.TO_PARTNER)) {
+			} else if (shipmentType.equals(StockShipmentType.TO_PARTNER)) {
 
 				Customer partner = documentEntity.getCustomer();
 				String partnerName = "";

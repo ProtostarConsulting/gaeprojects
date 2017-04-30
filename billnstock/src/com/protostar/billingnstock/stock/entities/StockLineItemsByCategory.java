@@ -3,18 +3,17 @@ package com.protostar.billingnstock.stock.entities;
 import java.util.List;
 
 import com.googlecode.objectify.Ref;
-import com.protostar.billingnstock.purchase.entities.LineItemEntity;
 
-public class BomLineItemCategory {
+public class StockLineItemsByCategory {
 
 	private Ref<StockItemTypeCategory> cat;
-	private List<LineItemEntity> items;
+	private List<StockLineItem> items;
 
-	public List<LineItemEntity> getItems() {
+	public List<StockLineItem> getItems() {
 		return items;
 	}
 
-	public void setItems(List<LineItemEntity> items) {
+	public void setItems(List<StockLineItem> items) {
 		this.items = items;
 	}
 

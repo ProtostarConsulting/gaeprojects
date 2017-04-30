@@ -5,6 +5,7 @@ import java.util.List;
 import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
+import com.protostar.billingnstock.stock.entities.StockLineItemCategory;
 import com.protostar.billnstock.entity.BaseEntity;
 import com.protostar.billnstock.until.data.Constants;
 import com.protostar.billnstock.until.data.Constants.BudgetType;
@@ -21,7 +22,7 @@ public class BudgetEntity extends BaseEntity {
 	private BudgetType type = BudgetType.NA;
 	@Index
 	private String period; 
-	private List<LineItemCategory> categoryList;
+	private List<StockLineItemCategory> categoryList;
 	
 	@Override
 	public void beforeSave() {
@@ -40,10 +41,10 @@ public class BudgetEntity extends BaseEntity {
 	public void setType(BudgetType type) {
 		this.type = type;
 	}	
-	public List<LineItemCategory> getCategoryList() {
+	public List<StockLineItemCategory> getCategoryList() {
 		return categoryList;
 	}
-	public void setCategoryList(List<LineItemCategory> categoryList) {
+	public void setCategoryList(List<StockLineItemCategory> categoryList) {
 		this.categoryList = categoryList;
 	}
 	public String getPeriod() {

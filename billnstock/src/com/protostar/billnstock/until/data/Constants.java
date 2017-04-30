@@ -100,6 +100,10 @@ public class Constants {
 	public static final int DOCUMENT_DEFAULT_MAX_SIZE = 5000000;
 	// MAX Document size is 5 MB
 
+	public enum StockShipmentType {
+		TO_CUSTOMER, TO_OTHER_WAREHOUSE, TO_PRODUCTION, TO_PARTNER
+	};
+
 	public enum DueDateTypes {
 		IMMEDIATE, NET15, NET30, NET60, NET90, CUSTOM
 	};

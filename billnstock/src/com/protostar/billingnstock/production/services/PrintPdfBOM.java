@@ -8,7 +8,6 @@ import java.io.StringReader;
 import java.io.Writer;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -24,8 +23,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
 import com.protostar.billingnstock.production.entities.BomEntity;
-import com.protostar.billingnstock.purchase.entities.LineItemEntity;
-import com.protostar.billingnstock.stock.entities.BomLineItemCategory;
+import com.protostar.billingnstock.stock.entities.StockLineItemsByCategory;
 import com.protostar.billingnstock.user.entities.UserEntity;
 import com.protostar.billnstock.until.data.Constants;
 import com.protostar.billnstock.until.data.PDFHtmlTemplateService;
@@ -71,7 +69,7 @@ public class PrintPdfBOM extends HttpServlet {
 			Map<String, Object> root = new HashMap<String, Object>();
 			PDFHtmlTemplateService.addDocumentHeaderLogo(bomEntity, document, root);
 
-			List<BomLineItemCategory> productItemList = bomEntity.getCatList();
+			List<StockLineItemsByCategory> productItemList = bomEntity.getCatList();
 			root.put("productItemList", productItemList);
 
 			DecimalFormat df = new DecimalFormat("#0.00");

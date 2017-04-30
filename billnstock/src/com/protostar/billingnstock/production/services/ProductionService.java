@@ -22,7 +22,7 @@ import com.protostar.billingnstock.production.entities.ProductionShipmentEntity;
 import com.protostar.billingnstock.production.entities.QCMachineDailyRecordEntity;
 import com.protostar.billingnstock.production.entities.QCMachineEntity;
 import com.protostar.billingnstock.production.entities.StockShipmentAgainstProductionRequisition;
-import com.protostar.billingnstock.stock.entities.BomLineItemCategory;
+import com.protostar.billingnstock.stock.entities.StockLineItemsByCategory;
 import com.protostar.billingnstock.stock.services.StockManagementService;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
 
@@ -56,7 +56,7 @@ public class ProductionService {
 		prodReq.setProductQty(1);
 		prodReq.setDeliveryDateTime(new Date());
 
-		List<BomLineItemCategory> bomCatList = bom.getCatList();
+		List<StockLineItemsByCategory> bomCatList = bom.getCatList();
 		prodReq.setCatList(bomCatList);
 
 		return prodReq;

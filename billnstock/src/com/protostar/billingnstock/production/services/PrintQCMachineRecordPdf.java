@@ -26,7 +26,7 @@ import com.itextpdf.tool.xml.XMLWorkerHelper;
 import com.protostar.billingnstock.production.entities.QCMachineDailyRecordEntity;
 import com.protostar.billingnstock.production.entities.QCParameterRecord;
 import com.protostar.billingnstock.production.entities.QCTimeParameterValue;
-import com.protostar.billingnstock.stock.entities.BomLineItemCategory;
+import com.protostar.billingnstock.stock.entities.StockLineItemsByCategory;
 import com.protostar.billingnstock.user.entities.UserEntity;
 import com.protostar.billnstock.until.data.Constants;
 import com.protostar.billnstock.until.data.PDFHtmlTemplateService;

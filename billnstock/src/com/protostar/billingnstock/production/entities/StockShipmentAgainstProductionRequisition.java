@@ -7,7 +7,7 @@ import java.util.List;
 import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
-import com.protostar.billingnstock.stock.entities.BomLineItemCategory;
+import com.protostar.billingnstock.stock.entities.StockLineItemsByWarehouse;
 import com.protostar.billnstock.entity.BaseEntity;
 import com.protostar.billnstock.until.data.Constants;
 import com.protostar.billnstock.until.data.Constants.DocumentStatus;
@@ -18,9 +18,12 @@ import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 @Entity
 public class StockShipmentAgainstProductionRequisition extends BaseEntity {
 
-	private List<BomLineItemCategory> catList = new ArrayList<BomLineItemCategory>();
+	private List<StockLineItemsByWarehouse> fromWarehouseList = new ArrayList<StockLineItemsByWarehouse>();
+
 	private DocumentStatus status = DocumentStatus.DRAFT;
+
 	private Date deliveryDateTime;
+
 	@Index
 	private int reqItemNumber;
 
@@ -30,14 +33,9 @@ public class StockShipmentAgainstProductionRequisition extends BaseEntity {
 
 		if (getId() == null) {
 			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
-					EntityUtil.getBusinessRawKey(getBusiness()),
-					Constants.PROD_STOCKISSUE_NO_COUNTER);
+					EntityUtil.getBusinessRawKey(getBusiness()), Constants.PROD_STOCKISSUE_NO_COUNTER);
 			setItemNumber(sequenceGenService.getNextSequenceNumber());
 		}
-	}
-
-	public List<BomLineItemCategory> getCatList() {
-		return catList;
 	}
 
 	public DocumentStatus getStatus() {
@@ -46,10 +44,6 @@ public class StockShipmentAgainstProductionRequisition extends BaseEntity {
 
 	public void setStatus(DocumentStatus status) {
 		this.status = status;
-	}
-
-	public void setCatList(List<BomLineItemCategory> catList) {
-		this.catList = catList;
 	}
 
 	public Date getDeliveryDateTime() {
@@ -66,5 +60,13 @@ public class StockShipmentAgainstProductionRequisition extends BaseEntity {
 
 	public void setReqItemNumber(int reqItemNumber) {
 		this.reqItemNumber = reqItemNumber;
+	}
+
+	public List<StockLineItemsByWarehouse> getFromWarehouseList() {
+		return fromWarehouseList;
+	}
+
+	public void setFromWarehouseList(List<StockLineItemsByWarehouse> fromWarehouseList) {
+		this.fromWarehouseList = fromWarehouseList;
 	}
 }

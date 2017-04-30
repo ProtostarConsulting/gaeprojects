@@ -13,12 +13,16 @@ public class StockLineItem {
 	private int qty;
 	private double cost;
 	private double price;
-	Ref<TaxEntity> selectedTaxItem;
 
 	private boolean isProduct = false;
 
+	private int stockIssuedQty;
+	private double currentBudgetBalance;
+
 	private int stockMaintainedQty;
 	private StockItemEntity stockItem;
+	private Ref<StockItemTypeEntity> stockItemType;
+	Ref<TaxEntity> selectedTaxItem;
 
 	@Embedded
 	private List<StockItemInstanceEntity> stockItemInstanceList;
@@ -30,6 +34,18 @@ public class StockLineItem {
 	public void setSelectedTaxItem(TaxEntity selectedTaxItem) {
 		if (selectedTaxItem != null)
 			this.selectedTaxItem = Ref.create(selectedTaxItem);
+	}
+
+	public StockItemTypeEntity getStockItemType() {
+		if (this.stockItemType == null)
+			return null;
+
+		return this.stockItemType.get();
+	}
+
+	public void setStockItemType(StockItemTypeEntity stockItemType) {
+		if (stockItemType != null)
+			this.stockItemType = Ref.create(stockItemType);
 	}
 
 	public String getItemName() {
@@ -86,6 +102,22 @@ public class StockLineItem {
 
 	public void setStockItem(StockItemEntity stockItem) {
 		this.stockItem = stockItem;
+	}
+
+	public double getCurrentBudgetBalance() {
+		return currentBudgetBalance;
+	}
+
+	public void setCurrentBudgetBalance(double currentBudgetBalance) {
+		this.currentBudgetBalance = currentBudgetBalance;
+	}
+
+	public int getStockIssuedQty() {
+		return stockIssuedQty;
+	}
+
+	public void setStockIssuedQty(int stockIssuedQty) {
+		this.stockIssuedQty = stockIssuedQty;
 	}
 
 	public static StockLineItem getCopy(StockLineItem fromCopy) {

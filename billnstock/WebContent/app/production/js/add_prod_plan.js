@@ -176,7 +176,6 @@ app
 										});
 					};
 
-					
 					// production shipment List
 					$scope.addProdShip = function(ev, productionShipment) {
 						var useFullScreen = $mdMedia('xs');
@@ -207,7 +206,7 @@ app
 										});
 
 					}
-					
+
 					function addProdReqCtr($scope, $mdDialog, curUser,
 							productionRequisition, prodPlan, bomList,
 							showAddToast) {
@@ -258,7 +257,9 @@ app
 						$scope.filterStockItemsByBomTypes = function(bomEntity) {
 							var stockService = appEndpointSF.getStockService();
 							stockService
-									.filterStockItemsByBomTypes(bomEntity)
+									.filterStockItemsByBomTypes({
+										'bomEntity' : bomEntity
+									})
 									.then(
 											function(stockList) {
 												$scope.firmStockItemList = stockList;
@@ -382,7 +383,7 @@ app
 									.filterStockItemsByBomTypes($scope.productionRequisitionBackup.bomEntity);
 						}
 					}
-					
+
 					function addProdReportCtr($scope, $mdDialog, curUser,
 							prodctionReport, prodPlan, bomList, showAddToast) {
 
@@ -473,7 +474,7 @@ app
 							$mdDialog.cancel();
 						};
 					}
-					
+
 					function addProdShipCtr($scope, $mdDialog, curUser,
 							productionShipment, prodPlan, showAddToast) {
 
@@ -640,8 +641,6 @@ app
 						$scope.getAllWarehouseByBusiness();
 
 					}
-					
-					
 
 					$scope.fetchBomList = function() {
 						var productService = appEndpointSF

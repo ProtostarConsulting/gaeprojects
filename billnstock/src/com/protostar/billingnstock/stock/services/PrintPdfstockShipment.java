@@ -23,10 +23,10 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
 import com.protostar.billingnstock.cust.entities.Customer;
 import com.protostar.billingnstock.stock.entities.StockItemsShipmentEntity;
-import com.protostar.billingnstock.stock.entities.StockItemsShipmentEntity.ShipmentType;
 import com.protostar.billingnstock.stock.entities.StockLineItem;
 import com.protostar.billingnstock.user.entities.UserEntity;
 import com.protostar.billnstock.entity.Address;
+import com.protostar.billnstock.until.data.Constants.StockShipmentType;
 import com.protostar.billnstock.until.data.NumberToRupees;
 import com.protostar.billnstock.until.data.PDFHtmlTemplateService;
 
@@ -78,7 +78,7 @@ public class PrintPdfstockShipment extends HttpServlet {
 
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
 
-			ShipmentType shipmentType = stockItemsShipment.getShipmentType();
+			StockShipmentType shipmentType = stockItemsShipment.getShipmentType();
 			root.put("createdDate", sdfDate.format(stockItemsShipment.getCreatedDate()));
 			root.put("modifiedDate", sdfDate.format(stockItemsShipment.getModifiedDate()));
 			root.put("docStatus", stockItemsShipment.getStatus());
@@ -106,7 +106,7 @@ public class PrintPdfstockShipment extends HttpServlet {
 			String warehouseAddress = buffer.toString();
 			root.put("fromWHAddress", warehouseAddress);
 
-			if (shipmentType.equals(ShipmentType.TO_OTHER_WAREHOUSE)) {
+			if (shipmentType.equals(StockShipmentType.TO_OTHER_WAREHOUSE)) {
 				root.put("toWarehouse", stockItemsShipment.getToWH().getWarehouseName());
 				StringBuffer newBuffer = new StringBuffer();
 				Address toWHAdd = stockItemsShipment.getToWH().getAddress();
@@ -128,7 +128,7 @@ public class PrintPdfstockShipment extends HttpServlet {
 
 			}
 
-			if (shipmentType.equals(ShipmentType.TO_CUSTOMER)) {
+			if (shipmentType.equals(StockShipmentType.TO_CUSTOMER)) {
 
 				Customer customer = stockItemsShipment.getCustomer();
 
@@ -162,7 +162,7 @@ public class PrintPdfstockShipment extends HttpServlet {
 				root.put("customerAddress", customerAddress);
 
 			}
-			if (shipmentType.equals(ShipmentType.TO_PARTNER)) {
+			if (shipmentType.equals(StockShipmentType.TO_PARTNER)) {
 
 				Customer partner = stockItemsShipment.getCustomer();
 				String partnerName = "";

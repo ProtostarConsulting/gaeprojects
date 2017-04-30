@@ -1,10 +1,10 @@
-package com.protostar.billingnstock.purchase.entities;
+package com.protostar.billingnstock.stock.entities;
 
 import java.util.List;
 
-public class LineItemCategory{
+public class StockLineItemCategory{
 	private String categoryName;
-	private List<LineItemEntity> items;	
+	private List<StockLineItem> items;	
 	
 	public String getCategoryName() {
 		return categoryName;
@@ -12,10 +12,10 @@ public class LineItemCategory{
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 	}
-	public List<LineItemEntity> getItems() {
+	public List<StockLineItem> getItems() {
 		return items;
 	}
-	public void setItems(List<LineItemEntity> items) {
+	public void setItems(List<StockLineItem> items) {
 		this.items = items;
 	}
 }

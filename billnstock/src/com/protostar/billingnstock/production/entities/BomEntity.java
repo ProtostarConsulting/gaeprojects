@@ -7,7 +7,7 @@ import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
-import com.protostar.billingnstock.stock.entities.BomLineItemCategory;
+import com.protostar.billingnstock.stock.entities.StockLineItemsByCategory;
 import com.protostar.billingnstock.stock.entities.StockItemTypeEntity;
 import com.protostar.billnstock.entity.BaseEntity;
 import com.protostar.billnstock.until.data.Constants;
@@ -19,7 +19,7 @@ import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 public class BomEntity extends BaseEntity {
 	@Index
 	private Ref<StockItemTypeEntity> stockItemType;
-	private List<BomLineItemCategory> catList = new ArrayList<BomLineItemCategory>();
+	private List<StockLineItemsByCategory> catList = new ArrayList<StockLineItemsByCategory>();
 
 	@Override
 	public void beforeSave() {
@@ -43,11 +43,11 @@ public class BomEntity extends BaseEntity {
 
 	}
 
-	public List<BomLineItemCategory> getCatList() {
+	public List<StockLineItemsByCategory> getCatList() {
 		return catList;
 	}
 
-	public void setCatList(List<BomLineItemCategory> catList) {
+	public void setCatList(List<StockLineItemsByCategory> catList) {
 		this.catList = catList;
 	}
 

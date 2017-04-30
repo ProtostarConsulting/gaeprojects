@@ -41,15 +41,8 @@
 				ng-model="documentEntity.deliveryDateTime"
 				md-placeholder="Select Date" ng-required="true"></md-datepicker> </md-input-container>
 
-			<md-input-container flex> <label> From
-				Warehouse </label> <md-select flex ng-model="documentEntity.toWH"
-				ng-required="true" placeholder="Select From Warehouse"
-				ng-change="filterStockItemsByWarehouse(documentEntity.toWH)">
-			<md-option ng-value="warehouse"
-				ng-selected="documentEntity.toWH.id == warehouse.id"
-				ng-repeat="warehouse in warehouses ">{{warehouse.warehouseName
-			}}</md-option> </md-select> </md-input-container>
-			<md-input-container flex> <label>Stock
+
+			<md-input-container flex=50 flex-xs=100> <label>Stock
 				Issue Notes</label> <textarea ng-model="documentEntity.note" rows="1"
 				cols="1"></textarea> </md-input-container>
 
@@ -60,7 +53,24 @@
 			<md-divider flex></md-divider>
 		</div>
 
-		<div>
+		<div layout="column"
+			ng-repeat="warehouseLineItem in documentEntity.fromWarehouseList">
+			<div layout="row" flex>
+				<md-input-container flex> <label> From
+					Warehouse </label> <md-select flex ng-model="warehouseLineItem.fromWH"
+					ng-required="true" placeholder="Select From Warehouse"
+					ng-change="filterStockItemsByBomTypes(warehouseLineItem)">
+				<md-option ng-value="warehouse"
+					ng-selected="warehouseLineItem.fromWH.id == warehouse.id"
+					ng-repeat="warehouse in warehouses ">{{warehouse.warehouseName
+				}}</md-option> </md-select> </md-input-container>
+				<div layout="row" flex>
+					<md-icon md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
+						ng-click="removeWarehouseLineItem($index)"> <md-tooltip>Remove
+					Item</md-tooltip></md-icon>
+				</div>
+			</div>
+
 			<table md-table md-progress="promise">
 				<thead ng-if="!dataTableOptions.decapitate" md-head
 					md-order="query.order" md-on-reorder="logOrder">
@@ -75,8 +85,9 @@
 				</thead>
 				<tbody>
 					<tr md-row ng-init="itemToggle=true"
-						ng-repeat-start="bomCategory in documentEntity.catList track by $index">
+						ng-repeat-start="bomCategory in warehouseLineItem.catList track by $index">
 						<td md-cell>{{bomCategory.cat.catName}}</td>
+						<td md-cell></td>
 						<td md-cell></td>
 						<td md-cell></td>
 						<td md-cell></td>
@@ -86,7 +97,8 @@
 						<td md-cell></td>
 						<td md-cell>{{itemObj.stockItemType.itemName}}</td>
 						<td md-cell>{{itemObj.qty}}</td>
-						<td md-cell>{{getCurrentWHStockItemQty(itemObj.stockItemType)}}</td>
+						<td md-cell>{{getCurrentWHStockItemQty(warehouseLineItem,
+							itemObj.stockItemType)}}</td>
 						<td md-cell><md-input-container flex
 								style="margin: 0px; padding: 0px;"> <input
 								type="text" ng-model="itemObj.stockIssuedQty" aria-label="sQty">
@@ -97,10 +109,14 @@
 						<td md-cell></td>
 						<td md-cell></td>
 						<td md-cell></td>
+						<td md-cell></td>
 					</tr>
 					<tr ng-repeat-end></tr>
 				</tbody>
 			</table>
+			<md-button class="md-icon-button" ng-click="addWarehouseLineItem()">
+			<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
+			<md-tooltip> Add New From Warehouse</md-tooltip></ng-md-icon> </md-button>
 		</div>
 	</form>
 </div>
