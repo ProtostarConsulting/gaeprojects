@@ -4,6 +4,22 @@ angular.module("stockApp").controller(
 				$log, objectFactory, appEndpointSF) {
 			$log.debug("Inside stockModuleCtr");
 
+			var originatorEv;
+			$scope.openPurchaseMenu = function($mdOpenMenu, ev) {
+				originatorEv = ev;
+				$mdOpenMenu(ev);
+			};
+			
+			$scope.openSalesMenu = function($mdOpenMenu, ev) {
+				originatorEv = ev;
+				$mdOpenMenu(ev);
+			};
+
+			$scope.announceClick = function(index) {
+				$log.debug('You clicked the menu item at index ' + index);
+				originatorEv = null;
+			};
+
 			/* Setup menu */
 			$scope.toggleRight = buildToggler('right');
 			/**

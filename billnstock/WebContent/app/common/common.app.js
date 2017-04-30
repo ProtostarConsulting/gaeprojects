@@ -407,52 +407,36 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		url : "/tax/taxlist",
 		templateUrl : '/app/tax/tax_list.html',
 		controller : 'taxCtr'
-	}).state('invoice', {
-		url : "/invoice",
-		templateUrl : '/app/invoice/invoice_module.html',
-		controller : 'invoiceModuleCtr'
-	}).state('invoice.add', {
+	}).state('stock.invoice_add', {
 		url : "/add",
 		templateUrl : '/app/invoice/invoice_add.html',
 		controller : 'invoiceAddCtr',
 		params : {
 			invoiceObj : null
 		}
-	}).state('invoice.list', {
+	}).state('stock.invoice_list', {
 		url : "/list/:selectedCustomerId",
 		templateUrl : '/app/invoice/invoice_list.html',
 		controller : 'invoiceListCtr',
-	}).state('invoice.view', {
-		url : "/view/:selectedInvoiceNo",
-		templateUrl : '/app/invoice/invoice_view.html',
-		controller : 'invoiceViewCtr',
-	}).state('invoice.edit', {
-		url : "/edit/:selectedInvoiceNo",
-		templateUrl : '/app/invoice/invoice_edit.html',
-		controller : 'invoiceEditCtr',
-	}).state('invoice.settings', {
-		url : "/settings",
-		templateUrl : '/app/invoice/invoice_settings.html',
-		controller : 'invoiceSettingsCtr',
-	}).state('invoice.addQuotation', {
+	}).state('stock.quotation_add', {
 		url : "/addQuotation",
 		templateUrl : '/app/invoice/quotation_add.html',
 		controller : 'quotationAddCtr',
 		params : {
 			invoiceObj : null
 		}
-	}).state('invoice.quotationlist', {
+	}).state('stock.quotation_list', {
 		url : "/listQuotation",
 		templateUrl : '/app/invoice/quotation_list.html',
 		controller : 'quotationListCtr',
-	}).state('invoice.viewquotation', {
-		url : "/viewQuotation/:selectedQuotationNo",
-		templateUrl : '/app/invoice/quotation_view.html',
-		controller : 'quotationViewCtr',
-	}).state('invoice.editquotation', {
-		url : "/editQuotation/:selectedQuotationNo",
-		templateUrl : '/app/invoice/quotation_edit.html',
-		controller : 'quotationEditCtr',
+	}).state('stock.invoice_settings', {
+		url : "/settings",
+		templateUrl : '/app/invoice/invoice_settings.html',
+		controller : 'invoiceSettingsCtr',
+	}).state('invoice', {
+		url : "/invoice",
+		templateUrl : '/app/invoice/invoice_module.html',
+		controller : 'invoiceModuleCtr'
 	}).state('customer', {
 		url : "/customer",
 		templateUrl : '/app/customer/customer_module.html',

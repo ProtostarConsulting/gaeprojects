@@ -12,7 +12,7 @@
 	<div layout="row" flex="33" flex-sm="50" flex-xs="100">
 		<md-input-container flex> <label>Search</label> <input
 			ng-model="searchText"> </md-input-container>
-		<md-button class="md-icon-button" ui-sref="invoice.addQuotation">
+		<md-button class="md-icon-button" ui-sref="stock.quotation_add">
 		<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
 		<md-tooltip> Add New </md-tooltip></ng-md-icon> </md-button>
 	</div>
@@ -57,7 +57,7 @@
 				<td md-cell>
 					<section layout="row">
 						<md-button class="md-icon-button"
-							ui-sref="invoice.addQuotation({invoiceObj: quotation})">
+							ui-sref="stock.quotation_add({invoiceObj: quotation})">
 						<ng-md-icon icon="edit" style="fill: md-default" size="20">
 						<md-tooltip> Edit</md-tooltip></ng-md-icon></md-button>
 						<md-button class="md-icon-button"
