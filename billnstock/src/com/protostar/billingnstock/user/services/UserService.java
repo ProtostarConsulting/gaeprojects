@@ -55,9 +55,9 @@ import com.protostar.billnstock.until.data.ServerMsg;
 import com.protostar.billnstock.until.data.UserAuthenticator;
 import com.protostar.billnstock.until.data.WebUtil;
 
-@Api(name = "userService", version = "v0.1", clientIds = {
-		Constants.WEB_CLIENT_ID, Constants.ANDROID_CLIENT_ID,
-		Constants.API_EXPLORER_CLIENT_ID }, audiences = { Constants.ANDROID_AUDIENCE }, scopes = { Constants.EMAIL_SCOPE }, namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.user.services", ownerName = "com.protostar.billingnstock.user.services", packagePath = ""))
+@Api(name = "userService", version = "v0.1", clientIds = { Constants.WEB_CLIENT_ID, Constants.ANDROID_CLIENT_ID,
+		Constants.API_EXPLORER_CLIENT_ID }, audiences = { Constants.ANDROID_AUDIENCE }, scopes = {
+				Constants.EMAIL_SCOPE }, namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.user.services", ownerName = "com.protostar.billingnstock.user.services", packagePath = ""))
 public class UserService {
 
 	private final Logger logger = Logger.getLogger(UserService.class.getName());
@@ -103,17 +103,13 @@ public class UserService {
 		Properties props = new Properties();
 		Session session = Session.getDefaultInstance(props, null);
 		String messageBody = "Welcome to ProERP! Your account has been created. "
-				+ "You can edit your user profile by clicking the "
-				+ "following link:\n\n"
-				+ "http://www.example.com/profile/\n\n"
-				+ "Let us know if you have any questions.\n\n"
+				+ "You can edit your user profile by clicking the " + "following link:\n\n"
+				+ "http://www.example.com/profile/\n\n" + "Let us know if you have any questions.\n\n"
 				+ "The Example Team\n";
 		try {
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(
-					"ganesh.lawande@protostar.co.in", "ProERP"));
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress(
-					usr.getEmail_id()));
+			message.setFrom(new InternetAddress("ganesh.lawande@protostar.co.in", "ProERP"));
+			message.addRecipient(Message.RecipientType.TO, new InternetAddress(usr.getEmail_id()));
 			message.setSubject("Welcome to Example.com!");
 			message.setText(messageBody);
 			Transport.send(message);
@@ -136,8 +132,7 @@ public class UserService {
 	}
 
 	private void setDefaultDepartment(UserEntity usr) {
-		List<EmpDepartment> empDepartments = getEmpDepartments(usr
-				.getBusiness().getId());
+		List<EmpDepartment> empDepartments = getEmpDepartments(usr.getBusiness().getId());
 		for (EmpDepartment empDepartment : empDepartments) {
 			if ("Default".equalsIgnoreCase(empDepartment.getName())) {
 				usr.getEmployeeDetail().setDepartment(empDepartment);
@@ -152,8 +147,8 @@ public class UserService {
 
 	@ApiMethod(name = "getEmpDepartments", path = "getEmpDepartments")
 	public List<EmpDepartment> getEmpDepartments(@Named("businessId") Long id) {
-		List<EmpDepartment> list = ofy().load().type(EmpDepartment.class)
-				.ancestor(Key.create(BusinessEntity.class, id)).list();
+		List<EmpDepartment> list = ofy().load().type(EmpDepartment.class).ancestor(Key.create(BusinessEntity.class, id))
+				.list();
 		return list;
 	}
 
@@ -175,10 +170,8 @@ public class UserService {
 	 */
 
 	@ApiMethod(name = "getUserByEmailID", path = "getUserByEmailID")
-	public List<UserEntity> getUserByEmailID(@Named("email_id") String email,
-			@Named("forLogin") boolean forLogin) {
-		List<UserEntity> list = ofy().load().type(UserEntity.class)
-				.filter("email_id", email).list();
+	public List<UserEntity> getUserByEmailID(@Named("email_id") String email, @Named("forLogin") boolean forLogin) {
+		List<UserEntity> list = ofy().load().type(UserEntity.class).filter("email_id", email).list();
 		if (list == null || list.size() == 0) {
 			return null;
 		} else {
@@ -196,36 +189,27 @@ public class UserService {
 	}
 
 	@ApiMethod(name = "getUserByID", path = "getUserByID")
-	public UserEntity getUserByID(@Named("busId") Long busId,
-			@Named("id") Long id) {
-		List<UserEntity> list = ofy()
-				.load()
-				.type(UserEntity.class)
-				.filterKey(
-						Key.create(Key.create(BusinessEntity.class, busId),
-								UserEntity.class, id)).list();
+	public UserEntity getUserByID(@Named("busId") Long busId, @Named("id") Long id) {
+		List<UserEntity> list = ofy().load().type(UserEntity.class)
+				.filterKey(Key.create(Key.create(BusinessEntity.class, busId), UserEntity.class, id)).list();
 		UserEntity userE = list.size() > 0 ? list.get(0) : null;
 		return userE;
 	}
 
 	@ApiMethod(name = "getUserByWebSafeKey", path = "getUserByWebSafeKey")
 	public UserEntity getUserByWebSafeKey(@Named("keyStr") String webSafeString) {
-		UserEntity userE = ofy().load().type(UserEntity.class)
-				.filterKey(Key.create(webSafeString)).first().now();
+		UserEntity userE = ofy().load().type(UserEntity.class).filterKey(Key.create(webSafeString)).first().now();
 		return userE;
 	}
 
 	@ApiMethod(name = "getBusinessByEmailID", path = "getBusinessByEmailID")
-	public BusinessEntity getBusinessByEmailID(
-			@Named("adminEmailId") String emailid) {
-		List<BusinessEntity> list = ofy().load().type(BusinessEntity.class)
-				.filter("adminEmailId", emailid).list();
+	public BusinessEntity getBusinessByEmailID(@Named("adminEmailId") String emailid) {
+		List<BusinessEntity> list = ofy().load().type(BusinessEntity.class).filter("adminEmailId", emailid).list();
 		return (list == null || list.size() == 0) ? null : list.get(0);
 	}
 
 	@ApiMethod(name = "login", path = "login")
-	public List<UserEntity> login(@Named("email_id") String email,
-			@Named("password") String pass) {
+	public List<UserEntity> login(@Named("email_id") String email, @Named("password") String pass) {
 		logger.info("Calling userLoginService.login...");
 		UserLoginService userLoginService = new UserLoginService();
 		return userLoginService.login(email, pass);
@@ -239,8 +223,7 @@ public class UserService {
 			logger.info("Logging out... currentUserSession.getUser().getEmail_id(): "
 					+ currentUserSession.getUser().getEmail_id());
 			UserLoginService userLoginService = new UserLoginService();
-			userLoginService.recordUserLogout(EntityUtil
-					.getUserWebSafeKey(currentUserSession));
+			userLoginService.recordUserLogout(EntityUtil.getUserWebSafeKey(currentUserSession));
 		}
 	}
 
@@ -265,14 +248,12 @@ public class UserService {
 				if (business.getId() == null) {
 					newBusiness = true;
 					// Seth Basic Auths
-					if (business.getAuthorizations() == null
-							|| business.getAuthorizations().isEmpty())
+					if (business.getAuthorizations() == null || business.getAuthorizations().isEmpty())
 						business.setAuthorizations(Constants.NEW_BIZ_DEFAULT_AUTHS);
 					business.setCreatedDate(new Date());
 					business.setRegisterDate(sdf.format(date));
 					ProtostarAdminService protostarAdminService = new ProtostarAdminService();
-					BusinessPlanType freeBusinessPlan = protostarAdminService
-							.getFreeBusinessPlan();
+					BusinessPlanType freeBusinessPlan = protostarAdminService.getFreeBusinessPlan();
 					business.setBusinessPlan(freeBusinessPlan);
 				} else {
 					business.setModifiedDate(new Date());
@@ -302,12 +283,10 @@ public class UserService {
 					// Add default Suppliers
 					SupplierEntity supplierEntity = new SupplierEntity();
 					supplierEntity.setBusiness(business);
-					supplierEntity
-							.setSupplierName("Protostar Consulting Services");
+					supplierEntity.setSupplierName("Protostar Consulting Services");
 					supplierEntity.setContactFName("Ganesh");
 					supplierEntity.setContactLName("Lawande");
-					supplierEntity.getAddress().setLine1(
-							"E101, Manimangal Apt, Kasarwadi");
+					supplierEntity.getAddress().setLine1("E101, Manimangal Apt, Kasarwadi");
 					supplierEntity.getAddress().setCity("Pune");
 					supplierEntity.getAddress().setPin("311034");
 					supplierEntity.setPhone1("9922923988");
@@ -320,51 +299,43 @@ public class UserService {
 					StockItemUnit stockItemUnitNos = new StockItemUnit();
 					stockItemUnitNos.setBusiness(business);
 					stockItemUnitNos.setUnitName("nos");
-					stockItemUnitNos
-							.setNote("Used where items are count by numbers.");
+					stockItemUnitNos.setNote("Used where items are count by numbers.");
 					stockManagementService.addStockItemUnit(stockItemUnitNos);
 
 					StockItemUnit stockItemUnitLiters = new StockItemUnit();
 					stockItemUnitLiters.setBusiness(business);
 					stockItemUnitLiters.setUnitName("liters");
-					stockItemUnitLiters
-							.setNote("Used where liquid items are count by liters.");
-					stockManagementService
-							.addStockItemUnit(stockItemUnitLiters);
+					stockItemUnitLiters.setNote("Used where liquid items are count by liters.");
+					stockManagementService.addStockItemUnit(stockItemUnitLiters);
 
 					// Add default Product Types
 					StockItemProductTypeEntity productTypeEntityRM = new StockItemProductTypeEntity();
 					productTypeEntityRM.setBusiness(business);
 					productTypeEntityRM.setTypeName("Raw Material");
-					stockManagementService
-							.addStockItemProductType(productTypeEntityRM);
+					stockManagementService.addStockItemProductType(productTypeEntityRM);
 
 					StockItemProductTypeEntity productTypeEntityFP = new StockItemProductTypeEntity();
 					productTypeEntityFP.setBusiness(business);
 					productTypeEntityFP.setTypeName("Finished Product");
-					stockManagementService
-							.addStockItemProductType(productTypeEntityFP);
+					stockManagementService.addStockItemProductType(productTypeEntityFP);
 
 					StockItemProductTypeEntity productTypeEntitySP = new StockItemProductTypeEntity();
 					productTypeEntitySP.setBusiness(business);
 					productTypeEntitySP.setTypeName("Spare Part");
-					stockManagementService
-							.addStockItemProductType(productTypeEntitySP);
+					stockManagementService.addStockItemProductType(productTypeEntitySP);
 
 					// Add default Stock Item Categories
 					StockItemTypeCategory stockItemTypeCategoryEG = new StockItemTypeCategory();
 					stockItemTypeCategoryEG.setBusiness(business);
 					stockItemTypeCategoryEG.setCatName("Electronic Goods");
-					;
-					stockManagementService
-							.addStockItemTypeCategory(stockItemTypeCategoryEG);
+
+					stockManagementService.addStockItemTypeCategory(stockItemTypeCategoryEG);
 
 					StockItemTypeCategory stockItemTypeCategoryFG = new StockItemTypeCategory();
 					stockItemTypeCategoryFG.setBusiness(business);
 					stockItemTypeCategoryFG.setCatName("Furniture");
-					;
-					stockManagementService
-							.addStockItemTypeCategory(stockItemTypeCategoryFG);
+
+					stockManagementService.addStockItemTypeCategory(stockItemTypeCategoryFG);
 
 				}
 
@@ -385,10 +356,8 @@ public class UserService {
 			HRSettingsEntity hrSettingsEntity = new HRSettingsEntity();
 
 			hrSettingsEntity.setBusiness(business);
-			hrSettingsEntity.setMonthlySalaryStructureRules(HREntityUtil
-					.getStandardMonthlySalaryStructureRules());
-			hrSettingsEntity.setMonthlySalaryDeductionRules(HREntityUtil
-					.getStandardMonthlySalaryDeductionRules());
+			hrSettingsEntity.setMonthlySalaryStructureRules(HREntityUtil.getStandardMonthlySalaryStructureRules());
+			hrSettingsEntity.setMonthlySalaryDeductionRules(HREntityUtil.getStandardMonthlySalaryDeductionRules());
 			hrservice.addHRSettings(hrSettingsEntity);
 
 			WarehouseService warehouseService = new WarehouseService();
@@ -415,45 +384,60 @@ public class UserService {
 			ProtostarAdminService adminService = new ProtostarAdminService();
 			adminService.createAccountingGroups(business.getId());
 
+			initializeAllCounters(business);
+
 		}
 
 		return business;
 	}
 
+	private void initializeAllCounters(BusinessEntity business) {
+		// Initialize All Counter all shards to Zero
+		SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
+				EntityUtil.getBusinessRawKey(business), Constants.STOCKSHIPMENT_NO_COUNTER);
+		sequenceGenService.init();
+		
+		sequenceGenService = new SequenceGeneratorShardedService(
+				EntityUtil.getBusinessRawKey(business), Constants.STOCKRECEIPT_NO_COUNTER);
+		sequenceGenService.init();
+		
+		sequenceGenService = new SequenceGeneratorShardedService(
+				EntityUtil.getBusinessRawKey(business), Constants.PURCHASE_ORDER_NO_COUNTER);
+		sequenceGenService.init();
+		
+		sequenceGenService = new SequenceGeneratorShardedService(
+				EntityUtil.getBusinessRawKey(business), Constants.INVOICE_NO_COUNTER);
+		sequenceGenService.init();
+	}
+
 	@ApiMethod(name = "getUsersByLoginAllowed", path = "getUsersByLoginAllowed")
 	public List<UserEntity> getUsersByLoginAllowed(@Named("busId") Long id,
 			@Named("loginAllowed") Boolean isLoginAllowed) {
-		List<UserEntity> list = ofy().load().type(UserEntity.class)
-				.ancestor(Key.create(BusinessEntity.class, id))
+		List<UserEntity> list = ofy().load().type(UserEntity.class).ancestor(Key.create(BusinessEntity.class, id))
 				.filter("isLoginAllowed", isLoginAllowed).list();
 
 		return list;
 	}
 
-	@ApiMethod(name = "getUsersByBusinessId", path = "getUsersByBusinessId", authenticators = { UserAuthenticator.class })
+	@ApiMethod(name = "getUsersByBusinessId", path = "getUsersByBusinessId", authenticators = {
+			UserAuthenticator.class })
 	public List<UserEntity> getUsersByBusinessId(@Named("id") Long id) {
-		List<UserEntity> list = ofy().transactionless().load()
-				.type(UserEntity.class)
-				.ancestor(Key.create(BusinessEntity.class, id))
-				.filter("isActive", true).list();
+		List<UserEntity> list = ofy().transactionless().load().type(UserEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, id)).filter("isActive", true).list();
 		return list;
 	}
 
 	@ApiMethod(name = "getInActiveUsersByBusinessId", path = "getInActiveUsersByBusinessId")
 	public List<UserEntity> getInActiveUsersByBusinessId(@Named("id") Long id) {
-		List<UserEntity> list = ofy().transactionless().load()
-				.type(UserEntity.class)
-				.ancestor(Key.create(BusinessEntity.class, id))
-				.filter("isActive", false).list();
+		List<UserEntity> list = ofy().transactionless().load().type(UserEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, id)).filter("isActive", false).list();
 		return list;
 	}
 
 	@ApiMethod(name = "isUserExists")
-	public ServerMsg isUserExists(@Named("bizId") Long id,
-			@Named("email_id") String emailID) {
+	public ServerMsg isUserExists(@Named("bizId") Long id, @Named("email_id") String emailID) {
 		ServerMsg serverMsg = new ServerMsg();
-		List<UserEntity> list = ofy().load().type(UserEntity.class)
-				.ancestor(Key.create(BusinessEntity.class, id))
+		List<UserEntity> list = ofy().load().type(UserEntity.class).ancestor(Key.create(BusinessEntity.class, id))
 				.filter("email_id", emailID).list();
 
 		/* if(list.get(0).equals(null)){ */
@@ -468,23 +452,19 @@ public class UserService {
 
 	@ApiMethod(name = "getBusinessCounterList", path = "getBusinessCounterList")
 	public List<CounterEntity> getBusinessCounterList(@Named("id") Long id) {
-		List<CounterEntity> counterList = ofy().load()
-				.type(CounterEntity.class)
+		List<CounterEntity> counterList = ofy().load().type(CounterEntity.class)
 				.ancestor(Key.create(BusinessEntity.class, id)).list();
 		for (CounterEntity counterEntity : counterList) {
 			int sum = 0;
-			List<CounterShard> shardList = ofy().load()
-					.type(CounterShard.class).ancestor(counterEntity).list();
+			List<CounterShard> shardList = ofy().load().type(CounterShard.class).ancestor(counterEntity).list();
 			for (CounterShard counterShard : shardList) {
 				sum += counterShard.getCount();
 			}
 
 			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
-					Key.create(BusinessEntity.class, id),
-					counterEntity.getCounterName());
+					Key.create(BusinessEntity.class, id), counterEntity.getCounterName());
 			counterEntity.setTempDSCounterValue(sum);
-			counterEntity.setTempMCCounterValue(sequenceGenService
-					.getTempMCValue());
+			counterEntity.setTempMCCounterValue(sequenceGenService.getTempMCValue());
 
 		}
 		return counterList;
@@ -497,10 +477,8 @@ public class UserService {
 
 	@ApiMethod(name = "getLogUploadURL")
 	public ServerMsg getLogUploadURL() {
-		BlobstoreService blobstoreService = BlobstoreServiceFactory
-				.getBlobstoreService();
-		String createUploadUrl = blobstoreService
-				.createUploadUrl("/UploadServlet");
+		BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
+		String createUploadUrl = blobstoreService.createUploadUrl("/UploadServlet");
 		ServerMsg serverMsg = new ServerMsg();
 		serverMsg.setMsg(createUploadUrl);
 		return serverMsg;
@@ -511,20 +489,16 @@ public class UserService {
 	}
 
 	@ApiMethod(name = "addBusinessSettingsEntity", path = "addBusinessSettingsEntity")
-	public BusinessSettingsEntity addBusinessSettingsEntity(
-			BusinessSettingsEntity settingsEntity) {
+	public BusinessSettingsEntity addBusinessSettingsEntity(BusinessSettingsEntity settingsEntity) {
 		ofy().save().entity(settingsEntity).now();
 		return settingsEntity;
 
 	}
 
 	@ApiMethod(name = "getBusinessSettingsEntity", path = "getBusinessSettingsEntity")
-	public BusinessSettingsEntity getBusinessSettingsEntity(
-			@Named("id") Long busId) {
-		BusinessSettingsEntity settingsEntity = ofy().load()
-				.type(BusinessSettingsEntity.class)
-				.ancestor(Key.create(BusinessEntity.class, busId)).first()
-				.now();
+	public BusinessSettingsEntity getBusinessSettingsEntity(@Named("id") Long busId) {
+		BusinessSettingsEntity settingsEntity = ofy().load().type(BusinessSettingsEntity.class)
+				.ancestor(Key.create(BusinessEntity.class, busId)).first().now();
 		return settingsEntity;
 
 	}

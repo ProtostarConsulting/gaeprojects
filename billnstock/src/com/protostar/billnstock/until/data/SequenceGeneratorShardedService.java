@@ -248,11 +248,11 @@ public class SequenceGeneratorShardedService {
 	 * @return Summed total of all shards' counts
 	 */
 	public final int getNextSequenceNumber() {
-		// Increament in DB first. That is mostly fails.
+		// Increment in DB first. That mostly fails.
 		if (increment()) {
 			return getCounterCount();
 		}
-		return 0;
+		return -1;
 	}
 
 	/**
@@ -267,6 +267,18 @@ public class SequenceGeneratorShardedService {
 
 		Key<CounterShard> shardKey = Key.create(this.counterKey, CounterShard.class, shardNum);
 		return incrementShardCountTx(shardKey, 1, 1);
+	}
+
+	/* init shard with zero value */
+	public final boolean init() {
+		// Find how many shards are in this counter.
+		int numShards = getShardCount();
+
+		// Choose the shard randomly from the available shards.
+		int shardNum = generator.nextInt(numShards) + 1;
+
+		Key<CounterShard> shardKey = Key.create(this.counterKey, CounterShard.class, shardNum);
+		return incrementShardCountTx(shardKey, 0, 0);
 	}
 
 	/**
@@ -321,11 +333,15 @@ public class SequenceGeneratorShardedService {
 						shardEntity = new CounterShard();
 						shardEntity.setCounter(this.counterKey);
 						shardEntity.setShardNumber(shardKey.getId());
+						shardEntity.setCount(initialValue);
 						value = initialValue;
+					} else {
+						value = shardEntity.getCount() + increment;
 					}
-					value = shardEntity.getCount() + increment;
+
 					shardEntity.setCount(value);
 					ofy().save().entity(shardEntity).now();
+
 					return shardKey;
 				}
 			}.init(shardKey, this.counterKey));
