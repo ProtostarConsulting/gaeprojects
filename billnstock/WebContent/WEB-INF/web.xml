@@ -1,38 +1,26 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="WebApp_ID" version="2.5" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
   <display-name>ProERP</display-name>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file>
   </welcome-file-list>
-  <!-- <servlet>
-    <servlet-name>SystemServiceServlet</servlet-name>
-    <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
+  <servlet>
+    <servlet-name>EndpointsServlet</servlet-name>
+    <servlet-class>com.google.api.server.spi.EndpointsServlet</servlet-class>
     <init-param>
       <param-name>services</param-name>
-      <param-value>com.protostar.billingnstock.account.services.AccountEntityService,com.protostar.billingnstock.account.services.AccountEntryService,com.protostar.billingnstock.account.services.AccountGroupService,com.protostar.billingnstock.account.services.AccountingService,com.protostar.billingnstock.account.services.GeneralJournalService,com.protostar.billingnstock.account.services.VoucherService,com.protostar.billingnstock.assetmanagement.services.AssetService,com.protostar.billingnstock.crm.services.CrmService,com.protostar.billingnstock.crm.services.OpportunityService,com.protostar.billingnstock.cust.services.CustomerService,com.protostar.billingnstock.hr.services.HrService,com.protostar.billingnstock.invoice.services.InvoiceService,com.protostar.billingnstock.proadmin.services.ProtostarAdminService,com.protostar.billingnstock.production.services.ProductionService,com.protostar.billingnstock.purchase.services.SupplierService,com.protostar.billingnstock.sales.services.SalesOrderService,com.protostar.billingnstock.setup.services.UploadURLService,com.protostar.billingnstock.stock.services.StockManagementService,com.protostar.billingnstock.taskmangement.TaskManagementService,com.protostar.billingnstock.tax.services.TaxService,com.protostar.billingnstock.user.services.UserService,com.protostar.billingnstock.warehouse.services.WarehouseService,com.protostar.billnstock.service.AuthorizationService,com.protostar.billnstock.service.TestService,com.protostar.billingnstock.production.services.ProductionService</param-value>
+      <param-value>com.protostar.billingnstock.account.services.AccountEntityService,com.protostar.billingnstock.account.services.AccountEntryService,com.protostar.billingnstock.account.services.AccountGroupService,com.protostar.billingnstock.account.services.AccountingService,com.protostar.billingnstock.account.services.GeneralJournalService,com.protostar.billingnstock.account.services.VoucherService,com.protostar.billingnstock.assetmanagement.services.AssetService,com.protostar.billingnstock.crm.services.CrmService,com.protostar.billingnstock.crm.services.OpportunityService,com.protostar.billingnstock.cust.services.CustomerService,com.protostar.billingnstock.hr.services.HrService,com.protostar.billingnstock.invoice.services.InvoiceService,com.protostar.billingnstock.proadmin.services.ProtostarAdminService,com.protostar.billingnstock.purchase.services.SupplierService,com.protostar.billingnstock.sales.services.SalesOrderService,com.protostar.billingnstock.setup.services.UploadURLService,com.protostar.billingnstock.stock.services.StockManagementService,com.protostar.billingnstock.taskmangement.TaskManagementService,com.protostar.billingnstock.tax.services.TaxService,com.protostar.billingnstock.user.services.UserService,com.protostar.billingnstock.warehouse.services.WarehouseService,com.protostar.billnstock.service.AuthorizationService,com.protostar.billingnstock.production.services.ProductionService,com.protostar.billnstock.service.TestService</param-value>
+    </init-param>
+    <init-param>
+      <param-name>restricted</param-name>
+      <param-value>false</param-value>
     </init-param>
   </servlet>
   <servlet-mapping>
-    <servlet-name>SystemServiceServlet</servlet-name>
-    <url-pattern>/_ah/spi/*</url-pattern>
-  </servlet-mapping> -->
- <servlet>
-  <servlet-name>EndpointsServlet</servlet-name>
-  <servlet-class>com.google.api.server.spi.EndpointsServlet</servlet-class>
-  <init-param>
-    <param-name>services</param-name>
-    <param-value>com.protostar.billingnstock.account.services.AccountEntityService,com.protostar.billingnstock.account.services.AccountEntryService,com.protostar.billingnstock.account.services.AccountGroupService,com.protostar.billingnstock.account.services.AccountingService,com.protostar.billingnstock.account.services.GeneralJournalService,com.protostar.billingnstock.account.services.VoucherService,com.protostar.billingnstock.assetmanagement.services.AssetService,com.protostar.billingnstock.crm.services.CrmService,com.protostar.billingnstock.crm.services.OpportunityService,com.protostar.billingnstock.cust.services.CustomerService,com.protostar.billingnstock.hr.services.HrService,com.protostar.billingnstock.invoice.services.InvoiceService,com.protostar.billingnstock.proadmin.services.ProtostarAdminService,com.protostar.billingnstock.purchase.services.SupplierService,com.protostar.billingnstock.sales.services.SalesOrderService,com.protostar.billingnstock.setup.services.UploadURLService,com.protostar.billingnstock.stock.services.StockManagementService,com.protostar.billingnstock.taskmangement.TaskManagementService,com.protostar.billingnstock.tax.services.TaxService,com.protostar.billingnstock.user.services.UserService,com.protostar.billingnstock.warehouse.services.WarehouseService,com.protostar.billnstock.service.AuthorizationService,com.protostar.billingnstock.production.services.ProductionService,com.protostar.billnstock.service.TestService</param-value>
-  </init-param>
-  <init-param>
-    <param-name>restricted</param-name>
-    <param-value>false</param-value>
-  </init-param>
-</servlet>
-<servlet-mapping>
-  <servlet-name>EndpointsServlet</servlet-name>
-  <url-pattern>/_ah/api/*</url-pattern>
-</servlet-mapping> 
-  
+    <servlet-name>EndpointsServlet</servlet-name>
+    <url-pattern>/_ah/api/*</url-pattern>
+  </servlet-mapping>
   <filter>
     <filter-name>ObjectifyFilter</filter-name>
     <filter-class>com.googlecode.objectify.ObjectifyFilter</filter-class>
@@ -55,7 +43,7 @@
     </listener-class>
   </listener>
   <servlet>
-    <description/>
+    <description></description>
     <display-name>UploadLogo</display-name>
     <servlet-name>UploadLogo</servlet-name>
     <servlet-class>com.protostar.billingnstock.document.UploadLogo</servlet-class>
@@ -65,7 +53,7 @@
     <url-pattern>/UploadLogo</url-pattern>
   </servlet-mapping>
   <servlet>
-    <description/>
+    <description></description>
     <display-name>Serve</display-name>
     <servlet-name>Serve</servlet-name>
     <servlet-class>com.protostar.billingnstock.document.Serve</servlet-class>
@@ -75,7 +63,7 @@
     <url-pattern>/serve</url-pattern>
   </servlet-mapping>
   <servlet>
-    <description/>
+    <description></description>
     <display-name>UploadFooter</display-name>
     <servlet-name>UploadFooter</servlet-name>
     <servlet-class>com.protostar.billingnstock.document.UploadFooter</servlet-class>
@@ -85,7 +73,7 @@
     <url-pattern>/UploadFooter</url-pattern>
   </servlet-mapping>
   <servlet>
-    <description/>
+    <description></description>
     <display-name>UploadExcelSheetAddUsers</display-name>
     <servlet-name>UploadExcelSheetAddUsers</servlet-name>
     <servlet-class>com.protostar.billingnstock.document.UploadExcelSheetAddUsers</servlet-class>
@@ -95,7 +83,7 @@
     <url-pattern>/UploadExcelSheetAddUsers</url-pattern>
   </servlet-mapping>
   <servlet>
-    <description/>
+    <description></description>
     <display-name>ExcelStockUpload</display-name>
     <servlet-name>ExcelStockUpload</servlet-name>
     <servlet-class>com.protostar.billingnstock.document.ExcelStockUpload</servlet-class>
@@ -105,7 +93,7 @@
     <url-pattern>/ExcelStockUpload</url-pattern>
   </servlet-mapping>
   <servlet>
-    <description/>
+    <description></description>
     <display-name>ExcelCustomerUpload</display-name>
     <servlet-name>ExcelCustomerUpload</servlet-name>
     <servlet-class>com.protostar.billingnstock.document.ExcelCustomerUpload</servlet-class>
@@ -115,7 +103,7 @@
     <url-pattern>/ExcelCustomerUpload</url-pattern>
   </servlet-mapping>
   <servlet>
-    <description/>
+    <description></description>
     <display-name>UploadAccountsServlet</display-name>
     <servlet-name>UploadAccountsServlet</servlet-name>
     <servlet-class>com.protostar.billingnstock.account.services.UploadAccountsServlet</servlet-class>
@@ -125,7 +113,7 @@
     <url-pattern>/UploadAccountsServlet</url-pattern>
   </servlet-mapping>
   <servlet>
-    <description/>
+    <description></description>
     <display-name>DownloadAccountsServlet</display-name>
     <servlet-name>DownloadAccountsServlet</servlet-name>
     <servlet-class>com.protostar.billingnstock.account.services.DownloadAccountsServlet</servlet-class>
@@ -133,8 +121,9 @@
   <servlet-mapping>
     <servlet-name>DownloadAccountsServlet</servlet-name>
     <url-pattern>/DownloadAccountsServlet</url-pattern>
-  </servlet-mapping> <servlet>
-    <description/>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
     <display-name>DownloadAccountViewServlet</display-name>
     <servlet-name>DownloadAccountViewServlet</servlet-name>
     <servlet-class>com.protostar.billingnstock.account.services.DownloadAccountViewServlet</servlet-class>
@@ -142,8 +131,9 @@
   <servlet-mapping>
     <servlet-name>DownloadAccountViewServlet</servlet-name>
     <url-pattern>/DownloadAccountViewServlet</url-pattern>
-  </servlet-mapping><servlet>
-    <description/>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
     <display-name>DownloadGroupViewServlet</display-name>
     <servlet-name>DownloadGroupViewServlet</servlet-name>
     <servlet-class>com.protostar.billingnstock.account.services.DownloadGroupViewServlet</servlet-class>
@@ -152,9 +142,8 @@
     <servlet-name>DownloadGroupViewServlet</servlet-name>
     <url-pattern>/DownloadGroupViewServlet</url-pattern>
   </servlet-mapping>
-  
   <servlet>
-    <description/>
+    <description></description>
     <display-name>UploadGroupsListServlet</display-name>
     <servlet-name>UploadGroupsListServlet</servlet-name>
     <servlet-class>com.protostar.billingnstock.account.services.UploadGroupsListServlet</servlet-class>
@@ -164,7 +153,7 @@
     <url-pattern>/UploadGroupsListServlet</url-pattern>
   </servlet-mapping>
   <servlet>
-    <description/>
+    <description></description>
     <display-name>DownloadGroupListServlet</display-name>
     <servlet-name>DownloadGroupListServlet</servlet-name>
     <servlet-class>com.protostar.billingnstock.account.services.DownloadGroupListServlet</servlet-class>
@@ -172,9 +161,9 @@
   <servlet-mapping>
     <servlet-name>DownloadGroupListServlet</servlet-name>
     <url-pattern>/DownloadGroupListServlet</url-pattern>
-  </servlet-mapping>  
+  </servlet-mapping>
   <servlet>
-    <description/>
+    <description></description>
     <display-name>DownloadAccountListServlet</display-name>
     <servlet-name>DownloadAccountListServlet</servlet-name>
     <servlet-class>com.protostar.billingnstock.account.services.DownloadAccountListServlet</servlet-class>
@@ -183,9 +172,8 @@
     <servlet-name>DownloadAccountListServlet</servlet-name>
     <url-pattern>/DownloadAccountListServlet</url-pattern>
   </servlet-mapping>
-  
   <servlet>
-    <description/>
+    <description></description>
     <display-name>PdfVouchers</display-name>
     <servlet-name>PdfVouchers</servlet-name>
     <servlet-class>com.protostar.billingnstock.account.services.PdfVouchers</servlet-class>
@@ -195,7 +183,7 @@
     <url-pattern>/PdfVouchers</url-pattern>
   </servlet-mapping>
   <servlet>
-    <description/>
+    <description></description>
     <display-name>PdfBalanceSheet</display-name>
     <servlet-name>PdfBalanceSheet</servlet-name>
     <servlet-class>com.protostar.billingnstock.account.services.PdfBalanceSheet</servlet-class>
@@ -204,8 +192,8 @@
     <servlet-name>PdfBalanceSheet</servlet-name>
     <url-pattern>/PdfBalanceSheet</url-pattern>
   </servlet-mapping>
-   <servlet>
-    <description/>
+  <servlet>
+    <description></description>
     <display-name>PandL</display-name>
     <servlet-name>PandL</servlet-name>
     <servlet-class>com.protostar.billingnstock.account.services.PandL</servlet-class>
@@ -215,7 +203,7 @@
     <url-pattern>/PandL</url-pattern>
   </servlet-mapping>
   <servlet>
-    <description/>
+    <description></description>
     <display-name>DownloadAccountChartServlet</display-name>
     <servlet-name>DownloadAccountChartServlet</servlet-name>
     <servlet-class>com.protostar.billingnstock.account.services.DownloadAccountChartServlet</servlet-class>
@@ -225,7 +213,7 @@
     <url-pattern>/DownloadAccountChartServlet</url-pattern>
   </servlet-mapping>
   <servlet>
-    <description/>
+    <description></description>
     <display-name>UploadUsersServlet</display-name>
     <servlet-name>UploadUsersServlet</servlet-name>
     <servlet-class>com.protostar.billnstock.servlets.UploadUsersServlet</servlet-class>
@@ -235,7 +223,7 @@
     <url-pattern>/UploadUsersServlet</url-pattern>
   </servlet-mapping>
   <servlet>
-    <description/>
+    <description></description>
     <display-name>UploadBusinessLogoServlet</display-name>
     <servlet-name>UploadBusinessLogoServlet</servlet-name>
     <servlet-class>com.protostar.billnstock.servlets.UploadBusinessLogoServlet</servlet-class>
@@ -245,7 +233,7 @@
     <url-pattern>/UploadBusinessLogoServlet</url-pattern>
   </servlet-mapping>
   <servlet>
-    <description/>
+    <description></description>
     <display-name>DownloadSalaryMaster</display-name>
     <servlet-name>DownloadSalaryMaster</servlet-name>
     <servlet-class>com.protostar.billingnstock.hr.services.DownloadSalaryMaster</servlet-class>
@@ -264,7 +252,7 @@
     </user-data-constraint>
   </security-constraint>
   <servlet>
-    <description/>
+    <description></description>
     <display-name>PrintPdfSalarySlip</display-name>
     <servlet-name>PrintPdfSalarySlip</servlet-name>
     <servlet-class>com.protostar.billingnstock.hr.services.PrintPdfSalarySlip</servlet-class>
@@ -274,7 +262,7 @@
     <url-pattern>/PrintPdfSalarySlip</url-pattern>
   </servlet-mapping>
   <servlet>
-    <description/>
+    <description></description>
     <display-name>UploadSalaryMasterServlet</display-name>
     <servlet-name>UploadSalaryMasterServlet</servlet-name>
     <servlet-class>com.protostar.billingnstock.hr.services.UploadSalaryMasterServlet</servlet-class>
@@ -284,7 +272,7 @@
     <url-pattern>/UploadSalaryMasterServlet</url-pattern>
   </servlet-mapping>
   <servlet>
-    <description/>
+    <description></description>
     <display-name>DownloadMonthlypayment</display-name>
     <servlet-name>DownloadMonthlypayment</servlet-name>
     <servlet-class>com.protostar.billingnstock.hr.services.DownloadMonthlypayment</servlet-class>
@@ -294,7 +282,7 @@
     <url-pattern>/DownloadMonthlypayment</url-pattern>
   </servlet-mapping>
   <servlet>
-    <description/>
+    <description></description>
     <display-name>PrintPdfInvoice</display-name>
     <servlet-name>PrintPdfInvoice</servlet-name>
     <servlet-class>com.protostar.billingnstock.invoice.services.PrintPdfInvoice</servlet-class>
@@ -304,7 +292,7 @@
     <url-pattern>/PrintPdfInvoice</url-pattern>
   </servlet-mapping>
   <servlet>
-    <description/>
+    <description></description>
     <display-name>PrintPdfQuotation</display-name>
     <servlet-name>PrintPdfQuotation</servlet-name>
     <servlet-class>com.protostar.billingnstock.invoice.services.PrintPdfQuotation</servlet-class>
@@ -314,7 +302,7 @@
     <url-pattern>/PrintPdfQuotation</url-pattern>
   </servlet-mapping>
   <servlet>
-    <description/>
+    <description></description>
     <display-name>PrintPdfRequisition</display-name>
     <servlet-name>PrintPdfRequisition</servlet-name>
     <servlet-class>com.protostar.billingnstock.stock.services.PrintPdfRequisition</servlet-class>
@@ -324,7 +312,7 @@
     <url-pattern>/PrintPdfRequisition</url-pattern>
   </servlet-mapping>
   <servlet>
-    <description/>
+    <description></description>
     <display-name>PrintPdfPurchaseOrder</display-name>
     <servlet-name>PrintPdfPurchaseOrder</servlet-name>
     <servlet-class>com.protostar.billingnstock.stock.services.PrintPdfPurchaseOrder</servlet-class>
@@ -333,9 +321,8 @@
     <servlet-name>PrintPdfPurchaseOrder</servlet-name>
     <url-pattern>/PrintPdfPurchaseOrder</url-pattern>
   </servlet-mapping>
-  
   <servlet>
-    <description/>
+    <description></description>
     <display-name>PrintPdfBOM</display-name>
     <servlet-name>PrintPdfBOM</servlet-name>
     <servlet-class>com.protostar.billingnstock.production.services.PrintPdfBOM</servlet-class>
@@ -344,9 +331,8 @@
     <servlet-name>PrintPdfBOM</servlet-name>
     <url-pattern>/PrintPdfBOM</url-pattern>
   </servlet-mapping>
-  
   <servlet>
-    <description/>
+    <description></description>
     <display-name>PrintPdfProductRequisition</display-name>
     <servlet-name>PrintPdfProductRequisition</servlet-name>
     <servlet-class>com.protostar.billingnstock.production.services.PrintPdfProductRequisition</servlet-class>
@@ -355,9 +341,8 @@
     <servlet-name>PrintPdfProductRequisition</servlet-name>
     <url-pattern>/PrintPdfProductRequisition</url-pattern>
   </servlet-mapping>
-  
   <servlet>
-    <description/>
+    <description></description>
     <display-name>PrintQCMachineRecordPdf</display-name>
     <servlet-name>PrintQCMachineRecordPdf</servlet-name>
     <servlet-class>com.protostar.billingnstock.production.services.PrintQCMachineRecordPdf</servlet-class>
@@ -366,7 +351,7 @@
     <servlet-name>PrintQCMachineRecordPdf</servlet-name>
     <url-pattern>/PrintQCMachineRecordPdf</url-pattern>
   </servlet-mapping>
-   <servlet>
+  <servlet>
     <description></description>
     <display-name>PrintStockReceiptQCRecordPdf</display-name>
     <servlet-name>PrintStockReceiptQCRecordPdf</servlet-name>
@@ -375,9 +360,9 @@
   <servlet-mapping>
     <servlet-name>PrintStockReceiptQCRecordPdf</servlet-name>
     <url-pattern>/PrintStockReceiptQCRecordPdf</url-pattern>
-  </servlet-mapping>  
+  </servlet-mapping>
   <servlet>
-    <description/>
+    <description></description>
     <display-name>PrintPdfstockReceipt</display-name>
     <servlet-name>PrintPdfstockReceipt</servlet-name>
     <servlet-class>com.protostar.billingnstock.stock.services.PrintPdfstockReceipt</servlet-class>
@@ -387,7 +372,7 @@
     <url-pattern>/PrintPdfstockReceipt</url-pattern>
   </servlet-mapping>
   <servlet>
-    <description/>
+    <description></description>
     <display-name>PrintPdfstockShipment</display-name>
     <servlet-name>PrintPdfstockShipment</servlet-name>
     <servlet-class>com.protostar.billingnstock.stock.services.PrintPdfstockShipment</servlet-class>
@@ -396,9 +381,8 @@
     <servlet-name>PrintPdfstockShipment</servlet-name>
     <url-pattern>/PrintPdfstockShipment</url-pattern>
   </servlet-mapping>
-  
   <servlet>
-    <description/>
+    <description></description>
     <display-name>PrintPdfProdShipment</display-name>
     <servlet-name>PrintPdfProdShipment</servlet-name>
     <servlet-class>com.protostar.billingnstock.production.services.PrintPdfProdShipment</servlet-class>
@@ -407,9 +391,8 @@
     <servlet-name>PrintPdfProdShipment</servlet-name>
     <url-pattern>/PrintPdfProdShipment</url-pattern>
   </servlet-mapping>
-  
-   <servlet>
-    <description/>
+  <servlet>
+    <description></description>
     <display-name>PrintPdfTaxCollectionReport</display-name>
     <servlet-name>PrintPdfTaxCollectionReport</servlet-name>
     <servlet-class>com.protostar.billingnstock.tax.services.PrintPdfTaxCollectionReport</servlet-class>
@@ -419,7 +402,7 @@
     <url-pattern>/PrintPdfTaxCollectionReport</url-pattern>
   </servlet-mapping>
   <servlet>
-    <description/>
+    <description></description>
     <display-name>FlushUserLoginCacheHandler</display-name>
     <servlet-name>FlushUserLoginCacheHandler</servlet-name>
     <servlet-class>com.protostar.billnstock.until.async.FlushUserLoginCacheHandler</servlet-class>
@@ -428,16 +411,26 @@
     <servlet-name>FlushUserLoginCacheHandler</servlet-name>
     <url-pattern>/proerp/cron/flushuserlogincache</url-pattern>
   </servlet-mapping>
- <servlet>
-  <servlet-name>SystemServiceServlet</servlet-name>
-  <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
-  <init-param>
-   <param-name>services</param-name>
-   <param-value>com.protostar.billingnstock.account.services.AccountEntityService,com.protostar.billingnstock.account.services.AccountEntryService,com.protostar.billingnstock.account.services.AccountGroupService,com.protostar.billingnstock.account.services.AccountingService,com.protostar.billingnstock.account.services.GeneralJournalService,com.protostar.billingnstock.account.services.VoucherService,com.protostar.billingnstock.assetmanagement.services.AssetService,com.protostar.billingnstock.crm.services.CrmService,com.protostar.billingnstock.crm.services.OpportunityService,com.protostar.billingnstock.cust.services.CustomerService,com.protostar.billingnstock.hr.services.HrService,com.protostar.billingnstock.invoice.services.InvoiceService,com.protostar.billingnstock.proadmin.services.ProtostarAdminService,com.protostar.billingnstock.production.services.ProductionService,com.protostar.billingnstock.purchase.services.SupplierService,com.protostar.billingnstock.sales.services.SalesOrderService,com.protostar.billingnstock.setup.services.UploadURLService,com.protostar.billingnstock.stock.services.StockManagementService,com.protostar.billingnstock.taskmangement.TaskManagementService,com.protostar.billingnstock.tax.services.TaxService,com.protostar.billingnstock.user.services.UserService,com.protostar.billingnstock.warehouse.services.WarehouseService,com.protostar.billnstock.service.AuthorizationService,com.protostar.billnstock.service.TestService</param-value>
-  </init-param>
- </servlet>
- <servlet-mapping>
-  <servlet-name>SystemServiceServlet</servlet-name>
-  <url-pattern>/_ah/spi/*</url-pattern>
- </servlet-mapping>
+  <servlet>
+    <servlet-name>SystemServiceServlet</servlet-name>
+    <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
+    <init-param>
+      <param-name>services</param-name>
+      <param-value>com.protostar.billingnstock.account.services.AccountEntityService,com.protostar.billingnstock.account.services.AccountEntryService,com.protostar.billingnstock.account.services.AccountGroupService,com.protostar.billingnstock.account.services.AccountingService,com.protostar.billingnstock.account.services.GeneralJournalService,com.protostar.billingnstock.account.services.VoucherService,com.protostar.billingnstock.assetmanagement.services.AssetService,com.protostar.billingnstock.crm.services.CrmService,com.protostar.billingnstock.crm.services.OpportunityService,com.protostar.billingnstock.cust.services.CustomerService,com.protostar.billingnstock.hr.services.HrService,com.protostar.billingnstock.invoice.services.InvoiceService,com.protostar.billingnstock.proadmin.services.ProtostarAdminService,com.protostar.billingnstock.production.services.ProductionService,com.protostar.billingnstock.purchase.services.SupplierService,com.protostar.billingnstock.sales.services.SalesOrderService,com.protostar.billingnstock.setup.services.UploadURLService,com.protostar.billingnstock.stock.services.StockManagementService,com.protostar.billingnstock.taskmangement.TaskManagementService,com.protostar.billingnstock.tax.services.TaxService,com.protostar.billingnstock.user.services.UserService,com.protostar.billingnstock.warehouse.services.WarehouseService,com.protostar.billnstock.service.AuthorizationService,com.protostar.billnstock.service.TestService</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SystemServiceServlet</servlet-name>
+    <url-pattern>/_ah/spi/*</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>PrintStockIssuedListPdf</display-name>
+    <servlet-name>PrintStockIssuedListPdf</servlet-name>
+    <servlet-class>com.protostar.billingnstock.production.services.PrintStockIssuedListPdf</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PrintStockIssuedListPdf</servlet-name>
+    <url-pattern>/PrintStockIssuedListPdf</url-pattern>
+  </servlet-mapping>
 </web-app>

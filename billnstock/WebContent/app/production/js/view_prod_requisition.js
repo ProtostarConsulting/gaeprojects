@@ -241,7 +241,7 @@ app
 											});
 							return totalStockQty;
 						}
-
+						
 						$scope.draftDocumnent = function(ev) {
 							$scope.documentEntity.status = 'DRAFT';
 							$scope.saveDocument();
@@ -257,5 +257,9 @@ app
 						};
 						$scope.getAllWarehouseByBusiness();
 					}
-
+					
+					$scope.printStockIssueList = function(prodRequisitionId,prodStockIssueId) {
+						var bid = $scope.curUser.business.id;
+						window.open("PrintStockIssuedListPdf?bid=" + bid + "&prodRequisitionId=" + prodRequisitionId + "&prodStockIssueId=" + prodStockIssueId);
+					}
 				});

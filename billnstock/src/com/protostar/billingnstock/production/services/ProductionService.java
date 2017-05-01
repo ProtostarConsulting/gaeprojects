@@ -267,5 +267,16 @@ public class ProductionService {
 		ofy().save().entity(reportEntity).now();
 		return reportEntity;
 	}
+	
+	@ApiMethod(name = "getStockShipmentProdRequisitionByID", path = "getStockShipmentProdRequisitionByID")
+	public StockShipmentAgainstProductionRequisition getStockShipmentProdRequisitionByID(@Named("busId") Long busId,
+			@Named("prodReqId") Long prodReqId) {
+
+		StockShipmentAgainstProductionRequisition productionRequisitionEntity = ofy().load()
+				.key(Key.create(Key.create(BusinessEntity.class, busId), StockShipmentAgainstProductionRequisition.class, prodReqId))
+				.now();
+
+		return productionRequisitionEntity;
+	}
 
 }
