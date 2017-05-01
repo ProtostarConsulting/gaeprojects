@@ -37,18 +37,19 @@ import freemarker.template.Template;
 
 public class PrintStockIssuedListPdf extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    public PrintStockIssuedListPdf() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-    
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	public PrintStockIssuedListPdf() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		Long prodRequisitionId = Long.parseLong(request.getParameter("prodRequisitionId"));
 		Long bid = Long.parseLong(request.getParameter("bid"));
 		Long prodStockIssueId = Long.parseLong(request.getParameter("prodStockIssueId"));
-		
+
 		ProductionService prodService = new ProductionService();
 		ProductionRequisitionEntity prodReqEntity = prodService.getRequisitionEntityByID(bid, prodRequisitionId);
 		response.setContentType("application/PDF");
@@ -76,10 +77,10 @@ public class PrintStockIssuedListPdf extends HttpServlet {
 			PDFHtmlTemplateService.addDocumentHeaderLogo(prodReqEntity, document, root);
 
 			DecimalFormat df = new DecimalFormat("#0.00");
-			
+
 			SimpleDateFormat sdfDate = new SimpleDateFormat("dd-MMM-yyyy");
 			SimpleDateFormat sdfTime = new SimpleDateFormat("hh:mm a");
-			TimeZone timeZone=TimeZone.getTimeZone("IST");
+			TimeZone timeZone = TimeZone.getTimeZone("IST");
 			sdfDate.setTimeZone(timeZone);
 			sdfTime.setTimeZone(timeZone);
 			Date createdDate = prodReqEntity.getCreatedDate();
@@ -93,12 +94,35 @@ public class PrintStockIssuedListPdf extends HttpServlet {
 			int prodRequisitionNo = prodReqEntity.getItemNumber();
 			String requistionNo = Integer.toString(prodRequisitionNo);
 			root.put("requistionNo", requistionNo);
-			List<StockShipmentAgainstProductionRequisition> stockShipmentProdReqList = prodReqEntity.getStockShipmentList();
+			List<StockShipmentAgainstProductionRequisition> stockShipmentProdReqList = prodReqEntity
+					.getStockShipmentList();
 			root.put("stockShipmentProdReqList", stockShipmentProdReqList);
 			ProductionService pordService = new ProductionService();
-			StockShipmentAgainstProductionRequisition stockShipProdReq = pordService.getStockShipmentProdRequisitionByID(prodReqEntity.getBusiness().getId(), prodStockIssueId);
+			StockShipmentAgainstProductionRequisition stockShipProdReq = pordService
+					.getStockShipmentProdRequisitionByID(prodReqEntity.getBusiness().getId(), prodStockIssueId);
 			List<StockLineItemsByWarehouse> warehouseList = stockShipProdReq.getFromWarehouseList();
-			root.put("warehouseList", warehouseList);
+
+			List<StockLineItemsByWarehouse> whList = new ArrayList<StockLineItemsByWarehouse>();
+			// whList will remove all warehouses and categories without items.
+
+			for (StockLineItemsByWarehouse warehouseItem : warehouseList) {
+				List<StockLineItemsByCategory> newCatList = new ArrayList<StockLineItemsByCategory>();
+				List<StockLineItemsByCategory> catList = warehouseItem.getCatList();
+				for (StockLineItemsByCategory catItem : catList) {
+					List<StockLineItem> items = catItem.getItems();
+					for (StockLineItem stockLineItem : items) {
+						if (stockLineItem.getStockIssuedQty() > 0) {
+							newCatList.add(catItem);
+							break;
+						}
+					}
+				}
+				if (newCatList.size() > 0) {
+					warehouseItem.setCatList(newCatList);
+					whList.add(warehouseItem);
+				}
+			}
+			root.put("warehouseList", whList);
 			Date devliveryDate = stockShipProdReq.getDeliveryDateTime();
 			String deliveryDateStr = sdfDate.format(devliveryDate);
 			root.put("deliveryDateStr", deliveryDateStr);
@@ -107,7 +131,7 @@ public class PrintStockIssuedListPdf extends HttpServlet {
 			root.put("stockIssueNo", stockIssueNo);
 			DocumentStatus status = stockShipProdReq.getStatus();
 			root.put("status", status.toString());
-			
+
 			Template temp = PDFHtmlTemplateService.getConfiguration()
 					.getTemplate("pdf_templates/stock_issued_list_tmpl.ftlh");
 
