@@ -41,6 +41,8 @@ app
 							finalTotal : 0,
 							isPaid : false,
 							isDraft : false,
+							indiviualServiceLineItemTax : false,
+							indiviualProductLineItemTax : false,
 							paidDate : null,
 							business : null,
 							status : 'DRAFT'
@@ -280,27 +282,91 @@ app
 					}
 
 					$scope.serviceTaxChanged = function() {
-						if (!$scope.documentEntity.selectedServiceTax) {
-							$scope.documentEntity.serviceTaxTotal = 0;
+
+						$scope.taxAmtsForServiceLineItems = [];
+						if ($scope.documentEntity.indiviualServiceLineItemTax) {
+							$scope.documentEntity.selectedServiceTax = null;
+							if ($scope.documentEntity.serviceLineItemList
+									&& $scope.documentEntity.serviceLineItemList.length > 0) {
+								for (var i = 0; i < $scope.documentEntity.serviceLineItemList.length; i++) {
+									var lineItem = $scope.documentEntity.serviceLineItemList[i];
+									if (lineItem.selectedTaxItem) {
+										lineItem.taxAmt = (lineItem.qty * lineItem.cost)
+												* (lineItem.selectedTaxItem.taxPercenatge / 100);
+										$scope.taxAmtsForServiceLineItems
+												.push(lineItem.taxAmt);
+									}
+
+								}
+								$scope.documentEntity.serviceTaxTotal = 0;
+								for (var j = 0; j < $scope.taxAmtsForServiceLineItems.length; j++) {
+									$scope.documentEntity.serviceTaxTotal += parseFloat($scope.taxAmtsForServiceLineItems[j]);
+								}
+								$scope.documentEntity.serviceTotal = ($scope.documentEntity.serviceSubTotal - $scope.documentEntity.serviceDiscAmount)
+										+ $scope.documentEntity.serviceTaxTotal;
+							}
+
 						} else {
-							$scope.documentEntity.serviceTaxTotal = parseFloat(($scope.documentEntity.selectedServiceTax.taxPercenatge / 100)
-									* ($scope.documentEntity.serviceSubTotal - $scope.documentEntity.serviceDiscAmount));
+							if ($scope.documentEntity.serviceLineItemList
+									&& $scope.documentEntity.serviceLineItemList.length > 0) {
+								for (var i = 0; i < $scope.documentEntity.serviceLineItemList.length; i++) {
+									$scope.documentEntity.serviceLineItemList[i].selectedTaxItem = null;
+								}
+							}
+							if (!$scope.documentEntity.selectedServiceTax) {
+								$scope.documentEntity.serviceTaxTotal = 0;
+							} else {
+								$scope.documentEntity.serviceTaxTotal = parseFloat(($scope.documentEntity.selectedServiceTax.taxPercenatge / 100)
+										* ($scope.documentEntity.serviceSubTotal - $scope.documentEntity.serviceDiscAmount));
+							}
+							$scope.documentEntity.serviceTotal = ($scope.documentEntity.serviceSubTotal - $scope.documentEntity.serviceDiscAmount)
+									+ $scope.documentEntity.serviceTaxTotal;
 						}
-						$scope.documentEntity.serviceTotal = ($scope.documentEntity.serviceSubTotal - $scope.documentEntity.serviceDiscAmount)
-								+ $scope.documentEntity.serviceTaxTotal;
 					};
 
 					$scope.productTaxChanged = function() {
-						if (!$scope.documentEntity.selectedProductTax) {
-							$scope.documentEntity.productTaxTotal = 0;
+
+						$scope.taxAmtsForProductLineItems = [];
+						if ($scope.documentEntity.indiviualProductLineItemTax) {
+							$scope.documentEntity.selectedProductTax = null;
+							if ($scope.documentEntity.productLineItemList
+									&& $scope.documentEntity.productLineItemList.length > 0) {
+								for (var i = 0; i < $scope.documentEntity.productLineItemList.length; i++) {
+									var lineItem = $scope.documentEntity.productLineItemList[i];
+									if (lineItem.selectedTaxItem) {
+										lineItem.taxAmt = (lineItem.qty * lineItem.price)
+												* (lineItem.selectedTaxItem.taxPercenatge / 100);
+										$scope.taxAmtsForProductLineItems
+												.push(lineItem.taxAmt);
+									}
+
+								}
+								$scope.documentEntity.productTaxTotal = 0;
+								for (var j = 0; j < $scope.taxAmtsForProductLineItems.length; j++) {
+									$scope.documentEntity.productTaxTotal += parseFloat($scope.taxAmtsForProductLineItems[j]);
+								}
+								$scope.documentEntity.productTotal = ($scope.documentEntity.productSubTotal - $scope.documentEntity.productDiscAmount)
+										+ $scope.documentEntity.productTaxTotal;
+							}
 
 						} else {
-							$scope.documentEntity.productTaxTotal = parseFloat(($scope.documentEntity.selectedProductTax.taxPercenatge / 100)
-									* ($scope.documentEntity.productSubTotal - $scope.documentEntity.productDiscAmount));
+							if ($scope.documentEntity.productLineItemList
+									&& $scope.documentEntity.productLineItemList.length > 0) {
+								for (var i = 0; i < $scope.documentEntity.productLineItemList.length; i++) {
+									$scope.documentEntity.productLineItemList[i].selectedTaxItem = null;
+								}
+							}
+							if (!$scope.documentEntity.selectedProductTax) {
+								$scope.documentEntity.productTaxTotal = 0;
+
+							} else {
+								$scope.documentEntity.productTaxTotal = parseFloat(($scope.documentEntity.selectedProductTax.taxPercenatge / 100)
+										* ($scope.documentEntity.productSubTotal - $scope.documentEntity.productDiscAmount));
+							}
+							$scope.documentEntity.productTotal = ($scope.documentEntity.productSubTotal - $scope.documentEntity.productDiscAmount)
+									+ $scope.documentEntity.productTaxTotal;
 						}
-						$scope.documentEntity.productTotal = ($scope.documentEntity.productSubTotal - $scope.documentEntity.productDiscAmount)
-								+ $scope.documentEntity.productTaxTotal;
-					}
+					};
 
 					$scope.calfinalTotal = function() {
 						var finalTotal = 0;
@@ -464,10 +530,6 @@ app
 							$scope.calProductSubTotal();
 							$scope.calServiceSubTotal();
 							$scope.getStockItemOrderTypeList();
-
-							if (!$scope.documentEntity.id) {
-								$scope.addProductLineItem();
-							}
 							$scope.toggleCloseBtn();
 						} else {
 							$log.debug("Services Not Loaded, watiting...");

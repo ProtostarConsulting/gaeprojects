@@ -282,6 +282,12 @@ app
 							}
 
 						} else {
+							if ($scope.documentEntity.serviceLineItemList
+									&& $scope.documentEntity.serviceLineItemList.length > 0) {
+								for (var i = 0; i < $scope.documentEntity.serviceLineItemList.length; i++) {
+									$scope.documentEntity.serviceLineItemList[i].selectedTaxItem = null;
+								}
+							}
 							if (!$scope.documentEntity.selectedServiceTax) {
 								$scope.documentEntity.serviceTaxTotal = 0;
 							} else {
@@ -319,6 +325,12 @@ app
 							}
 
 						} else {
+							if ($scope.documentEntity.productLineItemList
+									&& $scope.documentEntity.productLineItemList.length > 0) {
+								for (var i = 0; i < $scope.documentEntity.productLineItemList.length; i++) {
+									$scope.documentEntity.productLineItemList[i].selectedTaxItem = null;
+								}
+							}
 							if (!$scope.documentEntity.selectedProductTax) {
 								$scope.documentEntity.productTaxTotal = 0;
 
