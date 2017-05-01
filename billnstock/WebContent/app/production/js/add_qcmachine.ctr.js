@@ -5,7 +5,7 @@ app.controller("qcmachineAddCtr", function($scope, $window, $mdToast, $timeout,
 		$mdDialog, $mdMedia, $mdpDatePicker, $mdpTimePicker) {
 
 	$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
-
+	$scope.loading = true;
 	$scope.qcmachine = {
 		qcName : "",
 		validFrom : new Date().setHours(00, 00, 00, 000),
@@ -104,6 +104,7 @@ app.controller("qcmachineAddCtr", function($scope, $window, $mdToast, $timeout,
 		productService.getMachineList($scope.curUser.business.id).then(
 				function(list) {
 					$scope.machineList = list;
+					$scope.loading = false;
 				});
 	}
 

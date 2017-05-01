@@ -210,7 +210,7 @@ app
 					function addProdReqCtr($scope, $mdDialog, curUser,
 							productionRequisition, prodPlan, bomList,
 							showAddToast) {
-
+						
 						$scope.getEmptyObj = function() {
 							return {
 								createdDate : new Date(),
@@ -255,6 +255,7 @@ app
 						}
 
 						$scope.filterStockItemsByBomTypes = function(bomEntity) {
+							$scope.loading = true;
 							var stockService = appEndpointSF.getStockService();
 							stockService
 									.filterStockItemsByBomTypes({
@@ -279,6 +280,7 @@ app
 																		$scope.productionRequisition.deliveryDateTime = new Date();
 																	});
 												}
+												$scope.loading = false;
 											});
 						}
 
@@ -477,7 +479,7 @@ app
 
 					function addProdShipCtr($scope, $mdDialog, curUser,
 							productionShipment, prodPlan, showAddToast) {
-
+						
 						$scope.getEmptyObj = function() {
 							return {
 								productLineItemList : [],
@@ -529,7 +531,6 @@ app
 									curUser.business.id).then(
 									function(warehouseList) {
 										$scope.warehouses = warehouseList;
-
 										$scope.loading = false;
 									});
 						}

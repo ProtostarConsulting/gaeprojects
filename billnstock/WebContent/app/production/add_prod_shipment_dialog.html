@@ -9,8 +9,13 @@
 </div>
 </md-toolbar> <md-dialog-content
 	style="min-width:1100px; max-width:1200px; max-height:1800px;">
-<md-content layout-padding> <md-content layout-padding>
-<div>
+<md-content layout="column" flex layout-padding>
+<div ng-if="loading" layout-padding>
+	<div layout="row" layout-sm="column" layout-align="space-around">
+		<md-progress-circular md-diameter="60" md-mode="indeterminate"></md-progress-circular>
+	</div>
+</div>
+<div ng-if="!loading" layout-padding layout="column">
 	<form ng-submit="$event.preventDefault()" name="documentForm">
 		<div layout="row" layout-xs="column">
 			<div layout="row" flex>

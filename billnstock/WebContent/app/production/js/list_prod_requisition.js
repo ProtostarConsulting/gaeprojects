@@ -3,6 +3,7 @@ app.controller("list_prod_requisition", function($scope, $window, $mdToast,
 		$timeout, $mdSidenav, $mdUtil, $log, $state, $http, $stateParams,
 		$routeParams, $filter, $q, $mdMedia, $mdDialog, objectFactory,
 		appEndpointSF, $mdColors) {
+	$scope.loading = true;
 	$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
 	function reSetQuery() {
 		return {
@@ -35,6 +36,7 @@ app.controller("list_prod_requisition", function($scope, $window, $mdToast,
 		productService.listProductionRequisitionEntity(
 				$scope.curUser.business.id).then(function(list) {
 			$scope.bomRequiList = list;
+			$scope.loading = false;
 
 		});
 	}

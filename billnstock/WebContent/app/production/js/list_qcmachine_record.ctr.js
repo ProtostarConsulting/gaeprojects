@@ -6,6 +6,7 @@ var app = angular.module("stockApp")
 						$routeParams, $filter, $location, $anchorScroll,
 						objectFactory, appEndpointSF) {
 
+					$scope.loading = true;
 					function reSetQuery() {
 						return {
 							order : '-qcName',
@@ -27,6 +28,7 @@ var app = angular.module("stockApp")
 						var productService = appEndpointSF.getProductionService();
 						productService.getQCMachineRecordList($scope.curUser.business.id).then(function(list) {
 							$scope.qcmachine_recordList = list;
+							$scope.loading = false;
 						});
 					}
 					
@@ -45,8 +47,4 @@ var app = angular.module("stockApp")
 					}
 					
 					$scope.waitForServiceLoad();
-
-					$scope.back = function() {
-						window.history.back();
-					}
 				});

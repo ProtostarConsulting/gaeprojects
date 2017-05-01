@@ -5,7 +5,7 @@ var app = angular.module("stockApp")
 						$mdUtil, $log, $state, $http, $stateParams, $mdColors,
 						$routeParams, $filter, $location, $anchorScroll,
 						objectFactory, appEndpointSF) {
-
+					$scope.loading = true;
 					function reSetQuery() {
 						return {
 							order : '-machineNo',
@@ -42,6 +42,7 @@ var app = angular.module("stockApp")
 						var productService = appEndpointSF.getProductionService();
 						productService.getMachineList($scope.curUser.business.id).then(function(list) {
 							$scope.machineList = list;
+							$scope.loading = false;
 						});
 					}
 
@@ -55,8 +56,4 @@ var app = angular.module("stockApp")
 					}
 					
 					$scope.waitForServiceLoad();
-
-					$scope.back = function() {
-						window.history.back();
-					}
 				});

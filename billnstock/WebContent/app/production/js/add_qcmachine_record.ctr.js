@@ -6,7 +6,7 @@ app
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
 						$mdUtil, $log, $stateParams, objectFactory,
 						appEndpointSF, $mdDialog, $mdMedia) {
-
+					$scope.loading = true;
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
 
@@ -25,6 +25,7 @@ app
 								$scope.curUser.business.id, machine.id).then(
 								function(machineObj) {
 									$scope.tempMachine = machineObj;
+									$scope.loading = false;
 								});
 					}
 

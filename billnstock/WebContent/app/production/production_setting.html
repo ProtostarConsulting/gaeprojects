@@ -1,257 +1,91 @@
-<md-content layout-padding>
-<section layout="row" layout-xs="column">
-	<md-subheader class="md-primary">
-	<h4 class="md-title">Production Module Settings</h4>
-	</md-subheader>
-	<span flex></span>
-</section>
-<form name="invoiceSettings" layout="column">
-	<div layout="row" layout-xs="column">
-		<md-checkbox flex-offset="15" flex="30"
-			ng-model="settingsObj.needModuleDocumentApproval"
-			ng-true-value="true" ng-false-value="false"
-			aria-label="needModuleDocumentApproval"> Need Module
-		Document Approval</md-checkbox>
-		<div class="md-caption" style="padding-left: 20px;">This setting
-			makes Approval Compulsory for this module Documents like Bom,
-			Production Machine, Machine QC Definition, Machine QC Record etc.</div>
-	</div>
-	<div layout="row" layout-xs="column">
-		<div flex-xs flex="30">
-			<md-checkbox flex-offset="15"
-				ng-model="settingsObj.emailNotification" ng-true-value="true"
-				ng-false-value="false" aria-label="isGoogleUser">
-			Email Notification</md-checkbox>
-		</div>
 
-		<md-input-container flex="80" layout="row"> <label>Email
-			Notification List(enter comma separated email ids)</label> <textarea
-			ng-model="settingsObj.emailNotificationDL" rows="2" cols="1"></textarea>
-		</md-input-container>
+<md-content layout="column" flex layout-padding>
+<div ng-if="loading" layout-padding>
+	<div layout="row" layout-sm="column" layout-align="space-around">
+		<md-progress-circular md-diameter="60" md-mode="indeterminate"></md-progress-circular>
 	</div>
-</form>
-<div flex-xs flex="30">
-	<md-checkbox flex-offset="15" ng-disabled="true"
-		aria-label="Checkbox Disabled" class="md-primary"> </md-checkbox>
-	Machine QC Item Units
-	<!--Heading is placed outside the check-box,if inside it appears as faded on the UI because the check-box is disabled.  -->
 </div>
-<form name="qcMachineItemUnitForm">
-	<div layout="row" layout-xs="column">
-		<md-input-container flex="30"> <label>Enter
-			Unit Name</label> <input name="unitName" type="text"
-			ng-model="qcMachineUnitMeasure.unitName" ng-required="true">
-		</md-input-container>
-		<md-input-container flex> <label>Enter
-			Description </label> <input type="text" ng-model="qcMachineUnitMeasure.note">
-		</md-input-container>
-		<md-input-container flex> <md-button
-			class="md-icon-button" ng-click="addMachineQCUnitMeasure()">
-		<ng-md-icon icon="add_circle" style="fill: md-default" size="20">
-		<md-tooltip> Add Machine QC Unit Measure</md-tooltip></ng-md-icon> </md-button></md-input-container>
+<div ng-if="!loading" layout-padding layout="column">
+	<section layout="row" layout-xs="column">
+		<md-subheader class="md-primary">
+		<h4 class="md-title">Production Module Settings</h4>
+		</md-subheader>
+		<span flex></span>
+	</section>
+	<form name="invoiceSettings" layout="column">
+		<div layout="row" layout-xs="column">
+			<md-checkbox flex-offset="15" flex="30"
+				ng-model="settingsObj.needModuleDocumentApproval"
+				ng-true-value="true" ng-false-value="false"
+				aria-label="needModuleDocumentApproval"> Need Module
+			Document Approval</md-checkbox>
+			<div class="md-caption" style="padding-left: 20px;">This
+				setting makes Approval Compulsory for this module Documents like
+				Bom, Production Machine, Machine QC Definition, Machine QC Record
+				etc.</div>
+		</div>
+		<div layout="row" layout-xs="column">
+			<div flex-xs flex="30">
+				<md-checkbox flex-offset="15"
+					ng-model="settingsObj.emailNotification" ng-true-value="true"
+					ng-false-value="false" aria-label="isGoogleUser">
+				Email Notification</md-checkbox>
+			</div>
+
+			<md-input-container flex="80" layout="row"> <label>Email
+				Notification List(enter comma separated email ids)</label> <textarea
+				ng-model="settingsObj.emailNotificationDL" rows="2" cols="1"></textarea>
+			</md-input-container>
+		</div>
+	</form>
+	<div flex-xs flex="30">
+		<md-checkbox flex-offset="15" ng-disabled="true"
+			aria-label="Checkbox Disabled" class="md-primary"> </md-checkbox>
+		Machine QC Item Units
+		<!--Heading is placed outside the check-box,if inside it appears as faded on the UI because the check-box is disabled.  -->
 	</div>
-	<md-data-table-container>
-	<table style="width: 80%" md-table>
-		<thead md-head>
-			<tr md-row>
-				<th md-column>Unit Name</th>
-				<th md-column>Description</th>
-				<th md-column>Actions</th>
-			</tr>
-		</thead>
-		<tbody md-body>
-			<tr md-row ng-repeat="unit in qcMachineUnitMeasureList">
-				<td md-cell>{{unit.unitName}}</td>
-				<td md-cell>{{unit.note}}</td>
-				<td md-cell><md-button class="md-icon-button"
-						ng-click="editMachineQCUnitMeasure($event,unit)"> <ng-md-icon
-						icon="edit" style="fill: md-default" size="20"> <md-tooltip>
-					Edit</md-tooltip></ng-md-icon></md-button></td>
-			</tr>
-		</tbody>
-	</table>
-	</md-data-table-container>
-</form>
-<p></p>
-<!-- paragraph added to keep some space between units and category section -->
-<!-- <div flex-xs flex="30">
-	<md-checkbox flex-offset="15" ng-disabled="true"
-		aria-label="Checkbox Indeterminate" class="md-primary">
-	</md-checkbox>
-	Stock Item Categories
+	<form name="qcMachineItemUnitForm">
+		<div layout="row" layout-xs="column">
+			<md-input-container flex="30"> <label>Enter
+				Unit Name</label> <input name="unitName" type="text"
+				ng-model="qcMachineUnitMeasure.unitName" ng-required="true">
+			</md-input-container>
+			<md-input-container flex> <label>Enter
+				Description </label> <input type="text" ng-model="qcMachineUnitMeasure.note">
+			</md-input-container>
+			<md-input-container flex> <md-button
+				class="md-icon-button" ng-click="addMachineQCUnitMeasure()">
+			<ng-md-icon icon="add_circle" style="fill: md-default" size="20">
+			<md-tooltip> Add Machine QC Unit Measure</md-tooltip></ng-md-icon> </md-button></md-input-container>
+		</div>
+		<md-data-table-container>
+		<table style="width: 80%" md-table>
+			<thead md-head>
+				<tr md-row>
+					<th md-column>Unit Name</th>
+					<th md-column>Description</th>
+					<th md-column>Actions</th>
+				</tr>
+			</thead>
+			<tbody md-body>
+				<tr md-row ng-repeat="unit in qcMachineUnitMeasureList">
+					<td md-cell>{{unit.unitName}}</td>
+					<td md-cell>{{unit.note}}</td>
+					<td md-cell><md-button class="md-icon-button"
+							ng-click="editMachineQCUnitMeasure($event,unit)"> <ng-md-icon
+							icon="edit" style="fill: md-default" size="20"> <md-tooltip>
+						Edit</md-tooltip></ng-md-icon></md-button></td>
+				</tr>
+			</tbody>
+		</table>
+		</md-data-table-container>
+	</form>
+	<p></p>
+
+	<section layout="row" layout-sm="column">
+		<md-button class="md-raised md-primary" ng-click="addSettings()">Save
+		Changes </md-button>
+	</section>
 </div>
-<form name="stockItemTypeCategoryForm">
-	<div layout="row" layout-xs="column">
-		<md-input-container flex="30"> <label>Enter
-			Category Name</label> <input name="catName" type="text"
-			ng-model="stockItemTypeCategory.catName" ng-required="true">
-		</md-input-container>
-		<md-input-container flex> <md-select
-			placeholder=" Select Parent" ng-model="stockItemTypeCategory.parent">
-		<md-option ng-repeat="category in stockItemCategories"
-			ng-value="category">{{category.catName}} </md-option> </md-select> </md-input-container>
-		<md-input-container flex> <label>Enter
-			Description </label> <input type="text" ng-model="stockItemTypeCategory.note">
-		</md-input-container>
-		<md-input-container flex> <md-button
-			class="md-icon-button" ng-click="addStockItemTypeCategory()">
-		<ng-md-icon icon="add_circle" style="fill: md-default" size="20">
-		<md-tooltip> Add Stock Item Category</md-tooltip></ng-md-icon> </md-button></md-input-container>
-	</div>
-	<md-data-table-container>
-	<table style="width: 80%" md-table>
-		<thead md-head>
-			<tr md-row>
-				<th md-column>Category Name</th>
-				<th md-column>Parent Category</th>
-				<th md-column>Description</th>
-				<th md-column>Actions</th>
-			</tr>
-		</thead>
-		<tbody md-body>
-			<tr md-row ng-repeat="cat in stockItemCategories">
-				<td md-cell>{{cat.catName}}</td>
-				<td md-cell>{{cat.parent.catName}}</td>
-				<td md-cell>{{cat.note}}</td>
-				<td md-cell><md-button class="md-icon-button"
-						ng-click="editStockItemCategory($event,cat)"> <ng-md-icon
-						icon="edit" style="fill: md-default" size="20"> <md-tooltip>
-					Edit</md-tooltip></ng-md-icon></md-button></td>
-			</tr>
-		</tbody>
-	</table>
-	</md-data-table-container>
-</form>
-<p></p>
-<div flex-xs flex="30">
-	<md-checkbox flex-offset="15" ng-disabled="true"
-		aria-label="Checkbox Indeterminate" class="md-primary">
-	</md-checkbox>
-	Stock Item Order Types
-</div>
-<form name="stockItemOrderTypeForm">
-	<div layout="row" layout-xs="column">
-		<md-input-container flex="30"> <label>Enter
-			Order Type </label> <input name="typeName" type="text"
-			ng-model="stockItemOrderType.typeName" ng-required="true"> </md-input-container>
-		<md-input-container flex> <label>Enter
-			Description </label> <input type="text" ng-model="stockItemOrderType.note">
-		</md-input-container>
-		<md-input-container flex> <md-button
-			class="md-icon-button" ng-click="addStockItemOrderType()">
-		<ng-md-icon icon="add_circle" style="fill: md-default" size="20">
-		<md-tooltip> Add Stock Item Order Type</md-tooltip></ng-md-icon> </md-button></md-input-container>
-	</div>
-	<md-data-table-container>
-	<table style="width: 80%" md-table>
-		<thead md-head>
-			<tr md-row>
-				<th md-column>Order Type</th>
-				<th md-column>Description</th>
-				<th md-column>Actions</th>
-			</tr>
-		</thead>
-		<tbody md-body>
-			<tr md-row ng-repeat="orderType in stockItemOrderTypes">
-				<td md-cell>{{orderType.typeName}}</td>
-				<td md-cell>{{orderType.note}}</td>
-				<td md-cell><md-button class="md-icon-button"
-						ng-click="editStockItemOrderType($event,orderType)"> <ng-md-icon
-						icon="edit" style="fill: md-default" size="20"> <md-tooltip>
-					Edit</md-tooltip></ng-md-icon></md-button></td>
-			</tr>
-		</tbody>
-	</table>
-	</md-data-table-container>
-</form>
-<p></p>
-<div flex-xs flex="30">
-	<md-checkbox flex-offset="15" ng-disabled="true"
-		aria-label="Checkbox Indeterminate" class="md-primary">
-	</md-checkbox>
-	Stock Item Product Brands
-</div>
-<form name="stockItemBrandsForm">
-	<div layout="row" layout-xs="column">
-		<md-input-container flex="30"> <label>Enter
-			Brand Name </label> <input name="brandName" type="text"
-			ng-model="stockItemBrand.brandName" ng-required="true"> </md-input-container>
-		<md-input-container flex> <label>Enter
-			Description </label> <input type="text" ng-model="stockItemBrand.note">
-		</md-input-container>
-		<md-input-container flex> <md-button
-			class="md-icon-button" ng-click="addStockItemBrand()"> <ng-md-icon
-			icon="add_circle" style="fill: md-default" size="20"> <md-tooltip>
-		Add Stock Item Brand</md-tooltip></ng-md-icon> </md-button></md-input-container>
-	</div>
-	<md-data-table-container>
-	<table style="width: 80%" md-table>
-		<thead md-head>
-			<tr md-row>
-				<th md-column>Brand Name</th>
-				<th md-column>Description</th>
-				<th md-column>Actions</th>
-			</tr>
-		</thead>
-		<tbody md-body>
-			<tr md-row ng-repeat="brand in stockItemBrands">
-				<td md-cell>{{brand.brandName}}</td>
-				<td md-cell>{{brand.note}}</td>
-				<td md-cell><md-button class="md-icon-button"
-						ng-click="editStockItemBrand($event,brand)"> <ng-md-icon
-						icon="edit" style="fill: md-default" size="20"> <md-tooltip>
-					Edit</md-tooltip></ng-md-icon></md-button></td>
-			</tr>
-		</tbody>
-	</table>
-	</md-data-table-container>
-</form>
-<p></p>
-<div flex-xs flex="30">
-	<md-checkbox flex-offset="15" ng-disabled="true"
-		aria-label="Checkbox Indeterminate" class="md-primary">
-	</md-checkbox>
-	Stock Item Product Types
-</div>
-<form name="stockItemProductTypesForm">
-	<div layout="row" layout-xs="column">
-		<md-input-container flex="30"> <label>Enter
-			Product Type </label> <input name="typeName" type="text"
-			ng-model="stockItemProductType.typeName" ng-required="true">
-		</md-input-container>
-		<md-input-container flex> <label>Enter
-			Description </label> <input type="text" ng-model="stockItemProductType.note">
-		</md-input-container>
-		<md-input-container flex> <md-button
-			class="md-icon-button" ng-click="addStockItemProductType()">
-		<ng-md-icon icon="add_circle" style="fill: md-default" size="20">
-		<md-tooltip> Add Stock Item Product Type</md-tooltip></ng-md-icon> </md-button></md-input-container>
-	</div>
-	<md-data-table-container>
-	<table style="width: 80%" md-table>
-		<thead md-head>
-			<tr md-row>
-				<th md-column>Product Type</th>
-				<th md-column>Description</th>
-				<th md-column>Actions</th>
-			</tr>
-		</thead>
-		<tbody md-body>
-			<tr md-row ng-repeat="productType in stockItemProductTypes">
-				<td md-cell>{{productType.typeName}}</td>
-				<td md-cell>{{productType.note}}</td>
-				<td md-cell><md-button class="md-icon-button"
-						ng-click="editStockItemProductType($event,productType)">
-					<ng-md-icon icon="edit" style="fill: md-default" size="20">
-					<md-tooltip> Edit</md-tooltip></ng-md-icon></md-button></td>
-			</tr>
-		</tbody>
-	</table>
-	</md-data-table-container> 
-</form>-->
-<section layout="row" layout-sm="column">
-	<md-button class="md-raised md-primary" ng-click="addSettings()">Save
-	Changes </md-button>
-</section>
 </md-content>
 

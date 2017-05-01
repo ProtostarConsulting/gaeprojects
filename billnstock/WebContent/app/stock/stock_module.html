@@ -1,5 +1,3 @@
-
-
 <div layout="column">
 	<div>
 		<div layout-fill>
@@ -13,27 +11,35 @@
 					aria-label="Open demo menu" class="md-primary"
 					ng-click="openPurchaseMenu($mdOpenMenu, $event)">
 				Purchase </md-button> <md-menu-content width="4">
-				<p class="md-subhead md-primary" layout-padding>Purchase Menu</p>
+				<p class="md-subhead md-primary"
+					style="padding: 0 0 0 5px; margin: 0 0 0 0">Purchase Menu</p>
 				<md-menu-divider></md-menu-divider> <md-button
 					ui-sref="stock.requisitionList" ng-click="close()"
-					class="md-primary"> Requisitions</md-button> <md-menu-divider></md-menu-divider>
-				<md-button ui-sref="stock.purchaseOrderList" ng-click="close()"
-					class="md-primary"> Purchase Orders</md-button> <md-menu-divider></md-menu-divider>
-
-				</md-menu-content> </md-menu> <md-menu> <md-button aria-label="Open demo menu"
-					class="md-primary" ng-click="openSalesMenu($mdOpenMenu, $event)">
-				Sales </md-button> <md-menu-content width="4">
-				<p class="md-subhead md-primary" layout-padding>Sales Menu</p>
+					class="md-primary"
+					style="margin: 0 0 1px 0; border-radius: 10px 10px 10px 10px;">
+				Requisitions</md-button> <md-menu-divider></md-menu-divider> <md-button
+					ui-sref="stock.purchaseOrderList" ng-click="close()"
+					class="md-primary"
+					style="margin: 0 0 1px 0; border-radius: 10px 10px 10px 10px;">
+				Purchase Orders</md-button> <md-menu-divider></md-menu-divider> </md-menu-content> </md-menu> <md-menu>
+				<md-button aria-label="Open demo menu" class="md-primary"
+					ng-click="openSalesMenu($mdOpenMenu, $event)"> Sales </md-button> <md-menu-content
+					width="4">
+				<p class="md-subhead md-primary"
+					style="padding: 0 0 0 5px; margin: 0 0 0 0">Sales Menu</p>
 				<md-menu-divider></md-menu-divider> <md-button
 					ui-sref="stock.quotation_list" ng-click="close()"
-					class="md-primary"> Quotations</md-button> <md-menu-divider></md-menu-divider>
-				<md-button ui-sref="stock.invoice_list" ng-click="close()"
-					class="md-primary"> Invoices</md-button>
-				<md-menu-divider></md-menu-divider> <md-button
+					class="md-primary"
+					style="margin: 0 0 1px 0; border-radius: 10px 10px 10px 10px;">
+				Quotations</md-button> <md-menu-divider></md-menu-divider> <md-button
+					ui-sref="stock.invoice_list" ng-click="close()" class="md-primary"
+					style="margin: 0 0 1px 0; border-radius: 10px 10px 10px 10px;">
+				Invoices</md-button> <md-menu-divider></md-menu-divider> <md-button
 					ui-sref="stock.invoice_settings"
 					ng-show="hasUserAuthority(curUser, 'Invoice.ModuleAdmin')"
-					class="md-primary"> Invoices Settings</md-button>
-				<md-menu-divider></md-menu-divider> </md-menu-content> </md-menu> <md-button
+					class="md-primary"
+					style="margin: 0 0 1px 0; border-radius: 10px 10px 10px 10px;">
+				Invoices Settings</md-button> <md-menu-divider></md-menu-divider> </md-menu-content> </md-menu> <md-button
 					ui-sref="stock.stockItemList" ng-click="close()" class="md-primary">
 				Current Stock</md-button> <md-button ui-sref="stock.stockReceiptList"
 					ng-click="close()" class="md-primary"> Stock Receipts</md-button> <md-button

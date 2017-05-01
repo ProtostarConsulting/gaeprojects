@@ -6,7 +6,7 @@ app
 						$mdUtil, $log, $state, $http, $stateParams,
 						$routeParams, $filter, $mdMedia, $mdDialog, $q,
 						objectFactory, appEndpointSF) {
-
+					$scope.loading = true;
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
 
@@ -127,6 +127,7 @@ app
 								.then(
 										function(qcMachineUnitMeasureList) {
 											$scope.qcMachineUnitMeasureList = qcMachineUnitMeasureList;
+											$scope.loading = false;
 										})
 					}
 

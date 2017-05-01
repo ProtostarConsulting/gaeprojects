@@ -1,77 +1,85 @@
-<md-subheader class="md-primary">
-<h4 class="md-title" ng-bind="machine.id?'Edit Machine':'Add Machine'"></h4>
-</md-subheader>
+<md-content layout="column" flex layout-padding>
+<div ng-if="loading" layout-padding>
+	<div layout="row" layout-sm="column" layout-align="space-around">
+		<md-progress-circular md-diameter="60" md-mode="indeterminate"></md-progress-circular>
+	</div>
+</div>
+<div ng-if="!loading" layout-padding layout="column">
+	<md-subheader class="md-primary">
+	<h4 class="md-title" ng-bind="machine.id?'Edit Machine':'Add Machine'"></h4>
+	</md-subheader>
 
-<form name="addMachieForm">
-	<div layout="column" layout-xs="column">
+	<form name="addMachieForm">
+		<div layout="column" layout-xs="column">
 
-		<div layout="row" layout-xs="column" flex>
-			<md-input-container flex> <label>Machine
-				Name</label> <input name="machineName" ng-model="machine.machineName"
-				ng-required="true">
-			<div ng-messages="addMachieForm.machineName.$error"
-				ng-if="addMachieForm.machineName.$submitted || addMachieForm.machineName.$touched">
-				<div ng-message="required">Please Enter Machine Name.</div>
+			<div layout="row" layout-xs="column" flex>
+				<md-input-container flex> <label>Machine
+					Name</label> <input name="machineName" ng-model="machine.machineName"
+					ng-required="true">
+				<div ng-messages="addMachieForm.machineName.$error"
+					ng-if="addMachieForm.machineName.$submitted || addMachieForm.machineName.$touched">
+					<div ng-message="required">Please Enter Machine Name.</div>
+				</div>
+				</md-input-container>
+
+				<md-input-container flex> <label>Machine
+					Number</label> <input name="machineNo" ng-model="machine.machineNo">
+				</md-input-container>
 			</div>
-			</md-input-container>
 
-			<md-input-container flex> <label>Machine
-				Number</label> <input name="machineNo" ng-model="machine.machineNo">
-			</md-input-container>
+			<div layout="row" layout-xs="column" flex>
+				<!-- <span flex="10"></span> -->
+				<h4 class="md-subhead">Machine Details</h4>
+			</div>
+			<div layout="row" layout-xs="column">
+				<md-input-container flex> <label>Manufacturer
+					Name</label> <input name="manifacturerName" id="manifacturerName"
+					ng-model="machine.manifacturerName"> </md-input-container>
+
+				<md-input-container flex> <label>Phone
+					1</label> <input name="phone1" id="phone1"
+					ng-model="machine.manifacturerDetail.phone1"> </md-input-container>
+			</div>
+
+			<div layout="row" layout-xs="column">
+				<md-input-container flex> <label>Line1
+				</label> <input name="line1" id="line1"
+					ng-model="machine.manifacturerDetail.line1"> </md-input-container>
+				<md-input-container flex> <label>Line2
+				</label> <input name="line2" id="line2"
+					ng-model="machine.manifacturerDetail.line2"></md-input-container>
+			</div>
+
+			<div layout="row" layout-xs="column">
+				<md-input-container flex> <label>City</label> <input
+					name="city" id="city" ng-model="machine.manifacturerDetail.city">
+				</md-input-container>
+
+				<md-input-container flex> <label>Phone
+					2 </label> <input name="phone2" id="phone2"
+					ng-model="machine.manifacturerDetail.phone2"> </md-input-container>
+
+			</div>
+
+			<div layout="row" layout-xs="column">
+				<md-input-container flex> <label>State
+				</label> <input name="state" id="state"
+					ng-model="machine.manifacturerDetail.state"> </md-input-container>
+
+				<md-input-container flex="50"> <label>Pin
+				</label> <input name="pin" id="pin"
+					ng-model="machine.manifacturerDetail.pin"> </md-input-container>
+
+			</div>
 		</div>
-
-		<div layout="row" layout-xs="column" flex>
-			<!-- <span flex="10"></span> -->
-			<h4 class="md-subhead">Machine Details</h4>
+		<div layout layout-xs="column">
+			<section layout="row" layout-xs="column">
+				<md-button class="md-raised md-primary" ng-if="!machine.id"
+					ng-disabled="addMachieForm.$invalid" ng-click="addMachine()">Save</md-button>
+				<md-button class="md-raised md-primary" ng-if="machine.id"
+					ng-disabled="addMachieForm.$invalid" ng-click="addMachine()">Update</md-button>
+			</section>
 		</div>
-		<div layout="row" layout-xs="column">
-			<md-input-container flex> <label>Manufacturer
-				Name</label> <input name="manifacturerName" id="manifacturerName"
-				ng-model="machine.manifacturerName"> </md-input-container>
-
-			<md-input-container flex> <label>Phone 1</label>
-			<input name="phone1" id="phone1"
-				ng-model="machine.manifacturerDetail.phone1"> </md-input-container>
-		</div>
-
-		<div layout="row" layout-xs="column">
-			<md-input-container flex> <label>Line1 </label>
-			<input name="line1" id="line1"
-				ng-model="machine.manifacturerDetail.line1"> </md-input-container>
-			<md-input-container flex> <label>Line2 </label>
-			<input name="line2" id="line2"
-				ng-model="machine.manifacturerDetail.line2"></md-input-container>
-		</div>
-
-		<div layout="row" layout-xs="column">
-			<md-input-container flex> <label>City</label> <input
-				name="city" id="city" ng-model="machine.manifacturerDetail.city">
-			</md-input-container>
-
-			<md-input-container flex> <label>Phone 2
-			</label> <input name="phone2" id="phone2"
-				ng-model="machine.manifacturerDetail.phone2"> </md-input-container>
-
-		</div>
-
-		<div layout="row" layout-xs="column">
-			<md-input-container flex> <label>State </label>
-			<input name="state" id="state"
-				ng-model="machine.manifacturerDetail.state"> </md-input-container>
-
-			<md-input-container flex="50"> <label>Pin
-			</label> <input name="pin" id="pin" ng-model="machine.manifacturerDetail.pin">
-
-			</md-input-container>
-
-		</div>
-	</div>
-	<div layout layout-xs="column">
-		<section layout="row" layout-xs="column">
-			<md-button class="md-raised md-primary" ng-if="!machine.id"
-				ng-disabled="addMachieForm.$invalid" ng-click="addMachine()">Save</md-button>
-			<md-button class="md-raised md-primary" ng-if="machine.id"
-				ng-disabled="addMachieForm.$invalid" ng-click="addMachine()">Update</md-button>
-		</section>
-	</div>
-</form>
+	</form>
+</div>
+</md-content>

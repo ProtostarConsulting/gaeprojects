@@ -1,5 +1,5 @@
 var app = angular.module("stockApp", [ 'ngResource', 'ngAnimate', 'ngStorage',
-		'ngRoute', 'ngAria', 'mdPickers', 'ngMaterial', 'ngMessages',
+		'ngRoute', 'ngAria', 'angularCSS', 'mdPickers', 'ngMaterial', 'ngMessages',
 		"ui.bootstrap", "ui.router", 'md.data.table', 'ngFileUpload',
 		'directive.g+signin', 'ui.bootstrap', 'textAngular', 'ngMdIcons' ]);
 
@@ -287,7 +287,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	}).state('stock', {
 		url : "/stock",
 		templateUrl : '/app/stock/stock_module.html',
-		controller : 'stockModuleCtr'
+		controller : 'stockModuleCtr',
+		css: '/app/stock/css/module.css'
 	}).state('stock.settings', {
 		url : "/stocksettings",
 		templateUrl : '/app/stock/stock_settings.html',

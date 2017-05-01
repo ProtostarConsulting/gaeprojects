@@ -10,7 +10,13 @@
 </md-toolbar> <md-dialog-content
 	style="min-width:1100px; max-width:1200px; max-height:1800px;">
 <md-content layout-padding> <md-content layout-padding>
-<div>
+
+<div ng-if="loading" layout-padding>
+	<div layout="row" layout-sm="column" layout-align="space-around">
+		<md-progress-circular md-diameter="60" md-mode="indeterminate"></md-progress-circular>
+	</div>
+</div>
+<div ng-if="!loading" layout-padding layout="column">
 	<form name="entityForm">
 		<div layout="row" layout-xs="column" flex>
 			<md-input-container flex> <label>Prod

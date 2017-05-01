@@ -1,52 +1,62 @@
-<md-subheader class="md-primary"> <!-- <h4>Add Machine QC Record</h4> -->
-<h4 class="md-title"
-	ng-bind="tempQCMachineDailyRecordObj.id?'Edit Machine QC Record':'Add Machine QC Record'"></h4>
-</md-subheader>
-
-<form name="addQCMachineRecordForm">
-	<div layout="row" layout-xs="column" flex="65" flex-xs>
-		<md-input-container flex> <label>Machine
-			QC Name</label> <md-select name="machineQc" ng-model="machineQc"
-			ng-change="getMachineParamList(machineQc)" ng-required="true">
-		<md-option ng-repeat="qcmachine in machineList"
-			ng-selected="tempQCMachineDailyRecordObj.machineQc.id==qcmachine.id"
-			ng-value="qcmachine">{{qcmachine.qcName}}</md-option> </md-select>
-		<div ng-messages="addQCMachineRecordForm.machineQc.$error"
-			ng-if="addQCMachineRecordForm.machineQc.$submitted || addQCMachineRecordForm.machineQc.$touched">
-			<div ng-message="required">Please Select Machine.</div>
-		</div>
-		</md-input-container>
-
-		<mdp-date-picker mdp-placeholder="QC Record Date"
-			ng-model="recordDate" ng-change="getQCMachineDailyRecord(recordDate)"></mdp-date-picker>
+<md-content layout="column" flex layout-padding>
+<div ng-if="loading" layout-padding>
+	<div layout="row" layout-sm="column" layout-align="space-around">
+		<md-progress-circular md-diameter="60" md-mode="indeterminate"></md-progress-circular>
 	</div>
+</div>
+<div ng-if="!loading" layout-padding layout="column">
+	<md-subheader class="md-primary"> <!-- <h4>Add Machine QC Record</h4> -->
+	<h4 class="md-title"
+		ng-bind="tempQCMachineDailyRecordObj.id?'Edit Machine QC Record':'Add Machine QC Record'"></h4>
+	</md-subheader>
 
-	<div ng-if="isTableShow">
-		<div>
-			<md-table-container>
-			<table md-table md-progress="promise">
-				<tbody md-body>
-					<tr md-row>
-						<td md-cell width="20%">Time/QC Parameter Name</td>
-						<td md-cell
-							ng-repeat="parameterValue in tempQCMachineDailyRecordObj.parameterValueList[0].paramRecordedValues">{{parameterValue.parameterName}}</td>
-					</tr>
-					<tr md-row ng-repeat="tempTime in timeArray track by $index">
-						<td md-cell ng-model="parameterValueObj.time">{{ tempTime }}</td>
-						<td md-cell
-							ng-repeat="paramRecordedValue in tempQCMachineDailyRecordObj.parameterValueList[$index].paramRecordedValues"><md-input-container
-								flex style="margin: 0px; padding: 0px;"> <input
-								ng-model="paramRecordedValue.recordedValue"
-								placeholder="Enter value"> </md-input-container></td>
-					</tr>
-				</tbody>
-			</table>
-			</md-table-container>
+	<form name="addQCMachineRecordForm">
+		<div layout="row" layout-xs="column" flex="65" flex-xs>
+			<md-input-container flex> <label>Machine
+				QC Name</label> <md-select name="machineQc" ng-model="machineQc"
+				ng-change="getMachineParamList(machineQc)" ng-required="true">
+			<md-option ng-repeat="qcmachine in machineList"
+				ng-selected="tempQCMachineDailyRecordObj.machineQc.id==qcmachine.id"
+				ng-value="qcmachine">{{qcmachine.qcName}}</md-option> </md-select>
+			<div ng-messages="addQCMachineRecordForm.machineQc.$error"
+				ng-if="addQCMachineRecordForm.machineQc.$submitted || addQCMachineRecordForm.machineQc.$touched">
+				<div ng-message="required">Please Select Machine.</div>
+			</div>
+			</md-input-container>
+
+			<mdp-date-picker mdp-placeholder="QC Record Date"
+				ng-model="recordDate"
+				ng-change="getQCMachineDailyRecord(recordDate)"></mdp-date-picker>
 		</div>
 
-		<section layout="row" layout-xs="column">
-			<md-button class="md-raised md-primary"
-				ng-click="addQCMachineRecord()">Save</md-button>
-		</section>
-	</div>
-</form>
+		<div ng-if="isTableShow">
+			<div>
+				<md-table-container>
+				<table md-table md-progress="promise">
+					<tbody md-body>
+						<tr md-row>
+							<td md-cell width="20%">Time/QC Parameter Name</td>
+							<td md-cell
+								ng-repeat="parameterValue in tempQCMachineDailyRecordObj.parameterValueList[0].paramRecordedValues">{{parameterValue.parameterName}}</td>
+						</tr>
+						<tr md-row ng-repeat="tempTime in timeArray track by $index">
+							<td md-cell ng-model="parameterValueObj.time">{{ tempTime }}</td>
+							<td md-cell
+								ng-repeat="paramRecordedValue in tempQCMachineDailyRecordObj.parameterValueList[$index].paramRecordedValues"><md-input-container
+									flex style="margin: 0px; padding: 0px;"> <input
+									ng-model="paramRecordedValue.recordedValue"
+									placeholder="Enter value"> </md-input-container></td>
+						</tr>
+					</tbody>
+				</table>
+				</md-table-container>
+			</div>
+
+			<section layout="row" layout-xs="column">
+				<md-button class="md-raised md-primary"
+					ng-click="addQCMachineRecord()">Save</md-button>
+			</section>
+		</div>
+	</form>
+</div>
+</md-content>

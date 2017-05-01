@@ -69,6 +69,7 @@ app
 					function stockIssueCtr($scope, $mdDialog, curUser,
 							prodStock, productionRequisition, showAddToast) {
 
+						$scope.loading = true;
 						$scope.getEmptyObj = function() {
 							return {
 								productLineItemList : [],
