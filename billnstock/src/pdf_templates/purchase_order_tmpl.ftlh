@@ -20,6 +20,7 @@ td {
 	border-spacing: 5px; 
 	height: 15px; 
 	padding: 5px;
+	font-size: 9px;
 }
 
 </style>
@@ -201,19 +202,9 @@ td {
 			<th
 				style="width:6%;"
 				align="center">Qty.</th>
-			<th
-				style="width:15%;" 
-				align="center">Price
-			</th>
-			<th
-				style="width:15%;"
-				align="center">Sub Total</th>
-			<th
-				align="center">Tax Type</th>
-			<th
-				align="center">Tax Total</th>
-			<th style="width:15%;"
-				align="center">Total</th>
+			<th align="center">Price</th>
+			<th align="center">Total</th> <#if productTaxTotal gt 0>
+			<th align="center">Tax</th> </#if>
 		</tr>
 		
 		<#list productItemList as lineItem>
@@ -221,22 +212,89 @@ td {
 		    <#if productTax??>
 				<#assign taxAmt = productTax.taxPercenatge/100 * subTotal>
 				<#assign taxCodeName = productTax.taxCodeName + "(" + productTax.taxPercenatge + "%)">
-		    <#else>
-  				<#assign taxAmt = 0>
-  				<#assign taxCodeName = "NA">
-			</#if>	
-			<tr>
-			<td style="font-size:10px;" align="center">${lineItem.stockItem.stockItemType.itemName}</td>
-			<td style="font-size:10px;" align="center">${lineItem.qty} <#if lineItem.stockItem.stockItemType.unit??>${lineItem.stockItem.stockItemType.unit}</#if>	</td>
-			<td style="font-size:10px;" align="right">${lineItem.price?string["0.00"]}</td>			
-			<td style="font-size:10px;" align="right">${subTotal?string["0.00"]}</td>
-			<td style="font-size:10px;" align="center">${taxCodeName}</td>
-			<td style="font-size:10px;" align="right">${taxAmt?string["0.00"]}</td>
-			<td style="font-size:10px;" align="right">${(subTotal + taxAmt)?string["0.00"]}</td>
+				<tr>
+			<td align="center">${lineItem.stockItem.stockItemType.itemName}</td>
+			<td align="center">${lineItem.qty} <#if lineItem.stockItem.stockItemType.unitOfMeasure??>${lineItem.stockItem.stockItemType.unitOfMeasure.unitName}</#if></td>
+			<td align="right">${lineItem.price?string["0.00"]}</td>
+
+			<td align="right">${subTotal?string["0.00"]}</td>
+			<td style="width: 30%;" align="right">${taxCodeName}:&nbsp;${taxAmt?string["0.00"]}
+				<#if productTax.withSubHeads>
+				<table style="width: 100%; height: 100%;">
+					<#list productTax.subHeads as subHead> 
+					<#assign subHeadTax = subHead.taxSubCodeName+"("+subHead.taxPercenatge+ "%)"> 
+					<#assign subTotal = lineItem.qty * lineItem.price> 
+					<#assign subHeadTaxAmt = subHead.taxPercenatge/100 * subTotal>
+					<tbody>
+						<tr>
+							<td style="border: 0px;" align="right">
+								${subHeadTax}:&nbsp;${subHeadTaxAmt?string["0.00"]}</td>
+						</tr>
+					</tbody>
+					</#list>
+				</table> </#if>
+			</td>
 		</tr>
-		</#list>	
+		    <#elseif lineItem.selectedTaxItem??> 
+		<#assign taxAmt =lineItem.selectedTaxItem.taxPercenatge/100 * subTotal> 
+		<#assign taxCodeName = lineItem.selectedTaxItem.taxCodeName + "(" +	lineItem.selectedTaxItem.taxPercenatge + "%)">
+
+		<tr>
+			<td align="center">${lineItem.stockItem.stockItemType.itemName}</td>
+			<td align="center">${lineItem.qty} <#if lineItem.stockItem.stockItemType.unitOfMeasure??>${lineItem.stockItem.stockItemType.unitOfMeasure.unitName}</#if></td>
+			<td align="right">${lineItem.price?string["0.00"]}</td>
+			<td align="right">${subTotal?string["0.00"]}</td>
+			<td style="width: 30%;" align="right">${taxCodeName}:&nbsp;${taxAmt?string["0.00"]}
+
+				<#if lineItem.selectedTaxItem.withSubHeads>
+				<table style="width: 100%; height: 100%;" align="right">
+					<#list lineItem.selectedTaxItem.subHeads as subHead> <#assign
+					subHeadTax = subHead.taxSubCodeName+"("+subHead.taxPercenatge+
+					"%)"> <#assign subTotal = lineItem.qty * lineItem.price> <#assign
+					subHeadTaxAmt = subHead.taxPercenatge/100 * subTotal>
+					<tbody>
+						<tr>
+							<td style="border: 0px;" align="right">
+								${subHeadTax}:&nbsp;${subHeadTaxAmt?string["0.00"]}</td>
+						</tr>
+					</tbody>
+					</#list>
+				</table> </#if>
+			</td>
+		</tr>
+		<#else><#assign taxCodeName = "NA">
+			<tr>
+			<td align="center">${lineItem.stockItem.stockItemType.itemName}</td>
+			<td align="center">${lineItem.qty} <#if lineItem.stockItem.stockItemType.unitOfMeasure??>${lineItem.stockItem.stockItemType.unitOfMeasure.unitName}</#if>	</td>
+			<td align="right">${lineItem.price?string["0.00"]}</td>			
+			<td align="right">${subTotal?string["0.00"]}</td>
+			 <#if productTaxTotal gt 0>
+			<td style="width: 30%;" align="right">${taxCodeName}</td>
+			</tr></#if>
+		</#if>	</#list>	
 		</tbody>
-		</table>		
+		</table>
+<table
+	style="width: 100%; height: 100%; border-spacing: 5px; height: 30px; padding: 5px;">
+	<#assign productSubTotal = productTotal + productTaxTotal>
+	<tbody>
+		<tr>
+			<th style="width: 100%;" align="right">Product
+				Total:&nbsp;${productTotal?string["0.00"]}</th>
+		</tr>
+		<#if productTaxTotal gt 0>
+		<tr>
+			<th style="width: 100%;" align="right">Tax
+				Total:&nbsp;${productTaxTotal?string["0.00"]}</th>
+		</tr>
+		</#if> <#if serviceItemList??>
+		<tr>
+			<th style="width: 100%;" align="right">Product Sub
+				Total:&nbsp;${productSubTotal?string["0.00"]}</th>
+		</tr>
+		</#if>
+	</tbody>
+</table>		
 <#else>
   NO products items
 </#if>		
@@ -251,47 +309,106 @@ td {
 	<tbody>
 
 		<tr>
-			<th
-				style=""
-				align="center">Service Name</th>
-			<th
-				style="width:6%;"
-				align="center">Qty.</th>
-			<th
-				style="width:10%";align="center">Cost
-			</th>
-			<th
-				style=""
-				align="center">Sub Total</th>
-			<th
-				align="center">Tax Type</th>
-			<th
-				align="center">Tax Total</th>
-			<th
-			    style="width:10%;"
-				align="center">Total</th>
+			<th	align="center">Service Name</th>
+			<th style="width:6%;" align="center">Qty.</th>
+			<th align="center">Cost</th>
+			<th align="center">Total</th> <#if serviceTaxTotal gt 0>
+			<th align="center">Tax</th> </#if>
 		</tr>
 		<#list serviceItemList as lineItem>
 		    <#assign subTotal = lineItem.qty * lineItem.cost>
 			<#if serviceTax??>
 				<#assign taxAmt = serviceTax.taxPercenatge/100 * subTotal>
 				<#assign taxCodeName = serviceTax.taxCodeName + "(" + serviceTax.taxPercenatge + "%)">
-		    <#else>
-  				<#assign taxAmt = 0>
-  				<#assign taxCodeName = "NA">
-			</#if>	
-			<tr>
-			<td style="font-size:10px;" align="center">${lineItem.itemName}</td>
-			<td style="font-size:10px;" align="center">${lineItem.qty}</td>
-			<td style="font-size:10px;" align="right">${lineItem.cost?string["0.00"]}</td>			
-			<td style="font-size:10px;" align="right">${subTotal?string["0.00"]}</td>
-			<td style="font-size:10px;" align="center">${taxCodeName}</td>
-			<td style="font-size:10px;" align="right">${taxAmt?string["0.00"]}</td>
-			<td style="font-size:10px;" align="right">${(subTotal + taxAmt)?string["0.00"]}</td>
+				<tr>
+			<td align="center">${lineItem.itemName}</td>
+			<td align="center">${lineItem.qty}</td>
+			<td align="right">${lineItem.cost?string["0.00"]}</td>
+			<td align="right">${subTotal?string["0.00"]}</td>
+			<td style="width: 30%;" align="right">${taxCodeName}:&nbsp;${taxAmt?string["0.00"]}
+				<#if serviceTax.withSubHeads>
+
+				<table style="width: 100%; height: 100%;">
+					<#list serviceTax.subHeads as subHead> 
+					<#assign subHeadTax =subHead.taxSubCodeName+"("+subHead.taxPercenatge+ "%)"> 
+					<#assign subTotal = lineItem.qty * lineItem.cost> 
+					<#assign subHeadTaxAmt =subHead.taxPercenatge/100 * subTotal>
+					<tbody>
+						<tr>
+							<td style="border: 0px;" align="right">
+								${subHeadTax}:&nbsp;${subHeadTaxAmt?string["0.00"]}</td>
+						</tr>
+					</tbody>
+					</#list>
+				</table> </#if>
+			</td>
 		</tr>
+		    <#elseif lineItem.selectedTaxItem??>
+  				<#assign taxAmt =lineItem.selectedTaxItem.taxPercenatge/100 * subTotal> 
+				<#assign taxCodeName = lineItem.selectedTaxItem.taxCodeName + "(" +
+					lineItem.selectedTaxItem.taxPercenatge + "%)">			
+		<tr>
+			<td align="center">${lineItem.itemName}</td>
+			<td align="center">${lineItem.qty}</td>
+			<td align="right">${lineItem.cost?string["0.00"]}</td>
+			<td align="right">${subTotal?string["0.00"]}</td>
+			<td style="width: 30%;" align="right">
+				${taxCodeName}:&nbsp;${taxAmt?string["0.00"]} 
+				
+				<#if lineItem.selectedTaxItem.withSubHeads>
+
+				<table style="width: 100%; height: 100%;">
+					<#list lineItem.selectedTaxItem.subHeads as subHead> <#assign
+					subHeadTax = subHead.taxSubCodeName+"("+subHead.taxPercenatge+
+					"%)"> <#assign subTotal = lineItem.qty * lineItem.cost> <#assign
+					subHeadTaxAmt = subHead.taxPercenatge/100 * subTotal>
+					<tbody>
+						<tr>
+							<td style="border: 0px;" align="right">
+								${subHeadTax}:&nbsp;${subHeadTaxAmt?string["0.00"]}</td>
+						</tr>
+					</tbody>
+					</#list>
+				</table> </#if>
+
+			</td>
+		</tr>
+			
+			<#else> <#assign taxCodeName = "NA">
+			<tr>
+			<td align="center">${lineItem.itemName}</td>
+			<td align="center">${lineItem.qty}</td>
+			<td align="right">${lineItem.cost?string["0.00"]}</td>			
+			<td align="right">${subTotal?string["0.00"]}</td>
+			<#if serviceTaxTotal gt 0>
+			<td style="width: 30%;" align="right">${taxCodeName}</td>
+			</#if>
+		</tr>
+		</#if>	
 		</#list>	
 		</tbody>
 		</table>
+<table
+	style="width: 100%; height: 100%; border-spacing: 5px; height: 30px; padding: 5px;">
+	<#assign serviceSubTotal = serviceTotal + serviceTaxTotal>
+	<tbody>
+		<tr>
+			<th style="width: 100%;" align="right">Service
+				Total:&nbsp;${serviceTotal?string["0.00"]}</th>
+		</tr>
+		<#if serviceTaxTotal gt 0>
+		<tr>
+			<th style="width: 100%;" align="right">Tax
+				Total:&nbsp;${serviceTaxTotal?string["0.00"]}</th>
+		</tr>
+		</#if> <#if productItemList??>
+		<tr>
+			<th style="width: 100%;" align="right">Service Sub
+				Total:&nbsp;${serviceSubTotal?string["0.00"]}</th>
+		</tr>
+		</#if>
+	</tbody>
+</table>
 	<#else>
   No service items
 </#if>

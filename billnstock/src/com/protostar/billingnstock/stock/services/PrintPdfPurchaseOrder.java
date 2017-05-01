@@ -40,15 +40,16 @@ public class PrintPdfPurchaseOrder extends HttpServlet {
 		super();
 	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 
 		Long poId = Long.parseLong(request.getParameter("poId"));
 		Long bid = Long.parseLong(request.getParameter("bid"));
 
 		StockManagementService stockMgmtService = new StockManagementService();
 
-		PurchaseOrderEntity purchaseOrderEntity = stockMgmtService.getPOByID(bid, poId);
+		PurchaseOrderEntity purchaseOrderEntity = stockMgmtService.getPOByID(
+				bid, poId);
 		response.setContentType("application/PDF");
 
 		ServletOutputStream outputStream = response.getOutputStream();
@@ -56,14 +57,17 @@ public class PrintPdfPurchaseOrder extends HttpServlet {
 		String DATE_FORMAT = "dd/MMM/yyyy";
 		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 
-		String fileNameAppend = "PurchaseOrder_" + purchaseOrderEntity.getItemNumber() + "_" + sdf.format(date);
-		response.setHeader("Content-disposition", "inline; filename='ProERP_" + fileNameAppend + ".pdf'");
+		String fileNameAppend = "PurchaseOrder_"
+				+ purchaseOrderEntity.getItemNumber() + "_" + sdf.format(date);
+		response.setHeader("Content-disposition", "inline; filename='ProERP_"
+				+ fileNameAppend + ".pdf'");
 
 		this.generatePdf(purchaseOrderEntity, outputStream);
 
 	}
 
-	public void generatePdf(PurchaseOrderEntity purchaseOrderEntity, OutputStream outputStream) {
+	public void generatePdf(PurchaseOrderEntity purchaseOrderEntity,
+			OutputStream outputStream) {
 
 		try {
 			Document document = new Document();
@@ -73,7 +77,8 @@ public class PrintPdfPurchaseOrder extends HttpServlet {
 			XMLWorkerHelper worker = XMLWorkerHelper.getInstance();
 
 			Map<String, Object> root = new HashMap<String, Object>();
-			PDFHtmlTemplateService.addDocumentHeaderLogo(purchaseOrderEntity, document, root);
+			PDFHtmlTemplateService.addDocumentHeaderLogo(purchaseOrderEntity,
+					document, root);
 
 			DecimalFormat df = new DecimalFormat("#0.00");
 
@@ -99,29 +104,39 @@ public class PrintPdfPurchaseOrder extends HttpServlet {
 			root.put("createdDateStr", createdDateStr);
 			root.put("modifiedDateStr", modifiedDateStr);
 			root.put("shippedVia", "" + purchaseOrderEntity.getShippedVia());
-			root.put("requisitioner", "" + purchaseOrderEntity.getRequisitioner());
-			root.put("supplierName", "" + purchaseOrderEntity.getSupplier().getSupplierName());
+			root.put("requisitioner",
+					"" + purchaseOrderEntity.getRequisitioner());
+			root.put("supplierName", ""
+					+ purchaseOrderEntity.getSupplier().getSupplierName());
 			root.put("FOBPoint", "" + purchaseOrderEntity.getfOBPoint());
 			root.put("Terms", "" + purchaseOrderEntity.getTerms());
-			root.put("noteToCustomer", noteToCustomer == null ? "" : noteToCustomer);
+			root.put("noteToCustomer", noteToCustomer == null ? ""
+					: noteToCustomer);
 			UserEntity createdBy = purchaseOrderEntity.getCreatedBy();
-			root.put("createdBy", createdBy == null ? "" : createdBy.getFirstName() + " " + createdBy.getLastName());
+			root.put("createdBy",
+					createdBy == null ? "" : createdBy.getFirstName() + " "
+							+ createdBy.getLastName());
 			UserEntity approvedBy = purchaseOrderEntity.getApprovedBy();
 			root.put("approvedBy",
-					approvedBy == null ? "" : approvedBy.getFirstName() + " " + approvedBy.getLastName());
+					approvedBy == null ? "" : approvedBy.getFirstName() + " "
+							+ approvedBy.getLastName());
 
 			StringBuffer buffer = new StringBuffer();
 
 			Address suplAdress = purchaseOrderEntity.getSupplier().getAddress();
 
 			if (suplAdress != null) {
-				if (suplAdress.getLine1() != null && !suplAdress.getLine1().isEmpty())
+				if (suplAdress.getLine1() != null
+						&& !suplAdress.getLine1().isEmpty())
 					buffer.append(suplAdress.getLine1());
-				if (suplAdress.getLine2() != null && !suplAdress.getLine2().isEmpty())
+				if (suplAdress.getLine2() != null
+						&& !suplAdress.getLine2().isEmpty())
 					buffer.append(", <br></br>" + suplAdress.getLine2());
-				if (suplAdress.getCity() != null && !suplAdress.getCity().isEmpty())
+				if (suplAdress.getCity() != null
+						&& !suplAdress.getCity().isEmpty())
 					buffer.append(",<br></br>" + suplAdress.getCity());
-				if (suplAdress.getState() != null && !suplAdress.getState().isEmpty())
+				if (suplAdress.getState() != null
+						&& !suplAdress.getState().isEmpty())
 					buffer.append(", " + suplAdress.getState());
 			}
 
@@ -131,24 +146,78 @@ public class PrintPdfPurchaseOrder extends HttpServlet {
 			TaxEntity servTax = purchaseOrderEntity.getSelectedServiceTax();
 			TaxEntity prodTax = purchaseOrderEntity.getSelectedProductTax();
 
-			List<StockLineItem> serviceLineItemListForPO = purchaseOrderEntity.getServiceLineItemList();
-			List<StockLineItem> productLineItemListForPO = purchaseOrderEntity.getProductLineItemList();
+			List<StockLineItem> serviceLineItemListForPO = purchaseOrderEntity
+					.getServiceLineItemList();
+			List<StockLineItem> productLineItemListForPO = purchaseOrderEntity
+					.getProductLineItemList();
 
-			if (productLineItemListForPO != null && productLineItemListForPO.size() > 0) {
+			// //Product Line Items Part
+			double productTotal = 0;
+			double productTaxTotal = 0;
+			if (productLineItemListForPO != null
+					&& productLineItemListForPO.size() > 0) {
 				root.put("productItemList", productLineItemListForPO);
 				root.put("productTax", prodTax);
+				for (StockLineItem stockLineItem : productLineItemListForPO) {
+					productTotal += stockLineItem.getQty()
+							* stockLineItem.getPrice();
+				}
+				if (purchaseOrderEntity.isIndiviualProductLineItemTax()) {
+					for (StockLineItem stockLineItem : productLineItemListForPO) {
+						if (stockLineItem.getSelectedTaxItem() != null)
+							productTaxTotal += stockLineItem.getPrice()
+									* stockLineItem.getQty()
+									* (stockLineItem.getSelectedTaxItem()
+											.getTaxPercenatge() / 100);
+					}
+				} else {
+					if (prodTax != null)
+						productTaxTotal = (prodTax.getTaxPercenatge() / 100)
+								* (productTotal - purchaseOrderEntity
+										.getDiscAmount());
 
+				}
 			}
+			root.put("productTotal", productTotal);
+			root.put("productTaxTotal", productTaxTotal);
 
-			if (serviceLineItemListForPO != null && serviceLineItemListForPO.size() > 0) {
+			// //Service Line Items Part
+			double serviceTotal = 0;
+			double serviceTaxTotal = 0;
+			if (serviceLineItemListForPO != null
+					&& serviceLineItemListForPO.size() > 0) {
 				root.put("serviceItemList", serviceLineItemListForPO);
 				root.put("serviceTax", servTax);
+
+				for (StockLineItem stockLineItem : serviceLineItemListForPO) {
+					serviceTotal += stockLineItem.getQty()
+							* stockLineItem.getCost();
+				}
+				if (purchaseOrderEntity.isIndiviualServiceLineItemTax()) {
+					for (StockLineItem stockLineItem : serviceLineItemListForPO) {
+						if (stockLineItem.getSelectedTaxItem() != null)
+							serviceTaxTotal += stockLineItem.getCost()
+									* stockLineItem.getQty()
+									* (stockLineItem.getSelectedTaxItem()
+											.getTaxPercenatge() / 100);
+					}
+				} else {
+					if (servTax != null)
+						serviceTaxTotal = (servTax.getTaxPercenatge() / 100)
+								* (serviceTotal - purchaseOrderEntity
+										.getDiscAmount());
+
+				}
 			}
+
+			root.put("serviceTotal", serviceTotal);
+			root.put("serviceTaxTotal", serviceTaxTotal);
 
 			double finalTotal = purchaseOrderEntity.getFinalTotal();
 			root.put("finalTotal", finalTotal);
 
-			NumberToRupees numberToRupees = new NumberToRupees(Math.round(finalTotal));
+			NumberToRupees numberToRupees = new NumberToRupees(
+					Math.round(finalTotal));
 			String netInWords = numberToRupees.getAmountInWords();
 			root.put("finalTotalInWords", netInWords);
 
@@ -164,7 +233,8 @@ public class PrintPdfPurchaseOrder extends HttpServlet {
 			String pdfXMLContent = byteArrayOutputStream.toString();
 
 			worker.parseXHtml(writer, document, new StringReader(pdfXMLContent));
-			PDFHtmlTemplateService.addDocumentFooter(purchaseOrderEntity, writer);
+			PDFHtmlTemplateService.addDocumentFooter(purchaseOrderEntity,
+					writer);
 			document.close();
 
 		} catch (Exception e) {

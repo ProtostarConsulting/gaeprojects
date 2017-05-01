@@ -200,15 +200,14 @@ p {
 
 			</td>
 		</tr>
-		<#else> <#assign taxAmt = 0> <#assign taxCodeName = "NA">
+		<#else> <#assign taxCodeName = "NA">
 		<tr>
 			<td align="center">${lineItem.itemName}</td>
 			<td align="center">${lineItem.qty}</td>
 			<td align="right">${lineItem.price?string["0.00"]}</td>
-			<td align="right">${subTotal?string["0.00"]}</td> <#if
-			serviceTaxTotal gt 0>
-			<td style="width: 30%;" align="right">
-				${taxCodeName}:&nbsp;${taxAmt?string["0.00"]}</td> </#if>
+			<td align="right">${subTotal?string["0.00"]}</td> 
+			<#if serviceTaxTotal gt 0>
+			<td style="width: 30%;" align="right">${taxCodeName}</td> </#if>
 		</tr>
 		</#if> </#list>
 	</tbody>
@@ -282,7 +281,7 @@ p {
 		<#assign taxCodeName = lineItem.selectedTaxItem.taxCodeName + "(" +	lineItem.selectedTaxItem.taxPercenatge + "%)">
 
 		<tr>
-			<td align="left">${lineItem.stockItem.stockItemType.itemName}</td>
+			<td align="center">${lineItem.stockItem.stockItemType.itemName}</td>
 			<td align="center">${lineItem.qty}</td>
 			<td align="right">${lineItem.price?string["0.00"]}</td>
 			<td align="right">${subTotal?string["0.00"]}</td>
@@ -304,12 +303,14 @@ p {
 				</table> </#if>
 			</td>
 		</tr>
-		<#else>
+		<#else><#assign taxCodeName = "NA">
 		<tr>
 			<td align="center">${lineItem.stockItem.stockItemType.itemName}</td>
 			<td align="center">${lineItem.qty}</td>
 			<td align="right">${lineItem.price?string["0.00"]}</td>
 			<td align="right">${subTotal?string["0.00"]}</td>
+			<#if productTaxTotal gt 0>
+			<td style="width: 30%;" align="right">${taxCodeName}</td></#if>
 		</tr>
 
 		</#if> </#list>

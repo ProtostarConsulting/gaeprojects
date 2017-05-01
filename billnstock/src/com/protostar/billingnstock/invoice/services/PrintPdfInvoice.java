@@ -110,10 +110,11 @@ public class PrintPdfInvoice extends HttpServlet {
 				}
 				if (invoiceEntity.isIndiviualServiceLineItemTax()) {
 					for (StockLineItem stockLineItem : serviceLineItemList) {
-						serviceTaxTotal += stockLineItem.getPrice()
-								* stockLineItem.getQty()
-								* (stockLineItem.getSelectedTaxItem()
-										.getTaxPercenatge() / 100);
+						if (stockLineItem.getSelectedTaxItem() != null)
+							serviceTaxTotal += stockLineItem.getPrice()
+									* stockLineItem.getQty()
+									* (stockLineItem.getSelectedTaxItem()
+											.getTaxPercenatge() / 100);
 					}
 				} else {
 					if (serviceTax != null)
@@ -138,10 +139,11 @@ public class PrintPdfInvoice extends HttpServlet {
 				}
 				if (invoiceEntity.isIndiviualProductLineItemTax()) {
 					for (StockLineItem stockLineItem : productLineItemList) {
-						productTaxTotal += stockLineItem.getPrice()
-								* stockLineItem.getQty()
-								* (stockLineItem.getSelectedTaxItem()
-										.getTaxPercenatge() / 100);
+						if (stockLineItem.getSelectedTaxItem() != null)
+							productTaxTotal += stockLineItem.getPrice()
+									* stockLineItem.getQty()
+									* (stockLineItem.getSelectedTaxItem()
+											.getTaxPercenatge() / 100);
 					}
 				} else {
 					if (productTax != null)
