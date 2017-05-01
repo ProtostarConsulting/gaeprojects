@@ -45,7 +45,7 @@
 			<th md-column md-order-by="unit">Unit</th>
 			<th md-column md-order-by="unit">Brand</th>
 			<th md-column md-order-by="unit">Product Type</th>
-			<th md-column md-order-by="category">Category</th>
+			<!-- <th md-column md-order-by="category">Category</th> -->
 			<th md-column>Actions</th>
 			</tr>
 		</thead>
@@ -58,7 +58,7 @@
 				<td md-cell>{{stockItem.unitOfMeasure.unitName}}</td>
 				<td md-cell>{{stockItem.brand.brandName}}</td>
 				<td md-cell>{{stockItem.productType.typeName}}</td>
-				<td md-cell>{{stockItem.catNames}}</td>
+				<!-- <td md-cell>{{stockItem.catNames}}</td> -->
 				<td md-cell><md-button class="md-icon-button"
 						ui-sref="stock.stockItemTypeAdd({selectedStockItem: stockItem})">
 					<ng-md-icon icon="edit" style="fill: md-default" size="18">

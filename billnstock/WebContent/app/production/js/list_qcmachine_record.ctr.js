@@ -9,8 +9,8 @@ var app = angular.module("stockApp")
 					$scope.loading = true;
 					function reSetQuery() {
 						return {
-							order : '-qcName',
-							limit : 50,
+							order : 'itemNumber',
+							limit : $scope.dataTableOptions.limit,
 							page : 1,
 							totalSize : 0,
 							pagesLoaded : 0

@@ -11,7 +11,11 @@
 	</md-subheader>
 	<div>
 		<form name="entityForm">
-			<div layout="row" layout-xs="column">
+
+			<div layout="row" layout-xs="column" flex>
+				<md-input-container flex> <label>BOM Ref
+					Number</label> <input ng-model="documentEntity.itemNumber"
+					placeholder="Auto generated number" ng-disabled="true"></input> </md-input-container>
 				<md-autocomplete flex required ng-disabled="documentEntity.id"
 					md-input-name="autocompleteField" md-no-cache=true
 					md-selected-item="documentEntity.stockItemType"
@@ -28,6 +32,16 @@
 					auto-complete field, will only suggest stock items marked as
 					Production Items and do not have BOM defined yet.</div>
 				</md-autocomplete>
+				<md-input-container flex=25> <label>Created
+					By </label> <input ng-disabled="true" ng-model="createdBy"
+					ng-init="createdBy = documentEntity.createdBy? documentEntity.createdBy.firstName + ' ' + documentEntity.createdBy.lastName: ''"></input>
+				</md-input-container>
+				<md-input-container flex=25> <label>Created
+					Date </label> <input ng-disabled="true"
+					ng-value="documentEntity.createdDate | formatDate"></input> </md-input-container>
+
+			</div>
+			<div layout="row" layout-xs="column">
 
 				<md-input-container flex> <input type="text"
 					aria-label="period" placeholder="Discription"
@@ -80,8 +94,8 @@
 						<td md-cell>
 							<div layout="row" flex>
 								<md-input-container flex style="margin: 0px; padding: 0px;">
-								<md-select ng-model="itemObj.stockItemType" placeholder="Item Name"
-									ng-required="true"> <md-option
+								<md-select ng-model="itemObj.stockItemType"
+									placeholder="Item Name" ng-required="true"> <md-option
 									ng-value="stockItemType"
 									ng-selected="itemObj.stockItemType.id == stockItemType.id"
 									ng-repeat="stockItemType in bomCategory.categoryStockTypeList">{{stockItemType.itemName
@@ -94,7 +108,7 @@
 						<td md-cell>
 							<div layout="row" flex>
 								<md-input-container style="margin: 0px; padding: 0px;">
-								<input ng-model="itemObj.qty"  ng-required="true" aria-label="t"></md-input-container>
+								<input ng-model="itemObj.qty" ng-required="true" aria-label="t"></md-input-container>
 							</div>
 						</td>
 						<td md-cell><md-icon

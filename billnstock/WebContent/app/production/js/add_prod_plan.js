@@ -211,7 +211,7 @@ app
 							productionRequisition, prodPlan, bomList,
 							showAddToast) {
 						
-						$scope.getEmptyObj = function() {
+						function getEmptyObj() {
 							return {
 								createdDate : new Date(),
 								createdBy : curUser,
@@ -222,7 +222,7 @@ app
 
 						$scope.todaysDate = new Date();
 						$scope.productionRequisition = productionRequisition ? productionRequisition
-								: $scope.getEmptyObj();
+								: getEmptyObj();
 
 						if ($scope.productionRequisition.id) {
 							$scope.productionRequisition.deliveryDateTime = new Date(
@@ -389,7 +389,7 @@ app
 					function addProdReportCtr($scope, $mdDialog, curUser,
 							prodctionReport, prodPlan, bomList, showAddToast) {
 
-						$scope.getEmptyObj = function() {
+						function getEmptyObj() {
 							return {
 								prodPlanItemNumber : prodPlan.itemNumber,
 								createdDate : new Date(),
@@ -402,7 +402,7 @@ app
 						$scope.todaysDate = new Date()
 								.setHours(00, 00, 00, 000);
 						$scope.prodctionReport = prodctionReport ? prodctionReport
-								: $scope.getEmptyObj();
+								: getEmptyObj();
 
 						if ($scope.prodctionReport.id) {
 							$scope.prodctionReport.reportDate = new Date(
@@ -480,7 +480,7 @@ app
 					function addProdShipCtr($scope, $mdDialog, curUser,
 							productionShipment, prodPlan, showAddToast) {
 						
-						$scope.getEmptyObj = function() {
+						function getEmptyObj() {
 							return {
 								productLineItemList : [],
 								shipmentDate : new Date(),
@@ -494,7 +494,7 @@ app
 						$scope.warehouses = [];
 						$scope.stockItemList = [];
 						$scope.documentEntity = productionShipment ? productionShipment
-								: $scope.getEmptyObj();
+								: getEmptyObj();
 
 						if ($scope.documentEntity.id) {
 							$scope.documentEntity.shipmentDate = new Date(
@@ -517,7 +517,7 @@ app
 										$scope.stockItemList = stockList;
 										$scope.loading = false;
 									});
-							if (!$scope.documentEntity.id) {
+							if (!$scope.documentEntity.id && !$scope.documentEntity.productLineItemList) {
 								$scope.addProductLineItem();
 							}
 						}

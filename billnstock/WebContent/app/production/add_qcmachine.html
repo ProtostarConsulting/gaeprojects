@@ -11,6 +11,20 @@
 	</md-subheader>
 
 	<form name="addQCMachineForm">
+		<div layout="row" layout-xs="column">
+			<md-input-container flex> <label>Machine QC Master
+				Ref Number</label> <input ng-model="qcmachine.itemNumber"
+				placeholder="Auto generated number" ng-disabled="true"></input> </md-input-container>
+
+			<md-input-container flex=25> <label>Created
+				By </label> <input ng-disabled="true" ng-model="createdBy"
+				ng-init="createdBy = qcmachine.createdBy? qcmachine.createdBy.firstName + ' ' + qcmachine.createdBy.lastName: ''"></input>
+			</md-input-container>
+			<md-input-container flex=25> <label>Created
+				Date </label> <input ng-disabled="true"
+				ng-value="qcmachine.createdDate | formatDate"></input> </md-input-container>
+
+		</div>
 		<div layout="row" layout-xs="column" flex>
 			<md-input-container flex> <label>Select
 				Machine</label> <md-select name="machineNo" ng-model="qcmachine.machine"

@@ -9,16 +9,18 @@ import com.protostar.billingnstock.production.entities.QCMachineEntity;
 import com.protostar.billingnstock.production.entities.QCParameter;
 import com.protostar.billingnstock.production.entities.QCParameterRecord;
 import com.protostar.billingnstock.production.entities.QCTimeParameterValue;
+import com.protostar.billnstock.until.data.WebUtil;
 import com.protostar.billnstock.until.data.Constants.SchedulingFrequecyType;
 import com.protostar.billnstock.until.data.Constants.SchedulingTimeFrequecyType;
 
 public class ProductionUtil {
-	public QCMachineDailyRecordEntity createNewQCMachineDailyRecordEntity(
-			QCMachineEntity qcMachine, Date date) {
+	public QCMachineDailyRecordEntity createNewQCMachineDailyRecordEntity(QCMachineEntity qcMachine, Date date) {
 
-		QCMachineDailyRecordEntity qcMachineDailyRecordEntity = new QCMachineDailyRecordEntity();
+		QCMachineDailyRecordEntity qcRecord = new QCMachineDailyRecordEntity();
+		qcRecord.setCreatedBy(WebUtil.getCurrentUser().getUser());
+		qcRecord.setCreatedDate(new Date());
 		List<QCTimeParameterValue> parameterValueList = new ArrayList<QCTimeParameterValue>();
-		qcMachineDailyRecordEntity.setParameterValueList(parameterValueList);
+		qcRecord.setParameterValueList(parameterValueList);
 
 		List<QCParameter> parameterList = qcMachine.getParameterList();
 
@@ -36,21 +38,21 @@ public class ProductionUtil {
 				List<QCParameterRecord> paramRecordedValues = new ArrayList<QCParameterRecord>();
 				pValue.setTime(new Date(tempTime.getTime()));
 				pValue.setParamRecordedValues(paramRecordedValues);
-
-				for (QCParameter qcParameter : parameterList) {
-					QCParameterRecord qcParameterRecord = new QCParameterRecord();
-					qcParameterRecord.setParameterName(qcParameter.getName());
-					qcParameterRecord.setRecordedValue("");
-					paramRecordedValues.add(qcParameterRecord);
+				if (parameterList != null) {
+					for (QCParameter qcParameter : parameterList) {
+						QCParameterRecord qcParameterRecord = new QCParameterRecord();
+						qcParameterRecord.setParameterName(qcParameter.getName());
+						qcParameterRecord.setRecordedValue("");
+						paramRecordedValues.add(qcParameterRecord);
+					}
 				}
 
-				
 				tempTime.setHours(pValue.getTime().getHours() + 1);
 			} while (tempTime.compareTo(tillTime) <= 0);
 
 		}
 
-		return qcMachineDailyRecordEntity;
+		return qcRecord;
 	}
 
 }

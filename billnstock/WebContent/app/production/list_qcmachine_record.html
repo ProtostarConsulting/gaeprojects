@@ -24,6 +24,7 @@
 		<thead ng-if="!dataTableOptions.decapitate" md-head
 			md-order="query.order" md-on-reorder="logOrder">
 			<tr md-row>
+				<th md-column md-order-by="itemNumber">Record Ref Number</th>
 				<th md-column md-order-by="machineQc.qcName" >QC Name</th>
 				<th md-column >Note</th>
 				<th md-column md-order-by="validFrom">Record Date</th>
@@ -34,7 +35,7 @@
 		<tbody md-body>
 			<tr md-row
 				ng-repeat="qcmachineRecord in qcmachine_recordList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
-
+				<td md-cell>{{qcmachineRecord.itemNumber}}</td>
 				<td md-cell>{{qcmachineRecord.machineQc.qcName}}</td>
 				<td md-cell>{{qcmachineRecord.machineQc.note}}</td>
 				<td md-cell>{{qcmachineRecord.recordDate | formatDate}}</td>

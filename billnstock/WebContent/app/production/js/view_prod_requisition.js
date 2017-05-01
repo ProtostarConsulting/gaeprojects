@@ -6,7 +6,6 @@ app
 						$mdUtil, $log, $stateParams, objectFactory,
 						appEndpointSF, $mdDialog, $mdMedia) {
 
-					$scope.loading = true;
 					function reSetQuery() {
 						return {
 							order : '-itemNumber',

@@ -2,12 +2,14 @@ package com.protostar.billingnstock.production.entities;
 
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
 import com.protostar.billnstock.entity.BaseEntity;
+import com.protostar.billnstock.until.data.Constants;
+import com.protostar.billnstock.until.data.EntityUtil;
+import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 import com.protostar.billnstock.until.data.Constants.DocumentStatus;
 
 @Cache
@@ -18,11 +20,22 @@ public class ProductionPlanDailyReport extends BaseEntity {
 
 	@Index
 	private Ref<BomEntity> bomEntity;
-	
+
 	private DocumentStatus status = DocumentStatus.DRAFT;
 
 	private Date reportDate;
 	private int bomProducedQty;
+
+	@Override
+	public void beforeSave() {
+		super.beforeSave();
+
+		if (getId() == null) {
+			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
+					EntityUtil.getBusinessRawKey(getBusiness()), Constants.PROD_PLAN_DAILYERPORT_NO_COUNTER);
+			setItemNumber(sequenceGenService.getNextSequenceNumber());
+		}
+	}
 
 	public BomEntity getBomEntity() {
 		return bomEntity == null ? null : bomEntity.get();

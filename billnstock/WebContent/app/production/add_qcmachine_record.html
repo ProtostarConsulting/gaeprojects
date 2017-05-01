@@ -7,16 +7,30 @@
 <div ng-if="!loading" layout-padding layout="column">
 	<md-subheader class="md-primary"> <!-- <h4>Add Machine QC Record</h4> -->
 	<h4 class="md-title"
-		ng-bind="tempQCMachineDailyRecordObj.id?'Edit Machine QC Record':'Add Machine QC Record'"></h4>
+		ng-bind="qcRecordObj.id?'Edit Machine QC Record':'Add Machine QC Record'"></h4>
 	</md-subheader>
 
 	<form name="addQCMachineRecordForm">
-		<div layout="row" layout-xs="column" flex="65" flex-xs>
+
+		<div layout="row" layout-xs="column">
 			<md-input-container flex> <label>Machine
-				QC Name</label> <md-select name="machineQc" ng-model="machineQc"
+				QC Record Ref Number</label> <input ng-model="qcRecordObj.itemNumber"
+				placeholder="Auto generated number" ng-disabled="true"></input> </md-input-container>
+
+			<md-input-container flex=25> <label>Created
+				By </label> <input ng-disabled="true" ng-model="createdBy"
+				ng-init="createdBy = qcRecordObj.createdBy? qcRecordObj.createdBy.firstName + ' ' + qcRecordObj.createdBy.lastName: ''"></input>
+			</md-input-container>
+			<md-input-container flex=25> <label>Created
+				Date </label> <input ng-disabled="true"
+				ng-value="qcRecordObj.createdDate | formatDate"></input> </md-input-container>
+
+		</div>
+		<div layout="row" layout-xs="column" flex="65" flex-xs>
+			<md-input-container flex> <label>Machine QC Name</label> <md-select name="machineQc" ng-model="machineQc"
 				ng-change="getMachineParamList(machineQc)" ng-required="true">
 			<md-option ng-repeat="qcmachine in machineList"
-				ng-selected="tempQCMachineDailyRecordObj.machineQc.id==qcmachine.id"
+				ng-selected="qcRecordObj.machineQc.id==qcmachine.id"
 				ng-value="qcmachine">{{qcmachine.qcName}}</md-option> </md-select>
 			<div ng-messages="addQCMachineRecordForm.machineQc.$error"
 				ng-if="addQCMachineRecordForm.machineQc.$submitted || addQCMachineRecordForm.machineQc.$touched">
@@ -26,7 +40,7 @@
 
 			<mdp-date-picker mdp-placeholder="QC Record Date"
 				ng-model="recordDate"
-				ng-change="getQCMachineDailyRecord(recordDate)"></mdp-date-picker>
+				ng-change="getQCMachineDailyRecord(recordDate)" mdp-disabled="!machineQc"></mdp-date-picker>
 		</div>
 
 		<div ng-if="isTableShow">
@@ -37,12 +51,12 @@
 						<tr md-row>
 							<td md-cell width="20%">Time/QC Parameter Name</td>
 							<td md-cell
-								ng-repeat="parameterValue in tempQCMachineDailyRecordObj.parameterValueList[0].paramRecordedValues">{{parameterValue.parameterName}}</td>
+								ng-repeat="parameterValue in qcRecordObj.parameterValueList[0].paramRecordedValues">{{parameterValue.parameterName}}</td>
 						</tr>
 						<tr md-row ng-repeat="tempTime in timeArray track by $index">
 							<td md-cell ng-model="parameterValueObj.time">{{ tempTime }}</td>
 							<td md-cell
-								ng-repeat="paramRecordedValue in tempQCMachineDailyRecordObj.parameterValueList[$index].paramRecordedValues"><md-input-container
+								ng-repeat="paramRecordedValue in qcRecordObj.parameterValueList[$index].paramRecordedValues"><md-input-container
 									flex style="margin: 0px; padding: 0px;"> <input
 									ng-model="paramRecordedValue.recordedValue"
 									placeholder="Enter value"> </md-input-container></td>

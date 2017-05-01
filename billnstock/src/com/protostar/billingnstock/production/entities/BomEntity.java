@@ -13,6 +13,7 @@ import com.protostar.billnstock.entity.BaseEntity;
 import com.protostar.billnstock.until.data.Constants;
 import com.protostar.billnstock.until.data.EntityUtil;
 import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
+import com.protostar.billnstock.until.data.Constants.DocumentStatus;
 
 @Cache
 @Entity
@@ -50,5 +51,4 @@ public class BomEntity extends BaseEntity {
 	public void setCatList(List<StockLineItemsByCategory> catList) {
 		this.catList = catList;
 	}
-
 }

@@ -62,6 +62,7 @@ import com.protostar.billnstock.until.data.Constants.StockShipmentType;
 import com.protostar.billnstock.until.data.EmailHandler;
 import com.protostar.billnstock.until.data.EntityPagingInfo;
 import com.protostar.billnstock.until.data.EntityUtil;
+import com.protostar.billnstock.until.data.WebUtil;
 
 @Api(name = "stockService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.stock.services", ownerName = "com.protostar.billingnstock.stock.services", packagePath = ""))
 public class StockManagementService extends BaseService {
@@ -303,6 +304,9 @@ public class StockManagementService extends BaseService {
 		stockItemEntity.setStockItemType(stockLineItem.getStockItem().getStockItemType());
 		stockItemEntity.setCost(stockLineItem.getStockItem().getCost());
 		stockItemEntity.setMovingAvgCost(stockLineItem.getStockItem().getMovingAvgCost());
+
+		stockItemEntity.setCreatedBy(WebUtil.getCurrentUser().getUser());
+		stockItemEntity.setCreatedDate(new Date());
 
 		return addStockItem(stockItemEntity);
 

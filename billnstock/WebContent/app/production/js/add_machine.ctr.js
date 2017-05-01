@@ -4,48 +4,42 @@ app.controller("machineAddCtr", function($scope, $window, $mdToast, $timeout,
 		$mdSidenav, $mdUtil, $log, $stateParams, objectFactory, appEndpointSF,
 		$mdDialog, $mdMedia) {
 
-	$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
-
-	$scope.machine = {
-		manifacturerDetail : $scope.manifacturerDetail,
-		machineName : "",
-		machineNo : "",
-		manifacturerName : ""
-	};
-	
-	$scope.machine = $stateParams.machineObj ? $stateParams.machineObj : null;
-
-	$scope.manifacturerDetail = {
-		line1 : "",
-		line2 : "",
-		city : "",
-		state : "",
-		country : "India",
-		pin : "",
-		phone1 : "",
-		phone2 : ""
+	function getEmptyObj() {
+		return {
+			manifacturerDetail : {
+				line1 : "",
+				line2 : "",
+				city : "",
+				state : "",
+				country : "",
+				pin : "",
+				phone1 : "",
+				phone2 : ""
+			},
+			machineName : "",
+			manifacturerName : '',
+			manifacturerRefNumber : "",
+			createdDate : new Date(),
+			createdBy : $scope.curUser,
+			business : $scope.curUser.business,
+			status : 'DRAFT'
+		}
 	}
 
-	$scope.getEmptyMachineObj = function() {
-		return {
-			manifacturerDetail : $scope.manifacturerDetail,
-			machineName : "",
-			machineNo : ""
-		}
-	};
+	$scope.machine = $stateParams.machineObj ? $stateParams.machineObj
+			: getEmptyObj();
 
 	$scope.addMachine = function() {
-
 		$scope.machine.business = $scope.curUser.business;
 		$scope.machine.modifiedBy = $scope.curUser.email_id;
 
 		var productService = appEndpointSF.getProductionService();
 		productService.addMachine($scope.machine).then(function(machineObj) {
-			if(machineObj.id != undefined){
+			if (machineObj.id != undefined) {
+				$scope.machine = machineObj;
 				$scope.showAddToast();
 			}
 		});
-		
-		$scope.getEmptyMachineObj();
+
 	}
 });

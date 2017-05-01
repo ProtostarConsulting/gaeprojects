@@ -25,6 +25,7 @@ import com.protostar.billingnstock.production.entities.StockShipmentAgainstProdu
 import com.protostar.billingnstock.stock.entities.StockLineItemsByCategory;
 import com.protostar.billingnstock.stock.services.StockManagementService;
 import com.protostar.billingnstock.user.entities.BusinessEntity;
+import com.protostar.billnstock.until.data.WebUtil;
 
 @Api(name = "productionService", version = "v0.1", namespace = @ApiNamespace(ownerDomain = "com.protostar.billingnstock.production.services", ownerName = "com.protostar.billingnstock.production.services", packagePath = ""))
 public class ProductionService {
@@ -55,7 +56,8 @@ public class ProductionService {
 		prodReq.setBomEntity(bom);
 		prodReq.setProductQty(1);
 		prodReq.setDeliveryDateTime(new Date());
-
+		prodReq.setCreatedBy(WebUtil.getCurrentUser().getUser());
+		prodReq.setCreatedDate(new Date());
 		List<StockLineItemsByCategory> bomCatList = bom.getCatList();
 		prodReq.setCatList(bomCatList);
 

@@ -8,9 +8,7 @@ app
 						appEndpointSF, $mdDialog, $mdMedia) {
 
 					$scope.loading = true;
-					$scope.curUser = appEndpointSF.getLocalUserService()
-							.getLoggedinUser();
-
+					
 					function defaultActionProcessing() {
 						return {
 							saving : false,
@@ -21,21 +19,22 @@ app
 
 					$scope.actionProcessing = defaultActionProcessing();
 
-					$scope.getEmptyBomObjadd = function() {
+					function getEmptyObj() {
 						return {
 							productName : "",
 							catList : [],
-							business : $scope.curUser.business,
+							createdDate : new Date(),
 							createdBy : $scope.curUser,
-							modifiedBy : null
+							business : $scope.curUser.business,
+							status : 'DRAFT'
 						}
-					};
+					}
 
 					$scope.dummyCatList = [];
 					$scope.stockItemCategories = [];
 
 					$scope.documentEntity = $stateParams.bomEntity ? $stateParams.bomEntity
-							: $scope.getEmptyBomObjadd();
+							: getEmptyObj();
 
 					$scope.addCatogory = function() {
 						var category = {
@@ -74,9 +73,11 @@ app
 						productService
 								.addBomEntity($scope.documentEntity)
 								.then(
-										function(bom) {
-											if (bom.id)
-												$scope.documentEntity.id = bom.id;
+										function(savedObj) {
+											if (savedObj.id){
+												$scope.documentEntity.id = savedObj.id;
+												$scope.documentEntity.itemNumber = savedObj.itemNumber;
+											}
 
 											$scope.actionProcessing = defaultActionProcessing();
 											$scope.showAddToast();

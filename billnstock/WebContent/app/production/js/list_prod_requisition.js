@@ -7,8 +7,8 @@ app.controller("list_prod_requisition", function($scope, $window, $mdToast,
 	$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
 	function reSetQuery() {
 		return {
-			order : '-itemNumber',
-			limit : 50,
+			order : 'itemNumber',
+			limit : $scope.dataTableOptions.limit,
 			page : 1,
 			totalSize : 0,
 			pagesLoaded : 0

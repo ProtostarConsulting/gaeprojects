@@ -12,6 +12,20 @@
 	<form name="addMachieForm">
 		<div layout="column" layout-xs="column">
 
+			<div layout="row" layout-xs="column">
+				<md-input-container flex> <label>Machine
+					Ref Number</label> <input ng-model="machine.itemNumber"
+					placeholder="Auto generated number" ng-disabled="true"></input> </md-input-container>
+
+				<md-input-container flex=25> <label>Created
+					By </label> <input ng-disabled="true" ng-model="createdBy"
+					ng-init="createdBy = machine.createdBy? machine.createdBy.firstName + ' ' + machine.createdBy.lastName: ''"></input>
+				</md-input-container>
+				<md-input-container flex=25> <label>Created
+					Date </label> <input ng-disabled="true"
+					ng-value="machine.createdDate | formatDate"></input> </md-input-container>
+
+			</div>
 			<div layout="row" layout-xs="column" flex>
 				<md-input-container flex> <label>Machine
 					Name</label> <input name="machineName" ng-model="machine.machineName"
@@ -22,8 +36,8 @@
 				</div>
 				</md-input-container>
 
-				<md-input-container flex> <label>Machine
-					Number</label> <input name="machineNo" ng-model="machine.machineNo">
+				<md-input-container flex> <label>Manufacturer Machine Ref
+					Number</label> <input name="machineNo" ng-model="machine.manifacturerRefNumber">
 				</md-input-container>
 			</div>
 

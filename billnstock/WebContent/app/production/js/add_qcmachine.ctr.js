@@ -15,8 +15,12 @@ app.controller("qcmachineAddCtr", function($scope, $window, $mdToast, $timeout,
 		machine : "",
 		schedule : "",
 		scheduleTime : "",
-		startFromTime : moment('3:50 PM', "hh:mm A"),
-		tillTime : moment('3:50 PM', "hh:mm A"),
+		startFromTime : moment('9:00 AM', "hh:mm A"),
+		tillTime : moment('6:00 PM', "hh:mm A"),
+		createdDate : new Date(),
+		createdBy : $scope.curUser,
+		business : $scope.curUser.business,
+		status : 'DRAFT'
 	};
 
 	$scope.qcmachine = $stateParams.qcmachineObj ? $stateParams.qcmachineObj
@@ -55,6 +59,8 @@ app.controller("qcmachineAddCtr", function($scope, $window, $mdToast, $timeout,
 		productService.addQCMachine($scope.qcmachine).then(
 				function(machineObj) {
 					if (machineObj.id != undefined) {
+						$scope.qcmachine.id = machineObj.id;
+						$scope.qcmachine.itemNumber = savedObj.itemNumber;
 						$scope.showAddToast();
 					}
 				});
