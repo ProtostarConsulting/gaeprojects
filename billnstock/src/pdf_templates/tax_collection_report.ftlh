@@ -71,13 +71,14 @@ p {
 		</tr>
 			<#list taxItemList as taxItem>
 				
+			<#if taxItem.taxAmt gt 0>	
 			<tr>
 			<td style="font-size:10px;" align="center">${taxItem.invoiceItemNumber}</td>
 			<td style="font-size:10px;" align="center">${taxItem.invoiceDate?string["dd-MMM-yyyy"]}</td>
 			<td style="font-size:10px;" align="right">${taxItem.taxAmt}</td>			
-		
-			
-		</tr>
+				
+			</tr>
+			</#if>
 		</#list>
 		</tbody>
 		</table>
