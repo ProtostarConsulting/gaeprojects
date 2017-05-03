@@ -39,14 +39,13 @@
 			<tr md-row>
 				<th md-column md-order-by="invoiceItemNumber">Invoice No</th>
 				<th md-column md-order-by="invoiceDate">Invoice Paid Date</th>
-				<th md-column md-order-by="taxAmt">Tax
-					Collected(&#x20b9)</th>
+				<th md-column md-order-by="taxAmt">Tax Collected(&#x20b9)</th>
 			</tr>
 		</thead>
 
-		<tbody md-body>
-			<tr md-row
-				ng-repeat="tax in taxRcvData | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+		<tbody md-body
+			ng-repeat="tax in taxRcvData.itemList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
+			<tr md-row ng-if="tax.taxAmt>0">
 
 				<td md-cell>{{tax.invoiceItemNumber}}</td>
 				<td md-cell>{{tax.invoiceDate | formatDate}}</td>
@@ -57,7 +56,7 @@
 	</table>
 	<section layout="row" layout-xs="column">
 		<span flex=65></span>
-		<div id="taxTotal">Total :{{taxTotal | number:2}}</div>
+		<div id="taxTotal">Total :{{taxRcvData.taxTotal | number:2}}</div>
 	</section>
 	<md-table-pagination md-limit="query.limit"
 		md-limit-options="dataTableOptions.limitOptions" md-page="query.page"
