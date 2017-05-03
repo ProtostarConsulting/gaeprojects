@@ -125,7 +125,9 @@
 		</div>
 	</form>
 </div>
-</md-content></md-dialog-content> <md-dialog-actions layout="row"> <md-button
+</md-content></md-dialog-content> <md-dialog-actions layout="row"
+	ng-if="documentEntity.status !== 'FINALIZED'">
+<md-button class="md-raised" ng-click="cancel()">Cancel</md-button> <md-button
 	class="md-raised md-primary" ng-disabled="documentForm.$invalid"
 	ng-click="draftDocumnent()">Save as Draft</md-button> <md-button
 	class="md-raised md-primary" ng-disabled="documentForm.$invalid"

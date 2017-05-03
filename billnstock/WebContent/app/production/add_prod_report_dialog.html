@@ -14,8 +14,8 @@
 <div>
 	<form name="entityForm">
 		<div layout="row" layout-xs="column" flex>
-			<md-input-container flex> <label>Daily Report Number</label> <input
-				ng-model="prodctionReport.itemNumber"
+			<md-input-container flex> <label>Daily
+				Report Number</label> <input ng-model="prodctionReport.itemNumber"
 				placeholder="Auto generated number" ng-disabled="true"></input> </md-input-container>
 			<md-input-container flex> <label>Document
 				Status </label> <input type="text" ng-disabled="true"
@@ -55,7 +55,7 @@
 	</form>
 </div>
 
-</md-content> </md-content> </md-dialog-content> <md-dialog-actions layout="row"> <md-button
+</md-content> </md-content> </md-dialog-content> <md-dialog-actions layout="row">
+<md-button class="md-raised" ng-click="cancel()">Cancel</md-button> <md-button
 	class="md-raised md-primary" ng-disabled="entityForm.$invalid"
-	ng-click="addProductionReport()">Submit</md-button> <md-button
-	class="md-raised" ng-click="cancel()">Cancel</md-button> </md-dialog-actions> </md-dialog>
+	ng-click="addProductionReport()">Submit</md-button> </md-dialog-actions> </md-dialog>

@@ -7,16 +7,17 @@ import java.util.List;
 import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
+import com.protostar.billingnstock.stock.entities.StockItemsShipmentEntity;
 import com.protostar.billingnstock.stock.entities.StockLineItemsByWarehouse;
-import com.protostar.billnstock.entity.BaseEntity;
 import com.protostar.billnstock.until.data.Constants;
 import com.protostar.billnstock.until.data.Constants.DocumentStatus;
 import com.protostar.billnstock.until.data.EntityUtil;
 import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
+import com.protostar.billnstock.until.data.WebUtil;
 
 @Cache
 @Entity
-public class StockShipmentAgainstProductionRequisition extends BaseEntity {
+public class StockShipmentAgainstProductionRequisition extends StockItemsShipmentEntity {
 
 	private List<StockLineItemsByWarehouse> fromWarehouseList = new ArrayList<StockLineItemsByWarehouse>();
 
@@ -29,7 +30,29 @@ public class StockShipmentAgainstProductionRequisition extends BaseEntity {
 
 	@Override
 	public void beforeSave() {
-		super.beforeSave();
+		// super.beforeSave();
+
+		if (getBusiness() == null) {
+			throw new RuntimeException("Business entity is not set on: " + this.getClass().getSimpleName()
+					+ " This is required field. Aborting save operation...");
+		}
+		/*
+		 * Calendar cal = Calendar.getInstance(); Date today = cal.getTime();
+		 * cal.add(Calendar.YEAR, -1); Date dummyDate = cal.getTime();
+		 */
+		if (getId() == null) {
+			setCreatedDate(new Date());
+			if (WebUtil.getCurrentUser() != null)
+				setCreatedBy(WebUtil.getCurrentUser().getUser());
+		} else {
+			setModifiedDate(new Date());
+			if (WebUtil.getCurrentUser() != null)
+				setModifiedByUser(WebUtil.getCurrentUser().getUser());
+		}
+
+		if (this.getStatus() == DocumentStatus.FINALIZED) {
+			this.setStatusAlreadyFinalized(true);
+		}
 
 		if (getId() == null) {
 			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(

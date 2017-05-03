@@ -49,6 +49,7 @@ import com.protostar.billingnstock.stock.entities.StockItemsShipmentEntity;
 import com.protostar.billingnstock.stock.entities.StockLineItem;
 import com.protostar.billingnstock.stock.entities.StockLineItemCategory;
 import com.protostar.billingnstock.stock.entities.StockLineItemsByCategory;
+import com.protostar.billingnstock.stock.entities.StockLineItemsByWarehouse;
 import com.protostar.billingnstock.stock.entities.StockReceiptQCEntity;
 import com.protostar.billingnstock.stock.entities.StockReceiptQCRecord;
 import com.protostar.billingnstock.stock.entities.StockSettingsEntity;
@@ -109,11 +110,67 @@ public class StockManagementService extends BaseService {
 	}
 
 	@ApiMethod(name = "addProductionStockIssueList", path = "addProductionStockIssueList")
-	public StockShipmentAgainstProductionRequisition addProductionStockIssueList(
-			StockShipmentAgainstProductionRequisition stockissue) {
-		// System.out.println("--------stockissue-DeliveryDateTime-------"+stockissue.getDeliveryDateTime());
-		ofy().save().entity(stockissue).now();
-		return stockissue;
+	public StockShipmentAgainstProductionRequisition addProductionStockIssue(
+			StockShipmentAgainstProductionRequisition documentEntity) throws MessagingException, IOException {
+		if (documentEntity.getStatus() == DocumentStatus.FINALIZED && documentEntity.isStatusAlreadyFinalized()) {
+			throw new RuntimeException(
+					"Save not allowed. StockShipmentAgainstProductionRequisition is already FINALIZED: "
+							+ this.getClass().getSimpleName() + " Finalized entity can't be altered.");
+		}
+
+		documentEntity = ofy().execute(TxnType.REQUIRED, new Work<StockShipmentAgainstProductionRequisition>() {
+			private StockShipmentAgainstProductionRequisition documentEntity;
+			private StockManagementService thisSerive;
+
+			private Work<StockShipmentAgainstProductionRequisition> init(
+					StockShipmentAgainstProductionRequisition documentEntity, StockManagementService thisSerive) {
+				this.documentEntity = documentEntity;
+				this.thisSerive = thisSerive;
+				return this;
+			}
+
+			public StockShipmentAgainstProductionRequisition run() {
+				if (documentEntity.getStatus() == DocumentStatus.FINALIZED) {
+					List<StockLineItem> productLineItemList = new ArrayList<StockLineItem>();
+					documentEntity.setProductLineItemList(productLineItemList);
+
+					List<StockLineItemsByWarehouse> warehouseList = documentEntity.getFromWarehouseList();
+
+					for (StockLineItemsByWarehouse warehouseItem : warehouseList) {
+						List<StockLineItemsByCategory> catList = warehouseItem.getCatList();
+						for (StockLineItemsByCategory catItem : catList) {
+							List<StockLineItem> items = catItem.getItems();
+							for (StockLineItem stockLineItem : items) {
+								if (stockLineItem.getStockIssuedQty() > 0) {
+									stockLineItem.setQty(stockLineItem.getStockIssuedQty());
+
+									StockItemEntity stockItemEntity = new StockItemEntity();
+									stockLineItem.setStockItem(stockItemEntity);
+									stockItemEntity.setStockItemType(stockLineItem.getStockItemType());
+									stockLineItem.setStockItem(thisSerive
+											.getOrCreateWarehouseStockItem(warehouseItem.getFromWH(), stockLineItem));
+									productLineItemList.add(stockLineItem);
+								}
+							}
+						}
+					}
+					if (productLineItemList.size() > 0) {
+						// Process stock items
+						StockManagementService.adjustStockItems(documentEntity.getBusiness(), productLineItemList,
+								documentEntity.getItemNumber(), 0);
+					}
+				}
+
+				ofy().save().entity(documentEntity).now();
+				return documentEntity;
+			}
+		}.init(documentEntity, this));
+
+		if (documentEntity.getStatus() == DocumentStatus.FINALIZED) {
+			// new EmailHandler().sendProductionStockIssueEmail(documentEntity);
+		}
+
+		return documentEntity;
 	}
 
 	@ApiMethod(name = "getStockShipmentIssueList", path = "getStockShipmentIssueList")
@@ -277,9 +334,9 @@ public class StockManagementService extends BaseService {
 						if (toUpdateEntity instanceof StockItemsReceiptEntity) {
 							stockItemInstanceEntity
 									.setStockReceiptNumber(((StockItemsReceiptEntity) toUpdateEntity).getItemNumber());
-						} else if (toUpdateEntity instanceof StockItemsShipmentEntity) {
+						} else if (toUpdateEntity instanceof StockShipmentAgainstProductionRequisition) {
 							stockItemInstanceEntity.setStockShipmentNumber(
-									((StockItemsShipmentEntity) toUpdateEntity).getItemNumber());
+									((StockShipmentAgainstProductionRequisition) toUpdateEntity).getItemNumber());
 						} else if (toUpdateEntity instanceof InvoiceEntity) {
 							stockItemInstanceEntity.setInvoiceNumber(((InvoiceEntity) toUpdateEntity).getItemNumber());
 						}
@@ -892,28 +949,28 @@ public class StockManagementService extends BaseService {
 		List<StockItemTxnEntity> stockItemTxnList = new ArrayList<StockItemTxnEntity>();
 		List<StockItemInstanceEntity> stockItemInstanceToUpdateList = new ArrayList<StockItemInstanceEntity>();
 
-		for (StockLineItem invoiceLineItem : productLineItemList) {
-			int qtyDiff = invoiceLineItem.getQty() - invoiceLineItem.getStockMaintainedQty();
-			if (invoiceLineItem.getStockItem().isMaintainStock() && qtyDiff != 0) {
+		for (StockLineItem stockLineItem : productLineItemList) {
+			int qtyDiff = stockLineItem.getQty() - stockLineItem.getStockMaintainedQty();
+			if (stockLineItem.getStockItem().isMaintainStock() && qtyDiff != 0) {
 
 				StockItemTxnEntity txnEntity = new StockItemTxnEntity();
 				txnEntity.setBusiness(business);
-				txnEntity.setStockItem(invoiceLineItem.getStockItem());
+				txnEntity.setStockItem(stockLineItem.getStockItem());
 				txnEntity.setQty(Math.abs(qtyDiff));
 				txnEntity.setStockShipmentNumber(shipmentItemNumber);
 				txnEntity.setInvoiceNumber(invoiceItemNumber);
 				if (qtyDiff > 0) {
 					txnEntity.setTxnType(StockItemTxnEntity.StockTxnType.DR);
-					txnEntity.setPrice(invoiceLineItem.getPrice());
+					txnEntity.setPrice(stockLineItem.getPrice());
 				} else {
 					txnEntity.setTxnType(StockItemTxnEntity.StockTxnType.CR);
-					txnEntity.setPrice(invoiceLineItem.getCost());
+					txnEntity.setPrice(stockLineItem.getCost());
 				}
-				invoiceLineItem.setStockMaintainedQty(Math.abs(invoiceLineItem.getQty()));
+				stockLineItem.setStockMaintainedQty(Math.abs(stockLineItem.getQty()));
 				stockItemTxnList.add(txnEntity);
-				if (invoiceLineItem.getStockItem().getStockItemType().isMaintainStockBySerialNumber()
-						&& invoiceLineItem.getStockItemInstanceList() != null) {
-					stockItemInstanceToUpdateList.addAll(invoiceLineItem.getStockItemInstanceList());
+				if (stockLineItem.getStockItem().getStockItemType().isMaintainStockBySerialNumber()
+						&& stockLineItem.getStockItemInstanceList() != null) {
+					stockItemInstanceToUpdateList.addAll(stockLineItem.getStockItemInstanceList());
 				}
 			}
 		}

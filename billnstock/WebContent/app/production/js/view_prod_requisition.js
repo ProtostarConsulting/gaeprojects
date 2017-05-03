@@ -251,6 +251,11 @@ app
 							$scope.documentEntity.status = 'SUBMITTED';
 							$scope.saveDocument();
 						}
+						
+						$scope.finalizeDocumnent = function(ev) {
+							$scope.documentEntity.status = 'FINALIZED';
+							$scope.saveDocument();
+						}
 
 						$scope.cancel = function() {
 							$mdDialog.cancel();

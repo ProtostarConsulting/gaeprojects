@@ -114,8 +114,9 @@
 </div>
 
 </md-content> </md-content> </md-dialog-content> <md-dialog-actions layout="row"> <md-button
-	class="md-raised md-primary" ng-disabled="documentForm.$invalid"
-	ng-click="draftDocumnent()">Save as Draft</md-button> <md-button
-	class="md-raised md-primary" ng-disabled="documentForm.$invalid"
-	ng-click="submitDocumnent()">Submit</md-button> <md-button
-	class="md-raised" ng-click="cancel()">Cancel</md-button> </md-dialog-actions> </md-dialog>
+	class="md-raised" ng-click="cancel()">Cancel</md-button>
+<md-button class="md-raised md-primary"
+	ng-disabled="documentForm.$invalid" ng-click="draftDocumnent()">Save
+as Draft</md-button> <md-button class="md-raised md-primary"
+	ng-disabled="documentForm.$invalid" ng-click="submitDocumnent()">Submit</md-button>
+</md-dialog-actions> </md-dialog>
