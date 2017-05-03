@@ -136,5 +136,59 @@
 		Collection </md-button> </md-content> </md-sidenav>
 	</div>
 
-	<div ui-view layout-padding></div>
+	<div ui-view layout-padding>
+		<!-- sample dashboards -->
+		<div layout="row" layout-xs="column">
+			<md-card layout-padding layout="column" flex="45">
+			<p flex align="center">Purchase Dashboard</p>
+			<table class="table" style="border: 1px solid black;">
+				<tr>
+					<td
+						style="border: 1px solid black; width: 60%; overflow: hidden">Purchase
+						Orders Due Today</td>
+					<td style="border: 1px solid black;"><a href="">3 </a> of follow-up pending <a href=""> 2</a></td>
+				</tr>
+				<tr>
+					<td style="border: 1px solid black;">Purchase Orders Due in
+						next 3 Days</td>
+					<td style="border: 1px solid black;"><a href=""><a href="">14 </a> of follow-up pending <a href=""> 7</a> </a></td>
+				</tr>
+				<tr>
+					<td style="border: 1px solid black;">Purchase Orders Due in
+						next 7 Days</td>
+					<td style="border: 1px solid black;"><a href=""><a href="">17 </a> of follow-up pending <a href=""> 15</a></a></td>
+				</tr>
+				<tr>
+					<td style="border: 1px solid black;">Total Purchase Orders Due</td>
+					<td style="border: 1px solid black;"><a href="">45 </a></td>
+				</tr>
+			</table>
+			</md-card>
+			<md-card layout-padding layout="column" flex="45">
+			<p flex align="center">Stock Dashboard</p>
+
+			<table class="table" style="border: 1px solid black;">
+				<tr>
+					<td
+						style="border: 1px solid black; width: 85%; overflow: hidden">Stock Items below Re-order Level</td>
+					<td style="border: 1px solid black;"><a href="">6 </a></td>
+				</tr>
+				<tr>
+					<td style="border: 1px solid black;">Stock Items Not-in-Hand against Production Requistions</td>
+					<td style="border: 1px solid black;"><a href="">14 </a></td>
+				</tr>
+				<tr>
+					<td style="border: 1px solid black;">Purchase Orders Due in
+						next 7 Days</td>
+					<td style="border: 1px solid black;"><a href="">17 </a></td>
+				</tr>
+				<tr>
+					<td style="border: 1px solid black;">Total Purchase Orders Due</td>
+					<td style="border: 1px solid black;"><a href="">45 </a></td>
+				</tr>
+			</table>
+			</md-card>
+		</div>
+
+	</div>
 </div>
