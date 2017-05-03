@@ -4,7 +4,8 @@ angular
 				"indexCtr",
 				function($scope, $rootScope, $window, $log, $q, $timeout,
 						$mdToast, $mdBottomSheet, $state, $http, $location,
-						$anchorScroll, $mdMedia, ajsCache, appEndpointSF) {
+						$anchorScroll, $mdMedia, $localStorage, ajsCache,
+						appEndpointSF) {
 
 					$scope.loading = true;
 					$scope.angular = angular;
@@ -73,12 +74,11 @@ angular
 												if (result.items.length > 1) {
 													$scope.loading = false;
 													$scope.multiUsers = result.items;
-													$state
-															.go(
-																	"selectmultibiz",
-																	{
-																		multiUsers : $scope.multiUsers
-																	});
+													$localStorage.multiUsers = $scope.multiUsers;
+													var hostBaseUrl = '//'
+															+ window.location.host
+															+ '/app.html#/selectbiz';
+													$window.location.href = hostBaseUrl;
 													return;
 												} else {
 													var user = result.items[0];
@@ -260,19 +260,11 @@ angular
 											if (loggedInUserList.items.length > 1) {
 												$scope.loading = false;
 												$scope.multiUsers = loggedInUserList.items;
-												angular
-														.forEach(
-																$scope.multiUsers,
-																function(fu) {
-																	fu.imageURl = $scope.googleUser
-																			.getImageUrl();
-																});
-												$state
-														.go(
-																"selectmultibiz",
-																{
-																	multiUsers : $scope.multiUsers
-																});
+												$localStorage.multiUsers = $scope.multiUsers;
+												var hostBaseUrl = '//'
+														+ window.location.host
+														+ '/app.html#/selectbiz';
+												$window.location.href = hostBaseUrl;
 												return;
 											} else {
 												var loggedInUser = loggedInUserList.items[0];
@@ -498,12 +490,33 @@ angular
 										angular.fromJson(user.authorizations));
 					};
 
+					$scope.canUserApproveDocument = function(documentEntity,
+							settingsObj, curUser, authName) {
+						if (documentEntity
+								&& documentEntity.id
+								&& (settingsObj
+										&& !settingsObj.needModuleDocumentApproval || $scope
+										.hasUserAuthority(curUser, authName))) {
+							return true;
+						}
+						return false;
+					}
+
 					$scope.isDocumentEditAllowed = function(documentEntity) {
 						if (documentEntity
-								&& (documentEntity.status == 'FINALIZED' || documentEntity.status == 'REJECTED')) {
+								&& (documentEntity.status == 'FINALIZED'
+										|| documentEntity.status == 'REJECTED' || documentEntity.status == 'CLOSED')) {
 							return false;
 						}
 						return true;
+					}
+
+					$scope.isDocumentNotClosed = function(documentEntity) {
+						if (documentEntity && documentEntity.id
+								&& documentEntity.status !== 'CLOSED') {
+							return true;
+						}
+						return false;
 					}
 
 					$scope.gotoPart = function(partId) {

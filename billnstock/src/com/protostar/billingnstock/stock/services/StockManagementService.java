@@ -1073,8 +1073,13 @@ public class StockManagementService extends BaseService {
 	@ApiMethod(name = "updatePurchaseOrder", path = "updatePurchaseOrder")
 	public PurchaseOrderEntity updatePurchaseOrder(PurchaseOrderEntity purchaseOrderEntity)
 			throws MessagingException, IOException {
-		ofy().save().entity(purchaseOrderEntity).now();
-		return purchaseOrderEntity;
+		if (!(DocumentStatus.FINALIZED.equals(purchaseOrderEntity.getStatus())
+				|| DocumentStatus.CLOSED.equals(purchaseOrderEntity.getStatus()))) {
+			return addPurchaseOrder(purchaseOrderEntity);
+		} else {
+			ofy().save().entity(purchaseOrderEntity).now();
+			return purchaseOrderEntity;
+		}
 	}
 
 	@ApiMethod(name = "addPurchaseOrder", path = "addPurchaseOrder")

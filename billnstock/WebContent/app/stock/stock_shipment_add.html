@@ -259,16 +259,23 @@
 				</tbody>
 			</table>
 		</div>
-		<div layout layout-xs="column"
-			ng-if="isDocumentEditAllowed(documentEntity)">
-			<section layout="row" layout-xs="column">
+		<div
+			ng-if="isDocumentEditAllowed(documentEntity)"
+			layout="column" style="padding: 0; margin: 0;">
+			<span layout="row"><hr flex />
+				<h4>Actions</h4>
+				<hr flex /></span>
+		</div>
+		<div layout="row" layout-xs="column">
+			<section layout="row" layout-xs="column"
+				ng-if="isDocumentEditAllowed(documentEntity)">
 				<md-button class="md-raised md-primary"
 					ng-disabled="documentForm.$invalid" ng-click="draftDocumnent()">Save
 				as Draft</md-button>
 				<md-button class="md-raised md-primary"
 					ng-disabled="documentForm.$invalid" ng-click="submitDocumnent()">Submit</md-button>
 				<section layout="row" layout-xs="column"
-					ng-if="documentEntity.id &&  (!settingsObj.needModuleDocumentApproval || hasUserAuthority(curUser, 'Stock.ModuleApprover'))">
+					ng-if="canUserApproveDocument(documentEntity, settingsObj, curUser, 'Stock.ModuleApprover')">
 					<md-button class="md-raised md-primary"
 						ng-disabled="documentForm.$invalid"
 						ng-click="finalizeDocumnent($event)">Approve/Finalize</md-button>

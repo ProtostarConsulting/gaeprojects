@@ -21,473 +21,489 @@
 </section>
 <div>
 	<form ng-submit="$event.preventDefault()" name="documentForm">
-
-		<div flex layout="row" layout-xs="column">
-			<div layout="row" flex=40 flex-xs=100>
-				<md-input-container flex> <label>PO No.</label>
-				<input ng-model="documentEntity.itemNumber"
-					placeholder="Auto generated number" ng-disabled="true"></input> </md-input-container>
-				<span flex="5"></span>
-				<md-input-container flex> <label>Document
-					Status </label> <input type="text" ng-disabled="true"
-					ng-model="documentEntity.status"> </md-input-container>
-				<span flex="5"></span>
-			</div>
-			<div layout="row" flex=60 flex-xs=100>
-				<md-input-container flex> <label>Select
-					Order Type</label> <md-select placeholder="Order Type"
-					ng-model="documentEntity.orderType"> <md-option
-					ng-repeat="orderType in stockItemOrderTypes" ng-value="orderType"
-					ng-selected="documentEntity.orderType.id == orderType.id">{{orderType.typeName}}
-				</md-option> </md-select> </md-input-container>
-				<md-input-container flex=25 flex-xs=100> <label>Created
-					By </label> <input ng-disabled="true" ng-model="createdBy"
-					ng-init="createdBy = documentEntity.createdBy? documentEntity.createdBy.firstName + ' ' + documentEntity.createdBy.lastName: ''"></input>
-				</md-input-container>
-				<md-input-container flex=25 flex-xs=100> <label>Created
-					Date </label> <input ng-disabled="true"
-					ng-value="documentEntity.createdDate | formatDateWithTime"></input>
-				</md-input-container>
-			</div>
-		</div>
-		<div layout="row" layout-xs="column">
-			<div layout="row" layout-xs="column" flex=40 flex-xs=100>
-				<md-input-container flex> <label>Warehouse
-				</label> <md-select flex ng-model="documentEntity.warehouse"
-					placeholder="Select Warehouse" ng-change="warehouseChanged"
-					ng-required="true"> <md-option ng-value="warehouse"
-					ng-selected="(documentEntity.warehouse.id)?(documentEntity.warehouse.id == warehouse.id):($index == 0)"
-					ng-repeat="warehouse in warehouses">{{warehouse.warehouseName
-				}}</md-option> </md-select> </md-input-container>
-				<div layout="row" flex>
-					<md-autocomplete flex required md-input-name="autocompleteField"
-						md-no-cache=true md-selected-item="documentEntity.supplier"
-						md-search-text="searchTextInput"
-						md-items="item in querySearch(searchTextInput)"
-						md-item-text="item.supplierName" md-floating-label="Supplier Name">
-					<md-item-template> <span
-						md-highlight-text="searchTextInput">{{item.supplierName}}</span> </md-item-template>
-					<div ng-messages="documentForm.autocompleteField.$error"
-						ng-if="documentForm.autocompleteField.$touched">
-						<div ng-message="required">Supplier field is required.</div>
-					</div>
-					</md-autocomplete>
-					<div>
-						<md-icon md-svg-src="img/icons/ic_queue_black_24px.svg"
-							ng-click="addSupplier()" class="name"
-							style="color: Green; height: 18px; width: 18px"></md-icon>
-					</div>
+		<fieldset ng-disabled="!isDocumentEditAllowed(documentEntity)">
+			<div flex layout="row" layout-xs="column">
+				<div layout="row" flex=40 flex-xs=100>
+					<md-input-container flex> <label>PO
+						No.</label> <input ng-model="documentEntity.itemNumber"
+						placeholder="Auto generated number" ng-disabled="true"></input> </md-input-container>
+					<span flex="5"></span>
+					<md-input-container flex> <label>Document
+						Status </label> <input type="text" ng-disabled="true"
+						ng-model="documentEntity.status"> </md-input-container>
+					<span flex="5"></span>
 				</div>
-			</div>
-			<div layout="row" layout-xs="column" flex=60 flex-xs=100>
-				<md-input-container flex> <label>Select
-					Due Date</label> <md-datepicker flex ng-model="documentEntity.poDueDate"
-					ng-change="toggleCloseBtn()" md-placeholder="Select Date"></md-datepicker>
-				</md-input-container>
-				<div layout="row" flex=50 flex-xs=100>
-					<md-input-container flex> <label>Approved
-						By </label> <input ng-disabled="true" ng-model="approvedBy"
-						ng-init="approvedBy = documentEntity.approvedBy? documentEntity.approvedBy.firstName + ' ' + documentEntity.approvedBy.lastName : 'NA'"></input>
+				<div layout="row" flex=60 flex-xs=100>
+					<md-input-container flex> <label>Select
+						Order Type</label> <md-select placeholder="Order Type"
+						ng-model="documentEntity.orderType"> <md-option
+						ng-repeat="orderType in stockItemOrderTypes" ng-value="orderType"
+						ng-selected="documentEntity.orderType.id == orderType.id">{{orderType.typeName}}
+					</md-option> </md-select> </md-input-container>
+					<md-input-container flex=25 flex-xs=100> <label>Created
+						By </label> <input ng-disabled="true" ng-model="createdBy"
+						ng-init="createdBy = documentEntity.createdBy? documentEntity.createdBy.firstName + ' ' + documentEntity.createdBy.lastName: ''"></input>
 					</md-input-container>
-					<md-input-container flex> <label>Last
-						Modified Date </label> <input ng-disabled="true"
-						ng-value="documentEntity.modifiedDate | formatDateWithTime"></input>
+					<md-input-container flex=25 flex-xs=100> <label>Created
+						Date </label> <input ng-disabled="true"
+						ng-value="documentEntity.createdDate | formatDateWithTime"></input>
 					</md-input-container>
 				</div>
 			</div>
+			<div layout="row" layout-xs="column">
+				<div layout="row" layout-xs="column" flex=40 flex-xs=100>
+					<md-input-container flex> <label>Warehouse
+					</label> <md-select flex ng-model="documentEntity.warehouse"
+						placeholder="Select Warehouse" ng-change="warehouseChanged"
+						ng-required="true"> <md-option ng-value="warehouse"
+						ng-selected="(documentEntity.warehouse.id)?(documentEntity.warehouse.id == warehouse.id):($index == 0)"
+						ng-repeat="warehouse in warehouses">{{warehouse.warehouseName
+					}}</md-option> </md-select> </md-input-container>
+					<div layout="row" flex>
+						<md-autocomplete flex required md-input-name="autocompleteField"
+							md-no-cache=true md-selected-item="documentEntity.supplier"
+							md-search-text="searchTextInput"
+							md-items="item in querySearch(searchTextInput)"
+							md-item-text="item.supplierName"
+							md-floating-label="Supplier Name"> <md-item-template>
+						<span md-highlight-text="searchTextInput">{{item.supplierName}}</span>
+						</md-item-template>
+						<div ng-messages="documentForm.autocompleteField.$error"
+							ng-if="documentForm.autocompleteField.$touched">
+							<div ng-message="required">Supplier field is required.</div>
+						</div>
+						</md-autocomplete>
+						<div>
+							<md-icon md-svg-src="img/icons/ic_queue_black_24px.svg"
+								ng-click="addSupplier()" class="name"
+								style="color: Green; height: 18px; width: 18px"></md-icon>
+						</div>
+					</div>
+				</div>
+				<div layout="row" layout-xs="column" flex=60 flex-xs=100>
+					<md-input-container flex> <label>Select
+						Due Date</label> <md-datepicker flex ng-model="documentEntity.poDueDate"
+						ng-change="toggleCloseBtn()" md-placeholder="Select Date"></md-datepicker>
+					</md-input-container>
+					<div layout="row" flex=50 flex-xs=100>
+						<md-input-container flex> <label>Approved
+							By </label> <input ng-disabled="true" ng-model="approvedBy"
+							ng-init="approvedBy = documentEntity.approvedBy? documentEntity.approvedBy.firstName + ' ' + documentEntity.approvedBy.lastName : 'NA'"></input>
+						</md-input-container>
+						<md-input-container flex> <label>Last
+							Modified Date </label> <input ng-disabled="true"
+							ng-value="documentEntity.modifiedDate | formatDateWithTime"></input>
+						</md-input-container>
+					</div>
+				</div>
 
-		</div>
-
-		<div ng-if="settingsObj.linkPOToBudget" layout="row"
-			layout-xs="column">
-			<md-input-container flex=40 flex-xs=100> <label>Budget
-			</label> <md-select flex ng-model="documentEntity.budget"
-				placeholder="Select Budget" ng-required="true"> <md-option
-				ng-value="budget"
-				ng-selected="(documentEntity.budget.id)?(documentEntity.budget.id == budget.id):false"
-				ng-repeat="budget in budgetList">{{budget.type + "-" +
-			budget.period }}</md-option> </md-select> </md-input-container>
-
-			<md-input-container flex> <label>Budget
-				Category </label> <md-select flex
-				ng-model="documentEntity.budgetLineItemCategory"
-				placeholder="Select Budget Category" ng-required="true">
-			<md-option ng-value="budgetLineItemCategory"
-				ng-selected="(documentEntity.budgetLineItemCategory)?(documentEntity.budgetLineItemCategory.categoryName == budgetLineItemCategory.categoryName):false"
-				ng-repeat="budgetLineItemCategory in documentEntity.budget.categoryList">{{budgetLineItemCategory.categoryName}}</md-option>
-			</md-select> </md-input-container>
-
-			<md-input-container flex> <label>Budget
-				Line Item </label> <md-select flex ng-model="documentEntity.budgetLineItem"
-				placeholder="Select Budget Line Item" ng-required="true">
-			<md-option ng-value="budgetLineItem"
-				ng-selected="(documentEntity.budgetlineItem)?(documentEntity.budgetLineItem.itemName == budgetLineItem.itemName):false"
-				ng-repeat="budgetLineItem in documentEntity.budgetLineItemCategory.items">{{budgetLineItem.itemName}}</md-option>
-			</md-select>
-			<div ng-if="documentEntity.budgetLineItem">
-				Current Budget Balance <b>{{documentEntity.budgetLineItem.currentBudgetBalance}}</b>
 			</div>
-			</md-input-container>
-		</div>
+
+			<div ng-if="settingsObj.linkPOToBudget" layout="row"
+				layout-xs="column">
+				<md-input-container flex=40 flex-xs=100> <label>Budget
+				</label> <md-select flex ng-model="documentEntity.budget"
+					placeholder="Select Budget" ng-required="true"> <md-option
+					ng-value="budget"
+					ng-selected="(documentEntity.budget.id)?(documentEntity.budget.id == budget.id):false"
+					ng-repeat="budget in budgetList">{{budget.type + "-" +
+				budget.period }}</md-option> </md-select> </md-input-container>
+
+				<md-input-container flex> <label>Budget
+					Category </label> <md-select flex
+					ng-model="documentEntity.budgetLineItemCategory"
+					placeholder="Select Budget Category" ng-required="true">
+				<md-option ng-value="budgetLineItemCategory"
+					ng-selected="(documentEntity.budgetLineItemCategory)?(documentEntity.budgetLineItemCategory.categoryName == budgetLineItemCategory.categoryName):false"
+					ng-repeat="budgetLineItemCategory in documentEntity.budget.categoryList">{{budgetLineItemCategory.categoryName}}</md-option>
+				</md-select> </md-input-container>
+
+				<md-input-container flex> <label>Budget
+					Line Item </label> <md-select flex ng-model="documentEntity.budgetLineItem"
+					placeholder="Select Budget Line Item" ng-required="true">
+				<md-option ng-value="budgetLineItem"
+					ng-selected="(documentEntity.budgetlineItem)?(documentEntity.budgetLineItem.itemName == budgetLineItem.itemName):false"
+					ng-repeat="budgetLineItem in documentEntity.budgetLineItemCategory.items">{{budgetLineItem.itemName}}</md-option>
+				</md-select>
+				<div ng-if="documentEntity.budgetLineItem">
+					Current Budget Balance <b>{{documentEntity.budgetLineItem.currentBudgetBalance}}</b>
+				</div>
+				</md-input-container>
+			</div>
 
 
-		<div layout="row" layout-xs="column">
-			<md-input-container flex=40 flex-xs=100> <label>Bill
-				To </label> <textarea ng-model="documentEntity.to" rows="4" cols="1"></textarea>
-			</md-input-container>
+			<div layout="row" layout-xs="column">
+				<md-input-container flex=40 flex-xs=100> <label>Bill
+					To </label> <textarea ng-model="documentEntity.to" rows="4" cols="1"></textarea>
+				</md-input-container>
 
-			<md-input-container flex> <label>Ship To
-			</label> <textarea ng-model="documentEntity.shipTo" rows="4" cols="1"></textarea>
-			</md-input-container>
-		</div>
+				<md-input-container flex> <label>Ship
+					To </label> <textarea ng-model="documentEntity.shipTo" rows="4" cols="1"></textarea>
+				</md-input-container>
+			</div>
 
-		<div layout="row" layout-xs="column">
+			<div layout="row" layout-xs="column">
 
-			<md-input-container flex=40 flex-xs=100> <label>Requisitioner
-			</label> <input ng-model="documentEntity.requisitioner"> </md-input-container>
+				<md-input-container flex=40 flex-xs=100> <label>Requisitioner
+				</label> <input ng-model="documentEntity.requisitioner"> </md-input-container>
 
-			<md-input-container flex> <label>Shipped
-				Via </label> <input ng-model="documentEntity.shippedVia"> </md-input-container>
-		</div>
-		<div layout="row" layout-xs="column">
-			<md-input-container flex=40 flex-xs=100> <label>F.O.B.Point
-			</label> <input ng-model="documentEntity.fOBPoint"> </md-input-container>
+				<md-input-container flex> <label>Shipped
+					Via </label> <input ng-model="documentEntity.shippedVia"> </md-input-container>
+			</div>
+			<div layout="row" layout-xs="column">
+				<md-input-container flex=40 flex-xs=100> <label>F.O.B.Point
+				</label> <input ng-model="documentEntity.fOBPoint"> </md-input-container>
 
-			<md-input-container flex> <label>Terms </label>
-			<input ng-model="documentEntity.terms"> </md-input-container>
-		</div>
+				<md-input-container flex> <label>Terms
+				</label> <input ng-model="documentEntity.terms"> </md-input-container>
+			</div>
 
 
-		<div layout="row" layout-xs="column">
-			<md-input-container flex> <label>Note to
-				Supplier</label> <textarea ng-model="documentEntity.noteToCustomer" rows="3"
-				cols="1"></textarea> </md-input-container>
-		</div>
+			<div layout="row" layout-xs="column">
+				<md-input-container flex> <label>Note
+					to Supplier</label> <textarea ng-model="documentEntity.noteToCustomer"
+					rows="3" cols="1"></textarea> </md-input-container>
+			</div>
 
-		<div layout="row" layout-align="center start"
-			style="margin-top: 20px; margin-bottom: 20px;">
-			<md-divider flex></md-divider>
-		</div>
+			<div layout="row" layout-align="center start"
+				style="margin-top: 20px; margin-bottom: 20px;">
+				<md-divider flex></md-divider>
+			</div>
 
-		<div
-			ng-hide="documentEntity.productLineItemList && documentEntity.productLineItemList.length > 0"
-			ng-show="!documentEntity.productLineItemList && documentEntity.productLineItemList.length == 0">
-			Add Product Line Items:
-			<md-button class="md-icon-button" ng-click="addProductLineItem()">
-			<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
-			<md-tooltip> Add Product Line Items</md-tooltip></ng-md-icon> </md-button>
-
-		</div>
-
-		<div
-			ng-show="documentEntity.productLineItemList && documentEntity.productLineItemList.length > 0">
-			<h3>Product Line Items</h3>
 			<div
-				ng-show="documentEntity.productLineItemList && documentEntity.productLineItemList.length > 0"
-				nh-hide="!documentEntity.productLineItemList && documentEntity.productLineItemList.length == 0">
-				<md-input-container flex> <md-checkbox
-					ng-model="documentEntity.indiviualProductLineItemTax"
-					aria-label="active" ng-true-value="true" ng-false-value="false"
-					id="changer"> Tax By Line Item </md-checkbox> </md-input-container>
+				ng-hide="documentEntity.productLineItemList && documentEntity.productLineItemList.length > 0"
+				ng-show="!documentEntity.productLineItemList && documentEntity.productLineItemList.length == 0">
+				Add Product Line Items:
+				<md-button class="md-icon-button" ng-click="addProductLineItem()">
+				<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
+				<md-tooltip> Add Product Line Items</md-tooltip></ng-md-icon> </md-button>
+
 			</div>
-			<table md-table>
-				<thead md-head>
-					<tr md-row>
-						<th md-column width="4%">Sr. No.</th>
-						<th md-column width="40%">Item Name</th>
-						<th md-column>Quantity</th>
-						<th md-column>Purchase Price(&#x20b9)</th>
-						<th md-column md-numeric>Total(&#x20b9)</th>
-						<th md-column ng-show="documentEntity.indiviualProductLineItemTax">Tax</th>
-						<th md-column>Actions</th>
-					</tr>
-				</thead>
 
-				<tbody md-body>
-					<tr md-row ng-repeat="item in documentEntity.productLineItemList">
+			<div
+				ng-show="documentEntity.productLineItemList && documentEntity.productLineItemList.length > 0">
+				<h3>Product Line Items</h3>
+				<div
+					ng-show="documentEntity.productLineItemList && documentEntity.productLineItemList.length > 0"
+					nh-hide="!documentEntity.productLineItemList && documentEntity.productLineItemList.length == 0">
+					<md-input-container flex> <md-checkbox
+						ng-model="documentEntity.indiviualProductLineItemTax"
+						aria-label="active" ng-true-value="true" ng-false-value="false"
+						id="changer"> Tax By Line Item </md-checkbox> </md-input-container>
+				</div>
+				<table md-table>
+					<thead md-head>
+						<tr md-row>
+							<th md-column width="4%">Sr. No.</th>
+							<th md-column width="40%">Item Name</th>
+							<th md-column>Quantity</th>
+							<th md-column>Purchase Price(&#x20b9)</th>
+							<th md-column md-numeric>Total(&#x20b9)</th>
+							<th md-column
+								ng-show="documentEntity.indiviualProductLineItemTax">Tax</th>
+							<th md-column>Actions</th>
+						</tr>
+					</thead>
 
-						<td md-cell>{{ $index +1 }}</td>
-						<td md-cell width="40%">
-							<div layout="row">
-								<md-input-container flex style="margin: 0px; padding: 0px;">
-								<md-select ng-model="item.stockItem.stockItemType"
-									placeholder="Item Name" ng-required="true"> <md-option
-									ng-value="stockItemType"
-									ng-selected="item.stockItem.stockItemType.id == stockItemType.id"
-									ng-repeat="stockItemType in stockTypeList">{{stockItemType.itemName
-								}}</md-option> </md-select> </md-input-container>
-								<md-button class="md-icon-button"
-									ng-click="addStockItem($event, item)" aria-label="as">
-								<md-icon md-svg-src="img/icons/ic_queue_black_24px.svg"
-									class="name" style="color: Green; height: 18px; width: 18px"></md-icon></md-button>
-							</div>
-						</td>
+					<tbody md-body>
+						<tr md-row ng-repeat="item in documentEntity.productLineItemList">
 
-						<td md-cell><md-input-container flex
-								style="margin: 0px; padding: 0px;"> <input
-								type="number" ng-model="item.qty" ng-change="reCalculateTotal()"
-								ng-required="true">
-							<div>{{item.stockItem.stockItemType.unit}}</div>
-							</md-input-container></td>
-						<td md-cell><md-input-container flex
-								style="margin: 0px; padding: 0px;"> <input
-								type="number" ng-model="item.price"
-								ng-change="reCalculateTotal()" aria-label="iprice"
-								ng-required="true"> </md-input-container></td>
-						<td md-cell><md-input-container flex> <b>{{item.qty
-								* item.price | currency:"":"2"}} </b></td>
-						<td md-cell ng-show="documentEntity.indiviualProductLineItemTax"><md-select
-								ng-model="item.selectedTaxItem" placeholder="Select Tax"
-								ng-change="reCalculateTotal()"> <md-option
-								ng-value="taxItem" ng-repeat="taxItem in taxList"
-								ng-selected="item.selectedTaxItem.id == taxItem.id">{{taxItem?taxItem.taxCodeName:'NA'}}({{taxItem.taxPercenatge}}&#37)</md-option>
-							</md-select></td>
-						<td md-cell><md-icon
-								md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
-								ng-click="removeProductItem($index)" class="name"
-								style="color: Green; height: 18px; width: 18px"></md-icon></td>
+							<td md-cell>{{ $index +1 }}</td>
+							<td md-cell width="40%">
+								<div layout="row">
+									<md-input-container flex style="margin: 0px; padding: 0px;">
+									<md-select ng-model="item.stockItem.stockItemType"
+										placeholder="Item Name" ng-required="true"> <md-option
+										ng-value="stockItemType"
+										ng-selected="item.stockItem.stockItemType.id == stockItemType.id"
+										ng-repeat="stockItemType in stockTypeList">{{stockItemType.itemName
+									}}</md-option> </md-select> </md-input-container>
+									<md-button class="md-icon-button"
+										ng-click="addStockItem($event, item)" aria-label="as">
+									<md-icon md-svg-src="img/icons/ic_queue_black_24px.svg"
+										class="name" style="color: Green; height: 18px; width: 18px"></md-icon></md-button>
+								</div>
+							</td>
 
-					</tr>
-					<tr md-row>
-						<td md-cell><md-button class="md-icon-button"
-								ng-click="addProductLineItem()"> <ng-md-icon
-								icon="add_circle" style="fill: md-default" size="24">
-							<md-tooltip> New Entry </md-tooltip></ng-md-icon> </md-button></td>
-						<td md-cell></td>
-						<td md-cell colspan="2"><label>Product Sub Total</label></td>
-						<td md-cell><div align="right">
-								<b>{{documentEntity.productSubTotal | currency:"":"2"}}</b>
-							</div></td>
-						<td md-cell></td>
+							<td md-cell><md-input-container flex
+									style="margin: 0px; padding: 0px;"> <input
+									type="number" ng-model="item.qty"
+									ng-change="reCalculateTotal()" ng-required="true">
+								<div>{{item.stockItem.stockItemType.unit}}</div>
+								</md-input-container></td>
+							<td md-cell><md-input-container flex
+									style="margin: 0px; padding: 0px;"> <input
+									type="number" ng-model="item.price"
+									ng-change="reCalculateTotal()" aria-label="iprice"
+									ng-required="true"> </md-input-container></td>
+							<td md-cell><md-input-container flex> <b>{{item.qty
+									* item.price | currency:"":"2"}} </b></td>
+							<td md-cell ng-show="documentEntity.indiviualProductLineItemTax"><md-select
+									ng-model="item.selectedTaxItem" placeholder="Select Tax"
+									ng-change="reCalculateTotal()"> <md-option
+									ng-value="taxItem" ng-repeat="taxItem in taxList"
+									ng-selected="item.selectedTaxItem.id == taxItem.id">{{taxItem?taxItem.taxCodeName:'NA'}}({{taxItem.taxPercenatge}}&#37)</md-option>
+								</md-select></td>
+							<td md-cell><md-icon
+									md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
+									ng-click="removeProductItem($index)" class="name"
+									style="color: Green; height: 18px; width: 18px"></md-icon></td>
 
-					</tr>
-					<tr md-row>
-						<td md-cell></td>
-						<td md-cell>
-							<div align="right">
-								<md-input-container flex
-									ng-if="!documentEntity.indiviualProductLineItemTax">
-								<label>Select Tax</label> <md-select
-									ng-model="documentEntity.selectedProductTax"
-									placeholder="Select Tax" ng-change="reCalculateTotal()">
-								<md-option ng-value="taxItem" ng-repeat="taxItem in taxList"
-									ng-selected="documentEntity.selectedProductTax.id == taxItem.id">{{taxItem?taxItem.taxCodeName:'NA'}}({{taxItem.taxPercenatge}}&#37)</md-option>
-								</md-select> </md-input-container>
-							</div>
-						</td>
-						<td md-cell colspan="2"><label>Tax Total</label></td>
-						<td md-cell>
-							<div align="right">
-								<b>{{documentEntity.productTaxTotal | currency:"":"2"}}</b>
-							</div>
-						</td>
-						<td md-cell></td>
-					</tr>
+						</tr>
+						<tr md-row>
+							<td md-cell><md-button class="md-icon-button"
+									ng-click="addProductLineItem()"> <ng-md-icon
+									icon="add_circle" style="fill: md-default" size="24">
+								<md-tooltip> New Entry </md-tooltip></ng-md-icon> </md-button></td>
+							<td md-cell></td>
+							<td md-cell colspan="2"><label>Product Sub Total</label></td>
+							<td md-cell><div align="right">
+									<b>{{documentEntity.productSubTotal | currency:"":"2"}}</b>
+								</div></td>
+							<td md-cell></td>
 
-					<tr md-row>
-						<td md-cell></td>
-						<td md-cell></td>
-						<td md-cell colspan="2"><label>Product Total </label></td>
-						<td md-cell><div align="right">
-								<b>&#x20b9{{documentEntity.productTotal | currency:"":"2"}}</b>
-							</div></td>
-						<td md-cell></td>
-					</tr>
+						</tr>
+						<tr md-row>
+							<td md-cell></td>
+							<td md-cell>
+								<div align="right">
+									<md-input-container flex
+										ng-if="!documentEntity.indiviualProductLineItemTax">
+									<label>Select Tax</label> <md-select
+										ng-model="documentEntity.selectedProductTax"
+										placeholder="Select Tax" ng-change="reCalculateTotal()">
+									<md-option ng-value="taxItem" ng-repeat="taxItem in taxList"
+										ng-selected="documentEntity.selectedProductTax.id == taxItem.id">{{taxItem?taxItem.taxCodeName:'NA'}}({{taxItem.taxPercenatge}}&#37)</md-option>
+									</md-select> </md-input-container>
+								</div>
+							</td>
+							<td md-cell colspan="2"><label>Tax Total</label></td>
+							<td md-cell>
+								<div align="right">
+									<b>{{documentEntity.productTaxTotal | currency:"":"2"}}</b>
+								</div>
+							</td>
+							<td md-cell></td>
+						</tr>
+
+						<tr md-row>
+							<td md-cell></td>
+							<td md-cell></td>
+							<td md-cell colspan="2"><label>Product Total </label></td>
+							<td md-cell><div align="right">
+									<b>&#x20b9{{documentEntity.productTotal | currency:"":"2"}}</b>
+								</div></td>
+							<td md-cell></td>
+						</tr>
 
 
-				</tbody>
-			</table>
-		</div>
+					</tbody>
+				</table>
+			</div>
 
-		<div
-			ng-show="!documentEntity.serviceLineItemList || documentEntity.serviceLineItemList.length == 0">
-			Add New Other Cost Items:
-			<md-button class="md-icon-button" ng-click="addServiceLineItem()">
-			<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
-			<md-tooltip> Add New Other Costs</md-tooltip></ng-md-icon> </md-button>
+			<div
+				ng-show="!documentEntity.serviceLineItemList || documentEntity.serviceLineItemList.length == 0">
+				Add New Other Cost Items:
+				<md-button class="md-icon-button" ng-click="addServiceLineItem()">
+				<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
+				<md-tooltip> Add New Other Costs</md-tooltip></ng-md-icon> </md-button>
 
-		</div>
+			</div>
 
-		<div
-			ng-show="documentEntity.serviceLineItemList && documentEntity.serviceLineItemList.length > 0">
-			<h3>Other Cost Line Items</h3>
 			<div
 				ng-show="documentEntity.serviceLineItemList && documentEntity.serviceLineItemList.length > 0">
-				<md-input-container flex> <md-checkbox
-					ng-model="documentEntity.indiviualServiceLineItemTax"
-					aria-label="active" ng-true-value="true" ng-false-value="false"
-					id="changer">Tax By Line Item </md-checkbox> </md-input-container>
+				<h3>Other Cost Line Items</h3>
+				<div
+					ng-show="documentEntity.serviceLineItemList && documentEntity.serviceLineItemList.length > 0">
+					<md-input-container flex> <md-checkbox
+						ng-model="documentEntity.indiviualServiceLineItemTax"
+						aria-label="active" ng-true-value="true" ng-false-value="false"
+						id="changer">Tax By Line Item </md-checkbox> </md-input-container>
+				</div>
+				<table md-table>
+					<thead md-head>
+						<tr md-row>
+							<th md-column width="4%">Sr.No</th>
+							<th md-column width="40%">Service Name</th>
+							<th md-column>Quantity</th>
+							<th md-column>Cost Price(&#x20b9)</th>
+							<th md-column md-numeric>Total(&#x20b9)</th>
+							<th md-column
+								ng-show="documentEntity.indiviualServiceLineItemTax">Tax</th>
+							<th md-column>Actions</th>
+						</tr>
+					</thead>
+
+					<tbody md-body>
+						<tr md-row
+							ng-repeat="serviceItem in documentEntity.serviceLineItemList">
+
+							<td md-cell>{{ $index +1 }}</td>
+							<td md-cell width="40%"><md-input-container flex
+									style="margin: 0px; padding: 0px;"> <input
+									flex ng-model="serviceItem.itemName"> </md-input-container></td>
+
+							<td md-cell><md-input-container flex
+									style="margin: 0px; padding: 0px;"> <input
+									type="number" ng-model="serviceItem.qty"
+									ng-change="reCalculateTotal()"> </md-input-container></td>
+							<td md-cell><md-input-container flex
+									style="margin: 0px; padding: 0px;"> <input
+									type="number" ng-model="serviceItem.cost"
+									ng-change="reCalculateTotal()"></md-input-container></td>
+							<td md-cell><b>{{serviceItem.qty * serviceItem.cost |
+									currency:"":"2"}} </b></td>
+							<td md-cell ng-show="documentEntity.indiviualServiceLineItemTax"><md-input-container
+									flex> <md-select
+									ng-model="serviceItem.selectedTaxItem" placeholder="Select Tax"
+									ng-change="reCalculateTotal()"> <md-option
+									ng-value="taxItem" ng-repeat="taxItem in taxList"
+									ng-selected="serviceItem.selectedTaxItem.id == taxItem.id">{{taxItem?taxItem.taxCodeName:'NA'}}({{taxItem.taxPercenatge}}&#37)</md-option>
+								</md-select></md-input-container></td>
+							<td md-cell><md-icon
+									md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
+									ng-click="removeServiceItem($index)" class="name"
+									style="color: Green; height: 18px; width: 18px"></md-icon></td>
+
+						</tr>
+
+						<tr md-row>
+							<td md-cell><md-button class="md-icon-button"
+									ng-click="addServiceLineItem()"> <ng-md-icon
+									icon="add_circle" style="fill: md-default" size="24">
+								<md-tooltip> Add New </md-tooltip></ng-md-icon> </md-button></td>
+							<td md-cell></td>
+							<td md-cell colspan="2"><label>Service Sub Total</label></td>
+							<td md-cell><div align="right">
+									<b>{{documentEntity.serviceTotal | currency:"":"2"}}</b>
+								</div></td>
+							<td md-cell></td>
+						</tr>
+						<tr md-row>
+							<td md-cell colspan="2" flex>
+								<div align="right" flex>
+									<md-input-container flex
+										ng-if="!documentEntity.indiviualServiceLineItemTax">
+									<label>Select Tax</label> <md-select flex
+										ng-model="documentEntity.selectedServiceTax"
+										placeholder="Select Tax" ng-change="reCalculateTotal()">
+									<md-option ng-value="taxItem" ng-repeat="taxItem in taxList"
+										ng-selected="documentEntity.selectedServiceTax.id == taxItem.id">{{taxItem?taxItem.taxCodeName:'NA'}}({{taxItem.taxPercenatge}}&#37)</md-option>
+									</md-select> </md-input-container>
+								</div>
+							</td>
+							<td md-cell colspan="2"><label>Tax Total</label></td>
+							<td md-cell>
+								<div align="right">
+									<b>{{documentEntity.serviceTaxTotal | currency:"":"2"}}</b>
+								</div>
+							</td>
+							<td md-cell></td>
+						</tr>
+
+						<tr md-row>
+							<td md-cell></td>
+							<td md-cell></td>
+							<td md-cell colspan="2"><label>Service Total</label></td>
+							<td md-cell><div align="right">
+									<b>&#x20b9{{documentEntity.serviceTotal | currency:"":"2"}}</b>
+								</div></td>
+							<td md-cell></td>
+						</tr>
+
+						<tr md-row ng-show="tempDiscAmount">
+							<td md-cell></td>
+							<td md-cell></td>
+							<td md-cell colspan="2"><label>Discount</label></td>
+							<td md-cell><div align="right">
+									<b> {{tempDiscAmount | currency:"":"2"}}</b>
+								</div></td>
+							<td md-cell></td>
+						</tr>
+
+						<tr md-row>
+							<td md-cell></td>
+							<td md-cell></td>
+							<td md-cell colspan="2"><label>Final Total</label></td>
+							<td md-cell><div align="right">
+									<b>&#x20b9{{documentEntity.finalTotal | currency:"":"2"}}</b>
+								</div></td>
+							<td md-cell></td>
+						</tr>
+						<tr md-row>
+							<td md-cell></td>
+							<td md-cell></td>
+							<td md-cell></td>
+							<td md-cell></td>
+							<td md-cell></td>
+							<td md-cell></td>
+						</tr>
+
+
+					</tbody>
+				</table>
+
 			</div>
-			<table md-table>
-				<thead md-head>
-					<tr md-row>
-						<th md-column width="4%">Sr.No</th>
-						<th md-column width="40%">Service Name</th>
-						<th md-column>Quantity</th>
-						<th md-column>Cost Price(&#x20b9)</th>
-						<th md-column md-numeric>Total(&#x20b9)</th>
-						<th md-column ng-show="documentEntity.indiviualServiceLineItemTax">Tax</th>
-						<th md-column>Actions</th>
-					</tr>
-				</thead>
+		</fieldset>
 
-				<tbody md-body>
-					<tr md-row
-						ng-repeat="serviceItem in documentEntity.serviceLineItemList">
-
-						<td md-cell>{{ $index +1 }}</td>
-						<td md-cell width="40%"><md-input-container flex
-								style="margin: 0px; padding: 0px;"> <input
-								ng-model="serviceItem.itemName"> </md-input-container></td>
-
-						<td md-cell><md-input-container flex
-								style="margin: 0px; padding: 0px;"> <input
-								type="number" ng-model="serviceItem.qty"
-								ng-change="reCalculateTotal()"> </md-input-container></td>
-						<td md-cell><md-input-container flex
-								style="margin: 0px; padding: 0px;"> <input
-								type="number" ng-model="serviceItem.cost"
-								ng-change="reCalculateTotal()"></md-input-container></td>
-						<td md-cell><b>{{serviceItem.qty * serviceItem.cost |
-								currency:"":"2"}} </b></td>
-						<td md-cell ng-show="documentEntity.indiviualServiceLineItemTax"><md-select
-								ng-model="serviceItem.selectedTaxItem" placeholder="Select Tax"
-								ng-change="reCalculateTotal()"> <md-option
-								ng-value="taxItem" ng-repeat="taxItem in taxList"
-								ng-selected="serviceItem.selectedTaxItem.id == taxItem.id">{{taxItem?taxItem.taxCodeName:'NA'}}({{taxItem.taxPercenatge}}&#37)</md-option>
-							</md-select></td>
-						<td md-cell><md-icon
-								md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
-								ng-click="removeServiceItem($index)" class="name"
-								style="color: Green; height: 18px; width: 18px"></md-icon></td>
-
-					</tr>
-
-					<tr md-row>
-						<td md-cell><md-button class="md-icon-button"
-								ng-click="addServiceLineItem()"> <ng-md-icon
-								icon="add_circle" style="fill: md-default" size="24">
-							<md-tooltip> Add New </md-tooltip></ng-md-icon> </md-button></td>
-						<td md-cell></td>
-						<td md-cell colspan="2"><label>Service Sub Total</label></td>
-						<td md-cell><div align="right">
-								<b>{{documentEntity.serviceTotal | currency:"":"2"}}</b>
-							</div></td>
-						<td md-cell></td>
-					</tr>
-					<tr md-row>
-						<td md-cell></td>
-						<td md-cell>
-							<div align="right">
-								<md-input-container flex
-									ng-if="!documentEntity.indiviualServiceLineItemTax">
-								<label>Select Tax</label> <md-select
-									ng-model="documentEntity.selectedServiceTax"
-									placeholder="Select Tax" ng-change="reCalculateTotal()">
-								<md-option ng-value="taxItem" ng-repeat="taxItem in taxList"
-									ng-selected="documentEntity.selectedServiceTax.id == taxItem.id">{{taxItem?taxItem.taxCodeName:'NA'}}({{taxItem.taxPercenatge}}&#37)</md-option>
-								</md-select> </md-input-container>
-							</div>
-						</td>
-						<td md-cell colspan="2"><label>Tax Total</label></td>
-						<td md-cell>
-							<div align="right">
-								<b>{{documentEntity.serviceTaxTotal | currency:"":"2"}}</b>
-							</div>
-						</td>
-						<td md-cell></td>
-					</tr>
-
-					<tr md-row>
-						<td md-cell></td>
-						<td md-cell></td>
-						<td md-cell colspan="2"><label>Service Total</label></td>
-						<td md-cell><div align="right">
-								<b>&#x20b9{{documentEntity.serviceTotal | currency:"":"2"}}</b>
-							</div></td>
-						<td md-cell></td>
-					</tr>
-
-					<tr md-row ng-show="tempDiscAmount">
-						<td md-cell></td>
-						<td md-cell></td>
-						<td md-cell colspan="2"><label>Discount</label></td>
-						<td md-cell><div align="right">
-								<b> {{tempDiscAmount | currency:"":"2"}}</b>
-							</div></td>
-						<td md-cell></td>
-					</tr>
-
-					<tr md-row>
-						<td md-cell></td>
-						<td md-cell></td>
-						<td md-cell colspan="2"><label>Final Total</label></td>
-						<td md-cell><div align="right">
-								<b>&#x20b9{{documentEntity.finalTotal | currency:"":"2"}}</b>
-							</div></td>
-						<td md-cell></td>
-					</tr>
-					<tr md-row>
-						<td md-cell></td>
-						<td md-cell></td>
-						<td md-cell></td>
-						<td md-cell></td>
-						<td md-cell></td>
-						<td md-cell></td>
-					</tr>
-
-
-				</tbody>
-			</table>
-
+		<div
+			ng-if="isDocumentEditAllowed(documentEntity) || isDocumentNotClosed(documentEntity)"
+			layout="column" style="padding: 0; margin: 0;">
+			<span layout="row"><hr flex />
+				<h4>Actions</h4>
+				<hr flex /></span>
 		</div>
-		<div layout layout-xs="column"
-			ng-hide="documentEntity.status=='CLOSED'"
-			ng-show="isDocumentEditAllowed(documentEntity)">
-			<section layout="row" layout-xs="column">
+		<div layout="row" layout-xs="column">
+			<section layout="row" layout-xs="column"
+				ng-if="isDocumentEditAllowed(documentEntity)">
 				<md-button class="md-raised md-primary"
 					ng-disabled="documentForm.$invalid" ng-click="draftDocumnent()">Save
 				as Draft</md-button>
 				<md-button class="md-raised md-primary"
 					ng-disabled="documentForm.$invalid" ng-click="submitDocumnent()">Submit</md-button>
 				<section layout="row" layout-xs="column"
-					ng-if="documentEntity.id &&  (!settingsObj.needModuleDocumentApproval || hasUserAuthority(curUser, 'Stock.ModuleApprover'))">
+					ng-if="canUserApproveDocument(documentEntity, settingsObj, curUser, 'Stock.ModuleApprover')">
 					<md-button class="md-raised md-primary"
 						ng-disabled="documentForm.$invalid"
 						ng-click="finalizeDocumnent($event)">Approve/Finalize</md-button>
 					<md-button class="md-raised md-primary"
 						ng-disabled="documentForm.$invalid" ng-click="rejectDocumnent()">Reject</md-button>
-					<md-button class="md-raised md-primary" ng-show="!closeBtnHide"
-						ng-hide="closeBtnHide" ng-disabled="documentForm.$invalid"
-						ng-click="closeDocument()">Close</md-button>
 				</section>
 			</section>
+			<md-button class="md-raised md-primary"
+				ng-if="isDocumentNotClosed(documentEntity)"
+				ng-click="closeDocument()">Close</md-button>
+
 		</div>
 	</form>
 </div>
-<section ng-if="documentEntity.id" layout="column" flex
-	layout-align="start start">
-	<md-divider></md-divider>
+
+<section ng-if="documentEntity.id" layout="column" flex>
+	<div layout="column" style="padding: 0; margin: 0;">
+		<span layout="row"><hr flex />
+			<h4>Document Comments</h4>
+			<hr flex /></span>
+	</div>
 	<div layout="row">
-		<h4>User Comments</h4>
+		<h4>Add New Comment:</h4>
 		<md-button class="md-icon-button"
 			ng-click="addDocumentComment($event, documentEntity)"> <ng-md-icon
 			icon="add_circle" style="fill: md-default" size="20"> <md-tooltip>
-		Add New Comment</md-tooltip></ng-md-icon> </md-button>
+		Add New Document Comment</md-tooltip></ng-md-icon> </md-button>
 	</div>
 
 	<md-content> <md-list> <md-list-item
 		class="md-3-line"
 		ng-repeat="comment in documentEntity.documentComments">
 	<div class="md-list-item-text">
-		<h4>{{$index+1}}] By User: {{comment.addedBy.firstName + ' ' +
-			comment.addedBy.lastName}} on {{comment.date | formatDateWithTime}}</h4>
+		<strong>{{$index+1}}] By User: {{comment.addedBy.firstName + ' ' +
+			comment.addedBy.lastName}} on {{comment.date | formatDateWithTime}}</strong>
 		<p>
-			<code ng-bind="comment.commentText"></code>
+		<div style="white-space: pre-wrap;" ng-bind="comment.commentText"></div>
 		</p>
 	</div>
-	<md-button ng-if="comment.addedBy.id == curUser.id"
-		class="md-secondary"
+	<md-button md-no-ink class="md-primary"
+		ng-if="comment.addedBy.id == curUser.id"
 		ng-click="addDocumentComment($event, documentEntity, comment)">Edit</md-button>
 	<md-divider ng-if="!$last"></md-divider> </md-list-item> </md-list> </md-content>
 </section>

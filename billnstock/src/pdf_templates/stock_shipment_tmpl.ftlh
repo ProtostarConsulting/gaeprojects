@@ -177,7 +177,7 @@ td {
 					<tr align="left" style="border: 0px;">
 						<td colspan="2" style="border: 0px; padding: 7px;">
 							<b>Note :</b><br></br>
-							${shipmentNote}
+							<pre>${shipmentNote}</pre>
 					    </td>
 					</tr>
 				<#else>	

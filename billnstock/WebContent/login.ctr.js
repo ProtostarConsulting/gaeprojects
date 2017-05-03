@@ -53,13 +53,7 @@ app
 								+ '/app.html#/login#tp1';
 						$log.debug("hostBaseUrl: " + hostBaseUrl);
 						$window.location.href = hostBaseUrl;
-					}
-					var hostBaseUrl = '//' + window.location.host
-							+ '/app.html#/login#tp1';
-					// Directly go to page as before for suruchidairy
-					if (hostBaseUrl.includes('suruchidairy-prod')) {
-						$scope.loginClick();
-					}
+					}									
 
 					$scope.user = {
 						business : "",
@@ -131,10 +125,11 @@ app
 												}
 
 											} else {
-												$scope.loading = false;
 												$log.debug("User Not logged  "
 														+ $scope.user.email_id);
 												$scope.loginMsg = "Authontication failed. Username/Password did not match.";
+												$scope.loading = false;
+												$scope.$apply($scope.loading);
 											}
 
 										});

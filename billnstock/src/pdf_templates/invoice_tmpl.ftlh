@@ -118,7 +118,7 @@ p {
 			<#if noteToCustomer??>
 			<tr align="left" style="border: 0px;">
 				<td colspan="2" style="border: 0px; padding: 7px;"><b>Note
-						To Customer:</b><br></br> ${noteToCustomer}</td>
+						To Customer:</b><br></br> <pre>${noteToCustomer}</pre></td>
 			</tr>
 			<#else> </#if>
 		</tbody>
