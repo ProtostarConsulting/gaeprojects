@@ -132,14 +132,14 @@
 		</div>
 
 		<md-dialog-actions layout="row"
-			ng-if="documentEntity.status != 'FINALIZED' && !isActionhidden"> <md-button
+			ng-if="documentEntity.status != 'FINALIZED' && !isSaving"> <md-button
 			class="md-raised" ng-click="cancel()">Cancel</md-button> <md-button
 			class="md-raised md-primary" ng-disabled="documentForm.$invalid"
 			ng-click="draftDocumnent()">Save as Draft</md-button> <md-button
 			class="md-raised md-primary" ng-disabled="documentForm.$invalid"
 			ng-click="submitDocumnent()">Submit</md-button> </md-dialog-actions>
-		<md-dialog-actions ng-if="isActionhidden"><md-button
-			class="md-raised md-primary" ng-disabled="true">Saving...</md-button></md-dialog-actions>	
+		<md-dialog-actions ng-if="isSaving"><md-button
+			class="md-raised md-primary" ng-disabled="true">Saving...</md-button></md-dialog-actions>
 		<p style="font-size: 90%;">Note:- This document will not update
 			stock quantity automatically. You will need to add Stock Receipt
 			against this document</p>

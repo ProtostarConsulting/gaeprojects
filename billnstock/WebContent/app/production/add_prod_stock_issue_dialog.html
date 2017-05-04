@@ -128,7 +128,7 @@
 			<md-tooltip> Add New From Warehouse</md-tooltip></ng-md-icon> </md-button>
 		</div>
 		<md-dialog-actions layout="row"
-			ng-if="documentEntity.status !== 'FINALIZED' && !isActionhidden"> <md-button
+			ng-if="documentEntity.status !== 'FINALIZED' && !isSaving"> <md-button
 			class="md-raised" ng-click="cancel()">Cancel</md-button> <md-button
 			class="md-raised md-primary" ng-disabled="documentForm.$invalid"
 			ng-click="draftDocumnent()">Save as Draft</md-button> <md-button
@@ -144,8 +144,8 @@
 
 		</md-dialog-actions>
 		<md-dialog-actions layout="row"
-			ng-if="isActionhidden"> <md-button
-			class="md-raised" ng-disabled="true">Saving..</md-button>
+			ng-if="isSaving"> <md-button
+			class="md-raised" ng-disabled="true">Saving...</md-button>
 
 		</md-dialog-actions>
 	</form>

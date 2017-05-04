@@ -61,9 +61,9 @@
 	</form>
 </div>
 
-</md-content> </md-content> </md-dialog-content> <md-dialog-actions layout="row" ng-if="!isActionhidden">
+</md-content> </md-content> </md-dialog-content> <md-dialog-actions layout="row" ng-if="!isSaving">
 <md-button class="md-raised" ng-click="cancel()">Cancel</md-button> <md-button
 	class="md-raised md-primary" ng-disabled="entityForm.$invalid"
 	ng-click="addProductionReport()">Submit</md-button> </md-dialog-actions> <md-dialog-actions
-	layout="row" ng-if="isActionhidden"> <md-button
-	class="md-raised" ng-disabled="true">Saving..</md-button> </md-dialog-actions> </md-dialog>
+	layout="row" ng-if="isSaving"> <md-button
+	class="md-raised" ng-disabled="true">Saving...</md-button> </md-dialog-actions> </md-dialog>

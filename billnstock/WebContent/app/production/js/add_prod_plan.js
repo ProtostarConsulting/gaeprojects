@@ -10,7 +10,7 @@ app
 					$scope.loading = true;
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
-					$scope.isActionhidden = false;
+					$scope.isSaving = false;
 					$scope.statusList = [ "DRAFT", "INPROGRESS", "COMPLETED" ];
 
 					$scope.getEmptyProdPlan = function() {
@@ -40,14 +40,14 @@ app
 								$scope.documentEntity.toDateTime);
 
 					$scope.saveEntity = function() {
-						$scope.isActionhidden = true;
+						$scope.isSaving = true;
 						var productService = appEndpointSF
 								.getProductionService();
 						productService.addProdPlanEntity($scope.documentEntity)
 								.then(function(savedObj) {
 									if (savedObj.id)
 										$scope.documentEntity.id = savedObj.id;
-									$scope.isActionhidden = false;
+									$scope.isSaving = false;
 									$scope.showAddToast();
 								});
 
@@ -301,7 +301,7 @@ app
 						}
 
 						$scope.addRequisition = function() {
-
+							$scope.isSaving = true;
 							var productService = appEndpointSF
 									.getProductionService();
 							$scope.productionRequisition.business = curUser.business;
@@ -313,7 +313,7 @@ app
 								// if edit changed the value it should edit
 								// existing record, not create new one
 								$scope.productionRequisition.id = $scope.productionRequisitionBackup.id;
-								$scope.isActionhidden = true;
+								$scope.isSaving = true;
 							}
 
 							var wasUpdate = null;
@@ -332,7 +332,7 @@ app
 													showAddToast();
 													$mdDialog.cancel();
 												} else {
-													$scope.isActionhidden = true;
+													
 													if (!prodPlan.prodRequisitionList)
 														prodPlan.prodRequisitionList = [];
 
@@ -347,7 +347,7 @@ app
 																			savedObj) {
 																		if (savedObj.id)
 																			showAddToast();
-
+																		$scope.isSaving = false;
 																		$mdDialog
 																				.cancel();
 																	});
@@ -420,7 +420,7 @@ app
 						$scope.bomList = bomList;
 
 						$scope.addProductionReport = function() {
-
+							$scope.isSaving = true;
 							var productService = appEndpointSF
 									.getProductionService();
 
@@ -429,7 +429,7 @@ app
 							if ($scope.prodctionReportBackup.id) {
 								// if edit changed the value it should edit
 								// existing record, not create new one
-								$scope.isActionhidden = true;
+								$scope.isSaving = true;
 								$scope.prodctionReport.id = $scope.prodctionReportBackup.id;
 
 							}
@@ -450,7 +450,7 @@ app
 														showAddToast();
 														$mdDialog.cancel();
 													} else {
-														$scope.isActionhidden = true;
+														
 														if (!$scope.productionPlan.planDailyReport)
 															$scope.productionPlan.planDailyReport = [];
 
@@ -467,6 +467,7 @@ app
 																		function(
 																				savedObj) {
 																			if (savedObj.id)
+																				$scope.isSaving = false;
 																				showAddToast();
 
 																			$mdDialog
@@ -603,12 +604,12 @@ app
 						}
 
 						$scope.saveDocument = function() {
-
+							$scope.isSaving = true;
 							$scope.documentEntity.modifiedBy = curUser.email_id;
 
 							var wasUpdate = null;
 							if ($scope.documentEntity.id) {
-								$scope.isActionhidden = true;
+								$scope.isSaving = true;
 								wasUpdate = true;
 							} else {
 								wasUpdate = false;
@@ -623,7 +624,7 @@ app
 											showAddToast();
 											$mdDialog.cancel();
 										} else {
-											$scope.isActionhidden = true;
+											
 											if (!prodPlan.prodShipmentList)
 												prodPlan.prodShipmentList = [];
 
@@ -637,7 +638,7 @@ app
 													function(savedObj) {
 														if (savedObj.id)
 															showAddToast();
-
+														$scope.isSaving = false;
 														$mdDialog.cancel();
 													});
 										}

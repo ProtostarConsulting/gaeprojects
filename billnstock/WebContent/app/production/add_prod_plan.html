@@ -20,239 +20,248 @@
 		<md-progress-linear md-mode="determinate" value={{totalProducedPerc}}></md-progress-linear>
 	</div>
 	<div>
-		<form name="entityForm">
+		<fieldset ng-disabled="!isDocumentEditAllowed(documentEntity)">
+			<form name="entityForm">
+				<div layout="row" layout-xs="column">
+					<md-input-container flex> <input type="text"
+						aria-label="period" placeholder="Title"
+						ng-model="documentEntity.title" ng-required="true"> </md-input-container>
 
-			<div layout="row" layout-xs="column">
-				<md-input-container flex> <input type="text"
-					aria-label="period" placeholder="Title"
-					ng-model="documentEntity.title" ng-required="true"> </md-input-container>
-
-				<md-input-container flex> <input type="text"
-					aria-label="period" placeholder="Discription"
-					ng-model="documentEntity.note"> </md-input-container>
-			</div>
-
-			<div layout="row" layout-xs="column">
-				<md-input-container flex> <label>Select
-					BOM</label> <md-select name="bomEntity" ng-model="documentEntity.bomEntity"
-					ng-required="true"> <md-option
-					ng-repeat="bom in bomList"
-					ng-selected="documentEntity.bomEntity.id==bom.id" ng-value="bom">{{bom.stockItemType.itemName}}</md-option>
-				</md-select>
-				<div ng-messages="entityForm.bomEntity.$error"
-					ng-if="entityForm.bomEntity.$submitted || entityForm.bomEntity.$touched">
-					<div ng-message="required">Please Select BOM.</div>
-				</div>
-				</md-input-container>
-
-				<md-input-container flex> <input
-					name="plannedQty" type="number" aria-label="period"
-					placeholder="Planned Qty" ng-model="documentEntity.plannedQty"
-					ng-change="calculateProducedQty()" ng-required="true">
-				<div ng-messages="entityForm.plannedQty.$error"
-					ng-if="entityForm.plannedQty.$submitted || entityForm.plannedQty.$touched">
-					<div ng-message="required">Enter Planned Qty.</div>
-				</div>
-				</md-input-container>
-			</div>
-
-			<div layout="row" layout-xs="column">
-				<md-input-container flex> <input type="text"
-					aria-label="period" placeholder="Sales Order No"
-					ng-model="documentEntity.salesOrderNumber"> </md-input-container>
-
-				<md-input-container flex> <input type="text"
-					aria-label="period" placeholder="Customer Name"
-					ng-model="documentEntity.tempField"> </md-input-container>
-			</div>
-
-			<div layout="row" layout-xs="column">
-				<mdp-date-picker flex mdp-placeholder="Plan Start Date"
-					ng-model="documentEntity.fromDateTime" mdp-format="DD/MM/YYYY"></mdp-date-picker>
-
-				<mdp-date-picker flex mdp-placeholder="Plan End Date"
-					ng-model="documentEntity.toDateTime"
-					mdp-disabled="!documentEntity.fromDateTime"
-					mdp-min-date="documentEntity.fromDateTime" mdp-format="DD/MM/YYYY"></mdp-date-picker>
-
-				<md-input-container flex> <label>Select
-					Status</label> <md-select name="status" ng-model="documentEntity.status">
-				<md-option ng-repeat="status in statusList"
-					ng-selected="status == documentEntity.status" ng-value="status">{{status}}</md-option>
-				</md-select> </md-input-container>
-			</div>
-
-			<div ng-if="documentEntity.id">
-				<!-- Show this part only if Object is created  -->
-				<h4 ng-init="prodReqListToogle=true"
-					ng-click="prodReqListToogle=!prodReqListToogle">
-					Production Requisition List
-					<md-button class="md-icon-button" ng-show="prodReqListToogle">
-					<ng-md-icon icon="keyboard_arrow_up" style="fill: md-default"
-						size="24"> <md-tooltip> Collapse</md-tooltip></ng-md-icon></md-button>
-					<md-button class="md-icon-button" ng-show="!prodReqListToogle">
-					<ng-md-icon icon="keyboard_arrow_down" style="fill: md-default"
-						size="24"> <md-tooltip> Expand</md-tooltip></ng-md-icon></md-button>
-				</h4>
-				<div ng-show="prodReqListToogle">
-					<md-button class="md-icon-button" ng-click="addProdReq($event)">
-					<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
-					<md-tooltip> Add New </md-tooltip></ng-md-icon> </md-button>
-					<md-table-container>
-					<table md-table md-progress="promise">
-						<thead ng-if="!dataTableOptions.decapitate" md-head
-							md-order="query.order" md-on-reorder="logOrder">
-							<tr md-row>
-								<th md-column>Requisition No.</th>
-								<th md-column>BOM Product</th>
-								<th md-column>Delivery Date</th>
-								<th md-column>Status</th>
-								<th md-column>Action</th>
-							</tr>
-						</thead>
-						<tbody md-body>
-							<tr md-row
-								ng-repeat="bomRequisitionEntity in documentEntity.prodRequisitionList">
-								<td md-cell>{{bomRequisitionEntity.itemNumber}}</td>
-								<td md-cell>{{bomRequisitionEntity.bomEntity.stockItemType.itemName}}</td>
-								<td md-cell>{{bomRequisitionEntity.deliveryDateTime |
-									formatDateWithTime}}</td>
-								<td md-cell>{{bomRequisitionEntity.status}}</td>
-								<td md-cell><md-button class="md-icon-button"
-										ng-click="addProdReq($event, bomRequisitionEntity)">
-									<ng-md-icon icon="edit" style="fill: md-default" size="20">
-									<md-tooltip> Edit</md-tooltip></ng-md-icon></md-button> <md-button
-										class="md-icon-button"
-										ng-click="printProductRequisition(bomRequisitionEntity.id)">
-									<ng-md-icon icon="print" style="fill: md-default" size="20">
-									<md-tooltip> Print Product Requisition</md-tooltip></ng-md-icon></md-button></td>
-							</tr>
-						</tbody>
-						<tfoot md-foot>
-							<tr md-row>
-								<td md-cell colspan="5"></td>
-							</tr>
-						</tfoot>
-
-					</table>
-					</md-table-container>
+					<md-input-container flex> <input type="text"
+						aria-label="period" placeholder="Discription"
+						ng-model="documentEntity.note"> </md-input-container>
 				</div>
 
-				<h4 ng-init="prodReportListToogle=true"
-					ng-click="prodReportListToogle=!prodReportListToogle">
-					Production Daily Report
-					<md-button class="md-icon-button" ng-show="prodReportListToogle">
-					<ng-md-icon icon="keyboard_arrow_up" style="fill: md-default"
-						size="24"> <md-tooltip> Collapse</md-tooltip></ng-md-icon></md-button>
-					<md-button class="md-icon-button" ng-show="!prodReportListToogle">
-					<ng-md-icon icon="keyboard_arrow_down" style="fill: md-default"
-						size="24"> <md-tooltip> Expand</md-tooltip></ng-md-icon></md-button>
-				</h4>
-				<div ng-show="prodReportListToogle">
-					<md-button class="md-icon-button" ng-click="addProdReport()">
-					<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
-					<md-tooltip> Add New </md-tooltip></ng-md-icon> </md-button>
-					<md-table-container>
-					<table md-table md-progress="promise">
-						<thead ng-if="!dataTableOptions.decapitate" md-head
-							md-order="query.order" md-on-reorder="logOrder">
-							<tr md-row>
-								<th md-column>Daily Report Number</th>
-								<th md-column>Report Date</th>
-								<th md-column>Produced Qty.</th>
-								<th md-column>Action</th>
-							</tr>
-						</thead>
-						<tbody md-body>
-							<tr md-row
-								ng-repeat="reportEntity in documentEntity.planDailyReport">
-								<td md-cell>{{reportEntity.itemNumber}}</td>
-								<td md-cell>{{reportEntity.reportDate |
-									formatDateWithTime}}</td>
-								<td md-cell>{{reportEntity.bomProducedQty }}</td>
-								<td md-cell><md-button class="md-icon-button"
-										ng-click="addProdReport($event, reportEntity)"> <ng-md-icon
-										icon="edit" style="fill: md-default" size="20"> <md-tooltip>
-									Edit</md-tooltip></ng-md-icon></md-button> <!-- <md-button class="md-icon-button"
+				<div layout="row" layout-xs="column">
+					<md-input-container flex> <label>Select
+						BOM</label> <md-select name="bomEntity"
+						ng-model="documentEntity.bomEntity" ng-required="true">
+					<md-option ng-repeat="bom in bomList"
+						ng-selected="documentEntity.bomEntity.id==bom.id" ng-value="bom">{{bom.stockItemType.itemName}}</md-option>
+					</md-select>
+					<div ng-messages="entityForm.bomEntity.$error"
+						ng-if="entityForm.bomEntity.$submitted || entityForm.bomEntity.$touched">
+						<div ng-message="required">Please Select BOM.</div>
+					</div>
+					</md-input-container>
+
+					<md-input-container flex> <input
+						name="plannedQty" type="number" aria-label="period"
+						placeholder="Planned Qty" ng-model="documentEntity.plannedQty"
+						ng-change="calculateProducedQty()" ng-required="true">
+					<div ng-messages="entityForm.plannedQty.$error"
+						ng-if="entityForm.plannedQty.$submitted || entityForm.plannedQty.$touched">
+						<div ng-message="required">Enter Planned Qty.</div>
+					</div>
+					</md-input-container>
+				</div>
+
+				<div layout="row" layout-xs="column">
+					<md-input-container flex> <input type="text"
+						aria-label="period" placeholder="Sales Order No"
+						ng-model="documentEntity.salesOrderNumber"> </md-input-container>
+
+					<md-input-container flex> <input type="text"
+						aria-label="period" placeholder="Customer Name"
+						ng-model="documentEntity.tempField"> </md-input-container>
+				</div>
+
+				<div layout="row" layout-xs="column">
+					<mdp-date-picker flex mdp-placeholder="Plan Start Date"
+						ng-model="documentEntity.fromDateTime" mdp-format="DD/MM/YYYY"></mdp-date-picker>
+
+					<mdp-date-picker flex mdp-placeholder="Plan End Date"
+						ng-model="documentEntity.toDateTime"
+						mdp-disabled="!documentEntity.fromDateTime"
+						mdp-min-date="documentEntity.fromDateTime" mdp-format="DD/MM/YYYY"></mdp-date-picker>
+
+					<md-input-container flex> <label>Select
+						Status</label> <md-select name="status" ng-model="documentEntity.status">
+					<md-option ng-repeat="status in statusList"
+						ng-selected="status == documentEntity.status" ng-value="status">{{status}}</md-option>
+					</md-select> </md-input-container>
+				</div>
+
+				<div ng-if="documentEntity.id">
+					<!-- Show this part only if Object is created  -->
+					<h4 ng-init="prodReqListToogle=true"
+						ng-click="prodReqListToogle=!prodReqListToogle">
+						Production Requisition List
+						<md-button class="md-icon-button" ng-show="prodReqListToogle">
+						<ng-md-icon icon="keyboard_arrow_up" style="fill: md-default"
+							size="24"> <md-tooltip> Collapse</md-tooltip></ng-md-icon></md-button>
+						<md-button class="md-icon-button" ng-show="!prodReqListToogle">
+						<ng-md-icon icon="keyboard_arrow_down" style="fill: md-default"
+							size="24"> <md-tooltip> Expand</md-tooltip></ng-md-icon></md-button>
+					</h4>
+					<div ng-show="prodReqListToogle">
+						<md-button class="md-icon-button" ng-click="addProdReq($event)">
+						<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
+						<md-tooltip> Add New </md-tooltip></ng-md-icon> </md-button>
+						<md-table-container>
+						<table md-table md-progress="promise">
+							<thead ng-if="!dataTableOptions.decapitate" md-head
+								md-order="query.order" md-on-reorder="logOrder">
+								<tr md-row>
+									<th md-column>Requisition No.</th>
+									<th md-column>BOM Product</th>
+									<th md-column>Delivery Date</th>
+									<th md-column>Status</th>
+									<th md-column>Action</th>
+								</tr>
+							</thead>
+							<tbody md-body>
+								<tr md-row
+									ng-repeat="bomRequisitionEntity in documentEntity.prodRequisitionList">
+									<td md-cell>{{bomRequisitionEntity.itemNumber}}</td>
+									<td md-cell>{{bomRequisitionEntity.bomEntity.stockItemType.itemName}}</td>
+									<td md-cell>{{bomRequisitionEntity.deliveryDateTime |
+										formatDateWithTime}}</td>
+									<td md-cell>{{bomRequisitionEntity.status}}</td>
+									<td md-cell><md-button class="md-icon-button"
+											ng-click="addProdReq($event, bomRequisitionEntity)">
+										<ng-md-icon icon="edit" style="fill: md-default" size="20">
+										<md-tooltip> Edit</md-tooltip></ng-md-icon></md-button> <md-button
+											class="md-icon-button"
+											ng-click="printProductRequisition(bomRequisitionEntity.id)">
+										<ng-md-icon icon="print" style="fill: md-default" size="20">
+										<md-tooltip> Print Product Requisition</md-tooltip></ng-md-icon></md-button></td>
+								</tr>
+							</tbody>
+							<tfoot md-foot>
+								<tr md-row>
+									<td md-cell colspan="5"></td>
+								</tr>
+							</tfoot>
+
+						</table>
+						</md-table-container>
+					</div>
+
+					<h4 ng-init="prodReportListToogle=true"
+						ng-click="prodReportListToogle=!prodReportListToogle">
+						Production Daily Report
+						<md-button class="md-icon-button" ng-show="prodReportListToogle">
+						<ng-md-icon icon="keyboard_arrow_up" style="fill: md-default"
+							size="24"> <md-tooltip> Collapse</md-tooltip></ng-md-icon></md-button>
+						<md-button class="md-icon-button" ng-show="!prodReportListToogle">
+						<ng-md-icon icon="keyboard_arrow_down" style="fill: md-default"
+							size="24"> <md-tooltip> Expand</md-tooltip></ng-md-icon></md-button>
+					</h4>
+					<div ng-show="prodReportListToogle">
+						<md-button class="md-icon-button" ng-click="addProdReport()">
+						<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
+						<md-tooltip> Add New </md-tooltip></ng-md-icon> </md-button>
+						<md-table-container>
+						<table md-table md-progress="promise">
+							<thead ng-if="!dataTableOptions.decapitate" md-head
+								md-order="query.order" md-on-reorder="logOrder">
+								<tr md-row>
+									<th md-column>Daily Report Number</th>
+									<th md-column>Report Date</th>
+									<th md-column>Produced Qty.</th>
+									<th md-column>Action</th>
+								</tr>
+							</thead>
+							<tbody md-body>
+								<tr md-row
+									ng-repeat="reportEntity in documentEntity.planDailyReport">
+									<td md-cell>{{reportEntity.itemNumber}}</td>
+									<td md-cell>{{reportEntity.reportDate |
+										formatDateWithTime}}</td>
+									<td md-cell>{{reportEntity.bomProducedQty }}</td>
+									<td md-cell><md-button class="md-icon-button"
+											ng-click="addProdReport($event, reportEntity)"> <ng-md-icon
+											icon="edit" style="fill: md-default" size="20">
+										<md-tooltip> Edit</md-tooltip></ng-md-icon></md-button> <!-- <md-button class="md-icon-button"
 										ng-click="printstockShipment(shipmentEntity.id)">
 									<ng-md-icon icon="print" style="fill: md-default" size="20">
 									<md-tooltip> Print Product Shipment</md-tooltip></ng-md-icon></md-button> --></td>
-							</tr>
+								</tr>
 
-						</tbody>
-						<tfoot md-foot>
-							<tr md-row>
-								<td md-cell colspan="5"></td>
-							</tr>
-						</tfoot>
-					</table>
-					</md-table-container>
+							</tbody>
+							<tfoot md-foot>
+								<tr md-row>
+									<td md-cell colspan="5"></td>
+								</tr>
+							</tfoot>
+						</table>
+						</md-table-container>
+					</div>
+
+					<h4 ng-init="prodShipListToogle=true"
+						ng-click="prodShipListToogle=!prodShipListToogle">
+						Production Shipment List
+						<md-button class="md-icon-button" ng-show="prodShipListToogle">
+						<ng-md-icon icon="keyboard_arrow_up" style="fill: md-default"
+							size="24"> <md-tooltip> Collapse</md-tooltip></ng-md-icon></md-button>
+						<md-button class="md-icon-button" ng-show="!prodShipListToogle">
+						<ng-md-icon icon="keyboard_arrow_down" style="fill: md-default"
+							size="24"> <md-tooltip> Expand</md-tooltip></ng-md-icon></md-button>
+					</h4>
+					<div ng-show="prodShipListToogle">
+						<md-button class="md-icon-button" ng-click="addProdShip()">
+						<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
+						<md-tooltip> Add New </md-tooltip></ng-md-icon> </md-button>
+						<md-table-container>
+						<table md-table md-progress="promise">
+							<thead ng-if="!dataTableOptions.decapitate" md-head
+								md-order="query.order" md-on-reorder="logOrder">
+								<tr md-row>
+									<th md-column>Stock Transfer Number</th>
+									<th md-column>Transfer Date</th>
+									<th md-column>To Warehouse</th>
+									<th md-column>Action</th>
+								</tr>
+							</thead>
+							<tbody md-body>
+								<tr md-row
+									ng-repeat="shipmentEntity in documentEntity.prodShipmentList">
+									<td md-cell>{{shipmentEntity.itemNumber}}</td>
+									<td md-cell>{{shipmentEntity.shipmentDate |
+										formatDateWithTime}}</td>
+									<td md-cell>{{shipmentEntity.toWH.warehouseName }}</td>
+									<td md-cell><md-button class="md-icon-button"
+											ng-click="addProdShip($event, shipmentEntity)"> <ng-md-icon
+											icon="edit" style="fill: md-default" size="20">
+										<md-tooltip> Edit</md-tooltip></ng-md-icon></md-button> <md-button
+											class="md-icon-button"
+											ng-click="printstockShipment(shipmentEntity.id)">
+										<ng-md-icon icon="print" style="fill: md-default" size="20">
+										<md-tooltip> Print Product Shipment</md-tooltip></ng-md-icon></md-button></td>
+								</tr>
+
+							</tbody>
+							<tfoot md-foot>
+								<tr md-row>
+									<td md-cell colspan="5"></td>
+								</tr>
+							</tfoot>
+						</table>
+						</md-table-container>
+					</div>
 				</div>
-
-				<h4 ng-init="prodShipListToogle=true"
-					ng-click="prodShipListToogle=!prodShipListToogle">
-					Production Shipment List
-					<md-button class="md-icon-button" ng-show="prodShipListToogle">
-					<ng-md-icon icon="keyboard_arrow_up" style="fill: md-default"
-						size="24"> <md-tooltip> Collapse</md-tooltip></ng-md-icon></md-button>
-					<md-button class="md-icon-button" ng-show="!prodShipListToogle">
-					<ng-md-icon icon="keyboard_arrow_down" style="fill: md-default"
-						size="24"> <md-tooltip> Expand</md-tooltip></ng-md-icon></md-button>
-				</h4>
-				<div ng-show="prodShipListToogle">
-					<md-button class="md-icon-button" ng-click="addProdShip()">
-					<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
-					<md-tooltip> Add New </md-tooltip></ng-md-icon> </md-button>
-					<md-table-container>
-					<table md-table md-progress="promise">
-						<thead ng-if="!dataTableOptions.decapitate" md-head
-							md-order="query.order" md-on-reorder="logOrder">
-							<tr md-row>
-								<th md-column>Stock Transfer Number</th>
-								<th md-column>Transfer Date</th>
-								<th md-column>To Warehouse</th>
-								<th md-column>Action</th>
-							</tr>
-						</thead>
-						<tbody md-body>
-							<tr md-row
-								ng-repeat="shipmentEntity in documentEntity.prodShipmentList">
-								<td md-cell>{{shipmentEntity.itemNumber}}</td>
-								<td md-cell>{{shipmentEntity.shipmentDate |
-									formatDateWithTime}}</td>
-								<td md-cell>{{shipmentEntity.toWH.warehouseName }}</td>
-								<td md-cell><md-button class="md-icon-button"
-										ng-click="addProdShip($event, shipmentEntity)"> <ng-md-icon
-										icon="edit" style="fill: md-default" size="20"> <md-tooltip>
-									Edit</md-tooltip></ng-md-icon></md-button> <md-button class="md-icon-button"
-										ng-click="printstockShipment(shipmentEntity.id)">
-									<ng-md-icon icon="print" style="fill: md-default" size="20">
-									<md-tooltip> Print Product Shipment</md-tooltip></ng-md-icon></md-button></td>
-							</tr>
-
-						</tbody>
-						<tfoot md-foot>
-							<tr md-row>
-								<td md-cell colspan="5"></td>
-							</tr>
-						</tfoot>
-					</table>
-					</md-table-container>
-				</div>
-			</div>
-		</form>
+			</form>
+		</fieldset>
 	</div>
 
+	<div
+		ng-if="isDocumentEditAllowed(documentEntity) || isDocumentNotClosed(documentEntity)"
+		layout="column" style="padding: 0; margin: 0;">
+		<span layout="row"><hr flex />
+			<h4>Actions</h4>
+			<hr flex /></span>
+	</div>
 	<div layout layout-xs="column">
-		<section layout="row" layout-xs="column" ng-if="!isActionhidden">
+		<section layout="row" layout-xs="column" ng-if="!isSaving || isDocumentEditAllowed(documentEntity)">
 			<md-button class="md-raised md-primary"
 				ng-disabled="entityForm.$invalid" ng-click="saveEntity()">Save
 			as Draft</md-button>
 			<md-button class="md-raised md-primary"
 				ng-disabled="entityForm.$invalid" ng-click="saveEntity()">Submit</md-button>
 		</section>
-		<section layout="row" layout-xs="column" ng-if="isActionhidden">
-			<md-button class="md-raised md-primary" ng-disabled="true">Saving..</md-button>
+		<section layout="row" layout-xs="column" ng-if="isSaving">
+			<md-button class="md-raised md-primary" ng-disabled="true">Saving...</md-button>
 		</section>
 	</div>
 </div>

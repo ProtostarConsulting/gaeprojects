@@ -16,7 +16,7 @@ app
 						};
 					}
 					$scope.query = reSetQuery();
-					$scope.isActionhidden = false;
+					$scope.isSaving = false;
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
 
@@ -142,12 +142,13 @@ app
 						};
 
 						$scope.saveDocument = function() {
+							$scope.isSaving = true;
 							$scope.documentEntity.business = curUser.business;
 							$scope.documentEntity.modifiedBy = curUser.email_id;
 
 							var wasUpdate = null;
 							if ($scope.documentEntity.id) {
-								$scope.isActionhidden = true;
+								$scope.isSaving = true;
 								wasUpdate = true;
 							} else {
 								wasUpdate = false;
@@ -165,7 +166,7 @@ app
 													$mdDialog.cancel();
 													showAddToast();
 												} else {
-													$scope.isActionhidden = true;
+													
 													if (!productionRequisition.stockShipmentList) {
 														productionRequisition.stockShipmentList = [];
 													}
@@ -180,6 +181,7 @@ app
 																	productionRequisition)
 															.then(
 																	function() {
+																		$scope.isSaving = false;
 																		$mdDialog
 																				.cancel();
 																		showAddToast();
