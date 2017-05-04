@@ -62,9 +62,9 @@
 				ng-selected="stock.cat.id==cat.id">{{cat.catName}} </md-option> </md-select> </md-input-container> -->
 			<div flex layout="column">
 				<md-input-container flex> <md-checkbox
-					ng-model="stock.maintainAsProductionItem" aria-label="isProductionItem"
-					ng-true-value="true" ng-false-value="false"></md-checkbox> Is
-				Production Product
+					ng-model="stock.maintainAsProductionItem"
+					aria-label="isProductionItem" ng-true-value="true"
+					ng-false-value="false"></md-checkbox> Is Production Product
 				<div>
 					<p style="font-size: .8em; width: 100%; text-align: left;">
 						Mark this if the product item is being produced in your company
@@ -97,6 +97,17 @@
 				</div>
 			</div>
 		</section>
+
+		<div layout="row" layout-xs="column">
+			<md-input-container flex> <md-checkbox
+				ng-model="stock.withAdditionalExciseTax" aria-label="active"
+				ng-true-value="true" ng-false-value="false" id="changer">
+			With Additional Excise Tax </md-checkbox></md-input-container>
+
+			<md-input-container flex ng-show="stock.withAdditionalExciseTax">
+			<label>Excise Tax Rate(&#37)</label> <input type="number"
+				ng-model="stock.exciseTaxPercenatge" ng-required="true"> </md-input-container>
+		</div>
 
 		<section layout="row" layout-xs="column" layout-align="left left">
 			<md-button class="md-raised md-primary"
