@@ -65,11 +65,11 @@ app
 					$rootScope.$on("CallParentMethod", function() {
 						$scope.parentmethod();
 					});
-					
+
 					$scope.draftDocumnent = function(ev) {
 						$scope.documentEntity.status = 'DRAFT';
 						$scope.saveDocument();
-					}					
+					}
 
 					$scope.submitDocumnent = function(ev) {
 						$scope.documentEntity.status = 'SUBMITTED';
@@ -295,6 +295,13 @@ app
 						// $scope.calfinalTotal();
 					};
 
+					$scope.stockItemTypeQuerySearch = function(query) {
+						var autoCompleteUIService = appEndpointSF
+								.getAutoCompleteUIService();
+						return autoCompleteUIService.queryStockItemTypeSearch(
+								$scope.stockTypeList, query);
+					}
+
 					$scope.getStockItemTypes = function() {
 						$log.debug("Inside Ctr $scope.getStockItemTypes");
 						var stockService = appEndpointSF.getStockService();
@@ -393,7 +400,6 @@ app
 								});
 					}
 
-					
 					// End Select supplier
 					function getStockSettingsByBiz() {
 						var stockService = appEndpointSF.getStockService();
@@ -545,7 +551,7 @@ app
 							supplierService.addSupplier($scope.supplier).then(
 									function(supplierObj) {
 										supplierList.push(supplierObj);
-										documentEntity.supplier = supplierObj;										
+										documentEntity.supplier = supplierObj;
 									});
 							$scope.cancel();
 							// window.history.back();

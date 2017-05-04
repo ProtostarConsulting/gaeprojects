@@ -120,13 +120,15 @@
 						<td md-cell>{{ $index +1 }}</td>
 						<td md-cell width="40%">
 							<div layout="row">
-								<md-input-container flex style="margin: 0px; padding: 0px;">
-								<md-select ng-model="item.stockItem.stockItemType"
-									placeholder="Item Name" ng-required="true"> <md-option
-									ng-value="stockItemType"
-									ng-selected="item.stockItem.stockItemType.id == stockItemType.id"
-									ng-repeat="stockItemType in stockTypeList">{{stockItemType.itemName
-								}}</md-option> </md-select> </md-input-container>
+								<md-autocomplete flex required md-input-name="autocompleteField"
+									md-no-cache=true
+									md-selected-item="item.stockItem.stockItemType"
+									md-search-text="searchStockItemTypeText"
+									md-items="stockItemType in stockItemTypeQuerySearch(searchStockItemTypeText)"
+									md-item-text="stockItemType.itemName"
+									md-floating-label="Item Name"> <md-item-template>
+								<span md-highlight-text="searchStockItemTypeText">{{stockItemType.itemName}}</span>
+								</md-item-template> </md-autocomplete>
 								<md-button class="md-icon-button"
 									ng-click="addStockItem($event,item)" aria-label="as">
 								<md-icon md-svg-src="img/icons/ic_queue_black_24px.svg"
@@ -244,9 +246,8 @@
 			</table>
 
 		</div>
-		<div
-			ng-if="isDocumentEditAllowed(documentEntity)"
-			layout="column" style="padding: 0; margin: 0;">
+		<div ng-if="isDocumentEditAllowed(documentEntity)" layout="column"
+			style="padding: 0; margin: 0;">
 			<span layout="row"><hr flex />
 				<h4>Actions</h4>
 				<hr flex /></span>

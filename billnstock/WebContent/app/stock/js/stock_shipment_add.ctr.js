@@ -356,6 +356,13 @@ app
 					}
 					$scope.accountforinvoice = [];
 
+					$scope.stockItemQuerySearch = function(query) {
+						var autoCompleteUIService = appEndpointSF
+								.getAutoCompleteUIService();
+						return autoCompleteUIService.queryStockItemSearch(
+								$scope.stockItemList, query);
+					}
+
 					$scope.filterStockItemsByWarehouse = function(
 							selectedWarehouse) {
 						$scope.loading = true;

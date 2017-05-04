@@ -420,6 +420,13 @@ app
 								.hideDelay(10000));
 					};
 
+					$scope.stockItemTypeQuerySearch = function(query) {
+						var autoCompleteUIService = appEndpointSF
+								.getAutoCompleteUIService();
+						return autoCompleteUIService.queryStockItemTypeSearch(
+								$scope.stockTypeList, query);
+					}
+
 					$scope.getStockItemTypes = function() {
 						$log.debug("Inside Ctr $scope.getStockItemTypes");
 						var stockService = appEndpointSF.getStockService();
