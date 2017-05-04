@@ -40,6 +40,9 @@ public class StockItemTypeEntity extends BaseEntity {
 	private boolean maintainAsProductionItem = false;
 	private boolean maintainStockBySerialNumber = false;
 
+	private boolean withAdditionalExciseTax = false;
+	private double exciseTaxPercenatge;
+
 	@Index
 	private Ref<TaxEntity> selectedTaxItem;
 
@@ -148,5 +151,21 @@ public class StockItemTypeEntity extends BaseEntity {
 
 	public void setMaintainAsProductionItem(boolean maintainAsProductionItem) {
 		this.maintainAsProductionItem = maintainAsProductionItem;
+	}
+
+	public boolean isWithAdditionalExciseTax() {
+		return withAdditionalExciseTax;
+	}
+
+	public void setWithAdditionalExciseTax(boolean withAdditionalExciseTax) {
+		this.withAdditionalExciseTax = withAdditionalExciseTax;
+	}
+
+	public double getExciseTaxPercenatge() {
+		return exciseTaxPercenatge;
+	}
+
+	public void setExciseTaxPercenatge(double exciseTaxPercenatge) {
+		this.exciseTaxPercenatge = exciseTaxPercenatge;
 	}
 }
