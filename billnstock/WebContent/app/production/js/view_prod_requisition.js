@@ -33,6 +33,64 @@ app
 					$scope.stockItemCategories = [];
 					$scope.stockTypeList = [];
 					var dummyStockTypeList = [];
+					$scope.firmStockItemList = [];
+
+					$scope.getAllWHStockItemQty = function(stockItemType) {
+						var totalStockQty = 0;
+						if (!stockItemType)
+							return 'NA';
+
+						var stockService = appEndpointSF.getStockService();
+						/*
+						 * stockService .filterStockItemsByBomTypes( {
+						 * 'bomEntity' : $scope.productionRequisition.bomEntity
+						 * }).then(function(stockList) {
+						 * $scope.firmStockItemList = stockList; });
+						 */
+
+						/*
+						 * angular.forEach($scope.firmStockItemList, function(
+						 * stockItem) { if (stockItem.stockItemType.id ==
+						 * stockItemType.id) totalStockQty += stockItem.qty; });
+						 */
+
+						return totalStockQty;
+					}
+
+					$scope.filterStockItemsByBom = function() {
+						var stockService = appEndpointSF.getStockService();
+						stockService.getStockItemTypes(
+								$scope.curUser.business.id).then(
+								function(stockList) {
+									$scope.firmStockItemList = stockList;
+								});
+					}
+
+					$scope.filterStockItemsByBom();
+
+					$scope.getTotalStockIssuedQty = function(stockItemType) {
+						var totalStockQty = 0;
+						if (!stockItemType)
+							return 'NA';
+						for (var i = 0; i < $scope.productionRequisition.stockShipmentList.length; i++) {
+							if ($scope.productionRequisition.stockShipmentList[i].status == "FINALIZED") {
+								$scope.stockShipmentObj = $scope.productionRequisition.stockShipmentList[i];
+								var fromWarehouseOj = $scope.stockShipmentObj.fromWarehouseList[0];
+								for (var k = 0; k < fromWarehouseOj.catList.length; k++) {
+									for (var l = 0; l < fromWarehouseOj.catList[k].items.length; l++) {
+										var stockItem = fromWarehouseOj.catList[k].items[l];
+										for (var m = 0; m < $scope.firmStockItemList.length; m++) {
+											var stockId = $scope.firmStockItemList[m].id;
+											if (stockId === stockItemType.id) {
+												totalStockQty += stockItem.stockIssuedQty;
+											}
+										}
+									}
+								}
+							}
+						}
+						return totalStockQty;
+					}
 
 					$scope.addProdStockIsssueRecord = function(ev, prodStock) {
 
@@ -69,7 +127,7 @@ app
 							prodStock, productionRequisition, showAddToast) {
 
 						$scope.loading = true;
-						
+
 						$scope.getEmptyObj = function() {
 							return {
 								productLineItemList : [],
@@ -161,12 +219,12 @@ app
 											$scope.documentEntity)
 									.then(
 											function(savedObj) {
-												
+
 												if (wasUpdate) {
 													$mdDialog.cancel();
 													showAddToast();
 												} else {
-													
+
 													if (!productionRequisition.stockShipmentList) {
 														productionRequisition.stockShipmentList = [];
 													}
@@ -246,7 +304,7 @@ app
 											});
 							return totalStockQty;
 						}
-						
+
 						$scope.draftDocumnent = function(ev) {
 							$scope.documentEntity.status = 'DRAFT';
 							$scope.saveDocument();
@@ -256,7 +314,7 @@ app
 							$scope.documentEntity.status = 'SUBMITTED';
 							$scope.saveDocument();
 						}
-						
+
 						$scope.finalizeDocumnent = function(ev) {
 							$scope.documentEntity.status = 'FINALIZED';
 							$scope.saveDocument();
@@ -267,9 +325,12 @@ app
 						};
 						$scope.getAllWarehouseByBusiness();
 					}
-					
-					$scope.printStockIssueList = function(prodRequisitionId,prodStockIssueId) {
+
+					$scope.printStockIssueList = function(prodRequisitionId,
+							prodStockIssueId) {
 						var bid = $scope.curUser.business.id;
-						window.open("PrintStockIssuedListPdf?bid=" + bid + "&prodRequisitionId=" + prodRequisitionId + "&prodStockIssueId=" + prodStockIssueId);
+						window.open("PrintStockIssuedListPdf?bid=" + bid
+								+ "&prodRequisitionId=" + prodRequisitionId
+								+ "&prodStockIssueId=" + prodStockIssueId);
 					}
 				});

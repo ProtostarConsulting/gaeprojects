@@ -82,8 +82,8 @@
 					<td md-cell></td>
 					<td md-cell style="padding-top: 10px; padding-bottom: 10px;">{{itemObj.stockItemType.itemName}}</td>
 					<td md-cell style="padding-top: 10px; padding-bottom: 10px;">{{itemObj.qty}}</td>
-					<td md-cell style="padding-top: 10px; padding-bottom: 10px;">{{getCurrentWHStockItemQty(itemObj.stockItemType)}}</td>
-					<td md-cell style="padding-top: 10px; padding-bottom: 10px;"></td>
+					<td md-cell style="padding-top: 10px; padding-bottom: 10px;">{{getAllWHStockItemQty(itemObj.stockItemType)}}</td>
+					<td md-cell style="padding-top: 10px; padding-bottom: 10px;">{{getTotalStockIssuedQty(itemObj.stockItemType)}}</td>
 				</tr>
 				<tr md-row>
 					<td md-cell></td>
