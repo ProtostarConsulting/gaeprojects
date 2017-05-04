@@ -52,12 +52,11 @@ public class StockItemEntity extends BaseEntity {
 	}
 
 	public StockItemTypeEntity getStockItemType() {
-		return stockItemType == null ? null : stockItemType.get();
+		return this.stockItemType.get();
 	}
 
 	public void setStockItemType(StockItemTypeEntity stockItemType) {
-		if (stockItemType != null)
-			this.stockItemType = Ref.create(stockItemType);
+		this.stockItemType = Ref.create(stockItemType);
 	}
 
 	public int getQty() {
