@@ -6,6 +6,17 @@ app.controller("qcmachineAddCtr", function($scope, $window, $mdToast, $timeout,
 
 	$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
 	$scope.loading = true;
+	
+	function defaultActionProcessing() {
+		return {
+			saving : false,
+			saveButtonText : "Submit",
+			savingButtonText : "Saving..."
+		};
+	}
+
+	$scope.actionProcessing = defaultActionProcessing();
+	
 	$scope.qcmachine = {
 		qcName : "",
 		validFrom : new Date().setHours(00, 00, 00, 000),
@@ -51,7 +62,7 @@ app.controller("qcmachineAddCtr", function($scope, $window, $mdToast, $timeout,
 	};
 
 	$scope.addQCMachine = function() {
-
+		$scope.actionProcessing.saving = true;
 		$scope.qcmachine.business = $scope.curUser.business;
 		$scope.qcmachine.modifiedBy = $scope.curUser.email_id;
 
@@ -60,7 +71,8 @@ app.controller("qcmachineAddCtr", function($scope, $window, $mdToast, $timeout,
 				function(machineObj) {
 					if (machineObj.id != undefined) {
 						$scope.qcmachine.id = machineObj.id;
-						$scope.qcmachine.itemNumber = savedObj.itemNumber;
+						$scope.qcmachine.itemNumber = machineObj.itemNumber;
+						$scope.actionProcessing = defaultActionProcessing();
 						$scope.showAddToast();
 					}
 				});

@@ -36,9 +36,9 @@
 				</div>
 				</md-input-container>
 
-				<md-input-container flex> <label>Manufacturer Machine Ref
-					Number</label> <input name="machineNo" ng-model="machine.manifacturerRefNumber">
-				</md-input-container>
+				<md-input-container flex> <label>Manufacturer
+					Machine Ref Number</label> <input name="machineNo"
+					ng-model="machine.manifacturerRefNumber"> </md-input-container>
 			</div>
 
 			<div layout="row" layout-xs="column" flex>
@@ -88,10 +88,15 @@
 		</div>
 		<div layout layout-xs="column">
 			<section layout="row" layout-xs="column">
-				<md-button class="md-raised md-primary" ng-if="!machine.id"
+				<md-button class="md-raised md-primary"
+					ng-disabled="addMachieForm.$invalid || actionProcessing.saving"
+					ng-click="addMachine()"
+					ng-bind="actionProcessing.saving?actionProcessing.savingButtonText : actionProcessing.saveButtonText">Save
+				Changes</md-button>
+				<!-- <md-button class="md-raised md-primary" ng-if="!machine.id"
 					ng-disabled="addMachieForm.$invalid" ng-click="addMachine()">Save</md-button>
 				<md-button class="md-raised md-primary" ng-if="machine.id"
-					ng-disabled="addMachieForm.$invalid" ng-click="addMachine()">Update</md-button>
+					ng-disabled="addMachieForm.$invalid" ng-click="addMachine()">Update</md-button> -->
 			</section>
 		</div>
 	</form>

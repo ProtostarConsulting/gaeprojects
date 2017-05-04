@@ -4,6 +4,16 @@ app.controller("machineAddCtr", function($scope, $window, $mdToast, $timeout,
 		$mdSidenav, $mdUtil, $log, $stateParams, objectFactory, appEndpointSF,
 		$mdDialog, $mdMedia) {
 
+	function defaultActionProcessing() {
+		return {
+			saving : false,
+			saveButtonText : "Submit",
+			savingButtonText : "Saving..."
+		};
+	}
+
+	$scope.actionProcessing = defaultActionProcessing();
+
 	function getEmptyObj() {
 		return {
 			manifacturerDetail : {
@@ -30,6 +40,7 @@ app.controller("machineAddCtr", function($scope, $window, $mdToast, $timeout,
 			: getEmptyObj();
 
 	$scope.addMachine = function() {
+		$scope.actionProcessing.saving = true;
 		$scope.machine.business = $scope.curUser.business;
 		$scope.machine.modifiedBy = $scope.curUser.email_id;
 
@@ -37,6 +48,7 @@ app.controller("machineAddCtr", function($scope, $window, $mdToast, $timeout,
 		productService.addMachine($scope.machine).then(function(machineObj) {
 			if (machineObj.id != undefined) {
 				$scope.machine = machineObj;
+				$scope.actionProcessing = defaultActionProcessing();
 				$scope.showAddToast();
 			}
 		});

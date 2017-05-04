@@ -12,8 +12,8 @@
 
 	<form name="addQCMachineForm">
 		<div layout="row" layout-xs="column">
-			<md-input-container flex> <label>Machine QC Master
-				Ref Number</label> <input ng-model="qcmachine.itemNumber"
+			<md-input-container flex> <label>Machine
+				QC Master Ref Number</label> <input ng-model="qcmachine.itemNumber"
 				placeholder="Auto generated number" ng-disabled="true"></input> </md-input-container>
 
 			<md-input-container flex=25> <label>Created
@@ -163,10 +163,15 @@
 
 		<div layout layout-xs="column">
 			<section layout="row" layout-xs="column">
-				<md-button class="md-raised md-primary" ng-if="!qcmachine.id"
+				<md-button class="md-raised md-primary"
+					ng-disabled="addQCMachineForm.$invalid || actionProcessing.saving"
+					ng-click="addQCMachine()"
+					ng-bind="actionProcessing.saving?actionProcessing.savingButtonText : actionProcessing.saveButtonText">Save
+				Changes</md-button>
+				<!-- <md-button class="md-raised md-primary" ng-if="!qcmachine.id"
 					ng-disabled="addQCMachineForm.$invalid" ng-click="addQCMachine()">Save</md-button>
 				<md-button class="md-raised md-primary" ng-if="qcmachine.id"
-					ng-disabled="addQCMachineForm.$invalid" ng-click="addQCMachine()">Update</md-button>
+					ng-disabled="addQCMachineForm.$invalid" ng-click="addQCMachine()">Update</md-button> -->
 			</section>
 		</div>
 	</form>

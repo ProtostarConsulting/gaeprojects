@@ -7,7 +7,16 @@ app
 						$mdUtil, $log, $stateParams, objectFactory,
 						appEndpointSF, $mdDialog, $mdMedia) {
 					$scope.loading = true;
-				
+					
+					function defaultActionProcessing() {
+						return {
+							saving : false,
+							saveButtonText : "Submit",
+							savingButtonText : "Saving..."
+						};
+					}
+
+					$scope.actionProcessing = defaultActionProcessing();				
 					$scope.isTableShow = false;
 					$scope.timeArray = [];
 					$scope.machineList = [];
@@ -47,7 +56,7 @@ app
 					}
 
 					$scope.addQCMachineRecord = function() {
-
+						$scope.actionProcessing.saving = true;
 						$scope.qcRecordObj.createdBy = $scope.curUser;
 						$scope.qcRecordObj.business = $scope.curUser.business;
 						$scope.qcRecordObj.modifiedBy = $scope.curUser.email_id;
@@ -62,6 +71,7 @@ app
 								function(machineObj) {
 									if (machineObj.id != undefined) {
 										$scope.qcRecordObj = machineObj;
+										$scope.actionProcessing = defaultActionProcessing();
 										$scope.showAddToast();
 									}
 								});

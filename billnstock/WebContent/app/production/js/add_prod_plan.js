@@ -40,13 +40,14 @@ app
 								$scope.documentEntity.toDateTime);
 
 					$scope.saveEntity = function() {
+						$scope.isActionhidden = true;
 						var productService = appEndpointSF
 								.getProductionService();
 						productService.addProdPlanEntity($scope.documentEntity)
 								.then(function(savedObj) {
 									if (savedObj.id)
 										$scope.documentEntity.id = savedObj.id;
-
+									$scope.isActionhidden = false;
 									$scope.showAddToast();
 								});
 
