@@ -261,7 +261,14 @@ app
 						if ($scope.documentEntity.productLineItemList) {
 							for (var i = 0; i < $scope.documentEntity.productLineItemList.length; i++) {
 								var lineItem = $scope.documentEntity.productLineItemList[i];
-								$scope.documentEntity.productSubTotal += (lineItem.qty * lineItem.price);
+								if (lineItem.stockItem.stockItemType.withAdditionalExciseTax) {
+									$scope.documentEntity.productSubTotal += (lineItem.qty * lineItem.price)
+											+ (lineItem.qty * lineItem.price)
+											* (lineItem.stockItem.stockItemType.exciseTaxPercenatge / 100);
+								} else {
+									$scope.documentEntity.productSubTotal += (lineItem.qty * lineItem.price);
+								}
+
 							}
 						}
 					}

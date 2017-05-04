@@ -237,9 +237,20 @@
 									style="margin: 0px; padding: 0px;"> <input
 									type="number" ng-model="item.price"
 									ng-change="reCalculateTotal()" aria-label="iprice"
-									ng-required="true"> </md-input-container></td>
-							<td md-cell><md-input-container flex> <b>{{item.qty
-									* item.price | currency:"":"2"}} </b></td>
+									ng-required="true">
+								<div style="font-size: 9px;"
+									ng-if="item.stockItem.stockItemType.withAdditionalExciseTax">+Excise:{{(item.stockItem.stockItemType.exciseTaxPercenatge
+									/ 100) * item.price}}</div>
+								</md-input-container></td>
+							<td md-cell
+								ng-if="item.stockItem.stockItemType.withAdditionalExciseTax"><md-input-container
+									flex> <b>{{(item.qty *
+									item.price)+((item.stockItem.stockItemType.exciseTaxPercenatge
+									/ 100) *item.qty* item.price) | currency:"":"2"}} </b></td>
+							<td md-cell
+								ng-hide="item.stockItem.stockItemType.withAdditionalExciseTax"><md-input-container
+									flex> <b>{{item.qty * item.price |
+									currency:"":"2"}} </b></td>
 							<td md-cell ng-show="documentEntity.indiviualProductLineItemTax"><md-select
 									ng-model="item.selectedTaxItem" placeholder="Select Tax"
 									ng-change="reCalculateTotal()"> <md-option
