@@ -150,7 +150,7 @@ td {
 				</tr>
 				<tr align="left" style="border: 0px;">
 					<td style="width: 60%;"  style="border: 0px; padding: 7px;"><b>Bill To :</b><br></br>
-										${billTo} </td>
+										<pre>${billTo}</pre> </td>
 				
 					<td style="width: 40%;"  style="border: 0px; padding: 7px;">
 								<table style="width: 100%; height: 100%;">
@@ -167,7 +167,7 @@ td {
 										
 									</td>
 								<td style="width:40%;border: 0px;">
-										${shipTo}
+										<pre>${shipTo}</pre>
 									</td>
 								</tr>	
 								</table>
@@ -177,7 +177,7 @@ td {
 				<#if noteToCustomer??>
 					<tr align="left" style="border: 0px;">
 						<td colspan="2" style="border: 0px; padding: 7px;">
-							<b>Note To Customer:</b><br></br>
+							<b>Purchase Order Notes:</b><br></br>
 							<pre>${noteToCustomer}</pre>
 					    </td>
 					</tr>
@@ -437,20 +437,14 @@ td {
 	<br></br>
 	<br></br>
 </p>
-<#if paymentNotes??>
-	<p> <b> Payment Notes: </b>
-	<br></br>	
-	${paymentNotes}
-</p>
-<#else>	
-</#if>
+
 <p>
 	<br></br>	
 </p>
 <#if termsAndConditions??>
 	<p> <b> Terms and Conditions: </b>
 	<br></br>	
-	${termsAndConditions}
+	<pre>${termsAndConditions}</pre>
 </p>
 <#else>	
 </#if>			

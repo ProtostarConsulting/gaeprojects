@@ -91,13 +91,16 @@ public class PrintPdfPurchaseOrder extends HttpServlet {
 			String modifiedDateStr = sdfDate.format(modifiedDate);
 
 			String noteToCustomer = purchaseOrderEntity.getNoteToCustomer();
+			if(noteToCustomer != null && noteToCustomer.trim().isEmpty()){
+				noteToCustomer = null;
+			}
 
 			double discAmt = purchaseOrderEntity.getDiscAmount();
 			if (discAmt > 0) {
 				root.put("Discount", df.format(discAmt));
 			}
 
-			root.put("billTo", purchaseOrderEntity.getTo());
+			root.put("billTo", purchaseOrderEntity.getBillTo());
 			root.put("shipTo", purchaseOrderEntity.getShipTo());
 			root.put("pONum", purchaseOrderEntity.getItemNumber());
 			root.put("docStatus", purchaseOrderEntity.getStatus());
@@ -110,8 +113,7 @@ public class PrintPdfPurchaseOrder extends HttpServlet {
 					+ purchaseOrderEntity.getSupplier().getSupplierName());
 			root.put("FOBPoint", "" + purchaseOrderEntity.getfOBPoint());
 			root.put("Terms", "" + purchaseOrderEntity.getTerms());
-			root.put("noteToCustomer", noteToCustomer == null ? ""
-					: noteToCustomer);
+			root.put("noteToCustomer", noteToCustomer);
 			UserEntity createdBy = purchaseOrderEntity.getCreatedBy();
 			root.put("createdBy",
 					createdBy == null ? "" : createdBy.getFirstName() + " "
@@ -220,6 +222,13 @@ public class PrintPdfPurchaseOrder extends HttpServlet {
 					Math.round(finalTotal));
 			String netInWords = numberToRupees.getAmountInWords();
 			root.put("finalTotalInWords", netInWords);
+			
+			
+			String termsAndConditions = purchaseOrderEntity.getTermsAndConditions();
+			if(termsAndConditions != null && termsAndConditions.trim().isEmpty()){
+				termsAndConditions = null;
+			}
+			root.put("termsAndConditions", termsAndConditions);
 
 			Template temp = PDFHtmlTemplateService.getConfiguration()
 					.getTemplate("pdf_templates/purchase_order_tmpl.ftlh");

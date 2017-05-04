@@ -16,11 +16,18 @@
 			makes Approval Compulsory for this module Documents like Requisition,
 			Purchase Order, Stock Receipt, Stock Shipment etc.</div>
 	</div>
-	<md-input-container flex="80" layout="row"> <label>PO
+	<md-input-container flex> <label>PO
 		Terms and Conditions</label> <textarea
 		ng-model="settingsObj.poTermsAndConditions" rows="3" cols="1"></textarea>
 	</md-input-container>
-
+	<div layout="row" layout-xs="column">
+		<md-input-container flex> <label>PO
+			Bill To</label> <textarea ng-model="settingsObj.poBillTo" rows="3" cols="1"></textarea>
+		</md-input-container>
+		<md-input-container flex> <label>PO
+			Ship To</label> <textarea ng-model="settingsObj.poShipTo" rows="3" cols="1"></textarea>
+		</md-input-container>
+	</div>
 	<md-input-container flex="80" layout="row"> <label>Stock
 		Shipment Terms and Conditions</label> <textarea
 		ng-model="settingsObj.stockShipTermsAndConditions" rows="3" cols="1"></textarea>

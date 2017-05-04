@@ -459,9 +459,13 @@ app
 								.getStockSettingsByBiz(
 										$scope.curUser.business.id)
 								.then(
-										function(settingsList) {
-											$scope.settingsObj = settingsList;
-											$scope.documentEntity.noteToCustomer = $scope.settingsObj.noteToCustomer;
+										function(settingsObj) {
+											$scope.settingsObj = settingsObj;
+											if (!$scope.documentEntity.id) {
+												$scope.documentEntity.billTo = $scope.settingsObj.poBillTo;
+												$scope.documentEntity.shipTo = $scope.settingsObj.poShipTo;
+												$scope.documentEntity.termsAndConditions = $scope.settingsObj.poTermsAndConditions;
+											}
 											if ($scope.settingsObj.showDefaultServiceItems
 													&& !$scope.documentEntity.id) {
 												$scope.addServiceLineItem();

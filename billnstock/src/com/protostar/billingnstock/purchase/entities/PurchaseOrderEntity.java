@@ -19,7 +19,7 @@ import com.protostar.billnstock.until.data.SequenceGeneratorShardedService;
 @Cache
 @Entity
 public class PurchaseOrderEntity extends InvoiceEntity {
-	private String to;
+	private String billTo;
 	private String shipTo;
 	private Date poDate;
 	private Date poDueDate;
@@ -27,6 +27,7 @@ public class PurchaseOrderEntity extends InvoiceEntity {
 	private String shippedVia;
 	private String fOBPoint;
 	private String terms;
+	private String termsAndConditions;
 
 	@Index
 	private Ref<SupplierEntity> supplier;
@@ -43,14 +44,12 @@ public class PurchaseOrderEntity extends InvoiceEntity {
 	@Override
 	public void beforeSave() {
 		if (getBusiness() == null) {
-			throw new RuntimeException("Business entity is not set on: "
-					+ this.getClass().getSimpleName()
+			throw new RuntimeException("Business entity is not set on: " + this.getClass().getSimpleName()
 					+ " This is required field. Aborting save operation...");
 		}
 
 		if (getWarehouse() == null) {
-			throw new RuntimeException("Warehouse entity is not set on: "
-					+ this.getClass().getSimpleName()
+			throw new RuntimeException("Warehouse entity is not set on: " + this.getClass().getSimpleName()
 					+ " This is required field. Aborting save operation...");
 		}
 
@@ -67,8 +66,7 @@ public class PurchaseOrderEntity extends InvoiceEntity {
 
 		if (getId() == null) {
 			SequenceGeneratorShardedService sequenceGenService = new SequenceGeneratorShardedService(
-					EntityUtil.getBusinessRawKey(getBusiness()),
-					Constants.PURCHASE_ORDER_NO_COUNTER);
+					EntityUtil.getBusinessRawKey(getBusiness()), Constants.PURCHASE_ORDER_NO_COUNTER);
 			setItemNumber(sequenceGenService.getNextSequenceNumber());
 		}
 	}
@@ -109,16 +107,16 @@ public class PurchaseOrderEntity extends InvoiceEntity {
 		}
 	}
 
+	public String getBillTo() {
+		return billTo;
+	}
+
+	public void setBillTo(String billTo) {
+		this.billTo = billTo;
+	}
+
 	public String getShipTo() {
 		return shipTo;
-	}
-
-	public void setTo(String to) {
-		this.to = to;
-	}
-
-	public String getTo() {
-		return to;
 	}
 
 	public void setShipTo(String shipTo) {
@@ -177,8 +175,7 @@ public class PurchaseOrderEntity extends InvoiceEntity {
 		return budgetLineItemCategory;
 	}
 
-	public void setBudgetLineItemCategory(
-			StockLineItemCategory budgetLineItemCategory) {
+	public void setBudgetLineItemCategory(StockLineItemCategory budgetLineItemCategory) {
 		this.budgetLineItemCategory = budgetLineItemCategory;
 	}
 
@@ -189,4 +186,13 @@ public class PurchaseOrderEntity extends InvoiceEntity {
 	public void setBudgetLineItem(StockLineItem budgetLineItem) {
 		this.budgetLineItem = budgetLineItem;
 	}
+
+	public String getTermsAndConditions() {
+		return termsAndConditions;
+	}
+
+	public void setTermsAndConditions(String termsAndConditions) {
+		this.termsAndConditions = termsAndConditions;
+	}
+
 }

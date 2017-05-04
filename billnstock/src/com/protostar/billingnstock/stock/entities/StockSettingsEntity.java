@@ -8,6 +8,8 @@ import com.protostar.billnstock.entity.BaseEntity;
 @Entity
 public class StockSettingsEntity extends BaseEntity {	
 	private String poTermsAndConditions;
+	private String poBillTo;
+	private String poShipTo;
 	private String stockShipTermsAndConditions;
 	private boolean needModuleDocumentApproval = false;
 	private boolean needPOApproval = false;
@@ -78,6 +80,22 @@ public class StockSettingsEntity extends BaseEntity {
 
 	public void setNeedModuleDocumentApproval(boolean needModuleDocumentApproval) {
 		this.needModuleDocumentApproval = needModuleDocumentApproval;
+	}
+
+	public String getPoBillTo() {
+		return poBillTo;
+	}
+
+	public void setPoBillTo(String poBillTo) {
+		this.poBillTo = poBillTo;
+	}
+
+	public String getPoShipTo() {
+		return poShipTo;
+	}
+
+	public void setPoShipTo(String poShipTo) {
+		this.poShipTo = poShipTo;
 	}
 
 }
