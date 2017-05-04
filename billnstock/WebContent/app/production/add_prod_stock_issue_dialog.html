@@ -42,15 +42,13 @@
 				ng-model="documentEntity.reqItemNumber" aria-label="dummy"
 				ng-disabled="true"> </md-input-container>
 			<md-input-container flex> <label>
-				Delivery Date</label> <md-datepicker flex
+				Delivery Date</label> <md-datepicker flex name="deliveryDateTime"
 				ng-model="documentEntity.deliveryDateTime"
-				md-placeholder="Select Date" ng-required="true"></md-datepicker> </md-input-container>
-
+				md-placeholder="Select Date" ng-required="true"></md-datepicker></md-input-container>
 
 			<md-input-container flex=50 flex-xs=100> <label>Stock
 				Issue Notes</label> <textarea ng-model="documentEntity.note" rows="1"
 				cols="1"></textarea> </md-input-container>
-
 		</div>
 
 		<div layout="row" layout-align="center start"
@@ -62,13 +60,19 @@
 			ng-repeat="warehouseLineItem in documentEntity.fromWarehouseList">
 			<div layout="row" flex>
 				<md-input-container flex> <label> From
-					Warehouse </label> <md-select flex ng-model="warehouseLineItem.fromWH"
-					ng-required="true" placeholder="Select From Warehouse"
+					Warehouse </label> <md-select flex name="fromWH"
+					ng-model="warehouseLineItem.fromWH" ng-required="true"
+					placeholder="Select From Warehouse"
 					ng-change="filterStockItemsByBomTypes(warehouseLineItem)">
 				<md-option ng-value="warehouse"
 					ng-selected="warehouseLineItem.fromWH.id == warehouse.id"
 					ng-repeat="warehouse in warehouses ">{{warehouse.warehouseName
-				}}</md-option> </md-select> </md-input-container>
+				}}</md-option> </md-select>
+				<div ng-messages="documentForm.fromWH.$error"
+					ng-if="documentForm.fromWH.$submitted || documentForm.fromWH.$touched">
+					<div ng-message="required">Please Select Warehouse.</div>
+				</div>
+				</md-input-container>
 				<div layout="row" flex>
 					<md-icon md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
 						ng-click="removeWarehouseLineItem($index)"> <md-tooltip>Remove
@@ -123,21 +127,27 @@
 			<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
 			<md-tooltip> Add New From Warehouse</md-tooltip></ng-md-icon> </md-button>
 		</div>
+		<md-dialog-actions layout="row"
+			ng-if="documentEntity.status !== 'FINALIZED' && !isActionhidden"> <md-button
+			class="md-raised" ng-click="cancel()">Cancel</md-button> <md-button
+			class="md-raised md-primary" ng-disabled="documentForm.$invalid"
+			ng-click="draftDocumnent()">Save as Draft</md-button> <md-button
+			class="md-raised md-primary" ng-disabled="documentForm.$invalid"
+			ng-click="submitDocumnent()">Submit</md-button>
+
+		<section layout="row" layout-xs="column"
+			ng-if="documentEntity.status == 'SUBMITTED'">
+			<md-button class="md-raised md-primary"
+				ng-disabled="documentForm.$invalid"
+				ng-click="finalizeDocumnent($event)">Approve/Finalize</md-button>
+		</section>
+
+		</md-dialog-actions>
+		<md-dialog-actions layout="row"
+			ng-if="isActionhidden"> <md-button
+			class="md-raised" ng-disabled="true">Saving..</md-button>
+
+		</md-dialog-actions>
 	</form>
 </div>
-</md-content></md-dialog-content> <md-dialog-actions layout="row"
-	ng-if="documentEntity.status !== 'FINALIZED'">
-<md-button class="md-raised" ng-click="cancel()">Cancel</md-button> <md-button
-	class="md-raised md-primary" ng-disabled="documentForm.$invalid"
-	ng-click="draftDocumnent()">Save as Draft</md-button> <md-button
-	class="md-raised md-primary" ng-disabled="documentForm.$invalid"
-	ng-click="submitDocumnent()">Submit</md-button>
-
-<section layout="row" layout-xs="column"
-	ng-if="documentEntity.status == 'SUBMITTED'">
-	<md-button class="md-raised md-primary"
-		ng-disabled="documentForm.$invalid"
-		ng-click="finalizeDocumnent($event)">Approve/Finalize</md-button>
-</section>
-
-</md-dialog-actions> </md-dialog>
+</md-content></md-dialog-content> </md-dialog>

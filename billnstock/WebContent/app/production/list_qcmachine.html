@@ -37,8 +37,7 @@
 			<tr md-row
 				ng-repeat="qcmachine in qcmachineList | filter: searchText | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
 				<td md-cell>{{qcmachine.itemNumber}}</td>
-				<td md-cell>{{qcmachine.machine.machineNo}}</td>
-				<td md-cell>{{qcmachine.qcName}}</td>
+				<td md-cell>{{qcmachine.qcName}}</td>				
 				<td md-cell>{{qcmachine.note}}</td>
 				<td md-cell>{{qcmachine.validFrom | formatDateWithTime}}</td>
 				<td md-cell>{{qcmachine.validTill | formatDateWithTime}}</td>

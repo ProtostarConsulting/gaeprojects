@@ -10,7 +10,7 @@ app
 					$scope.loading = true;
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
-
+					$scope.isActionhidden = false;
 					$scope.statusList = [ "DRAFT", "INPROGRESS", "COMPLETED" ];
 
 					$scope.getEmptyProdPlan = function() {
@@ -312,7 +312,7 @@ app
 								// if edit changed the value it should edit
 								// existing record, not create new one
 								$scope.productionRequisition.id = $scope.productionRequisitionBackup.id;
-
+								$scope.isActionhidden = true;
 							}
 
 							var wasUpdate = null;
@@ -331,6 +331,7 @@ app
 													showAddToast();
 													$mdDialog.cancel();
 												} else {
+													$scope.isActionhidden = true;
 													if (!prodPlan.prodRequisitionList)
 														prodPlan.prodRequisitionList = [];
 
@@ -403,12 +404,13 @@ app
 								.setHours(00, 00, 00, 000);
 						$scope.prodctionReport = prodctionReport ? prodctionReport
 								: getEmptyObj();
+						$scope.productionPlan = prodPlan;
 
 						if ($scope.prodctionReport.id) {
 							$scope.prodctionReport.reportDate = new Date(
 									$scope.prodctionReport.reportDate);
 						} else {
-							$scope.prodctionReport.reportDate = new Date();
+							$scope.prodctionReport.reportDate = $scope.productionPlan.fromDateTime;
 						}
 
 						$scope.prodctionReportBackup = angular
@@ -426,6 +428,7 @@ app
 							if ($scope.prodctionReportBackup.id) {
 								// if edit changed the value it should edit
 								// existing record, not create new one
+								$scope.isActionhidden = true;
 								$scope.prodctionReport.id = $scope.prodctionReportBackup.id;
 
 							}
@@ -446,18 +449,19 @@ app
 														showAddToast();
 														$mdDialog.cancel();
 													} else {
-														if (!prodPlan.planDailyReport)
-															prodPlan.planDailyReport = [];
+														$scope.isActionhidden = true;
+														if (!$scope.productionPlan.planDailyReport)
+															$scope.productionPlan.planDailyReport = [];
 
-														prodPlan.planDailyReport
+														$scope.productionPlan.planDailyReport
 																.push(savedObj)
 														if (savedObj.bomProducedQty > 0
-																&& prodPlan.status == "DRAFT") {
-															prodPlan.status = "INPROGRESS";
+																&& $scope.productionPlan.status == "DRAFT") {
+															$scope.productionPlan.status = "INPROGRESS";
 														}
 														productService
 																.addProdPlanEntity(
-																		prodPlan)
+																		$scope.productionPlan)
 																.then(
 																		function(
 																				savedObj) {
@@ -603,6 +607,7 @@ app
 
 							var wasUpdate = null;
 							if ($scope.documentEntity.id) {
+								$scope.isActionhidden = true;
 								wasUpdate = true;
 							} else {
 								wasUpdate = false;
@@ -617,6 +622,7 @@ app
 											showAddToast();
 											$mdDialog.cancel();
 										} else {
+											$scope.isActionhidden = true;
 											if (!prodPlan.prodShipmentList)
 												prodPlan.prodShipmentList = [];
 

@@ -16,7 +16,7 @@ app
 						};
 					}
 					$scope.query = reSetQuery();
-
+					$scope.isActionhidden = false;
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
 
@@ -69,6 +69,7 @@ app
 							prodStock, productionRequisition, showAddToast) {
 
 						$scope.loading = true;
+						
 						$scope.getEmptyObj = function() {
 							return {
 								productLineItemList : [],
@@ -146,6 +147,7 @@ app
 
 							var wasUpdate = null;
 							if ($scope.documentEntity.id) {
+								$scope.isActionhidden = true;
 								wasUpdate = true;
 							} else {
 								wasUpdate = false;
@@ -158,11 +160,12 @@ app
 											$scope.documentEntity)
 									.then(
 											function(savedObj) {
+												
 												if (wasUpdate) {
 													$mdDialog.cancel();
 													showAddToast();
 												} else {
-
+													$scope.isActionhidden = true;
 													if (!productionRequisition.stockShipmentList) {
 														productionRequisition.stockShipmentList = [];
 													}

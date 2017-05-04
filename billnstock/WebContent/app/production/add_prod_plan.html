@@ -71,7 +71,7 @@
 					ng-model="documentEntity.fromDateTime" mdp-format="DD/MM/YYYY"></mdp-date-picker>
 
 				<mdp-date-picker flex mdp-placeholder="Plan End Date"
-					ng-model="documentEntity.toDateTime"
+					ng-model="documentEntity.toDateTime" mdp-disabled="!documentEntity.fromDateTime"
 					mdp-min-date="documentEntity.fromDateTime" mdp-format="DD/MM/YYYY"></mdp-date-picker>
 
 				<md-input-container flex> <label>Select

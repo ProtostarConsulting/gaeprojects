@@ -12,7 +12,7 @@ app
 					$scope.timeArray = [];
 					$scope.machineList = [];
 					$scope.tempMachine = null;				
-					
+					$scope.recordDate = new Date();
 
 					$scope.qcRecordObj = $stateParams.qcmachineRecordObj ? $stateParams.qcmachineRecordObj
 							: null;
@@ -29,14 +29,14 @@ app
 
 					$scope.getQCMachineDailyRecord = function(recordDate) {
 						$scope.isTableShow = true;
-						$scope.tempDate = new Date(recordDate);
+						$scope.recordDate = new Date(recordDate);
 						var productService = appEndpointSF
 								.getProductionService();
 						productService
 								.getQCMachineDailyRecordEntity(
 										$scope.tempMachine.id,
 										$scope.curUser.business.id,
-										$scope.tempDate.getTime())
+										$scope.recordDate.getTime())
 								.then(
 										function(qcMachineDailyRecordObj) {
 												$scope.qcRecordObj = qcMachineDailyRecordObj;

@@ -9,7 +9,7 @@
 </div>
 </md-toolbar> <md-dialog-content
 	style="min-width:1100px; max-width:1200px; max-height:1800px;">
-<md-content layout-padding> <md-content layout-padding>
+<md-content layout-padding>
 
 <div ng-if="loading" layout-padding>
 	<div layout="row" layout-sm="column" layout-align="space-around">
@@ -44,7 +44,12 @@
 				placeholder="Select Product" ng-required="true"> <md-option
 				ng-value="bomEntity" ng-repeat="bomEntity in bomList"
 				ng-selected="productionRequisition.bomEntity.id == bomEntity.id">{{bomEntity.stockItemType.itemName}}
-			</md-option> </md-select> </md-input-container>
+			</md-option> </md-select>
+			<div ng-messages="entityForm.bomEntity.$error"
+				ng-if="entityForm.bomEntity.$submitted || entityForm.bomEntity.$touched">
+				<div ng-message="required">Please Select Product.</div>
+			</div>
+			</md-input-container>
 			<md-input-container flex> <input type="number"
 				aria-label="period" placeholder="BOM Product Qty."
 				ng-change="calculation()"
@@ -110,13 +115,15 @@
 				</tr>
 			</tbody>
 		</table>
+		<md-dialog-actions layout="row" ng-if="!isActionhidden"> <md-button
+			class="md-raised" ng-click="cancel()">Cancel</md-button> <md-button
+			class="md-raised md-primary" ng-disabled="entityForm.$invalid"
+			ng-click="draftDocumnent()">Save as Draft</md-button> <md-button
+			class="md-raised md-primary" ng-disabled="entityForm.$invalid"
+			ng-click="submitDocumnent()">Submit</md-button> </md-dialog-actions>
+		<md-dialog-actions ng-if="isActionhidden"><md-button
+	class="md-raised" ng-disabled="true">Saving..</md-button></md-dialog-actions>	
 	</form>
 </div>
 
-</md-content> </md-content> </md-dialog-content> <md-dialog-actions layout="row"> <md-button
-	class="md-raised" ng-click="cancel()">Cancel</md-button>
-<md-button class="md-raised md-primary"
-	ng-disabled="documentForm.$invalid" ng-click="draftDocumnent()">Save
-as Draft</md-button> <md-button class="md-raised md-primary"
-	ng-disabled="documentForm.$invalid" ng-click="submitDocumnent()">Submit</md-button>
-</md-dialog-actions> </md-dialog>
+</md-content> </md-dialog-content> </md-dialog>
