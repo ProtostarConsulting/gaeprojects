@@ -457,23 +457,23 @@
 				</table>
 
 			</div>
-			
+
 			<h4 ng-init="otherDetailToogle=false"
-			ng-click="otherDetailToogle=!otherDetailToogle">
-			Other Detail
-			<md-button class="md-icon-button" ng-show="otherDetailToogle">
-			<ng-md-icon icon="keyboard_arrow_up" style="fill: md-default"
-				size="24"> <md-tooltip> Expand</md-tooltip></ng-md-icon></md-button>
-			<md-button class="md-icon-button" ng-show="!otherDetailToogle">
-			<ng-md-icon icon="keyboard_arrow_down" style="fill: md-default"
-				size="24"> <md-tooltip> Collapse</md-tooltip></ng-md-icon></md-button>
-		</h4>
-		<div ng-show="otherDetailToogle">
-			<md-input-container flex layout="row"> <label>Invoice
-				Terms and Conditions</label> <textarea
-				ng-model="documentEntity.termsAndConditions" rows="3" cols="1"></textarea>
-			</md-input-container>
-		</div>
+				ng-click="otherDetailToogle=!otherDetailToogle">
+				Other Detail
+				<md-button class="md-icon-button" ng-show="otherDetailToogle">
+				<ng-md-icon icon="keyboard_arrow_up" style="fill: md-default"
+					size="24"> <md-tooltip> Expand</md-tooltip></ng-md-icon></md-button>
+				<md-button class="md-icon-button" ng-show="!otherDetailToogle">
+				<ng-md-icon icon="keyboard_arrow_down" style="fill: md-default"
+					size="24"> <md-tooltip> Collapse</md-tooltip></ng-md-icon></md-button>
+			</h4>
+			<div ng-show="otherDetailToogle">
+				<md-input-container flex layout="row"> <label>Invoice
+					Terms and Conditions</label> <textarea
+					ng-model="documentEntity.termsAndConditions" rows="3" cols="1"></textarea>
+				</md-input-container>
+			</div>
 		</fieldset>
 
 		<div

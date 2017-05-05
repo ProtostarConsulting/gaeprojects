@@ -263,8 +263,7 @@ app
 								var lineItem = $scope.documentEntity.productLineItemList[i];
 								if (lineItem.stockItem.stockItemType.withAdditionalExciseTax) {
 									$scope.documentEntity.productSubTotal += (lineItem.qty * lineItem.price)
-											+ (lineItem.qty * lineItem.price)
-											* (lineItem.stockItem.stockItemType.exciseTaxPercenatge / 100);
+											+ ((lineItem.qty * lineItem.price) * (lineItem.stockItem.stockItemType.exciseTaxPercenatge / 100));
 								} else {
 									$scope.documentEntity.productSubTotal += (lineItem.qty * lineItem.price);
 								}
@@ -340,13 +339,21 @@ app
 									&& $scope.documentEntity.productLineItemList.length > 0) {
 								for (var i = 0; i < $scope.documentEntity.productLineItemList.length; i++) {
 									var lineItem = $scope.documentEntity.productLineItemList[i];
-									if (lineItem.selectedTaxItem) {
-										lineItem.taxAmt = (lineItem.qty * lineItem.price)
-												* (lineItem.selectedTaxItem.taxPercenatge / 100);
-										$scope.taxAmtsForProductLineItems
-												.push(lineItem.taxAmt);
+									lineItem.taxAmt = 0;
+									if (lineItem.stockItem.stockItemType.withAdditionalExciseTax) {
+										if (lineItem.selectedTaxItem)
+											lineItem.taxAmt = ((lineItem.qty * lineItem.price) + ((lineItem.stockItem.stockItemType.exciseTaxPercenatge / 100)
+													* lineItem.qty * lineItem.price))
+													* (lineItem.selectedTaxItem.taxPercenatge / 100);
+									} else {
+										if (lineItem.selectedTaxItem)
+											lineItem.taxAmt = (lineItem.qty * lineItem.price)
+													* (lineItem.selectedTaxItem.taxPercenatge / 100);
+
 									}
 
+									$scope.taxAmtsForProductLineItems
+											.push(lineItem.taxAmt);
 								}
 								$scope.documentEntity.productTaxTotal = 0;
 								for (var j = 0; j < $scope.taxAmtsForProductLineItems.length; j++) {
