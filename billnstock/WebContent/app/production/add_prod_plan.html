@@ -253,7 +253,7 @@
 			<hr flex /></span>
 	</div>
 	<div layout layout-xs="column">
-		<section layout="row" layout-xs="column" ng-if="!isSaving || isDocumentEditAllowed(documentEntity)">
+		<section layout="row" layout-xs="column" ng-if="!isSaving">
 			<md-button class="md-raised md-primary"
 				ng-disabled="entityForm.$invalid" ng-click="saveEntity()">Save
 			as Draft</md-button>
