@@ -91,7 +91,7 @@ public class PrintPdfPurchaseOrder extends HttpServlet {
 			String modifiedDateStr = sdfDate.format(modifiedDate);
 
 			String noteToCustomer = purchaseOrderEntity.getNoteToCustomer();
-			if(noteToCustomer != null && noteToCustomer.trim().isEmpty()){
+			if (noteToCustomer != null && noteToCustomer.trim().isEmpty()) {
 				noteToCustomer = null;
 			}
 
@@ -161,16 +161,42 @@ public class PrintPdfPurchaseOrder extends HttpServlet {
 				root.put("productItemList", productLineItemListForPO);
 				root.put("productTax", prodTax);
 				for (StockLineItem stockLineItem : productLineItemListForPO) {
-					productTotal += stockLineItem.getQty()
-							* stockLineItem.getPrice();
+					if (stockLineItem.getStockItem().getStockItemType()
+							.isWithAdditionalExciseTax()) {
+						productTotal += (stockLineItem.getQty() * stockLineItem
+								.getPrice())
+								+ (stockLineItem.getQty()
+										* stockLineItem.getPrice() * (stockLineItem
+										.getStockItem().getStockItemType()
+										.getExciseTaxPercenatge() / 100));
+					} else {
+						productTotal += stockLineItem.getQty()
+								* stockLineItem.getPrice();
+					}
+
 				}
 				if (purchaseOrderEntity.isIndiviualProductLineItemTax()) {
 					for (StockLineItem stockLineItem : productLineItemListForPO) {
-						if (stockLineItem.getSelectedTaxItem() != null)
-							productTaxTotal += stockLineItem.getPrice()
-									* stockLineItem.getQty()
-									* (stockLineItem.getSelectedTaxItem()
-											.getTaxPercenatge() / 100);
+						if (stockLineItem.getStockItem().getStockItemType()
+								.isWithAdditionalExciseTax()) {
+							if (stockLineItem.getSelectedTaxItem() != null) {
+								productTaxTotal += ((stockLineItem.getQty() * stockLineItem
+										.getPrice()) + (stockLineItem.getQty()
+										* stockLineItem.getPrice() * (stockLineItem
+										.getStockItem().getStockItemType()
+										.getExciseTaxPercenatge() / 100)))
+										* (stockLineItem.getSelectedTaxItem()
+												.getTaxPercenatge() / 100);
+							}
+
+						} else {
+							if (stockLineItem.getSelectedTaxItem() != null)
+								productTaxTotal += stockLineItem.getPrice()
+										* stockLineItem.getQty()
+										* (stockLineItem.getSelectedTaxItem()
+												.getTaxPercenatge() / 100);
+						}
+
 					}
 				} else {
 					if (prodTax != null)
@@ -222,10 +248,11 @@ public class PrintPdfPurchaseOrder extends HttpServlet {
 					Math.round(finalTotal));
 			String netInWords = numberToRupees.getAmountInWords();
 			root.put("finalTotalInWords", netInWords);
-			
-			
-			String termsAndConditions = purchaseOrderEntity.getTermsAndConditions();
-			if(termsAndConditions != null && termsAndConditions.trim().isEmpty()){
+
+			String termsAndConditions = purchaseOrderEntity
+					.getTermsAndConditions();
+			if (termsAndConditions != null
+					&& termsAndConditions.trim().isEmpty()) {
 				termsAndConditions = null;
 			}
 			root.put("termsAndConditions", termsAndConditions);
