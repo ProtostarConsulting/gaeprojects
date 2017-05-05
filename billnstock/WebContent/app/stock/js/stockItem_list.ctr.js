@@ -7,7 +7,7 @@ angular
 						$mdDialog, objectFactory, appEndpointSF) {
 
 					$log.debug("Inside stockListCtr");
-
+					$scope.loading = true;
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
 
@@ -97,9 +97,6 @@ angular
 					}
 
 					$scope.getAllWarehouseByBusiness = function() {
-						$log
-								.debug("Inside function $scope.getAllWarehouseByBusiness");
-						$scope.loading = true;
 						var warehouseService = appEndpointSF
 								.getWarehouseManagementService();
 
@@ -113,9 +110,7 @@ angular
 												$scope.warehouses
 														.unshift($scope.dummyWarehouse);
 												$scope.stockItemTypeFilterWrapper.warehouse = $scope.warehouses[0];
-
 											}
-											$scope.loading = false;
 										});
 					}
 
