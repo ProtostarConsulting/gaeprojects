@@ -166,6 +166,6 @@ public class Constants {
 	};
 
 	public enum QCRecordResultType {
-		PASS, WARN, FAIL
+		PASS, FAIL, WARN, YES, NO
 	};
 }

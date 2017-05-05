@@ -22,6 +22,7 @@ public class PurchaseOrderEntity extends InvoiceEntity {
 	private String billTo;
 	private String shipTo;
 	private Date poDate;
+	@Index
 	private Date poDueDate;
 	private String requisitioner;
 	private String shippedVia;

@@ -558,6 +558,9 @@ app
 							$scope.calServiceSubTotal();
 							$scope.getStockItemOrderTypeList();
 							$scope.toggleCloseBtn();
+							if (!$scope.documentEntity.id) {
+								$scope.addProductLineItem();
+							}
 						} else {
 							$log.debug("Services Not Loaded, watiting...");
 							$timeout($scope.waitForServiceLoad, 1000);

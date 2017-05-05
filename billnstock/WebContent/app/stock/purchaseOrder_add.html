@@ -170,38 +170,29 @@
 				<md-divider flex></md-divider>
 			</div>
 
-			<div
-				ng-hide="documentEntity.productLineItemList && documentEntity.productLineItemList.length > 0"
-				ng-show="!documentEntity.productLineItemList && documentEntity.productLineItemList.length == 0">
-				Add Product Line Items:
-				<md-button class="md-icon-button" ng-click="addProductLineItem()">
-				<ng-md-icon icon="add_circle" style="fill: md-default" size="24">
-				<md-tooltip> Add Product Line Items</md-tooltip></ng-md-icon> </md-button>
 
-			</div>
-
-			<div
-				ng-show="documentEntity.productLineItemList && documentEntity.productLineItemList.length > 0">
-				<h3>Product Line Items</h3>
+			<div>
+				<h4>Product Line Items</h4>
 				<div
 					ng-show="documentEntity.productLineItemList && documentEntity.productLineItemList.length > 0"
 					nh-hide="!documentEntity.productLineItemList && documentEntity.productLineItemList.length == 0">
-					<md-input-container flex> <md-checkbox
-						ng-model="documentEntity.indiviualProductLineItemTax"
+					<md-input-container flex style="margin: 0; padding: 0;">
+					<md-checkbox ng-model="documentEntity.indiviualProductLineItemTax"
 						aria-label="active" ng-true-value="true" ng-false-value="false"
-						id="changer"> Tax By Line Item </md-checkbox> </md-input-container>
+						id="changer"> <span style="font-size: 9px;">Tax By Line
+					Item </span></md-checkbox> </md-input-container>
 				</div>
-				<table md-table>
+				<table md-table style="margin: 2px; padding: 0;">
 					<thead md-head>
 						<tr md-row>
-							<th md-column width="4%">Sr. No.</th>
+							<th md-column width="2%">Sr. No.</th>
 							<th md-column width="40%">Item Name</th>
 							<th md-column>Quantity</th>
 							<th md-column>Purchase Price(&#x20b9)</th>
-							<th md-column md-numeric>Total(&#x20b9)</th>
+							<th md-column md-numeric align="right">Total(&#x20b9)</th>
 							<th md-column
-								ng-show="documentEntity.indiviualProductLineItemTax">Tax</th>
-							<th md-column>Actions</th>
+								ng-if="documentEntity.indiviualProductLineItemTax">Tax</th>
+							<th md-column align="right">Actions</th>
 						</tr>
 					</thead>
 
@@ -209,7 +200,7 @@
 						<tr md-row ng-repeat="item in documentEntity.productLineItemList">
 
 							<td md-cell>{{ $index +1 }}</td>
-							<td md-cell width="40%">
+							<td md-cell width="40%" style="margin: 0; padding: 0 3px;">
 								<div layout="row">
 									<md-autocomplete flex required
 										md-input-name="autocompleteField" md-no-cache=true
@@ -227,40 +218,43 @@
 								</div>
 							</td>
 
-							<td md-cell><md-input-container flex
-									style="margin: 0px; padding: 0px;"> <input
-									type="number" ng-model="item.qty"
-									ng-change="reCalculateTotal()" ng-required="true">
+							<td md-cell style="margin: 0; padding: 0 3px;"><md-input-container
+									flex> <input type="number"
+									ng-model="item.qty" ng-change="reCalculateTotal()"
+									ng-required="true">
 								<div>{{item.stockItem.stockItemType.unit}}</div>
 								</md-input-container></td>
-							<td md-cell><md-input-container flex
-									style="margin: 0px; padding: 0px;"> <input
-									type="number" ng-model="item.price"
-									ng-change="reCalculateTotal()" aria-label="iprice"
-									ng-required="true">
+							<td md-cell style="margin: 0; padding: 0 3px;"><md-input-container
+									flex> <input type="number"
+									ng-model="item.price" ng-change="reCalculateTotal()"
+									aria-label="iprice" ng-required="true">
 								<div style="font-size: 9px;"
 									ng-if="item.stockItem.stockItemType.withAdditionalExciseTax">+Excise:{{(item.stockItem.stockItemType.exciseTaxPercenatge
-									/ 100) * item.price}}</div>
+									/ 100) * item.price | currency:"":"2"}}</div>
 								</md-input-container></td>
-							<td md-cell
+							<td md-cell style="margin: 0; padding: 0 3px;"
 								ng-if="item.stockItem.stockItemType.withAdditionalExciseTax"><md-input-container
 									flex> <b>{{(item.qty *
 									item.price)+((item.stockItem.stockItemType.exciseTaxPercenatge
 									/ 100) *item.qty* item.price) | currency:"":"2"}} </b></td>
-							<td md-cell
+							<td md-cell style="margin: 0; padding: 0 3px;"
 								ng-hide="item.stockItem.stockItemType.withAdditionalExciseTax"><md-input-container
 									flex> <b>{{item.qty * item.price |
 									currency:"":"2"}} </b></td>
-							<td md-cell ng-show="documentEntity.indiviualProductLineItemTax"><md-select
+							<td md-cell style="margin: 0; padding: 0 3px;"
+								ng-if="documentEntity.indiviualProductLineItemTax"><md-select
 									ng-model="item.selectedTaxItem" placeholder="Select Tax"
 									ng-change="reCalculateTotal()"> <md-option
 									ng-value="taxItem" ng-repeat="taxItem in taxList"
 									ng-selected="item.selectedTaxItem.id == taxItem.id">{{taxItem?taxItem.taxCodeName:'NA'}}({{taxItem.taxPercenatge}}&#37)</md-option>
 								</md-select></td>
-							<td md-cell><md-icon
-									md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
-									ng-click="removeProductItem($index)" class="name"
-									style="color: Green; height: 18px; width: 18px"></md-icon></td>
+							<td md-cell style="margin: 0; padding: 0 3px;"><div
+									layout="row" flex align="right">
+									<md-icon
+										md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
+										ng-click="removeProductItem($index)" class="name"
+										style="color: Green; height: 18px; width: 18px"></md-icon>
+								</div></td>
 
 						</tr>
 						<tr md-row>
@@ -270,7 +264,8 @@
 								<md-tooltip> New Entry </md-tooltip></ng-md-icon> </md-button></td>
 							<td md-cell></td>
 							<td md-cell colspan="2"><label>Product Sub Total</label></td>
-							<td md-cell><div align="right">
+							<td md-cell style="margin: 0; padding: 0 3px;"><div
+									align="right">
 									<b>{{documentEntity.productSubTotal | currency:"":"2"}}</b>
 								</div></td>
 							<td md-cell></td>
@@ -279,7 +274,7 @@
 						<tr md-row>
 							<td md-cell></td>
 							<td md-cell>
-								<div align="right">
+								<div align="right" layout="row" flex>
 									<md-input-container flex
 										ng-if="!documentEntity.indiviualProductLineItemTax">
 									<label>Select Tax</label> <md-select
@@ -290,8 +285,9 @@
 									</md-select> </md-input-container>
 								</div>
 							</td>
-							<td md-cell colspan="2"><label>Tax Total</label></td>
-							<td md-cell>
+							<td md-cell colspan="2" style="margin: 0; padding: 0 3px;"><label>Tax
+									Total</label></td>
+							<td md-cell style="margin: 0; padding: 0 3px;">
 								<div align="right">
 									<b>{{documentEntity.productTaxTotal | currency:"":"2"}}</b>
 								</div>
@@ -303,7 +299,8 @@
 							<td md-cell></td>
 							<td md-cell></td>
 							<td md-cell colspan="2"><label>Product Total </label></td>
-							<td md-cell><div align="right">
+							<td md-cell style="margin: 0; padding: 0 3px;"><div
+									align="right">
 									<b>&#x20b9{{documentEntity.productTotal | currency:"":"2"}}</b>
 								</div></td>
 							<td md-cell></td>
@@ -325,58 +322,70 @@
 
 			<div
 				ng-show="documentEntity.serviceLineItemList && documentEntity.serviceLineItemList.length > 0">
-				<h3>Other Cost Line Items</h3>
+				<h4>Other Cost Line Items</h4>
 				<div
 					ng-show="documentEntity.serviceLineItemList && documentEntity.serviceLineItemList.length > 0">
-					<md-input-container flex> <md-checkbox
+					<md-input-container flex style="margin: 0; padding: 0 3px;"> <md-checkbox
 						ng-model="documentEntity.indiviualServiceLineItemTax"
 						aria-label="active" ng-true-value="true" ng-false-value="false"
-						id="changer">Tax By Line Item </md-checkbox> </md-input-container>
+						id="changer"><span style="font-size: 9px;">Tax By Line
+					Item </span></md-checkbox> </md-input-container>
 				</div>
-				<table md-table>
+				<table md-table style="margin: 0; padding: 0 3px;">
 					<thead md-head>
 						<tr md-row>
-							<th md-column width="4%">Sr.No</th>
+							<th md-column width="2%">Sr.No</th>
 							<th md-column width="40%">Service Name</th>
 							<th md-column>Quantity</th>
 							<th md-column>Cost Price(&#x20b9)</th>
-							<th md-column md-numeric>Total(&#x20b9)</th>
+							<th md-column md-numeric align="right">Total(&#x20b9)</th>
 							<th md-column
-								ng-show="documentEntity.indiviualServiceLineItemTax">Tax</th>
-							<th md-column>Actions</th>
+								ng-if="documentEntity.indiviualServiceLineItemTax" align="right">Tax</th>
+							<th md-column align="right">Actions</th>
 						</tr>
 					</thead>
 
 					<tbody md-body>
 						<tr md-row
 							ng-repeat="serviceItem in documentEntity.serviceLineItemList">
+							<td md-cell style="margin: 0; padding: 0;">{{ $index +1 }}</td>
+							<td md-cell width="40%" style="margin: 0; padding: 0 3px;"><div layout="row" flex>
+									<md-input-container flex style="margin: 0; padding: 0 3px;">
+									<input flex ng-model="serviceItem.itemName"> </md-input-container>
+								</div></td>
 
-							<td md-cell>{{ $index +1 }}</td>
-							<td md-cell width="40%"><md-input-container flex
-									style="margin: 0px; padding: 0px;"> <input
-									flex ng-model="serviceItem.itemName"> </md-input-container></td>
-
-							<td md-cell><md-input-container flex
-									style="margin: 0px; padding: 0px;"> <input
-									type="number" ng-model="serviceItem.qty"
-									ng-change="reCalculateTotal()"> </md-input-container></td>
-							<td md-cell><md-input-container flex
-									style="margin: 0px; padding: 0px;"> <input
-									type="number" ng-model="serviceItem.cost"
-									ng-change="reCalculateTotal()"></md-input-container></td>
-							<td md-cell><b>{{serviceItem.qty * serviceItem.cost |
-									currency:"":"2"}} </b></td>
-							<td md-cell ng-show="documentEntity.indiviualServiceLineItemTax"><md-input-container
-									flex> <md-select
-									ng-model="serviceItem.selectedTaxItem" placeholder="Select Tax"
-									ng-change="reCalculateTotal()"> <md-option
-									ng-value="taxItem" ng-repeat="taxItem in taxList"
-									ng-selected="serviceItem.selectedTaxItem.id == taxItem.id">{{taxItem?taxItem.taxCodeName:'NA'}}({{taxItem.taxPercenatge}}&#37)</md-option>
-								</md-select></md-input-container></td>
-							<td md-cell><md-icon
-									md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
-									ng-click="removeServiceItem($index)" class="name"
-									style="color: Green; height: 18px; width: 18px"></md-icon></td>
+							<td md-cell style="margin: 0; padding: 0 3px;">
+								<div layout="row">
+									<md-input-container flex style="margin: 0; padding: 0 3px;">
+									<input type="number" ng-model="serviceItem.qty"
+										ng-change="reCalculateTotal()"> </md-input-container>
+								</div>
+							</td>
+							<td md-cell style="margin: 0; padding: 0 3px;"><div layout="row">
+									<md-input-container flex style="margin: 0; padding: 0 3px;">
+									<input type="number" ng-model="serviceItem.cost"
+										ng-change="reCalculateTotal()"></md-input-container>
+								</div></td>
+							<td md-cell style="margin: 0; padding: 0 3px;"><b>{{serviceItem.qty
+									* serviceItem.cost | currency:"":"2"}} </b></td>
+							<td md-cell ng-show="documentEntity.indiviualServiceLineItemTax" style="margin: 0; padding: 0 3px;">
+								<div layout="row" flex>
+									<md-input-container flex> <md-select
+										ng-model="serviceItem.selectedTaxItem"
+										placeholder="Select Tax" ng-change="reCalculateTotal()">
+									<md-option ng-value="taxItem" ng-repeat="taxItem in taxList"
+										ng-selected="serviceItem.selectedTaxItem.id == taxItem.id">{{taxItem?taxItem.taxCodeName:'NA'}}({{taxItem.taxPercenatge}}&#37)</md-option>
+									</md-select></md-input-container>
+								</div>
+							</td>
+							<td md-cell style="margin: 0; padding: 0 3px;">
+								<div layout="row" flex align="right">
+									<md-icon
+										md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
+										ng-click="removeServiceItem($index)" class="name"
+										style="color: Green; height: 18px; width: 18px"></md-icon>
+								</div>
+							</td>
 
 						</tr>
 
@@ -387,14 +396,15 @@
 								<md-tooltip> Add New </md-tooltip></ng-md-icon> </md-button></td>
 							<td md-cell></td>
 							<td md-cell colspan="2"><label>Service Sub Total</label></td>
-							<td md-cell><div align="right">
+							<td md-cell style="margin: 0; padding: 0 3px;"><div
+									align="right">
 									<b>{{documentEntity.serviceTotal | currency:"":"2"}}</b>
 								</div></td>
 							<td md-cell></td>
 						</tr>
 						<tr md-row>
-							<td md-cell colspan="2" flex>
-								<div align="right" flex>
+							<td md-cell colspan="2">
+								<div align="right" layout="row" flex>
 									<md-input-container flex
 										ng-if="!documentEntity.indiviualServiceLineItemTax">
 									<label>Select Tax</label> <md-select flex
@@ -406,7 +416,7 @@
 								</div>
 							</td>
 							<td md-cell colspan="2"><label>Tax Total</label></td>
-							<td md-cell>
+							<td md-cell style="margin: 0; padding: 0 3px;">
 								<div align="right">
 									<b>{{documentEntity.serviceTaxTotal | currency:"":"2"}}</b>
 								</div>
@@ -418,18 +428,9 @@
 							<td md-cell></td>
 							<td md-cell></td>
 							<td md-cell colspan="2"><label>Service Total</label></td>
-							<td md-cell><div align="right">
+							<td md-cell style="margin: 0; padding: 0 3px;"><div
+									align="right">
 									<b>&#x20b9{{documentEntity.serviceTotal | currency:"":"2"}}</b>
-								</div></td>
-							<td md-cell></td>
-						</tr>
-
-						<tr md-row ng-show="tempDiscAmount">
-							<td md-cell></td>
-							<td md-cell></td>
-							<td md-cell colspan="2"><label>Discount</label></td>
-							<td md-cell><div align="right">
-									<b> {{tempDiscAmount | currency:"":"2"}}</b>
 								</div></td>
 							<td md-cell></td>
 						</tr>
@@ -437,8 +438,10 @@
 						<tr md-row>
 							<td md-cell></td>
 							<td md-cell></td>
-							<td md-cell colspan="2"><label>Final Total</label></td>
-							<td md-cell><div align="right">
+							<td md-cell colspan="2" style="margin: 0; padding: 0 3px;"><label>Final
+									Total</label></td>
+							<td md-cell style="margin: 0; padding: 0 3px;"><div
+									align="right">
 									<b>&#x20b9{{documentEntity.finalTotal | currency:"":"2"}}</b>
 								</div></td>
 							<td md-cell></td>
@@ -458,7 +461,7 @@
 
 			</div>
 
-			<h4 ng-init="otherDetailToogle=false"
+			<h4 ng-init="otherDetailToogle=true"
 				ng-click="otherDetailToogle=!otherDetailToogle">
 				Other Detail
 				<md-button class="md-icon-button" ng-show="otherDetailToogle">
@@ -468,8 +471,8 @@
 				<ng-md-icon icon="keyboard_arrow_down" style="fill: md-default"
 					size="24"> <md-tooltip> Collapse</md-tooltip></ng-md-icon></md-button>
 			</h4>
-			<div ng-show="otherDetailToogle">
-				<md-input-container flex layout="row"> <label>Invoice
+			<div ng-show="otherDetailToogle" layout="row">
+				<md-input-container flex> <label>
 					Terms and Conditions</label> <textarea
 					ng-model="documentEntity.termsAndConditions" rows="3" cols="1"></textarea>
 				</md-input-container>
@@ -500,7 +503,7 @@
 						ng-disabled="documentForm.$invalid" ng-click="rejectDocumnent()">Reject</md-button>
 				</section>
 				<section ng-if="isDocumentNotClosed(documentEntity)">
-					<md-button class="md-raised md-primary"	ng-click="closeDocument()">Close</md-button>
+					<md-button class="md-raised md-primary" ng-click="closeDocument()">Close</md-button>
 				</section>
 			</section>
 			<section layout="row" layout-xs="column" ng-if="isSaving">

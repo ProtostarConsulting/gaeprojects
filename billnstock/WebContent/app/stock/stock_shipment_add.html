@@ -118,8 +118,8 @@
 
 		<div
 			ng-show="documentEntity.productLineItemList && documentEntity.productLineItemList.length > 0">
-			<h3>Product Line Items</h3>
-			<table md-table>
+			<h4>Product Line Items</h4>
+			<table md-table style="margin: 0; padding: 0 3px;">
 				<thead md-head>
 					<tr md-row>
 						<th md-column width="4%">Sr. No</th>
@@ -135,35 +135,32 @@
 					<tr md-row ng-repeat="item in documentEntity.productLineItemList">
 
 						<td md-cell>{{ $index +1 }}</td>
-						<td md-cell width="40%">
+						<td md-cell width="40%" style="margin: 0; padding: 0 3px;">
 							<div layout="row">
 								<md-autocomplete flex required md-input-name="autocompleteField"
 									md-no-cache=true md-selected-item="item.stockItem"
 									md-search-text="searchStockItemText"
 									md-items="stockItem in stockItemQuerySearch(searchStockItemText)"
 									md-item-text="stockItem.stockItemType.itemName"
-									md-floating-label="Item Name"> <md-item-template>
-								<span md-highlight-text="searchStockItemText">{{stockItem.stockItemType.itemName}}</span>
+									md-floating-label="Item Name">
+								<md-item-template> <span
+									md-highlight-text="searchStockItemText">{{stockItem.stockItemType.itemName}}</span>
 								</md-item-template> </md-autocomplete>
-								<md-button class="md-icon-button"
-									ng-click="addStock($event, item)" aria-label="as">
-								<md-icon md-svg-src="img/icons/ic_queue_black_24px.svg"
-									class="name" style="color: Green; height: 18px; width: 18px"></md-icon></md-button>
 							</div>
 						</td>
 
-						<td md-cell><md-input-container flex
+						<td md-cell style="margin: 0; padding: 0 3px;"><md-input-container flex
 								style="margin: 0px; padding: 0px;"> <input
 								type="number" ng-model="item.qty" ng-required="true"
 								aria-label="iqty" ng-change="calProductSubTotal()"> </md-input-container></td>
-						<td md-cell><md-input-container flex
+						<td md-cell style="margin: 0; padding: 0 3px;"><md-input-container flex
 								style="margin: 0px; padding: 0px;"> <input
 								type="number" ng-model="item.price"
 								ng-change="calProductSubTotal()" aria-label="iprice"
 								ng-required="true"></md-input-container></td>
-						<td md-cell><b>{{item.qty * item.price |
+						<td md-cell style="margin: 0; padding: 0 3px;"><b>{{item.qty * item.price |
 								currency:"":"2"}} </b></td>
-						<td md-cell><md-button class="md-icon-button"
+						<td md-cell style="margin: 0; padding: 0 3px;"><md-button class="md-icon-button"
 								ng-show="item.stockItem.stockItemType.maintainStockBySerialNumber"
 								ng-click="addSerialNumbers($event, item)"> <ng-md-icon
 								icon="list" style="fill: md-default" size="18"> <md-tooltip>
@@ -180,8 +177,8 @@
 							<md-tooltip> New Entry </md-tooltip></ng-md-icon> </md-button></td>
 						<td md-cell></td>
 						<td md-cell></td>
-						<td md-cell><label>Product Total</label></td>
-						<td md-cell><b>{{documentEntity.productTotal
+						<td md-cell style="margin: 0px; padding: 0px;"><label>Product Total</label></td>
+						<td md-cell style="margin: 0px; padding: 0px;"><b>{{documentEntity.productTotal
 								|currency:"":"2"}}</b></td>
 						<td md-cell></td>
 					</tr>
@@ -198,7 +195,7 @@
 		</div>
 		<div
 			ng-show="documentEntity.serviceLineItemList && documentEntity.serviceLineItemList.length > 0">
-			<h3>Other Cost Line Items</h3>
+			<h4>Other Cost Line Items</h4>
 			<table md-table>
 				<thead md-head>
 					<tr md-row>
@@ -216,19 +213,19 @@
 						ng-repeat="serviceItem in documentEntity.serviceLineItemList">
 
 						<td md-cell>{{ $index +1 }}</td>
-						<td md-cell width="40%"><md-input-container flex
+						<td md-cell width="40%" style="margin: 0; padding: 0 3px;"><div layout="row" flex><md-input-container flex
 								style="margin: 0px; padding: 0px;"> <input
-								ng-model="serviceItem.itemName" aria-label="sName"> </md-input-container></td>
+								ng-model="serviceItem.itemName" aria-label="sName"> </md-input-container></div></td>
 
-						<td md-cell><md-input-container flex
+						<td md-cell style="margin: 0; padding: 0 3px;"><div layout="row" flex><md-input-container flex
 								style="margin: 0px; padding: 0px;"> <input
 								type="number" ng-model="serviceItem.qty" aria-label="sQty"
-								ng-change="calServiceSubTotal()"> </md-input-container></td>
-						<td md-cell><md-input-container flex
+								ng-change="calServiceSubTotal()"> </md-input-container></div></td>
+						<td md-cell style="margin: 0; padding: 0 3px;"><div layout="row" flex><md-input-container flex
 								style="margin: 0px; padding: 0px;"> <input
 								type="number" ng-model="serviceItem.price" aria-label="sPrice"
-								ng-change="calServiceSubTotal()"></md-input-container></td>
-						<td md-cell><b>{{serviceItem.qty * serviceItem.price |
+								ng-change="calServiceSubTotal()"></md-input-container></div></td>
+						<td md-cell style="margin: 0; padding: 0 3px;"><b>{{serviceItem.qty * serviceItem.price |
 								currency:"":"2"}} </b></td>
 						<td md-cell><md-button class="md-icon-button"
 								ng-click="removeServiceItem($index)"> <ng-md-icon
@@ -244,8 +241,8 @@
 							<md-tooltip> Add New </md-tooltip></ng-md-icon> </md-button></td>
 						<td md-cell></td>
 						<td md-cell></td>
-						<td md-cell><label>Service Total</label></td>
-						<td md-cell><b> {{documentEntity.serviceTotal |
+						<td md-cell style="margin: 0px; padding: 0px;"><label>Service Total</label></td>
+						<td md-cell style="margin: 0px; padding: 0px;"><b> {{documentEntity.serviceTotal |
 								currency:"":"2"}}</b></td>
 						<td md-cell></td>
 					</tr>
@@ -253,8 +250,8 @@
 						<td md-cell></td>
 						<td md-cell></td>
 						<td md-cell></td>
-						<td md-cell><label>Final Total</label></td>
-						<td md-cell><b>&#x20b9 {{documentEntity.finalTotal
+						<td md-cell style="margin: 0px; padding: 0px;"><label>Final Total</label></td>
+						<td md-cell style="margin: 0px; padding: 0px;"><b>&#x20b9 {{documentEntity.finalTotal
 								|currency:"":"2"}}</b></td>
 					</tr>
 				</tbody>

@@ -81,7 +81,7 @@
 				<thead md-head>
 					<tr md-row>
 						<th md-column>Sr.No.</th>
-						<th md-column>Item Name</th>
+						<th md-column width="60%">Item Name</th>
 						<th md-column>Quantity</th>
 						<th md-column>Actions</th>
 					</tr>
@@ -92,14 +92,14 @@
 						ng-repeat="lineItem in documentEntity.serviceLineItemList">
 
 						<td md-cell>{{ $index +1 }}</td>
-						<td md-cell
-							ng-selected="lineItem.itemName.id?lineItem.itemName.id:lineItem.itemName"><md-input-container
-								flex> <label>Item Name </label> <input
-								ng-model="lineItem.itemName" ng-required="true"> </md-input-container></td>
+						<td md-cell> <div layout="row"><md-input-container flex
+								style="margin: 0px; padding: 0px;"> <input
+								ng-model="lineItem.itemName" ng-required="true"> </md-input-container></div></td>
 
-						<td md-cell><md-input-container flex> <label>Quantity
-							</label> <input type="number" ng-model="lineItem.qty" ng-required="true">
-							</md-input-container></td>
+						<td md-cell><div><md-input-container flex
+								style="margin: 0px; padding: 0px;"> <input
+								type="number" ng-model="lineItem.qty" ng-required="true">
+							</md-input-container></div></td>
 
 						<td md-cell><md-icon
 								md-svg-src="img/icons/ic_delete_forever_black_24px.svg"
