@@ -12,7 +12,7 @@ app
 
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
-
+					$scope.isSaving = false;
 					$scope.documentEntityTemp = {
 						requester : $scope.curUser,
 						onBehalfOf : "",
@@ -46,6 +46,7 @@ app
 
 							$scope.errorMsg = "Please select atleast one line item.";
 						} else {
+							$scope.isSaving = true;
 							$scope.documentEntity.business = $scope.curUser.business;
 							$scope.documentEntity.modifiedBy = $scope.curUser.email_id;
 
@@ -56,6 +57,7 @@ app
 									.then(
 											function(entityObj) {
 												if (entityObj.id) {
+													$scope.isSaving = false;
 													$scope.documentEntity.id = entityObj.id;
 													$scope.documentEntity.itemNumber = entityObj.itemNumber;
 													$scope.showUpdateToast();

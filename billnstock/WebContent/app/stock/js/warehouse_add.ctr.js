@@ -7,7 +7,7 @@ app.controller("warehouseAddCtr", function($scope, $window, $mdToast, $timeout,
 
 	$log.debug("$stateParams.selectedWarehouseId:",
 			$stateParams.selectedWarehouse);
-
+	$scope.isSaving = false;
 	$scope.selectedWarehouse = $stateParams.selectedWarehouse;
 
 	function getEmptyWarehourse() {
@@ -26,7 +26,7 @@ app.controller("warehouseAddCtr", function($scope, $window, $mdToast, $timeout,
 			: getEmptyWarehourse();
 	
 	$scope.addWarehouse = function() {
-
+		$scope.isSaving = true;
 		var WarehouseManagementService = appEndpointSF
 				.getWarehouseManagementService();
 
@@ -35,8 +35,10 @@ app.controller("warehouseAddCtr", function($scope, $window, $mdToast, $timeout,
 		WarehouseManagementService.addWarehouse($scope.warehouse).then(
 				function(msgBean) {
 					if ($scope.selectedWarehouse) {
+						$scope.isSaving = false;
 						$scope.showUpdateToast();
 					} else {
+						$scope.isSaving = false;
 						$scope.showAddToast();
 						$scope.warehouse = getEmptyWarehourse();
 						$scope.warehouseForm.$setPristine();

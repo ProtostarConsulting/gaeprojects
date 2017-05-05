@@ -9,7 +9,7 @@ app
 
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
-
+					$scope.isSaving = false;
 					$scope.shipmentTypes = [ 'TO_CUSTOMER',
 							'TO_OTHER_WAREHOUSE', 'TO_PARTNER' ];
 
@@ -46,6 +46,7 @@ app
 							: '';
 
 					$scope.saveDocument = function() {
+						$scope.isSaving = true;
 						$scope.documentEntity.business = $scope.curUser.business;
 						$scope.documentEntity.modifiedBy = $scope.curUser.email_id;
 						// $scope.documentEntity.createdBy = $scope.curUser;
@@ -61,6 +62,7 @@ app
 											if (entityObj.id) {
 												$scope.documentEntity.id = entityObj.id;
 												$scope.documentEntity.itemNumber = entityObj.itemNumber;
+												$scope.isSaving = false;
 												$scope.showUpdateToast();
 											}
 										});

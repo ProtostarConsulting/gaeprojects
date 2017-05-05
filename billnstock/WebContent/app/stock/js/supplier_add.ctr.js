@@ -9,7 +9,7 @@ app
 
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
-
+					$scope.isSaving = false;
 					$scope.getEmptySupplier = function() {
 						return {
 							supplierName : '',
@@ -24,7 +24,7 @@ app
 					};
 
 					$scope.addSupplier = function() {
-
+						$scope.isSaving = true;
 						$scope.supplier.business = $scope.curUser.business;
 						$scope.supplier.modifiedBy = $scope.curUser.email_id;
 
@@ -41,7 +41,7 @@ app
 											$scope.supplier = $scope
 													.getEmptySupplier();
 										});
-
+						$scope.isSaving = false;
 					}
 
 					$scope.supplier = $stateParams.selectedSupplier ? $stateParams.selectedSupplier

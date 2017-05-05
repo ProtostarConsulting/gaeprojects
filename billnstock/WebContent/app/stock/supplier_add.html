@@ -93,10 +93,16 @@
 			name="pin" ng-model="supplier.address.pin"> </md-input-container>
 	</div>
 
-
-	<section layout="row" layout-xs="column" layout-align="left left">
-		<md-button ng-disabled="supplierForm.$invalid"
-			class="md-raised md-primary" ng-click="addSupplier()">Save</md-button>
-	</section>
+	<div ng-if="!isSaving">
+		<section layout="row" layout-xs="column" layout-align="left left">
+			<md-button ng-disabled="supplierForm.$invalid"
+				class="md-raised md-primary" ng-click="addSupplier()">Save</md-button>
+		</section>
+	</div>
+	<div ng-if="isSaving">
+		<section layout="row" layout-xs="column" layout-align="left left">
+			<md-button class="md-raised md-primary" ng-disabled="true">Saving...</md-button>
+		</section>
+	</div>
 </form>
 </md-content>

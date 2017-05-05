@@ -70,19 +70,22 @@
 			name="pin" ng-model="warehouse.address.pin"> </md-input-container>
 	</div>
 
+	<div ng-if="!isSaving">
+		<section layout="row" layout-sm="column" layout-align="left left">
+			<md-button ng-disabled="warehouseForm.$invalid"
+				class="md-raised md-primary" ng-hide="warehouse.id"
+				ng-click="addWarehouse()">Add</md-button>
+		</section>
 
-	<section layout="row" layout-sm="column" layout-align="left left">
-		<md-button ng-disabled="warehouseForm.$invalid"
-			class="md-raised md-primary" ng-hide="warehouse.id"
-			ng-click="addWarehouse()">Add</md-button>
-	</section>
-
-	<section layout="row" layout-xs="column" layout-align="left left">
-		<md-button ng-disabled="warehouseForm.$invalid"
-			class="md-raised md-primary" ng-hide="warehouse.id == null"
-			ng-click="addWarehouse()">Update</md-button>
-	</section>
-
-
-	<div></div>
+		<section layout="row" layout-xs="column" layout-align="left left">
+			<md-button ng-disabled="warehouseForm.$invalid"
+				class="md-raised md-primary" ng-hide="warehouse.id == null"
+				ng-click="addWarehouse()">Update</md-button>
+		</section>
+	</div>
+	<div ng-if="isSaving">
+		<section layout="row" layout-xs="column" layout-align="left left">
+			<md-button class="md-raised md-primary" ng-disabled="true">Saving...</md-button>
+		</section>
+	</div>
 </form>

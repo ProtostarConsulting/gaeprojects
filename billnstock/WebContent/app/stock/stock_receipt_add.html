@@ -254,7 +254,7 @@
 		</div>
 		<div layout="row" layout-xs="column">
 			<section layout="row" layout-xs="column"
-				ng-if="isDocumentEditAllowed(documentEntity)">
+				ng-if="isDocumentEditAllowed(documentEntity) && !isSaving">
 				<md-button class="md-raised md-primary"
 					ng-disabled="documentForm.$invalid" ng-click="draftDocumnent()">Save
 				as Draft</md-button>
@@ -268,6 +268,9 @@
 					<md-button class="md-raised md-primary"
 						ng-disabled="documentForm.$invalid" ng-click="rejectDocumnent()">Reject</md-button>
 				</section>
+			</section>
+			<section layout="row" layout-xs="column" ng-if="isSaving">
+				<md-button class="md-raised md-primary" ng-disabled="true">Saving...</md-button>
 			</section>
 		</div>
 	</form>

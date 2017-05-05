@@ -31,7 +31,7 @@ app
 
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
-
+					$scope.isSaving = false;
 					function getEmptyStockItemType() {
 						return {
 							itemName : "",
@@ -58,7 +58,7 @@ app
 					$scope.stockItemProductTypes = [];
 
 					$scope.addStockItemType = function() {
-
+						$scope.isSaving = true;
 						$scope.stock.modifiedBy = $scope.curUser.email_id;
 						$scope.stock.business = $scope.curUser.business;
 
@@ -67,7 +67,9 @@ app
 								function(msgBean) {
 									if ($scope.selectedStockItem) {
 										$scope.showUpdateToast();
+										$scope.isSaving = false;
 									} else {
+										$scope.isSaving = false;
 										$scope.showAddToast();
 										$scope.stock = getEmptyStockItemType();
 									}

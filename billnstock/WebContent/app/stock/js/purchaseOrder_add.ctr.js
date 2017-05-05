@@ -12,7 +12,7 @@ app
 
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
-
+					$scope.isSaving = false;
 					$scope.getEmptyPurchaseOrderObj = function() {
 						return {
 							warehouse : null,
@@ -85,6 +85,7 @@ app
 								&& !$scope.documentEntity.productLineItemList) {
 							$scope.errorMsg = "Please select atleast one item.";
 						} else {
+							$scope.isSaving = true;
 							$scope.documentEntity.business = $scope.curUser.business;
 							$scope.documentEntity.modifiedBy = $scope.curUser.email_id;
 							$scope.documentEntity.discAmount = $scope.discAmount;
@@ -94,6 +95,7 @@ app
 									.then(
 											function(entityObj) {
 												if (entityObj.id) {
+													$scope.isSaving = false;
 													$scope.documentEntity.id = entityObj.id;
 													$scope.documentEntity.itemNumber = entityObj.itemNumber;
 													$scope.showUpdateToast();
