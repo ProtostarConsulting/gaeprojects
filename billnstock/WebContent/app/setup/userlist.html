@@ -39,6 +39,7 @@
 					<tr md-row>
 						<th md-column md-order-by="firstName">First Name</th>
 						<th md-column md-order-by="lastName">Last Name</th>
+						<th md-column md-order-by="email_id">Email Id</th>
 						<th md-column md-order-by="isLoginAllowed" hide-xs>Login
 							Allowed</th>
 						<th md-column md-order-by="lastLoginDate" hide-xs>Last Login</th>
@@ -50,6 +51,7 @@
 						ng-repeat="user in activeUsers | filter: searchTextActiveUsers | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit">
 						<td md-cell>{{user.firstName}}</td>
 						<td md-cell>{{user.lastName}}</td>
+						<td md-cell>{{user.email_id}}</td>
 						<td md-cell hide-xs>{{user.isLoginAllowed?'Yes':'No'}}</td>
 						<td md-cell hide-xs>{{user.lastLoginDate |
 							formatDateWithTime}}</td>
