@@ -37,8 +37,12 @@
 				ng-false-value="false"></md-checkbox> Maintain By Serial Number </md-input-container>
 		</div>
 	</div>
+	<md-dialog-actions layout="row" ng-if="!isSaving">
+	<md-button class="md-raised md-primary"
+		ng-disabled="stockForm.$invalid" ng-click="addStock()"> </md-icon>Save</md-button>
+	<md-button class="md-raised" ng-hide="customer.id" ng-click="cancel()">Cancel</md-button>
+	</md-dialog-actions>
+	<md-dialog-actions ng-if="isSaving"> <md-button
+		class="md-raised" ng-disabled="true">Saving...</md-button></md-dialog-actions>
 </form>
-</md-content> </md-content> </md-dialog-content> <md-dialog-actions layout="row"> <md-button
-	class="md-raised md-primary" ng-click="addStock()"> </md-icon>Save</md-button> <md-button
-	class="md-raised" ng-hide="customer.id" ng-click="cancel()">Cancel</md-button>
-</md-dialog-actions> </md-dialog>
+</md-content> </md-content> </md-dialog-content> </md-dialog>

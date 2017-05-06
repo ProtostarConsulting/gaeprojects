@@ -154,7 +154,7 @@ public class Constants {
 	};
 
 	public enum QCParameterType {
-		NUMBER, NUMBERRANGE, YESNO, TEXT
+		NUMBER, NUMBERRANGE, YESNO, TEXT, PASSFAIL
 	};
 
 	public enum SchedulingFrequecyType {

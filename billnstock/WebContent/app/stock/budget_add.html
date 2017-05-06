@@ -134,7 +134,7 @@
 
 	</div>
 </form>
-<div layout layout-xs="column" ng-hide="budgetObj.status == 'FINALIZED'">
+<div layout layout-xs="column" ng-if="!isSaving" ng-hide="budgetObj.status == 'FINALIZED'">
 	<section layout="row" layout-xs="column">
 		<md-button class="md-raised md-primary"
 			ng-disabled="addBudgetForm.$invalid" ng-click="saveBudgetRecord()">Save
@@ -144,6 +144,11 @@
 			ng-click="submitBudgetRecord($event)">Submit</md-button>
 		<md-button class="md-raised md-primary"
 			ng-disabled="addBudgetForm.$invalid">Finalize</md-button>
+	</section>
+</div>
+<div>
+	<section layout="row" layout-xs="column" ng-if="isSaving">
+		<md-button class="md-raised md-primary" ng-disabled="true">Saving...</md-button>
 	</section>
 </div>
 </md-content>

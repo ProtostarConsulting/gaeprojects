@@ -3,7 +3,7 @@ angular
 		.controller(
 				"taxCtr",
 				function($scope, $window, $mdToast, $timeout, $mdSidenav,
-						$mdUtil, $log, $stateParams, objectFactory,
+						$mdUtil, $log, $stateParams, objectFactory, $state,
 						appEndpointSF) {
 
 					$scope.query = {
@@ -13,7 +13,7 @@ angular
 						totalSize : 0,
 						pagesLoaded : 0
 					};
-
+					$scope.isSaving = false;
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
 
@@ -36,16 +36,19 @@ angular
 							: newTax();
 
 					$scope.addTax = function() {
+						$scope.isSaving = true;
 						$scope.selectedTax.business = $scope.curUser.business;
 						var taxService = appEndpointSF.getTaxService();
 						taxService.addTax($scope.selectedTax).then(
 								function(msgBean) {
 									if ($scope.selectedTax.id) {
+										$scope.isSaving = false;
 										$scope.showUpdateToast();
 									} else {
+										$scope.isSaving = false;
 										$scope.showAddToast();
 										$scope.selectedTax = newTax();
-										resetTaxForm();
+										$state.reload();
 									}
 								});
 
@@ -120,13 +123,6 @@ angular
 					}
 
 					$scope.waitForServiceLoad();
-
-					function resetTaxForm() {
-						$scope.taxForm.$setPristine();
-						$scope.taxForm.$setValidity();
-						$scope.taxForm.$setUntouched();
-						$scope.selected = [];
-					}
 
 					$scope.cancelUpdate = function() {
 						$scope.back();

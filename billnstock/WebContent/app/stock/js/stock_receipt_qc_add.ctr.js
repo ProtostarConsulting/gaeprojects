@@ -18,7 +18,7 @@ app
 							parameterList : [],
 							note : "",
 						};
-					
+					$scope.isSaving = false;
 					$scope.qcparameter = {
 							name : "",
 							parameterType : "",
@@ -34,16 +34,17 @@ app
 						$scope.qcstockreceipt.validTill = new Date($stateParams.qcstockReceiptObj.validTill);
 					}
 					
-					$scope.qcparameterType = [ "NUMBER", "NUMBERRANGE", "YESNO", "TEXT" ];
+					$scope.qcparameterType = [ "NUMBER", "NUMBERRANGE", "YESNO", "TEXT", "PASSFAIL" ];
 					$scope.stockItemUnitList = [];
 					
 					$scope.addStockReceiptQC = function() {
-						
+						$scope.isSaving = true;
 						$scope.qcstockreceipt.business = $scope.curUser.business;
 						$scope.qcstockreceipt.modifiedBy = $scope.curUser.email_id;
 						var stockService = appEndpointSF.getStockService();
 						stockService.addStockReceiptQC($scope.qcstockreceipt).then(function(qcstockreceiptobj){
 							if (qcstockreceiptobj.id != undefined) {
+								$scope.isSaving = false;
 								$scope.qcstockreceipt.id = qcstockreceiptobj.id;
 								$scope.showAddToast();
 							}
@@ -68,6 +69,9 @@ app
 							parameterType : "",
 							numberIdealValue : "",
 							numberIdealValueValidDeviationPerc : ""
+						}
+						if($scope.qcstockreceipt.id && !$scope.qcstockreceipt.parameterList){
+							$scope.qcstockreceipt.parameterList = [];
 						}
 						$scope.qcstockreceipt.parameterList.push($scope.qcparameter);
 					};

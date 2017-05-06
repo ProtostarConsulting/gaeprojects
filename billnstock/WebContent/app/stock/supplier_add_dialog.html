@@ -96,7 +96,9 @@
 			name="pin" ng-model="supplier.address.pin"> </md-input-container>
 	</div>
 </form>
-</md-content> </md-dialog-content> <md-dialog-actions layout="row"> <md-button
-	ng-disabled="supplierForm.$invalid" class="md-raised md-primary"
-	ng-click="addSupplier()">Save</md-button> <md-button class="md-raised"
-	ng-hide="customer.id" ng-click="cancel()">Cancel</md-button> </md-dialog-actions> </md-dialog>
+</md-content> </md-dialog-content> <md-dialog-actions layout="row" ng-if="!isSaving">
+<md-button ng-disabled="supplierForm.$invalid"
+	class="md-raised md-primary" ng-click="addSupplier()">Save</md-button>
+<md-button class="md-raised" ng-hide="customer.id" ng-click="cancel()">Cancel</md-button>
+</md-dialog-actions> <md-dialog-actions ng-if="isSaving"> <md-button
+	class="md-raised" ng-disabled="true">Saving...</md-button></md-dialog-actions> </md-dialog>

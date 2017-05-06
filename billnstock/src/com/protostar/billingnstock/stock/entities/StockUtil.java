@@ -18,7 +18,7 @@ public class StockUtil {
 		if (parameterList.size() > 0) {
 			for (QCParameter qcParameter : parameterList) {
 				QCParameterRecord qcParameterRecord = new QCParameterRecord();
-				qcParameterRecord.setParameterName(qcParameter.getName());
+				qcParameterRecord.setQcParameter(qcParameter);
 				qcParameterRecord.setRecordedValue("");
 				paramRecordedValues.add(qcParameterRecord);
 

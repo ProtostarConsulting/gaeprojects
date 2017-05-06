@@ -1,7 +1,7 @@
 var app = angular.module("stockApp");
 
 app.controller("warehouseAddCtr", function($scope, $window, $mdToast, $timeout,
-		$mdSidenav, $mdUtil, $log, $stateParams, objectFactory, appEndpointSF) {
+		$mdSidenav, $mdUtil, $log, $stateParams, objectFactory, appEndpointSF, $state) {
 
 	$scope.curUser = appEndpointSF.getLocalUserService().getLoggedinUser();
 
@@ -41,9 +41,7 @@ app.controller("warehouseAddCtr", function($scope, $window, $mdToast, $timeout,
 						$scope.isSaving = false;
 						$scope.showAddToast();
 						$scope.warehouse = getEmptyWarehourse();
-						$scope.warehouseForm.$setPristine();
-						$scope.warehouseForm.$setValidity();
-						$scope.warehouseForm.$setUntouched();
+						$state.reload();
 						
 					}
 				});

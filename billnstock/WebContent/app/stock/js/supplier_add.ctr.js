@@ -34,14 +34,15 @@ app
 								.addSupplier($scope.supplier)
 								.then(
 										function(msgBean) {
+											$scope.isSaving = false;
 											$scope.showUpdateToast();
 											$scope.supplierForm.$setPristine();
 											$scope.supplierForm.$setValidity();
 											$scope.supplierForm.$setUntouched();
 											$scope.supplier = $scope
 													.getEmptySupplier();
+											$state.reload();
 										});
-						$scope.isSaving = false;
 					}
 
 					$scope.supplier = $stateParams.selectedSupplier ? $stateParams.selectedSupplier

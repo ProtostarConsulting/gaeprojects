@@ -168,7 +168,7 @@ td {
 	<tr>
 			<td>Time/Parameter Name</td>
 			<#list parameterRecordList as parameterRecord>
-			<td>${parameterRecord.parameterName}</td>
+			<td>${parameterRecord.qcParameter.name}</td>
 			</#list>
 			
 		</tr>

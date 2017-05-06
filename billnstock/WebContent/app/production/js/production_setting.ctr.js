@@ -11,20 +11,21 @@ app
 							.getLoggedinUser();
 
 					$scope.settingsObj = {}
-					
+					$scope.isSaving = false;
 					$scope.qcMachineUnitMeasure = {
 							unitName : ""
 						}
 					$scope.qcMachineUnitMeasureList = [];
 					
 					$scope.addSettings = function() {
-
+						$scope.isSaving = true;
 						var productService = appEndpointSF.getProductionService();
 						$scope.settingsObj.business = $scope.curUser.business;
 						$scope.settingsObj.modifiedBy = $scope.curUser.email_id;
 
 						productService.addProductionSettings($scope.settingsObj).then(
 								function(savedRecoed) {
+									$scope.isSaving = false;
 									$scope.settingsObj = savedRecoed;
 									$scope.showUpdateToast();
 								});

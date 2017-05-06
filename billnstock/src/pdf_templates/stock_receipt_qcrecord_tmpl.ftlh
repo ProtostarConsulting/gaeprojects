@@ -162,7 +162,7 @@ td {
 	<tr>
 			<td style="width: 15%">Parameter Name</td>
 			<#list parameterRecordList[i] as parameterRecord>
-			<td style="width: 15%">${parameterRecord.parameterName}</td>
+			<td style="width: 15%">${parameterRecord.qcParameter.name}</td>
 			</#list>			
 		</tr>
 

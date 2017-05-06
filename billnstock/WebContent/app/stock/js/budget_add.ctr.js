@@ -14,7 +14,7 @@ app
 
 					$scope.curUser = appEndpointSF.getLocalUserService()
 							.getLoggedinUser();
-
+					$scope.isSaving = false;
 					$scope.budgetObj = {
 						status : 'DRAFT',
 						period : "",
@@ -35,13 +35,14 @@ app
 
 							$scope.errorMsg = "Please select atleast one category.";
 						} else {
-
+							$scope.isSaving = true;
 							$scope.budgetObj.business = $scope.curUser.business;
 							$scope.budgetObj.modifiedBy = $scope.curUser.email_id;
 
 							var stockService = appEndpointSF.getStockService();
 							stockService.addBudget($scope.budgetObj).then(
 									function() {
+										$scope.isSaving = false;
 										$scope.showUpdateToast();
 										$scope.budgetObj = {};
 									});

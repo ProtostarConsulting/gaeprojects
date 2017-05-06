@@ -1,6 +1,6 @@
 <md-subheader class="md-primary">
 <h4 class="md-title"
-	ng-bind="qcstockreceipt.id?'Edit Stock Receipt QC':'Add Stock Receipt QC'"></h4>
+	ng-bind="qcstockreceipt.id?'Edit Stock Receipt QC Definition':'Add Stock Receipt QC Definition'"></h4>
 </md-subheader>
 
 <form name="addStockReceiptQCForm">
@@ -74,18 +74,18 @@
 						<md-select name="parameterType" ng-model="parameter.parameterType"
 							ng-required="true"> <md-option
 							ng-repeat="paramType in qcparameterType" ng-value="paramType">{{paramType}}</md-option>
-						</md-select></md-input-container></td>
-					<td md-cell><md-input-container flex
+						</md-select></md-input-container></td>	
+					<td md-cell ng-hide="parameter.parameterType == 'PASSFAIL'"><md-input-container flex
 							style="padding-left:2px; padding-right:0px;">
 						<md-select name="paramUnit" ng-model="parameter.itemUnit"
-							ng-required="true"> <md-option
+							ng-required="parameter.itemUnit"> <md-option
 							ng-repeat="unit in stockItemUnitList"
 							ng-selected="parameter.itemUnit.id==unit.id" ng-value="unit">{{unit.unitName}}</md-option>
 						</md-select></md-input-container></td>
-					<td md-cell><md-input-container flex
+					<td md-cell ng-hide="parameter.parameterType == 'PASSFAIL'"><md-input-container flex
 							style="padding-left:2px; padding-right:0px;">
 						<input ng-model="parameter.numberIdealValue"> </md-input-container></td>
-					<td md-cell><md-input-container flex
+					<td md-cell ng-hide="parameter.parameterType == 'PASSFAIL'"><md-input-container flex
 							style="padding-left:2px; padding-right:0px;">
 						<input ng-model="parameter.numberIdealValueValidDeviationPerc">
 						</md-input-container></td>
@@ -110,11 +110,12 @@
 	</div>
 
 	<div layout layout-xs="column">
-		<section layout="row" layout-xs="column">
+		<section layout="row" layout-xs="column" ng-if="!isSaving">
 			<md-button class="md-raised md-primary"
 				ng-disabled="addStockReceiptQCForm.$invalid" ng-click="addStockReceiptQC()">Save</md-button>
-			<!-- <md-button class="md-raised md-primary" ng-if="qcmachine.id"
-				ng-disabled="addStockReceiptQCForm.$invalid" ng-click="addQCMachine()">Update</md-button> -->
+		</section>
+		<section layout="row" layout-xs="column" ng-if="isSaving">
+			<md-button class="md-raised md-primary" ng-disabled="true" >Saving...</md-button>
 		</section>
 	</div>
 </form>

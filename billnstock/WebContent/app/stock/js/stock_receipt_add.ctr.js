@@ -544,7 +544,9 @@ app
 
 					function addSupplierDialogController($scope, $mdDialog,
 							curBusi, curUser, supplierList, documentEntity) {
+						$scope.isSaving = false;
 						$scope.addSupplier = function() {
+							$scope.isSaving = true;
 							$scope.supplier.business = curUser.business;
 							$scope.supplier.createdDate = new Date();
 							$scope.supplier.modifiedBy = curUser.email_id;
@@ -554,6 +556,7 @@ app
 							supplierService.addSupplier($scope.supplier).then(
 									function(supplierObj) {
 										supplierList.push(supplierObj);
+										$scope.isSaving = false;
 										documentEntity.supplier = supplierObj;
 									});
 							$scope.cancel();
@@ -613,8 +616,10 @@ app
 					function addStockItemDialogController($scope, $mdDialog,
 							curUser, stock, warehouses, stockItemList,
 							lineItem, calProductSubTotalFn) {
+						$scope.isSaving = false;
 						$scope.warehouses = warehouses;
 						$scope.addStock = function() {
+							$scope.isSaving = true;
 							$scope.stock.business = curUser.business;
 							$scope.stock.createdDate = new Date();
 							$scope.stock.modifiedBy = curUser.email_id;
@@ -624,6 +629,7 @@ app
 									.then(
 											function(addedItem) {
 												if (addedItem.id) {
+													$scope.isSaving = false;
 													lineItem.stockItem.stockItemType = addedItem;
 													lineItem.price = addedItem.price;
 													stockItemList

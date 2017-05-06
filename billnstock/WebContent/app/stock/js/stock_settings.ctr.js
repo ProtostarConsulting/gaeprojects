@@ -11,7 +11,7 @@ app
 							.getLoggedinUser();
 
 					$scope.settingsObj = {}
-
+					$scope.isSaving = false;
 					$scope.stockItemUnit = {
 						unitName : ""
 					}
@@ -44,13 +44,14 @@ app
 					$scope.editMode = false;
 
 					$scope.addSettings = function() {
-
+						$scope.isSaving = true;
 						var StockService = appEndpointSF.getStockService();
 						$scope.settingsObj.business = $scope.curUser.business;
 						$scope.settingsObj.modifiedBy = $scope.curUser.email_id;
 
 						StockService.addStockSettings($scope.settingsObj).then(
 								function(savedRecoed) {
+									$scope.isSaving = false;
 									$scope.settingsObj = savedRecoed;
 									$scope.showUpdateToast();
 								});

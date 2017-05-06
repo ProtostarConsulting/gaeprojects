@@ -114,11 +114,14 @@
 		</div>
 
 
-		<section layout="row" layout-sm="column" layout-align="left left">
+		<section layout="row" layout-sm="column" layout-align="left left" ng-if="!isSaving">
 			<md-button class="md-raised md-primary" ng-click="cancelUpdate()">Back</md-button>
 			<md-button class="md-raised md-primary"
 				ng-disabled="taxForm.$invalid" ng-click="addTax()">Submit</md-button>
 		</section>
+		<section layout="row" layout-xs="column" ng-if="isSaving">
+				<md-button class="md-raised md-primary" ng-disabled="true">Saving...</md-button>
+			</section>
 	</div>
 </form>
 </md-content>
