@@ -26,7 +26,6 @@ app
 					};
 
 					$scope.sectionTitle = "Budget Period";
-
 					$scope.budgetObj = $stateParams.selectedBudgetObj ? $stateParams.selectedBudgetObj
 							: $scope.budgetObj;
 
