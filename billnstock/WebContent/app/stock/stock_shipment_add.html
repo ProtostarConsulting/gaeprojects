@@ -140,6 +140,7 @@
 								<md-autocomplete flex required md-input-name="autocompleteField"
 									md-no-cache=true md-selected-item="item.stockItem"
 									md-search-text="searchStockItemText"
+									md-search-text-change="productLineItemChangedEventFn()"
 									md-items="stockItem in stockItemQuerySearch(searchStockItemText)"
 									md-item-text="stockItem.stockItemType.itemName"
 									md-floating-label="Item Name">

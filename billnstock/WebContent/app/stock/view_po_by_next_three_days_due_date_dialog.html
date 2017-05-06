@@ -1,0 +1,31 @@
+<md-dialog aria-label="Add New" style="min-width:800px;"> <md-toolbar>
+<div class="md-toolbar-tools">
+	<h2>Purchase Orders Due In Next 3 Days</h2>
+	<span flex></span>
+	<md-button class="md-icon-button" ng-click="cancel()"> <md-icon
+		md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+	</md-button>
+</div>
+</md-toolbar> <md-dialog-content style="min-width:200px; max-width:800px;">
+<md-content layout-padding>
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>PO No.</th>
+			<th>Due Date</th>
+			<th>Created By</th>
+			<th>Supplier</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="purchaseOrder in purchaseOrders">
+			<td>{{purchaseOrder.itemNumber}}</td>
+			<td>{{purchaseOrder.poDueDate|formatDate}}</td>
+			<td>{{purchaseOrder.createdBy.firstName+"
+				"+purchaseOrder.createdBy.lastName}}</td>
+			<td>{{purchaseOrder.supplier.supplierName}}</td>
+		</tr>
+
+	</tbody>
+</table>
+</md-content> </md-dialog-content> </md-dialog>

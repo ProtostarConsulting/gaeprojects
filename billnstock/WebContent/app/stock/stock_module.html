@@ -141,24 +141,38 @@
 			<p flex align="center">Purchase Dashboard</p>
 			<table class="table" style="border: 1px solid black;">
 				<tr>
-					<td
-						style="border: 1px solid black; width: 60%; overflow: hidden">Purchase
+					<td style="border: 1px solid black; width: 60%; overflow: hidden">Purchase
 						Orders Due Today</td>
-					<td style="border: 1px solid black;"><a href="">3 </a> of follow-up pending <a href=""> 2</a></td>
+					<td style="border: 1px solid black;"><md-button
+							class="md-icon-button" ng-click="viewPOsDueToday($event)">
+						<ng-md-icon icon="pageview" style="fill: md-default" size="20">
+						<md-tooltip> View</md-tooltip></ng-md-icon></md-button> of follow-up pending <a href="">
+							2</a></td>
 				</tr>
 				<tr>
 					<td style="border: 1px solid black;">Purchase Orders Due in
 						next 3 Days</td>
-					<td style="border: 1px solid black;"><a href=""><a href="">14 </a> of follow-up pending <a href=""> 7</a> </a></td>
+					<td style="border: 1px solid black;"><md-button
+							class="md-icon-button" ng-click="viewPOsDueInThreeDays($event)">
+						<ng-md-icon icon="pageview" style="fill: md-default" size="20">
+						<md-tooltip> View</md-tooltip></ng-md-icon></md-button> of follow-up pending <a href="">
+							7</a></td>
 				</tr>
 				<tr>
 					<td style="border: 1px solid black;">Purchase Orders Due in
 						next 7 Days</td>
-					<td style="border: 1px solid black;"><a href=""><a href="">17 </a> of follow-up pending <a href=""> 15</a></a></td>
+					<td style="border: 1px solid black;"><md-button
+							class="md-icon-button" ng-click="viewPOsDueInSevenDays($event)">
+						<ng-md-icon icon="pageview" style="fill: md-default" size="20">
+						<md-tooltip> View</md-tooltip></ng-md-icon></md-button> of follow-up pending <a href="">
+							15</a></td>
 				</tr>
 				<tr>
 					<td style="border: 1px solid black;">Total Purchase Orders Due</td>
-					<td style="border: 1px solid black;"><a href="">45 </a></td>
+					<td style="border: 1px solid black;"><md-button
+							class="md-icon-button" ng-click="viewTotalPOsFinalized($event)">
+						<ng-md-icon icon="pageview" style="fill: md-default" size="20">
+						<md-tooltip> View</md-tooltip></ng-md-icon></md-button></td>
 				</tr>
 			</table>
 			</md-card>
@@ -167,12 +181,13 @@
 
 			<table class="table" style="border: 1px solid black;">
 				<tr>
-					<td
-						style="border: 1px solid black; width: 85%; overflow: hidden">Stock Items below Re-order Level</td>
+					<td style="border: 1px solid black; width: 85%; overflow: hidden">Stock
+						Items below Re-order Level</td>
 					<td style="border: 1px solid black;"><a href="">6 </a></td>
 				</tr>
 				<tr>
-					<td style="border: 1px solid black;">Stock Items Not-in-Hand against Production Requistions</td>
+					<td style="border: 1px solid black;">Stock Items Not-in-Hand
+						against Production Requistions</td>
 					<td style="border: 1px solid black;"><a href="">14 </a></td>
 				</tr>
 				<tr>
@@ -182,7 +197,7 @@
 				</tr>
 				<tr>
 					<td style="border: 1px solid black;">Total Purchase Orders Due</td>
-					<td style="border: 1px solid black;"><a href="">45 </a></td>
+					<td style="border: 1px solid black;"></td>
 				</tr>
 			</table>
 			</md-card>
